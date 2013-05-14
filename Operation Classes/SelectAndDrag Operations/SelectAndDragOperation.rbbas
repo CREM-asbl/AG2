@@ -1,0 +1,507 @@
+#tag Class
+Protected Class SelectAndDragOperation
+Inherits SelectOperation
+	#tag Method, Flags = &h0
+		Sub CompleteOperation(NewPoint as BasicPoint)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SelectAndDragOperation()
+		  SelectOperation()
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MouseDrag(pc As BasicPoint)
+		  
+		  dim i as integer
+		  
+		  if  tempshape.count = 0 or currentshape = nil  then
+		    return
+		  end if
+		  ReinitAttraction
+		  
+		  if CurrentShape isa repere then
+		    pc = wnd.MyCanvas1.transform(pc)
+		  end if
+		  
+		  if visi <> nil then
+		    visi.tspfalse
+		  end if
+		  
+		  if not self isa modifier then
+		    visi = objects.findobject(pc)
+		    for i = 0 to visi.count-1
+		      if objects.getposition(currentshape) < objects.getposition(visi.element(i)) then
+		        visi.element(i).tsp = true
+		      else
+		        visi.element(i).tsp = false
+		      end if
+		    next
+		  end if
+		  
+		  
+		  CompleteOperation(pc)
+		  ShowAttraction
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MouseDown(p As BasicPoint)
+		  // Sert à établir la liste des formes sélectionnées
+		  dim i,j as integer
+		  dim pt as Point
+		  
+		  drapUA = false
+		  drapUL = false
+		  figs.removeall
+		  
+		  StartPoint = new BasicPoint(p)
+		  EndPoint = new BasicPoint(p)
+		  
+		  if (CurrentHighlightedShape = nil) and (self isa modifier)    then
+		    return
+		  end if
+		  
+		  if currenthighlightedshape = nil and  objects.findobject(p).count = 0  then
+		    Objects.unselectall
+		    CurrentShape = wnd.Mycanvas1.getrepere
+		    StartPoint = wnd.MyCanvas1.MouseCan
+		    EndPoint = StartPoint
+		    objects.selectobject(currentshape)
+		    
+		  elseif currenthighlightedshape <> nil then
+		    selection
+		    currentshape = currenthighlightedshape
+		    objects.tspfalse
+		    finished = false
+		    wnd.refreshtitle
+		    
+		    if not self isa modifier    then
+		      CurrentShape.SelectNeighboor //sélectionne  toute la figure  et les formes  liées
+		      for i = 0 to tempshape.count-1
+		        figs.addfigure tempshape.element(i).fig
+		      next
+		      figs.creerlistesfigures
+		      figs.figs0.createstate("FigsMoved", nil)
+		    end if
+		    
+		    if self isa redimensionner then
+		      for i = 0 to figs.count -1
+		        if figs.element(i).shapes.getposition(currentcontent.SHUL) <> -1 then
+		          drapUL = true
+		        end if
+		        if figs.element(i).shapes.getposition(currentcontent.SHUA) <> -1 then
+		          drapUA = true
+		        end if
+		      next
+		    end if
+		    
+		  end if
+		  nobj = 1
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MouseUp(p As BasicPoint)
+		  
+		  if  tempshape.count > 0 then
+		    wnd.mycanvas1.MouseCursor = system.cursors.wait
+		    endoperation
+		  else
+		    super.mouseup(p)
+		  end if
+		  if visi <> nil then
+		    visi.tspfalse
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Glissement(NewPoint as BasicPoint)
+		  dim AttractedShape,AttractingShape,NextAttractingShape as Shape
+		  dim Magnetism,tempm As  Integer
+		  dim Mp as BasicPoint
+		  dim i as integer
+		  dim M as Matrix
+		  
+		  
+		  Magnetism = 0
+		  
+		  M = new Translationmatrix(NewPoint-EndPoint)
+		  
+		  if self isa Duplicate then
+		    figs.move(M)
+		  else
+		    figs.Bouger(M)
+		  end if
+		  endpoint = newpoint
+		  
+		  if dret = nil then
+		    for i = 0 to figs.count-1
+		      tempM =  Magnetisme(MagneticD, figs.element(i))
+		      if tempM > Magnetism then
+		        Magnetism = tempm
+		        Mp =  MagneticD
+		        AttractedShape = CurrentAttractedShape
+		        AttractingShape = CurrentAttractingShape
+		        NextAttractingShape = NextCurrentAttractingShape
+		      end if
+		    next
+		    CurrentAttractedShape = AttractedShape
+		    CurrentAttractingShape = AttractingShape
+		    NextCurrentAttractingShape = NextAttractingShape
+		    MagneticD = Mp
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Ajustement() As Matrix
+		  dim q, MagneticD as BasicPoint
+		  dim FirstAttractedPoint, SecondAttractedPoint, Pt, p as Point
+		  dim i,j, Magnetism as Integer
+		  dim M as Matrix
+		  dim Pol, s, s0 as Shape
+		  
+		  if (not  CurrentAttractedShape isa point) or (not CurrentAttractingshape isa point) or (CurrentAttractedshape.fig = Currentattractingshape.fig)  then
+		    return nil
+		  end if
+		  
+		  FirstAttractedPoint = Point(CurrentAttractedShape)
+		  p = point(CurrentAttractingShape)
+		  s0 = nil
+		  
+		  for i = 0 to Ubound(p.parents)
+		    for j = 0 to Ubound(FirstAttractedPoint.parents)
+		      Pol = FirstAttractedPoint.parents(j)
+		      if Pol.getindexpoint(FirstAttractedPoint) <> -1 then
+		        s = p.parents(i)
+		        if  Pol isa Polygon and not Pol isa cube  then
+		          Pt = Polygon(Pol).PrecPoint(FirstAttractedPoint)
+		          ajustermagnetisme(s, s0, Pt, SecondAttractedPoint, Magnetism, MagneticD)
+		          Pt = Polygon(Pol).NextPoint(FirstAttractedPoint)
+		          ajustermagnetisme(s, s0,  Pt, SecondAttractedPoint, Magnetism, MagneticD)
+		        elseif Pol isa Droite then
+		          Pt = Droite(Pol).otherpoint(FirstAttractedPoint)
+		          ajustermagnetisme(s, s0,Pt, SecondAttractedPoint, Magnetism, MagneticD)
+		        end if
+		      end if
+		    next
+		  next
+		  
+		  if (Magnetism = 0) or (s0=nil) or (secondattractedpoint <> nil and (s0.fig = SecondAttractedPoint.fig)) then
+		    return nil
+		  end if
+		  
+		  q = magneticD
+		  if q.distance(Pt.bpt) <= 4*epsilon then
+		    q = Pt.bpt
+		  end if
+		  'Angle=GetAngle(FirstAttractedPoint.bpt,q)-GetAngle(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt)
+		  M = new SimilarityMatrix(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt, Firstattractedpoint.bpt,q)
+		  figs.Bouger(M)
+		  RotationPoint=FirstAttractedPoint
+		  'updateangles(Angle)
+		  return M
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DoOper(NewPoint as BasicPoint)
+		  NewPoint = EndPoint+NewPoint
+		  CompleteOperation(NewPoint)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function VectInter(n as integer) As BasicPoint
+		  dim p as BasicPoint
+		  p = EndPoint-StartPoint
+		  EndPoint = StartPoint
+		  return p/n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UndoOperation(Temp as XMLElement)
+		  dim i, idf as integer
+		  dim EL as XMLNode
+		  dim EL1, EL2 as XMLElement
+		  dim ff as figure
+		  dim List as XmlNodeList
+		  
+		  List = Temp.Xql("MovedFigures")
+		  if List.Length > 0 then
+		    EL = List.Item(0)
+		    EL1 = XMLElement(EL.child(0))
+		    for i = 0 to EL1.childcount-1
+		      EL2 = XMLElement(EL1.child(i))
+		      idf = val(EL2.GetAttribute("FigId"))
+		      ff = CurrentContent.Thefigs.getfigure(idf)
+		      ff.RestoreInit(EL2)
+		    next
+		  end if
+		  wnd.refresh
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updateangles(a as double)
+		  dim i as integer
+		  dim s as shape
+		  
+		  for i = 0 to tempshape.count-1
+		    s = tempshape.element(i)
+		    if s isa StandardPolygon  then
+		      StandardPolygon(s).angles(0) = StandardPolygon(s).angles(0) + a
+		    end if
+		    if s isa StdCircle  then
+		      StdCircle(s).angles(0) = StdCircle(s).angles(0) + a
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ajuster()
+		  dim p as point
+		  dim M as Matrix
+		  
+		  if Config.Ajust and angle <> 0 then
+		    p = Point(Objects.GetShape(fid))
+		    M = new RotationMatrix(p.bpt, angle)
+		    figs.Bouger(M)
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ajustermagnetisme(s as shape, Byref s0 as shape, Pt as Point, byref SP as point, byref Mag as integer, byref MagD as Basicpoint)
+		  
+		  dim  ts as shape
+		  dim tp1 as integer
+		  dim mp as basicpoint
+		  
+		  
+		  tp1 = Pt.Magnetism2(s,mp,Ts)
+		  if tp1 > Mag then
+		    SP = Pt
+		    Mag = tp1
+		    MagD = mp
+		    s0 = s
+		  end if
+		End Sub
+	#tag EndMethod
+
+
+	#tag Note, Name = Licence
+		
+		Copyright © 2010 CREM
+		Noël Guy - Pliez Geoffrey
+		
+		This file is part of Apprenti Géomètre 2.
+		
+		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+		
+		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+		
+		You should have received a copy of the GNU General Public License
+		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
+	#tag EndNote
+
+
+	#tag Property, Flags = &h0
+		StartPoint As Basicpoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		EndPoint As basicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Angle As Double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RotationPoint As Point
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		fid As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MagneticD As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		visi As Objectslist
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		drapUA As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		drapUL As Boolean
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ntsf"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="itsf"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="display"
+			Group="Behavior"
+			Type="string"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="HistId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Std2flag"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="SidetoPaint"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OpId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Finished"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="nobj"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="iobj"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="info"
+			Group="Behavior"
+			Type="string"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Angle"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="fid"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="drapUA"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="drapUL"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Class
+#tag EndClass

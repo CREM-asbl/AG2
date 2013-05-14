@@ -1,0 +1,292 @@
+#tag Class
+Protected Class Ouvrir
+Inherits Operation
+	#tag Method, Flags = &h0
+		Sub Ouvrir(f as folderitem)
+		  dim Doc as XmlDocument
+		  dim Fag as XmlElement
+		  dim Cfg as string
+		  dim v1, v2, v3, n as integer
+		  dim version as string
+		  dim msg as MessageDialog
+		  dim but as MessageDialogButton
+		  dim BkCol as string
+		  
+		  Ouvrir
+		  
+		  'MsgBox "Ouvrir 6"
+		  
+		  try
+		    Doc=new XMLDocument(f)
+		  catch err as XmlException
+		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    return
+		  end try
+		  
+		  FagTitle = f.name
+		  FAG = Doc.DocumentElement
+		  if Doc.FirstChild.name <> "AG" then
+		    MsgBox Dico.Value("Nofagfile")
+		    return
+		  end if
+		  
+		  
+		  
+		  FichAG = FAG
+		  
+		  version = FAG.GetAttribute("Version")
+		  v1 = val(NthField(version,".", 1))
+		  v2 = val(NthField(version,".",2))
+		  v3 = val(NthField(version,".",3))
+		  wnd.version = 100*v1+ 10*v2 + v3  'les trois numéros de version ne peuvent avoir qu'un chiffre
+		  if wnd.version <  222 and not app.quiet then '100*App.MajorVersion + 10* App.MinorVersion + App.BugVersion then
+		    msg = new MessageDialog
+		    msg.Message = "Ce fichier a été enregistré avec une  version d'Apprenti Géomètre antérieure à la version 2.2.2." + EndOfLine + "S'il comporte des découpages, il est possible qu'il ne fonctionne pas correctement."
+		    msg.AlternateActionButton.visible = true
+		    msg.AlternateActionButton.Caption = "Ne plus afficher ce message"
+		    but = msg.ShowModal
+		    if but <> msg.ActionButton then
+		      app.quiet = true
+		    end if
+		  end if
+		  
+		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
+		  
+		  
+		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
+		  if Cfg <> Config.Menu then
+		    if left(cfg,6) = "Niveau" or left(cfg,5) = "Level" then
+		      n = len(cfg)
+		      cfg = "Menu"+right(cfg,n-6)
+		    end if
+		    Config.Menu = Cfg
+		    Config.ChargerConfig
+		  end if
+		  
+		  'wnd.updatemenu
+		  
+		  currentcontent.removeall
+		  Objects.SetId(-1)
+		  
+		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
+		  
+		  BkCol = FAG.GetAttribute("BkCol")
+		  if BkCol = "noir" and wnd.BackColor = &cFFFFFF then
+		    wnd.switchcolors
+		  end if
+		  Objects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
+		  Objects.XMLLoadObjects(FichAG)
+		  Objects.updateids
+		  currentcontent.FinInitialisation(FAG, f)
+		  wnd.refresh
+		  finished = true
+		  CurrentContent.AddOperation(self)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToXml(Doc as XMLDocument) As XMLElement
+		  dim EL as XMLElement
+		  dim EN as XMLNode
+		  dim i, j as integer
+		  
+		  CurrentContent.CreateFigs
+		  
+		  for i = 0 to CurrentContent.TheFigs.count-1
+		    CurrentContent.TheFigs.element(i).XMLPutIncontainer(1,CurrentContent.OpList)
+		  next
+		  
+		  EL = Doc.CreateElement("ObjetsLus")
+		  EL.SetAttribute("Fichier", FagTitle)
+		  for i = 0 to FichAG.ChildCount-1
+		    EN = Doc.ImportNode(FichAG.Child(i), true)
+		    EL.Appendchild EN
+		  next
+		  return EL
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetName() As string
+		  Return dico.value("Ouvrir")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RedoOperation(EL as XMLElement)
+		  dim Temp, Obj as XMLElement
+		  dim List as XmlNodeList
+		  
+		  
+		  Temp = XMLElement(EL.Child(0))
+		  Objects.XMLLoadObjects(Temp)
+		  Objects.updateids
+		  wnd.Mycanvas1.RefreshBackground
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Ouvrir()
+		  Operation
+		  OpId = -1
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Note, Name = Licence
+		
+		Copyright © 2010 CREM
+		Noël Guy - Pliez Geoffrey
+		
+		This file is part of Apprenti Géomètre 2.
+		
+		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+		
+		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+		
+		You should have received a copy of the GNU General Public License
+		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
+	#tag EndNote
+
+
+	#tag Property, Flags = &h0
+		FichAG As XMLElement
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		FagTitle As string
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ntsf"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="itsf"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="display"
+			Group="Behavior"
+			Type="string"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Std2flag"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="SidetoPaint"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OpId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Finished"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="nobj"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="iobj"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="info"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="HistId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="FagTitle"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Class
+#tag EndClass

@@ -1,0 +1,105 @@
+#tag Class
+Protected Class InfoMac
+	#tag Method, Flags = &h0
+		Sub InfoMac()
+		  coord = new nBpoint
+		End Sub
+	#tag EndMethod
+
+
+	#tag Note, Name = Interprétations
+		
+		MacId: Id interne à la macro de l'objet créé par l'oper n°NumOper
+		Les vraies id des objets initiaux sont stockés dans MacInfo.RealInit
+		Coord: coordonnées des sommets de l'objet construit
+		
+		Un IFMac pour chacune des opérations de la macro
+	#tag EndNote
+
+
+	#tag Property, Flags = &h0
+		MacId As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		coord As nBpoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		M As Matrix
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		T As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TsfId As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealId As Integer
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="MacId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="T"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TsfId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="RealId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Class
+#tag EndClass

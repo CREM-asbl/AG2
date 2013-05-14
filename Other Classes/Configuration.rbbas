@@ -1,0 +1,1058 @@
+#tag Class
+Protected Class Configuration
+	#tag Method, Flags = &h0
+		Function ToXml() As XMLDocument
+		  dim temp, EL as XMLNode
+		  dim i, j as integer
+		  
+		  CFG = New XmlDocument
+		  
+		  
+		  temp = CFG.AppendChild(CFG.CreateElement("Configuration"))
+		  
+		  temp.AppendChild ConfigElem("EditMenu","EditUndo","Undo")
+		  temp.AppendChild ConfigElem("EditMenu","EditRedo","Redo")
+		  temp.AppendChild ConfigElem("EditMenu","EditCopy","Copy")
+		  temp.AppendChild ConfigElem("EditMenu","EditPaste","Paste")
+		  temp.AppendChild ConfigElem("EditMenu","EditSelection","Selection")
+		  temp.AppendChild ConfigElem("EditMenu","EditReselect","Reselect")
+		  temp.AppendChild ConfigElem("EditMenu","EditSelectall","Selectall")
+		  temp.AppendChild ConfigElem("EditMenu","EditDelete","Delete")
+		  temp.AppendChild ConfigElem("EditMenu","EditLink","Link")
+		  
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsColorTransparent","ColTsp")
+		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorBorder","ColBorder")
+		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorFill","ColFill")
+		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorStdFam","ColStdFam")
+		  
+		  if  MenuMenus.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked  then
+		    temp.appendchild CFG.CreateElement("Thickness")
+		  end if
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsRigid","Rigid")
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsHide","Hide")
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsGrid","Grid")
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsHisto","Histo")
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsAVPlan","AVPlan")
+		  temp.AppendChild ConfigElem("ToolsMenu","ToolsLabel","Label")
+		  
+		  temp.appendchild ConfigElem("MacrosMenu", "MacrosLoad", "Macros")
+		  
+		  temp.AppendChild ConfigElem("OperaMenu","OperaDivide","Divide")
+		  temp.AppendChild ConfigElem("OperaMenu","OperaCut","Cut")
+		  temp.AppendChild ConfigElem("OperaMenu","OperaMerge","Merge")
+		  temp.AppendChild ConfigElem("OperaMenu","OperaClone","Cloner")
+		  temp.AppendChild ConfigElem("OperaMenu","OperaProl","Prolonger")
+		  temp.AppendChild ConfigElem("OperaMenu","OperaCreateCenter","CreateCenter")
+		  temp.AppendChild ConfigElem("OperaMenu","OperaIdentify","Identify")
+		  
+		  temp.AppendChild ConfigElem("TransfosMenu","TransfosAppliquer","Transformations")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirTranslation","Translation")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirRotation","Rotation")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartD","Rot90D")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartG","Rot90G")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDemitour","SymCentrale")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "Definirsymetrieaxiale","SymOrtho")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirHomothetie","Homothetie")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirSimilitude","Similitude")
+		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDeplacement","Deplacement")
+		  temp.AppendChild ConfigElem("TransfosMenu","TransfosFixedPoints","PtsFix")
+		  temp.AppendChild ConfigElem("TransfosMenu","TransfosHide","HideTsf")
+		  
+		  
+		  temp.AppendChild ConfigElem("PrefsMenu","PrefsStdForms", "StdForms")
+		  temp.AppendChild ConfigElem("PrefsMenu","PrefsFleches", "Flecher")
+		  temp.AppendChild ConfigElem("PrefsMenu","PrefsTrace", "Traj")
+		  temp.AppendChild ConfigElem("PrefsMenu","PrefsPolyg", "Pointer")
+		  temp.AppendChild ConfigElem("PrefsMenu","PrefsBiface", "Biface")
+		  temp.AppendChild ConfigElem("PrefsMenu","PrefsAjust", "Ajuster")
+		  
+		  EL = ConfigElem("PrefsMenu","PrefsMagDist", "DistanceMagnetisme")
+		  if EL <> nil then
+		    EL.setattribute("Value", str(MagneticDist))
+		    temp.appendchild EL
+		  end if
+		  
+		  temp.AppendChild ConfigElem("HelpMenu","HelpView", "View")
+		  temp.AppendChild ConfigElem("HelpMenu","HelpVisit", "Visit")
+		  temp.AppendChild ConfigElem("HelpMenu","HelpAbout", "About")
+		  temp.AppendChild ConfigElem("NotesMenu","NotesOpen", "Notes")
+		  
+		  
+		  if ShowStdTools then
+		    temp.AppendChild CFG.CreateElement("StdForms")
+		    EL = CFG.CreateElement("StdFile")
+		    if EL <> nil then
+		      EL.SetAttribute("Name", stdfile)
+		      Temp.appendchild EL
+		    end if
+		    EL = CFG.CreateElement("TailleFormesStandard")
+		    if EL <> nil then
+		      EL.SetAttribute("Value", str(stdsize))
+		      Temp.appendchild EL
+		    end if
+		  end if
+		  
+		  if ShowTools then
+		    temp.AppendChild CFG.CreateElement("FreeForms")
+		    for i = 1 to 7
+		      for j =  0 to 10
+		        if LibVisible (i,j) then
+		          EL = CFG.CreateElement("Fam"+str(i))
+		          if EL <> nil then
+		            EL.SetAttribute("Vis", str(j))
+		            temp.appendchild EL
+		          end if
+		        end if
+		      next
+		    next
+		  end if
+		  if MvBt(0) then
+		    temp.appendchild CFG.CreateElement("Modify")
+		  end if
+		  if MvBt(1) then
+		    temp.appendchild CFG.CreateElement("Slide")
+		  end if
+		  if MvBt(2) then
+		    temp.appendchild CFG.CreateElement("Turn")
+		  end if
+		  if MvBt(3) then
+		    temp.appendchild CFG.CreateElement("Return")
+		  end if
+		  if MvBt(4) then
+		    temp.appendchild CFG.CreateElement("Zoom")
+		  end if
+		  
+		  CFG.PreserveWhitespace = true
+		  return CFG
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Configuration()
+		  dim fi  As folderItem
+		  dim C as XMLDocument
+		  dim El,El1 as XMLNode
+		  dim El2 as XMLTextNode
+		  dim List as XMLNodeList
+		  dim lastmaj,f() as String
+		  
+		  initParams
+		  fi=app.DocFolder.Child("AG_Init.xml")
+		  
+		  password = hash("")
+		  
+		  if fi.exists then
+		    try
+		      C=new XMLDocument(fi)
+		    catch err as XmlException
+		      Save
+		      return
+		    end try
+		    List = C.XQL("AG_Init")
+		    if List.Length>0 then
+		      EL = List.Item(0)
+		      List = EL.XQL("Password")
+		      EL1= List.Item(0)
+		      if El1<>nil then
+		        El2=XMLTextNode(El1.FirstChild)
+		        if El2<>nil then
+		          if EL2.Value <> "" then
+		            setPassword(El2.Value)
+		          end if
+		        end if
+		      end if
+		    end if
+		    
+		    List = EL.XQL("Language")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(El1.FirstChild)
+		        if El2 <> nil then
+		          setLangue( EL2.Value)
+		        else
+		          setLangue("Français")
+		        end if
+		      end if
+		    end if
+		    
+		    List = EL.XQL("Configuration")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(El1.FirstChild)
+		        if El2 <> nil then
+		          setMenu( EL2.Value)
+		        else
+		          setMenu("Menu_AC")
+		        end if
+		      end if
+		    end if
+		    
+		    List = EL.XQL("LastInfo")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(El1.FirstChild)
+		        if EL2 <> nil then
+		          lastinfo =  EL2.Value
+		        end if
+		      end if
+		    end if
+		  else
+		    'Si AG_Init n'existe pas, on le recrée"
+		    Langue = "Français"
+		    Menu = "Menu_AC"
+		    Save
+		  end if
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SaveToFile()
+		  dim fi as FolderItem
+		  
+		  if Name <> "" then
+		    fi=GetFolderItem(Name+".men")
+		    ToXML.SaveXML fi
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function GetMenuItem(menu as string, sousmenu as string) As boolean
+		  return MenuMenus.Child(menu).Child(sousmenu).checked
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ConfigElem(m as string, sm as string, tag as string) As XMLNode
+		  if MenuMenus.Child(m).Child(sm).checked then
+		    return CFG.CreateElement(tag)
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ConfigElem3(m as string, sm as string, ssm as string, tag as string) As XMLNode
+		  if MenuMenus.Child(m).Child(sm).Child(ssm).checked then
+		    return CFG.CreateElement(tag)
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerConfig()
+		  dim List as XMLNodeList
+		  dim i,j,k as integer
+		  dim C as XMLDocument
+		  dim El,temp as  XMLElement
+		  dim fi as FolderItem
+		  
+		  if oldMenu = Menu then
+		    return
+		  end if
+		  
+		  fi=GetFolderItem(Menu+".men")
+		  if not  fi.exists  then
+		    MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
+		    quit
+		  else
+		    C=new XMLDocument(fi)
+		    El = C.DocumentElement
+		    name = fi.name
+		  end if
+		  
+		  ChargerMenu(El)
+		  
+		  ChargerBoutons(El)
+		  
+		  ShowTools = EL.XQL("FreeForms").length > 0
+		  ShowStdTools = EL.XQL("StdForms").length > 0
+		  
+		  GridPointsSize = 1
+		  List = EL.XQL("DistanceMagnetisme")
+		  if List.length > 0 then
+		    Temp = XMLElement(List.Item(0))
+		    MagneticDist= Val(Temp.GetAttribute("Value"))
+		  else
+		    MagneticDist = 8
+		  end if
+		  
+		  if ShowStdTools then
+		    List = EL.XQL("StdFile")
+		    if List.Length > 0 then
+		      Temp = XMLElement(List.Item(0))
+		      StdFile = Temp.GetAttribute("Name")
+		      List = EL.XQL("TailleFormesStandard")
+		      if List.length > 0 then
+		        Temp = XMLElement(List.Item(0))
+		        StdSize=Val(Temp.GetAttribute("Value"))
+		      else
+		        StdSize = 1
+		      end if
+		      ChargerStdForms
+		    else
+		      ShowStdTools = false
+		    end if
+		  end if
+		  
+		  ChargerLibForms(El)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetLangue(NewLang as string)
+		  if Langue <> NewLang then
+		    OldLangue = Langue
+		    if NewLang = "" then
+		      NewLang = "Français"
+		    end if
+		    Langue = NewLang
+		    'todo : doit être déplacé dans Workwindow
+		    Dico.load(Langue)
+		    'wnd.setMenus
+		    ///////
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Save()
+		  dim fi As FolderItem
+		  dim tos as TextOutputStream
+		  dim Doc as XMLDocument
+		  dim temp,EL, EL1, EL2,EL3, EL4 as XMLNode
+		  
+		  'todo : comparer avec SaveToFile
+		  
+		  //création du document XML
+		  
+		  Doc=new XMLDocument
+		  temp = Doc.appendChild(Doc.CreateElement("AG_Init"))
+		  
+		  EL = temp.appendChild(Doc.CreateElement("Password"))
+		  EL.AppendChild(Doc.CreateTextNode(Password))
+		  
+		  
+		  EL1 = temp.appendChild(Doc.CreateElement("Language"))
+		  EL1.AppendChild(Doc.CreateTextNode(Langue))
+		  
+		  EL2 = temp.appendchild(Doc.CreateElement("Configuration"))
+		  EL2.AppendChild(Doc.CreateTextNode(Menu))
+		  
+		  EL4 = temp.appendchild(Doc.CreateElement("LastInfo"))
+		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))
+		  
+		  
+		  //enregistrement du document XML
+		  fi=app.DocFolder.Child("AG_Init.xml")
+		  tos=fi.CreateTextFile
+		  if tos =nil then
+		    MsgBox Dico.Value("AGInitNotUpdatable")
+		  else
+		    tos.write(Doc.ToString)
+		    tos.close
+		  end if
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub setPassword(pass as string)
+		  Password = pass
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub setMenu(m as string)
+		  oldMenu = Menu
+		  if m = "" then
+		    m  = "Menu_AC"
+		  end if
+		  Menu = m
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub setUser(u as string)
+		  User = u
+		  if User = "prof" then
+		    username = Dico.Value("Enseignant")
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerStdForms()
+		  dim fi as FolderItem
+		  dim Doc As XMLDocument
+		  dim List, Famlist, FormList as XMLNodeList
+		  dim EL, CurFig, EL1, EL2,EL3 as XMLElement
+		  dim h,i,j,k,nrep as Integer
+		  dim CurSpecs as StdPolygonSpecifications
+		  
+		  if not ShowStdTools then
+		    return
+		  end if
+		  
+		  fi=GetFolderItem(stdfile)
+		  if not fi.exists then
+		    MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
+		    Quit
+		  end if
+		  
+		  Doc = new XMLDocument(fi)
+		  EL = Doc.DocumentElement
+		  Famlist = EL.XQL("Famille")
+		  NstdFam = Famlist.Length
+		  if nstdfam > 4 then
+		    MsgBox Dico.Value("Toomanystdf")
+		    Quit
+		  end if
+		  
+		  for i = 0 to nstdfam-1
+		    EL1 = XMLElement(Famlist.Item(i))
+		    NamesStdFamilies(i)=EL1.GetAttribute("Nom")
+		    List = EL1.XQL("Couleur")
+		    if List.length > 0 then
+		      EL2 = XMLElement(List.Item(0))
+		      StdColor(i)=new Couleur(EL2)
+		    end if
+		    FormList = EL1.XQL("Forme")
+		    Nstdf(i) = FormList.length
+		    for j=0 to nstdf(i)-1
+		      Curfig = XMLElement(FormList.Item(j))
+		      CurSpecs=new StdPolygonSpecifications
+		      Curspecs.NonPointed = val(Curfig.GetAttribute("NonPointed"))  // 0 ou 1
+		      Curspecs.family = NamesStdFamilies(i)
+		      CurSpecs.name=CurFig.GetAttribute("Nom")
+		      List = Curfig.XQL("Couleur")
+		      if List.length >0 then
+		        EL3 =  XMLElement(List.Item(0))
+		        Curspecs.coul = new Couleur(EL3)
+		      else
+		        curspecs.coul = stdcolor(i)
+		      end if
+		      List = Curfig.XQL("Arete")
+		      for k=0 to List.Length-1
+		        EL3 = XMLElement(List.Item(k))
+		        nrep = Val(EL3.GetAttribute("Repete"))
+		        if nrep = 0 then
+		          nrep = 1
+		        end if
+		        for h = 0 to nrep-1
+		          Curspecs.Distances.append Val(EL3.GetAttribute("Longueur"))
+		          Curspecs.Angles.append Val(EL3.GetAttribute("Angle"))*PI/180
+		        next
+		      next
+		      StdFamilies(i,j) = Curspecs
+		    next
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerLibForms(El as XmlElement)
+		  ' todo : (peut-être même un module)
+		  dim i, j,k,n as integer
+		  dim List as XMLNodeList
+		  dim Temp as XmlElement
+		  
+		  Libfamilies(0,0) = "Point"
+		  nlibf(0)=0
+		  
+		  Libfamilies(1,0) = "Segment"
+		  Libfamilies(1,1) = "SegParall"
+		  Libfamilies(1,2) = "SegPerp"
+		  Libfamilies(1,3)= "Droite"
+		  Libfamilies(1,4)= "DroiteParall"
+		  Libfamilies(1,5)= "DroitePerp"
+		  Libfamilies(1,6)= "DemiDroite"
+		  Libfamilies(1,7) = "Bande"
+		  Libfamilies(1,8) = "Secteur"
+		  nlibf(1)=8
+		  
+		  Libfamilies(2,0) = "Triang"
+		  Libfamilies(2,1) = "TriangIso"
+		  Libfamilies(2,2) = "TriangEqui"
+		  Libfamilies(2,3) = "TriangRect"
+		  Libfamilies(2,4) = "TriangRectIso"
+		  nlibf(2)=4
+		  
+		  Libfamilies(3,0) = "Quadri"
+		  Libfamilies(3,1) = "Trap"
+		  Libfamilies(3,2) = "TrapRect"
+		  Libfamilies(3,3) = "TrapIso"
+		  Libfamilies(3,4) = "Parallelogram"
+		  Libfamilies(3,5) = "Rect"
+		  Libfamilies(3,6) = "Losange"
+		  Libfamilies(3,7) = "Carre"
+		  nlibf(3)=7
+		  
+		  Libfamilies(4,0) = "TriangEqui"
+		  Libfamilies(4,1) = "Carre"
+		  Libfamilies(4,2) = "PentaReg"
+		  Libfamilies(4,3) = "HexaReg"
+		  Libfamilies(4,4) = "HeptaReg"
+		  Libfamilies(4,5) = "OctoReg"
+		  Libfamilies(4,6) = "EnneaReg"
+		  Libfamilies(4,7) = "DecaReg"
+		  Libfamilies(4,8) = "UndecaReg"
+		  Libfamilies(4,9) = "DodecaReg"
+		  nlibf(4)=9
+		  
+		  LibFamilies(5,0) = "FreeCircle"
+		  Libfamilies(5,1) = "Arc"
+		  nlibf(5)=1
+		  
+		  Libfamilies(6,0) = "Triang"
+		  Libfamilies(6,1) = "Quadri"
+		  Libfamilies(6,2) = "Penta"
+		  Libfamilies(6,3) = "Hexa"
+		  Libfamilies(6,4) = "Hepta"
+		  Libfamilies(6,5) = "Octo"
+		  Libfamilies(6,6) = "Ennea"
+		  Libfamilies(6,7) = "Deca"
+		  Libfamilies(6,8) = "Undeca"
+		  Libfamilies(6,9) = "Dodeca"
+		  nlibf(6)=9
+		  
+		  if ShowTools then
+		    for i = 1 to 6
+		      List=EL.XQL("Fam"+str(i))
+		      n =list.length
+		      If list.Length > 0 then
+		        for j =  0 to n-1
+		          Temp = XMLElement(List.Item(j))
+		          k = val(Temp.GetAttribute("Vis"))
+		          Libvisible(i,k) = true
+		        next
+		      end if
+		    next
+		    for i = 0 to 6
+		      nlibvis(i) = true
+		    next
+		  else
+		    for i = 0 to 6
+		      nlibvis(i) = false
+		    next
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetStdFile(file as string)
+		  stdfile = file
+		  ChargerStdForms
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub initParams()
+		  HideColor = BleuPale
+		  HighLightColor=magenta
+		  WeightlessColor=Blue
+		  Bordercolor= Black
+		  Fillcolor=White
+		  TransfoColor = Green
+		  Border = 100
+		  Fill = 0
+		  Thickness = 1
+		  ShowHelp = true
+		  trace = true
+		  ajust = true
+		  stdbiface = false
+		  PolPointes = true
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerMenu(El As XmlElement)
+		  dim mmenubar as MenuItem
+		  
+		  'un moyen plus propre ?
+		  mmenubar = MenuMenus
+		  
+		  mmenubar.Child("EditMenu").Child("EditUndo").checked = El.XQL("Undo").length > 0
+		  mmenubar.Child("EditMenu").Child("EditRedo").checked = El.XQL("Redo").length > 0
+		  mmenubar.Child("EditMenu").Child("EditCopy").checked = El.XQL("Copy").length > 0
+		  mmenubar.Child("EditMenu").Child("EditPaste").checked = El.XQL("Paste").length > 0
+		  mmenubar.Child("EditMenu").Child("EditSelection").checked = El.XQL("Selection").length > 0
+		  mmenubar.Child("EditMenu").Child("EditReSelect").checked = El.XQL("Reselect").length > 0
+		  mmenubar.Child("EditMenu").Child("EditSelectall").checked = El.XQL("Selectall").length > 0
+		  mmenubar.Child("EditMenu").Child("EditDelete").checked = El.XQL("Delete").length > 0
+		  mmenubar.Child("EditMenu").Child("EditLink").checked = El.XQL("Link").length > 0
+		  mmenubar.Child("EditMenu").Child("EditUnlink").checked = El.XQL("Link").length > 0
+		  
+		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorBorder").checked = El.XQL("ColBorder").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorFill").checked = El.XQL("ColFill").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorStdFam").checked = El.XQL("ColStdFam").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = El.XQL("Thickness").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = El.XQL("Thickness").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsHide").checked = El.XQL("Hide").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsRigid").checked = El.XQL("Rigid").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsGrid").checked = El.XQL("Grid").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsHisto").checked = El.XQL("Histo").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsARPlan").checked = El.XQL("AVPlan").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsAVPlan").checked = El.XQL("AVPlan").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsLabel").checked = El.XQL("Label").length > 0
+		  
+		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").checked = El.XQL("Macros").length > 0
+		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").checked = El.XQL("Macros").length > 0
+		  
+		  mmenubar.Child("OperaMenu").Child("OperaDivide").checked = El.XQL("Divide").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaCut").checked = El.XQL("Cut").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaMerge").checked = El.XQL("Merge").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaClone").checked = El.XQL("Cloner").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaIdentify").checked = El.XQL("Identify").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaProl").checked = El.XQL("Prolonger").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").checked = El.XQL("CreateCenter").length > 0
+		  
+		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").checked = El.XQL("Transformations").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirTranslation").checked = El.XQL("Translation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
+		  
+		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").checked = El.XQL("StdForms").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").checked = El.XQL("Traj").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").checked = El.XQL("DistanceMagnetisme").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsPolyg").checked  = El.XQL("Pointer").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsBiface").checked =  El.XQL("Biface").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsAjust").checked =  El.XQL("Ajuster").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsFleches").checked = El.XQL("Flecher").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULDef").checked = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULChoix").checked = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUADef").checked = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUAChoix").checked = true
+		  
+		  mmenubar.Child("HelpMenu").Child("HelpView").checked = true
+		  mmenubar.Child("HelpMenu").Child("HelpVisit").checked = true
+		  mmenubar.Child("HelpMenu").Child("HelpAbout").checked = true
+		  mmenubar.Child("HelpMenu").Child("HelpUG").checked = true
+		  
+		  mmenubar.Child("NotesMenu").Child("NotesOpen").checked = El.XQL("Notes").length > 0
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerBoutons(El As XmlElement)
+		  MvBt(0) = EL.XQL("Modify").length > 0
+		  MvBt(1) = EL.XQL("Slide").length > 0
+		  MvBt(2) = EL.XQL("Turn").length > 0
+		  MvBt(3) = EL.XQL("Return").length > 0
+		  MvBt(4) = EL.XQL("Zoom").length > 0
+		End Sub
+	#tag EndMethod
+
+
+	#tag Note, Name = Licence
+		
+		Copyright © 2010 CREM
+		Noël Guy - Pliez Geoffrey
+		
+		This file is part of Apprenti Géomètre 2.
+		
+		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+		
+		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+		
+		You should have received a copy of the GNU General Public License
+		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
+	#tag EndNote
+
+
+	#tag Property, Flags = &h0
+		MagneticDist As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Name As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		StdSize As integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		stdfile As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		StdFamilies(4,12) As StdPolygonSpecifications
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		GridPointsSize As integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ShowStdTools As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ShowTools As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Libvisible(7,10) As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MvBt(4) As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Menu As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		OldMenu As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		OldLangue As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Langue As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Password As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		LastInfo As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		user As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		username As String = "Historique"
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		pwok As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Nstdfam As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		NamesStdFamilies(3) As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Stdcolor(4) As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		nstdf(4) As integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		CFG As XMLDocument
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Hidecolor As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		HighlightColor As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Weightlesscolor As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Bordercolor As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Fillcolor As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TransfoColor As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Border As integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Fill As integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Thickness As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ShowHelp As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Trace As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Ajust As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		stdbiface As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		PolPointes As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Libfamilies(7,10) As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		nlibf(7) As integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		nlibvis(7) As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TextSize As Integer = 12
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="MagneticDist"
+			Group="Behavior"
+			InitialValue="0"
+			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="StdSize"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="stdfile"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="GridPointsSize"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ShowStdTools"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ShowTools"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Menu"
+			Group="Behavior"
+			InitialValue="Menu_AC"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OldLangue"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Langue"
+			Group="Behavior"
+			InitialValue="Francais"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Password"
+			Group="Behavior"
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="LastInfo"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="user"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="username"
+			Group="Behavior"
+			InitialValue="Historique"
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="pwok"
+			Group="Behavior"
+			InitialValue="0"
+			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OldMenu"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Nstdfam"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Border"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fill"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Thickness"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ShowHelp"
+			Group="Behavior"
+			InitialValue="0"
+			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Trace"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Ajust"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="stdbiface"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="PolPointes"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TextSize"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Class
+#tag EndClass
