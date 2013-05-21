@@ -233,16 +233,6 @@ Inherits Application
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SauverConfig()
-		  'todo : voir utilité ?
-		  'CopyMenuBar
-		  'Config.SaveToFile
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub abortread()
 		  MsgBox Dico.Value("MsgNovalidFile") + Dico.Value("Noread")
 		  CurrentContent.currentoperation = nil

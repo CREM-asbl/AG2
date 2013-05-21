@@ -216,8 +216,8 @@ Protected Class Configuration
 		Sub SaveToFile()
 		  dim fi as FolderItem
 		  
-		  if Name <> "" then
-		    fi=GetFolderItem(Name+".men")
+		  if Menu <> "" then
+		    fi=GetFolderItem(Menu+".men")
 		    ToXML.SaveXML fi
 		  end if
 		  
@@ -270,7 +270,6 @@ Protected Class Configuration
 		  else
 		    C=new XMLDocument(fi)
 		    El = C.DocumentElement
-		    name = fi.name
 		  end if
 		  
 		  ChargerMenu(El)
@@ -336,7 +335,7 @@ Protected Class Configuration
 		  dim Doc as XMLDocument
 		  dim temp,EL, EL1, EL2,EL3, EL4 as XMLNode
 		  
-		  'todo : comparer avec SaveToFile
+		  'save pourAG_init
 		  
 		  //création du document XML
 		  
@@ -699,10 +698,6 @@ Protected Class Configuration
 
 	#tag Property, Flags = &h0
 		MagneticDist As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Name As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

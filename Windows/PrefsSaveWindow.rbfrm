@@ -31,7 +31,7 @@ Begin Window PrefsSaveWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window PrefsSaveWindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   185
       BehaviorIndex   =   0
    End
@@ -66,7 +66,7 @@ Begin Window PrefsSaveWindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -95,7 +95,7 @@ Begin Window PrefsSaveWindow
       Top             =   13
       Underline       =   "False"
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   108
       BehaviorIndex   =   1
    End
@@ -106,7 +106,7 @@ Begin Window PrefsSaveWindow
       Caption         =   "Ok"
       ControlOrder    =   2
       Default         =   "True"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -123,7 +123,7 @@ Begin Window PrefsSaveWindow
       TextSize        =   12
       Top             =   52
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   2
    End
@@ -134,7 +134,7 @@ Begin Window PrefsSaveWindow
       Caption         =   "Annuler"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -151,7 +151,7 @@ Begin Window PrefsSaveWindow
       TextSize        =   12
       Top             =   52
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   3
    End
@@ -207,13 +207,12 @@ End
 	#tag Event
 		Sub Action()
 		  dim nom as string
-		  
 		  nom = EditField1.text
 		  if (instr(nom, " ") <> 0)or (nom.Len() = 0)  then
 		    MsgBox Dico.Value("Noblankspace")
 		  else
 		    Config.setMenu(nom)
-		    app.SauverConfig
+		    Config.SaveToFile
 		    Config.save
 		    Close
 		  end if
@@ -224,7 +223,6 @@ End
 #tag Events CancelButton
 	#tag Event
 		Sub Action()
-		  result=-1
 		  Hide
 		End Sub
 	#tag EndEvent

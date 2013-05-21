@@ -1198,13 +1198,10 @@ End
 	#tag Event
 		Sub Action()
 		  dim psw as PrefsSaveWindow
-		  
 		  CurrentContent.CurrentOperation=nil
-		  
 		  psw=new PrefsSaveWindow
 		  psw.ShowModal
 		  
-		  close
 		  
 		End Sub
 	#tag EndEvent

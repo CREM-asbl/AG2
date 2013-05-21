@@ -1905,6 +1905,7 @@ End
 		    updatemenu
 		  end if
 		  Mycanvas1.RefreshBackground
+		  MoveBoxRefresh
 		  StdBoxRefresh
 		  LibBoxRefresh
 		  'if CurrentContent.currentoperation isa shapeconstruction and fw <> nil  then
@@ -2509,9 +2510,8 @@ End
 		Sub UpdateToolBar()
 		  dim espace as integer
 		  
-		  'todo : exploiter responsive design ?
-		  
 		  espace = (me.Height-me.MinHeight)/3
+		  espace = min(espace,50)
 		  
 		  MoveBox.Top = 60+espace
 		  
@@ -2521,6 +2521,15 @@ End
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MoveBoxRefresh()
+		  dim i as integer
+		  for i=0 to 4
+		    MouvBut(i) .visible = Config.MvBt(i)
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -2755,6 +2764,13 @@ End
 		    end if
 		    SetFocus
 		  end if
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events MoveBox
+	#tag Event
+		Sub Open()
+		  MoveBoxRefresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents
