@@ -217,7 +217,7 @@ Protected Class Configuration
 		  dim fi as FolderItem
 		  
 		  if Menu <> "" then
-		    fi=GetFolderItem(Menu+".men")
+		    fi=app.MenusFolder.Child(Menu+".men")
 		    ToXML.SaveXML fi
 		  end if
 		  
@@ -264,6 +264,9 @@ Protected Class Configuration
 		  end if
 		  
 		  fi=GetFolderItem(Menu+".men")
+		  if not fi.exists then
+		    fi = app.MenusFolder.Child(Menu+".men")
+		  end if
 		  if not  fi.exists  then
 		    MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
 		    quit

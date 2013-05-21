@@ -331,6 +331,11 @@ Inherits Application
 		  if not MacFolder.Exists then
 		    MacFolder.CreateAsFolder
 		  end if
+		  MenusFolder = DocFolder.Child("Menus")
+		  if not MenusFolder.Exists then
+		    MenusFolder.CreateAsFolder
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -347,6 +352,29 @@ Inherits Application
 		  else
 		    return ""
 		  end
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function MenusDispo() As String()
+		  dim menus(-1),nom as String
+		  dim i as integer
+		  
+		  for i=1 to AppFolder.count
+		    nom = app.AppFolder.trueItem(i).Name
+		    if right(nom,4)=".men" then
+		      menus.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  for i=1 to MenusFolder.count
+		    nom = app.MenusFolder.trueItem(i).Name
+		    if right(nom,4)=".men" then
+		      menus.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  return menus
 		End Function
 	#tag EndMethod
 
@@ -447,6 +475,10 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		DocFolder As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MenusFolder As FolderItem
 	#tag EndProperty
 
 

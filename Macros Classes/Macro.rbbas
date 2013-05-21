@@ -134,7 +134,6 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub SaveFileMacro()
-		  
 		  Dim file As FolderItem
 		  Dim tos as TextOutputStream
 		  dim place as integer

@@ -199,28 +199,24 @@ End
 #tag EndEvents
 #tag Events PopupMenu1
 	#tag Event
-		Sub Open()
-		  dim i,n as integer
-		  dim nom,menu as string
-		  n=-1
-		  
-		  for i=1 to app.appfolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".men"  then
-		      n = n+1
-		      menu = Left(nom,len(nom)-4)
-		      me.addRow(menu)
-		      if menu = config.Menu then
-		        me.ListIndex = n
-		      end if
-		    end if
-		  next
-		End Sub
-	#tag EndEvent
-	#tag Event
 		Sub Change()
 		  Config.Menu = PopupMenu1.text
 		  update
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Open()
+		  dim i as integer
+		  dim menus(-1) as string
+		  
+		  menus = app.MenusDispo
+		  for i=0 to UBound(menus)
+		    me.addRow(menus(i))
+		    if menus(i) = config.Menu then
+		      me.ListIndex = i
+		    end if
+		  next
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
