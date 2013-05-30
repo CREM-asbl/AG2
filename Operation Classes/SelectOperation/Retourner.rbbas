@@ -3,7 +3,6 @@ Protected Class Retourner
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Retourner()
-		  
 		  SelectOperation()
 		  OPId=16
 		  

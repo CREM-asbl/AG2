@@ -2,7 +2,7 @@
 Protected Class Debug
 	#tag Method, Flags = &h0
 		Function getString() As String
-		  s = s+"------"+EndOfLine
+		  s = EndOfLine+s+"------"+EndOfLine
 		  
 		  return s
 		End Function

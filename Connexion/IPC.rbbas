@@ -10,6 +10,10 @@ Implements StringProvider
 		  data = me.ReadAll
 		  if data <> "focus" then
 		    f = new FolderItem(data)
+		    if (f =nil) then
+		      MsgBox  Dico.Value("MsgErrOpenFile")
+		      return
+		    end if
 		    wnd.Restore
 		    wnd.OpenFile(f)
 		  end if
@@ -21,7 +25,7 @@ Implements StringProvider
 		  d.setMethod(getString,"dataAvailable")
 		  d.setVariable("data",data)
 		  d.setVariable("file",f)
-		  err.message = err.message+d.getString
+		  err.message = err.message+EndOfLine+d.getString
 		  
 		  Raise err
 		  

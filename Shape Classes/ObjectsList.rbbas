@@ -1,5 +1,6 @@
 #tag Class
 Protected Class ObjectsList
+Implements StringProvider
 	#tag Method, Flags = &h0
 		Function element(idx As Integer) As Shape
 		  if idx>=0 and idx<=Ubound(objects) then
@@ -1222,6 +1223,14 @@ Protected Class ObjectsList
 		  next
 		  
 		  return Visible
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function getString() As String
+		  return  "objectlist("+str(self.count)+")"
+		  
 		  
 		End Function
 	#tag EndMethod

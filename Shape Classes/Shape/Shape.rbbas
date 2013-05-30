@@ -3612,7 +3612,13 @@ Implements StringProvider
 		Function getString() As string
 		  dim s as String
 		  
-		  s = "{id : "+str(id)+", IDGroupe : "+str(IDGroupe)+"}"
+		  s = "{id : "+str(id)+", IDGroupe : "+str(IDGroupe)
+		  if fig <> nil then
+		    s = s+",fig : "+Fig.getString
+		  else
+		    s = s+",fig : nil" 
+		  end if
+		  s = s+"}"
 		  
 		  Return s
 		End Function
