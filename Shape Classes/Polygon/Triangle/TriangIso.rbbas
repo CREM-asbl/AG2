@@ -27,10 +27,6 @@ Inherits Triangle
 		  p=Points(2).bpt
 		  p = M*p
 		  Points(2).moveto(p)
-		  
-		  
-		  ComputeOri
-		  
 		  updateskull
 		  
 		  

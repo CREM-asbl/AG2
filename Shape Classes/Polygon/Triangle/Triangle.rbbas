@@ -73,6 +73,12 @@ Inherits Polygon
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Orientation()
+		  ori = coord.orientation
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

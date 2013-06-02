@@ -30,7 +30,6 @@ Inherits Triangle
 		  Points(2).moveto(p)
 		  figskull(sk).UpdateSommet(2,wnd.mycanvas1.dtransform(p-Points(0).bpt))
 		  
-		  ComputeOri
 		  
 		  
 		  
