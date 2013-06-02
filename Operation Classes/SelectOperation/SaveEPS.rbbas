@@ -563,6 +563,11 @@ Inherits SelectOperation
 		  dim col as couleur
 		  dim co as color
 		  
+		  if (s.sk = nil) and (s.nsk = nil)  then
+		    return
+		  end if
+		  
+		  
 		  if s isa point then
 		    co = s.sk.cc.bordercolor
 		  elseif s isa circle then
