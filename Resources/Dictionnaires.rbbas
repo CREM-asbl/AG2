@@ -891,6 +891,18 @@ Protected Module Dictionnaires
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function cette() As string
+		  return dico.value("cette")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function cet() As string
+		  return dico.value("cet")
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
