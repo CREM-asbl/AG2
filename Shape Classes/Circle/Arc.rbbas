@@ -8,7 +8,6 @@ Inherits Circle
 		  npts = 3
 		  liberte = 5
 		  nsk = new ArcSkull(wnd.Mycanvas1.transform(p))
-		  Ori=0 //L'orientation n'est pas encore fixée
 		  arcangle= 0 'Permet de ne pas peindre l'arc tant que le skull n'est pas complètement créé
 		  
 		  
@@ -25,7 +24,6 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  dim i as Integer
-		  dim q as BasicPoint
 		  
 		  for i = n to 2
 		    Points(i).moveto(p)
@@ -36,15 +34,17 @@ Inherits Circle
 		    arcangle = 0
 		  case 1
 		    computeradius
-		    q = Points(1).bpt - Points(0).bpt
-		    startangle = q.anglepolaire
+		    startangle = GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
-		    computeradius
+		    computeori
 		    Points(2).Moveto p.projection(points(0).bpt, radius)
-		    computearcangle
+		    if  PIDEMI < amplitude(points(1).bpt,points(0).bpt,points(2).bpt) then
+		      drapori = true  //on ne peut plus changer l'orientation
+		    end if
 		    updateangles
+		    CreateExtreAndCtrlPoints
 		  end select
-		  CreateExtreAndCtrlPoints
+		  
 		  
 		  
 		  
@@ -53,12 +53,10 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  if abs (PIDEMI - amplitude(points(1).bpt,points(0).bpt,points(2).bpt)) < 0.1 then
-		    drapori = true  //on ne peut plus changer l'orientation
-		  end if
-		  if not drapori then
-		    ori = points(0).bpt.orientation(points(1).bpt,points(2).bpt)
-		  end if
+		  
+		  
+		  
+		  
 		  
 		  arcangle = computeangle(points(2).bpt)
 		  
@@ -402,7 +400,7 @@ Inherits Circle
 		  end if
 		  
 		  if p2.pointsur.count = 1 then
-		    t = ff.replacerpoint(p2)
+		    't = ff.replacerpoint(p2)
 		    sh = p2.pointsur.element(0)
 		    Bib = new BiBPoint(np0, np1)
 		    np2 = Bib.computefirstintersect(1,sh,p2)
@@ -619,10 +617,8 @@ Inherits Circle
 		Sub Updateangles()
 		  dim q as basicpoint
 		  
-		  q = Points(1).bpt - Points(0).bpt
-		  startangle = q.anglepolaire
-		  q = Points(2).bpt - Points(0).bpt
-		  endangle = q.anglepolaire
+		  startangle = GetAngle(Points(0).bpt, Points(1).bpt)
+		  endangle = GetAngle(Points(0).bpt, Points(2).bpt)
 		  computearcangle
 		  
 		  // startangle et endangle  sont toujours entre 0 et 2 pi
@@ -790,6 +786,22 @@ Inherits Circle
 		  end if
 		  
 		  setpoint p
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub computeori()
+		  updatecoord
+		  if not drapori then
+		    ori = coord.orientation
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatecoord()
+		  coord = new TriBPoint(self)
 		End Sub
 	#tag EndMethod
 

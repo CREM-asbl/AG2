@@ -311,10 +311,6 @@ Inherits Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		nsk As NSkull
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		arcangle As double
 	#tag EndProperty
 
