@@ -9,6 +9,16 @@ Inherits nBpoint
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Orientation() As integer
+		  dim u,v as BasicPoint
+		  
+		  u = tab(1)-tab(0)
+		  v = tab(2)-tab(1)
+		  return sign(u.vect(v))
+		End Function
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

@@ -211,6 +211,12 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function orientation() As integer
+		  return 0
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint
