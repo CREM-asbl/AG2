@@ -1,6 +1,5 @@
 #tag Class
 Protected Class ObjectsList
-Implements StringProvider
 	#tag Method, Flags = &h0
 		Function element(idx As Integer) As Shape
 		  if idx>=0 and idx<=Ubound(objects) then
@@ -320,9 +319,6 @@ Implements StringProvider
 		  fam = Val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  forme = Val(Temp.GetAttribute(Dico.Value("NrForm")))
 		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version.3.8) qui étaient incorrects
-		  if a = 5 and fam = 3 then
-		    forme = 1
-		  end if
 		  select case  fam
 		  case -1
 		    s = new Repere(self,temp)
@@ -1223,14 +1219,6 @@ Implements StringProvider
 		  next
 		  
 		  return Visible
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function getString() As String
-		  return  "objectlist("+str(self.count)+")"
-		  
 		  
 		End Function
 	#tag EndMethod
