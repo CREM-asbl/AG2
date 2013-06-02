@@ -499,7 +499,7 @@ Inherits Polyqcq
 		      next
 		      n = n+2
 		      for j = 0 to 5
-		        nsk.updatectrl(k+j\2 , j mod 2, wnd.mycanvas1.dtransform(ctrl(m+j)-p))
+		        LSkull(nsk).updatectrl(k+j\2 , j mod 2, wnd.mycanvas1.dtransform(ctrl(m+j)-p))
 		      next
 		      m = m+6
 		      k=k+3
@@ -848,10 +848,6 @@ Inherits Polyqcq
 
 	#tag Property, Flags = &h0
 		centre(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		nsk As LSkull
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

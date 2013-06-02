@@ -21,12 +21,6 @@ Inherits Polygon
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  ComputeOri
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
 		  
 		  return new Polyqcq(Obl,self,p)
