@@ -329,6 +329,9 @@ Inherits Canvas
 	#tag Method, Flags = &h0
 		Sub Resize()
 		  Background=NewPicture(width,height,Screen(0).Depth)
+		  Background.graphics.ForeColor= Bkcol
+		  Background.graphics.FillRect(0,0,width,height)
+		  Background.graphics.forecolor = Config.bordercolor.col
 		  OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
 		  OffscreenPicture.Transparent = 1
 		  bkcol = Config.Fillcolor.col
@@ -365,20 +368,20 @@ Inherits Canvas
 		    CurrentContent.TheGrid.Paint(Background.Graphics)
 		  end if
 		  
-		  if rep <> nil then
-		    rep.paintall(Background.Graphics)
-		  end if
+		  'if rep <> nil then
+		  'rep.paintall(Background.Graphics)
+		  'end if
 		  
 		  tracept =false
 		  op = CurrentContent.currentoperation
 		  
 		  
-		  for i=1 to CurrentContent.TheObjects.count-1
+		  for i=0 to CurrentContent.TheObjects.count-1
 		    o = CurrentContent.TheObjects.GetPlan(i)
 		    if o <> nil then
-		      if not o isa repere then
-		        o.PaintAll(Background.Graphics)
-		      end if
+		      'if not o isa repere then
+		      o.PaintAll(Background.Graphics)
+		      'end if
 		      
 		      if o isa point and o.tracept and creertrace then
 		        pt=new point(currentcontent.theobjects, point(o).bpt)
@@ -413,11 +416,11 @@ Inherits Canvas
 		    CurrentContent.curoper.paint(Background.graphics)
 		  end if
 		  
-		  if  op <> nil and (op isa modifier or op isa appliquertsf or currentcontent.curoper isa modifier or op isa SaveBitMap) then
-		    Background.graphics.DrawPicture OffscreenPicture, 0, 0
-		  else
-		    ClearOffscreen
-		  end if
+		  'if  op <> nil and (op isa modifier or op isa appliquertsf or currentcontent.curoper isa modifier or op isa SaveBitMap) then
+		  Background.graphics.DrawPicture OffscreenPicture, 0, 0
+		  'else
+		  'ClearOffscreen
+		  'end if
 		  
 		  me.Graphics.drawpicture Background,0,0
 		  
@@ -553,8 +556,10 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub ClearOffscreen()
-		  OffscreenPicture.graphics.ForeColor= blanc
-		  OffscreenPicture.graphics.FillRect(0,0,width,height)
+		  if offscreenpicture <> nil then
+		    OffscreenPicture.graphics.ForeColor= blanc
+		    OffscreenPicture.graphics.FillRect(0,0,width,height)
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -698,8 +703,12 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub EraseBackground()
+		  
 		  Background.graphics.ForeColor= Bkcol
 		  Background.graphics.FillRect(0,0,width,height)
+		  if FondsEcran <> nil then
+		    Background.graphics.drawpicture fondsecran,0,0,width,height,0,0,fondsecran.width,fondsecran.height
+		  end if
 		  Background.graphics.forecolor = Config.bordercolor.col
 		  Background.graphics.TextSize = Config.TextSize
 		  Background.graphics.Bold = true
@@ -880,6 +889,10 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		zone As ovalshape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		FondsEcran As Picture
 	#tag EndProperty
 
 
@@ -1178,6 +1191,12 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="FondsEcran"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Picture"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
