@@ -2127,8 +2127,11 @@ Implements StringProvider
 		        p.puton p.pointsur.element(0)
 		        p.unmodifiable = true
 		      end select
-		      p.updateshape
 		    end if
+		    if p.isonasupphom(s) = 2 then
+		      p.resetonsupphom(s)
+		    end if
+		    p.updateshape
 		    p.modified = true // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
 		  next
 		  
@@ -2176,15 +2179,19 @@ Implements StringProvider
 		    end if
 		  next
 		  
+		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
 		    p =point(somm.element(i))
 		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile and ListPtsModifs.indexof(i)=-1 )  and PtsConsted.getposition(p) = -1 then
 		      Pointsfixes.append i
+		      if p.pointsur.count <> 2 then
+		        NbUnModif = NbUnModif+1
+		      end if
 		    end if
 		  next
 		  
-		  NbUnmodif = ubound(PointsFixes)+1
+		  'NbUnmodif = ubound(PointsFixes)+1
 		  
 		  
 		  
@@ -2522,7 +2529,7 @@ Implements StringProvider
 		    if  (replacerpoint(p) or replacerpoint(q))  then
 		      return autospeupdate
 		    else
-		      return s.Modifier1fixe(p,pmob)
+		      return s.Modifier1fixe(p,q)
 		    end if                                             //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
 		  else
 		    return s.Modify2(p,q)

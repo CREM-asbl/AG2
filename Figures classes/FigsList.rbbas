@@ -4,17 +4,6 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function GetPosition(f as Figure) As Integer
 		  
-		  'dim i as Integer
-		  '
-		  '
-		  'for i=0 to count-1
-		  'if element(i)=f then
-		  'return i
-		  'end if
-		  'next
-		  '
-		  'return -1
-		  
 		  return figures.indexof(f)
 		End Function
 	#tag EndMethod
@@ -133,11 +122,11 @@ Implements StringProvider
 		  next
 		  
 		  for i = 0 to count-1
-		    'if element(i).isapoint = nil then
-		    for j = 0 to element(i).subs.count-1
-		      ff.subs.addfigure element(i).subs.element(j)
-		    next
-		    'end if
+		    if element(i).isapoint = nil then                                    'Probleme: pourquoi avoir un jour supprimé ce test?  (révision 75) Prévu pour le cas ou des sommets de formes sont
+		      for j = 0 to element(i).subs.count-1                          'construits avant les formes.
+		        ff.subs.addfigure element(i).subs.element(j)
+		      next
+		    end if
 		  next
 		  
 		  for i = 0 to ff.subs.count-1
@@ -163,7 +152,7 @@ Implements StringProvider
 		  for i = 0 to ff.somm.count-1
 		    pt = point(ff.somm.element(i))
 		    if pt <> nil then
-		      'ff.shapes.removeshape pt   // indispensable pour éviter certains bugs -- (cas où le point n'était pas construit)
+		      ff.shapes.removeshape pt   // indispensable pour éviter certains bugs -- (cas où le point n'était pas construit)
 		      if pt.pointsur.count > 0 then
 		        ff.ptssur.addshape pt
 		        for j = 0 to pt.pointsur.count-1
