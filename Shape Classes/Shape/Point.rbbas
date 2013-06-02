@@ -735,8 +735,8 @@ Inherits Shape
 		  Shape(ol,El)
 		  pointsur = new objectslist
 		  conditioned = new objectslist
-		  sk = new rectskull(2,2,wnd.Mycanvas1.transform(Bpt))
-		  updateskull
+		  createskull(wnd.Mycanvas1.transform(Bpt))
+		  'updateskull
 		  
 		End Sub
 	#tag EndMethod
@@ -2327,6 +2327,14 @@ Inherits Shape
 		      if tsf <> nil then
 		        tsf.removeconstructioninfos(self)
 		      end if
+		    case 9
+		      if constructedby.shape = nil then
+		        for j = 0 to 2 step 2
+		          point(constructedby.data(j)).removeconstructedshape self
+		        next
+		      else
+		        constructedby.shape.removeconstructedshape self
+		      end if
 		    end  select
 		    constructedby = nil
 		  end if
@@ -2593,7 +2601,7 @@ Inherits Shape
 		  Shape(ol,1,1)
 		  Bpt = new BasicPoint (a)
 		  Hidden = false
-		  sk = new rectskull(2,2,wnd.Mycanvas1.transform(Bpt))
+		  createskull(wnd.Mycanvas1.transform(Bpt))
 		  pointsur = new objectslist
 		  conditioned = new objectslist
 		  drapmagn = true
@@ -2873,6 +2881,48 @@ Inherits Shape
 		      inter.update        //Le point est éventuellement re-validé
 		    end if
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function isonasupphom(byref s as shape) As integer
+		  dim i as integer
+		  
+		  for i = 0 to ubound(parents)
+		    if parents(i) isa supphom then
+		      s = parents(i)
+		      return parents(i).getindexpoint(self)
+		    end if
+		  next
+		  return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub resetonsupphom(s as shape)
+		  dim n as integer
+		  dim ff as figure
+		  dim ep, eq, np, nq as BasicPoint
+		  dim r as double
+		  
+		  if s isa supphom then
+		    n = s.getindexpoint(self)
+		    if n <> 2 then
+		      ff = s.GetSousFigure(s.fig)
+		      ff.getoldnewpos(s.points(0),ep,np)
+		      ff.getoldnewpos(s.points(1),eq,nq)
+		      r = s.points(2).bpt.location(ep,eq)
+		      moveto np*(1-r)+nq*r
+		    else
+		      moveto bpt.projection(s.points(0).bpt,s.points(1).bpt)
+		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateSkull(bp as BasicPoint)
+		  sk = new rectskull(2,2,bp)
 		End Sub
 	#tag EndMethod
 

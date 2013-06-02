@@ -669,7 +669,7 @@ Implements StringProvider
 		    Ti = new Tip
 		  end if
 		  
-		  signaire = sign(aire)
+		  
 		  
 		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
 		    nonpointed = not currentcontent.PolygPointes
@@ -697,6 +697,9 @@ Implements StringProvider
 		  else
 		    coord = new nBPoint(ar)
 		  end select
+		  
+		  signaire = sign(aire)
+		  computeori
 		  
 		  dounselect
 		  currentcontent.optimize
@@ -1022,10 +1025,6 @@ Implements StringProvider
 		  for i = 0 to  Ubound(childs)
 		    Temp.AppendChild Childs(i).XMLPutInContainer(Doc)
 		  next
-		  
-		  if self isa supphom then
-		    Temp.setattribute("IdPoint3", str(supphom(self).Point3.Id))
-		  end if
 		  return Temp
 		End Function
 	#tag EndMethod
@@ -1231,6 +1230,7 @@ Implements StringProvider
 		  dim a as double
 		  
 		  updatecoord
+		  computeori
 		  a = aire
 		  if signaire*sign(a) <0  and Ti <> nil and (fillcolor.equal(poscolor) or fillcolor.equal(negcolor))  then
 		    signaire = sign(a)
@@ -3026,17 +3026,6 @@ Implements StringProvider
 		    case 9
 		      shape(constructedby.data(0)).removeconstructedshape self
 		      shape(constructedby.data(2)).removeconstructedshape self
-		      for i = 0 to npts-1
-		        if points(i).constructedby.shape <> nil then
-		          p = point(points(i).constructedby.shape)
-		          p.removeconstructedshape points(i)
-		        else
-		          for j = 0 to 2 step 2
-		            p = point(points(i).constructedby.data(j))
-		            p.removeconstructedshape points(i)
-		          next
-		        end if
-		      next
 		    case 5
 		    end  select
 		    constructedby = nil
@@ -3612,13 +3601,7 @@ Implements StringProvider
 		Function getString() As string
 		  dim s as String
 		  
-		  s = "{id : "+str(id)+", IDGroupe : "+str(IDGroupe)
-		  if fig <> nil then
-		    s = s+",fig : "+Fig.getString
-		  else
-		    s = s+",fig : nil" 
-		  end if
-		  s = s+"}"
+		  s = "{id : "+str(id)+", IDGroupe : "+str(IDGroupe)+"}"
 		  
 		  Return s
 		End Function
@@ -4161,6 +4144,10 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		diam As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		nsk As nskull
 	#tag EndProperty
 
 

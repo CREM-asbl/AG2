@@ -62,33 +62,34 @@ Inherits Shape
 		  He = Val(EL1.GetAttribute("H"))
 		  List = EL.XQL("Origine")
 		  EL1 = XMLElement(List.Item(0))
-		  Origine = new BasicPoint(Val(El1.GetAttribute("X")), Val(El1.GetAttribute("Y")))
+		  Ori = new BasicPoint(Val(El1.GetAttribute("X")), Val(El1.GetAttribute("Y")))
 		  List = EL.XQL("IdX")
 		  EL1 = XMLElement(List.Item(0))
-		  Idx = new BasicPoint(Val(El1.GetAttribute("X")), Val(El1.GetAttribute("Y")))
+		  Ix = new BasicPoint(Val(El1.GetAttribute("X")), Val(El1.GetAttribute("Y")))
 		  List = EL.XQL("IdY")
 		  EL1 = XMLElement(List.Item(0))
-		  Idy = new BasicPoint(Val(El1.GetAttribute("X")), Val(El1.GetAttribute("Y")))
+		  Iy = new BasicPoint(Val(El1.GetAttribute("X")), Val(El1.GetAttribute("Y")))
 		  
-		  'pas nécessaire de mettre à l'échelle car repère construit en fonction du canvas
-		  'Kw = wnd.Mycanvas1.width/Wi
-		  'Kh = wnd.Mycanvas1.height/He
-		  '
-		  'k = min(kw,kh)
-		  '
-		  'if k >= 1 then
-		  'origine = Ori
-		  'Idx = Ix
-		  'Idy = Iy
-		  'else
-		  'Idx = Ix*k
-		  'Idy= Iy*k
-		  'origine = new BasicPoint(wnd.mycanvas1.width/2, wnd.mycanvas1.height/2)
-		  'p = new BasicPoint(Wi/2,He/2)
-		  'origine = origine +(ori-p)*k
-		  'end if
-		  'wnd.MyCanvas1.setrepere(self)
-		  'echelle =  k
+		  'il est nécessaire de mettre à l'échelle car le repère du fichier de sauvegarde n'est pas nécessairement le même que celui
+		  'du canvas. Il faut que toute la figure tienne sur le nouvel écran
+		  Kw = wnd.Mycanvas1.width/Wi
+		  Kh = wnd.Mycanvas1.height/He
+		  
+		  k = min(kw,kh)
+		  
+		  if k >= 1 then
+		    origine = Ori
+		    Idx = Ix
+		    Idy = Iy
+		  else
+		    Idx = Ix*k
+		    Idy= Iy*k
+		    origine = new BasicPoint(wnd.mycanvas1.width/2, wnd.mycanvas1.height/2)
+		    p = new BasicPoint(Wi/2,He/2)
+		    origine = origine +(ori-p)*k
+		  end if
+		  wnd.MyCanvas1.setrepere(self)
+		  echelle =  k
 		  Hidden = true
 		  
 		  
