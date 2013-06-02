@@ -1,20 +1,18 @@
 #tag Class
 Protected Class Supphom
-Inherits Bipoint
+Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Supphom(ol as objectslist, fp as point, sp as point, qp as point)
-		  Shape(ol,0,2)
+		  Shape(ol,0,3)
 		  fam = 1
 		  forme = -2
 		  Points.Append fp
 		  Points.append sp
+		  Points.append qp
 		  setpoint fp
 		  setpoint sp
+		  SetPoint qp
 		  points(0).borderwidth = 2
-		  Childs.append qp
-		  setpoint(qp)
-		  qp.puton self
-		  Point3 = qp
 		  sk = new SegSkull(wnd.mycanvas1.transform(fp.bpt))
 		  updateshape
 		  endconstruction
@@ -38,7 +36,7 @@ Inherits Bipoint
 		  dim pt As BasicPoint
 		  
 		  sk.update(wnd.myCanvas1.transform(Points(1).bpt))
-		  pt = wnd.myCanvas1.dtransform(point3.bpt-Points(1).bpt)
+		  pt = wnd.myCanvas1.dtransform(points(2).bpt-Points(1).bpt)
 		  segskull(sk).updatesommet(1,pt)
 		  
 		  
@@ -51,7 +49,7 @@ Inherits Bipoint
 		  dim i as integer
 		  d= wnd.Mycanvas1.MagneticDist
 		  
-		  if p.distance(points(1).bpt,point3.bpt) < d and p.between(points(1).bpt,point3.bpt) then
+		  if p.distance(points(1).bpt,points(2).bpt) < d and p.between(points(1).bpt,points(2).bpt) then
 		    return 0
 		  else
 		    return -1
@@ -78,9 +76,11 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub ToEps(tos as textoutputstream)
+		  dim i as integer
 		  
-		  points(1).toeps(tos)
-		  childs(2).toeps(tos)
+		  for i = 0 to 2
+		    points(i).toeps(tos)
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -94,38 +94,19 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub XMLReadPtsSur(Temp as XMLElement)
-		  dim i , IdPoint3 as integer
-		  dim EL,  EL1 as XmlElement
-		  dim List As XMLNodelist
-		  dim pt, pt3 as point
-		  
-		  super.XMLReadPtsSur(Temp)
-		  
-		  List = Temp.XQL("Childs")
-		  if List.Length  > 0 then
-		    EL = XMLElement(List.Item(0))
+		Function GetSide(i as integer) As droite
+		  if i = 0 then
+		    return new droite(points(0), points(1))
+		  else
+		    return nil
 		  end if
-		  
-		  
-		  
-		  IdPoint3 = val(EL.GetAttribute("IdPoint3"))
-		  if IdPoint3 <> 0 then
-		    pt3 = Point(currentcontent.theobjects.getshape(IdPoint3))
-		    if pt3.pointsur.count<> 1 then
-		      return
-		    end if
-		    if pt3.pointsur.element(0) = self then
-		      supphom(self).DRAP = false
-		      supphom(self).Bip = nil
-		    else
-		      supphom(self).DRAP = true
-		      supphom(self).Bip = BiPoint(pt3.pointsur.element(0))
-		    end if
-		    supphom(self).Point3 = pt3
-		  end if
-		  updateskull
-		End Sub
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function pInShape(p as BasicPoint) As Boolean
+		  return PointOnSide(p) = 0
+		End Function
 	#tag EndMethod
 
 
@@ -149,27 +130,6 @@ Inherits Bipoint
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
-
-
-	#tag Property, Flags = &h0
-		Point3 As Point
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		DRAP As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Bip As Bipoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		np3 As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		oldqp As Point
-	#tag EndProperty
 
 
 	#tag ViewBehavior
@@ -228,13 +188,6 @@ Inherits Bipoint
 			InitialValue="0"
 			Type="Integer"
 			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Side"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-			InheritedFrom="Bipoint"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="drapori"
@@ -466,16 +419,16 @@ Inherits Bipoint
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="DRAP"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="np3"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="oldDRAP"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

@@ -676,7 +676,11 @@ Inherits Bipoint
 		    d = sh.getside(n)
 		    u = vecteurdirecteur.normer
 		    v = d.vecteurdirecteur.normer
-		    return abs(u.vect(v) ) < epsilon
+		    if u = nil or v = nil then
+		      return true
+		    else
+		      return abs(u.vect(v) ) < epsilon
+		    end if
 		  end if
 		  
 		  
@@ -826,9 +830,6 @@ Inherits Bipoint
 		
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
-	#tag EndNote
-
-	#tag Note, Name = Sans_titre
 	#tag EndNote
 
 
