@@ -102,13 +102,20 @@ Inherits MultipleSelectOperation
 		    n = MacInfo.RealFinal(i)
 		    s = objects.GetShape(n)
 		    IdentifyPoints (s, i)
-		    s.createskull(s.points(0).bpt)
-		    s.updateskull
-		    for j = 0 to s.npts-1
-		      s.points(j).mobility
-		    next
-		    s.endconstruction
+		    if s isa point then
+		      s.createskull(point(s).bpt)
+		      point(s).mobility
+		    else
+		      s.createskull(s.points(0).bpt)
+		      for j = 0 to s.npts-1
+		        s.points(j).mobility
+		      next
+		    end if
 		  next
+		  s.endconstruction
+		  s.updateskull
+		  
+		  
 		  wnd.mycanvas1.refreshbackground
 		  
 		End Sub
