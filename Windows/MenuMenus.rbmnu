@@ -419,6 +419,27 @@ Begin Menu MenuMenus
       Text = "Préférences"
       Index = -2147483648
       AutoEnable = True
+      Begin MenuItem Fonds
+         SpecialMenu = 0
+         Text = "Fonds d'écran"
+         Index = -2147483648
+         AutoEnable = True
+         SubMenu = True
+         Begin MenuItem Install
+            SpecialMenu = 0
+            Text = "Installer"
+            Index = -2147483648
+            AutoEnable = True
+            SubMenu = True
+         End
+         Begin MenuItem UnInstall
+            SpecialMenu = 0
+            Text = "Retirer"
+            Index = -2147483648
+            AutoEnable = True
+            SubMenu = True
+         End
+      End
       Begin MenuItem PrefsStdForms
          SpecialMenu = 0
          Text = "StdForms"
