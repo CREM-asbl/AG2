@@ -15,7 +15,7 @@ Inherits Quadri
 		  Points(3).moveto Points(2).bpt+p
 		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(Points(3).bpt-Points(0).bpt))
 		  
-		  ComputeOri
+		  
 		  
 		End Sub
 	#tag EndMethod

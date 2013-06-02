@@ -28,8 +28,6 @@ Inherits Trap
 		  Points(3).moveto(a)
 		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(a-Points(0).bpt))
 		  
-		  ComputeOri
-		  
 		End Sub
 	#tag EndMethod
 

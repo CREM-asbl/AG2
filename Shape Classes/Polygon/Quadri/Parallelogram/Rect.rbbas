@@ -27,7 +27,7 @@ Inherits Parallelogram
 		  UpdateSkull(2,wnd.mycanvas1.dtransform(p-Points(0).bpt))
 		  Parallelogram.ConstructShape
 		  
-		  ComputeOri
+		  
 		  
 		End Sub
 	#tag EndMethod

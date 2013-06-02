@@ -22,7 +22,6 @@ Inherits Trap
 		  b = Points(0).bpt + a.vecnorperp
 		  p = Points(2).bpt.projection(Points(0).bpt,b)
 		  Points(3).moveto(p)
-		  ComputeOri
 		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(p-Points(0).bpt))
 		  
 		  
