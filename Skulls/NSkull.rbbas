@@ -223,11 +223,15 @@ Inherits FigureShape
 
 
 	#tag Property, Flags = &h0
-		ref As BasicPoint
+		cs(-1) As curveshape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		currentcurve As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ref As BasicPoint
 	#tag EndProperty
 
 

@@ -5,6 +5,7 @@ Inherits NSkull
 		Sub ArcSkull(p as BasicPoint)
 		  dim i as integer
 		  ref = p
+		  redim cs(2)
 		  for i = 0 to 2
 		    cs(i) = new CurveShape
 		    cs(i).order = 2

@@ -4,7 +4,7 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub DSectSkull(p as BasicPoint)
 		  dim i as integer
-		  
+		  redim cs(4)
 		  ref = p
 		  for i = 0 to 4
 		    cs(i)=new curveshape

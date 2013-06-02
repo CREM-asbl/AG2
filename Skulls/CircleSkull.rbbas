@@ -5,7 +5,7 @@ Inherits NSkull
 		Sub CircleSkull(p as BasicPoint)
 		  dim i as integer
 		  ref = p
-		  
+		  redim cs(2)
 		  for i = 0 to 2
 		    cs(i) = new CurveShape
 		    cs(i).order = 2
@@ -61,11 +61,6 @@ Inherits NSkull
 		  cs(n+1).y = p.y
 		End Sub
 	#tag EndMethod
-
-
-	#tag Property, Flags = &h0
-		cs(2) As curveshape
-	#tag EndProperty
 
 
 	#tag ViewBehavior
