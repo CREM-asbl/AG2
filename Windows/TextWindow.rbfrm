@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -237,6 +237,9 @@ End
 		  dim i as integer
 		  
 		  m = mess(s) + " Fig. "+ str(s.fig.idfig) +chr(13)
+		  if s isa triangle or s isa arc then
+		    m = m + "Orientation " + str(s.ori)+chr(13)
+		  end if
 		  if s.constructedby <> nil or s.conditionedby <> nil or ubound(s.constructedshapes) > -1 then
 		    m = m + messlinks(s)+chr(13)
 		  end if
