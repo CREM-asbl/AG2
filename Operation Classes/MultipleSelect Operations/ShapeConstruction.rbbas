@@ -57,7 +57,7 @@ Inherits MultipleSelectOperation
 		    case 2
 		      select case forme
 		      case 0
-		        currentshape = new Polyqcq(objects,3,p)
+		        currentshape = new Triangle(objects,3,p)
 		      case 1
 		        currentshape = new TriangIso(objects,p)
 		      case 2
@@ -98,7 +98,11 @@ Inherits MultipleSelectOperation
 		        currentshape = new DSect(objects,p)
 		      end select
 		    case 6
-		      currentshape = new Polyqcq(objects, forme+3, p)
+		      if forme = 0 then
+		        currentshape = new Triangle(objects,3,p)
+		      else
+		        currentshape = new Polyqcq(objects, forme+3, p)
+		      end if
 		      'case 7
 		      'Lacets
 		    end select
@@ -332,6 +336,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
+		  
+		  dim magneticD as BasicPoint
+		  dim magnetism as integer
+		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then
@@ -341,12 +349,13 @@ Inherits MultipleSelectOperation
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig
 		        curShape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
 		        if curshape.invalid then
-		          MsgBox "Le point est attiré par le " + lowercase(CurrentAttractingShape.Identifiant)+ " et le " + lowercase(NextCurrentAttractingShape.Identifiant)  +"."+ EndOfLine + EndOfLine _
-		          + "L'intersection des deux formes n'est pas un point." + EndOfLine + EndOfLine + "Le point sera placé sur la forme située à l'avant-plan."
 		          CurrentContent.thefigs.addfigure NextCurrentAttractingShape.fig
-		          nextcurrentattractingshape = nil
 		          curshape.valider
 		          curshape.puton currentattractingshape
+		          NextCurrentAttractingShape.Attracting = false
+		          NextCurrentAttractingShape = nil
+		          magnetism = Magnetisme(currentshape,magneticD)
+		          AdjustMagnetism(curshape)
 		        end if
 		      else
 		        curshape.puton currentattractingshape
