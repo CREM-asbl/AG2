@@ -38,6 +38,7 @@ Begin Window WorkWindow
       drapzone        =   0
       Enabled         =   True
       EraseBackground =   "True"
+      FondsEcran      =   0
       Height          =   592
       HelpTag         =   ""
       Index           =   -2147483648
@@ -1812,6 +1813,37 @@ End
 		End Function
 #tag EndMenuHandler
 
+#tag MenuHandler
+		Function Install() As Boolean Handles Install.Action
+			Dim f As FolderItem
+			dim jpegType as New FileType
+			jpegType.Name = "image/jpeg"
+			jpegType.MacType = "JPEG"
+			jpegType.Extensions = "jpg;jpeg"
+			
+			if mousedispo then
+			closefw
+			f=GetOpenFolderItem(jpegType)
+			if f=nil then
+			return true
+			else
+			mycanvas1.FondsEcran = f.OpenAsPicture()
+			end if
+			end if
+			
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function UnInstall() As Boolean Handles UnInstall.Action
+			mycanvas1.FondsEcran = nil
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
 
 	#tag Method, Flags = &h0
 		Sub refreshtitle()
@@ -1905,7 +1937,6 @@ End
 		    updatemenu
 		  end if
 		  Mycanvas1.RefreshBackground
-		  MoveBoxRefresh
 		  StdBoxRefresh
 		  LibBoxRefresh
 		  'if CurrentContent.currentoperation isa shapeconstruction and fw <> nil  then
@@ -1930,6 +1961,7 @@ End
 		      liboutils(fw.fam).refresh
 		    end if
 		    fw.close
+		    
 		  end if
 		  fw = nil
 		End Sub
@@ -1998,6 +2030,7 @@ End
 		  else
 		    CurrentContent.UndoLastOperation
 		  end if
+		  mycanvas1.refreshBackground
 		  
 		End Sub
 	#tag EndMethod
@@ -2510,8 +2543,9 @@ End
 		Sub UpdateToolBar()
 		  dim espace as integer
 		  
+		  'todo : exploiter responsive design ?
+		  
 		  espace = (me.Height-me.MinHeight)/3
-		  espace = min(espace,50)
 		  
 		  MoveBox.Top = 60+espace
 		  
@@ -2521,15 +2555,6 @@ End
 		  
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MoveBoxRefresh()
-		  dim i as integer
-		  for i=0 to 4
-		    MouvBut(i) .visible = Config.MvBt(i)
-		  next
 		End Sub
 	#tag EndMethod
 
@@ -2741,7 +2766,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(Index As Integer, index as Integer)
+		Sub Action(index as Integer)
 		  if mousedispo then
 		    closefw
 		    select case index
@@ -2767,13 +2792,6 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events MoveBox
-	#tag Event
-		Sub Open()
-		  MoveBoxRefresh
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events StdBox
 	#tag Event
 		Sub Open()
@@ -2783,7 +2801,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -2815,14 +2833,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(Index As Integer, index as Integer, g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -2838,7 +2856,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(Index As Integer, index as Integer)
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -2854,15 +2872,19 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
+		    if selectedtool = 0 and fw = nil then
+		      selectedtool = -1
+		      liboutils(0).refresh
+		    end if
 		    closefw
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -2879,12 +2901,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(Index As Integer, index as Integer)
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(Index As Integer, index as Integer, g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
