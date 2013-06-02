@@ -99,7 +99,7 @@ Protected Class Operation
 		  'todo : à placer dans canvas ?
 		  if Config.ShowHelp then
 		    g.forecolor = Config.bordercolor.col
-		    g.DrawString  s1+info ,Mcanx,Mcany
+		    g.DrawString  lowercase(s1+info) ,Mcanx,Mcany
 		  end if
 		End Sub
 	#tag EndMethod
