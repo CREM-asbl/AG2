@@ -1097,6 +1097,23 @@ End
 		End Function
 #tag EndMenuHandler
 
+#tag MenuHandler
+		Function Install() As Boolean Handles Install.Action
+			Install.checked = not Install.Checked
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function UnInstall() As Boolean Handles UnInstall.Action
+			UnInstall.checked = not UnInstall.Checked
+			Return True
+			
+			
+		End Function
+#tag EndMenuHandler
+
 
 	#tag Method, Flags = &h0
 		Sub ReadNomsBut()
@@ -1198,10 +1215,13 @@ End
 	#tag Event
 		Sub Action()
 		  dim psw as PrefsSaveWindow
+		  
 		  CurrentContent.CurrentOperation=nil
+		  
 		  psw=new PrefsSaveWindow
 		  psw.ShowModal
 		  
+		  close
 		  
 		End Sub
 	#tag EndEvent
