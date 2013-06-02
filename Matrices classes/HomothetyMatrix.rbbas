@@ -27,15 +27,6 @@ Inherits SimilarityMatrix
 		      HomothetyMatrix(s1,b2.location(s1,s2) )
 		    else
 		      SimilarityMatrix(s1,s2,b1,b2)
-		      'M1 = new TranslationMatrix(b1 - s1)
-		      'b3 = M1*s2
-		      'M3 =new HomothetyMatrix(b1, b2.location(b1,b3))
-		      'M = Matrix(M1)
-		      'M= M3*M
-		      '
-		      'v1 = M.v1
-		      'v2 = M.v2
-		      'v3 = M.v3
 		    end if
 		  end if
 		End Sub
