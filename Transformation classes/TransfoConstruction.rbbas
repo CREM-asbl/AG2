@@ -39,35 +39,35 @@ Inherits MultipleSelectOperation
 		Sub Paint(g as graphics)
 		  super .paint(g)
 		  
-		  select  case currentitemtoset
-		  case 1
-		    select case type
+		  if currenthighlightedshape = nil then
+		    select  case currentitemtoset
 		    case 1
-		      display =  choose + asegment + oroneofitsendpoints
+		      select case type
+		      case 1
+		        display =  choose + asegment + oroneofitsendpoints
+		      case 2
+		        display =  choose + anarc
+		      case 3 to 5
+		        display =  choose + apoint
+		      case 6
+		        display =  choose + asegmentoraline + orahalfline
+		      case 7
+		        display = choose + atrapezoid + orfourpoints
+		      case 8
+		        display = choose + aquad +  orfourpoints
+		      case 9
+		      end select
 		    case 2
-		      display =  choose + anarc
-		    case 3 to 5
-		      display =  choose + apoint
-		    case 6
-		      display =  choose + asegmentoraline + orahalfline
-		    case 7
-		      display = choose + atrapezoid + orfourpoints
-		    case 8
-		      display = choose + aquad +  orfourpoints
-		    case 9
+		      select case type
+		      case 1
+		        display = choose + theotherendpoint
+		      case 7to 9
+		        display = choose + anotherpoint
+		      end select
+		    case 3, 4
+		      display = choose + apoint
 		    end select
-		  case 2
-		    select case type
-		    case 1
-		      display = choose + theotherendpoint
-		    case 7to 9
-		      display = choose + anotherpoint
-		    end select
-		  case 3, 4
-		    display = choose + apoint
-		  end select
-		  Help g, display
-		  if currenthighlightedshape <> nil then
+		  else
 		    select case currentitemtoset
 		    case 1
 		      if currenthighlightedshape isa polygon and type < 7 then
@@ -75,8 +75,23 @@ Inherits MultipleSelectOperation
 		      else
 		        currenthighlightedshape.highlight
 		      end if
+		      if currenthighlightedshape isa point then
+		        display = thispoint+" ?"
+		      elseif currenthighlightedshape isa arc then
+		        display = this + " "+ arc + " ?"
+		      elseif  currenthighlightedshape isa droite then
+		        display = thissegment + "/"+cette+" "+droite+" ?"
+		      elseif currenthighlightedshape isa trap then
+		        display = this+ " " +trap+" ?"
+		      elseif currenthighlightedshape isa quadri then
+		        display = this + " "+ quadri+" ?"
+		      end if
+		    else
+		      display = thispoint+" ?"
 		    end select
 		  end if
+		  Help g, display
+		  
 		End Sub
 	#tag EndMethod
 
@@ -175,23 +190,9 @@ Inherits MultipleSelectOperation
 		    select case type
 		    case 7
 		      if fp = tp then
-		        type = 71
-		        
-		        if qp.pointsur.count = 1 then
-		          if fp.sameparent(sp, sh()) then
-		            i0 = -1
-		            for i = 0 to ubound(sh)
-		              if sh(i) isa droite and qp.pointsur.element(0) = sh(i) then
-		                i0 = i
-		              end if
-		            next
-		            if i0 = -1 then
-		              currentcontent.currentoperation = nil
-		              return false
-		            end if
-		          end if
-		        end if
+		        qp.moveto qp.bpt.projection(tp.bpt, sp.bpt)
 		        currentshape = new Supphom(objects, fp,  sp, qp)
+		        type = 71
 		        index.append 0
 		      else
 		        qp.moveto qp.bpt.projection(tp.bpt, tp.bpt+sp.bpt-fp.bpt)

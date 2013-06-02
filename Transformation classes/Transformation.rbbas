@@ -153,10 +153,6 @@ Implements StringProvider
 		      FixPt.moveto bp
 		    end if
 		  end if
-		  'if supp.invalid then
-		  'msgbox "support invalide"
-		  'end if
-		  
 		  if   (dret <> nil or  op isa modifier)  or CurrentContent.isaundoredo or (op isa ReadHisto and ReadHisto(op).OpId=31) then
 		    ModifyImages
 		  end if
@@ -200,7 +196,7 @@ Implements StringProvider
 		  case 71
 		    u = supp.points(0).bpt
 		    v = supp.points(1).bpt
-		    w = supphom(supp).point3.bpt
+		    w = supp.points(2).bpt
 		    k = w.location(u,v)
 		    M = new HomothetyMatrix(u, k)
 		  case 8
@@ -271,9 +267,9 @@ Implements StringProvider
 		    Hidden2 = true
 		  end if
 		  
-		  if type = 71 then
-		    supphom(supp).point3.moveto supphom(supp).point3.bpt.projection(supp.points(0).bpt, supp.points(1).bpt)
-		  end if
+		  'if type = 71 then
+		  'supp.points(2).moveto supp.points(2).bpt.projection(supp.points(0).bpt, supp.points(1).bpt)
+		  'end if
 		  
 		  
 		  
@@ -609,12 +605,12 @@ Implements StringProvider
 		      a = a.vecnorperp
 		      a = can.dtransform(a)
 		      a =  b - a*supp.ori
-		    case  71
+		    case  71, 81
 		      a = can.transform(supp.points(1).bpt)
-		      b = can.transform(supphom(supp).point3.bpt)
-		    case 81
-		      a = can.transform(supp.points(1).bpt)
-		      b = can.transform(supp.childs(2).bpt)
+		      b = can.transform(supp.points(2).bpt)
+		      'case 81
+		      'a = can.transform(supp.points(1).bpt)
+		      'b = can.transform(supp.points(2).bpt)
 		    case 7, 8, 72,10
 		      a = can.transform(supp.points(0).bpt)
 		      b = can.transform(supp.points(3).bpt)
