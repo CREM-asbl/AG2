@@ -614,7 +614,7 @@ Protected Class WindContent
 		  setpolygpointes(val(Temp.GetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"))))
 		  wnd.settrace(val(Temp.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
 		  SetFleches(val(Temp.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
-		  'TheObjects.updatelabels(wnd.mycanvas1.rep.echelle)
+		  TheObjects.updatelabels(wnd.mycanvas1.rep.echelle)
 		  
 		End Sub
 	#tag EndMethod
@@ -772,11 +772,16 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub RemettreTsfAvantPlan()
-		  
+		  dim s as shape
 		  dim i as integer
 		  
 		  for i = 0 to TheTransfos.count-1
-		    TheTransfos.element(i).supp.MovetoFront
+		    s = TheTransfos.element(i).supp
+		    if s isa point and ubound(point(s).parents)> -1 then
+		      point(s).parents(0).movetofront
+		    else
+		      s.MovetoFront
+		    end if
 		  next
 		End Sub
 	#tag EndMethod
