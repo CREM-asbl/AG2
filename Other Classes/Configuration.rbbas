@@ -216,8 +216,8 @@ Protected Class Configuration
 		Sub SaveToFile()
 		  dim fi as FolderItem
 		  
-		  if Menu <> "" then
-		    fi=app.MenusFolder.Child(Menu+".men")
+		  if Name <> "" then
+		    fi=GetFolderItem(Name+".men")
 		    ToXML.SaveXML fi
 		  end if
 		  
@@ -264,15 +264,13 @@ Protected Class Configuration
 		  end if
 		  
 		  fi=GetFolderItem(Menu+".men")
-		  if not fi.exists then
-		    fi = app.MenusFolder.Child(Menu+".men")
-		  end if
 		  if not  fi.exists  then
 		    MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
 		    quit
 		  else
 		    C=new XMLDocument(fi)
 		    El = C.DocumentElement
+		    name = fi.name
 		  end if
 		  
 		  ChargerMenu(El)
@@ -338,7 +336,7 @@ Protected Class Configuration
 		  dim Doc as XMLDocument
 		  dim temp,EL, EL1, EL2,EL3, EL4 as XMLNode
 		  
-		  'save pourAG_init
+		  'todo : comparer avec SaveToFile
 		  
 		  //création du document XML
 		  
@@ -645,6 +643,8 @@ Protected Class Configuration
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
 		  
+		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").checked =true
+		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").checked =true
 		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").checked = El.XQL("StdForms").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").checked = El.XQL("Traj").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").checked = El.XQL("DistanceMagnetisme").length > 0
@@ -701,6 +701,10 @@ Protected Class Configuration
 
 	#tag Property, Flags = &h0
 		MagneticDist As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Name As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
