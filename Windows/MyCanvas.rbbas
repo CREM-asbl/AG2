@@ -176,11 +176,11 @@ Inherits Canvas
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
 		  if icot = -1 then
-		    if sctxt.Ti <> nil and not sctxt isa droite  then
+		    if sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc)  then
 		      base.append( New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
 		    end if
 		    
-		    if (not sctxt isa point) and (not sctxt isa droite) then
+		    if (not sctxt isa point) and (not sctxt isa droite) and (not sctxt isa arc) then
 		      base.append( New MenuItem(Dico.value("ToolsColorFill")))
 		    end if
 		    

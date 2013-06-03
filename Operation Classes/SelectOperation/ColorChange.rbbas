@@ -234,6 +234,13 @@ Inherits SelectOperation
 		      end if
 		    next
 		    icot = index(iobj)
+		  else
+		    for i = visible.count-1 downto 0
+		      s = Visible.element(i)
+		      if s isa arc then
+		        visible.removeshape s
+		      end if 
+		    next
 		  end if
 		  
 		  
