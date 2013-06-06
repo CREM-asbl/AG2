@@ -41,7 +41,11 @@ Inherits SelectOperation
 		  sh = currenthighlightedshape
 		  display = ""
 		  if visible  = nil or sh = nil then
-		    display = choose + asegment + aprolonger
+		    if app.macrocreation then
+		      display = choose + asideofpoly
+		    else
+		      display = choose + asegment 
+		    end if
 		  else
 		    super.paint(g)
 		    if sh isa polygon and cot <> -1   then 'and nobj = 1
@@ -51,7 +55,11 @@ Inherits SelectOperation
 		      sh.highlight
 		      sh.paintall(g)
 		    end if
-		    display = thissegment + "?"
+		    if app.macrocreation then
+		      display = thissideofpoly + "?"
+		    else
+		      display = thissegment + "?"
+		    end if
 		  end if
 		  Help g, display
 		  
@@ -174,6 +182,10 @@ Inherits SelectOperation
 		  
 		  deplacerperp
 		  Dr.endconstruction
+		  Dr.setconstructedby Bip, 8
+		  if Bip isa polygon then
+		    Dr.Constructedby.data.append ibip
+		  end if
 		  
 		  for i = 2 to ubound(Dr.childs)
 		    Dr.childs(i).fig = Dr.fig
@@ -322,6 +334,9 @@ Inherits SelectOperation
 		    if  not ((s isa droite and droite(s).nextre  =2)  or  ((s isa polygon) and (ibip <> -1) and (not polygon(s).prol(ibip)) )  ) then
 		      visible.removeshape s
 		    end if
+		    if s isa droite and app.macrocreation then
+		      visible.removeshape s
+		    end if
 		  next
 		  
 		  nobj = visible.count
@@ -351,46 +366,15 @@ Inherits SelectOperation
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub oldMouseMove(p as BasicPoint)
-		  
-		  objects.unhighlightall
-		  currenthighlightedshape = Getshape(p)
-		  
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
-		Sub oldMouseWheel()
-		  dim i as integer
-		  dim pt as point
-		  
-		  if visible <> nil and visible.count <> 0 then
-		    nobj = visible.count
-		    iobj = (iobj+1) mod nobj
-		    if CurrentHighlightedShape<>nil then
-		      CurrentHighlightedShape.UnHighLight
-		    end if
-		    
-		    CurrentHighlightedShape = visible.element(iobj)
-		    Highlight(CurrentHighlightedShape)
-		    Wnd.mycanvas1.refreshbackground
-		    
+		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLelement
+		  if not Bip isa Polygon then
+		    return nil
 		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function ToMac(Doc as XmlDocument) As XMLelement
-		  dim Temp, EL as XMLElement
+		  EL.appendchild Dr.XMLPutIdINContainer(Doc)
+		  EL.AppendChild Dr.XMLPutConstructionInfoInContainer(Doc)
 		  
-		  Temp= Bip.XMLPutInContainer(Doc)
-		  if Bip isa Polygon then
-		    EL = Dr.XMLPutIncontainer(Doc)
-		    EL.SetAttribute("Ibip", str(ibip))
-		    Temp.Appendchild EL
-		  end if
-		  return Temp
+		  return EL
 		End Function
 	#tag EndMethod
 

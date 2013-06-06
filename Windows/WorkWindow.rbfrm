@@ -1234,8 +1234,6 @@ End
 
 #tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			dim mac as macro
-			
 			closefw
 			app.macrocreation = true
 			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
@@ -1265,8 +1263,14 @@ End
 
 #tag MenuHandler
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
+			dim op as operation
+			
 			closefw
+			op = currentcontent.currentoperation
+			if op isa choosefinal then
+			choosefinal(op).endoperation
 			mac.sauvegarder
+			end if
 			return true
 		End Function
 #tag EndMenuHandler
@@ -1279,7 +1283,8 @@ End
 			dim dlg as OpenDialog
 			
 			closefw
-			
+			currentcontent.currentoperation = nil
+			refreshtitle
 			dlg = new OpenDialog
 			dlg.InitialDirectory = App.MacFolder
 			dlg.Filter = FileAGTypes.MACR

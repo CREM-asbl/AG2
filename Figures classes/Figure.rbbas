@@ -1239,15 +1239,12 @@ Implements StringProvider
 		  for j = 0 to shapes.count -1
 		    s= shapes.element(j)
 		    s.Mmove = M
-		    
 		    if s isa Circle or s isa Lacet  then
 		      s.MoveExtreCtrl(M)
 		    end if
-		    
 		    if s isa arc  or s isa dsect or s isa cube then
 		      s.updateskull
 		    end if
-		    
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
 		      s.endmove
 		    end if

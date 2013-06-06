@@ -24,8 +24,8 @@ Protected Class ConstructionInfo
 		5 : Découpe. Data: matrice de Transformation
 		6: Image par une transformation
 		7: Point fixe d'une transformation
-		      8: Objet auxiliaire à la construction d'un autre  // obsolete
-		9 : Fusion // shape = nil data 0: 1ere forme fusionnée 1: matrice correspondante 2: 2eme forme fusionnée 3: matrice correspondante 
+		8: Prolongement d'un segment ou côté de polygone 
+		9 : Fusion // shape = nil
 		10: Duplication d'un pointsur
 		
 		Data
@@ -37,6 +37,8 @@ Protected Class ConstructionInfo
 		5: pour les pièces: 1 : matrice de transformation, 2: sens de parcours (1 ou -1)
 		6:  Transformation
 		7: Transformation   
+		8: si côté de polygone prolongé: data(0) = numéro du côté
+		9:  0: 1ere forme fusionnée 1: matrice correspondante 2: 2eme forme fusionnée 3: matrice correspondante 
 		10 : difference entre les  numéros de côté sur l'original et la copie (voir point.putduplicateon)
 	#tag EndNote
 

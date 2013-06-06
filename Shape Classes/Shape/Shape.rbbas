@@ -1337,6 +1337,10 @@ Implements StringProvider
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
 		    i = tsf.supp.GetIndexTsf(tsf)
 		    Temp.SetAttribute("Nr", str(i))
+		  case 8
+		    if ubound(constructedby.data)= 0 then
+		      Temp.SetAttribute("Index", str(constructedby.data(0)))
+		    end if
 		  case 9
 		    for i = 0 to 2 step 2
 		      Form = Shape(constructedby.data(i)).XMLPutIdInContainer(Doc)
@@ -1700,6 +1704,7 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  updatecoord
+		  updateMacConstructedShapes
 		  if UBound(tsfi)>-1 then
 		    for i=0 to Ubound(tsfi)
 		      tsfi(i).update

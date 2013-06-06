@@ -557,6 +557,7 @@ Protected Class Operation
 		  end if
 		  if (not self isa shapeconstruction) or (not currentshape isa repere) then
 		    El=Oplist.CreateElement(Dico.Value("Operation"))
+		    El.SetAttribute(Dico.Value("Numero"),str(Currentcontent.TotalOperation))
 		    El.SetAttribute(Dico.Value("Type"), GetName)
 		    EL.SetAttribute("OpId", str(opId))
 		    EL1.AppendChild ToMac(OpList,EL)

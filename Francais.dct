@@ -290,6 +290,7 @@
     <arigidifier Name=" à punaiser" />
     <asegment Name=" un segment" />
     <asegmentoraline Name=" un segment ou une droite" />
+    <asideofpoly Name=" un côté de polygone" />
     <asupprimer Name=" à supprimer" />
     <atrapezoid Name=" un trapèze" />
     <atransformation Name=" une transformation" />
@@ -356,6 +357,7 @@
     <thishomothety Name=" cette homothétie" />
     <thissimilarity Name=" cette similitude" />
     <thisstretch Name=" cet étirement" />
+    <thissideofpoly Name=" ce côté de polygone" />
     <tocut Name=" à découper" />
     <toputatbackground Name=" à mettre à l'arrière-plan" />
     <toputatforeground Name=" à mettre à l'avant-plan" />

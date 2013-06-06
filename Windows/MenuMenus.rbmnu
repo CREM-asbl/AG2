@@ -381,13 +381,13 @@ Begin Menu MenuMenus
          Index = -2147483648
          AutoEnable = True
       End
-      Begin MenuItem MacrosSave
+      Begin MenuItem MacrosFinaux
          SpecialMenu = 0
          Text = ""
          Index = -2147483648
          AutoEnable = True
       End
-      Begin MenuItem MacrosFinaux
+      Begin MenuItem MacrosSave
          SpecialMenu = 0
          Text = ""
          Index = -2147483648

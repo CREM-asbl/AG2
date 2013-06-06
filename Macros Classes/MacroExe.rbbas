@@ -97,11 +97,11 @@ Inherits MultipleSelectOperation
 		      end if
 		    end if
 		  next
-		  mac.macexe(macinfo)
-		  for i = 0 to ubound(MacInfo.RealFinal)
+		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
+		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
 		    n = MacInfo.RealFinal(i)
 		    s = objects.GetShape(n)
-		    IdentifyPoints (s, i)
+		    'IdentifyPoints (s, i)
 		    if s isa point then
 		      s.createskull(point(s).bpt)
 		      point(s).mobility
@@ -111,9 +111,10 @@ Inherits MultipleSelectOperation
 		        s.points(j).mobility
 		      next
 		    end if
+		    s.endconstruction
+		    s.updateskull
 		  next
-		  s.endconstruction
-		  s.updateskull
+		  
 		  
 		  
 		  wnd.mycanvas1.refreshbackground
@@ -207,7 +208,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub IdentifyPoints(s as shape, n as integer)
+		Sub oldIdentifyPoints(s as shape, n as integer)
 		  //Si une forme finale a un ou des sommets superposés à des sommets d'une ou plusieurs  formes initiales, il faut identifier ces sommets. De cette façon,
 		  // on pourra tirer sur les sommets et les formes finales seront liées aux formes initiales pour les mouvements
 		  // s est donc une forme finale,n est son index dans RealFinal, mid son id dans la macro, tid son id dans la macro

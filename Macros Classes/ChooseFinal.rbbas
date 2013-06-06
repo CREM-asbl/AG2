@@ -24,17 +24,20 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim s as shape
 		  
+		  drapcoul = true
+		  objects.unselectall
+		  
+		  currentshape.unhighlight
+		  AddFinal(currentshape)
+		  IdentifyInit(currentshape)
 		  for i = 1 to currentcontent.TheObjects.count -1
 		    s =  currentcontent.TheObjects.element(i)
 		    if s.init or s.Interm or s.final then
 		      fixecouleurs(s)
-		    else
-		      s.delete
 		    end if
 		  next
-		  wnd.mac.Histo = currentcontent.Histo
-		  wnd.mac.Elaguer
-		  
+		  wnd.mycanvas1.refreshbackground
+		  showattraction
 		  
 		  
 		  
@@ -128,7 +131,7 @@ Inherits MultipleSelectOperation
 		  if CurrentHighLightedShape <> nil then
 		    display = click+pour+selectionner
 		  else
-		    display =  choose + aform
+		    display =  choose + aform + "ou sauvegarde la macro"
 		  end if
 		  
 		  Help g, display
@@ -220,11 +223,26 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
+		  dim i as integer
+		  dim s as shape
+		  
+		  CurrentItemtoSet = NumberOfItemsToSelect +1
+		  
+		  for i = 1 to currentcontent.TheObjects.count -1
+		    s =  currentcontent.TheObjects.element(i)
+		    if s.init or s.Interm or s.final then
+		      fixecouleurs(s)
+		    else
+		      s.delete
+		    end if
+		  next
+		  wnd.mac.Histo = currentcontent.Histo
+		  wnd.mac.Elaguer
+		  
 		  super.endoperation
 		  
 		  mw = new  MacWindow
 		  mw.ShowModal
-		  
 		  currentcontent.currentoperation = nil
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
 		  wnd.EraseMenuBar
@@ -235,36 +253,13 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
-		  Dim d as New MessageDialog
-		  Dim b as MessageDialogButton
-		  
 		  if s = nil then
 		    return false
 		  end if
 		  
-		  drapcoul = true
-		  objects.unselectall
-		  
-		  currentshape = CurrentHighlightedshape
-		  CurrentHighlightedShape = nil
-		  AddFinal(currentshape)
-		  IdentifyInit(currentshape)
-		  Fixecouleurs(currentshape)
-		  currentshape.unhighlight
-		  wnd.mycanvas1.refreshbackground
-		  
-		  d.icon=MessageDialog.GraphicCaution   //display warning icon
-		  d.ActionButton.Caption= Dico.VALUE("Oui")
-		  d.CancelButton.Caption = Dico.Value("Non")
-		  d.cancelbutton.visible = true
-		  d.Message= Dico.value("ChoiceFinished")
-		  b=d.ShowModal     //display the dialog
-		  
-		  if not (b =  d.ActionButton)  then
-		    NumberOfItemsToSelect = NumberofItemsToSelect+1
-		    showattraction
-		  End if
-		  
+		  currentshape = s
+		  NumberOfItemsToSelect = NumberofItemsToSelect+1
+		  DoOperation
 		  return true
 		  
 		  

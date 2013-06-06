@@ -903,6 +903,18 @@ Protected Module Dictionnaires
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function asideofpoly() As string
+		  return Dico.Value("asideofpoly")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function thissideofpoly() As string
+		  return Dico.Value("thissideofpoly")
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

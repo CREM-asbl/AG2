@@ -287,7 +287,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddOperationToMac(OpList as XMLDocument, Histo as XMLElement)
+		Sub AddOperationToMac(OpList as XMLDocument, EL1 as XMLElement)
 		  dim EL as XmlElement
 		  dim i as integer
 		  
@@ -296,9 +296,10 @@ Inherits MultipleSelectOperation
 		    El.SetAttribute(Dico.Value("Numero"),str(Currentcontent.TotalOperation))
 		    El.SetAttribute(Dico.Value("Type"), GetName)
 		    EL.SetAttribute("OpId", str(opId))
-		    EL= ToMac(i, OpList,EL)
-		    Histo.AppendChild EL
+		    EL1.AppendChild ToMac(i, OpList,EL)
 		  next
+		  
+		  
 		End Sub
 	#tag EndMethod
 

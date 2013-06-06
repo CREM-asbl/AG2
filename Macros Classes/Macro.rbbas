@@ -205,7 +205,7 @@ Protected Class Macro
 		  dim s, newshape as shape
 		  dim nbp as nBPoint
 		  
-		  codesoper = Array(0,1,14,16,28,33,35,37,39,17,24,25,26,27, 45)
+		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,17,24,25,26,27, 45)
 		  
 		  MacInf = MacInfo
 		  
@@ -230,14 +230,18 @@ Protected Class Macro
 		          ifmac.coord = nbp
 		        end if
 		        
-		        if ObFinal.indexof(MacId) <> -1 then      //Si c'est une forme finale
+		        k = ObFinal.indexof(MacId)
+		        if k <> -1 then      //Si c'est une forme finale
 		          ExeOper(EL,nbp)                                //On recalcule les coordonnées
 		          ifmac.coord = nbp
-		          k = ObFinal.indexof(MacId)
-		          s = currentcontent.theobjects.getshape(MacInf.RealFinal(k))                      //On va rechercher la forme
-		          for j = 0 to ubound(s.points)
-		            s.points(j).moveto ifmac.coord.tab(j)   //On repositionne les sommets
-		          next
+		          s = currentcontent.theobjects.getshape(MacInf.RealFinal(k))
+		          if s isa point then
+		            point(s).moveto ifmac.coord.tab(0)
+		          else                  //On va rechercher la forme
+		            for j = 0 to ubound(s.points)
+		              s.points(j).moveto ifmac.coord.tab(j)   //On repositionne les sommets
+		            next
+		          end if
 		        end if
 		      end if
 		    end if
@@ -269,8 +273,20 @@ Protected Class Macro
 		    paraperp(EL0,EL1,ifm1,nbp)
 		  case 14 //Centre
 		    centre(ifm1,nbp)
+		  case 16 //Retourner
+		  case 17 //TransfoConstruction
+		  case 19 //Dupliquer
+		  case 24 //AppliquerTsf
+		  case 25 //Decouper
 		  case 26 //Point de division
 		    divide(EL0,EL1,ifm1,nbp)
+		  case 27 //Fusionner
+		  case 28 //Prolonger
+		    extend(EL0,EL1,ifm1,nbp)
+		  case 33 //AddLabel
+		  case 35 //Identifier
+		  case 37 //FixPConstruction
+		  case 39 //Flecher
 		  case 45  //Point d'intersection
 		    inter (EL0, EL1, nbp)
 		  end select
@@ -485,6 +501,22 @@ Protected Class Macro
 		Function GetName() As string
 		  return Histo.GetAttribute("Name")
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub extend(EL0 as XMLElement, EL1 as XMLelement, ifm1 as InfoMac, byref nbp as nBPoint)
+		  dim index, npt as integer
+		  dim c as nBPoint
+		  dim p, q as BasicPoint
+		  
+		  index = val(EL1.GetAttribute("Index"))
+		  c = ifm1.coord
+		  npt = c.Taille
+		  p = c.tab(index)
+		  q = c.tab ((index+1) mod npt)
+		  nbp.append p
+		  nbp.append q
+		End Sub
 	#tag EndMethod
 
 
