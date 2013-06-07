@@ -112,6 +112,7 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		    s.endconstruction
+		    s.CreateExtreAndCtrlPoints
 		    s.updateskull
 		  next
 		  

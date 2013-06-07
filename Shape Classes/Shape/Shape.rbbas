@@ -788,7 +788,11 @@ Implements StringProvider
 		  
 		  for i=0 to npts-1
 		    if i=0 then
-		      sk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		      if self isa circle or self isa Lacet then
+		        nsk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		      else
+		        sk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		      end if
 		    else
 		      UpdateSkull(i,wnd.myCanvas1.dtransform(Points(i).bpt-Points(0).bpt))
 		    end
@@ -902,11 +906,15 @@ Implements StringProvider
 		  elseif other <> nil then
 		    gc1 = getGravityCenter
 		    gc2 = other.getgravityCenter
-		    dist=gc1.Distance(gc2)
-		    b1=getBoundingRadius()
-		    b2=other.getBoundingRadius()
-		    if dist < b1+b2+magdist then
-		      return true
+		    if gc1 <> nil and gc2 <> nil then
+		      dist=gc1.Distance(gc2)
+		      b1=getBoundingRadius()
+		      b2=other.getBoundingRadius()
+		      if dist < b1+b2+magdist then
+		        return true
+		      else
+		        return false
+		      end if
 		    else
 		      return false
 		    end if

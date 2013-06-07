@@ -273,7 +273,7 @@ Inherits Shape
 		  
 		  
 		  
-		  if nsk= nil  or  (not wnd.drapshowall and hidden) then
+		  if nsk= nil  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
 		  

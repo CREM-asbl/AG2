@@ -5,6 +5,10 @@ Inherits Shape
 		Sub paint(g As Graphics)
 		  dim op as operation
 		  
+		  if bpt = nil then
+		    return
+		  end if
+		  
 		  op = currentcontent.currentoperation
 		  
 		  if  op <> nil and (op  isa shapeconstruction) and (op.currentattractedshape = self) and (not op.currentattractingshape isa repere ) then
