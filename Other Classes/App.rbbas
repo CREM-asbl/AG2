@@ -143,11 +143,40 @@ Inherits Application
 		  autoquit = true
 		  init
 		  themacros = new macroslist
-		  'new WorkWindow
+		  
 		  
 		  
 		  
 		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub OpenDocument(item As FolderItem)
+		  if FileName ="" then
+		    FileName = item.AbsolutePath
+		  else
+		    FileName = FileName+" "+item.AbsolutePath
+		  end if
+		  Currentfile = GetFolderItem(FileName)
+		  if currentfile.Exists then
+		    if ipctransfert then
+		      ipc.send(currentfile)
+		      ipctransfert = false
+		    end if
+		    FileName = ""
+		  end if
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Function CancelClose() As Boolean
+		  if ipctransfert then
+		    ipc.Send(nil)
+		  else
+		    Config.Save
+		  end if
+		End Function
 	#tag EndEvent
 
 	#tag Event
@@ -189,35 +218,6 @@ Inherits Application
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
 		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub OpenDocument(item As FolderItem)
-		  if FileName ="" then
-		    FileName = item.AbsolutePath
-		  else
-		    FileName = FileName+" "+item.AbsolutePath
-		  end if
-		  Currentfile = GetFolderItem(FileName)
-		  if currentfile.Exists then
-		    if ipctransfert then
-		      ipc.send(currentfile)
-		      ipctransfert = false
-		    end if
-		    FileName = ""
-		  end if
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Function CancelClose() As Boolean
-		  if ipctransfert then
-		    ipc.Send(nil)
-		  else
-		    Config.Save
-		  end if
-		End Function
 	#tag EndEvent
 
 

@@ -222,13 +222,13 @@ End
 #tag EndEvents
 #tag Events CancelButton
 	#tag Event
-		Sub Action()
-		  Hide
+		Sub Open()
+		  me.Caption = dico.value("Cancel")
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
-		  me.Caption = dico.value("Cancel")
+		Sub Action()
+		  close
 		End Sub
 	#tag EndEvent
 #tag EndEvents

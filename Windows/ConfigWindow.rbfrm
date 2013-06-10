@@ -1221,8 +1221,6 @@ End
 		  psw=new PrefsSaveWindow
 		  psw.ShowModal
 		  
-		  close
-		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
