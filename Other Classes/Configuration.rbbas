@@ -679,6 +679,42 @@ Protected Class Configuration
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ToggleLibVisible(fam as integer,shape as integer)
+		  Libvisible(fam,shape) = not Libvisible(fam,shape)
+		  UpdateNLibVis(fam)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateNLibVis(fam as integer)
+		  dim i as integer
+		  dim visible as Boolean
+		  
+		  visible = false
+		  
+		  for i=0 to nlibf(fam)
+		    visible = visible or Libvisible(fam,i)
+		  next
+		  
+		  nlibvis(fam) = visible
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ToggleFLib(fam as integer)
+		  dim i as integer
+		  
+		  nlibvis(fam) = not nlibvis(fam)
+		  
+		  for i=0 to nlibf(fam)
+		    Libvisible(fam,i) = nlibvis(fam)
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

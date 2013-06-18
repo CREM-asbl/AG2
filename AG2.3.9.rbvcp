@@ -217,6 +217,7 @@ Class=Macro;Macros Classes/Macro.rbbas;&h80C5FFF;&h53FED7FF;false
 Class=MacroExe;Macros Classes/MacroExe.rbbas;&h3D09DFFF;&h53FED7FF;false
 Class=MacConstructionInfo;Macros Classes/MacConstructionInfo.rbbas;&h330F17FF;&h53FED7FF;false
 Class=InfoMac;Macros Classes/InfoMac.rbbas;&h21D407FF;&h53FED7FF;false
+Window=Window1;Other Classes/Window1.rbfrm;&h196D57FF;&hBA3BB9BA;false
 DefaultWindow=WorkWindow
 AppMenuBar=Menu
 MajorVersion=2
