@@ -323,7 +323,7 @@ Inherits MultipleSelectOperation
 		  dim Temp as XMLElement
 		  
 		  if currentshape isa point  then
-		    EL = Point(CurrentShape).XMLPutInContainer(Doc, EL)
+		    EL = Point(CurrentShape).XMLPutIdInContainer(Doc, EL)
 		  else
 		    Temp =  CurrentShape.XMLPutIdInContainer(Doc)
 		    Temp.AppendChild currentshape.XMLPutChildsInContainer(Doc)

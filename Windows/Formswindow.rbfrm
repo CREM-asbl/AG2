@@ -483,7 +483,7 @@ End
 
 #tag Events Bouton
 	#tag Event
-		Sub MouseEnter(index as Integer)
+		Sub MouseEnter()
 		  if selection then
 		    return
 		  end if
@@ -496,7 +496,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if  selection then
 		    me.bold  = not me.bold
 		    me.italic = not me.bold
@@ -534,7 +534,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  select case kit
 		  case 0
 		    if index < config.nstdf(fam) then
@@ -565,14 +565,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Close(index as Integer)
+		Sub Close()
 		  if selection and index <= config.nlibf(fam) then
 		    Config.libvisible(fam,index) = me.bold
 		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  if selection then
 		    return
 		  end if
@@ -583,12 +583,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseUp(X As Integer, Y As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent

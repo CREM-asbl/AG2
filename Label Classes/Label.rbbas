@@ -107,7 +107,7 @@ Protected Class Label
 		  
 		  ////////////  Aires
 		  
-		  if ( (shape isa polygon)  or (shape isa circle) ) and (loc = -1) then
+		  if ( (shape isa polygon)  or (shape isa circle and not shape isa arc) ) and (loc = -1) then
 		    if shape = currentcontent.SHUA then
 		      dat = arrondi2(shape.aire)
 		    elseif currentcontent.UA <> 0 then
@@ -146,6 +146,7 @@ Protected Class Label
 	#tag Method, Flags = &h0
 		Sub SetPosition()
 		  dim fp, sp as BasicPoint
+		  dim Trib as TriBPoint
 		  
 		  
 		  if shape isa cube then
@@ -177,7 +178,8 @@ Protected Class Label
 		  elseif shape isa Freecircle and loc <> -1 then
 		    position = shape.points(1).bpt
 		  elseif shape isa arc and loc <> -1 then
-		    position = arc(shape).GetSubdivPoint(arc(shape).startp, arc(shape).endp,2,1)
+		    TriB = new TribPoint(arc(shape).getgravitycenter,arc(shape).startp, arc(shape).endp)
+		    position = Trib.Subdiv(arc(shape).ori,2,1)  
 		  end if
 		  
 		  if shape isa repere or fixe then

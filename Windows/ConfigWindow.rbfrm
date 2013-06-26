@@ -212,6 +212,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -237,6 +239,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -262,6 +266,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -287,6 +293,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -312,6 +320,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -337,6 +347,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -362,6 +374,8 @@ Begin Window ConfigWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
@@ -1283,7 +1297,7 @@ End
 #tag EndEvents
 #tag Events Canvas1
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
 		    return false
 		  end if
@@ -1299,7 +1313,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  wnd.MouvBut(index).visible = not wnd.MouvBut(index).visible
 		  Config.MvBt(index) = wnd.MouvBut(Index).visible
 		  

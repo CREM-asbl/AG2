@@ -239,7 +239,7 @@ Inherits SelectOperation
 		      s = Visible.element(i)
 		      if s isa arc then
 		        visible.removeshape s
-		      end if 
+		      end if
 		    next
 		  end if
 		  

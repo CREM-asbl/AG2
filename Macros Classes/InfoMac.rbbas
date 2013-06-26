@@ -1,8 +1,9 @@
 #tag Class
 Protected Class InfoMac
 	#tag Method, Flags = &h0
-		Sub InfoMac()
-		  coord = new nBpoint
+		Sub InfoMac(fa as integer, fo as integer)
+		  self.fa = fa
+		  self.fo = fo
 		End Sub
 	#tag EndMethod
 
@@ -39,6 +40,30 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		RealId As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		location As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ptsur As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		fa As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		fo As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ori As Integer
 	#tag EndProperty
 
 
@@ -96,6 +121,36 @@ Protected Class InfoMac
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="RealId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="location"
+			Group="Behavior"
+			InitialValue="0"
+			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ptsur"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="fa"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="fo"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

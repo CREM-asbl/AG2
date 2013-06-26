@@ -98,10 +98,6 @@ Inherits SelectAndDragOperation
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)
 		      display = display +" "+  onthearc
-		    elseif currentshape isa Arc and loc = -1 then
-		      currenthighlightedshape.highlight
-		      currenthighlightedshape.paint(g)
-		      display = display +" "+  onthesector
 		    elseif currenthighlightedshape <> nil and not currentshape isa repere then
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)
@@ -150,7 +146,7 @@ Inherits SelectAndDragOperation
 		    currenthighlightedshape.dounselect
 		  end if
 		  Currentshape = GetShape(p) //retourne par priorité les points, ensuite les formes
-		  if loc = -1 then
+		  if ( loc = -1) or ( currentshape isa arc and loc = 0)  then
 		    currenthighlightedshape = currentshape   'on n'a pas choisi un cote de polygone, ni de bande, ni de secteur
 		  end if
 		  
