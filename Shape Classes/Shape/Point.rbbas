@@ -289,7 +289,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function SelectShape(p as BasicPoint) As Shape
 		  
-		  if bpt.distance(p) <= abs(wnd.Mycanvas1.MagneticDist) and not invalid and not deleted then
+		  if  bpt.distance(p) <= abs(wnd.Mycanvas1.MagneticDist) and not invalid and not deleted then
 		    return self
 		  end if
 		End Function
@@ -365,24 +365,28 @@ Inherits Shape
 		    return false
 		  end if
 		  
-		  t = false
-		  i = 0
+		  't = false
+		  'i = 0
 		  
-		  while i <=  ubound(sh) and not t
-		    num1 = sh(i).getindexpoint(self)
-		    num2 = sh(i).getindexpoint(q)
-		    if num1 <> -1 and  num2 <> -1 then
-		      t = true
-		    end if
-		    i = i+1
-		  wend
-		  
-		  if not t then
+		  'while i <=  ubound(sh) and not t
+		  'num1 = sh(i).getindex(self)
+		  'num2 = sh(i).getindex(q)
+		  'if num1 <> -1 and  num2 <> -1 then
+		  't = true
+		  'end if
+		  'i = i+1
+		  'wend
+		  '
+		  'if not t then
+		  'return false
+		  'else
+		  's = sh(i-1)
+		  'end if
+		  if ubound(sh) > 0 then
 		    return false
-		  else
-		    s = sh(i-1)
 		  end if
 		  
+		  s = sh(0)
 		  if s isa BiPoint  then  // même si s est un bipoint, P et Q n'en sont pas nécessairement les extrémités
 		    if abs(num1-num2) = 1 then
 		      return true
@@ -643,16 +647,17 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SameParent(Q as Point, Byref s() as shape) As Boolean
+		Function SameParent(Q as Point, Byref s() as shape) As boolean
 		  dim i,j as integer
 		  
-		  for i=0 to Ubound(parents)
+		  for i = 0 to ubound(parents)
 		    for j=0 to Ubound(Q.parents)
 		      if parents(i)=Q.parents(j) and not parents(i).hidden then
 		        s.append Parents(i)
 		      end if
 		    next
 		  next
+		  
 		  
 		  if ubound(s) > -1 then
 		    return true
@@ -1519,6 +1524,8 @@ Inherits Shape
 		    s.modified = true
 		    s.updateshape
 		  next
+		  
+		  updatesubdivarcpoints
 		  
 		  if constructedby <> nil and not centerordivpoint then
 		    select case constructedby.Oper
@@ -2450,7 +2457,9 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub repositioncstedpoint()
 		  dim s as shape
-		  dim a, b as BasicPoint
+		  dim a, b,bp as BasicPoint
+		  dim Bib as BiBPoint
+		  dim Trib as TriBPoint
 		  
 		  s = constructedby.shape
 		  select case ConstructedBy.oper
@@ -2459,7 +2468,13 @@ Inherits Shape
 		  case 4
 		    a = Point(ConstructedBy.data(0)).bpt
 		    b = Point(ConstructedBy.data(1)).bpt
-		    moveto s.GetSubdivPoint(a, b,ConstructedBy.data(2), ConstructedBy.data(3))
+		    if s isa circle then
+		      Trib = new TriBPoint(s.getgravitycenter,a,b)
+		      bp = Trib.subdiv(s.ori,ConstructedBy.data(2), ConstructedBy.data(3))
+		    else
+		      BiB = new BiBPoint(a,b)
+		      bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
+		    end if
 		  end select
 		End Sub
 	#tag EndMethod
@@ -2800,9 +2815,7 @@ Inherits Shape
 		    Temp2 = Doc.CreateElement(Dico.Value("Form"))
 		    Temp2.Setattribute("Id", str(PointSur.objects(i).Id))
 		    Temp2.Setattribute("NrCote", str(numside(i)))
-		    if not app.macrocreation then
-		      Temp2.SetAttribute("Location",str(location(i)))
-		    end if
+		    Temp2.SetAttribute("Location",str(location(i)))
 		    Temp.AppendChild Temp2
 		  next
 		  if surseg then
@@ -2825,24 +2838,27 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function XMLPutInContainer(Doc as XMLDocument, EL as XMLElement) As XMLElement
+		Function XMLPutIdINContainer(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  //Utilisé uniquement dans le cadre des macros
 		  dim Form, Temp as XMLElement
 		  dim i, n as integer
 		  
 		  Form = XMLPutIdInContainer(Doc)
-		  if labs.count = 1 then
-		    form.appendchild labs.element(0).toXML(Doc)
-		  end if
-		  if constructedby <> nil  and constructedby.oper <> 5 then                           'and constructedby.oper <> 3
-		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
-		  end if
 		  Form.AppendChild XMLPutTsfInContainer(Doc)
 		  
+		  if pointsur.count = 1 then
+		    Form.setAttribute("PointSur", str(pointsur.element(0).id))
+		    if surseg then
+		      Form.SetAttribute("Surseg","1")
+		    end if
+		  elseif pointsur.count=2 then
+		    temp = pointsur.XMLPutIdInContainer(Doc)
+		    temp.setAttribute("NumSide0",str(numside(0)))
+		    temp.setAttribute("NumSide1",str(numside(1)))
+		  end if
 		  EL.AppendChild Form
-		  
-		  if pointsur.count >0 then
-		    EL.AppendChild XMLPutPointSur(Doc)
+		  if pointsur.count = 2 then
+		    EL.AppendChild Temp
 		  end if
 		  
 		  return EL
@@ -2927,6 +2943,40 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub CreateSkull(bp as BasicPoint)
 		  sk = new rectskull(2,2,bp)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PointOnSide(p as BasicPoint) As integer
+		  if pinshape(p) then
+		    return 0
+		  else
+		    return -1
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatesubdivarcpoints()
+		  dim i, j as integer
+		  dim s, sc as shape
+		  dim Bib as BiBPoint
+		  dim Trib as TriBPoint
+		  
+		  for i = 0 to ubound(parents)
+		    s = parents(i)
+		    if s isa freecircle then
+		      for j = 0 to ubound(s.constructedshapes)
+		        sc = s.constructedshapes(j)
+		        if sc.constructedby.oper = 4 and (sc.constructedby.data(0) = self or sc.constructedby.data(1) = self) then
+		          Trib = new TriBpoint(s.getgravitycenter,point(sc.constructedby.data(0)).bpt, point(sc.constructedby.data(1)).bpt)
+		          point(sc).moveto  Trib.subdiv(S.ori, sc.constructedby.data(2), sc.constructedby.data(3))
+		        end if
+		      next
+		    end if
+		  next
+		  
+		  
 		End Sub
 	#tag EndMethod
 

@@ -183,24 +183,44 @@ Inherits MultipleSelectOperation
 		  dim p as BasicPoint
 		  dim Q as point
 		  dim Bib as BiBPoint
+		  dim Trib as TriBPoint
 		  
 		  S = ShapeToDivide
 		  
-		  if shapetodivide isa StdCircle then
+		  if S isa StdCircle then
 		    Firstpoint.show
 		  end if
 		  
-		  Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
+		  if s isa lacet then
+		    if lacet(s).curved(loc) = 0 then
+		      Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
+		    else
+		      Trib = new TribPoint(lacet(s).getcentre(loc),firstpoint.bpt,secondpoint.bpt)
+		    end if
+		  elseif S isa droite or s isa polygon then
+		    Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
+		  elseif s isa circle then
+		    Trib = new TriBPoint(s.getgravitycenter, firstpoint.bpt, secondpoint.bpt)
+		  end if
 		  
 		  for i= 1 to Numberofdivisions-1
-		    p = Bib.subdiv(S,NumberOfDivisions,i)
+		    if s isa lacet then
+		      if lacet(s).curved(loc) = 0 then
+		        p = Bib.subdiv(NumberofDivisions,i)
+		      else
+		        p = Trib.subdiv(s.ori, NumberofDivisions,i) 
+		      end if
+		    elseif S isa droite or s isa polygon then
+		      p = Bib.subdiv(NumberofDivisions,i)
+		    elseif s isa circle then
+		      p = Trib.subdiv(s.ori, NumberofDivisions,i) 
+		    end if
 		    Q=new Point(Objects,p)
 		    Q.setconstructedby S, 4
 		    Q.constructedBy.data.append firstpoint
 		    Q.constructedBy.data.append secondpoint
 		    Q.ConstructedBy.data.append numberofdivisions
 		    Q.ConstructedBy.data.append i
-		    Q.mobility
 		    CreatedShapes.addshape  Q
 		  next
 		  

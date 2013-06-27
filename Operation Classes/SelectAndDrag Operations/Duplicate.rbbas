@@ -590,6 +590,20 @@ Inherits SelectAndDragOperation
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLElement
+		  dim Temp as XMLElement
+		  
+		  if copyptsur then
+		    Temp = cop.XMLPutIdINContainer(Doc,EL)
+		    'if constructedby <> nil  and constructedby.oper <> 5 then                           'and constructedby.oper <> 3
+		    Temp.appendchild cop.XMLPutConstructionInfoInContainer(Doc)
+		    'end if
+		  end if
+		  return Temp
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

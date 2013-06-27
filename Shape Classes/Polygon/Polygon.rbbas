@@ -373,7 +373,7 @@ Inherits Shape
 		  
 		  if not hidden and Ti <> nil then
 		    for i = 0 to npts-1
-		      PaintTipOnSeg g, Points(i).bpt, Points((i+1) mod npts).bpt, colcotes(i)
+		      PaintTipOnSide g, i
 		    next
 		    if constructedby <> nil and constructedby.oper = 9 and constructedby.data(4) = 1 then
 		      a = Points(0).bpt
@@ -382,7 +382,7 @@ Inherits Shape
 		      e = e*0.05
 		      a = a-e
 		      b = b-e
-		      PaintTipOnSeg g, a,b , colcotes(0)
+		      PaintTipOnSide g, 0
 		    end if
 		  end if
 		End Sub
@@ -690,6 +690,25 @@ Inherits Shape
 		  Super.InitConstruction
 		  
 		  redim curved(npts-1)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PaintTipOnSide(g as graphics, i as integer)
+		  
+		  dim Bib as BiBPoint
+		  dim Trib as TribPoint
+		  dim m, a, b, e as BasicPoint
+		  
+		  a = coord.tab(i)
+		  b = coord.tab((i+1)mod npts)
+		  
+		  Bib = new BibPoint(a,b) 
+		  m = BiB.Subdiv(2,1)
+		  e = (b-a)*0.1
+		  a = m-e
+		  b = m+e
+		  PaintTip(a, b, bordercolor, 0.5, g)
 		End Sub
 	#tag EndMethod
 

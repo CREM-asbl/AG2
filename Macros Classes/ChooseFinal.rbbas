@@ -50,44 +50,55 @@ Inherits MultipleSelectOperation
 		  dim  i as integer  //lors du premier passage, s est un objet sélectionné comme final
 		  dim t as boolean
 		  dim sh as shape
+		  dim op as integer
 		  
 		  if  s.interm or s.init then
 		    return
 		  end if
 		  
-		  if s.constructedby <> nil then
-		    Addinterm(s)
-		    identifyinit(s.constructedby.shape)
-		    if s.isaparaperp then
-		      identifyinit(s.points(0))
-		      if droite(s).nextre=2 then
-		        identifyinit(s.points(1))
-		      end if
-		    end if
-		  elseif s isa point then
-		    select case point(s).pointsur.count
-		    case 0
-		      t = true
-		      for i = 0 to ubound(point(s).parents)
-		        t = t and  (s.id < point(s).parents(i).id)
-		      next
-		      if t then
-		        Addinit(s)
-		      else
+		  if s isa point then
+		    if s.constructedby <> nil then
+		      AddInterm(s)
+		      op = s.constructedby.oper
+		      select case op
+		      case 0, 3, 5, 6, 7
+		        IdentifyInit(s.constructedby.shape)
+		      case 4
+		        IdentifyInit(s.constructedby.shape)
+		        IdentifyInit(s.constructedby.data(0))
+		        IdentifyInit(s.constructedby.data(1))
+		      case 9
+		      case 10
+		        IdentifyInit(point(s).pointsur.element(0))
+		        identifyinit(s.constructedby.shape)
+		      end select
+		    else
+		      select case point(s).pointsur.count
+		      case 0
+		        t = true
 		        for i = 0 to ubound(point(s).parents)
-		          if s.id > point(s).parents(i).id  then
-		            IdentifyInit(point(s).parents(i))
-		          end if
+		          t = t and  (s.id < point(s).parents(i).id)
 		        next
-		      end if
-		    case 1
-		      AddInterm(s)
-		      IdentifyInit(point(s).pointsur.element(0))
-		    case 2
-		      AddInterm(s)
-		      IdentifyInit(point(s).pointsur.element(0))
-		      IdentifyInit(point(s).pointsur.element(1))
-		    end select
+		        if t then
+		          Addinit(s)
+		        else
+		          for i = 0 to ubound(point(s).parents)
+		            if s.id > point(s).parents(i).id  then
+		              IdentifyInit(point(s).parents(i))
+		            end if
+		          next
+		        end if
+		      case 1
+		        IdentifyInit(point(s).pointsur.element(0))
+		        if s.constructedby = nil then
+		          AddInit(s)
+		        end if
+		      case 2
+		        AddInterm(s)
+		        IdentifyInit(point(s).pointsur.element(0))
+		        IdentifyInit(point(s).pointsur.element(1))
+		      end select
+		    end if
 		  else
 		    t = true
 		    for i =0 to s.ncpts-1
@@ -102,6 +113,15 @@ Inherits MultipleSelectOperation
 		          identifyinit(s.points(i))
 		        end if
 		      next
+		    end if
+		    if s.constructedby <> nil then
+		      identifyinit(s.constructedby.shape)
+		      if s.isaparaperp then
+		        identifyinit(s.points(0))
+		        if droite(s).nextre=2 then
+		          identifyinit(s.points(1))
+		        end if
+		      end if
 		    end if
 		  end if
 		  
@@ -238,6 +258,11 @@ Inherits MultipleSelectOperation
 		  next
 		  wnd.mac.Histo = currentcontent.Histo
 		  wnd.mac.Elaguer
+		  wnd.mac.ObInit.sort
+		  wnd.mac.ObInterm.sort
+		  wnd.mac.ObFinal.sort
+		  
+		  
 		  
 		  super.endoperation
 		  

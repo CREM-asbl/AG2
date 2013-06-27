@@ -219,3 +219,4 @@ pip-log.txt
 #############
 .AG2.rbuistate
 *.exe
+*.obsolete

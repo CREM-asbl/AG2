@@ -552,7 +552,7 @@ Protected Class Operation
 		Sub AddOperationToMac(OpList as XMLDocument, EL1 as XMLElement)
 		  dim EL as XmlElement
 		  
-		  if (self isa shapeconstruction) and (currentshape isa point) and  (point(currentshape).pointsur.count > 0) then
+		  if (self isa shapeconstruction) and (currentshape isa point) and  (point(currentshape).pointsur.count = 2) then
 		    opId = 45
 		  end if
 		  if (not self isa shapeconstruction) or (not currentshape isa repere) then
@@ -644,7 +644,6 @@ Protected Class Operation
 		Flecher: 39
 		Conditionner: 40
 		Unit : 41
-		ChooseFinal : 42
 		HideTsf: 44
 		Inter : 45                  //N'est utilisé que pour les macros: on assimile l'intersection de deux objets à une opération
 		
@@ -661,6 +660,7 @@ Protected Class Operation
 		Decouper: 25  
 		Divide: 26   
 		Fusion: 27
+		ChooseFinal : 42
 		MacroExe : 43
 	#tag EndNote
 

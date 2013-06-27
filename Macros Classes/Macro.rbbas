@@ -222,18 +222,27 @@ Protected Class Macro
 		        MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
 		        
 		        if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
-		          ifmac.coord = Getcoord(MacId)             //On met ifmac à jour
+		          ifmac.coord = Getcoord(MacId)
+		          if oper = 19 then            //On met ifmac à jour
+		            ifmac.location = GetLocation(MacId)
+		            ifmac.side = GetSide(MacId)
+		          end if
 		        end if
 		        
 		        if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
-		          ExeOper(EL,nbp)                              //on recalcule ou récupère les coordonnées
+		          ExeOper(EL,nbp)                                     //on recalcule ou récupère les coordonnées
 		          ifmac.coord = nbp
+		          ifmac.location =loc0
+		          ifmac.side = si0
 		        end if
 		        
 		        k = ObFinal.indexof(MacId)
 		        if k <> -1 then      //Si c'est une forme finale
-		          ExeOper(EL,nbp)                                //On recalcule les coordonnées
+		          ExeOper(EL,nbp)
 		          ifmac.coord = nbp
+		          ifmac.location = loc0
+		          ifmac.side = si0                    //On recalcule les coordonnées
+		          
 		          s = currentcontent.theobjects.getshape(MacInf.RealFinal(k))
 		          if s isa point then
 		            point(s).moveto ifmac.coord.tab(0)
@@ -253,7 +262,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub ExeOper(EL as XMLElement, byref nbp As nBPoint)
 		  dim MacId, oper as integer
-		  dim  ifm1 as InfoMac
+		  dim ifm0,  ifm1 as InfoMac
 		  dim EL0, EL1 as XMLElement
 		  
 		  
@@ -276,6 +285,7 @@ Protected Class Macro
 		  case 16 //Retourner
 		  case 17 //TransfoConstruction
 		  case 19 //Dupliquer
+		    dupliquer(EL0,EL1,ifm1,nbp)
 		  case 24 //AppliquerTsf
 		  case 25 //Decouper
 		  case 26 //Point de division
@@ -283,7 +293,6 @@ Protected Class Macro
 		  case 27 //Fusionner
 		  case 28 //Prolonger
 		    extend(EL0,EL1,ifm1,nbp)
-		  case 33 //AddLabel
 		  case 35 //Identifier
 		  case 37 //FixPConstruction
 		  case 39 //Flecher
@@ -303,17 +312,27 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub divide(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
-		  dim id0, id1 as integer
+		  dim id0, id1, idfather as integer
 		  dim fp, sp as BasicPoint
 		  dim ndiv, div as integer
+		  dim ifm as InfoMac
+		  dim Trib as TriBpoint
+		  dim Bib as BiBPoint
 		  
 		  ndiv = val(EL1.GetAttribute("NDivP"))
 		  div = val(EL1.GetAttribute("DivP"))
-		  id0 = val(EL1.GetAttribute("Id0"))
-		  id1 = val(EL1.GetAttribute("Id1"))
-		  fp = getcoord(id0).tab(0)
-		  sp = GetCoord(id1).tab(0)
-		  nbp.append  fp + (sp-fp)*(div/ndiv)
+		  idfather = val(EL1.GetAttribute("Id"))
+		  ifm = MacInf.GetInfoMac(idfather)
+		  
+		  if ifm.fa <> 5 and ifm.fa <> 7 then
+		    Bib = new BiBPoint(ifm.coord)
+		    nbp.append BiB.subdiv(ndiv,div)
+		  elseif ifm.fa = 5 then
+		    Trib = new TriBPoint(ifm.coord)
+		    nbp.append TriB.subdiv(ifm.ori,ndiv, div)
+		  else  'cas des lacets
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -325,14 +344,16 @@ Protected Class Macro
 		  dim EL2, EL3 as XmlElement
 		  dim ifm1, ifm2 as infoMac
 		  dim pere, num as integer
+		  dim c as nBPoint
 		  
 		  //On calcule d'abord le vecteur directeur de la paraperp
 		  
 		  index = val(EL1.GetAttribute("Index"))
-		  npt = val(EL1.GetAttribute(Dico.value("Npts")))
 		  
-		  p = ifmac.coord.tab(index)
-		  q = ifmac.coord.tab ((index+1) mod npt)
+		  c = ifmac.coord
+		  npt = c.taille
+		  p = c.tab(index)
+		  q = c.tab ((index+1) mod npt)
 		  w0 = q - p
 		  w=w0.normer
 		  if val(EL1.GetAttribute("Oper")) = 2 Then
@@ -401,20 +422,53 @@ Protected Class Macro
 		  dim nb1, nb2 as nBPoint
 		  dim Bib1, Bib2 as BiBPoint
 		  dim r1, r2 as double
+		  dim fa1, fa2, fo1, fo2 as integer
+		  dim ar1() as integer
+		  dim bp as BasicPoint
 		  
 		  EL10 = XMLElement(EL1.Child(0))
+		  fa1 = val(EL10.GetAttribute(Dico.Value("NrFam")))
+		  fo1 = val(EL10.GetAttribute(Dico.Value("NrForm")))
 		  mid1 = val(EL10.GetAttribute("Id"))
 		  nb1 = GetCoord(mid1)
-		  ncot1 = val(EL10.GetAttribute("NrCote"))
-		  Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
 		  
 		  EL11 = XMLElement(EL1.Child(1))
+		  fa2 = val(EL11.GetAttribute(Dico.Value("NrFam")))
+		  fo2 = val(EL11.GetAttribute(Dico.Value("NrForm")))
 		  mid2 = val(EL11.GetAttribute("Id"))
 		  nb2 = GetCoord(mid2)
-		  ncot2 = val(EL11.GetAttribute("NrCote"))
-		  Bib2 = new BiBPoint(nb2.tab(ncot2), nb2.tab((ncot2+1) mod nb2.taille))
 		  
-		  nbp.append bib1.BiBInterDroites(Bib2,0,0,r1,r2)
+		  if fa1 <> 5  then
+		    ncot1 = val(EL1.GetAttribute("NumSide0"))
+		    Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
+		  else
+		  end if
+		  if fa2 <> 5 then
+		    ncot2 = val(EL1.GetAttribute("NumSide1"))
+		    Bib2 = new BiBPoint(nb2.tab(ncot2), nb2.tab((ncot2+1) mod nb2.taille))
+		  else
+		  end if
+		  
+		  if fa1 <> 5 and fa2 <> 5 then
+		    bp =  bib1.BiBInterDroites(Bib2,0,0,r1,r2)
+		    if(( fa1 = 2) or (fa1 = 3) or (fa1 = 6) or (fa1 = 7)) and ((r1<0)or (r1> 1)) then
+		      nbp.append nil
+		    elseif(( fa2 = 2) or (fa2 = 3) or (fa2 = 6) or (fa2 = 7)) and ((r2<0)or (r2> 1)) then
+		      nbp.append nil
+		    else
+		      nbp.append bp
+		    end if
+		    
+		    
+		  else
+		    
+		  end if
+		  
+		  
+		  
+		  
+		  
+		  
 		  
 		  // Encore considérer les intersections droite-cercle et cercle-cercle
 		  
@@ -441,23 +495,32 @@ Protected Class Macro
 		    nbp = GetCoord(MacId)
 		  case 1
 		    select case fo
-		    case 0, 1, 2, 3, 4, 5, 6
+		    case -1,0, 1, 2, 3, 4, 5, 6
 		      n = 1
 		    case 7,8
 		      n = 2
 		    end select
 		  case 2
-		    select case fo
-		    case 0
-		      n = 2
-		    end select
+		    'select case fo
+		    'case 0
+		    n = 2
+		    'end select
 		  case 3
 		    select case fo
 		    case 7
 		      n = 1
+		    else
+		      n = 3
 		    end select
-		  case 4,5
+		  case 4
 		    n = 1
+		  case 5
+		    select case fo
+		    case 0
+		      n = 1
+		    else
+		      n = 2
+		    end select
 		  case 6
 		    n = fo+2
 		  end select
@@ -517,6 +580,111 @@ Protected Class Macro
 		  nbp.append p
 		  nbp.append q
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub dupliquer(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
+		  dim id1, id0 ,  k, n, np as integer
+		  dim fp, sp, bp as BasicPoint
+		  dim nb as nBPoint
+		  
+		  id1 =  val(EL1.GetAttribute("Id")) //point source
+		  loc0 = GetLocation(id1)
+		  si0 = GetSide(id1)
+		  
+		  k = val(EL1.GetAttribute("Data0")) //Point image
+		  n = val(EL0.GetAttribute("PointSur"))
+		  nb = GetCoord(n)
+		  np = nb.Taille
+		  
+		  si0 = ( si0+k ) mod np
+		  fp = nb.tab(si0)
+		  sp = nb.tab((si0+1) mod np)
+		  bp = fp*(1-loc0)+sp*loc0
+		  nbp.append bp
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetLocation(n as integer) As double
+		  dim i, j, k, m as integer
+		  dim s as shape
+		  dim ifm as infomac
+		  dim EL, EL0, EL1 as XMLElement
+		  
+		  m = Obinit.indexof(n)
+		  if m <> -1 then        //Si c'est une forme initiale
+		    k = MacInf.RealInit(m)
+		    s= currentcontent.theobjects.getshape(k)
+		    if s isa point and point(s).pointsur.count = 1 then
+		      return point(s).location(0)
+		    end if
+		  end if
+		  
+		  m = ObInterm.indexof(n)
+		  if m <> -1 then        //Si c'est une forme intermédiaire
+		    ifm = MacInf.GetInfoMac(n)
+		    return ifm.location
+		  end if
+		  
+		  //Si c'est un point qui n'est ni initial ni intermédiaire
+		  
+		  
+		  for i = numop -1 downto 0
+		    EL = XMLElement(Histo.Child(i))
+		    EL0 = XMLElement(EL.Child(0))
+		    if EL0.Childcount > 0 then
+		      EL1 = XMLElement(EL0.FirstChild)
+		      for j = 0 to EL1.Childcount-1
+		        if n = val(EL1.Child(j).GetAttribute("Id")) then
+		          ifm = Macinf.IfMacs(i)
+		          return ifm.location
+		        end if
+		      next
+		    end if
+		  next
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetSide(n as integer) As integer
+		  dim i, j, k, m as integer
+		  dim s as shape
+		  dim ifm as infomac
+		  dim EL, EL0, EL1 as XMLElement
+		  
+		  m = Obinit.indexof(n)
+		  if m <> -1 then        //Si c'est une forme initiale
+		    k = MacInf.RealInit(m)
+		    s= currentcontent.theobjects.getshape(k)
+		    if s isa point and point(s).pointsur.count = 1 then
+		      return point(s).numside(0)
+		    end if
+		  end if
+		  
+		  m = ObInterm.indexof(n)
+		  if m <> -1 then        //Si c'est une forme intermédiaire
+		    ifm = MacInf.GetInfoMac(n)
+		    return ifm.side
+		  end if
+		  
+		  //Si c'est un point qui n'est ni initial ni intermédiaire
+		  
+		  
+		  for i = numop -1 downto 0
+		    EL = XMLElement(Histo.Child(i))
+		    EL0 = XMLElement(EL.Child(0))
+		    if EL0.Childcount > 0 then
+		      EL1 = XMLElement(EL0.FirstChild)
+		      for j = 0 to EL1.Childcount-1
+		        if n = val(EL1.Child(j).GetAttribute("Id")) then
+		          ifm = Macinf.IfMacs(i)
+		          return ifm.side
+		        end if
+		      next
+		    end if
+		  next
+		End Function
 	#tag EndMethod
 
 
@@ -610,6 +778,14 @@ Protected Class Macro
 		Description As XMLElement
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		loc0 As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		si0 As Integer
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -662,6 +838,18 @@ Protected Class Macro
 			Group="Behavior"
 			Type="string"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="loc0"
+			Group="Behavior"
+			InitialValue="0"
+			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="si0"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

@@ -54,10 +54,6 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
 		  
-		  
-		  
-		  
-		  
 		  arcangle = computeangle(points(2).bpt)
 		  
 		  'arcangle a toujours meme signe que l'orientation
@@ -647,7 +643,7 @@ Inherits Circle
 		Sub UpdatePtsConsted()
 		  dim i as integer
 		  dim p as point
-		  dim BiB as BiBPoint
+		  dim TriB as TriBPoint
 		  dim fp, sp as point
 		  
 		  
@@ -657,8 +653,8 @@ Inherits Circle
 		      p = point(constructedshapes(i))
 		      fp = point(p.constructedby.data(0))
 		      sp = point(p.constructedby.data(1))
-		      Bib = new BiBpoint(fp.bpt,sp.bpt)
-		      p.moveto Bib.subdiv(Self,p.constructedby.data(2),p.constructedby.data(3))
+		      Trib = new TriBpoint(getgravitycenter,fp.bpt,sp.bpt)
+		      p.moveto Trib.subdiv(ori,p.constructedby.data(2),p.constructedby.data(3))
 		      p.modified = true
 		      p.updateshape
 		    end if
@@ -727,7 +723,7 @@ Inherits Circle
 		  super.paint(g)
 		  
 		  if (not hidden ) and  (Ti <> nil) and (dret = nil) then
-		    PaintTipOnArc(g, points(1).bpt, points(2).bpt, points(0).bpt, bordercolor)
+		    PaintTipOnArc(g, bordercolor)
 		  end if
 		  
 		End Sub
@@ -802,6 +798,22 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub updatecoord()
 		  coord = new TriBPoint(self)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PaintTipOnArc(g as graphics, col as couleur)
+		  
+		  dim b, e  as BasicPoint
+		  dim Trib as TriBPoint
+		  
+		  Trib = new TriBPoint(self)
+		  b = Trib.Subdiv(ori, 2,1)
+		  e = b - getgravitycenter
+		  e = e.vecnorperp
+		  e = e*0.1*ori
+		  PaintTip(b-e, b,  bordercolor, 0.5, g)
+		  
 		End Sub
 	#tag EndMethod
 

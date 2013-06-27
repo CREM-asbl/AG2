@@ -608,11 +608,7 @@ Inherits Polyqcq
 		  
 		  if not hidden and Ti <> nil then
 		    for i = 0 to npts-1
-		      if curved(i) = 0 then
-		        PaintTipOnSeg g, Points(i).bpt, Points((i+1) mod npts).bpt, colcotes(i)
-		      else
-		        PaintTipOnArc(g, Points(i).bpt, Points((i+1) mod npts).bpt, centre(i), colcotes(i))
-		      end if
+		      PaintTipOnside(g, i)
 		    next
 		  end if
 		End Sub
@@ -811,6 +807,34 @@ Inherits Polyqcq
 		    return GetArcAngle(n)*GetRadius(n)
 		  end if
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PaintTipOnSide(g as graphics, i as integer)
+		  
+		  dim Bib as BiBPoint
+		  dim Trib as TribPoint
+		  dim m, a, b, e as BasicPoint
+		  
+		  a = coord.tab(i)
+		  b = coord.tab((i+1)mod npts)
+		  
+		  if curved(i) = 0 then
+		    Bib = new BibPoint(a,b) 
+		    m = BiB.Subdiv(2,1)
+		    e = (b-a)*0.1
+		    a = m-e
+		    b = m+e
+		  else
+		    Trib = new TriBPoint(centre(i),a,b)
+		    b = Trib.Subdiv(ori,2,1)
+		    e = b - centre(i)
+		    e = e.vecnorperp
+		    e = e*0.1*ori
+		    a = b-e
+		  end if
+		  PaintTip(a, b, bordercolor, 0.5, g)
+		End Sub
 	#tag EndMethod
 
 

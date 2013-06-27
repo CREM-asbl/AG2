@@ -540,46 +540,6 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function subdiv(S as shape, ndiv as integer, i as integer) As BasicPoint
-		  dim div, k as integer
-		  dim bp, ar() As BasicPoint
-		  dim c, p, dp, ep as basicpoint
-		  dim a1, a2, a, r as double
-		  dim Ag as Angle
-		  
-		  if not s isa circle and not s isa arc and not s isa lacet then
-		    return subdiv(ndiv, i)
-		  elseif s isa lacet then
-		    bp = first
-		    k = s.getindexpoint(bp)
-		    if lacet(s).curved(k) = 0 then
-		      return subdiv (ndiv,i)
-		    else
-		      c = lacet(s).getcentre(k)
-		      r = lacet(s).getradius(k)
-		      a1 = Lacet(s).GetStartAngle(k)
-		      a2 = Lacet(s).GetArcAngle(k)
-		      a = a1+(i/ndiv)*a2
-		      return c + new BasicPoint(r*cos(a), r*sin(a))
-		    end if
-		  else
-		    c = S.getgravitycenter
-		    r = circle(s).getradius
-		    if s isa arc then
-		      a1 = arc(s).startangle
-		      Ag = new Angle(self, c, s.ori)
-		      a2= Ag.alpha
-		    elseif s isa circle then
-		      a1 = getangle(c,first)
-		      a2 = 2*PI
-		    end if
-		    a = a1+(i/ndiv)*a2
-		    return c + new BasicPoint(r*cos(a), r*sin(a))
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function First() As basicPoint
 		  return Tab(0)
 		End Function
@@ -688,6 +648,13 @@ Inherits nBpoint
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub BiBPoint(nBp as nBPoint)
+		  tab = nBP.tab
+		  
+		End Sub
 	#tag EndMethod
 
 

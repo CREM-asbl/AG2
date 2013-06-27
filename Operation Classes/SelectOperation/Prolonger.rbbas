@@ -44,7 +44,7 @@ Inherits SelectOperation
 		    if app.macrocreation then
 		      display = choose + asideofpoly
 		    else
-		      display = choose + asegment 
+		      display = choose + asegment
 		    end if
 		  else
 		    super.paint(g)

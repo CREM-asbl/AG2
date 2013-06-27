@@ -50,7 +50,12 @@ Inherits MultipleSelectOperation
 		  super.paint(g)
 		  
 		  if currenthighlightedshape <> nil then
-		    display = ce + " " + lowercase(currenthighlightedshape.gettype) + " ?"
+		    obj = lowercase(currenthighlightedshape.gettype)
+		    if obj = "arc" then 
+		      display = cet + " " + obj + " ?"
+		    else
+		      display = ce + " " + obj + " ?"
+		    end if
 		  else
 		    display = choose + un + " " +lowercase(identifier(fa, fo))
 		  end if
@@ -62,31 +67,34 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i, j, k, n, index, type,oper, fa, fo as integer
-		  dim EL, EL1 as XMLElement
+		  dim EL, EL0 as XMLElement
 		  dim codesoper() as integer
 		  dim ifmac As InfoMac
 		  dim s, newshape as shape
 		  dim bp() as BasicPoint
 		  
 		  
-		  codesoper = Array(0,1,14,16,28,33,35,37,39,17,24,25,26,27,45)  //codes des opérations
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,17,24,25,26,27,45)  //codes des opérations
 		  
 		  
 		  for i = 0 to Histo.Childcount-1  // i: numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
-		    ifmac = new InfoMac
-		    
 		    if EL.Name = Dico.Value("Operation") then
+		      EL0 = XMLElement(EL.Child(0))
+		      fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		      fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		      ifmac = new InfoMac(fa, fo)
+		      ifmac.ptsur = val(EL0.GetAttribute("PointSur"))       //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
 		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
 		      if codesoper.indexof(oper) <> -1 then                       //est-ce une opération de construction ? prévoir le cas contraire!
 		        n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
 		        if (Mac.ObInit.indexof(n) <> -1) or  (Mac.ObInterm.indexof(n) <> -1) or  (Mac.ObFinal.indexof(n)  <> -1) then
 		          ifmac.MacId = n
-		          k = Mac.ObFinal.indexof(n)              // A-t-on affaire  à un objet final?
-		          if k <> -1 then                                  //si oui, k est le numéro dans ObFinal de l'"objet"  final correspondant de la macro
-		            fa = Mac.Fafinal(k)
-		            fo = Mac.fofinal(k)
-		            newshape = objects.createshape(fa,fo)
+		          'k = Mac.ObFinal.indexof(n)
+		          if Mac.ObFinal.indexof(n) <> -1 then                                 // A-t-on affaire  à un objet final?
+		            'fa = Mac.Fafinal(k)
+		            'fo = Mac.fofinal(k)
+		            newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		            newshape.SetMacConstructedBy MacInfo
 		            newshape.initconstruction
 		            currentcontent.addshape newshape
@@ -106,8 +114,8 @@ Inherits MultipleSelectOperation
 		      s.createskull(point(s).bpt)
 		      point(s).mobility
 		    else
-		      s.createskull(s.points(0).bpt)
 		      for j = 0 to s.npts-1
+		        s.createskull(s.points(j).bpt)
 		        s.points(j).mobility
 		      next
 		    end if
@@ -208,26 +216,6 @@ Inherits MultipleSelectOperation
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub oldIdentifyPoints(s as shape, n as integer)
-		  //Si une forme finale a un ou des sommets superposés à des sommets d'une ou plusieurs  formes initiales, il faut identifier ces sommets. De cette façon,
-		  // on pourra tirer sur les sommets et les formes finales seront liées aux formes initiales pour les mouvements
-		  // s est donc une forme finale,n est son index dans RealFinal, mid son id dans la macro, tid son id dans la macro
-		  
-		  dim mid, tid,i ,j , pid, index  as integer
-		  
-		  tid = s.id
-		  mid = Mac.ObFinal(n)
-		  for  i = 0 to ubound(s.points)
-		    'GetInfoSommet(mid, pid, index)
-		    
-		    
-		  next
-		  
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Property, Flags = &h0
 		Mac As Macro
@@ -246,19 +234,19 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		fa As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		fo As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		ListInit() As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		mw As MacWindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		fa As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		fo As Integer
 	#tag EndProperty
 
 

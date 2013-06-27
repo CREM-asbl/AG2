@@ -107,6 +107,8 @@ Inherits SelectOperation
 		  dim i0, j, n as integer
 		  dim fp, sp as point
 		  dim s1 as shape
+		  dim Bib as BiBPoint
+		  dim Trib as TriBPoint
 		  
 		  i0 = -1
 		  
@@ -137,7 +139,13 @@ Inherits SelectOperation
 		    s2.constructedby.data.append sp
 		    s2.constructedby.data.append s.constructedby.data(2)
 		    s2.constructedby.data.append s.constructedby.data(3)
-		    point(s2).moveto copies.element(i0).GetSubdivPoint (fp.bpt, sp.bpt, s2.constructedby.data(2), s2.constructedby.data(3))
+		    if s2 isa circle then
+		      TriB = new TriBPoint(copies.element(0).getgravitycenter,fp.bpt,sp.bpt)
+		      point(s2).moveto Trib.subdiv (s1.ori,s.constructedby.data(2), s.constructedby.data(3))
+		    else
+		      bib = new BibPoint(fp.bpt,sp.bpt)
+		      point(s2).moveto BiB.subdiv(s2.constructedby.data(2), s2.constructedby.data(3))
+		    end if
 		  end select
 		End Sub
 	#tag EndMethod

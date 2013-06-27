@@ -494,7 +494,7 @@ Implements StringProvider
 		Sub PaintAll(g as Graphics)
 		  dim i,j as Integer
 		  
-		  if not invalid and not deleted then
+		  if not invalid and not deleted  then
 		    Paint(g)
 		    for i = 0 to ubound(tsfi)
 		      if not hidden then
@@ -651,6 +651,23 @@ Implements StringProvider
 		  dim ar() as BasicPoint
 		  
 		  isinconstruction = false
+		  
+		  if self isa point then
+		    ar.append point(self).bpt
+		  else
+		    for i = 0 to ubound(Points)
+		      ar.append points(i).bpt
+		    next
+		  end if
+		  select case  ubound(Points)
+		  case 1
+		    coord = new BiBPoint(ar)
+		  case 2
+		    coord = new TriBPoint(ar)
+		  else
+		    coord = new nBPoint(ar)
+		  end select
+		  
 		  if not self isa point then
 		    for i = 0 to npts-1
 		      points(i).isinconstruction = false
@@ -682,21 +699,7 @@ Implements StringProvider
 		    addtofigure
 		  end if
 		  
-		  if self isa point then
-		    ar.append point(self).bpt
-		  else
-		    for i = 0 to ubound(Points)
-		      ar.append points(i).bpt
-		    next
-		  end if
-		  select case  ubound(Points)
-		  case 1
-		    coord = new BiBPoint(ar)
-		  case 2
-		    coord = new TriBPoint(ar)
-		  else
-		    coord = new nBPoint(ar)
-		  end select
+		  
 		  
 		  signaire = sign(aire)
 		  computeori
@@ -751,6 +754,7 @@ Implements StringProvider
 		  Form.SetAttribute(Dico.Value("NrForm"),str(forme))
 		  if fam <> 0 then
 		    Form.SetAttribute(Dico.value("Npts"),Str(Npts))
+		    Form.SetAttribute(Dico.value("Ncpts"),Str(Ncpts))
 		  end if
 		  if not self isa point then
 		    Form.SetAttribute("Ori", str(ori))
@@ -1610,7 +1614,7 @@ Implements StringProvider
 		  dim cs as Object2D
 		  
 		  
-		  if (self isa Bipoint and not self isa droite) or (not wnd.drapshowall and hidden) then
+		  if (self isa Bipoint and not self isa droite) or (not wnd.drapshowall and hidden) or not noinvalidpoints then
 		    return
 		  end if
 		  
@@ -3175,8 +3179,10 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics, c as couleur)
-		  sk.updatebordercolor (c.col,100)
-		  sk.paint(g)
+		  if not noinvalidpoints then
+		    sk.updatebordercolor (c.col,100)
+		    sk.paint(g)
+		  end if
 		  
 		  
 		End Sub
@@ -3586,7 +3592,15 @@ Implements StringProvider
 		Sub updatecoord()
 		  //updatecoord doit appara^tre dans endmove (à l'issue des mouvements) et updateshape (à l'issue des modifications)
 		  
-		  coord = new nBPoint(self)
+		  select case npts
+		  case 2
+		    coord = new BiBPoint(self)
+		  case 3
+		    coord = new TriBPoint(self)
+		  else
+		    coord = new nBPoint(self)
+		  end select
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3594,20 +3608,6 @@ Implements StringProvider
 		Sub AddToCurrentcontent()
 		  CurrentContent.addshape self
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetSubdivPoint(a as BasicPoint, b as BasicPoint, n as integer, i as integer) As basicpoint
-		  dim bib as BiBpoint
-		  dim p() as BasicPoint
-		  
-		  Bib = new BiBpoint(a,b)
-		  
-		  return Bib.subdiv(self,n,i)
-		  
-		  
-		  
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3699,14 +3699,6 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function subdiv(fp as point, sp as point, n as integer, i as integer) As basicpoint
-		  dim p as basicpoint
-		  p = fp.bpt + (sp.bpt-fp.bpt)*(i/n)
-		  return p
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub computediam()
 		  dim i , j as integer
 		  
@@ -3752,43 +3744,6 @@ Implements StringProvider
 		    end if
 		  next
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub PaintTipOnSeg(g as graphics, a as BasicPoint, b as BasicPoint, col as couleur)
-		  dim can as mycanvas
-		  dim u,v, m, e  as BasicPoint
-		  
-		  can = wnd.mycanvas1
-		  e = b - a
-		  e =e*0.1
-		  m = (a+b)/2
-		  u = can.transform(m-e)
-		  v = can.transform(m+e)
-		  Ti.updatetip(u,v,col)
-		  Ti.scale = 0.5
-		  g.DrawObject Ti, v.x, v.y
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub PaintTipOnArc(g as graphics, a as BasicPoint, b as BasicPoint, c as BasicPoint, col as couleur)
-		  dim can as mycanvas
-		  dim u,v, m, e  as BasicPoint
-		  dim k as integer
-		  
-		  can = wnd.mycanvas1
-		  b = GetSubdivPoint(a,b,2,1)
-		  e = b - c
-		  e = e.vecnorperp
-		  e = e*0.1*ori
-		  a = can.transform(b-e)
-		  b = can.transform(b)
-		  Ti.updatetip(a,b,bordercolor)
-		  Ti.scale = 0.5
-		  g.DrawObject Ti, b.x, b.y
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3874,6 +3829,34 @@ Implements StringProvider
 		  
 		  return true
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function noinvalidpoints() As boolean
+		  dim i as integer
+		  dim t as Boolean
+		  
+		  t = true
+		  
+		  for i = 0 to npts-1
+		    t = t and (points(i).bpt <> nil)
+		  next
+		  return t
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PaintTip(u as BasicPoint, v as BasicPoint, col as couleur, sc as double, g as graphics)
+		  dim a, b as BasicPoint
+		  dim can as Mycanvas
+		  
+		  can = wnd.MyCanvas1
+		  a = can.transform(u)
+		  b = can.transform(v)
+		  Ti.updatetip(a,b,col)
+		  Ti.scale = sc
+		  g.DrawObject Ti, b.x, b.y
+		End Sub
 	#tag EndMethod
 
 
