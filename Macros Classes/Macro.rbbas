@@ -500,28 +500,30 @@ Protected Class Macro
 		    case 7,8
 		      n = 2
 		    end select
-		  case 2
-		    'select case fo
-		    'case 0
-		    n = 2
-		    'end select
-		  case 3
+		  case 2  'Triangles
+		    select case fo
+		    case 0, 1, 3  'Triqcq
+		      n = 2
+		    case 2, 4
+		      n = 1
+		    end select
+		  case 3  'Quadris
 		    select case fo
 		    case 7
 		      n = 1
 		    else
 		      n = 3
 		    end select
-		  case 4
+		  case 4 'Polreg
 		    n = 1
-		  case 5
+		  case 5  'Circles
 		    select case fo
 		    case 0
 		      n = 1
 		    else
 		      n = 2
 		    end select
-		  case 6
+		  case 6 'Polyqcq
 		    n = fo+2
 		  end select
 		  

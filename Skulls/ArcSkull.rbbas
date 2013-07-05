@@ -80,11 +80,6 @@ Inherits NSkull
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		cs(2) As CurveShape
-	#tag EndProperty
-
-
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="currentcurve"

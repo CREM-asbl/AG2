@@ -19,6 +19,9 @@ Inherits Triangle
 		  dim a,b,p as BasicPoint
 		  dim M as OrthoProjectionMatrix
 		  
+		  'coord = coord.constructshape(2,1)    'Voir plus tard si on peut remplacer la construction par celle-ci
+		  'Points(2).Moveto coord.tab(2)
+		  'updateskull
 		  
 		  a = (Points(0).bpt+Points(1).bpt)/2
 		  b = Points(1).bpt-Points(0).bpt

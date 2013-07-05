@@ -689,7 +689,9 @@ Inherits Shape
 		Sub InitConstruction()
 		  Super.InitConstruction
 		  
+		  initcolcotes
 		  redim curved(npts-1)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -703,7 +705,7 @@ Inherits Shape
 		  a = coord.tab(i)
 		  b = coord.tab((i+1)mod npts)
 		  
-		  Bib = new BibPoint(a,b) 
+		  Bib = new BibPoint(a,b)
 		  m = BiB.Subdiv(2,1)
 		  e = (b-a)*0.1
 		  a = m-e

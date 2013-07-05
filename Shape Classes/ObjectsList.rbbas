@@ -1130,13 +1130,13 @@ Protected Class ObjectsList
 		      case 0
 		        currentshape = new Polyqcq(self,3)
 		      case 1
-		        currentshape = new TriangIso(self,3)
+		        currentshape = new TriangIso(self,3,3)
 		      case 2
-		        currentshape = new Polreg(self,3)
+		        currentshape = new Polreg(self,2,3)
 		      case 3
-		        currentshape = new TriangRect(self,3)
+		        currentshape = new TriangRect(self,3,3)
 		      case 4
-		        CurrentShape = new TriangRectIso(self,2)
+		        CurrentShape = new TriangRectIso(self,2,3)
 		      end select
 		    case 3
 		      select case fo

@@ -189,6 +189,7 @@ Implements StringProvider
 		    next
 		  end if
 		  
+		  updatecoord
 		  isinconstruction = true
 		End Sub
 	#tag EndMethod
@@ -648,25 +649,10 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
 		  dim i as integer
-		  dim ar() as BasicPoint
+		  
 		  
 		  isinconstruction = false
-		  
-		  if self isa point then
-		    ar.append point(self).bpt
-		  else
-		    for i = 0 to ubound(Points)
-		      ar.append points(i).bpt
-		    next
-		  end if
-		  select case  ubound(Points)
-		  case 1
-		    coord = new BiBPoint(ar)
-		  case 2
-		    coord = new TriBPoint(ar)
-		  else
-		    coord = new nBPoint(ar)
-		  end select
+		  updatecoord
 		  
 		  if not self isa point then
 		    for i = 0 to npts-1
@@ -698,8 +684,6 @@ Implements StringProvider
 		  if CurrentContent.ForHisto then
 		    addtofigure
 		  end if
-		  
-		  
 		  
 		  signaire = sign(aire)
 		  computeori
