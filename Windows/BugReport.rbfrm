@@ -41,6 +41,8 @@ Begin Window BugReport
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   133
       Value           =   0
       Visible         =   True
@@ -153,6 +155,8 @@ Begin Window BugReport
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   42
       Value           =   0
       Visible         =   True
@@ -175,6 +179,8 @@ Begin Window BugReport
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   74
       Value           =   0
       Visible         =   True
@@ -216,14 +222,18 @@ Begin Window BugReport
       Address         =   ""
       ControlOrder    =   7
       dataport        =   12345
+      Height          =   32
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   6
       Port            =   1000
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   6
       transfert       =   0
+      Width           =   32
       BehaviorIndex   =   7
    End
    Begin StaticText Etat

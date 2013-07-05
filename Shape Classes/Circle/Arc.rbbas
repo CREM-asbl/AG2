@@ -8,7 +8,7 @@ Inherits Circle
 		  npts = 3
 		  liberte = 5
 		  nsk = new ArcSkull(wnd.Mycanvas1.transform(p))
-		  arcangle= 0 'Permet de ne pas peindre l'arc tant que le skull n'est pas complètement créé
+		  
 		  
 		  
 		  
@@ -716,7 +716,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
-		  if arcangle = 0 and not self isa DSect then
+		  if abs(arcangle) < 0.01 and not self isa DSect then
 		    return
 		  end if
 		  
@@ -732,21 +732,15 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub CreateExtreAndCtrlPoints()
 		  dim Bib as BiBPoint
-		  dim A as angle
 		  dim alpha as double
 		  dim M as RotationMatrix
 		  dim i as integer
 		  
-		  Bib = new BiBPoint(Points(1).bpt, points(2).bpt)
-		  A = new Angle(Bib, Points(0).bpt, ori)
-		  alpha = A.alpha/3
-		  
+		  alpha = arcangle/3
 		  M = new RotationMatrix(Points(0).bpt,alpha)
-		  
 		  extre(0) = M*StartP
 		  extre(1) = M*extre(0)
 		  BiB = new BiBPoint(StartP,extre(0))
-		  
 		  Bib.computeCtrlPoints(Points(0).bpt, ori,  ctrl)
 		  for i = 2 to 5
 		    ctrl(i) = M*ctrl(i-2)

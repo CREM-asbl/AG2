@@ -51,7 +51,7 @@ Inherits MultipleSelectOperation
 		  
 		  if currenthighlightedshape <> nil then
 		    obj = lowercase(currenthighlightedshape.gettype)
-		    if obj = "arc" then 
+		    if obj = "arc" then
 		      display = cet + " " + obj + " ?"
 		    else
 		      display = ce + " " + obj + " ?"
@@ -90,10 +90,7 @@ Inherits MultipleSelectOperation
 		        n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
 		        if (Mac.ObInit.indexof(n) <> -1) or  (Mac.ObInterm.indexof(n) <> -1) or  (Mac.ObFinal.indexof(n)  <> -1) then
 		          ifmac.MacId = n
-		          'k = Mac.ObFinal.indexof(n)
 		          if Mac.ObFinal.indexof(n) <> -1 then                                 // A-t-on affaire  à un objet final?
-		            'fa = Mac.Fafinal(k)
-		            'fo = Mac.fofinal(k)
 		            newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		            newshape.SetMacConstructedBy MacInfo
 		            newshape.initconstruction

@@ -564,7 +564,7 @@ End
 		        me.italic = not Config.nlibvis(fam)
 		        if me.bold then
 		          me.caption = Dico.Value("Retirer la famille complète")
-		        else 
+		        else
 		          me.caption = Dico.Value("Activer la famille complète")
 		        end if
 		      else
@@ -587,6 +587,17 @@ End
 		    hauteur = hauteur+Me.Height
 		  end
 		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit(index as Integer)
+		  if selection then
+		    return
+		  end if
+		  if kit = 0 and wnd.drapico then
+		    wnd.setIco(fam,0)
+		    wnd.stdoutil(fam).refresh
+		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event

@@ -142,7 +142,7 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Function ConstructShape(fa as integer, fo as integer) As nBPoint
-		  dim p,v,c as BasicPoint
+		  dim a, b,  p,v,c as BasicPoint
 		  dim d as double
 		  dim i, n, ori as integer
 		  dim M as matrix
@@ -150,12 +150,25 @@ Protected Class nBpoint
 		  ori = 1
 		  
 		  select case fa
-		  case 3
+		  case 2 'Triangles
+		    select case  fo
+		    case 1 'TriIso
+		      a = (tab(0)+tab(1))/2
+		      b = tab(1)-tab(0)
+		      b = b.vecnorperp
+		      M = new OrthoProjectionMatrix(a,a+b)
+		      tab(2) = M*tab(2)
+		    case 2 'TriEqui
+		    case 3 'TriRect
+		    case 4 'TroRectIso
+		    end select
+		    
+		  case 3 'Quadris
 		    select case fo
 		    case 7
 		      return constructshape(4,1)
 		    end select
-		  case 4
+		  case 4 'Polreg
 		    n = fo+3
 		    p = (tab(0)+tab(1))/2
 		    v = tab(1)-tab(0)

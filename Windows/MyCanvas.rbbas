@@ -37,6 +37,7 @@ Inherits Canvas
 		  dim p as BasicPoint
 		  
 		  p =mouseuser
+		  sctxt = nil
 		  
 		  if dret = nil and not CurrentContent.bugfound then
 		    if CurrentContent.CurrentOperation<>nil then

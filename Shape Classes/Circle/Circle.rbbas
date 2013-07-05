@@ -271,17 +271,13 @@ Inherits Shape
 		Sub paint(g as Graphics)
 		  dim i as integer
 		  
-		  
-		  
-		  if nsk= nil  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
+		  updateskull
+		  if (nsk= nil ) or ( nsk.cs(0).x = 0 and nsk.cs(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
-		  
-		  
-		  updateskull
 		  nsk.fixecouleurs(self)
 		  nsk.fixeepaisseurs(self)
-		  nsk.paint(self, g)
+		  nsk.paint(self,g)
 		  
 		  if not hidden then
 		    for i = 0 to labs.count-1

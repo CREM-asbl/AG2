@@ -104,14 +104,15 @@ Inherits MultipleSelectOperation
 		    for i =0 to s.ncpts-1
 		      t = t and s.id < s.points(i).id
 		    next
-		    if t then
+		    if t and (s isa polyqcq or ( (s.fam = 2 or s.fam = 3) and (s.forme = 0) ) ) then  's a été créé avant ses sommets et est un polyqcq
 		      AddInit(s)
 		    else
 		      AddInterm(s)
-		      for i = 0 to s.ncpts-1
-		        if s.id > s.points(i).id then
-		          identifyinit(s.points(i))
-		        end if
+		      for i = 0 to s.npts-1
+		        AddInit(s.points(i))
+		        'if s.id > s.points(i).id then
+		        'identifyinit(s.points(i))
+		        'end if
 		      next
 		    end if
 		    if s.constructedby <> nil then

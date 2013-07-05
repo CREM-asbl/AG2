@@ -30,7 +30,7 @@ Begin ContainerControl ContainerControl1
       CaptionDelta    =   0
       CaptionPlacement=   1
       ControlOrder    =   0
-      Enabled         =   "True"
+      Enabled         =   True
       HasMenu         =   0
       Height          =   22
       HelpTag         =   ""
@@ -54,7 +54,7 @@ Begin ContainerControl ContainerControl1
       Top             =   0
       Underline       =   "False"
       Value           =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   120
       BehaviorIndex   =   0
    End
@@ -69,7 +69,7 @@ Begin ContainerControl ContainerControl1
       CaptionDelta    =   0
       CaptionPlacement=   1
       ControlOrder    =   1
-      Enabled         =   "True"
+      Enabled         =   True
       HasMenu         =   0
       Height          =   22
       HelpTag         =   "Première construction"
@@ -93,7 +93,7 @@ Begin ContainerControl ContainerControl1
       Top             =   0
       Underline       =   "False"
       Value           =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   120
       BehaviorIndex   =   1
    End
@@ -108,7 +108,7 @@ Begin ContainerControl ContainerControl1
       CaptionDelta    =   0
       CaptionPlacement=   1
       ControlOrder    =   2
-      Enabled         =   "True"
+      Enabled         =   True
       HasMenu         =   0
       Height          =   22
       HelpTag         =   ""
@@ -132,7 +132,7 @@ Begin ContainerControl ContainerControl1
       Top             =   0
       Underline       =   "False"
       Value           =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   120
       BehaviorIndex   =   2
    End
@@ -147,7 +147,7 @@ Begin ContainerControl ContainerControl1
       CaptionDelta    =   0
       CaptionPlacement=   1
       ControlOrder    =   3
-      Enabled         =   "True"
+      Enabled         =   True
       HasMenu         =   0
       Height          =   22
       HelpTag         =   ""
@@ -171,7 +171,7 @@ Begin ContainerControl ContainerControl1
       Top             =   0
       Underline       =   "False"
       Value           =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   120
       BehaviorIndex   =   3
    End
@@ -186,7 +186,7 @@ Begin ContainerControl ContainerControl1
       CaptionDelta    =   0
       CaptionPlacement=   1
       ControlOrder    =   4
-      Enabled         =   "True"
+      Enabled         =   True
       HasMenu         =   0
       Height          =   22
       HelpTag         =   ""
@@ -210,7 +210,7 @@ Begin ContainerControl ContainerControl1
       Top             =   0
       Underline       =   "False"
       Value           =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   120
       BehaviorIndex   =   4
    End

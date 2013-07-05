@@ -31,7 +31,7 @@ Begin Window MagDistWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window MagDistWindow
       TextSize        =   12
       Top             =   22
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   127
       BehaviorIndex   =   0
    End
@@ -66,7 +66,7 @@ Begin Window MagDistWindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -95,7 +95,7 @@ Begin Window MagDistWindow
       Top             =   21
       Underline       =   "False"
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   1
    End
@@ -106,7 +106,7 @@ Begin Window MagDistWindow
       Caption         =   "OK"
       ControlOrder    =   2
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -123,7 +123,7 @@ Begin Window MagDistWindow
       TextSize        =   12
       Top             =   78
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   2
    End
@@ -134,7 +134,7 @@ Begin Window MagDistWindow
       Caption         =   "Cancel"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -151,7 +151,7 @@ Begin Window MagDistWindow
       TextSize        =   12
       Top             =   78
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   3
    End
