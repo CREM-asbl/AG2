@@ -1,13 +1,13 @@
 #tag Window
 Begin Window Formswindow
-   BackColor       =   16777215
+   BackColor       =   &hFFFFFF
    Backdrop        =   0
    BalloonHelp     =   ""
    CloseButton     =   "True"
-   Composite       =   "True"
+   Composite       =   "False"
    Frame           =   3
    FullScreen      =   "False"
-   HasBackColor    =   "True"
+   HasBackColor    =   "False"
    Height          =   360
    ImplicitInstance=   "True"
    LiveResize      =   "False"
@@ -366,29 +366,20 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Close()
-		  dim i as integer
-		  if not app.quitting then
-		    if selection then
-		      for i = 0 to config.nlibf(fam)
-		        Config.libvisible(fam,i) = Bouton(i).bold
-		      next
-		    else
-		      for i = 0 to Config.nstdfam-1
-		        wnd.setico(i,0)
-		        wnd.stdoutil(i).refresh
-		      next i
-		    end if
-		  end if
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Open()
 		  Title = Dico.Value("Forms")
 		  Height = hauteur
 		  updateTextSize
 		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub MouseExit()
+		  if kit = 0 and wnd.drapico then
+		    wnd.setIco(fam,0)
+		    wnd.stdoutil(fam).refresh
+		  end if
 		End Sub
 	#tag EndEvent
 
@@ -431,6 +422,29 @@ End
 		  
 		  for i = 0 to 11
 		    Bouton(i).TextSize = Config.TextSize
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SelectionRefresh()
+		  dim i as integer
+		  
+		  Bouton(0).bold = Config.nlibvis(fam)
+		  Bouton(0).italic = not Config.nlibvis(fam)
+		  if Bouton(0).bold then
+		    Bouton(0).caption = Dico.Value("Retirer la famille complète")
+		  else
+		    Bouton(0).caption = Dico.Value("Activer la famille complète")
+		  end if
+		  
+		  for i=1 to config.nlibf(fam)+1
+		    Bouton(i).bold = Config.libvisible(fam,i-1)
+		    Bouton(i).italic = not Config.libvisible(fam,i-1)
+		    Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i-1))
+		    if Config.libvisible(fam,i-1) then
+		      Bouton(i).caption = Bouton(i).caption + " x"
+		    end if
 		  next
 		End Sub
 	#tag EndMethod
@@ -483,12 +497,12 @@ End
 
 #tag Events Bouton
 	#tag Event
-		Sub MouseEnter()
+		Sub MouseEnter(index as Integer)
 		  if selection then
 		    return
 		  end if
 		  wnd.selectedtool = fam
-		  if kit = 0 and wnd.drapico then
+		  if kit = 0 then
 		    wnd.setIco(fam,index)
 		    wnd.stdoutil(fam).refresh
 		  end if
@@ -496,14 +510,15 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if  selection then
-		    me.bold  = not me.bold
-		    me.italic = not me.bold
-		    me.caption = Dico.Value(config.Libfamilies(fam,index))
-		    if me.bold then
-		      me.caption = me.caption + " x"
+		    if index =0 then
+		      Config.ToggleFLib(fam)
+		    else
+		      Config.ToggleLibVisible(fam,index-1)
 		    end if
+		    SelectionRefresh
+		    wnd.LibBoxRefresh
 		  else
 		    dim Op As Operation
 		    Op = CurrentContent.CurrentOperation
@@ -534,7 +549,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  select case kit
 		  case 0
 		    if index < config.nstdf(fam) then
@@ -543,12 +558,22 @@ End
 		      me.visible = false
 		    end if
 		  case 1
-		    if selection = true and index < config.nlibf(fam)+1 then
-		      me.bold = Config.libvisible(fam,index)
-		      me.italic = not Config.libvisible(fam,index)
-		      me.caption = Dico.Value(config.Libfamilies(fam,index))
-		      if Config.libvisible(fam,index) then
-		        me.caption = me.caption + " x"
+		    if selection = true and index < config.nlibf(fam)+2 then
+		      if index = 0 then
+		        me.bold = Config.nlibvis(fam)
+		        me.italic = not Config.nlibvis(fam)
+		        if me.bold then
+		          me.caption = Dico.Value("Retirer la famille complète")
+		        else
+		          me.caption = Dico.Value("Activer la famille complète")
+		        end if
+		      else
+		        me.bold = Config.libvisible(fam,index-1)
+		        me.italic = not Config.libvisible(fam,index-1)
+		        me.caption = Dico.Value(config.Libfamilies(fam,index-1))
+		        if Config.libvisible(fam,index-1) then
+		          me.caption = me.caption + " x"
+		        end if
 		      end if
 		    elseif index < config.nlibf(fam)+1 and (Config.libvisible(fam,index) or (CurrentContent.thegrid <> nil and fam = 6)) then
 		      me.caption = Dico.Value(config.Libfamilies(fam,index))
@@ -565,14 +590,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Close()
-		  if selection and index <= config.nlibf(fam) then
-		    Config.libvisible(fam,index) = me.bold
-		  end if
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  if selection then
 		    return
 		  end if
@@ -583,12 +601,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseUp(X As Integer, Y As Integer) As Boolean
+		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent

@@ -2108,9 +2108,11 @@ End
 		  ReadNomsMouvBut
 		  ReadStTexts
 		  TradMenu
-		  MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = Config.PolPointes
-		  MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
-		  MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
+		  if MenuBar.Child("PrefsMenu") <> nil then 'correctif pour annuler dans InitWindow
+		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = Config.PolPointes
+		    MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
+		    MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
+		  end if
 		  
 		End Sub
 	#tag EndMethod

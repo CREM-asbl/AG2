@@ -255,6 +255,8 @@ End
 		      me.ListIndex = i
 		    end if
 		  next
+		  me.ListIndex = max(0,me.ListIndex)
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -360,8 +362,8 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  quit
-		  close
+		  Quit
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event

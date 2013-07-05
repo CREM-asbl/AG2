@@ -201,11 +201,38 @@ Begin Window ConfigWindow
       ControlOrder    =   6
       Enabled         =   True
       EraseBackground =   "True"
-      Height          =   35
+      Height          =   36
       HelpTag         =   ""
       Index           =   0
       InitialParent   =   ""
       Left            =   57
+      LockBottom      =   ""
+      LockLeft        =   ""
+      LockRight       =   ""
+      LockTop         =   ""
+      Scope           =   0
+      TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
+      Top             =   39
+      UseFocusRing    =   "True"
+      Visible         =   "True"
+      Width           =   36
+      BehaviorIndex   =   6
+   End
+   Begin Canvas Canvas1
+      AcceptFocus     =   "True"
+      AcceptTabs      =   ""
+      AutoDeactivate  =   "True"
+      Backdrop        =   1584048127
+      ControlOrder    =   7
+      Enabled         =   True
+      EraseBackground =   "True"
+      Height          =   36
+      HelpTag         =   ""
+      Index           =   1
+      InitialParent   =   ""
+      Left            =   117
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -224,42 +251,15 @@ Begin Window ConfigWindow
       AcceptFocus     =   "True"
       AcceptTabs      =   ""
       AutoDeactivate  =   "True"
-      Backdrop        =   1584048127
-      ControlOrder    =   7
-      Enabled         =   True
-      EraseBackground =   "True"
-      Height          =   35
-      HelpTag         =   ""
-      Index           =   1
-      InitialParent   =   ""
-      Left            =   107
-      LockBottom      =   ""
-      LockLeft        =   ""
-      LockRight       =   ""
-      LockTop         =   ""
-      Scope           =   0
-      TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
-      Top             =   39
-      UseFocusRing    =   "True"
-      Visible         =   True
-      Width           =   33
-      BehaviorIndex   =   6
-   End
-   Begin Canvas Canvas1
-      AcceptFocus     =   "True"
-      AcceptTabs      =   ""
-      AutoDeactivate  =   "True"
       Backdrop        =   8007679
       ControlOrder    =   8
       Enabled         =   True
       EraseBackground =   "True"
-      Height          =   35
+      Height          =   36
       HelpTag         =   ""
       Index           =   2
       InitialParent   =   ""
-      Left            =   157
+      Left            =   177
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -271,7 +271,7 @@ Begin Window ConfigWindow
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
-      Width           =   37
+      Width           =   36
       BehaviorIndex   =   6
    End
    Begin Canvas Canvas1
@@ -282,11 +282,11 @@ Begin Window ConfigWindow
       ControlOrder    =   9
       Enabled         =   True
       EraseBackground =   "True"
-      Height          =   35
+      Height          =   36
       HelpTag         =   ""
       Index           =   3
       InitialParent   =   ""
-      Left            =   207
+      Left            =   237
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -298,7 +298,7 @@ Begin Window ConfigWindow
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
-      Width           =   37
+      Width           =   36
       BehaviorIndex   =   6
    End
    Begin Canvas Canvas1
@@ -309,11 +309,11 @@ Begin Window ConfigWindow
       ControlOrder    =   10
       Enabled         =   True
       EraseBackground =   "True"
-      Height          =   35
+      Height          =   36
       HelpTag         =   ""
       Index           =   4
       InitialParent   =   ""
-      Left            =   259
+      Left            =   297
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -336,11 +336,11 @@ Begin Window ConfigWindow
       ControlOrder    =   11
       Enabled         =   True
       EraseBackground =   "True"
-      Height          =   35
+      Height          =   36
       HelpTag         =   ""
       Index           =   5
       InitialParent   =   ""
-      Left            =   305
+      Left            =   357
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -363,11 +363,11 @@ Begin Window ConfigWindow
       ControlOrder    =   12
       Enabled         =   True
       EraseBackground =   "True"
-      Height          =   35
+      Height          =   36
       HelpTag         =   ""
       Index           =   6
       InitialParent   =   ""
-      Left            =   357
+      Left            =   417
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -379,7 +379,7 @@ Begin Window ConfigWindow
       Top             =   39
       UseFocusRing    =   "True"
       Visible         =   True
-      Width           =   33
+      Width           =   36
       BehaviorIndex   =   6
    End
    Begin PushButton MouvBut
@@ -423,7 +423,7 @@ Begin Window ConfigWindow
       Index           =   1
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   150
+      Left            =   157
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -451,7 +451,7 @@ Begin Window ConfigWindow
       Index           =   2
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   251
+      Left            =   257
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -479,7 +479,7 @@ Begin Window ConfigWindow
       Index           =   3
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   353
+      Left            =   357
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -507,7 +507,7 @@ Begin Window ConfigWindow
       Index           =   4
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   458
+      Left            =   457
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -1235,8 +1235,6 @@ End
 		  psw=new PrefsSaveWindow
 		  psw.ShowModal
 		  
-		  close
-		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1299,6 +1297,9 @@ End
 	#tag Event
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
+		    Config.nlibvis(0) = not config.nlibvis(0)
+		    wnd.LibBoxRefresh
+		    me.Refresh
 		    return false
 		  end if
 		  
@@ -1309,6 +1310,17 @@ End
 		  
 		  
 		End Function
+	#tag EndEvent
+	#tag Event
+		Sub Paint(index as Integer, g As Graphics)
+		  if not Config.nlibvis(index) then
+		    me.Graphics.ForeColor = &c000000
+		    me.Graphics.DrawLine 0,0,me.width,me.height
+		    me.Graphics.DrawLine 0,me.height,me.width,0
+		  end if
+		  
+		  
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events MouvBut

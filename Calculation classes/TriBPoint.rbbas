@@ -17,7 +17,6 @@ Inherits nBpoint
 		  dim a1, a2, a as double
 		  dim Bib as BiBPoint
 		  
-		  
 		  c = tab(0)   //centre
 		  o = tab(1)  //origine
 		  e = tab(2)  //extremite
@@ -64,7 +63,6 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Sub TriBPoint(nBp as nBPoint)
-		  
 		  Tab = nBp.Tab
 		  ori = orientation
 		  
@@ -75,8 +73,8 @@ Inherits nBpoint
 		Function orientation() As integer
 		  dim u, v as BasicPoint
 		  
-		  u = tab(1)-tab(0)
-		  v = tab(2)-tab(1)
+		  u = tab(0)-tab(1)
+		  v = tab(2)-tab(0)
 		  return sign(u.vect(v))
 		End Function
 	#tag EndMethod

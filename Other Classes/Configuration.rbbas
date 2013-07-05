@@ -216,8 +216,8 @@ Protected Class Configuration
 		Sub SaveToFile()
 		  dim fi as FolderItem
 		  
-		  if Name <> "" then
-		    fi=GetFolderItem(Name+".men")
+		  if Menu <> "" then
+		    fi=app.MenusFolder.Child(Menu+".men")
 		    ToXML.SaveXML fi
 		  end if
 		  
@@ -264,13 +264,16 @@ Protected Class Configuration
 		  end if
 		  
 		  fi=GetFolderItem(Menu+".men")
+		  if not fi.exists then
+		    fi = app.MenusFolder.Child(Menu+".men")
+		  end if
+		  
 		  if not  fi.exists  then
 		    MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
 		    quit
 		  else
 		    C=new XMLDocument(fi)
 		    El = C.DocumentElement
-		    name = fi.name
 		  end if
 		  
 		  ChargerMenu(El)
@@ -336,7 +339,7 @@ Protected Class Configuration
 		  dim Doc as XMLDocument
 		  dim temp,EL, EL1, EL2,EL3, EL4 as XMLNode
 		  
-		  'todo : comparer avec SaveToFile
+		  'save pourAG_init
 		  
 		  //création du document XML
 		  
@@ -676,6 +679,42 @@ Protected Class Configuration
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ToggleLibVisible(fam as integer,shape as integer)
+		  Libvisible(fam,shape) = not Libvisible(fam,shape)
+		  UpdateNLibVis(fam)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateNLibVis(fam as integer)
+		  dim i as integer
+		  dim visible as Boolean
+		  
+		  visible = false
+		  
+		  for i=0 to nlibf(fam)
+		    visible = visible or Libvisible(fam,i)
+		  next
+		  
+		  nlibvis(fam) = visible
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ToggleFLib(fam as integer)
+		  dim i as integer
+		  
+		  nlibvis(fam) = not nlibvis(fam)
+		  
+		  for i=0 to nlibf(fam)
+		    Libvisible(fam,i) = nlibvis(fam)
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -701,10 +740,6 @@ Protected Class Configuration
 
 	#tag Property, Flags = &h0
 		MagneticDist As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Name As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
