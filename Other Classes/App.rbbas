@@ -133,12 +133,12 @@ Inherits Application
 		  
 		  CheckSystem
 		  
-		  CheckUpdate
-		  
 		  InitFolders
 		  
 		  Dico = new Dictionnaire
 		  Config = new Configuration
+		  
+		  CheckUpdate
 		  
 		  autoquit = true
 		  init
@@ -290,11 +290,11 @@ Inherits Application
 		    version = str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion)
 		    '@todo Geo : Prévoir les infos en plusieurs langues
 		    'todo : remplacer par un accès API
-		    list = upd.Post("www.crem.be/medias/logiciels/1/info.xml",10)
+		    list = upd.Post("www.crem.be/api/data/info.xml",10)
 		    if list <>"" then
 		      getNews(list)
 		    end if
-		    list = upd.Post("www.crem.be/medias/logiciels/1/Update.php?version="+version+"&os="+app.sys+"&stageCode="+str(app.StageCode),10)
+		    list = upd.Post("www.crem.be/api/AG.php?version="+version+"&os="+app.sys+"&stageCode="+str(app.StageCode),10)
 		    if list <> "" then
 		      GuW = new GetUpdateW(list)
 		      GuW.ShowModal
