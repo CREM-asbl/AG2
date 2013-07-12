@@ -285,6 +285,11 @@ Inherits Application
 		  dim upd As HTTPSocket
 		  dim version,list as string
 		  
+		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
+		  #if DebugBuild then
+		    return
+		  #endif
+		  
 		  if System.Network.IsConnected or TargetLinux then
 		    upd =New HTTPSocket
 		    version = str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion)
