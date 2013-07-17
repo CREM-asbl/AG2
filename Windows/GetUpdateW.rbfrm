@@ -220,7 +220,7 @@ End
 	#tag Method, Flags = &h0
 		Sub Update()
 		  dim f as FolderItem
-		  dim upd as HTTPSocket
+		  dim api as ApiConnexion
 		  
 		  
 		  #if TargetWin32
@@ -230,12 +230,9 @@ End
 		  #endif
 		  StaticText1.Text = "Ouverture de la mise à jour..."
 		  f.Launch
-		  Hide
-		  if System.Network.IsConnected or TargetLinux then
-		    upd =New HTTPSocket
-		    list = upd.Post("www.crem.be/api/AG.php?action=update&os="+app.sys,10)
-		  end if
-		  Close
+		  api = new ApiConnexion
+		  api.getupdate
+		  Quit
 		  
 		  
 		  
@@ -284,11 +281,11 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		updated As boolean
+		list As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		list As string
+		updated As boolean
 	#tag EndProperty
 
 

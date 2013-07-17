@@ -241,30 +241,6 @@ Inherits Application
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub getNews(list as string)
-		  dim date as Date
-		  dim info as String
-		  dim EL as XmlNode
-		  dim doc as XmlDocument
-		  dim validite, version as String
-		  
-		  try
-		    doc = new XmlDocument(DefineEncoding(list,Encodings.UTF8))
-		    EL = doc.FirstChild
-		    info = EL.FirstChild.FirstChild.Value
-		    validite  = EL.Child(1).FirstChild.value
-		    version = str(App.MajorVersion)+str(App.MinorVersion)+str(App.BugVersion)
-		    if version < validite and info<>Config.LastInfo  then
-		      msgBox EL.LastChild.FirstChild.Value
-		      Config.LastInfo = info
-		    end if
-		  catch err as XmlException
-		  end try
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub CheckSystem()
 		  #if TargetWin32 then
 		    sys = "win32"
@@ -281,33 +257,29 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
-		  dim GuW as GetUpdateW
-		  dim upd As HTTPSocket
-		  dim version,list as string
+		  dim api As ApiConnexion
 		  
 		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
-		  #if DebugBuild then
-		    return
-		  #endif
+		  '#if DebugBuild then
+		  'return
+		  '#endif
 		  
-		  if System.Network.IsConnected or TargetLinux then
-		    upd =New HTTPSocket
-		    version = str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion)
-		    '@todo Geo : Prévoir les infos en plusieurs langues
-		    'todo : remplacer par un accès API
-		    list = upd.Post("www.crem.be/api/data/info.xml",10)
-		    if list <>"" then
-		      getNews(list)
-		    end if
-		    list = upd.Post("www.crem.be/api/AG.php?version="+version+"&os="+app.sys+"&stageCode="+str(app.StageCode),10)
-		    if list <> "" then
-		      GuW = new GetUpdateW(list)
-		      GuW.ShowModal
-		      if GuW.updated then
-		        Quit                                      //Pourquoi quitter ? Pour pouvoir installer la nouvelle version, AG.exe doit être fermé car on ne peut remplacer un exécutable qui tourne
-		      end if
-		    end if
-		  end if
+		  api = new ApiConnexion
+		  api.checkInfo
+		  api.checkUpdate
+		  
+		  
+		  'if System.Network.IsConnected or TargetLinux then
+		  'upd =New HTTPSocket
+		  'version = str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion)
+		  ''@todo Geo : Prévoir les infos en plusieurs langues
+		  ''todo : remplacer par un accès API
+		  'list = upd.Post("www.crem.be/api/data/info.xml",10)
+		  'if list <>"" then
+		  'getNews(list)
+		  'end if
+		  'list = upd.Post("www.crem.be/api/AG.php?version="+version+"&os="+app.sys+"&stageCode="+str(app.StageCode),10)
+		  'end if
 		End Sub
 	#tag EndMethod
 
