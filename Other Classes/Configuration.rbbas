@@ -680,7 +680,7 @@ Protected Class Configuration
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ToggleLibVisible(fam as integer,shape as integer)
+		Sub ToggleLibVisible(fam as integer, shape as integer)
 		  Libvisible(fam,shape) = not Libvisible(fam,shape)
 		  UpdateNLibVis(fam)
 		  
