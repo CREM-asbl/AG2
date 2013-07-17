@@ -257,29 +257,16 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
-		  dim api As ApiConnexion
-		  
 		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
-		  '#if DebugBuild then
-		  'return
-		  '#endif
+		  #if DebugBuild then
+		    return
+		  #endif
 		  
-		  api = new ApiConnexion
+		  'fusionner checkInfo et CheckUpdate ? ainsi une seule connexion ?
+		  api.init
 		  api.checkInfo
 		  api.checkUpdate
 		  
-		  
-		  'if System.Network.IsConnected or TargetLinux then
-		  'upd =New HTTPSocket
-		  'version = str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion)
-		  ''@todo Geo : Prévoir les infos en plusieurs langues
-		  ''todo : remplacer par un accès API
-		  'list = upd.Post("www.crem.be/api/data/info.xml",10)
-		  'if list <>"" then
-		  'getNews(list)
-		  'end if
-		  'list = upd.Post("www.crem.be/api/AG.php?version="+version+"&os="+app.sys+"&stageCode="+str(app.StageCode),10)
-		  'end if
 		End Sub
 	#tag EndMethod
 

@@ -1,53 +1,5 @@
-#tag Class
-Protected Class ApiConnexion
-	#tag Method, Flags = &h0
-		Sub ApiConnexion()
-		  if System.Network.IsConnected or TargetLinux then
-		    http = New HTTPSocket
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub getUpdate()
-		  if http = Nil then
-		    return
-		  end if
-		  
-		  response = http.Post(url+"?action=update&os="+app.sys,timeout)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub checkUpdate()
-		  if http = Nil then
-		    return
-		  end if
-		  
-		  response = http.Post(url+"?version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
-		  
-		  if response<> "" then
-		    dim GuW As GetUpdateW
-		    GuW = new GetUpdateW(response)
-		    GuW.ShowModal
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub checkInfo()
-		  if http = Nil then
-		    return
-		  end if
-		  
-		  response = http.Post("www.crem.be/api/data/info.xml",timeout)
-		  
-		  if response <>"" then
-		    AfficherReponse
-		  end if
-		End Sub
-	#tag EndMethod
-
+#tag Module
+Protected Module api
 	#tag Method, Flags = &h0
 		Sub AfficherReponse()
 		  dim date as Date
@@ -72,20 +24,68 @@ Protected Class ApiConnexion
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub init()
+		  if System.Network.IsConnected or TargetLinux then
+		    http = New HTTPSocket
+		  end if
+		End Sub
+	#tag EndMethod
 
-	#tag Property, Flags = &h0
-		http As HTTPSocket
-	#tag EndProperty
+	#tag Method, Flags = &h0
+		Sub checkInfo()
+		  if http = Nil then
+		    return
+		  end if
+		  
+		  response = http.Post("www.crem.be/api/data/info.xml",timeout)
+		  
+		  if response <>"" then
+		    AfficherReponse
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub checkUpdate()
+		  if http = Nil then
+		    return
+		  end if
+		  
+		  response = http.Post(url+"?version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
+		  
+		  if response<> "" then
+		    dim GuW As GetUpdateW
+		    GuW = new GetUpdateW(response)
+		    GuW.ShowModal
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub getUpdate()
+		  if http = Nil then
+		    return
+		  end if
+		  
+		  response = http.Post(url+"?action=update&os="+app.sys,timeout)
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		response As string
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		http As HTTPSocket
+	#tag EndProperty
 
-	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://www.crem.be/api/AG.php", Scope = Public
-	#tag EndConstant
 
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://www.crem.be/api/AG.php", Scope = Public
 	#tag EndConstant
 
 
@@ -130,5 +130,5 @@ Protected Class ApiConnexion
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Module
+#tag EndModule

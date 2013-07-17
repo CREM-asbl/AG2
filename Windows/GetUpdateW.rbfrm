@@ -220,8 +220,6 @@ End
 	#tag Method, Flags = &h0
 		Sub Update()
 		  dim f as FolderItem
-		  dim api as ApiConnexion
-		  
 		  
 		  #if TargetWin32
 		    f = GetFolderItem("Updates").Child(newversion)
@@ -230,7 +228,6 @@ End
 		  #endif
 		  StaticText1.Text = "Ouverture de la mise à jour..."
 		  f.Launch
-		  api = new ApiConnexion
 		  api.getupdate
 		  Quit
 		  
