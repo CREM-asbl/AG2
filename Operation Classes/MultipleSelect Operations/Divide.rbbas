@@ -197,7 +197,7 @@ Inherits MultipleSelectOperation
 		    else
 		      Trib = new TribPoint(lacet(s).getcentre(loc),firstpoint.bpt,secondpoint.bpt)
 		    end if
-		  elseif S isa droite or s isa polygon then
+		  elseif S isa BiPoint or s isa polygon then
 		    Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
 		  elseif s isa circle then
 		    Trib = new TriBPoint(s.getgravitycenter, firstpoint.bpt, secondpoint.bpt)
@@ -208,12 +208,12 @@ Inherits MultipleSelectOperation
 		      if lacet(s).curved(loc) = 0 then
 		        p = Bib.subdiv(NumberofDivisions,i)
 		      else
-		        p = Trib.subdiv(s.ori, NumberofDivisions,i) 
+		        p = Trib.subdiv(s.ori, NumberofDivisions,i)
 		      end if
-		    elseif S isa droite or s isa polygon then
+		    elseif S isa BiPoint or s isa polygon then
 		      p = Bib.subdiv(NumberofDivisions,i)
 		    elseif s isa circle then
-		      p = Trib.subdiv(s.ori, NumberofDivisions,i) 
+		      p = Trib.subdiv(s.ori, NumberofDivisions,i)
 		    end if
 		    Q=new Point(Objects,p)
 		    Q.setconstructedby S, 4

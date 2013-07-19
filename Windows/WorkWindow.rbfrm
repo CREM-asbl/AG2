@@ -54,8 +54,6 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       tracept         =   0
       UseFocusRing    =   "False"
@@ -81,13 +79,39 @@ Begin Window WorkWindow
       LockTop         =   "True"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       TopLeftColor    =   0
       Visible         =   True
       Width           =   122
       BehaviorIndex   =   1
+      Begin PushButton PushButton1
+         AutoDeactivate  =   "False"
+         Bold            =   "True"
+         Cancel          =   ""
+         Caption         =   ""
+         ControlOrder    =   2
+         Default         =   ""
+         Enabled         =   True
+         Height          =   30
+         HelpTag         =   ""
+         Index           =   -2147483648
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   1
+         LockBottom      =   ""
+         LockLeft        =   ""
+         LockRight       =   ""
+         LockTop         =   ""
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   0
+         Underline       =   ""
+         Visible         =   True
+         Width           =   120
+         BehaviorIndex   =   2
+      End
       Begin PushButton MouvBut
          AutoDeactivate  =   "True"
          Bold            =   "True"
@@ -114,7 +138,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   120
-         BehaviorIndex   =   2
+         BehaviorIndex   =   3
       End
       Begin GroupBox MoveBox
          AutoDeactivate  =   "True"
@@ -140,7 +164,35 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   3
+         BehaviorIndex   =   4
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Glisser"
+            ControlOrder    =   5
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   7
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   84
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   3
+         End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
             Bold            =   "True"
@@ -167,7 +219,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -195,35 +247,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
-         End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   "True"
-            Bold            =   "True"
-            Cancel          =   ""
-            Caption         =   "Glisser"
-            ControlOrder    =   5
-            Default         =   ""
-            Enabled         =   True
-            Height          =   30
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "MoveBox"
-            Italic          =   ""
-            Left            =   7
-            LockBottom      =   ""
-            LockLeft        =   ""
-            LockRight       =   ""
-            LockTop         =   ""
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   84
-            Underline       =   ""
-            Visible         =   True
-            Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -251,7 +275,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
       End
       Begin GroupBox StdBox
@@ -278,34 +302,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   4
-         Begin Canvas StdOutil
-            AcceptFocus     =   "False"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   0
-            ControlOrder    =   11
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "StdBox"
-            Left            =   62
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   239
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   5
-         End
+         BehaviorIndex   =   5
          Begin Canvas StdOutil
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
@@ -325,13 +322,36 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   239
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
+         End
+         Begin Canvas StdOutil
+            AcceptFocus     =   "False"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
+            Backdrop        =   0
+            ControlOrder    =   11
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "StdBox"
+            Left            =   62
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   239
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   6
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
@@ -352,13 +372,11 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   291
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
          End
          Begin Canvas StdOutil
             AcceptFocus     =   ""
@@ -379,42 +397,12 @@ Begin Window WorkWindow
             LockTop         =   ""
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   291
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
          End
-      End
-      Begin PushButton PushButton1
-         AutoDeactivate  =   "False"
-         Bold            =   "True"
-         Cancel          =   ""
-         Caption         =   ""
-         ControlOrder    =   2
-         Default         =   ""
-         Enabled         =   True
-         Height          =   30
-         HelpTag         =   ""
-         Index           =   -2147483648
-         InitialParent   =   "Tools"
-         Italic          =   ""
-         Left            =   1
-         LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
-         Scope           =   0
-         TabPanelIndex   =   0
-         TextFont        =   "System"
-         TextSize        =   0
-         Top             =   0
-         Underline       =   ""
-         Visible         =   True
-         Width           =   120
-         BehaviorIndex   =   6
       End
       Begin GroupBox LibBox
          AutoDeactivate  =   "True"
@@ -460,8 +448,31 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
+            Top             =   378
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
+            Backdrop        =   1584048127
+            ControlOrder    =   16
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "LibBox"
+            Left            =   62
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
             Top             =   378
             UseFocusRing    =   "True"
             Visible         =   True
@@ -487,36 +498,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   430
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   1584048127
-            ControlOrder    =   16
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "LibBox"
-            Left            =   62
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   378
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -541,9 +523,32 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   430
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
+            Backdrop        =   115009535
+            ControlOrder    =   19
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   4
+            InitialParent   =   "LibBox"
+            Left            =   7
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   482
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -568,8 +573,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   482
             UseFocusRing    =   "True"
             Visible         =   True
@@ -595,36 +598,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   534
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   115009535
-            ControlOrder    =   19
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   4
-            InitialParent   =   "LibBox"
-            Left            =   7
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   482
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -1268,7 +1242,7 @@ End
 			MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
 			EraseMenuBar
 			CopyMenuBar
-			wnd.mac = new macro
+			mac = new macro
 			newcontent
 			return true
 			
@@ -1331,9 +1305,16 @@ End
 #tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
 			closefw
-			
 			app.macrocreation = false
-			self.close
+			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
+			MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
+			MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
+			EraseMenuBar
+			CopyMenuBar
+			mac = nil
+			CloseMacro
+			NewContent
+			wnd.mycanvas1.refreshbackground
 			return true
 		End Function
 #tag EndMenuHandler
@@ -2356,9 +2337,10 @@ End
 		Sub CloseMacro()
 		  dim i as integer
 		  
-		  
 		  app.macrocreation = false
+		  'if currentcontent.currentoperation <> nil then
 		  currentcontent.currentoperation = nil
+		  'end if
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = true
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=true
 		  MenuBar.Child("FileMenu").Child("FileSave").visible = true
@@ -2612,6 +2594,11 @@ End
 		
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
+	#tag EndNote
+
+	#tag Note, Name = Sans_titre
+		
+		
 	#tag EndNote
 
 

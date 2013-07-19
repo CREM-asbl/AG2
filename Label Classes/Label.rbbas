@@ -179,7 +179,7 @@ Protected Class Label
 		    position = shape.points(1).bpt
 		  elseif shape isa arc and loc <> -1 then
 		    TriB = new TribPoint(arc(shape).getgravitycenter,arc(shape).startp, arc(shape).endp)
-		    position = Trib.Subdiv(arc(shape).ori,2,1)  
+		    position = Trib.Subdiv(arc(shape).ori,2,1)
 		  end if
 		  
 		  if shape isa repere or fixe then
@@ -332,10 +332,10 @@ Protected Class Label
 		      a = droite(shape).firstp.distance(droite(shape).secondp)
 		      eti = left(str(Tronquer(a,1)),4)
 		    elseif shape isa polygon and loc = -1 then
-		      a = polygon(shape).aire
+		      a = polygon(shape).aire/currentcontent.UA
 		      eti = left(str(Tronquer(a,1)),4)
 		    elseif shape isa polygon and loc <> -1 then
-		      a =shape.points(loc).bpt.distance(shape.points((loc+1) mod shape.npts).bpt)
+		      a =shape.points(loc).bpt.distance(shape.points((loc+1) mod shape.npts).bpt)/currentcontent.UL
 		      eti =left(str(Tronquer(a,1)),4)
 		    elseif shape isa arc then
 		      a = arc(shape).arcangle*180/PI
