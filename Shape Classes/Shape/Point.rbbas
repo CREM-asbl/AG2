@@ -810,11 +810,12 @@ Inherits Shape
 		  
 		  Form = XMLPutIdInContainer(Doc)
 		  
-		  if fig <> nil then
-		    Form.SetAttribute("FigId",str(fig.idfig))
+		  if not app.macrocreation then
+		    if fig <> nil then
+		      Form.SetAttribute("FigId",str(fig.idfig))
+		    end if
+		    Form.AppendChild XMLPutCoordInContainer(Doc)
 		  end if
-		  
-		  Form.AppendChild XMLPutCoordInContainer(Doc)
 		  
 		  if labs.count = 1 then
 		    form.appendchild labs.element(0).toXML(Doc)
@@ -2475,6 +2476,7 @@ Inherits Shape
 		      BiB = new BiBPoint(a,b)
 		      bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
 		    end if
+		    moveto bp
 		  end select
 		End Sub
 	#tag EndMethod

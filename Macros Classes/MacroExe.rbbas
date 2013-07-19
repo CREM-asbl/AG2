@@ -66,12 +66,13 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, j, k, n, index, type,oper, fa, fo as integer
-		  dim EL, EL0 as XMLElement
+		  dim i, j, k, n, m, index, type,oper, fa, fo as integer
+		  dim EL, EL0, EL1, EL2 as XMLElement
 		  dim codesoper() as integer
 		  dim ifmac As InfoMac
 		  dim s, newshape as shape
 		  dim bp() as BasicPoint
+		  dim pt as Point
 		  
 		  
 		  codesoper = Array(0,1,14,16,19,28,35,37,39,17,24,25,26,27,45)  //codes des opérations
@@ -94,6 +95,19 @@ Inherits MultipleSelectOperation
 		            newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		            newshape.SetMacConstructedBy MacInfo
 		            newshape.initconstruction
+		            if oper = 0 then
+		              EL1 = XMLElement(EL0.Child(0))
+		              for j = 0 to newshape.npts-1
+		                EL2 = XMLElement(EL1.Child(j))
+		                m = val(EL2.GetAttribute("Id"))
+		                m = Mac.ObInit.indexof(m)
+		                if m <> -1 then
+		                  m = MacInfo.RealInit(m)
+		                  pt = Point(Objects.GetShape(m))
+		                  newshape.substitutepoint(pt,newshape.points(j))
+		                end if
+		              next
+		            end if
 		            currentcontent.addshape newshape
 		            MacInfo.RealFinal.append newshape.id
 		          end if
@@ -106,7 +120,6 @@ Inherits MultipleSelectOperation
 		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
 		    n = MacInfo.RealFinal(i)
 		    s = objects.GetShape(n)
-		    'IdentifyPoints (s, i)
 		    if s isa point then
 		      s.createskull(point(s).bpt)
 		      point(s).mobility
