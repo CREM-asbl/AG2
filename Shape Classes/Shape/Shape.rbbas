@@ -739,8 +739,8 @@ Implements StringProvider
 		  if fam <> 0 then
 		    Form.SetAttribute(Dico.value("Npts"),Str(Npts))
 		    Form.SetAttribute(Dico.value("Ncpts"),Str(Ncpts))
-		  end if
-		  if not self isa point then
+		    'end if
+		    'if not self isa point then
 		    Form.SetAttribute("Ori", str(ori))
 		  end if
 		  if nonpointed then
@@ -763,7 +763,6 @@ Implements StringProvider
 		      Form.setattribute("Standard", str(0))
 		    end if
 		  end if
-		  
 		  
 		  return Form
 		End Function
@@ -3163,7 +3162,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics, c as couleur)
-		  if not noinvalidpoints then
+		  if noinvalidpoints then
 		    sk.updatebordercolor (c.col,100)
 		    sk.paint(g)
 		  end if
@@ -3661,8 +3660,9 @@ Implements StringProvider
 		  for i = 0 to ubound(MacConstructedShapes)
 		    s1 = MacConstructedShapes(i)
 		    MacInfo = s1.MacConstructedby
+		    Mac = MacInfo.Mac
 		    k =  MacInfo.RealInit.IndexOf(id)
-		    MacId = MacInfo.Mac.ObInit(k)
+		    MacId = Mac.ObInit(k)
 		    IfMac = MacInfo.GetInfoMac(MacId)
 		    if self isa point then
 		      Ifmac.coord.tab(0) = point(self).bpt
@@ -3671,7 +3671,6 @@ Implements StringProvider
 		        Ifmac.coord.Tab(k) = points(k).bpt          ' Mettre à jour les formes initiales
 		      next
 		    end if
-		    Mac = MacInfo.Mac
 		    Mac.Macexe(MacInfo)
 		    s1.Modified = true
 		    for j = 0 to ubound(s1.childs)
@@ -3822,9 +3821,13 @@ Implements StringProvider
 		  
 		  t = true
 		  
-		  for i = 0 to npts-1
-		    t = t and (points(i).bpt <> nil)
-		  next
+		  if not self isa point then
+		    for i = 0 to npts-1
+		      t = t and not points(i).invalid
+		    next
+		  else
+		    t = not invalid
+		  end if
 		  return t
 		End Function
 	#tag EndMethod

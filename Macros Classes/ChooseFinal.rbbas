@@ -109,9 +109,8 @@ Inherits MultipleSelectOperation
 		    else
 		      AddInterm(s)
 		      for i = 0 to s.npts-1
-		        AddInit(s.points(i))
 		        'if s.id > s.points(i).id then
-		        'identifyinit(s.points(i))
+		        identifyinit(s.points(i))
 		        'end if
 		      next
 		    end if

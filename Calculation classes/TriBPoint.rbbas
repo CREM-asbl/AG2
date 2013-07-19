@@ -73,7 +73,7 @@ Inherits nBpoint
 		Function orientation() As integer
 		  dim u, v as BasicPoint
 		  
-		  u = tab(0)-tab(1)
+		  u = tab(1)-tab(0)
 		  v = tab(2)-tab(0)
 		  return sign(u.vect(v))
 		End Function

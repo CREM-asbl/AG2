@@ -216,7 +216,7 @@ Inherits MultipleSelectOperation
 		    CurrentContent.TheTransfos.HideAll
 		    if ListTsf.count >0 then
 		      ListTsf.element(itsf).Hidden = false
-		    end if    
+		    end if
 		    Wnd.mycanvas1.refreshbackground
 		  case 2
 		    super.MouseWheel

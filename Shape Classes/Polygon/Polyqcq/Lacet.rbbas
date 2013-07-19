@@ -820,7 +820,7 @@ Inherits Polyqcq
 		  b = coord.tab((i+1)mod npts)
 		  
 		  if curved(i) = 0 then
-		    Bib = new BibPoint(a,b) 
+		    Bib = new BibPoint(a,b)
 		    m = BiB.Subdiv(2,1)
 		    e = (b-a)*0.1
 		    a = m-e

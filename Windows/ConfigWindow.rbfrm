@@ -214,7 +214,7 @@ Begin Window ConfigWindow
       TabPanelIndex   =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End

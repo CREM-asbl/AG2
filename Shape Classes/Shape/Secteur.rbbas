@@ -363,7 +363,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  if abs (PI-amplitude(points(1).bpt,points(0).bpt,points(2).bpt)) < epsilon then
+		  if   abs(arcangle)  >  0.2 then
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
 		  if not drapori then

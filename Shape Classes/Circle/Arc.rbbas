@@ -36,11 +36,7 @@ Inherits Circle
 		    computeradius
 		    startangle = GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
-		    computeori
 		    Points(2).Moveto p.projection(points(0).bpt, radius)
-		    if  PIDEMI < amplitude(points(1).bpt,points(0).bpt,points(2).bpt) then
-		      drapori = true  //on ne peut plus changer l'orientation
-		    end if
 		    updateangles
 		    CreateExtreAndCtrlPoints
 		  end select
@@ -54,6 +50,13 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
 		  
+		  if  abs(arcangle)  >  0.2 then
+		    drapori = true  //on ne peut plus changer l'orientation
+		  end if
+		  if not drapori then
+		    ori = points(0).bpt.orientation(points(1).bpt,points(2).bpt)
+		  end if
+		  
 		  arcangle = computeangle(points(2).bpt)
 		  
 		  'arcangle a toujours meme signe que l'orientation
@@ -63,6 +66,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function computeangle(q as Basicpoint) As double
 		  dim e, a as double
+		  
 		  e = GetAngle(points(0).bpt,q)
 		  a = e - startangle
 		  
