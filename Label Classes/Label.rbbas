@@ -332,10 +332,10 @@ Protected Class Label
 		      a = droite(shape).firstp.distance(droite(shape).secondp)
 		      eti = left(str(Tronquer(a,1)),4)
 		    elseif shape isa polygon and loc = -1 then
-		      a = polygon(shape).aire/currentcontent.UA
+		      a = arrondi2(polygon(shape).aire/currentcontent.UA)
 		      eti = left(str(Tronquer(a,1)),4)
 		    elseif shape isa polygon and loc <> -1 then
-		      a =shape.points(loc).bpt.distance(shape.points((loc+1) mod shape.npts).bpt)/currentcontent.UL
+		      a =arrondi2(shape.points(loc).bpt.distance(shape.points((loc+1) mod shape.npts).bpt)/currentcontent.UL)
 		      eti =left(str(Tronquer(a,1)),4)
 		    elseif shape isa arc then
 		      a = arc(shape).arcangle*180/PI
