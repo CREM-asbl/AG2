@@ -241,7 +241,7 @@ Implements StringProvider
 		  CreerMatricePrecedences(count)
 		  
 		  if not Mat.Null and  Bouclesasupprimer (n0) then
-		    fusionner (M1, n0)
+		    fusionner (n0)
 		    return ordonner
 		  else
 		    CreerIndex
@@ -793,7 +793,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub fusionner(M1 as MatrixnD, n as integer)
+		Sub fusionner( n as integer)
 		  dim i, j, nc as integer
 		  dim ff as new figslist
 		  dim f as figure
@@ -802,22 +802,24 @@ Implements StringProvider
 		  nc = M1.nc
 		  
 		  for i = 0 to nc-1
-		    if M1.col (i,i) = 1 then
+		    if M1.col (i,i) > 0 then
 		      ff.addfigure element(i)
 		      index.append i
 		    end if
 		  next
 		  
-		  f = ff.concat
-		  f.ListerPrecedences
-		  
-		  for j = ubound(index) downto 0
-		    CurrentContent.TheFigs.removefigure element(index(j))
-		    removefigure element(index(j))
-		  next
-		  
-		  addfigure f
-		  CurrentContent.TheFigs.addfigure f
+		  if ff.count > 0 then
+		    f = ff.concat
+		    f.ListerPrecedences
+		    
+		    for j = ubound(index) downto 0
+		      CurrentContent.TheFigs.removefigure element(index(j))
+		      removefigure element(index(j))
+		    next
+		    
+		    addfigure f
+		    CurrentContent.TheFigs.addfigure f
+		  end if
 		  
 		  
 		End Sub

@@ -395,6 +395,15 @@ Inherits Quadri
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Trap(ol as objectslist, fp as point, sp as point, qp as point, tp as point)
+		  
+		  Polygon(ol, fp , sp , qp , tp)
+		  forme = 1 
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
