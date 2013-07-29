@@ -84,34 +84,6 @@ Begin Window WorkWindow
       Visible         =   True
       Width           =   122
       BehaviorIndex   =   1
-      Begin PushButton PushButton1
-         AutoDeactivate  =   "False"
-         Bold            =   "True"
-         Cancel          =   ""
-         Caption         =   ""
-         ControlOrder    =   2
-         Default         =   ""
-         Enabled         =   True
-         Height          =   30
-         HelpTag         =   ""
-         Index           =   -2147483648
-         InitialParent   =   "Tools"
-         Italic          =   ""
-         Left            =   1
-         LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
-         Scope           =   0
-         TabPanelIndex   =   0
-         TextFont        =   "System"
-         TextSize        =   0
-         Top             =   0
-         Underline       =   ""
-         Visible         =   True
-         Width           =   120
-         BehaviorIndex   =   2
-      End
       Begin PushButton MouvBut
          AutoDeactivate  =   "True"
          Bold            =   "True"
@@ -138,7 +110,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   120
-         BehaviorIndex   =   3
+         BehaviorIndex   =   2
       End
       Begin GroupBox MoveBox
          AutoDeactivate  =   "True"
@@ -164,7 +136,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   4
+         BehaviorIndex   =   3
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
             Bold            =   "True"
@@ -191,7 +163,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   2
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -219,7 +191,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   2
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -247,7 +219,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   2
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -275,7 +247,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   2
          End
       End
       Begin PushButton PushButton1
@@ -304,7 +276,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   120
-         BehaviorIndex   =   6
+         BehaviorIndex   =   4
       End
       Begin GroupBox StdBox
          AutoDeactivate  =   "True"
@@ -487,12 +459,37 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   1584048127
-            ControlOrder    =   16
+            ControlOrder    =   17
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
             Index           =   1
+            InitialParent   =   "LibBox"
+            Left            =   64
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   378
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
+            Backdrop        =   8007679
+            ControlOrder    =   16
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   2
             InitialParent   =   "LibBox"
             Left            =   8
             LockBottom      =   "False"
@@ -552,31 +549,6 @@ Begin Window WorkWindow
             Scope           =   0
             TabPanelIndex   =   0
             Top             =   534
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   1584048127
-            ControlOrder    =   16
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "LibBox"
-            Left            =   64
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            Top             =   378
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -2634,8 +2606,6 @@ End
 	#tag EndNote
 
 	#tag Note, Name = Sans_titre
-		
-		
 	#tag EndNote
 
 
