@@ -66,7 +66,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, j, k, n, m, index, type,oper, fa, fo as integer
+		  dim i, j, k, n, m, index, p, type,oper, fa, fo as integer
 		  dim EL, EL0, EL1, EL2 as XMLElement
 		  dim codesoper() as integer
 		  dim ifmac As InfoMac
@@ -97,13 +97,17 @@ Inherits MultipleSelectOperation
 		            newshape.initconstruction
 		            if oper = 0 then
 		              EL1 = XMLElement(EL0.Child(0))
-		              for j = 0 to newshape.npts-1
+		              for j = 0 to newshape.ncpts-1
 		                EL2 = XMLElement(EL1.Child(j))
 		                m = val(EL2.GetAttribute("Id"))
-		                m = Mac.ObInit.indexof(m)
-		                if m <> -1 then
-		                  m = MacInfo.RealInit(m)
-		                  pt = Point(Objects.GetShape(m))
+		                p = -1
+		                index = -1
+		                Mac.GetInfoSommet(m, p, index) 
+		                if p <> -1 then
+		                  p = Mac.Obinit.indexof(p)
+		                  p = MacInfo.RealInit(p)
+		                  s = currentcontent.TheObjects.GetShape(p)
+		                  pt = s.points(index)
 		                  newshape.substitutepoint(pt,newshape.points(j))
 		                end if
 		              next

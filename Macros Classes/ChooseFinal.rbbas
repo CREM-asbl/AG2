@@ -104,11 +104,11 @@ Inherits MultipleSelectOperation
 		    for i =0 to s.ncpts-1
 		      t = t and s.id < s.points(i).id
 		    next
-		    if t and (s isa polyqcq or ( (s.fam = 2 or s.fam = 3) and (s.forme = 0) ) ) then  's a été créé avant ses sommets et est un polyqcq
+		    if t and (s isa droite or s isa polyqcq or ( (s.fam = 2 or s.fam = 3) and (s.forme = 0) ) ) then  's a été créé avant ses sommets et est un polyqcq ou une droite (segment)
 		      AddInit(s)
 		    else
 		      AddInterm(s)
-		      for i = 0 to s.npts-1
+		      for i = 0 to s.ncpts-1
 		        'if s.id > s.points(i).id then
 		        identifyinit(s.points(i))
 		        'end if
