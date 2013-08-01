@@ -4,6 +4,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub paint(g As Graphics)
 		  dim op as operation
+		  dim pt as point
 		  
 		  if bpt = nil then
 		    return
@@ -57,7 +58,15 @@ Inherits Shape
 		    end if
 		  end if
 		  
+		  if tracept and currentcontent.theobjects.creertrace then
+		    pt=new point(currentcontent.theobjects,bpt)
+		    pt.EndConstruction
+		  end if
 		  
+		  if tracept and (modified or currentcontent.currentoperation isa appliquertsf)  then
+		    paint(wnd.MyCanvas1.OffscreenPicture.Graphics,blue)
+		    currentcontent.theobjects.tracept = true
+		  end if
 		  
 		  if  (not hidden) and  Labs.count = 1 and (not invalid) and (not deleted) and (g <> wnd.mycanvas1.OffscreenPicture.graphics) then
 		    Labs.element(0).Paint(g)

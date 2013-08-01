@@ -211,6 +211,15 @@ Inherits Operation
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Paint(g as graphics)
+		  if curoper isa lier or curoper isa delier then
+		    curoper.paint(g)
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
