@@ -540,8 +540,8 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub GetInfoSommet(mid as integer, byref pid as integer, byref index as integer)
 		  dim i, j, n as integer
-		  dim EL, EL0, EL1, EL2 as XMLElement
-		  
+		  dim EL, EL0, EL1, EL2 as XMLElement  // On va chercher l'objet auquel un point  de macroid mid appartient comme sommet
+		                                                                    //pid est la macroid du père et j est le numéro du sommet en tant que tel
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.Child(i))
 		    if EL.Name =  Dico.Value("Operation") then

@@ -20,7 +20,7 @@ Protected Class MacConstructionInfo
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInfoTsf(n as integer) As infomac
+		Function GetInfoTsf(n as integer) As InfoMac
 		  dim i as integer
 		  
 		  for i = 0 to ubound (IfMacs)
@@ -47,6 +47,10 @@ Protected Class MacConstructionInfo
 
 	#tag Property, Flags = &h0
 		RealFinal() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealSide() As Integer
 	#tag EndProperty
 
 
