@@ -38,6 +38,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
 		  MacInfo.RealInit.append s.id
+		  MacInfo.RealSide.append side
 		  s.init = true
 		  return true
 		End Function
@@ -46,15 +47,21 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim obj as string
-		  
-		  super.paint(g)
+		  dim cot as integer
 		  
 		  if currenthighlightedshape <> nil then
-		    obj = lowercase(currenthighlightedshape.gettype)
-		    if obj = "arc" then
-		      display = cet + " " + obj + " ?"
+		    if side <> -1 then
+		      currenthighlightedshape.paintside(g, side, 2, config.highlightcolor)
+		      currenthighlightedshape = nil
+		      display = thissegment
 		    else
-		      display = ce + " " + obj + " ?"
+		      super.paint(g)
+		      obj = lowercase(currenthighlightedshape.gettype)
+		      if obj = "arc" then
+		        display = cet + " " + obj + " ?"
+		      else
+		        display = ce + " " + obj + " ?"
+		      end if
 		    end if
 		  else
 		    display = choose + un + " " +lowercase(identifier(fa, fo))
@@ -66,7 +73,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, j, k, n, m, index, p, type,oper, fa, fo as integer
+		  dim i, j, k, n, m, index, p, type,oper, fa, fo, side as integer
 		  dim EL, EL0, EL1, EL2 as XMLElement
 		  dim codesoper() as integer
 		  dim ifmac As InfoMac
@@ -102,12 +109,15 @@ Inherits MultipleSelectOperation
 		                m = val(EL2.GetAttribute("Id"))
 		                p = -1
 		                index = -1
-		                Mac.GetInfoSommet(m, p, index) 
+		                Mac.GetInfoSommet(m, p, index)
 		                if p <> -1 then
 		                  p = Mac.Obinit.indexof(p)
+		                  side = MacInfo.RealSide(p)
 		                  p = MacInfo.RealInit(p)
 		                  s = currentcontent.TheObjects.GetShape(p)
-		                  pt = s.points(index)
+		                  if side <> -1 then
+		                    pt = s.points((index+side) mod s.npts)
+		                  end if
 		                  newshape.substitutepoint(pt,newshape.points(j))
 		                end if
 		              next
@@ -172,10 +182,10 @@ Inherits MultipleSelectOperation
 		    b = (sh.fam <> fa)
 		    
 		    select case fa   //une macro valable pour (par ex) un Triangle doit pouvoir être appliquée à un triangiso ou un triangrect ou...
-		    case 1
+		    case 1               //une macro valable pour un segment  (fa = 1, fo < 3) doit pouvoir être appliquée à un côté de polygone
 		      select case fo
 		      case 0
-		        b = b or (sh.forme  > 2)
+		        b = not sh.validsegment(p, side)   ' b or (sh.forme  > 2)
 		      case 3
 		        b = b or ((sh.forme <3) or (sh.forme > 5))
 		      case 6,7,8
@@ -223,6 +233,7 @@ Inherits MultipleSelectOperation
 		  nobj = visible.count
 		  
 		  if nobj > 0 then
+		    side = visible.element(iobj).pointonside(p)
 		    return visible.element(iobj)
 		  else
 		    return nil
@@ -261,6 +272,10 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		fo As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
 	#tag EndProperty
 
 
