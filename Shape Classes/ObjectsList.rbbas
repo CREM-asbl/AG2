@@ -166,7 +166,7 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetShapeIn(s as Shape, id as Integer) As Shape
+		Function GetShapeIn(s as Shape, id as Integer) As shape
 		  
 		  dim i as Integer
 		  dim temp as Shape
@@ -1223,6 +1223,21 @@ Protected Class ObjectsList
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Paint(g as graphics)
+		  dim i as integer
+		  dim o as shape
+		  
+		  tracept = false
+		  for i=0 to count-1
+		    o = GetPlan(i)
+		    if o <> nil then
+		      o.PaintAll(g)
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -1268,6 +1283,14 @@ Protected Class ObjectsList
 
 	#tag Property, Flags = &h0
 		drapplan As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		CreerTrace As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		tracept As Boolean
 	#tag EndProperty
 
 

@@ -221,7 +221,7 @@ Inherits SelectAndDragOperation
 		  dim Magnetism as integer
 		  dim i as integer
 		  
-		  wnd.mycanvas1.tracept = false
+		  CurrentContent.TheObjects.tracept = false
 		  wnd.mycanvas1.ClearOffscreen
 		  super.MouseDown(p)
 		  

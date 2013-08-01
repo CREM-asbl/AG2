@@ -116,6 +116,7 @@ Inherits Canvas
 	#tag Event
 		Sub Open()
 		  Readdblclicktime
+		  resize
 		  zone = new ovalshape
 		  zone.width = 2*config.magneticdist
 		  zone.height= zone.width
@@ -330,11 +331,16 @@ Inherits Canvas
 	#tag Method, Flags = &h0
 		Sub Resize()
 		  Background=NewPicture(width,height,Screen(0).Depth)
-		  Background.graphics.ForeColor= Bkcol
-		  Background.graphics.FillRect(0,0,width,height)
-		  Background.graphics.forecolor = Config.bordercolor.col
-		  OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
-		  OffscreenPicture.Transparent = 1
+		  'Background.graphics.ForeColor= Bkcol
+		  'Background.graphics.FillRect(0,0,width,height)
+		  'Background.graphics.forecolor = Config.bordercolor.col
+		  'Background.graphics.TextSize = Config.TextSize
+		  'Background.graphics.Bold = true
+		  
+		  if currentcontent <> nil and not currentcontent.theobjects.tracept then
+		    OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
+		    OffscreenPicture.Transparent = 1
+		  end if
 		  bkcol = Config.Fillcolor.col
 		  calculcoins
 		  
@@ -369,42 +375,14 @@ Inherits Canvas
 		    CurrentContent.TheGrid.Paint(Background.Graphics)
 		  end if
 		  
-		  'if rep <> nil then
-		  'rep.paintall(Background.Graphics)
-		  'end if
-		  
-		  tracept =false
 		  op = CurrentContent.currentoperation
 		  
+		  CurrentContent.TheObjects.paint(Background.Graphics)
 		  
-		  for i=0 to CurrentContent.TheObjects.count-1
-		    o = CurrentContent.TheObjects.GetPlan(i)
-		    if o <> nil then
-		      'if not o isa repere then
-		      o.PaintAll(Background.Graphics)
-		      'end if
-		      
-		      if o isa point and o.tracept and creertrace then
-		        pt=new point(currentcontent.theobjects, point(o).bpt)
-		        pt.EndConstruction
-		      end if
-		      if o.tracept and (o.modified or op isa appliquertsf)  then
-		        o.paint(offscreenpicture.graphics)
-		        tracept = true
-		      end if
-		      for j = 0 to ubound(o.childs)
-		        if o.childs(j).tracept and (o.childs(j).modified or op isa appliquertsf)  then
-		          o.childs(j).paint(OffscreenPicture.Graphics)
-		          tracept = true
-		        end if
-		      next
-		    end if
-		  next
-		  
-		  if op <> nil and not op  isa readhisto then
+		  if op <> nil  then
 		    op.Paint(Background.Graphics)
-		  elseif op isa readhisto and (readhisto(op).curoper isa lier or readhisto(op).curoper isa delier ) then
-		    readhisto(op).curoper.paint(background.graphics)
+		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
+		    CurrentContent.curoper.paint(Background.graphics)
 		  elseif currentcontent.curoper = nil then
 		    if sctxt <> nil then
 		      sctxt.paint(Background.graphics)
@@ -413,16 +391,8 @@ Inherits Canvas
 		      Background.graphics.drawstring info, MouseCan.x, MouseCan.y
 		    end if
 		  end if
-		  if  CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
-		    CurrentContent.curoper.paint(Background.graphics)
-		  end if
 		  
-		  'if  op <> nil and (op isa modifier or op isa appliquertsf or currentcontent.curoper isa modifier or op isa SaveBitMap) then
 		  Background.graphics.DrawPicture OffscreenPicture, 0, 0
-		  'else
-		  'ClearOffscreen
-		  'end if
-		  
 		  me.Graphics.drawpicture Background,0,0
 		  
 		  
@@ -805,10 +775,6 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		tracept As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		lastclickticks As Integer
 	#tag EndProperty
 
@@ -857,10 +823,6 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		CreerTrace As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		tit As string
 	#tag EndProperty
 
@@ -895,10 +857,6 @@ Inherits Canvas
 	#tag Property, Flags = &h0
 		FondsEcran As Picture
 	#tag EndProperty
-
-
-	#tag Constant, Name = Sans_titre, Type = , Dynamic = False, Default = \"", Scope = Public
-	#tag EndConstant
 
 
 	#tag ViewBehavior

@@ -514,6 +514,11 @@ Implements StringProvider
 		    end if
 		  end if
 		  
+		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
+		    paint(wnd.Mycanvas1.offscreenpicture.graphics)
+		    currentcontent.theobjects.tracept = true
+		  end if
+		  
 		  if not nonpointed then
 		    for i=0 to Ubound(childs)
 		      childs(i).Paint(g)
@@ -3844,6 +3849,23 @@ Implements StringProvider
 		  Ti.scale = sc
 		  g.DrawObject Ti, b.x, b.y
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ValidSegment(p as BasicPoint, byref side as integer) As Boolean
+		  if self isa droite and droite(self).nextre = 2 then
+		    side = 0
+		    return true
+		  elseif self isa polygon then
+		    side = polygon(self).pointonside(p)
+		    if side <> -1 then
+		      return true
+		    end if
+		  end if
+		  side = -1
+		  return false
+		  
+		End Function
 	#tag EndMethod
 
 
