@@ -66,7 +66,7 @@ Inherits SelectOperation
 		          CurrentContent.thegrid.paint(Pict.Graphics)
 		        end if
 		        
-		        if wnd.mycanvas1.tracept then
+		        if CurrentContent.TheObjects.tracept then
 		          Pict.Graphics.DrawPicture wnd.Mycanvas1.OffscreenPicture, 0, 0
 		        end if
 		        
