@@ -328,12 +328,19 @@ Inherits SelectOperation
 		  nobj = visible.count
 		  for i = visible.count-1 downto 0
 		    s = Visible.element(i)
-		    if s isa polygon then
-		      ibip = polygon(s).pointonside(p)
-		    end if
-		    if  not ((s isa droite and droite(s).nextre  =2)  or  ((s isa polygon) and (ibip <> -1) and (not polygon(s).prol(ibip)) )  ) then
+		    if s.ValidSegment(p,ibip) then
+		      if s isa polygon and polygon(s).prol(ibip) then  //le côté a déjà été prolongé
+		        visible.removeshape(s)
+		      end if
+		    else
 		      visible.removeshape s
 		    end if
+		    'if s isa polygon then
+		    'ibip = polygon(s).pointonside(p)
+		    'end if
+		    'if  not ((s isa droite and droite(s).nextre  =2)  or  ((s isa polygon) and (ibip <> -1) and (not polygon(s).prol(ibip)) )  ) then
+		    'visible.removeshape s
+		    'end if
 		    if s isa droite and app.macrocreation then
 		      visible.removeshape s
 		    end if
@@ -347,7 +354,7 @@ Inherits SelectOperation
 		  for i = 0 to visible.count-1
 		    s = visible.element(i)
 		    if s isa droite then
-		      index(i) = -1
+		      index(i) = 0
 		    else
 		      index(i) = polygon(s).pointonside(p)
 		    end if
