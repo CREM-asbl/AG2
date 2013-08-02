@@ -47,27 +47,34 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim obj as string
-		  dim cot as integer
 		  
-		  if currenthighlightedshape <> nil then
-		    if side <> -1 then
-		      currenthighlightedshape.paintside(g, side, 2, config.highlightcolor)
-		      currenthighlightedshape = nil
-		      display = thissegment
-		    else
-		      super.paint(g)
-		      obj = lowercase(currenthighlightedshape.gettype)
-		      if obj = "arc" then
-		        display = cet + " " + obj + " ?"
-		      else
-		        display = ce + " " + obj + " ?"
-		      end if
-		    end if
-		  else
+		  
+		  
+		  currentshape = currenthighlightedshape
+		  
+		  if visible  = nil or currentshape = nil then
 		    display = choose + un + " " +lowercase(identifier(fa, fo))
+		  else
+		    if side <> -1 then
+		      'CurrentHighlightedShape = nil
+		      currentshape.highlightsegment(g, side)
+		      obj = lowercase(segment)
+		    else
+		      obj = lowercase(currenthighlightedshape.gettype)
+		    end if
+		    operation.paint(g)
+		    if obj = "arc" then
+		      display = cet + " " + obj + " ?"
+		    else
+		      display = ce + " " + obj + " ?"
+		    end if
 		  end if
 		  
 		  Help g, display
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -172,7 +179,7 @@ Inherits MultipleSelectOperation
 		  dim b as boolean
 		  n = CurrentItemToSet
 		  
-		  sh = super.getshape(p)
+		  sh = operation.getshape(p)
 		  fa = mac.fainit(n-1)
 		  fo = mac.foinit(n-1)
 		  nobj = visible.count
@@ -230,14 +237,30 @@ Inherits MultipleSelectOperation
 		    end if
 		  next
 		  
-		  nobj = visible.count
+		  nobj = visible.count-1
+		  redim index(nobj)
 		  
-		  if nobj > 0 then
-		    side = visible.element(iobj).pointonside(p)
-		    return visible.element(iobj)
-		  else
+		  iobj = 0
+		  
+		  for i = 0 to visible.count-1
+		    sh = visible.element(i)
+		    if sh isa droite then
+		      index(i) = 0
+		    elseif sh isa polygon then
+		      index(i) = polygon(sh).pointonside(p)
+		    else
+		      index(i)=-1
+		    end if
+		  next
+		  
+		  sh = visible.element(iobj)
+		  if sh = nil then
 		    return nil
 		  end if
+		  side = index(iobj)
+		  return sh
+		  
+		  
 		End Function
 	#tag EndMethod
 
@@ -411,6 +434,12 @@ Inherits MultipleSelectOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="fo"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

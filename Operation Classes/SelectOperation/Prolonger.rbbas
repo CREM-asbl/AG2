@@ -48,13 +48,7 @@ Inherits SelectOperation
 		    end if
 		  else
 		    super.paint(g)
-		    if sh isa polygon and cot <> -1   then 'and nobj = 1
-		      sh.unhighlight
-		      sh.paintside(g,cot,2,Config.highlightcolor)
-		    elseif sh isa droite then
-		      sh.highlight
-		      sh.paintall(g)
-		    end if
+		    sh.highlightsegment(g, cot)
 		    if app.macrocreation then
 		      display = thissideofpoly + "?"
 		    else
@@ -328,19 +322,9 @@ Inherits SelectOperation
 		  nobj = visible.count
 		  for i = visible.count-1 downto 0
 		    s = Visible.element(i)
-		    if s.ValidSegment(p,ibip) then
-		      if s isa polygon and polygon(s).prol(ibip) then  //le côté a déjà été prolongé
-		        visible.removeshape(s)
-		      end if
-		    else
-		      visible.removeshape s
+		    if not s.ValidSegment(p,ibip) or ( s isa polygon and polygon(s).prol(ibip) ) then  //le côté a déjà été prolongé
+		      visible.removeshape(s)
 		    end if
-		    'if s isa polygon then
-		    'ibip = polygon(s).pointonside(p)
-		    'end if
-		    'if  not ((s isa droite and droite(s).nextre  =2)  or  ((s isa polygon) and (ibip <> -1) and (not polygon(s).prol(ibip)) )  ) then
-		    'visible.removeshape s
-		    'end if
 		    if s isa droite and app.macrocreation then
 		      visible.removeshape s
 		    end if

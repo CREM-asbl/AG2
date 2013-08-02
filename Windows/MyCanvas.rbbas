@@ -375,10 +375,8 @@ Inherits Canvas
 		    CurrentContent.TheGrid.Paint(Background.Graphics)
 		  end if
 		  
-		  op = CurrentContent.currentoperation
-		  
 		  CurrentContent.TheObjects.paint(Background.Graphics)
-		  
+		  op = CurrentContent.currentoperation
 		  if op <> nil  then
 		    op.Paint(Background.Graphics)
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
@@ -1056,12 +1054,6 @@ Inherits Canvas
 			Type="Color"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="tracept"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="lastclickticks"
 			Group="Behavior"
 			InitialValue="0"
@@ -1108,12 +1100,6 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="CreerTrace"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tit"

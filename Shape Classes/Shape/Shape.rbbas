@@ -3868,6 +3868,18 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub highlightsegment(g as graphics, cot as integer)
+		  if self isa polygon and cot <> -1   then
+		    unhighlight
+		    paintside(g,cot,2,Config.highlightcolor)
+		  elseif self isa droite then
+		    highlight
+		    paintall(g)
+		  end if
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Formes
 		
