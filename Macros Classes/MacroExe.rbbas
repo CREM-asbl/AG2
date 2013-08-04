@@ -114,18 +114,22 @@ Inherits MultipleSelectOperation
 		              for j = 0 to newshape.ncpts-1
 		                EL2 = XMLElement(EL1.Child(j))
 		                m = val(EL2.GetAttribute("Id"))
-		                p = -1
-		                index = -1
+		                p = -1  //Macro-Id du premier parent dans la macro du point points(j) de l'objet en construction 
+		                index = -1 // numéro de points(j) dans ce premier parent
 		                Mac.GetInfoSommet(m, p, index)
 		                if p <> -1 then
 		                  p = Mac.Obinit.indexof(p)
-		                  side = MacInfo.RealSide(p)
-		                  p = MacInfo.RealInit(p)
-		                  s = currentcontent.TheObjects.GetShape(p)
-		                  if side <> -1 then
-		                    pt = s.points((index+side) mod s.npts)
+		                  if p <> -1  then //points(j) appartient à un objet initial
+		                    side = MacInfo.RealSide(p)  //side est le numéro du côté de l'objet initial réel
+		                    p = MacInfo.RealInit(p)  //p est l'id de l'objet initial en question
+		                    s = currentcontent.TheObjects.GetShape(p) // s est cet objet initial
+		                    if side <> -1 then
+		                      pt = s.points((index+side) mod s.npts)  //utile si l'objet initial de la macro est un segment et l'objet initial réel un polygone
+		                    else
+		                      pt = s.points(index)
+		                    end if
+		                    newshape.substitutepoint(pt,newshape.points(j))
 		                  end if
-		                  newshape.substitutepoint(pt,newshape.points(j))
 		                end if
 		              next
 		            end if

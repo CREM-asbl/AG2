@@ -200,7 +200,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
-		  dim s, sh as shape
+		  dim s, sh, nextsh as shape
 		  dim i, mag as integer
 		  dim t, t1 as boolean
 		  dim MagneticD as BasicPoint
@@ -224,12 +224,10 @@ Inherits SelectOperation
 		    t = positionner(point(visible.element(0)), point(visible.element(1)))
 		  elseif nobj = 1 then
 		    remplacement = point(visible.element(0))
-		    'for i=Objects.count-1 downto 0
-		    'Sh=Objects.element(i).SelectShape(p)
+		    mag = remplacement.magnetisme(magneticD,sh, nextsh)
 		    if cancelattraction(remplacement) then
 		      remplacement = nil
 		    else
-		      sh = currentattractingshape
 		      if Sh <>nil  and not (sh isa point) and  not sh.invalid and not sh.deleted and not sh.hidden and sh.pointonside(remplacement.bpt) <> -1 and  remplacement.authorisedputon(sh) then
 		        support = sh
 		      end if
