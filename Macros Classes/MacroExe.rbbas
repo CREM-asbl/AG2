@@ -37,8 +37,8 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
-		  MacInfo.RealInit.append s.id
-		  MacInfo.RealSide.append side
+		  RealInit.append s.id
+		  RealSide.append side
 		  s.init = true
 		  return true
 		End Function
@@ -53,7 +53,7 @@ Inherits MultipleSelectOperation
 		  currentshape = currenthighlightedshape
 		  
 		  if visible  = nil or currentshape = nil then
-		    display = choose + un + " " +lowercase(identifier(fa, fo))
+		    display = choose + un + " " +str
 		  else
 		    if side <> -1 then
 		      'CurrentHighlightedShape = nil
@@ -81,7 +81,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i, j, k, n, m, index, p, type,oper, fa, fo, side as integer
-		  dim EL, EL0, EL1, EL2 as XMLElement
+		  dim EL, EL0 as XMLElement
 		  dim codesoper() as integer
 		  dim ifmac As InfoMac
 		  dim s, newshape as shape
@@ -94,56 +94,41 @@ Inherits MultipleSelectOperation
 		  
 		  for i = 0 to Histo.Childcount-1  // i: numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
-		    if EL.Name = Dico.Value("Operation") then
-		      EL0 = XMLElement(EL.Child(0))
-		      fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		      fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		      ifmac = new InfoMac(fa, fo)
-		      ifmac.ptsur = val(EL0.GetAttribute("PointSur"))       //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
-		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
-		      if codesoper.indexof(oper) <> -1 then                       //est-ce une opération de construction ? prévoir le cas contraire!
-		        n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
-		        if (Mac.ObInit.indexof(n) <> -1) or  (Mac.ObInterm.indexof(n) <> -1) or  (Mac.ObFinal.indexof(n)  <> -1) then
-		          ifmac.MacId = n
-		          if Mac.ObFinal.indexof(n) <> -1 then                                 // A-t-on affaire  à un objet final?
-		            newshape = objects.createshape(ifmac.fa,ifmac.fo)
-		            newshape.SetMacConstructedBy MacInfo
-		            newshape.initconstruction
-		            if oper = 0 then
-		              EL1 = XMLElement(EL0.Child(0))
-		              for j = 0 to newshape.ncpts-1
-		                EL2 = XMLElement(EL1.Child(j))
-		                m = val(EL2.GetAttribute("Id"))
-		                p = -1  //Macro-Id du premier parent dans la macro du point points(j) de l'objet en construction 
-		                index = -1 // numéro de points(j) dans ce premier parent
-		                Mac.GetInfoSommet(m, p, index)
-		                if p <> -1 then
-		                  p = Mac.Obinit.indexof(p)
-		                  if p <> -1  then //points(j) appartient à un objet initial
-		                    side = MacInfo.RealSide(p)  //side est le numéro du côté de l'objet initial réel
-		                    p = MacInfo.RealInit(p)  //p est l'id de l'objet initial en question
-		                    s = currentcontent.TheObjects.GetShape(p) // s est cet objet initial
-		                    if side <> -1 then
-		                      pt = s.points((index+side) mod s.npts)  //utile si l'objet initial de la macro est un segment et l'objet initial réel un polygone
-		                    else
-		                      pt = s.points(index)
-		                    end if
-		                    newshape.substitutepoint(pt,newshape.points(j))
-		                  end if
-		                end if
-		              next
-		            end if
-		            currentcontent.addshape newshape
-		            MacInfo.RealFinal.append newshape.id
-		          end if
-		          MacInfo.IfMacs.append ifmac
-		        end if
-		      end if
+		    if EL.Name <> Dico.Value("Operation") then
+		      return
 		    end if
+		    //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
+		    oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
+		    if codesoper.indexof(oper) = -1 then
+		      return
+		    end if
+		    //est-ce une opération de construction ? prévoir le cas contraire!
+		    n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
+		    if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
+		      return
+		    end if
+		    EL0 = XMLElement(EL.Child(0))
+		    fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		    fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		    ifmac = new InfoMac(fa, fo)
+		    ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
+		    ifmac.MacId = n
+		    
+		    if Mac.ObInit.indexof(n) <> -1 then
+		      ifmac.RealId =RealInit.indexof(n)
+		    end if
+		    if Mac.ObInterm.indexof(n) <> -1 then
+		    end if
+		    if Mac.ObFinal.indexof(n) <> -1 then
+		       CreateFinal(oper,ifmac,EL0)
+		      ifmac.RealId = RealFinal.indexof(n)                // A-t-on affaire  à un objet final?
+		    end if
+		    
+		    MacInfo.IfMacs.append ifmac
 		  next
 		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
-		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
-		    n = MacInfo.RealFinal(i)
+		  for i = 0 to ubound(RealFinal)           //Création des skulls des objets finaux
+		    n = RealFinal(i)
 		    s = objects.GetShape(n)
 		    if s isa point then
 		      s.createskull(point(s).bpt)
@@ -178,14 +163,16 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
-		  dim n,i as integer
+		  dim n,i, fa, fo as integer
 		  dim  sh as shape
 		  dim b as boolean
+		  
 		  n = CurrentItemToSet
 		  
 		  sh = operation.getshape(p)
 		  fa = mac.fainit(n-1)
 		  fo = mac.foinit(n-1)
+		  str = lowercase(identifier(fa, fo))
 		  nobj = visible.count
 		  
 		  for i = visible.count-1 downto 0
@@ -248,9 +235,9 @@ Inherits MultipleSelectOperation
 		  
 		  for i = 0 to visible.count-1
 		    sh = visible.element(i)
-		    if sh isa droite then
-		      index(i) = 0
-		    elseif sh isa polygon then
+		    'if sh isa droite then
+		    'index(i) = 0
+		    if sh isa polygon then
 		      index(i) = polygon(sh).pointonside(p)
 		    else
 		      index(i)=-1
@@ -261,11 +248,70 @@ Inherits MultipleSelectOperation
 		  if sh = nil then
 		    return nil
 		  end if
-		  side = index(iobj)
+		  side = index(iobj)  // side <> -1 ssi on achoisi un côté de polygone
 		  return sh
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateFinal(oper as integer, ifmac as InfoMac, EL0 as XMLElement)
+		  dim newshape, s as shape
+		  dim EL1, EL2 as XMLElement
+		  dim i, j, m, n, p, pid, index, fa, fo as integer
+		  dim pt as point
+		  
+		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
+		  newshape.initconstruction
+		  newshape.MacConstructedBy = MacInfo
+		  for i = 0 to ubound(realinit)
+		    s = currentcontent.Theobjects.getshape(realinit(i))
+		    s.addMacConstructedshape newshape
+		  next
+		  
+		  select case oper
+		  case 0
+		    EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
+		    
+		    for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
+		      EL2 = XMLElement(EL1.Child(j))
+		      m = val(EL2.GetAttribute("Id"))     //m est l'id dans la macro du point associé à newshape.points(j)
+		      
+		      p = -1
+		      index = -1
+		      Mac.GetInfoSommet(m, pid, index, fa , fo)  //pid est la Macro-Id du premier parent dans la macro du point associé à newshape.points(j). Normalement p <> -1
+		      //On peut avoir m = pid si le point associé à newshape.points(j) est un point isolé
+		      //index est le  numéro de newshape.points(j) dans ce premier parent (fa et fo sont relatifs au parent)
+		      p = Mac.ObInit.indexof(pid)
+		      
+		      if p <> -1 then                                                                     //points(j) appartient à un objet initial ou est un objet initial
+		        n = RealInit(p)                                                 //p est l'id de l'objet initial en question
+		        s = currentcontent.TheObjects.GetShape(n)             // s est cet objet initial
+		        
+		        if m = pid then                          //newshape.points(j) correspond à un point initial isolé
+		          pt = point(s)
+		          newshape.substitutepoint(pt,newshape.points(j))
+		        else
+		          side = RealSide(p)              //side est le numéro du côté de l'objet initial réel
+		          ifmac.side = side
+		          
+		          
+		          if side <> -1 then
+		            pt = s.points((index+side) mod s.npts)  //utile si l'objet initial de la macro est un segment et l'objet initial réel un polygone
+		          else
+		            pt = s.points(index)
+		          end if
+		          newshape.substitutepoint(pt,newshape.points(j))
+		        end if
+		      end if
+		    next
+		  end select
+		  currentcontent.addshape newshape
+		  RealFinal.append newshape.id
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 
@@ -294,15 +340,23 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		fa As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		fo As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		side As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		str As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealInit() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealSide() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealFinal() As Integer
 	#tag EndProperty
 
 
@@ -431,22 +485,15 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="fa"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="fo"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="side"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="str"
+			Group="Behavior"
+			Type="string"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

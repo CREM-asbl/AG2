@@ -66,6 +66,18 @@ Protected Class InfoMac
 		ori As Integer
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		init As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		interm As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		final As Boolean
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

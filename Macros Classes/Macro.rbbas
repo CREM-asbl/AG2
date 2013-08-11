@@ -222,10 +222,11 @@ Protected Class Macro
 		        MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
 		        
 		        if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
-		          ifmac.coord = Getcoord(MacId)
+		          s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		          ifmac.coord = s.coord
 		          if oper = 19 then            //On met ifmac à jour
-		            ifmac.location = GetLocation(MacId)
-		            ifmac.side = GetSide(MacId)
+		            ifmac.location = point(s).location(0)
+		            ifmac.side = point(s).numside(0)
 		          end if
 		        end if
 		        
@@ -243,7 +244,7 @@ Protected Class Macro
 		          ifmac.location = loc0
 		          ifmac.side = si0                    //On recalcule les coordonnées
 		          
-		          s = currentcontent.theobjects.getshape(MacInf.RealFinal(k))
+		          s = currentcontent.theobjects.getshape(ifmac.RealId)
 		          if s isa point then
 		            point(s).moveto ifmac.coord.tab(0)
 		          else                  //On va rechercher la forme
@@ -340,7 +341,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub paraperp(EL0 as XMLElement, EL1 as XMLElement, ifmac as InfoMac, byref nbp as nBPoint)
 		  dim p, q, w0, w as BasicPoint
-		  dim n0, index, npt as integer
+		  dim n0, index, npt,fam, fom as integer
 		  dim EL2, EL3 as XmlElement
 		  dim ifm1, ifm2 as infoMac
 		  dim pere, num as integer
@@ -368,7 +369,7 @@ Protected Class Macro
 		  if ifm1 <> nil then                         //Cas d'un point isolé, on le retrouve illico
 		    nbp.append ifm1.Coord.tab(0)
 		  else                                                 //Sinon, il faut retourner chercher dans Histo quel est l'objet dont  l'origine de la paraperp est un sommet
-		    GetInfoSommet(n0, pere, num)  //pere est la macid de la 1ere forme dont le point cherché est sommet et num est le numéro de ce sommet
+		    GetInfoSommet(n0, pere, num,fam,fom)  //pere est la macid de la 1ere forme dont le point cherché est sommet et num est le numéro de ce sommet
 		    ifm2 = MacInf.GetInfoMac(pere)
 		    nbp.append ifm2.Coord.tab(num)
 		  end if
@@ -385,7 +386,8 @@ Protected Class Macro
 		  
 		  m = Obinit.indexof(n)
 		  if m <> -1 then        //Si c'est une forme initiale
-		    k = MacInf.RealInit(m)
+		    ifm = MacInf.GetInfoMac(n)
+		    k = ifm.RealId
 		    s= currentcontent.theobjects.getshape(k)
 		    return new nBPoint(s)
 		  end if
@@ -538,24 +540,34 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub GetInfoSommet(mid as integer, byref pid as integer, byref index as integer)
+		Sub GetInfoSommet(mid as integer, byref pid as integer, byref index as integer, byref fa as integer, byref fo as integer)
 		  dim i, j, n as integer
 		  dim EL, EL0, EL1, EL2 as XMLElement  // On va chercher l'objet auquel un point  de macroid mid appartient comme sommet
-		                                                                    //pid est la macroid du père et j est le numéro du sommet en tant que tel
+		  //pid est la macroid du père et j est le numéro du sommet en tant que tel
+		  
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.Child(i))
 		    if EL.Name =  Dico.Value("Operation") then
 		      EL0 = XMLElement(EL.Child(0))
-		      EL1= XMLElement(EL0.Child(0))
-		      for j = 0 to EL1.Childcount -1
-		        EL2 = XMLElement(EL1.Child(j))
-		        n = val(EL2.GetAttribute("Id"))
-		        if n = mid then
-		          index = j
-		          pid = val(EL0.GetAttribute("Id"))
-		          return
-		        end if
-		      next
+		      pid = val(EL0.GetAttribute("Id"))
+		      fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		      fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		      
+		      if fa = 0 and fo = 0 and pid = mid then
+		        index = 0
+		        return
+		      else
+		        EL1= XMLElement(EL0.Child(0))
+		        for j = 0 to EL1.Childcount -1
+		          EL2 = XMLElement(EL1.Child(j))
+		          n = val(EL2.GetAttribute("Id"))
+		          if n = mid then
+		            index = j
+		            return
+		          end if
+		        next
+		      end if
+		      
 		    end if
 		  next
 		  
@@ -616,8 +628,9 @@ Protected Class Macro
 		  
 		  m = Obinit.indexof(n)
 		  if m <> -1 then        //Si c'est une forme initiale
-		    k = MacInf.RealInit(m)
-		    s= currentcontent.theobjects.getshape(k)
+		    
+		    ifm = MacInf.GetInfoMac(n)
+		    s= currentcontent.theobjects.getshape(ifm.realid)
 		    if s isa point and point(s).pointsur.count = 1 then
 		      return point(s).location(0)
 		    end if
@@ -657,7 +670,8 @@ Protected Class Macro
 		  
 		  m = Obinit.indexof(n)
 		  if m <> -1 then        //Si c'est une forme initiale
-		    k = MacInf.RealInit(m)
+		    ifm = MacInf.GetInfoMac(n)
+		    k = ifm.realid
 		    s= currentcontent.theobjects.getshape(k)
 		    if s isa point and point(s).pointsur.count = 1 then
 		      return point(s).numside(0)
