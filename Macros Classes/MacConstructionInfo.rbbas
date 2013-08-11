@@ -41,18 +41,6 @@ Protected Class MacConstructionInfo
 		IfMacs() As InfoMac
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		RealInit() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealFinal() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealSide() As Integer
-	#tag EndProperty
-
 
 	#tag ViewBehavior
 		#tag ViewProperty

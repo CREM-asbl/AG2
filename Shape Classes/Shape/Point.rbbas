@@ -570,7 +570,7 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(parents)
 		    s = parents(i)
-		    if (s.std or (s.MacConstructedby <> nil and s.MacConstructedby.RealInit.Indexof(id) = -1) )  and s.getindexpoint(self) <> -1 then
+		    if (s.std or (s.MacConstructedby <> nil  and i = 0) )  and s.getindexpoint(self) <> -1 then
 		      liberte = 0
 		    end if
 		    if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then

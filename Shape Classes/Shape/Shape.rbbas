@@ -3609,19 +3609,6 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetMacConstructedBy(MacInfo as MacConstructionInfo)
-		  dim i as integer
-		  dim s as shape
-		  
-		  MacConstructedBy = MacInfo
-		  for i = 0 to Ubound(MacInfo.RealInit)
-		    s=objects.getshape(MacInfo.RealInit(i))
-		    s.addMacConstructedshape self
-		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
 		  
 		End Sub
@@ -3665,17 +3652,19 @@ Implements StringProvider
 		  for i = 0 to ubound(MacConstructedShapes)
 		    s1 = MacConstructedShapes(i)
 		    MacInfo = s1.MacConstructedby
-		    Mac = MacInfo.Mac
-		    k =  MacInfo.RealInit.IndexOf(id)
-		    MacId = Mac.ObInit(k)
-		    IfMac = MacInfo.GetInfoMac(MacId)
-		    if self isa point then
-		      Ifmac.coord.tab(0) = point(self).bpt
-		    else
-		      for k = 0 to npts-1
-		        Ifmac.coord.Tab(k) = points(k).bpt          ' Mettre à jour les formes initiales
-		      next
-		    end if
+		    Mac = Macinfo.Mac
+		    for j = 0 to ubound(macinfo.ifmacs)
+		      ifmac = macinfo.ifmacs(j)
+		      if ifmac.init then
+		        if self isa point then
+		          Ifmac.coord.tab(0) = point(self).bpt
+		        else
+		          for k = 0 to npts-1
+		            Ifmac.coord.Tab(k) = points(k).bpt          ' Mettre à jour les formes initiales
+		          next
+		        end if
+		      end if
+		    next
 		    Mac.Macexe(MacInfo)
 		    s1.Modified = true
 		    for j = 0 to ubound(s1.childs)
