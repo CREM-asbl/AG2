@@ -74,7 +74,11 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Function GetCote(i as integer) As curveshape
-		  return cotes(i)
+		  if  i >-1 and i <= ubound(cotes) then
+		    return cotes(i)
+		  else
+		    return nil
+		  end if
 		End Function
 	#tag EndMethod
 

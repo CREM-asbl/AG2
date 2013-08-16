@@ -393,9 +393,11 @@ Inherits Shape
 		  dim cs as curveshape
 		  
 		  cs = figskull(sk).getcote(cot)
-		  cs.borderwidth = ep*borderwidth
-		  cs.bordercolor = coul.col
-		  g.drawobject(cs, sk.ref.x, sk.ref.y)
+		  if cs <> nil then
+		    cs.borderwidth = ep*borderwidth
+		    cs.bordercolor = coul.col
+		    g.drawobject(cs, sk.ref.x, sk.ref.y)
+		  end if
 		  
 		  
 		End Sub
