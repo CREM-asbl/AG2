@@ -33,7 +33,6 @@ Begin Window WorkWindow
       Background      =   0
       Bkcol           =   0
       ControlOrder    =   0
-      CreerTrace      =   0
       ctxt            =   0
       drapzone        =   0
       Enabled         =   True
@@ -55,7 +54,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabPanelIndex   =   0
       Top             =   0
-      tracept         =   0
       UseFocusRing    =   "False"
       Visible         =   True
       Width           =   676
@@ -2771,6 +2769,10 @@ End
 		  Name = EL.GetAttribute(Dico.Value("Type"))
 		  me.Helptag = Dico.Value("Cancel") + " " + lowercase(Name)
 		  EL1 = XMLElement(EL.firstchild)
+		  
+		  if EL1= nil then
+		    return
+		  end if
 		  
 		  select case op
 		  case 0  //Construction
