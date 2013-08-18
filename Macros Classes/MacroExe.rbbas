@@ -39,7 +39,7 @@ Inherits MultipleSelectOperation
 		Function SetItem(s as shape) As Boolean
 		  RealInit.append s.id
 		  RealSide.append side
-		  s.init = true
+		  's.init = true
 		  return true
 		End Function
 	#tag EndMethod
@@ -94,37 +94,39 @@ Inherits MultipleSelectOperation
 		  
 		  for i = 0 to Histo.Childcount-1  // i: numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
-		    if EL.Name <> Dico.Value("Operation") then
-		      return
+		    if EL.Name = Dico.Value("Operation") then
+		                             //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
+		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
+		      if codesoper.indexof(oper) = -1 then
+		        return
+		      end if
+		      //est-ce une opération de construction ? prévoir le cas contraire!
+		      n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
+		      if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
+		        return
+		      end if
+		      EL0 = XMLElement(EL.Child(0))
+		      fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		      fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		      ifmac = new InfoMac(fa, fo)
+		      ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
+		      ifmac.MacId = n
+		      
+		      if Mac.ObInit.indexof(n) <> -1 then
+		        ifmac.RealId =RealInit(Mac.ObInit.indexof(n))
+		        ifmac.init = true
+		      end if
+		      if Mac.ObInterm.indexof(n) <> -1 then
+		        ifmac.interm = true
+		      end if
+		      if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
+		        CreateFinal(oper,ifmac,EL0)
+		        ifmac.RealId = RealFinal(Mac.ObFinal.indexof(n)) 
+		        ifmac.final = true               
+		      end if
+		      MacInfo.IfMacs.append ifmac
+		      
 		    end if
-		    //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
-		    oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
-		    if codesoper.indexof(oper) = -1 then
-		      return
-		    end if
-		    //est-ce une opération de construction ? prévoir le cas contraire!
-		    n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
-		    if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
-		      return
-		    end if
-		    EL0 = XMLElement(EL.Child(0))
-		    fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		    fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		    ifmac = new InfoMac(fa, fo)
-		    ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
-		    ifmac.MacId = n
-		    
-		    if Mac.ObInit.indexof(n) <> -1 then
-		      ifmac.RealId =RealInit.indexof(n)
-		    end if
-		    if Mac.ObInterm.indexof(n) <> -1 then
-		    end if
-		    if Mac.ObFinal.indexof(n) <> -1 then
-		       CreateFinal(oper,ifmac,EL0)
-		      ifmac.RealId = RealFinal.indexof(n)                // A-t-on affaire  à un objet final?
-		    end if
-		    
-		    MacInfo.IfMacs.append ifmac
 		  next
 		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
 		  for i = 0 to ubound(RealFinal)           //Création des skulls des objets finaux
@@ -494,6 +496,7 @@ Inherits MultipleSelectOperation
 			Name="str"
 			Group="Behavior"
 			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
