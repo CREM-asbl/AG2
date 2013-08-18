@@ -3645,26 +3645,13 @@ Implements StringProvider
 		Sub updateMacConstructedShapes()
 		  dim Mac as Macro
 		  dim MacInfo as MacConstructionInfo
-		  dim IfMac as InfoMac
-		  dim i, j, k, MacId as integer
+		  dim i, j as integer
 		  dim s1 as shape
 		  
 		  for i = 0 to ubound(MacConstructedShapes)
 		    s1 = MacConstructedShapes(i)
 		    MacInfo = s1.MacConstructedby
 		    Mac = Macinfo.Mac
-		    for j = 0 to ubound(macinfo.ifmacs)
-		      ifmac = macinfo.ifmacs(j)
-		      if ifmac.init then
-		        if self isa point then
-		          Ifmac.coord.tab(0) = point(self).bpt
-		        else
-		          for k = 0 to npts-1
-		            Ifmac.coord.Tab(k) = points(k).bpt          ' Mettre à jour les formes initiales
-		          next
-		        end if
-		      end if
-		    next
 		    Mac.Macexe(MacInfo)
 		    s1.Modified = true
 		    for j = 0 to ubound(s1.childs)
