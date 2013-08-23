@@ -14,11 +14,9 @@ Protected Class TransfosList
 		  
 		  
 		  for i=0 to UBound(Transfos)
-		    
-		    if Transfos(i) = tsf then
+		    if  tsf.Equal(Transfos(i)) then
 		      return i
 		    end if
-		    
 		  next
 		  
 		  return -1

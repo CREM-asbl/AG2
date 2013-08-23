@@ -141,7 +141,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ConstructShape(fa as integer, fo as integer) As nBPoint
+		Sub ConstructShape(fa as integer, fo as integer)
 		  dim a, b,  p,v,c as BasicPoint
 		  dim d as double
 		  dim i, n, ori as integer
@@ -166,7 +166,7 @@ Protected Class nBpoint
 		  case 3 'Quadris
 		    select case fo
 		    case 7
-		      return constructshape(4,1)
+		       constructshape(4,1)
 		    end select
 		  case 4 'Polreg
 		    n = fo+3
@@ -184,11 +184,10 @@ Protected Class nBpoint
 		    end if
 		  end select
 		  
-		  return self
 		  
 		  
 		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

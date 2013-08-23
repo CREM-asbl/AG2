@@ -151,7 +151,7 @@ Implements StringProvider
 		  
 		  for i = 0 to ff.somm.count-1
 		    pt = point(ff.somm.element(i))
-		    if pt <> nil then
+		    if pt <> nil and pt.macconstructedby = nil then
 		      ff.shapes.removeshape pt   // indispensable pour éviter certains bugs -- (cas où le point n'était pas construit)
 		      if pt.pointsur.count > 0 then
 		        ff.ptssur.addshape pt
@@ -241,7 +241,7 @@ Implements StringProvider
 		  CreerMatricePrecedences(count)
 		  
 		  if not Mat.Null and  Bouclesasupprimer (n0) then
-		    fusionner (n0)
+		    fusionner ( n0)
 		    return ordonner
 		  else
 		    CreerIndex
@@ -327,7 +327,13 @@ Implements StringProvider
 		    return
 		  end if
 		  
-		  q = modifier(currentcontent.currentoperation).pointmobile
+		  if currentcontent.forhisto then
+		    q = modifier(currentcontent.currentoperation).pointmobile
+		  elseif currentcontent.currentoperation isa readHisto then
+		    q = modifier(readhisto(currentcontent.currentoperation).curoper).pointmobile
+		  else
+		    q = modifier(currentcontent.curoper).pointmobile
+		  end if
 		  if q.guide = nil then
 		    p = q
 		  else
@@ -793,7 +799,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub fusionner( n as integer)
+		Sub fusionner(n as integer)
 		  dim i, j, nc as integer
 		  dim ff as new figslist
 		  dim f as figure
@@ -807,6 +813,7 @@ Implements StringProvider
 		      index.append i
 		    end if
 		  next
+		  
 		  
 		  if ff.count > 0 then
 		    f = ff.concat

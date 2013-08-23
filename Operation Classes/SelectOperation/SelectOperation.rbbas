@@ -287,7 +287,7 @@ Implements StringProvider
 		      next
 		    end if
 		  next
-		  
+		  currentcontent.TheObjects.updateids
 		End Sub
 	#tag EndMethod
 

@@ -674,6 +674,12 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Equal(tsf as Transformation) As Boolean
+		  return (Type = tsf.type) and (supp = tsf.supp) and (ori = tsf.ori) and (index = tsf.index)
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

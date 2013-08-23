@@ -659,15 +659,9 @@ Implements StringProvider
 		  isinconstruction = false
 		  updatecoord
 		  
-		  if not self isa point then
-		    for i = 0 to npts-1
-		      points(i).isinconstruction = false
-		    next
-		  end if
-		  
-		  if self isa point then
-		    point(self).mobility
-		  end if
+		  for i = 0 to npts-1
+		    points(i).isinconstruction = false
+		  next
 		  
 		  if self isa arc or self isa secteur then
 		    drapori = true
@@ -676,7 +670,6 @@ Implements StringProvider
 		  if currentcontent.PolygFleches and not self isa Lacet then
 		    Ti = new Tip
 		  end if
-		  
 		  
 		  
 		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
@@ -1530,11 +1523,11 @@ Implements StringProvider
 		  // Création de la liste (List0) des figures comprenant un sommet ou un point sur de la forme (self)
 		  
 		  List0 = Listerfigsneighbour
-		  for i = List0.count -1 downto 0
-		    if List0.element(i).isapoint <> nil then
-		      CurrentContent.TheFigs.Removefigure List0.element(i)
-		    end if
-		  next
+		  'for i = List0.count -1 downto 0
+		  'if List0.element(i).isapoint <> nil then
+		  'CurrentContent.TheFigs.Removefigure List0.element(i)
+		  'end if
+		  'next
 		  List0.addfigure new Figure(self)
 		  if List0.count > 1 then
 		    CurrentContent.Thefigs.Removefigures List0
@@ -2362,6 +2355,9 @@ Implements StringProvider
 		Function Listerfigsneighbour() As figslist
 		  dim i, j as integer
 		  dim List0 as FigsList
+		  dim macinf as MacConstructionInfo
+		  dim ifm as InfoMac
+		  
 		  list0 = new figslist
 		  
 		  for i = 0 to ubound(childs)
@@ -2386,6 +2382,14 @@ Implements StringProvider
 		    end if
 		  next
 		  
+		  if macconstructedby <> nil then
+		    for i = 0 to ubound(macconstructedby.ifmacs)
+		      ifm = macconstructedby.ifmacs(i)
+		      if ifm.init then
+		        list0.addfigure currentcontent.theobjects.getshape(ifm.realid).fig
+		      end if
+		    next
+		  end if
 		  return list0
 		  
 		End Function
@@ -3158,7 +3162,7 @@ Implements StringProvider
 		    elseif op isa colorchange and colorchange(op).bord then
 		      n = op.index(op.iobj)
 		    elseif op isa Divide then
-		      n = Divide(op).loc
+		      n = Divide(op).side
 		    end if
 		  end if
 		  return n

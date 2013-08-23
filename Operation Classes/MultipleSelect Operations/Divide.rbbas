@@ -70,8 +70,8 @@ Inherits MultipleSelectOperation
 		  
 		  operation.paint(g)
 		  
-		  if currenthighlightedshape isa polygon  and loc <> -1 then
-		    polygon(currenthighlightedshape).paintside(g,loc,2,config.highlightcolor)
+		  if currenthighlightedshape isa polygon  and side <> -1 then
+		    polygon(currenthighlightedshape).paintside(g,side,2,config.highlightcolor)
 		  else
 		    if CurrentHighlightedShape<>nil then
 		      CurrentHighlightedShape.HighLight
@@ -123,7 +123,7 @@ Inherits MultipleSelectOperation
 		  select case CurrentItemToSet
 		  case 1
 		    if s isa polygon then
-		      loc = s.PointOnSide(p)
+		      side = s.PointOnSide(p)
 		    end if
 		    return s
 		  case 2
@@ -159,8 +159,8 @@ Inherits MultipleSelectOperation
 		        Firstpoint = s.Points(1)
 		        secondpoint = firstpoint
 		      elseif s isa polygon then
-		        firstpoint = s.points(loc)
-		        secondpoint = s.points((loc +1) mod s.npts)
+		        firstpoint = s.points(side)
+		        secondpoint = s.points((side +1) mod s.npts)
 		      end if
 		      nextitem
 		    end if
@@ -192,10 +192,10 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  if s isa lacet then
-		    if lacet(s).curved(loc) = 0 then
+		    if lacet(s).curved(side) = 0 then
 		      Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
 		    else
-		      Trib = new TribPoint(lacet(s).getcentre(loc),firstpoint.bpt,secondpoint.bpt)
+		      Trib = new TribPoint(lacet(s).getcentre(side),firstpoint.bpt,secondpoint.bpt)
 		    end if
 		  elseif S isa BiPoint or s isa polygon then
 		    Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
@@ -205,7 +205,7 @@ Inherits MultipleSelectOperation
 		  
 		  for i= 1 to Numberofdivisions-1
 		    if s isa lacet then
-		      if lacet(s).curved(loc) = 0 then
+		      if lacet(s).curved(side) = 0 then
 		        p = Bib.subdiv(NumberofDivisions,i)
 		      else
 		        p = Trib.subdiv(s.ori, NumberofDivisions,i)
@@ -363,7 +363,7 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		loc As double
+		side As double
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

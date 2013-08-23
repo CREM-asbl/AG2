@@ -286,7 +286,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Point(other as point, NewId as Integer)
-		  
 		  Point(other.GetObjects,other.bpt)
 		  SetId(NewId)
 		  fam = 0
@@ -341,7 +340,7 @@ Inherits Shape
 		  dim t as Boolean
 		  
 		  t = sameparent(q, sh)    // self  et Q ont-ils un parent commun? si oui, le tableau sh les contient tous
-		  
+		                                            // rechercher si des points construits sont ok
 		  if not t then
 		    if Q.ConstructedBy <> nil and Q.ConstructedBy.Oper <> 0 then // si Q est un point construit sans être un centre
 		      for i=0 to Ubound(parents)
@@ -373,29 +372,30 @@ Inherits Shape
 		    s = nil
 		    return false
 		  end if
-		  
-		  't = false
-		  'i = 0
-		  
-		  'while i <=  ubound(sh) and not t
-		  'num1 = sh(i).getindex(self)
-		  'num2 = sh(i).getindex(q)
-		  'if num1 <> -1 and  num2 <> -1 then
-		  't = true
-		  'end if
-		  'i = i+1
-		  'wend
-		  '
-		  'if not t then
-		  'return false
-		  'else
-		  's = sh(i-1)
-		  'end if
-		  if ubound(sh) > 0 then
+		  if ubound(sh) = -1 then
 		    return false
 		  end if
 		  
-		  s = sh(0)
+		  t = false
+		  i = 0
+		  
+		  while i <=  ubound(sh) and not t
+		    num1 = sh(i).getindex(self)
+		    num2 = sh(i).getindex(q)
+		    if num1 <> -1 and  num2 <> -1 then
+		      t = true
+		    end if
+		    i = i+1
+		  wend
+		  
+		  if not t then
+		    return false
+		  else
+		    s = sh(i-1)
+		  end if
+		  
+		  
+		  's = sh(0)
 		  if s isa BiPoint  then  // même si s est un bipoint, P et Q n'en sont pas nécessairement les extrémités
 		    if abs(num1-num2) = 1 then
 		      return true
@@ -2987,6 +2987,32 @@ Inherits Shape
 		    end if
 		  next
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub endconstruction()
+		  dim i as integer
+		  
+		  
+		  isinconstruction = false
+		  updatecoord
+		  
+		  mobility
+		  
+		  Currentcontent.addShape self
+		  if CurrentContent.ForHisto then
+		    if macconstructedby <> nil then
+		      super.addtofigure
+		    else
+		      addtofigure
+		    end if
+		  end if
+		  
+		  dounselect
+		  currentcontent.optimize
+		  currentcontent.RemettreTsfAvantPlan
 		  
 		End Sub
 	#tag EndMethod
