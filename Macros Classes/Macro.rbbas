@@ -205,7 +205,7 @@ Protected Class Macro
 		  dim s, newshape as shape
 		  dim nbp as nBPoint
 		  
-		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,17,24,25,26,27, 45)
+		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,17,24,25,26,27,43,45)
 		  
 		  MacInf = MacInfo
 		  
@@ -222,8 +222,6 @@ Protected Class Macro
 		        MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
 		        
 		        if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
-		          s = currentcontent.TheObjects.GetShape(ifmac.RealId)
-		          ifmac.coord = s.coord
 		          if oper = 19 then            //On met ifmac à jour
 		            ifmac.location = point(s).location(0)
 		            ifmac.side = point(s).numside(0)
@@ -312,26 +310,30 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub divide(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
-		  dim id0, id1, idfather as integer
-		  dim fp, sp as BasicPoint
+		Sub divide(EL0 as XMLElement, EL1 as XMLElement, ifm as InfoMac, byref nbp as nBPoint)
+		  dim id0, id1 as integer
 		  dim ndiv, div as integer
-		  dim ifm as InfoMac
 		  dim Trib as TriBpoint
 		  dim Bib as BiBPoint
+		  dim nb0, nb1 as nBPoint
 		  
 		  ndiv = val(EL1.GetAttribute("NDivP"))
 		  div = val(EL1.GetAttribute("DivP"))
-		  idfather = val(EL1.GetAttribute("Id"))
-		  ifm = MacInf.GetInfoMac(idfather)
 		  
-		  if ifm.fa <> 5 and ifm.fa <> 7 then
+		  if ifm.fa = 1 then
 		    Bib = new BiBPoint(ifm.coord)
+		    nbp.append BiB.subdiv(ndiv,div)
+		  elseif ifm.fa <> 5 and ifm.fa <> 7 then
+		    id0 = val(EL1.GetAttribute("Id0"))
+		    id1 = val(EL1.GetAttribute("Id1"))
+		    nb0 = GetCoord(id0)
+		    nb1 = GetCoord(id1)
+		    Bib = new BiBPoint(nb0.tab(0), nb1.tab(0))
 		    nbp.append BiB.subdiv(ndiv,div)
 		  elseif ifm.fa = 5 then
 		    Trib = new TriBPoint(ifm.coord)
 		    nbp.append TriB.subdiv(ifm.ori,ndiv, div)
-		  else  'cas des lacets
+		  elseif ifm.fa = 7 then                                     'cas des lacets
 		  end if
 		  
 		  
@@ -534,7 +536,7 @@ Protected Class Macro
 		    MacId = val(EL02.GetAttribute("Id"))
 		    nbp.append  GetCoord(MacId).tab(0)
 		  next
-		  nbp = nbp.constructshape(fa,fo)
+		  nbp.constructshape(fa,fo)
 		  
 		End Sub
 	#tag EndMethod

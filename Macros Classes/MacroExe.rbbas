@@ -39,7 +39,7 @@ Inherits MultipleSelectOperation
 		Function SetItem(s as shape) As Boolean
 		  RealInit.append s.id
 		  RealSide.append side
-		  's.init = true
+		  s.init = true
 		  return true
 		End Function
 	#tag EndMethod
@@ -89,13 +89,13 @@ Inherits MultipleSelectOperation
 		  dim pt as Point
 		  
 		  
-		  codesoper = Array(0,1,14,16,19,28,35,37,39,17,24,25,26,27,45)  //codes des opérations
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,17,24,25,26,27,43,45)  //codes des opérations
 		  
 		  
 		  for i = 0 to Histo.Childcount-1  // i: numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
 		    if EL.Name = Dico.Value("Operation") then
-		                             //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
+		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
 		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
 		      if codesoper.indexof(oper) = -1 then
 		        return
@@ -115,14 +115,16 @@ Inherits MultipleSelectOperation
 		      if Mac.ObInit.indexof(n) <> -1 then
 		        ifmac.RealId =RealInit(Mac.ObInit.indexof(n))
 		        ifmac.init = true
+		        s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		        ifmac.coord = s.coord
 		      end if
 		      if Mac.ObInterm.indexof(n) <> -1 then
 		        ifmac.interm = true
 		      end if
 		      if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
 		        CreateFinal(oper,ifmac,EL0)
-		        ifmac.RealId = RealFinal(Mac.ObFinal.indexof(n)) 
-		        ifmac.final = true               
+		        ifmac.RealId = RealFinal(Mac.ObFinal.indexof(n))
+		        ifmac.final = true
 		      end if
 		      MacInfo.IfMacs.append ifmac
 		      
