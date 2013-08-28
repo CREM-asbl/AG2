@@ -262,10 +262,8 @@ Inherits Application
 		    return
 		  #endif
 		  
-		  'fusionner checkInfo et CheckUpdate ? ainsi une seule connexion ?
 		  api.init
-		  api.checkInfo
-		  api.checkUpdate
+		  api.Connect
 		  
 		End Sub
 	#tag EndMethod
