@@ -1,26 +1,17 @@
 #tag Module
 Protected Module api
 	#tag Method, Flags = &h0
-		Sub AfficherReponse()
-		  dim date as Date
+		Sub AfficherInfo(EL as XmlNode)
 		  dim info as String
-		  dim EL as XmlNode
-		  dim doc as XmlDocument
 		  dim validite, version as String
 		  
-		  try
-		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))
-		    EL = doc.FirstChild
-		    info = EL.FirstChild.FirstChild.Value
-		    validite  = EL.Child(1).FirstChild.value
-		    version = str(App.MajorVersion)+str(App.MinorVersion)+str(App.BugVersion)
-		    if version < validite and info<>Config.LastInfo  then
-		      msgBox EL.LastChild.FirstChild.Value
-		      Config.LastInfo = info
-		    end if
-		  catch err as XmlException
-		  end try
-		  
+		  info = EL.FirstChild.FirstChild.Value
+		  validite  = EL.Child(1).FirstChild.value
+		  version = str(App.MajorVersion)+str(App.MinorVersion)+str(App.BugVersion)
+		  if version < validite and info<>Config.LastInfo  then
+		    msgBox EL.LastChild.FirstChild.Value
+		    Config.LastInfo = info
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -33,42 +24,41 @@ Protected Module api
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub checkInfo()
+		Sub updateDone()
 		  if http = Nil then
 		    return
 		  end if
 		  
-		  response = http.Post("www.crem.be/api/data/info.xml",timeout)
-		  
-		  if response <>"" then
-		    AfficherReponse
-		  end if
+		  response = http.Post(url+"?action=updateDone&os="+app.sys,timeout)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub checkUpdate()
+		Sub Connect()
 		  if http = Nil then
 		    return
 		  end if
 		  
-		  response = http.Post(url+"?version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
+		  dim EL as XmlNode
+		  dim doc as XmlDocument
+		  dim update As string
 		  
-		  if response<> "" then
-		    dim GuW As GetUpdateW
-		    GuW = new GetUpdateW(response)
-		    GuW.ShowModal
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub getUpdate()
-		  if http = Nil then
-		    return
-		  end if
+		  response = http.Post(url+"?action=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
 		  
-		  response = http.Post(url+"?action=update&os="+app.sys,timeout)
+		  try
+		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))
+		    EL = doc.FirstChild
+		    AfficherInfo(EL.FirstChild)
+		    update = EL.LastChild.FirstChild.value
+		    if update <> "" then
+		      dim GuW As GetUpdateW
+		      GuW = new GetUpdateW(update)
+		      GuW.ShowModal
+		    end if
+		  catch err as XmlException
+		  end try
+		  
+		  
 		End Sub
 	#tag EndMethod
 
