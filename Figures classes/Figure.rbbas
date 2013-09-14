@@ -2278,7 +2278,7 @@ Implements StringProvider
 		  for i = 0 to somm.count-1
 		    if  point(somm.element(i))  <> p and PointsFixes.IndexOf(i) = -1 and (PtsConsted.GetPosition(somm.element(i)) = -1) and nff(i) = nf and ListPtsModifs.IndexOf(i) = -1 then
 		      Ptfx.append i
-		      dist.append  ep.distance(point(somm.element(i)).bpt)
+		      dist.append     ubound(point(somm.element(i)).parents)    '      ep.distance(point(somm.element(i)).bpt)
 		    end if
 		  next
 		  
