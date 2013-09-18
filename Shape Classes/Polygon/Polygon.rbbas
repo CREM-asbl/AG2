@@ -716,6 +716,12 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function check() As Boolean
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
