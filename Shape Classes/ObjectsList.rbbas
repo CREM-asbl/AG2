@@ -1334,6 +1334,18 @@ Protected Class ObjectsList
 			InitialValue="0"
 			Type="Boolean"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CreerTrace"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="tracept"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass
