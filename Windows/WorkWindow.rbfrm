@@ -116,7 +116,7 @@ Begin Window WorkWindow
          Caption         =   "Mouvements"
          ControlOrder    =   4
          Enabled         =   True
-         Height          =   154
+         Height          =   152
          HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tools"
@@ -130,7 +130,7 @@ Begin Window WorkWindow
          TabPanelIndex   =   0
          TextFont        =   "System"
          TextSize        =   0
-         Top             =   60
+         Top             =   61
          Underline       =   ""
          Visible         =   True
          Width           =   112
@@ -157,7 +157,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   84
+            Top             =   85
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -185,7 +185,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   144
+            Top             =   145
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -213,7 +213,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   174
+            Top             =   175
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -232,7 +232,7 @@ Begin Window WorkWindow
             Index           =   2
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   5
+            Left            =   7
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -241,7 +241,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   112
+            Top             =   115
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -268,7 +268,7 @@ Begin Window WorkWindow
          TabPanelIndex   =   0
          TextFont        =   "System"
          TextSize        =   0
-         Top             =   214
+         Top             =   215
          Underline       =   ""
          Visible         =   True
          Width           =   112
@@ -292,7 +292,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   239
+            Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -317,7 +317,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   239
+            Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -342,7 +342,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   291
+            Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -367,7 +367,7 @@ Begin Window WorkWindow
             LockTop         =   ""
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   291
+            Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -394,7 +394,7 @@ Begin Window WorkWindow
          TabPanelIndex   =   0
          TextFont        =   "System"
          TextSize        =   0
-         Top             =   349
+         Top             =   352
          Underline       =   ""
          Visible         =   True
          Width           =   112
@@ -418,7 +418,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   378
+            Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -443,7 +443,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   430
+            Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -468,7 +468,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   378
+            Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -493,7 +493,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   430
+            Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -518,7 +518,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   482
+            Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -543,7 +543,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   482
+            Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -568,7 +568,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   534
+            Top             =   537
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -588,7 +588,7 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   ""
-         Left            =   0
+         Left            =   1
          LockBottom      =   ""
          LockLeft        =   ""
          LockRight       =   ""
@@ -2559,14 +2559,18 @@ End
 	#tag Method, Flags = &h0
 		Sub UpdateToolBar()
 		  dim espace as integer
-		  
 		  espace = min((me.Height-me.MinHeight)/3,50)
-		  
+		  if(me.Height = me.MinHeight) then
+		    MoveBox.TextSize = 8
+		    StdBox.TextSize = 8
+		    LibBox.TextSize = 8
+		    espace = espace+2
+		  end if
 		  MoveBox.Top = 60+espace
-		  
 		  StdBox.top = MoveBox.top+MoveBox.Height+espace
-		  
 		  LibBox.Top = StdBox.top+StdBox.Height+espace
+		  
+		  
 		  
 		  
 		  

@@ -29,7 +29,7 @@ Protected Module api
 		    return
 		  end if
 		  
-		  response = http.Post(url+"?action=updateDone&os="+app.sys,timeout)
+		  response = http.Post(url+"?method=updateDone&os="+app.sys,timeout)
 		End Sub
 	#tag EndMethod
 
@@ -43,7 +43,7 @@ Protected Module api
 		  dim doc as XmlDocument
 		  dim update As string
 		  
-		  response = http.Post(url+"?action=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
+		  response = http.Post(url+"?method=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
 		  
 		  try
 		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))
