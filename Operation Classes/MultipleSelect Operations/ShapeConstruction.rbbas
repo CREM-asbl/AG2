@@ -176,7 +176,11 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  if currentshape <> nil and not currentshape isa repere then
-		    curshape = currentshape.points(currentshape.IndexConstructedPoint)
+		    if not currentshape isa point then
+		      curshape = currentshape.points(currentshape.IndexConstructedPoint)
+		    else
+		      curshape = point(currentshape)
+		    end if
 		    if currentattractingshape <> nil then
 		      currentattractingshape.paint(g)
 		      if currentattractingshape isa point or currentattractingshape isa repere then
