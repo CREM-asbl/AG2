@@ -494,7 +494,7 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="loc"
+			Name="side"
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"

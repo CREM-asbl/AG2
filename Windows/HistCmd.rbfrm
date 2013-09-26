@@ -30,7 +30,7 @@ Begin Window HistCmd
       AcceptTabs      =   ""
       AutoDeactivate  =   "True"
       ControlOrder    =   0
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   22
       HelpTag         =   ""
