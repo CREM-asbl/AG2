@@ -50,7 +50,9 @@ Protected Module api
 		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))
 		    EL = doc.FirstChild
 		    AfficherInfo(EL.FirstChild)
-		    update = EL.LastChild.FirstChild.value
+		    if EL.LastChild.FirstChild <> nil then
+		      update = EL.LastChild.FirstChild.value
+		    end if
 		    if update <> "" then
 		      dim GuW As GetUpdateW
 		      GuW = new GetUpdateW(update)
