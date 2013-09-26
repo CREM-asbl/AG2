@@ -168,7 +168,7 @@ Inherits SelectOperation
 		  dim q, MagneticD as BasicPoint
 		  dim FirstAttractedPoint, SecondAttractedPoint, Pt, p as Point
 		  dim i,j, Magnetism as Integer
-		  dim M as Matrix
+		  dim M as SimilarityMatrix
 		  dim Pol, s, s0 as Shape
 		  
 		  if (not  CurrentAttractedShape isa point) or (not CurrentAttractingshape isa point) or (CurrentAttractedshape.fig = Currentattractingshape.fig)  then
@@ -205,11 +205,10 @@ Inherits SelectOperation
 		  if q.distance(Pt.bpt) <= 4*epsilon then
 		    q = Pt.bpt
 		  end if
-		  'Angle=GetAngle(FirstAttractedPoint.bpt,q)-GetAngle(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt)
 		  M = new SimilarityMatrix(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt, Firstattractedpoint.bpt,q)
 		  figs.Bouger(M)
 		  RotationPoint=FirstAttractedPoint
-		  'updateangles(Angle)
+		  updateangles(M.angle)
 		  return M
 		  
 		  

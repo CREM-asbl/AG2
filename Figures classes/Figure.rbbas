@@ -993,19 +993,19 @@ Implements StringProvider
 		    p = Point(somm.element(i))
 		    p.Transform(M)
 		    p.modified = true
-		    if  p.pointsur.count = 1 then
-		      sh = p.pointsur.element(0)
-		      if sh isa droite then
-		        t = droite(sh).pinshape(p.bpt)
-		      else
-		        t =  (sh.pointonside(p.bpt) <> -1)
-		      end if
-		      if  t then
-		        p.valider
-		      else
-		        p.invalider
-		      end if
-		    end if
+		    'if  p.pointsur.count = 1 then
+		    'sh = p.pointsur.element(0)
+		    'if sh isa droite then
+		    't = droite(sh).pinshape(p.bpt)
+		    'else
+		    't =  (sh.pointonside(p.bpt) <> -1)
+		    'end if
+		    'if  t then
+		    'p.valider
+		    'else
+		    'p.invalider
+		    'end if
+		    'end if
 		    p.updateshape
 		    if  p.pointsur.count = 0 then
 		      p.unmodifiable = true
@@ -1448,6 +1448,12 @@ Implements StringProvider
 		  if shapes.element(0).tobereconstructed = true then
 		    return true
 		  end if
+		  
+		  'for i = 0 to shapes.count-1
+		  'if not shapes.element(i).check then
+		  'return false
+		  'end if
+		  'next
 		  
 		  t = true
 		  for i = 0 to somm.count-1
@@ -2278,7 +2284,7 @@ Implements StringProvider
 		  for i = 0 to somm.count-1
 		    if  point(somm.element(i))  <> p and PointsFixes.IndexOf(i) = -1 and (PtsConsted.GetPosition(somm.element(i)) = -1) and nff(i) = nf and ListPtsModifs.IndexOf(i) = -1 then
 		      Ptfx.append i
-		      dist.append  ep.distance(point(somm.element(i)).bpt)
+		      dist.append ubound(point(somm.element(i)).parents)
 		    end if
 		  next
 		  

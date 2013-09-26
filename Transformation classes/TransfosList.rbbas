@@ -8,7 +8,7 @@ Protected Class TransfosList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetPosition(tsf as transformation) As Integer
+		Function GetPosition(tsf as Transformation) As Integer
 		  
 		  dim i as Integer
 		  

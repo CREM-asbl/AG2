@@ -676,7 +676,11 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function Equal(tsf as Transformation) As Boolean
-		  return (Type = tsf.type) and (supp = tsf.supp) and (ori = tsf.ori) and (index = tsf.index)
+		  if type = 0 then
+		    return (tsf.type = 0) and (supp=tsf.supp) and (index = tsf.index) and (constructedshapes.element(0) = tsf.constructedshapes.element(0))
+		  else
+		    return (Type = tsf.type) and (supp = tsf.supp) and (ori = tsf.ori) and (index = tsf.index)
+		  end if
 		End Function
 	#tag EndMethod
 

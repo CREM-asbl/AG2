@@ -112,7 +112,7 @@ Inherits Polygon
 		  dim p as BasicPoint
 		  
 		  g = getgravitycenter
-		  M = new RotationMatrix (g, ori*2*PI/Npts)
+		  M = new RotationMatrix (g, 2*PI/Npts)
 		  
 		  t = true
 		  p = Points(0).bpt

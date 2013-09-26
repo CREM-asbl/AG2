@@ -131,46 +131,65 @@ Inherits MultipleSelectOperation
 		  dim magneticD As BasicPoint
 		  dim magnetism as Integer
 		  
-		  if currentShape<>nil then
-		    CurrentShape.Fixecoord(p, Currentshape.IndexConstructedPoint)
-		    magnetism = Magnetisme(currentshape,magneticD)
-		    if currentshape isa point and currentattractingshape  isa point then
-		      reinitattraction
-		      magnetism =0
-		      return
+		  if currentShape = nil then
+		    return
+		  end  if
+		  
+		  ReinitAttraction
+		  CurrentShape.Fixecoord(p, Currentshape.IndexConstructedPoint)
+		  magnetism = Magnetisme(currentshape,magneticD)
+		  if currentshape isa point and currentattractingshape  isa point then
+		    magnetism =0
+		    return
+		  end if
+		  if magnetism>0 then
+		    if currentshape isa point   then
+		      currentattractedshape = currentshape
+		    else
+		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
-		    if magnetism>0 then
-		      if currentshape isa point   then
-		        currentattractedshape = currentshape
-		      else
-		        currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
+		    CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
+		    if not(currentattractingshape isa point) and nextcurrentattractingshape <> nil and not(nextcurrentattractingshape isa point) then
+		      point(currentattractedshape).adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
+		      if currentattractedshape.invalid then
+		        nextcurrentattractingshape.unhighlight
+		        nextcurrentattractingshape = nil
+		        point(currentattractedshape).valider
 		      end if
-		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
-		      ShowAttraction
 		    end if
 		  end if
-		  'wnd.mycanvas1.RefreshBackground
+		  ShowAttraction
+		  wnd.mycanvas1.RefreshBackground
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
+		  dim curshape as point
+		  
 		  if (currentshape isa point and currentattractingshape <> nil and currentattractingshape isa point)  then
 		    return
 		  end if
 		  
 		  display = ""
 		  
+		  
 		  if currentshape <> nil and not currentshape isa repere then
+		    if not currentshape isa point then
+		      curshape = currentshape.points(currentshape.IndexConstructedPoint)
+		    else
+		      curshape = point(currentshape)
+		    end if
 		    if currentattractingshape <> nil then
 		      currentattractingshape.paint(g)
 		      if currentattractingshape isa point or currentattractingshape isa repere then
 		        display  = thispoint + "?"
 		      elseif nextcurrentattractingshape <> nil then
+		        curshape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
 		        display = attheinter + "?"
 		      else
-		        display = ontheline + "?"
+		        display = sur + this + " " +currentattractingshape.gettype +"?"
 		      end if
 		    else
 		      if currentshape.std then
@@ -180,6 +199,7 @@ Inherits MultipleSelectOperation
 		      end if
 		    end if
 		    
+		    showattraction
 		    Help g, display
 		    
 		    if  (not currentshape.std or wnd.stdflag) then
@@ -340,6 +360,7 @@ Inherits MultipleSelectOperation
 		  dim magneticD as BasicPoint
 		  dim magnetism as integer
 		  
+		  'curshape.valider
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then
@@ -348,15 +369,15 @@ Inherits MultipleSelectOperation
 		      if NextCurrentAttractingShape <> nil then
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig
 		        curShape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
-		        if curshape.invalid then
-		          CurrentContent.thefigs.addfigure NextCurrentAttractingShape.fig
-		          curshape.valider
-		          curshape.puton currentattractingshape
-		          NextCurrentAttractingShape.Attracting = false
-		          NextCurrentAttractingShape = nil
-		          magnetism = Magnetisme(currentshape,magneticD)
-		          AdjustMagnetism(curshape)
-		        end if
+		        'if curshape.invalid then
+		        'CurrentContent.thefigs.addfigure NextCurrentAttractingShape.fig
+		        'curshape.valider
+		        'curshape.puton currentattractingshape
+		        'NextCurrentAttractingShape.Attracting = false
+		        'NextCurrentAttractingShape = nil
+		        'magnetism = Magnetisme(currentshape,magneticD)
+		        'AdjustMagnetism(curshape)
+		        'end if
 		      else
 		        curshape.puton currentattractingshape
 		      end if

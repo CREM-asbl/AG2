@@ -244,6 +244,9 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub ReinitAttraction()
+		  
+		  'currentcontent.TheObjects.UnHighlightall
+		  
 		  if CurrentAttractedShape<>nil then
 		    CurrentAttractedShape.UnHighLight
 		    CurrentAttractedShape=nil
