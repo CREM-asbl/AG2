@@ -35,7 +35,7 @@ Begin Window WorkWindow
       ControlOrder    =   0
       ctxt            =   0
       drapzone        =   0
-      Enabled         =   "True"
+      Enabled         =   True
       EraseBackground =   "True"
       FondsEcran      =   0
       Height          =   592
@@ -55,7 +55,7 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       Top             =   0
       UseFocusRing    =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   676
       BehaviorIndex   =   0
    End
@@ -64,7 +64,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   0
       ControlOrder    =   1
-      Enabled         =   "True"
+      Enabled         =   True
       FillColor       =   12632256
       Height          =   595
       HelpTag         =   ""
@@ -79,7 +79,7 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       Top             =   0
       TopLeftColor    =   0
-      Visible         =   "True"
+      Visible         =   True
       Width           =   122
       BehaviorIndex   =   1
       Begin PushButton PushButton1
@@ -89,7 +89,7 @@ Begin Window WorkWindow
          Caption         =   ""
          ControlOrder    =   2
          Default         =   ""
-         Enabled         =   "True"
+         Enabled         =   True
          Height          =   30
          HelpTag         =   ""
          Index           =   -2147483648
@@ -106,9 +106,9 @@ Begin Window WorkWindow
          TextSize        =   0
          Top             =   0
          Underline       =   ""
-         Visible         =   "True"
+         Visible         =   True
          Width           =   120
-         BehaviorIndex   =   8
+         BehaviorIndex   =   2
       End
       Begin PushButton MouvBut
          AutoDeactivate  =   "True"
@@ -117,7 +117,7 @@ Begin Window WorkWindow
          Caption         =   "Modifier"
          ControlOrder    =   3
          Default         =   ""
-         Enabled         =   "True"
+         Enabled         =   True
          Height          =   30
          HelpTag         =   ""
          Index           =   0
@@ -134,16 +134,16 @@ Begin Window WorkWindow
          TextSize        =   0
          Top             =   30
          Underline       =   ""
-         Visible         =   "True"
+         Visible         =   True
          Width           =   120
-         BehaviorIndex   =   2
+         BehaviorIndex   =   3
       End
       Begin GroupBox MoveBox
          AutoDeactivate  =   "True"
          Bold            =   "True"
          Caption         =   "Mouvements"
          ControlOrder    =   4
-         Enabled         =   "True"
+         Enabled         =   True
          Height          =   152
          HelpTag         =   ""
          Index           =   -2147483648
@@ -160,9 +160,9 @@ Begin Window WorkWindow
          TextSize        =   0
          Top             =   61
          Underline       =   ""
-         Visible         =   "True"
+         Visible         =   True
          Width           =   112
-         BehaviorIndex   =   3
+         BehaviorIndex   =   4
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
             Bold            =   "True"
@@ -170,7 +170,7 @@ Begin Window WorkWindow
             Caption         =   "Glisser"
             ControlOrder    =   5
             Default         =   ""
-            Enabled         =   "True"
+            Enabled         =   True
             Height          =   30
             HelpTag         =   ""
             Index           =   1
@@ -187,9 +187,9 @@ Begin Window WorkWindow
             TextSize        =   0
             Top             =   85
             Underline       =   ""
-            Visible         =   "True"
+            Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -198,7 +198,7 @@ Begin Window WorkWindow
             Caption         =   "Tourner"
             ControlOrder    =   6
             Default         =   ""
-            Enabled         =   "True"
+            Enabled         =   True
             Height          =   30
             HelpTag         =   ""
             Index           =   2
@@ -215,9 +215,9 @@ Begin Window WorkWindow
             TextSize        =   0
             Top             =   115
             Underline       =   ""
-            Visible         =   "True"
+            Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -226,7 +226,7 @@ Begin Window WorkWindow
             Caption         =   "Retourner"
             ControlOrder    =   7
             Default         =   ""
-            Enabled         =   "True"
+            Enabled         =   True
             Height          =   30
             HelpTag         =   ""
             Index           =   3
@@ -243,9 +243,9 @@ Begin Window WorkWindow
             TextSize        =   0
             Top             =   145
             Underline       =   ""
-            Visible         =   "True"
+            Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -254,7 +254,7 @@ Begin Window WorkWindow
             Caption         =   "Zoomer"
             ControlOrder    =   8
             Default         =   ""
-            Enabled         =   "True"
+            Enabled         =   True
             Height          =   30
             HelpTag         =   ""
             Index           =   4
@@ -271,9 +271,9 @@ Begin Window WorkWindow
             TextSize        =   0
             Top             =   175
             Underline       =   ""
-            Visible         =   "True"
+            Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
       End
       Begin GroupBox StdBox
@@ -281,7 +281,7 @@ Begin Window WorkWindow
          Bold            =   "True"
          Caption         =   "Formes Standard"
          ControlOrder    =   9
-         Enabled         =   "True"
+         Enabled         =   True
          Height          =   135
          HelpTag         =   ""
          Index           =   -2147483648
@@ -298,16 +298,16 @@ Begin Window WorkWindow
          TextSize        =   0
          Top             =   215
          Underline       =   ""
-         Visible         =   "True"
+         Visible         =   True
          Width           =   112
-         BehaviorIndex   =   4
+         BehaviorIndex   =   5
          Begin Canvas StdOutil
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
             AutoDeactivate  =   "False"
             Backdrop        =   0
             ControlOrder    =   10
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -322,9 +322,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   240
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
@@ -332,7 +332,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   0
             ControlOrder    =   11
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -347,9 +347,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   240
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
@@ -357,7 +357,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   0
             ControlOrder    =   12
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -372,9 +372,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   292
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
          End
          Begin Canvas StdOutil
             AcceptFocus     =   ""
@@ -382,7 +382,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   ""
             ControlOrder    =   13
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -397,9 +397,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   292
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   5
+            BehaviorIndex   =   6
          End
       End
       Begin GroupBox LibBox
@@ -407,7 +407,7 @@ Begin Window WorkWindow
          Bold            =   "True"
          Caption         =   "Formes Libres"
          ControlOrder    =   14
-         Enabled         =   "True"
+         Enabled         =   True
          Height          =   238
          HelpTag         =   ""
          Index           =   -2147483648
@@ -424,16 +424,16 @@ Begin Window WorkWindow
          TextSize        =   0
          Top             =   352
          Underline       =   ""
-         Visible         =   "True"
+         Visible         =   True
          Width           =   112
-         BehaviorIndex   =   6
+         BehaviorIndex   =   7
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   1344944127
             ControlOrder    =   15
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -448,9 +448,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   381
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -458,7 +458,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   8007679
             ControlOrder    =   16
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -473,9 +473,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   433
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -483,7 +483,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   1584048127
             ControlOrder    =   17
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -498,9 +498,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   381
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -508,7 +508,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   952131583
             ControlOrder    =   18
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -523,9 +523,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   433
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -533,7 +533,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   115009535
             ControlOrder    =   19
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -548,9 +548,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   485
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -558,7 +558,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   623656959
             ControlOrder    =   20
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -573,9 +573,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   485
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -583,7 +583,7 @@ Begin Window WorkWindow
             AutoDeactivate  =   "True"
             Backdrop        =   454606847
             ControlOrder    =   21
-            Enabled         =   "True"
+            Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
@@ -598,9 +598,9 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             Top             =   537
             UseFocusRing    =   "True"
-            Visible         =   "True"
+            Visible         =   True
             Width           =   50
-            BehaviorIndex   =   7
+            BehaviorIndex   =   8
          End
       End
    End
@@ -638,7 +638,7 @@ End
 		  select case asc(Key)
 		  case 59    ' ;
 		    config
-		  case 36 '$
+		  case 181 'µ
 		    stdflag = not stdflag
 		  case   163  //shift "µ"
 		    if CurrentContent.currentoperation <> nil then
@@ -662,6 +662,10 @@ End
 		    tw = new textwindow
 		    tw.source2 = true  //fag
 		    tw.visible = true
+		  case 42
+		    increasedecimals
+		  case 36
+		    decreasedecimals
 		  case 99  'c
 		    switchcolors
 		  case 100 'd
@@ -2584,6 +2588,34 @@ End
 		    MouvBut(i) .visible = Config.MvBt(i)
 		  next
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub increasedecimals()
+		  dim lab as Label
+		  dim i, j as integer
+		  for i = 1 to currentcontent.TheObjects.count-1
+		    for j = 0 to  currentcontent.TheObjects.element(i).labs.count-1
+		      Lab = currentcontent.TheObjects.element(i).labs.element(j)
+		      lab.p =Lab.p +1
+		    next 
+		  next
+		  wnd.mycanvas1.refreshbackground
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub decreasedecimals()
+		  dim lab as Label
+		  dim i, j as integer
+		  for i = 1 to currentcontent.TheObjects.count-1
+		    for j = 0 to  currentcontent.TheObjects.element(i).labs.count-1
+		      Lab = currentcontent.TheObjects.element(i).labs.element(j)
+		      lab.p = Lab.p -1
+		    next
+		  next
+		  wnd.mycanvas1.refreshbackground
 		End Sub
 	#tag EndMethod
 

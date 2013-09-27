@@ -32,6 +32,10 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
 		  
+		  if currentshape = nil then
+		    return
+		  end if
+		  
 		  if currentshape isa repere then
 		    Lab = Currentshape.Labs.GetLab(wnd.Mycanvas1.MouseUser)
 		  else
@@ -139,14 +143,15 @@ Inherits SelectAndDragOperation
 		  if finished = false then
 		    return
 		  end if
-		  
+		  Currentshape = nil
+		  loc = -1
 		  if currenthighlightedshape <> nil then
 		    currenthighlightedshape.unhighlight
 		    currenthighlightedshape.tsp = false
 		    currenthighlightedshape.dounselect
 		  end if
 		  Currentshape = GetShape(p) //retourne par priorité les points, ensuite les formes
-		  if ( loc = -1) or ( currentshape isa arc and loc = 0)  then
+		  if loc = -1 then
 		    currenthighlightedshape = currentshape   'on n'a pas choisi un cote de polygone, ni de bande, ni de secteur
 		  end if
 		  
@@ -287,7 +292,9 @@ Inherits SelectAndDragOperation
 		Sub MouseUp(p as BasicPoint)
 		  dim pos as basicPoint
 		  
-		  lab.MouseCorrection(p)
+		  if lab <> nil then
+		    lab.MouseCorrection(p)
+		  end if
 		  Lw = new LabelWindow
 		  Lw.ShowModal
 		  
@@ -307,8 +314,9 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDrag(p as BasicPoint)
-		  
-		  Lab.MouseCorrection(P)
+		  if lab <> nil then
+		    Lab.MouseCorrection(P)
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -319,9 +327,12 @@ Inherits SelectAndDragOperation
 		  
 		  s = Operation.GetShape(p)
 		  
+		  if s <> nil  then
+		    loc = s.PointOnSide(p)
+		  end if
 		  
-		  if s = nil then
-		    s= wnd.mycanvas1.getrepere
+		  if s = nil or (s isa arc and loc <> 0)  then
+		    return wnd.mycanvas1.getrepere
 		  end if
 		  
 		  if s isa cube then
@@ -340,6 +351,9 @@ Inherits SelectAndDragOperation
 		  else
 		    loc = -1
 		  end if
+		  'if loc = -1 and s isa arc then
+		  'return nil
+		  'end if
 		  return s
 		End Function
 	#tag EndMethod
