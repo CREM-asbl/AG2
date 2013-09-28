@@ -3860,6 +3860,32 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub increasedecimals()
+		  dim i as integer
+		  dim lab as label
+		  
+		  for i = 0 to labs.count-1
+		    Lab = labs.element(i)
+		    lab.p =Lab.p +1
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub decreasedecimals()
+		  dim i as integer
+		  dim lab as label
+		  
+		  for i = 0 to labs.count-1
+		    Lab = labs.element(i)
+		    if lab.p >= 1 then
+		      lab.p =Lab.p -1
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Formes
 		

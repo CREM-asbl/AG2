@@ -457,7 +457,11 @@ Protected Class Label
 		  if b then
 		    s1 = "-"+s1
 		  end if
-		  return s1+","+s2
+		  if s2 ="" then
+		    return s1
+		  else
+		    return s1+","+s2
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -698,6 +702,12 @@ Protected Class Label
 			Group="Behavior"
 			InitialValue="&h000000"
 			Type="Color"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="p"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

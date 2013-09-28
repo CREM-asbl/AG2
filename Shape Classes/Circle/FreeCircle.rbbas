@@ -169,6 +169,7 @@ Inherits Circle
 		  else
 		    Points(1).moveto p
 		    CreateExtreAndCtrlPoints
+		    updateskull
 		  end if
 		  
 		End Sub

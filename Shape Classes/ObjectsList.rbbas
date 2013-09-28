@@ -1238,6 +1238,26 @@ Protected Class ObjectsList
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub increasedecimals()
+		  dim i as integer
+		  
+		  for i = 1 to count-1
+		    element(i).increasedecimals
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub decreasedecimals()
+		  dim i as integer
+		  
+		  for i = 1 to count-1
+		    element(i).decreasedecimals
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
