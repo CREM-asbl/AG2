@@ -263,7 +263,7 @@ Inherits Application
 		  #endif
 		  
 		  api.init
-		  'api.Connect
+		  api.Connect
 		  
 		End Sub
 	#tag EndMethod
