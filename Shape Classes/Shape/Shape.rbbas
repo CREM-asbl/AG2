@@ -4173,6 +4173,10 @@ Implements StringProvider
 		nsk As nskull
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		NotPossibleCut As Boolean
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
