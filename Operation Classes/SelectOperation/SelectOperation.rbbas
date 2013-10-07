@@ -388,7 +388,6 @@ Implements StringProvider
 		  
 		  Figs = new FigsList
 		  Finished = true   //Ceci ne devrait-il pas être la dernière instruction du "DoOperation"?
-		  wnd.MyCanvas1.refresh
 		  wnd.mycanvas1.mousecursor = ArrowCursor
 		  
 		  
