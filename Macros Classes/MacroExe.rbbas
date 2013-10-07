@@ -37,8 +37,8 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
-		  RealInit.append s.id
-		  RealSide.append side
+		  MacInfo.RealInit.append s.id
+		  MacInfo.RealSide.append side
 		  s.init = true
 		  return true
 		End Function
@@ -56,8 +56,8 @@ Inherits MultipleSelectOperation
 		    display = choose + un + " " +str
 		  else
 		    if side <> -1 then
-		      'CurrentHighlightedShape = nil
-		      currentshape.highlightsegment(g, side)
+		      polygon(currentshape).paintside(g,side,2,config.highlightcolor)
+		      currentshape.unhighlight
 		      obj = lowercase(segment)
 		    else
 		      obj = lowercase(currenthighlightedshape.gettype)
@@ -92,20 +92,20 @@ Inherits MultipleSelectOperation
 		  codesoper = Array(0,1,14,16,19,28,35,37,39,17,24,25,26,27,43,45)  //codes des opérations
 		  
 		  
-		  for i = 0 to Histo.Childcount-1  // i: numéro de l'opération
+		  for i = 0 to Histo.Childcount-1  // i : numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
-		    if EL.Name = Dico.Value("Operation") then
+		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction ? prévoir le cas contraire!
 		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
 		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
 		      if codesoper.indexof(oper) = -1 then
 		        return
 		      end if
-		      //est-ce une opération de construction ? prévoir le cas contraire!
-		      n = val(EL.Child(0).GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
+		      EL0 = XMLElement(EL.Child(0))
+		      n = val(EL0.GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
 		      if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
 		        return
 		      end if
-		      EL0 = XMLElement(EL.Child(0))
+		      
 		      fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		      fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		      ifmac = new InfoMac(fa, fo)
@@ -113,7 +113,7 @@ Inherits MultipleSelectOperation
 		      ifmac.MacId = n
 		      
 		      if Mac.ObInit.indexof(n) <> -1 then
-		        ifmac.RealId =RealInit(Mac.ObInit.indexof(n))
+		        ifmac.RealId =MacInfo.RealInit(Mac.ObInit.indexof(n))
 		        ifmac.init = true
 		        s = currentcontent.TheObjects.GetShape(ifmac.RealId)
 		        ifmac.coord = s.coord
@@ -123,16 +123,17 @@ Inherits MultipleSelectOperation
 		      end if
 		      if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
 		        CreateFinal(oper,ifmac,EL0)
-		        ifmac.RealId = RealFinal(Mac.ObFinal.indexof(n))
+		        ifmac.RealId = MacInfo.RealFinal(Mac.ObFinal.indexof(n))
 		        ifmac.final = true
 		      end if
 		      MacInfo.IfMacs.append ifmac
-		      
 		    end if
 		  next
+		  
 		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
-		  for i = 0 to ubound(RealFinal)           //Création des skulls des objets finaux
-		    n = RealFinal(i)
+		  
+		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
+		    n = MacInfo.RealFinal(i)
 		    s = objects.GetShape(n)
 		    if s isa point then
 		      s.createskull(point(s).bpt)
@@ -252,7 +253,7 @@ Inherits MultipleSelectOperation
 		  if sh = nil then
 		    return nil
 		  end if
-		  side = index(iobj)  // side <> -1 ssi on achoisi un côté de polygone
+		  side = index(iobj)  // side <> -1 ssi on a choisi un côté de polygone
 		  return sh
 		  
 		  
@@ -269,8 +270,8 @@ Inherits MultipleSelectOperation
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		  newshape.initconstruction
 		  newshape.MacConstructedBy = MacInfo
-		  for i = 0 to ubound(realinit)
-		    s = currentcontent.Theobjects.getshape(realinit(i))
+		  for i = 0 to ubound(MacInfo.Realinit)
+		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
 		    s.addMacConstructedshape newshape
 		  next
 		  
@@ -284,35 +285,25 @@ Inherits MultipleSelectOperation
 		      
 		      p = -1
 		      index = -1
-		      Mac.GetInfoSommet(m, pid, index, fa , fo)  //pid est la Macro-Id du premier parent dans la macro du point associé à newshape.points(j). Normalement p <> -1
+		      Mac.GetInfoSommet(m, pid, index, fa , fo)  //pid est la Macro-Id du premier parent dans la macro du point associé à newshape.points(j). Normalement pid <> -1
 		      //On peut avoir m = pid si le point associé à newshape.points(j) est un point isolé
 		      //index est le  numéro de newshape.points(j) dans ce premier parent (fa et fo sont relatifs au parent)
 		      p = Mac.ObInit.indexof(pid)
 		      
 		      if p <> -1 then                                                                     //points(j) appartient à un objet initial ou est un objet initial
-		        n = RealInit(p)                                                 //p est l'id de l'objet initial en question
+		        n = MacInfo.RealInit(p)                                                                 //p est l'id de l'objet initial en question
 		        s = currentcontent.TheObjects.GetShape(n)             // s est cet objet initial
 		        
-		        if m = pid then                          //newshape.points(j) correspond à un point initial isolé
+		        if index = 0  then                          //newshape.points(j) correspond à un point initial isolé
 		          pt = point(s)
 		          newshape.substitutepoint(pt,newshape.points(j))
-		        else
-		          side = RealSide(p)              //side est le numéro du côté de l'objet initial réel
-		          ifmac.side = side
 		          
-		          
-		          if side <> -1 then
-		            pt = s.points((index+side) mod s.npts)  //utile si l'objet initial de la macro est un segment et l'objet initial réel un polygone
-		          else
-		            pt = s.points(index)
-		          end if
-		          newshape.substitutepoint(pt,newshape.points(j))
 		        end if
 		      end if
 		    next
 		  end select
 		  currentcontent.addshape newshape
-		  RealFinal.append newshape.id
+		  MacInfo.RealFinal.append newshape.id
 		  
 		  
 		End Sub
@@ -349,18 +340,6 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		str As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealInit() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealSide() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealFinal() As Integer
 	#tag EndProperty
 
 

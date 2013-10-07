@@ -109,9 +109,9 @@ Inherits MultipleSelectOperation
 		    else
 		      AddInterm(s)
 		      for i = 0 to s.ncpts-1
-		        'if s.id > s.points(i).id then
-		        identifyinit(s.points(i))
-		        'end if
+		        if s.id > s.points(i).id then
+		          identifyinit(s.points(i))
+		        end if
 		      next
 		    end if
 		    if s.constructedby <> nil then

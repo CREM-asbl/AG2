@@ -560,14 +560,16 @@ Protected Class Macro
 		        return
 		      else
 		        EL1= XMLElement(EL0.Child(0))
-		        for j = 0 to EL1.Childcount -1
-		          EL2 = XMLElement(EL1.Child(j))
-		          n = val(EL2.GetAttribute("Id"))
-		          if n = mid then
-		            index = j
-		            return
-		          end if
-		        next
+		        if EL1 <> nil and EL1.Childcount > 0 then
+		          for j = 0 to EL1.Childcount -1
+		            EL2 = XMLElement(EL1.Child(j))
+		            n = val(EL2.GetAttribute("Id"))
+		            if n = mid then
+		              index = j
+		              return
+		            end if
+		          next
+		        end if  
 		      end if
 		      
 		    end if
