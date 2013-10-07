@@ -2565,6 +2565,10 @@ End
 		    StdBox.TextSize = 8
 		    LibBox.TextSize = 8
 		    espace = espace+2
+		  else
+		    MoveBox.TextSize = 0
+		    StdBox.TextSize = 0
+		    LibBox.TextSize = 0
 		  end if
 		  MoveBox.Top = 60+espace
 		  StdBox.top = MoveBox.top+MoveBox.Height+espace
