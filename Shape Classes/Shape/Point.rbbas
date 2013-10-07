@@ -340,7 +340,7 @@ Inherits Shape
 		  dim t as Boolean
 		  
 		  t = sameparent(q, sh)    // self  et Q ont-ils un parent commun? si oui, le tableau sh les contient tous
-		                                            // rechercher si des points construits sont ok
+		  // rechercher si des points construits sont ok
 		  if not t then
 		    if Q.ConstructedBy <> nil and Q.ConstructedBy.Oper <> 0 then // si Q est un point construit sans être un centre
 		      for i=0 to Ubound(parents)

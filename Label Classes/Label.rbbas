@@ -9,6 +9,7 @@ Protected Class Label
 		  Text = chr(Etiquette)
 		  loc = n
 		  size = sizelabel
+		  p=2
 		End Sub
 	#tag EndMethod
 
@@ -16,7 +17,8 @@ Protected Class Label
 		Sub Paint(g as graphics)
 		  dim  q as BasicPoint
 		  dim a, iobj  as integer
-		  dim  dat as double
+		  dim  dat as string
+		  dim idat as integer
 		  dim vis as objectslist
 		  dim sh as shape
 		  dim ch as string
@@ -52,7 +54,7 @@ Protected Class Label
 		  
 		  
 		  
-		  dat = -10000
+		  dat ="-10000"
 		  ///////////// Abscisses
 		  if shape isa point then
 		    if point(shape).pointsur.count = 1  then
@@ -99,7 +101,7 @@ Protected Class Label
 		        dat = arrondi2(polygon(shape).getside(loc).longueur/currentcontent.UL)
 		      end if
 		    elseif shape isa arc and loc <>-1 then
-		      dat = round(arc(shape).arcangle*180/PI)
+		      dat = str(round(arc(shape).arcangle*180/PI))
 		    elseif shape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
 		      dat = arrondi2(2*PI*Freecircle(shape).getradius/currentcontent.UL)
 		    end if
@@ -116,26 +118,18 @@ Protected Class Label
 		    type = 1
 		  end if
 		  
-		  if dat <> -10000 then
-		    if (shape isa arc) and loc <> -1  then
-		      ch = left(str(dat),4)+"°"
-		    elseif dat < 0 then
-		      ch = left(str(dat),6)
-		    else
-		      ch = left(str(dat),5)
-		    end if
-		    
+		  if dat <>"-10000" then
 		    select case type
 		    case 0
 		      if (shape isa droite and shape =currentcontent.SHUL) or (shape isa polygon and shape = currentcontent.SHUL and loc = currentcontent.IcotUL)  then
-		        ch = "Ref. " + ch
+		        dat = "Ref. " + dat
 		      end if
 		    case 1
 		      if shape = currentcontent.SHUA  then
-		        ch = "Ref. " + ch
+		        dat = "Ref. " + dat
 		      end if
 		    end select
-		    g.Drawstring(ch,q.x, q.y)
+		    g.Drawstring(dat,q.x, q.y)
 		  else
 		    infini(g)
 		  end if
@@ -304,6 +298,7 @@ Protected Class Label
 		  else
 		    correction = can.idtransform(corr)
 		  end if
+		  p =2
 		End Sub
 	#tag EndMethod
 
@@ -326,17 +321,13 @@ Protected Class Label
 		  
 		  if  text = "*" then
 		    if shape isa point and point(shape).pointsur.count = 1  then
-		      a = point(shape).location(0)
-		      eti = left(str(Tronquer(a,2)),4)
+		      eti = arrondi2(point(shape).location(0))
 		    elseif shape isa droite   then
-		      a = droite(shape).firstp.distance(droite(shape).secondp)
-		      eti = left(str(Tronquer(a,1)),4)
+		      eti=arrondi2(droite(shape).firstp.distance(droite(shape).secondp))
 		    elseif shape isa polygon and loc = -1 then
-		      a = arrondi2(polygon(shape).aire/currentcontent.UA)
-		      eti = left(str(Tronquer(a,1)),4)
+		      eti = arrondi2(polygon(shape).aire/currentcontent.UA)
 		    elseif shape isa polygon and loc <> -1 then
-		      a =arrondi2(shape.points(loc).bpt.distance(shape.points((loc+1) mod shape.npts).bpt)/currentcontent.UL)
-		      eti =left(str(Tronquer(a,1)),4)
+		      eti =arrondi2(shape.points(loc).bpt.distance(shape.points((loc+1) mod shape.npts).bpt)/currentcontent.UL)
 		    elseif shape isa arc then
 		      a = arc(shape).arcangle*180/PI
 		      eti = left(str(sign(a)*floor(abs(a)+0.5)),4)
@@ -424,21 +415,8 @@ Protected Class Label
 		  psw = lab.psw
 		  setsize(lab.size)
 		  text = lab.text
+		  p=lab.p
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Tronquer(a as double, n as integer) As double
-		  dim aa as double
-		  
-		  aa = abs(a)
-		  aa = arrondi2((10^n)*aa)/10^n
-		  a = sign(a)*aa
-		  if abs(a) < 0.1 then
-		    a = 0
-		  end if
-		  return a
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -448,8 +426,42 @@ Protected Class Label
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function arrondi2(d as double) As double
-		  return  round(d*100)/100
+		Function arrondi2(d as double) As string
+		  dim s1, s2 as string
+		  dim r, k as double
+		  dim m, n, i as integer
+		  dim b as boolean
+		  
+		  b = d < 0
+		  
+		  if b then
+		    d = abs(d)
+		  end if
+		  
+		  n = floor(d)
+		  r = pow(10,p)
+		  d = d-n
+		  
+		  k = round(d*r)
+		  if k >= r then
+		    n = n+1
+		    k = k-1
+		  end if
+		  k = k/r
+		  
+		  s2 = str(k)
+		  m = instr(s2,".")
+		  s2 = s2. right(len(s2)-m)
+		  s2=s2.left(p)
+		  s1 = str(n)
+		  if b then
+		    s1 = "-"+s1
+		  end if
+		  if s2 ="" then
+		    return s1
+		  else
+		    return s1+","+s2
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -573,6 +585,10 @@ Protected Class Label
 		Oldcol As Color
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		p As integer
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -686,6 +702,12 @@ Protected Class Label
 			Group="Behavior"
 			InitialValue="&h000000"
 			Type="Color"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="p"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

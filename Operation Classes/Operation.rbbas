@@ -28,6 +28,9 @@ Protected Class Operation
 		  CurrentContent.TheTransfos.Unhighlightall
 		  CurrentContent.curoper = nil
 		  CurrentContent.CreateFigs
+		  if not self isa SaveBitMap then
+		    wnd.mycanvas1.clearoffscreen
+		  end if
 		  finished = true
 		  
 		  

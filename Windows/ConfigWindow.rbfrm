@@ -214,7 +214,7 @@ Begin Window ConfigWindow
       TabPanelIndex   =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -558,11 +558,11 @@ End
 		  OperaCreateCenter.Enable
 		  ToolsHisto.Enable
 		  'ToolsTrace.Enable
-		  MacrosMenu.Enable
-		  MacrosCreate.Enable
-		  MacrosSave.enable
-		  MacrosLoad.Enable
-		  MacrosQuit.Enable
+		  'MacrosMenu.Enable
+		  'MacrosCreate.Enable
+		  'MacrosSave.enable
+		  'MacrosLoad.Enable
+		  'MacrosQuit.Enable
 		  'MacrosChoose.Enable
 		  DefinirTranslation.Enable
 		  DefinirRotation.Enable
@@ -809,7 +809,7 @@ End
 
 #tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			MacrosCreate.checked = not MacrosCreate.checked
+			'MacrosCreate.checked = not MacrosCreate.checked
 			Return True
 			
 			
@@ -818,7 +818,7 @@ End
 
 #tag MenuHandler
 		Function MacrosLoad() As Boolean Handles MacrosLoad.Action
-			MacrosLoad.checked = not MacrosLoad.checked
+			'MacrosLoad.checked = not MacrosLoad.checked
 			Return True
 		End Function
 #tag EndMenuHandler
@@ -858,14 +858,14 @@ End
 
 #tag MenuHandler
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
-			MacrosSave.checked = not MacrosSave.checked
+			'MacrosSave.checked = not MacrosSave.checked
 			Return True
 		End Function
 #tag EndMenuHandler
 
 #tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
-			MacrosQuit.checked = not MacrosQuit.checked
+			'MacrosQuit.checked = not MacrosQuit.checked
 			Return True
 		End Function
 #tag EndMenuHandler
@@ -1067,7 +1067,7 @@ End
 
 #tag MenuHandler
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
-			MacrosFinaux.checked = not MacrosFinaux.checked
+			'MacrosFinaux.checked = not MacrosFinaux.checked
 			Return True
 			
 		End Function

@@ -32,6 +32,7 @@ Inherits MultipleSelectOperation
 		        Fus.Points(0).Identify1(Fus.Points(Fus1.npts))
 		        Fus.Points(1).Identify1(Fus.Points(Fus1.npts+1))
 		      end if
+		      Fus.NotPossibleCut = true
 		    else
 		      Fus = new Polyqcq(CurrentContent.TheObjects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
 		      for i = 2 to Fus1.npts-1
@@ -40,6 +41,7 @@ Inherits MultipleSelectOperation
 		      for i = 1 to Fus2.npts-1
 		        Fus.AddPoint Fus2.Points((start2+i) mod Fus2.npts).bpt
 		      next
+		      
 		    end if
 		  end if
 		  
@@ -54,7 +56,7 @@ Inherits MultipleSelectOperation
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
 		  Fus.Fill = (Fus1.fill+Fus2.fill)/2
-		  Fus.InitColCotes
+		  Fus.InitConstruction
 		  
 		  Tr = Fus1.points((start1+1)mod Fus1.npts).bpt - Fus1.points(start1).bpt
 		  Tr = Tr.VecNorPerp

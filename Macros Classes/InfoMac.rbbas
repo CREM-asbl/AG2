@@ -173,6 +173,24 @@ Protected Class InfoMac
 			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="init"
+			Group="Behavior"
+			InitialValue="0"
+			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="interm"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="final"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

@@ -166,7 +166,7 @@ Protected Class nBpoint
 		  case 3 'Quadris
 		    select case fo
 		    case 7
-		       constructshape(4,1)
+		      constructshape(4,1)
 		    end select
 		  case 4 'Polreg
 		    n = fo+3

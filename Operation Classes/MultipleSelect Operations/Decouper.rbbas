@@ -101,7 +101,7 @@ Inherits MultipleSelectOperation
 		  
 		  if CurrentItemToSet = 1 then
 		    S = Operation.GetShape(p)
-		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc) ) then
+		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc) or S.NotPossibleCut ) then
 		      S = nil
 		    end if
 		    return s
@@ -268,7 +268,10 @@ Inherits MultipleSelectOperation
 		  end if
 		  s.npts = 0
 		  s.ncpts = 0
-		  s.SetConstructedBy currentshape,5
+		  s.std = currentshape.std
+		  if not s.std then
+		    s.SetConstructedBy currentshape,5
+		  end if
 		  
 		  if n = 0 then
 		    for i = 0 to ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
@@ -293,7 +296,7 @@ Inherits MultipleSelectOperation
 		    k = currentshape.GetIndexPoint(pt1)
 		    if pt1 <> pt2 then
 		      P = new Point(Objects,currentshape.Points(k).bpt)
-		      if currentshape.fam < 10 then                                   //on ne relie pas les morceaux des formes standard à leur mère
+		      if not s.std then                                   //on ne relie pas les morceaux des formes standard à leur mère
 		        P.SetConstructedBy currentshape.Points(k),5    // donc on pourra supprimer la mère standard sans tuer les enfants
 		      end if
 		      s.InsertPoint(s.npts, P)
@@ -303,14 +306,13 @@ Inherits MultipleSelectOperation
 		  Tr = CutPts(ncutpt-1).bpt-CutPts(0).bpt
 		  Tr = Tr.VecNorPerp
 		  M = new Translationmatrix(Tr*0.2*currentshape.ori*((-1)^n))
-		  if currentshape.fam < 10  then
+		  if not s.std  then
 		    setconstructioninfo(s, n, M)
 		  end if
-		  s.std = currentshape.std
 		  s.Ori = currentshape.Ori                //Les deux pièces sont orientées comme la forme mère
 		  s.fixecouleurfond(currentshape.fillcolor,currentshape.fill)
 		  s.forme = s.npts-3
-		  polygon(s).initcolcotes
+		  polygon(s).initconstruction
 		  recopiercouleurs (s)
 		  if s isa lacet then
 		    lacet(s).prepareskull

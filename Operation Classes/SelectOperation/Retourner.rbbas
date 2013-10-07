@@ -244,6 +244,7 @@ Inherits SelectOperation
 		    end if
 		    if s isa circle then
 		      circle(s).CreateExtreAndCtrlPoints
+		      circle(s).updateskull
 		    end if
 		    if s isa Lacet then
 		      Lacet(s).CreateExtreAndCtrlPoints

@@ -39,6 +39,7 @@ Inherits Circle
 		    Points(2).Moveto p.projection(points(0).bpt, radius)
 		    updateangles
 		    CreateExtreAndCtrlPoints
+		    updateskull
 		  end select
 		  
 		  

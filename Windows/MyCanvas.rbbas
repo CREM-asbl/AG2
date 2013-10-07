@@ -99,6 +99,8 @@ Inherits Canvas
 		    end if
 		  else
 		    oldp = new BasicPoint(x,y)
+		    info = ""
+		    refreshbackground
 		  end if
 		  
 		  
@@ -228,6 +230,7 @@ Inherits Canvas
 		      end if
 		    end if
 		  end if
+		  
 		  Return True//display the contextual menu
 		  
 		End Function
@@ -654,7 +657,7 @@ Inherits Canvas
 		Sub AfficherChoixContext()
 		  currenthighlightedshape.HighLight
 		  sctxt = currenthighlightedshape
-		  info = sctxt.Identifiant + " " + Dico.Value("rightclick")+Dico.Value("toseecontextmenu")
+		  info = sctxt.Identifiant + ", " + Dico.Value("rightclick")+Dico.Value("toseecontextmenu")
 		  if nobj > 1 then
 		    info = info + " (" + str(nobj) + "," + str(iobj+1) + ")"
 		  end if

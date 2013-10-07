@@ -31,7 +31,7 @@ Begin Window GridWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window GridWindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   46
       BehaviorIndex   =   0
    End
@@ -63,7 +63,7 @@ Begin Window GridWindow
       Caption         =   "OK"
       ControlOrder    =   1
       Default         =   "True"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -80,7 +80,7 @@ Begin Window GridWindow
       TextSize        =   12
       Top             =   65
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   1
    End
@@ -91,7 +91,7 @@ Begin Window GridWindow
       Caption         =   "Annuler"
       ControlOrder    =   2
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -108,7 +108,7 @@ Begin Window GridWindow
       TextSize        =   12
       Top             =   65
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   2
    End
@@ -118,7 +118,7 @@ Begin Window GridWindow
       ControlOrder    =   3
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -137,7 +137,7 @@ Begin Window GridWindow
       TextSize        =   12
       Top             =   13
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   102
       BehaviorIndex   =   3
    End
@@ -147,7 +147,7 @@ Begin Window GridWindow
       ControlOrder    =   4
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -168,7 +168,7 @@ Begin Window GridWindow
       TextSize        =   12
       Top             =   13
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   100
       BehaviorIndex   =   4
    End
@@ -178,7 +178,7 @@ Begin Window GridWindow
       ControlOrder    =   5
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -197,7 +197,7 @@ Begin Window GridWindow
       TextSize        =   12
       Top             =   12
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   5
    End
@@ -207,7 +207,7 @@ Begin Window GridWindow
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -228,7 +228,7 @@ Begin Window GridWindow
       TextSize        =   0
       Top             =   65
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   35
       BehaviorIndex   =   6
    End
@@ -238,7 +238,7 @@ Begin Window GridWindow
       ControlOrder    =   7
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -257,7 +257,7 @@ Begin Window GridWindow
       TextSize        =   0
       Top             =   65
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   103
       BehaviorIndex   =   7
    End

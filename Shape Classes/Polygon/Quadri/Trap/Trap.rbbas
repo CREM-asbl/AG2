@@ -399,7 +399,7 @@ Inherits Quadri
 		Sub Trap(ol as objectslist, fp as point, sp as point, qp as point, tp as point)
 		  
 		  Polygon(ol, fp , sp , qp , tp)
-		  forme = 1 
+		  forme = 1
 		  
 		End Sub
 	#tag EndMethod
