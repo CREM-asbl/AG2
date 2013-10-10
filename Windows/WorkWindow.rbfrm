@@ -797,6 +797,12 @@ End
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Moved()
+		  UpdateToolBar
+		End Sub
+	#tag EndEvent
+
 
 #tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
