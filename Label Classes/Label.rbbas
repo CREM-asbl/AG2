@@ -42,7 +42,7 @@ Protected Class Label
 		    ResetParam(g)
 		    return
 		  end if
-		  if text <> "*"  then
+		  if text <> "*"  and not (font = "Symbol" and text = "¥") then
 		    g.DrawString(Text,q.x, q.y)
 		    ResetParam(g)
 		    return
@@ -132,6 +132,7 @@ Protected Class Label
 		    g.Drawstring(dat,q.x, q.y)
 		  else
 		    infini(g)
+		    g.Drawstring(Text,q.x, q.y)
 		  end if
 		  ResetParam(g)
 		End Sub
@@ -495,6 +496,7 @@ Protected Class Label
 		  setfont("Symbol")
 		  g.TextFont= "Symbol"
 		  Text= "¥"
+		  
 		End Sub
 	#tag EndMethod
 

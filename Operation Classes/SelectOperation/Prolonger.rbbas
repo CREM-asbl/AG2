@@ -176,8 +176,9 @@ Inherits SelectOperation
 		  
 		  deplacerperp
 		  Dr.endconstruction
-		  Dr.setconstructedby Bip, 8
+		  
 		  if Bip isa polygon then
+		    Dr.setconstructedby Bip, 8
 		    Dr.Constructedby.data.append ibip
 		  end if
 		  

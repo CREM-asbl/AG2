@@ -31,7 +31,7 @@ Begin Window PasswordWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window PasswordWindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   137
       BehaviorIndex   =   0
    End
@@ -63,7 +63,7 @@ Begin Window PasswordWindow
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "True"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -80,7 +80,7 @@ Begin Window PasswordWindow
       TextSize        =   12
       Top             =   45
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   1
    End
@@ -94,7 +94,7 @@ Begin Window PasswordWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   20
       HelpTag         =   ""
@@ -123,7 +123,7 @@ Begin Window PasswordWindow
       Top             =   13
       Underline       =   "False"
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   121
       BehaviorIndex   =   2
    End
@@ -134,7 +134,7 @@ Begin Window PasswordWindow
       Caption         =   "Annuler"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -151,7 +151,7 @@ Begin Window PasswordWindow
       TextSize        =   12
       Top             =   46
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   3
    End

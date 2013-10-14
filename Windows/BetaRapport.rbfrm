@@ -35,7 +35,7 @@ Begin Window BetaRapport
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window BetaRapport
       Top             =   66
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   0
    End
@@ -78,7 +78,7 @@ Begin Window BetaRapport
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -107,7 +107,7 @@ Begin Window BetaRapport
       Top             =   66
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   169
       BehaviorIndex   =   1
    End
@@ -117,7 +117,7 @@ Begin Window BetaRapport
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -136,7 +136,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   123
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   2
    End
@@ -150,7 +150,7 @@ Begin Window BetaRapport
       ControlOrder    =   3
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -179,7 +179,7 @@ Begin Window BetaRapport
       Top             =   174
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   3
    End
@@ -193,7 +193,7 @@ Begin Window BetaRapport
       ControlOrder    =   4
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -222,7 +222,7 @@ Begin Window BetaRapport
       Top             =   174
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   169
       BehaviorIndex   =   4
    End
@@ -236,7 +236,7 @@ Begin Window BetaRapport
       ControlOrder    =   5
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   128
       HelpTag         =   ""
@@ -265,7 +265,7 @@ Begin Window BetaRapport
       Top             =   228
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   511
       BehaviorIndex   =   5
    End
@@ -308,7 +308,7 @@ Begin Window BetaRapport
       Top             =   391
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   340
       BehaviorIndex   =   6
    End
@@ -319,7 +319,7 @@ Begin Window BetaRapport
       Caption         =   "Parcourir"
       ControlOrder    =   7
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -336,7 +336,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   391
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   7
    End
@@ -350,7 +350,7 @@ Begin Window BetaRapport
       ControlOrder    =   8
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   128
       HelpTag         =   ""
@@ -379,7 +379,7 @@ Begin Window BetaRapport
       Top             =   447
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   511
       BehaviorIndex   =   8
    End
@@ -389,7 +389,7 @@ Begin Window BetaRapport
       ControlOrder    =   9
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -410,7 +410,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   14
       Underline       =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   100
       BehaviorIndex   =   9
    End
@@ -420,7 +420,7 @@ Begin Window BetaRapport
       ControlOrder    =   10
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -441,7 +441,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   46
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   10
    End
@@ -451,7 +451,7 @@ Begin Window BetaRapport
       ControlOrder    =   11
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -472,7 +472,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   46
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   169
       BehaviorIndex   =   11
    End
@@ -482,7 +482,7 @@ Begin Window BetaRapport
       ControlOrder    =   12
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -503,7 +503,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   100
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   12
    End
@@ -513,7 +513,7 @@ Begin Window BetaRapport
       ControlOrder    =   13
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -534,7 +534,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   155
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   13
    End
@@ -544,7 +544,7 @@ Begin Window BetaRapport
       ControlOrder    =   14
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -565,7 +565,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   155
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   169
       BehaviorIndex   =   14
    End
@@ -575,7 +575,7 @@ Begin Window BetaRapport
       ControlOrder    =   15
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -596,7 +596,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   208
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   511
       BehaviorIndex   =   15
    End
@@ -606,7 +606,7 @@ Begin Window BetaRapport
       ControlOrder    =   16
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -627,7 +627,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   425
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   511
       BehaviorIndex   =   16
    End
@@ -637,7 +637,7 @@ Begin Window BetaRapport
       ControlOrder    =   17
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -658,7 +658,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   369
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   178
       BehaviorIndex   =   17
    End
@@ -687,7 +687,7 @@ Begin Window BetaRapport
       Caption         =   "Envoyer"
       ControlOrder    =   19
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -704,14 +704,14 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   587
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   19
    End
    Begin ProgressWheel ProgressWheel1
       AutoDeactivate  =   "True"
       ControlOrder    =   20
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   16
       HelpTag         =   ""
       Index           =   -2147483648
@@ -736,7 +736,7 @@ Begin Window BetaRapport
       ControlOrder    =   21
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -757,7 +757,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   14
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   100
       BehaviorIndex   =   21
    End
@@ -768,7 +768,7 @@ Begin Window BetaRapport
       Caption         =   "Sauvegarder"
       ControlOrder    =   22
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -785,7 +785,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   587
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   22
    End
@@ -796,7 +796,7 @@ Begin Window BetaRapport
       Caption         =   "Imprimer"
       ControlOrder    =   23
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -813,7 +813,7 @@ Begin Window BetaRapport
       TextSize        =   0
       Top             =   587
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   23
    End
@@ -827,7 +827,7 @@ Begin Window BetaRapport
       ControlOrder    =   24
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""

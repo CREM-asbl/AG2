@@ -248,8 +248,10 @@ Protected Class Macro
 		          else                  //On va rechercher la forme
 		            for j = 0 to ubound(s.points)
 		              s.points(j).moveto ifmac.coord.tab(j)   //On repositionne les sommets
+		              s.points(j).modified = true
 		            next
 		          end if
+		          s.modified = true
 		        end if
 		      end if
 		    end if
@@ -569,7 +571,7 @@ Protected Class Macro
 		              return
 		            end if
 		          next
-		        end if  
+		        end if
 		      end if
 		      
 		    end if

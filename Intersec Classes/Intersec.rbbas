@@ -517,6 +517,33 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function locatepoint(p as BasicPoint) As basicPoint
+		  dim i, j, i1, j1  as integer
+		  dim r1, s as double
+		  
+		  r1  = 10000
+		  for i = 0 to nlig
+		    for j = 0 to ncol
+		      if val(i,j) and (not bezet(i,j))  then
+		        s = p.distance(bptinters(i,j))
+		        if abs(s) < r1 then
+		          r1 = s
+		          i1 = i
+		          j1 = j
+		        end if
+		      end if
+		    next
+		  next
+		  
+		  if  bezet(i1,j1) or (r1 > wnd.mycanvas1.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
+		    return nil
+		  else
+		    return bptinters(i1,j1)
+		  end if
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		sh1 As shape

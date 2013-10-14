@@ -31,7 +31,7 @@ Begin Window Confirmation
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window Confirmation
       TextSize        =   12
       Top             =   25
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   150
       BehaviorIndex   =   0
    End
@@ -63,7 +63,7 @@ Begin Window Confirmation
       Caption         =   "Oui"
       ControlOrder    =   1
       Default         =   "True"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -80,7 +80,7 @@ Begin Window Confirmation
       TextSize        =   12
       Top             =   57
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   1
    End
@@ -91,7 +91,7 @@ Begin Window Confirmation
       Caption         =   "Non"
       ControlOrder    =   2
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -108,7 +108,7 @@ Begin Window Confirmation
       TextSize        =   12
       Top             =   57
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   2
    End
@@ -119,7 +119,7 @@ Begin Window Confirmation
       Caption         =   "Annuler"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -136,7 +136,7 @@ Begin Window Confirmation
       TextSize        =   12
       Top             =   57
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   3
    End

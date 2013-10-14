@@ -31,7 +31,7 @@ Begin Window PassChangeWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window PassChangeWindow
       TextSize        =   12
       Top             =   13
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   168
       BehaviorIndex   =   0
    End
@@ -62,7 +62,7 @@ Begin Window PassChangeWindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -83,7 +83,7 @@ Begin Window PassChangeWindow
       TextSize        =   12
       Top             =   46
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   168
       BehaviorIndex   =   1
    End
@@ -93,7 +93,7 @@ Begin Window PassChangeWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -114,7 +114,7 @@ Begin Window PassChangeWindow
       TextSize        =   12
       Top             =   78
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   168
       BehaviorIndex   =   2
    End
@@ -128,7 +128,7 @@ Begin Window PassChangeWindow
       ControlOrder    =   3
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -157,7 +157,7 @@ Begin Window PassChangeWindow
       Top             =   14
       Underline       =   "False"
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   101
       BehaviorIndex   =   3
    End
@@ -171,7 +171,7 @@ Begin Window PassChangeWindow
       ControlOrder    =   4
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -200,7 +200,7 @@ Begin Window PassChangeWindow
       Top             =   45
       Underline       =   "False"
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   101
       BehaviorIndex   =   4
    End
@@ -214,7 +214,7 @@ Begin Window PassChangeWindow
       ControlOrder    =   5
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -243,7 +243,7 @@ Begin Window PassChangeWindow
       Top             =   77
       Underline       =   "False"
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   101
       BehaviorIndex   =   5
    End
@@ -254,7 +254,7 @@ Begin Window PassChangeWindow
       Caption         =   "Ok"
       ControlOrder    =   6
       Default         =   "True"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -271,7 +271,7 @@ Begin Window PassChangeWindow
       TextSize        =   12
       Top             =   127
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   6
    End
@@ -282,7 +282,7 @@ Begin Window PassChangeWindow
       Caption         =   "Annuler"
       ControlOrder    =   7
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -299,7 +299,7 @@ Begin Window PassChangeWindow
       TextSize        =   12
       Top             =   127
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   7
    End

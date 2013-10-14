@@ -2194,7 +2194,7 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  'NbUnmodif = ubound(PointsFixes)+1
+		  
 		  
 		  
 		  

@@ -136,6 +136,13 @@ Inherits Circle
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"

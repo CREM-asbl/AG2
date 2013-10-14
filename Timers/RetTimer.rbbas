@@ -138,6 +138,7 @@ Inherits TsfTimer
 		        Lacet(s).ctrl(j) =  t.TriDPts(ntdbp+2*Lacet(s).narcs+1+j).ProjPlan + fp
 		      next
 		    end if
+		    s.updatecoord
 		    if pas = niter/2  then
 		      if Config.stdbiface or (s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
 		        s.fixecouleurfond(s.fillcolor.comp, s.fill)

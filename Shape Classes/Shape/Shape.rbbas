@@ -1276,6 +1276,7 @@ Implements StringProvider
 		  
 		  CreateExtreAndCtrlPoints
 		  updateMacConstructedShapes
+		  
 		  endmove
 		  
 		  
@@ -3657,10 +3658,15 @@ Implements StringProvider
 		    MacInfo = s1.MacConstructedby
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
+		    s1.updateshape
 		    s1.Modified = true
 		    for j = 0 to ubound(s1.childs)
-		      s1.childs(j).modified = true
+		      if not s1.childs(j).modified then
+		        s1.childs(j).updateshape
+		        s1.childs(j).modified = true
+		      end if
 		    next
+		    
 		  next
 		  
 		End Sub
@@ -3706,11 +3712,13 @@ Implements StringProvider
 		Function GetIndexPoint(p as BasicPoint) As integer
 		  dim i as integer
 		  
-		  for i = 0 to npts-1
-		    if points(i).bpt = p then
-		      return i
-		    end if
-		  next
+		  if not self isa point then
+		    for i = 0 to npts-1
+		      if points(i).bpt = p then
+		        return i
+		      end if
+		    next
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -4427,6 +4435,12 @@ Implements StringProvider
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
