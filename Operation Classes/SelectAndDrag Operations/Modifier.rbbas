@@ -94,6 +94,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as basicpoint) As Shape
+		  l'ordinateur la méthode la méthode sf
 		  dim i as integer
 		  dim S As Shape
 		  dim t as boolean
@@ -218,6 +219,8 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as basicpoint)
+		  Cette méthode a pour fonction n
+		  n
 		  dim Magnetism as integer
 		  dim i as integer
 		  
@@ -324,9 +327,6 @@ Inherits SelectAndDragOperation
 		  
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
-		    if (sh.std   and sh.getindexpoint(p) <> -1) then
-		      return false
-		    end if
 		    if (sh isa arc) and (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and (not (p.pointsur.element(0) isa arc and (p.pointsur.element(0).getindex(sh.points(0)) = 0) ))  then
 		      return false
 		    end if

@@ -611,7 +611,6 @@ Inherits Shape
 		    'end if
 		  next
 		  
-		  
 		  if liberte<0 then
 		    liberte=0
 		  end if
@@ -1127,7 +1126,7 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(ConstructedShapes)
 		    s = point(constructedshapes(i))
-		    if s.duplicateorcut then
+		    if s.duplicateorcut or s.fused then
 		      s.liberte = liberte
 		      s.updatemobilitysucceeding
 		    end if
@@ -1146,18 +1145,8 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  'guide = self     //inutile
-		  //on remonte à la racine de l'arbre (oper = 3 ou 5 ou 9)
+		   //on remonte à la racine de l'arbre (oper = 3 ou 5 ou 9)
 		  s = self
-		  
-		  'if s.predecesseur  <> nil then    //Inutile puisqu'on ne peut identifier deux points qui ont ou sont des dupliqués.
-		  's1 = s.predecesseur
-		  'if s1.predecesseur = s then //pourrait arriver si on a identifié des points dupliqués (deux triangles dupliqués joints par un côté)
-		  's.liberte = 0
-		  's1.liberte = 0
-		  'return
-		  'end if
-		  'end if
 		  
 		  while s.predecesseur <> nil and s.Predecesseur <> s
 		    s = s.predecesseur
@@ -2436,15 +2425,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(M as Matrix)
-		  dim  ep, np as BasicPoint
-		  
-		  
-		  
-		  
-		  ep = bpt
-		  np =  M*bpt
-		  
-		  Moveto np
+		  Moveto M*bpt
 		  if pointsur.count = 1 then
 		    puton pointsur.element(0)
 		  elseif ubound(parents) > -1 and parents(0).isaparaperp and parents(0).getindexpoint(self) = 1 then
