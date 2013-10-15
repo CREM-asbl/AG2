@@ -94,7 +94,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as basicpoint) As Shape
-		  l'ordinateur la méthode la méthode sf
 		  dim i as integer
 		  dim S As Shape
 		  dim t as boolean
@@ -219,8 +218,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as basicpoint)
-		  Cette méthode a pour fonction n
-		  n
 		  dim Magnetism as integer
 		  dim i as integer
 		  

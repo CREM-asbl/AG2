@@ -247,7 +247,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub ReinitAttraction()
-		  Operation.
+		  
 		  'currentcontent.TheObjects.UnHighlightall
 		  
 		  if CurrentAttractedShape<>nil then
@@ -274,7 +274,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub ShowAttraction()
-		  sf
+		  
 		  dim icot as integer
 		  dim CAS as shape
 		  dim p as basicpoint
