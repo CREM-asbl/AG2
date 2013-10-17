@@ -1145,7 +1145,7 @@ Inherits Shape
 		    return
 		  end if
 		  
-		   //on remonte à la racine de l'arbre (oper = 3 ou 5 ou 9)
+		  //on remonte à la racine de l'arbre (oper = 3 ou 5 ou 9)
 		  s = self
 		  
 		  while s.predecesseur <> nil and s.Predecesseur <> s
@@ -1518,8 +1518,6 @@ Inherits Shape
 		    s.updateshape
 		  next
 		  
-		  updatesubdivarcpoints
-		  
 		  if constructedby <> nil and not centerordivpoint then
 		    select case constructedby.Oper
 		    case 3, 5
@@ -1588,14 +1586,13 @@ Inherits Shape
 		    else
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
-		    modified = true
 		  end if
-		  
-		  if modified then
-		    updateconstructedpoints
-		    updateMacConstructedShapes
-		    endmove
-		  end if
+		  modified = true
+		  'if modified then
+		  updateconstructedpoints
+		  updateMacConstructedShapes
+		  endmove
+		  'end if
 		  
 		  
 		  
@@ -2428,13 +2425,11 @@ Inherits Shape
 		  Moveto M*bpt
 		  if pointsur.count = 1 then
 		    puton pointsur.element(0)
-		  elseif ubound(parents) > -1 and parents(0).isaparaperp and parents(0).getindexpoint(self) = 1 then
-		    M = droite(parents(0)).prppupdate1
 		  end if
 		  modified = true
 		  updateshape
 		  
-		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainis la modification de toutes les figures
+		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
 		  
 		End Sub
 	#tag EndMethod
@@ -2913,30 +2908,6 @@ Inherits Shape
 		    return -1
 		  end if
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatesubdivarcpoints()
-		  dim i, j as integer
-		  dim s, sc as shape
-		  dim Bib as BiBPoint
-		  dim Trib as TriBPoint
-		  
-		  for i = 0 to ubound(parents)
-		    s = parents(i)
-		    if s isa freecircle then
-		      for j = 0 to ubound(s.constructedshapes)
-		        sc = s.constructedshapes(j)
-		        if sc.constructedby.oper = 4 and (sc.constructedby.data(0) = self or sc.constructedby.data(1) = self) then
-		          Trib = new TriBpoint(s.getgravitycenter,point(sc.constructedby.data(0)).bpt, point(sc.constructedby.data(1)).bpt)
-		          point(sc).moveto  Trib.subdiv(S.ori, sc.constructedby.data(2), sc.constructedby.data(3))
-		        end if
-		      next
-		    end if
-		  next
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

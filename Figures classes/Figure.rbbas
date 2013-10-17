@@ -305,8 +305,8 @@ Implements StringProvider
 		    return true                                             ////faut-il bloquer plus ?  (arc d'angle 0)...
 		  else
 		    updatesomm(M)
-		    updatePtsConsted(M)
 		    updatePtsSur(M)
+		    updatePtsConsted(M)
 		    updateshapes(M)
 		    if not wnd.drapbug then
 		      return checksimaff(M)
@@ -470,6 +470,9 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  for i = 0 to shapes.count-1
+		    if shapes.element(i) isa Circle then
+		      Circle(shapes.element(i)).UpdatePtsConsted
+		    end if
 		    shapes.element(i).updateshape(M)
 		    shapes.element(i).modified = true
 		  next
@@ -2020,9 +2023,9 @@ Implements StringProvider
 		  dim t as boolean
 		  
 		  Choixpointsfixes
-		  if NbUnModif > 0 then
-		    return new Matrix(1)
-		  end if
+		  'if NbUnModif > 0 then
+		  'return new Matrix(1)
+		  'end if
 		  
 		  
 		  p = supfig.pointmobile
@@ -2964,6 +2967,7 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  for i = 0 to shapes.count-1
+		    
 		    shapes.element(i).updateshape
 		    shapes.element(i).modified = true
 		  next
@@ -3557,9 +3561,11 @@ Implements StringProvider
 		  dim i as integer
 		  dim p as point
 		  
-		  if auto = 3 and shapes.element(0) isa arc then
-		    arc(shapes.element(0)).Updateangles
-		    arc(shapes.element(0)).UpdatePtsConsted
+		  if auto = 3 then
+		    if shapes.element(0) isa arc then
+		      arc(shapes.element(0)).Updateangles
+		      'arc(shapes.element(0)).UpdatePtsConsted
+		    end if
 		  else
 		    for i = 0 to PtsConsted.count-1
 		      p = Point(Ptsconsted.element(i))

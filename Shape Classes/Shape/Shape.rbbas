@@ -1271,12 +1271,9 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  
-		  
-		  
 		  CreateExtreAndCtrlPoints
 		  updateMacConstructedShapes
-		  
+		  modified = true  '?
 		  endmove
 		  
 		  
@@ -1698,7 +1695,6 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  updatecoord
-		  updateMacConstructedShapes
 		  if UBound(tsfi)>-1 then
 		    for i=0 to Ubound(tsfi)
 		      tsfi(i).update
@@ -3658,15 +3654,14 @@ Implements StringProvider
 		    MacInfo = s1.MacConstructedby
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
-		    s1.updateshape
-		    s1.Modified = true
+		    
 		    for j = 0 to ubound(s1.childs)
-		      if not s1.childs(j).modified then
+		      if not s1.childs(j).modified and  s1.childs(j).macconstructedby = nil then
 		        s1.childs(j).updateshape
 		        s1.childs(j).modified = true
 		      end if
 		    next
-		    
+		    s1.updateshape
 		  next
 		  
 		End Sub

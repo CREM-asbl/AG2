@@ -297,6 +297,29 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdatePtsConsted()
+		  dim i as integer
+		  dim p as point
+		  dim TriB as TriBPoint
+		  dim fp, sp as point
+		  
+		  
+		  
+		  for i = 0 to ubound(constructedshapes)
+		    if constructedshapes(i).constructedby.oper = 4 then
+		      p = point(constructedshapes(i))
+		      fp = point(p.constructedby.data(0))
+		      sp = point(p.constructedby.data(1))
+		      Trib = new TriBpoint(getgravitycenter,fp.bpt,sp.bpt)
+		      p.moveto Trib.subdiv(ori,p.constructedby.data(2),p.constructedby.data(3))
+		      p.modified = true
+		      p.updateshape
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		angle As double
