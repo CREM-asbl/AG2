@@ -9,16 +9,14 @@ Inherits Triangle
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim a,b,p as BasicPoint
-		  dim M as Matrix
 		  
-		  a = (Points(0).bpt+Points(1).bpt)/2
-		  M = new RotationMatrix(a,ori*PIDEMI)
-		  p = Points(1).bpt
-		  p = M*p
-		  Points(2).moveto(p)
+		  dim d as double
 		  
-		  updateSkull
+		  d = Points(0).bpt.distance(Points(1).bpt)
+		  if d >0 then
+		    super.constructshape
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod

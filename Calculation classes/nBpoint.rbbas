@@ -159,12 +159,42 @@ Protected Class nBpoint
 		      M = new OrthoProjectionMatrix(a,a+b)
 		      tab(2) = M*tab(2)
 		    case 2 'TriEqui
+		      constructshape(4,0)
 		    case 3 'TriRect
-		    case 4 'TroRectIso
+		      a = tab(1)
+		      b = a-tab(0)
+		      b = b.vecnorperp
+		      M = new OrthoProjectionMatrix(a,a+b)
+		      tab(2) = M*tab(2)
+		    case 4 'TriRectIso
+		      a = (tab(0)+tab(1))/2
+		      M = new RotationMatrix(a,ori*PIDEMI)
+		      append M*tab(1)
 		    end select
 		    
 		  case 3 'Quadris
 		    select case fo
+		    case 1
+		      a = tab(2)
+		      b =  tab(0)-tab(1)
+		      M =  new OrthoProjectionMatrix(a,a+b)
+		      tab(3) = M*tab(3)
+		    case 2
+		      a = tab(0)
+		      b = tab(1)-tab(0)
+		      b = b.vecnorperp
+		      M = new OrthoProjectionMatrix(a,a+b)
+		      append M*tab(2)
+		    case 3
+		      a = (tab(0)+tab(1))/2
+		      b = tab(1)-tab(0)
+		      b = b.vecnorperp
+		      M = new SymmetryMatrix(a,a+b)
+		      append M*tab(2)
+		    case 4
+		      append tab(0)-tab(1)+tab(2)
+		      
+		      
 		    case 7
 		      constructshape(4,1)
 		    end select

@@ -16,17 +16,6 @@ Inherits Quadri
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  dim b,p as BasicPoint
-		  b = Points(2).bpt + Points(0).bpt - Points(1).bpt
-		  p = Points(3).bpt.projection(Points(2).bpt,b)
-		  Points(3).moveto(p)
-		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
 		  dim s as shape
 		  
@@ -441,6 +430,13 @@ Inherits Quadri
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"

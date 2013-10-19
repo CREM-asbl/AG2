@@ -640,12 +640,6 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub UpDateSkull(p as BasicPoint)
 		  sk.ref = p
 		End Sub
@@ -3886,6 +3880,34 @@ Implements StringProvider
 		      lab.p =Lab.p -1
 		    end if
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub repositionnerpoints()
+		  dim j as integer
+		  
+		  if self isa point then
+		    point(self).moveto coord.tab(0)
+		  else                  //On va rechercher la forme
+		    for j = 0 to ubound(points)
+		      points(j).moveto coord.tab(j)   //On repositionne les sommets
+		      points(j).modified = true
+		    next
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConstructShape()
+		  dim i as integer
+		  
+		  coord = new nBPoint
+		  for i = 0 to ncpts-1
+		    coord.append Points(i).bpt
+		  next
+		  coord.constructshape(fam,forme)
+		  repositionnerpoints
 		End Sub
 	#tag EndMethod
 

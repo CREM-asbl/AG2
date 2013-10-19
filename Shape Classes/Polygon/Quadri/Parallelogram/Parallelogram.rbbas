@@ -8,19 +8,6 @@ Inherits Quadri
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  dim p as BasicPoint
-		  
-		  p = Points(0).bpt - Points(1).bpt
-		  Points(3).moveto Points(2).bpt+p
-		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(Points(3).bpt-Points(0).bpt))
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetType() As string
 		  Return Dico.Value("Parallelogram")
 		End Function

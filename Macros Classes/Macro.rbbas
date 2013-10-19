@@ -241,16 +241,9 @@ Protected Class Macro
 		          ifmac.coord = nbp
 		          ifmac.location = loc0
 		          ifmac.side = si0                    //On recalcule les coordonnées
-		          
 		          s = currentcontent.theobjects.getshape(ifmac.RealId)
-		          if s isa point then
-		            point(s).moveto ifmac.coord.tab(0)
-		          else                  //On va rechercher la forme
-		            for j = 0 to ubound(s.points)
-		              s.points(j).moveto ifmac.coord.tab(j)   //On repositionne les sommets
-		              s.points(j).modified = true
-		            next
-		          end if
+		          s.coord = ifmac.coord
+		          s.repositionnerpoints
 		          s.modified = true
 		        end if
 		      end if

@@ -16,17 +16,12 @@ Inherits Trap
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim a, b,c as BasicPoint
-		  dim M as SymmetryMatrix
+		  dim d as double
 		  
-		  a = (Points(0).bpt+Points(1).bpt)/2
-		  c = Points(1).bpt-Points(0).bpt
-		  b = a + c.vecnorperp
-		  M = new SymmetryMatrix(a,b)
-		  a = Points(2).bpt
-		  a = M*a
-		  Points(3).moveto(a)
-		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(a-Points(0).bpt))
+		  d = Points(0).bpt.distance(Points(1).bpt)
+		  if d > 0 then
+		    super.constructshape
+		  end if
 		  
 		End Sub
 	#tag EndMethod

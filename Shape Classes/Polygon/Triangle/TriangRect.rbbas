@@ -18,17 +18,13 @@ Inherits Triangle
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim a,b ,p as BasicPoint
-		  dim M as OrthoProjectionMatrix
+		  dim d as double
 		  
-		  a = Points(1).bpt
-		  b = Points(1).bpt-Points(0).bpt
-		  b = b.vecnorperp
-		  M = new OrthoProjectionMatrix(a,a+b)
-		  p = Points(2).bpt
-		  p = M*p
-		  Points(2).moveto(p)
-		  figskull(sk).UpdateSommet(2,wnd.mycanvas1.dtransform(p-Points(0).bpt))
+		  d = Points(0).bpt.distance(Points(1).bpt)
+		  if d >0 then
+		    super.constructshape
+		  end if
+		  
 		  
 		  
 		  

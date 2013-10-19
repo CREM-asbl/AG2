@@ -16,21 +16,16 @@ Inherits Triangle
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim a,b,p as BasicPoint
-		  dim M as OrthoProjectionMatrix
+		  dim d as double
 		  
-		  'coord = coord.constructshape(2,1)    'Voir plus tard si on peut remplacer la construction par celle-ci
-		  'Points(2).Moveto coord.tab(2)
-		  'updateskull
+		  d = Points(0).bpt.distance(Points(1).bpt)
+		  if d >0 then
+		    super.constructshape
+		  end if
 		  
-		  a = (Points(0).bpt+Points(1).bpt)/2
-		  b = Points(1).bpt-Points(0).bpt
-		  b = b.vecnorperp
-		  M = new OrthoProjectionMatrix(a,a+b)
-		  p=Points(2).bpt
-		  p = M*p
-		  Points(2).moveto(p)
-		  updateskull
+		  
+		  
+		  
 		  
 		  
 		  
