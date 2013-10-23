@@ -7,7 +7,7 @@ Inherits MultipleSelectOperation
 		  OpId = 0
 		  
 		  Objects.unselectAll
-		  
+		  Currentcontent.currentoperation = self
 		  Famille = Fam
 		  Forme = form
 		  CreateShape
@@ -117,9 +117,6 @@ Inherits MultipleSelectOperation
 		      currentshape = new StdCircle(objects,famille, forme, p)
 		    end if
 		  end if
-		  
-		  currentshape.fam = famille
-		  currentshape.forme = forme
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
 		  wnd.setcross
@@ -130,8 +127,6 @@ Inherits MultipleSelectOperation
 		Sub MouseMove(p as BasicPoint)
 		  dim magneticD As BasicPoint
 		  dim magnetism as Integer
-		  dim inter as intersec
-		  dim pt as Basicpoint
 		  
 		  if currentShape = nil then
 		    return
@@ -155,14 +150,7 @@ Inherits MultipleSelectOperation
 		    if nextcurrentattractingshape = nil then
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
-		      pt = point(currentattractedshape).simulinter(CurrentAttractingShape,NextCurrentAttractingShape)
-		      if pt = nil then
-		        nextcurrentattractingshape.unhighlight
-		        nextcurrentattractingshape = nil
-		        'point(currentattractedshape).valider
-		      else
-		        CurrentShape.Fixecoord(pt, Currentshape.IndexConstructedPoint)
-		      end if
+		      TraitementIntersec()
 		    end if
 		  end if
 		  
@@ -382,6 +370,21 @@ Inherits MultipleSelectOperation
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub TraitementIntersec()
+		  dim pt as Basicpoint
+		  
+		  pt = point(currentattractedshape).simulinter(CurrentAttractingShape,NextCurrentAttractingShape)
+		  if pt = nil then
+		    nextcurrentattractingshape.unhighlight
+		    nextcurrentattractingshape = nil
+		  else
+		    CurrentShape.Fixecoord(pt, Currentshape.IndexConstructedPoint)
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -405,12 +408,12 @@ Inherits MultipleSelectOperation
 	#tag EndNote
 
 
-	#tag Property, Flags = &h1
-		Protected Famille As Integer
+	#tag Property, Flags = &h0
+		Famille As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected Forme As Integer
+	#tag Property, Flags = &h0
+		Forme As Integer
 	#tag EndProperty
 
 
@@ -529,6 +532,18 @@ Inherits MultipleSelectOperation
 			InitialValue="0"
 			Type="Integer"
 			InheritedFrom="MultipleSelectOperation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Famille"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Forme"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
