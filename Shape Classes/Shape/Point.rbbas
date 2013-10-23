@@ -2110,7 +2110,7 @@ Inherits Shape
 		  // q sur self // On n'est pas sûr que q  précède self dans la chaîne ou l'inverse.
 		  //utilisé uniquement dans Modifier.decal
 		  
-		  dim p1, p2 as point
+		  dim p1, p2, p3 as point
 		  dim M, M1 as Matrix
 		  
 		  // On vérifie d'abord que q précède self
@@ -2573,6 +2573,9 @@ Inherits Shape
 		  'Utilisé pour la construction à la souris (notamment)
 		  
 		  Shape(ol,1,1)
+		  fam = 0
+		  forme = 0
+		  auto = 4
 		  Bpt = new BasicPoint (a)
 		  Hidden = false
 		  createskull(wnd.Mycanvas1.transform(Bpt))

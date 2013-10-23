@@ -77,19 +77,6 @@ Inherits Polygon
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructshape()
-		  dim d as double
-		  
-		  d = Points(0).bpt.distance(Points(1).bpt)
-		  if d > 0 then
-		    super.constructshape
-		  end if
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function check() As Boolean
 		  dim i as integer
 		  dim g as BasicPoint

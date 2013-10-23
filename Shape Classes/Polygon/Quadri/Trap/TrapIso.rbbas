@@ -15,18 +15,6 @@ Inherits Trap
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  dim d as double
-		  
-		  d = Points(0).bpt.distance(Points(1).bpt)
-		  if d > 0 then
-		    super.constructshape
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
 		  dim s as shape
 		  
@@ -237,6 +225,13 @@ Inherits Trap
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"

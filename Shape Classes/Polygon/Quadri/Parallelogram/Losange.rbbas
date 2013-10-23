@@ -15,21 +15,6 @@ Inherits Parallelogram
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  dim p,q as BasicPoint
-		  dim d as double
-		  
-		  d = Points(1).bpt.distance(Points(0).bpt)
-		  q=Points(2).bpt - Points(1).bpt
-		  p = Points(1).bpt + (q.normer)*d
-		  Points(2).moveto(p)
-		  figskull(sk).UpdateSommet(2,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		  parallelogram.constructshape
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
 		  dim s as shape
 		  
@@ -69,6 +54,13 @@ Inherits Parallelogram
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"

@@ -679,15 +679,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetBibSide(i as integer) As BiBPoint
-		  
-		  return new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  Super.InitConstruction
 		  

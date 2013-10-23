@@ -15,24 +15,6 @@ Inherits Parallelogram
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructshape()
-		  dim p,q,r as BasicPoint
-		  
-		  q = Points(1).bpt
-		  r = Points(1).bpt-Points(0).bpt
-		  r = r.vecnorperp
-		  p = Points(2).bpt.projection(q,q+r)
-		  Points(2).moveto(p)
-		  
-		  UpdateSkull(2,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		  Parallelogram.ConstructShape
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
 		  dim s as shape
 		  
@@ -235,6 +217,13 @@ Inherits Parallelogram
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"

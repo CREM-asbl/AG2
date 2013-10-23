@@ -142,7 +142,7 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape(fa as integer, fo as integer)
-		  dim a, b,  p,v,c as BasicPoint
+		  dim a, b, c as BasicPoint
 		  dim d as double
 		  dim i, n, ori as integer
 		  dim M as matrix
@@ -171,7 +171,6 @@ Protected Class nBpoint
 		      M = new RotationMatrix(a,ori*PIDEMI)
 		      append M*tab(1)
 		    end select
-		    
 		  case 3 'Quadris
 		    select case fo
 		    case 1
@@ -193,25 +192,42 @@ Protected Class nBpoint
 		      append M*tab(2)
 		    case 4
 		      append tab(0)-tab(1)+tab(2)
-		      
-		      
+		    case 5
+		      a = tab(1)
+		      b = tab(1)-tab(0)
+		      b = b.vecnorperp
+		      M =  new OrthoProjectionMatrix(a,a+b)
+		      tab(2) = M*tab(2)
+		      append tab(0)-tab(1)+tab(2)
+		    case 6
+		      d = tab(0).distance(tab(1))
+		      if tab(1).distance(tab(2)) > 0 then
+		        b = tab(2)-tab(1)
+		        tab(2) = tab(1)+(b.normer)*d
+		        append tab(0)-tab(1)+tab(2)
+		      end if
 		    case 7
 		      constructshape(4,1)
 		    end select
 		  case 4 'Polreg
 		    n = fo+3
-		    p = (tab(0)+tab(1))/2
-		    v = tab(1)-tab(0)
-		    d = v.norme
+		    a = (tab(0)+tab(1))/2
+		    b = tab(1)-tab(0)
+		    d = b.norme
 		    if d <> 0 then
-		      v = v.VecNorPerp
-		      c = p + v*(ori*d/(2*tan(PI/n)))
+		      b = b.VecNorPerp
+		      c = a + b*(ori*d/(2*tan(PI/n)))
 		      M = new RotationMatrix(c,2*ori*PI/n)
-		      v = tab(1)
 		      for i = 2 to n-1
 		        append M*tab(i-1)
 		      next
 		    end if
+		  case 5
+		    select case  fo
+		    case 1
+		      d = tab(0).distance(tab(1))
+		      tab(2) = tab(2).projection(tab(0),d)
+		    end select
 		  end select
 		  
 		  
@@ -257,6 +273,30 @@ Protected Class nBpoint
 		Function orientation() As integer
 		  return 0
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint)
+		  dim  w as BasicPoint
+		  dim M as Matrix
+		  
+		  w = ref.tab(1)-ref.tab(0)
+		  w=w.normer
+		  if fo = 2 or fo = 5 Then
+		    w=w.VecNorPerp
+		  end if
+		  
+		  select case fo
+		  case 1, 2
+		    M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
+		    tab(1) = M*tab(1)
+		  case 4,5
+		    tab(1) = tab(0) +w*10
+		  end select
+		  
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 
