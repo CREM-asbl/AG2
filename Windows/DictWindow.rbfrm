@@ -36,7 +36,7 @@ Begin Window DictWindow
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
-      Enabled         =   "True"
+      Enabled         =   True
       EnableDrag      =   "False"
       EnableDragReorder=   "False"
       GridLinesHorizontal=   3
@@ -66,7 +66,7 @@ Begin Window DictWindow
       Top             =   1
       Underline       =   "False"
       UseFocusRing    =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   819
       _ScrollOffset   =   0
       _ScrollWidth    =   -1

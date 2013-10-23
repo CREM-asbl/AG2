@@ -324,9 +324,6 @@ Inherits SelectAndDragOperation
 		  
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
-		    if (sh.std   and sh.getindexpoint(p) <> -1) then
-		      return false
-		    end if
 		    if (sh isa arc) and (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and (not (p.pointsur.element(0) isa arc and (p.pointsur.element(0).getindex(sh.points(0)) = 0) ))  then
 		      return false
 		    end if

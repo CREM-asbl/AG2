@@ -564,23 +564,6 @@ Inherits Shape
 		  liberte = 2
 		  liberte = liberte-pointsur.count
 		  
-		  if std then
-		    liberte = 0
-		  end if
-		  
-		  for i = 0 to ubound(parents)
-		    s = parents(i)
-		    if (s.std or (s.MacConstructedby <> nil  and i = 0) )  and s.getindexpoint(self) <> -1 then
-		      liberte = 0
-		    end if
-		    if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then
-		      sh = pointsur.element(0)
-		      ''if (not sh isa circle or (sh.points(0) <> s.points(0))) and (not sh isa Lacet or  s.points(0).bpt.distance (Lacet(sh).support) > epsilon)   then
-		      'liberte = 0
-		      'end if
-		    end if
-		  next
-		  
 		  if constructedby <> nil then
 		    select case constructedby.oper
 		    case 0, 4, 6, 7
@@ -615,8 +598,18 @@ Inherits Shape
 		    updatemobilitysucceeding
 		  end if
 		  
-		  
-		  
+		  for i = 0 to ubound(parents)
+		    s = parents(i)
+		    if s.std or ( (s.MacConstructedby <> nil  and i = 0)  and (pointsur.count = 0) and not s.init)  then
+		      liberte = 0
+		    end if
+		    'if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then
+		    'sh = pointsur.element(0)
+		    '''if (not sh isa circle or (sh.points(0) <> s.points(0))) and (not sh isa Lacet or  s.points(0).bpt.distance (Lacet(sh).support) > epsilon)   then
+		    ''liberte = 0
+		    ''end if
+		    'end if
+		  next
 		  
 		  if liberte<0 then
 		    liberte=0
@@ -1133,7 +1126,7 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(ConstructedShapes)
 		    s = point(constructedshapes(i))
-		    if s.duplicateorcut then
+		    if s.duplicateorcut or s.fused then
 		      s.liberte = liberte
 		      s.updatemobilitysucceeding
 		    end if
@@ -1152,18 +1145,8 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  'guide = self     //inutile
 		  //on remonte à la racine de l'arbre (oper = 3 ou 5 ou 9)
 		  s = self
-		  
-		  'if s.predecesseur  <> nil then    //Inutile puisqu'on ne peut identifier deux points qui ont ou sont des dupliqués.
-		  's1 = s.predecesseur
-		  'if s1.predecesseur = s then //pourrait arriver si on a identifié des points dupliqués (deux triangles dupliqués joints par un côté)
-		  's.liberte = 0
-		  's1.liberte = 0
-		  'return
-		  'end if
-		  'end if
 		  
 		  while s.predecesseur <> nil and s.Predecesseur <> s
 		    s = s.predecesseur
@@ -1535,8 +1518,6 @@ Inherits Shape
 		    s.updateshape
 		  next
 		  
-		  updatesubdivarcpoints
-		  
 		  if constructedby <> nil and not centerordivpoint then
 		    select case constructedby.Oper
 		    case 3, 5
@@ -1605,14 +1586,13 @@ Inherits Shape
 		    else
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
-		    modified = true
 		  end if
-		  
-		  if modified then
-		    updateconstructedpoints
-		    updateMacConstructedShapes
-		    endmove
-		  end if
+		  modified = true
+		  'if modified then
+		  updateconstructedpoints
+		  updateMacConstructedShapes
+		  endmove
+		  'end if
 		  
 		  
 		  
@@ -2442,24 +2422,14 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(M as Matrix)
-		  dim  ep, np as BasicPoint
-		  
-		  
-		  
-		  
-		  ep = bpt
-		  np =  M*bpt
-		  
-		  Moveto np
+		  Moveto M*bpt
 		  if pointsur.count = 1 then
 		    puton pointsur.element(0)
-		  elseif ubound(parents) > -1 and parents(0).isaparaperp and parents(0).getindexpoint(self) = 1 then
-		    M = droite(parents(0)).prppupdate1
 		  end if
 		  modified = true
 		  updateshape
 		  
-		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainis la modification de toutes les figures
+		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
 		  
 		End Sub
 	#tag EndMethod
@@ -2487,32 +2457,6 @@ Inherits Shape
 		    end if
 		    moveto bp
 		  end select
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub adjustinter(S1 as Shape, S2 as Shape)
-		  dim inter as intersec
-		  
-		  if s2 = nil then
-		    PutOn S1
-		    drapmagn = false
-		    mobility
-		    return
-		  end if
-		  
-		  inter = CurrentContent.TheIntersecs.find(s1, s2)
-		  
-		  if inter = nil then
-		    inter = new Intersec(s1,s2)
-		    CurrentContent.TheIntersecs.addintersec(inter)
-		  end if
-		  
-		  inter.addpoint self
-		  
-		  if s1.invalid or s2.invalid then
-		    invalider
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -2714,7 +2658,6 @@ Inherits Shape
 		  dim j, old as integer
 		  dim loc as double
 		  dim sh as shape
-		  
 		  
 		  List = EL1.XQL("PointSur")
 		  if List.length > 0 then
@@ -2968,30 +2911,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatesubdivarcpoints()
-		  dim i, j as integer
-		  dim s, sc as shape
-		  dim Bib as BiBPoint
-		  dim Trib as TriBPoint
-		  
-		  for i = 0 to ubound(parents)
-		    s = parents(i)
-		    if s isa freecircle then
-		      for j = 0 to ubound(s.constructedshapes)
-		        sc = s.constructedshapes(j)
-		        if sc.constructedby.oper = 4 and (sc.constructedby.data(0) = self or sc.constructedby.data(1) = self) then
-		          Trib = new TriBpoint(s.getgravitycenter,point(sc.constructedby.data(0)).bpt, point(sc.constructedby.data(1)).bpt)
-		          point(sc).moveto  Trib.subdiv(S.ori, sc.constructedby.data(2), sc.constructedby.data(3))
-		        end if
-		      next
-		    end if
-		  next
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub endconstruction()
 		  dim i as integer
 		  
@@ -3014,6 +2933,48 @@ Inherits Shape
 		  currentcontent.optimize
 		  currentcontent.RemettreTsfAvantPlan
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SimulInter(s1 as shape, s2 as shape) As BasicPoint
+		  dim inter as intersec
+		  
+		  inter = CurrentContent.TheIntersecs.find(s1, s2)
+		  
+		  if inter = nil then
+		    inter = new Intersec(s1,s2)
+		  end if
+		  
+		  return inter.locatepoint(bpt)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub adjustinter(s1 as shape, s2 as shape)
+		  dim inter as intersec
+		  
+		  if s2 = nil then
+		    PutOn S1
+		    drapmagn = false
+		    mobility
+		    return
+		  end if
+		  
+		  inter = CurrentContent.TheIntersecs.find(s1, s2)
+		  
+		  if inter = nil then
+		    inter = new Intersec(s1,s2)
+		    CurrentContent.TheIntersecs.addintersec(inter)
+		  end if
+		  
+		  inter.addpoint self
+		  
+		  if s1.invalid or s2.invalid then
+		    invalider
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -3102,6 +3063,13 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"

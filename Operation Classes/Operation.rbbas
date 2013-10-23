@@ -274,6 +274,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub ShowAttraction()
+		  
 		  dim icot as integer
 		  dim CAS as shape
 		  dim p as basicpoint

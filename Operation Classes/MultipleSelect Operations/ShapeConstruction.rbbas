@@ -130,6 +130,8 @@ Inherits MultipleSelectOperation
 		Sub MouseMove(p as BasicPoint)
 		  dim magneticD As BasicPoint
 		  dim magnetism as Integer
+		  dim inter as intersec
+		  dim pt as Basicpoint
 		  
 		  if currentShape = nil then
 		    return
@@ -148,18 +150,21 @@ Inherits MultipleSelectOperation
 		    else
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
-		    CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
-		    if not(currentattractingshape isa point) and nextcurrentattractingshape <> nil and not(nextcurrentattractingshape isa point) then
-		      point(currentattractedshape).adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
-		      if currentattractedshape.invalid then
+		    ShowAttraction
+		    wnd.mycanvas1.RefreshBackground
+		    if nextcurrentattractingshape = nil then
+		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
+		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
+		      pt = point(currentattractedshape).simulinter(CurrentAttractingShape,NextCurrentAttractingShape)
+		      if pt = nil then
 		        nextcurrentattractingshape.unhighlight
 		        nextcurrentattractingshape = nil
-		        point(currentattractedshape).valider
+		        'point(currentattractedshape).valider
+		      else
+		        CurrentShape.Fixecoord(pt, Currentshape.IndexConstructedPoint)
 		      end if
 		    end if
 		  end if
-		  ShowAttraction
-		  wnd.mycanvas1.RefreshBackground
 		  
 		End Sub
 	#tag EndMethod
@@ -167,6 +172,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
 		  dim curshape as point
+		  dim inter as intersec
 		  
 		  if (currentshape isa point and currentattractingshape <> nil and currentattractingshape isa point)  then
 		    return
@@ -186,7 +192,6 @@ Inherits MultipleSelectOperation
 		      if currentattractingshape isa point or currentattractingshape isa repere then
 		        display  = thispoint + "?"
 		      elseif nextcurrentattractingshape <> nil then
-		        curshape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
 		        display = attheinter + "?"
 		      else
 		        display = sur + this + " " +currentattractingshape.gettype +"?"
@@ -360,7 +365,6 @@ Inherits MultipleSelectOperation
 		  dim magneticD as BasicPoint
 		  dim magnetism as integer
 		  
-		  'curshape.valider
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then
@@ -369,15 +373,6 @@ Inherits MultipleSelectOperation
 		      if NextCurrentAttractingShape <> nil then
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig
 		        curShape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
-		        'if curshape.invalid then
-		        'CurrentContent.thefigs.addfigure NextCurrentAttractingShape.fig
-		        'curshape.valider
-		        'curshape.puton currentattractingshape
-		        'NextCurrentAttractingShape.Attracting = false
-		        'NextCurrentAttractingShape = nil
-		        'magnetism = Magnetisme(currentshape,magneticD)
-		        'AdjustMagnetism(curshape)
-		        'end if
 		      else
 		        curshape.puton currentattractingshape
 		      end if

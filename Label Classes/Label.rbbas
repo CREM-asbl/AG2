@@ -42,7 +42,7 @@ Protected Class Label
 		    ResetParam(g)
 		    return
 		  end if
-		  if text <> "*"  then
+		  if text <> "*"   then
 		    g.DrawString(Text,q.x, q.y)
 		    ResetParam(g)
 		    return
@@ -84,11 +84,16 @@ Protected Class Label
 		  ////////////////////// Longueurs
 		  if (shape isa droite) or ((shape isa polygon or shape isa arc or shape isa freecircle) and loc <>-1 ) then
 		    Type = 0
-		    if shape isa droite  and droite(shape).nextre = 2 then
-		      if shape = currentcontent.SHUL then
-		        dat = arrondi2(droite(shape).longueur)
-		      elseif currentcontent.UL <> 0 then
-		        dat = arrondi2(droite(shape).longueur/currentcontent.UL)
+		    if shape isa droite then
+		      if droite(shape).nextre = 2 then
+		        if shape = currentcontent.SHUL then
+		          dat = arrondi2(droite(shape).longueur)
+		        elseif currentcontent.UL <> 0 then
+		          dat = arrondi2(droite(shape).longueur/currentcontent.UL)
+		        end if
+		      else
+		        dat =  "¥"
+		        setfont("Symbol")
 		      end if
 		    elseif shape isa Lacet and Loc <> -1 then
 		      if currentcontent.UL <> 0 then
@@ -130,8 +135,6 @@ Protected Class Label
 		      end if
 		    end select
 		    g.Drawstring(dat,q.x, q.y)
-		  else
-		    infini(g)
 		  end if
 		  ResetParam(g)
 		End Sub
@@ -487,14 +490,6 @@ Protected Class Label
 		  g.bold =false
 		  g.Italic =false
 		  g.TextFont = "System"
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub infini(g as graphics)
-		  setfont("Symbol")
-		  g.TextFont= "Symbol"
-		  Text= "¥"
 		End Sub
 	#tag EndMethod
 
