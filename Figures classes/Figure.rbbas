@@ -2409,9 +2409,9 @@ Implements StringProvider
 		  dim s as shape
 		  
 		  Choixpointsfixes
-		  if NbUnModif > 0 then
-		    return new Matrix(1)
-		  end if
+		  'if NbUnModif > 0 then
+		  'return new Matrix(1)
+		  'end if
 		  
 		  n = NbSommSur
 		  
@@ -2456,22 +2456,6 @@ Implements StringProvider
 		    return autoaffupdate
 		  end if
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub autozeroupdate()
-		  'dim s1, s2 as shape
-		  'dim tsf as transformation
-		  '
-		  's2 = shapes.element(0)
-		  'if s2.constructedby <> nil and s2.constructedby.oper = 6 then
-		  's1 = s2.constructedby.shape
-		  'tsf = transformation(s2.constructedby.data(0))
-		  'tsf.Appliquer(s1,s2)
-		  'end if
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -2630,9 +2614,9 @@ Implements StringProvider
 		  dim s as shape
 		  
 		  choixpointsfixes
-		  if NbUnModif > 2 then
-		    return new Matrix(1)
-		  end if
+		  'if NbUnModif > 2 then
+		  'return new Matrix(1)
+		  'end if
 		  
 		  n = NbSommSur
 		  

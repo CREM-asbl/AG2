@@ -77,33 +77,6 @@ Inherits Polygon
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructshape()
-		  dim p,u,v,c as BasicPoint
-		  dim d as double
-		  dim i as integer
-		  dim M1 as Matrix
-		  
-		  p = (Points(0).bpt + Points(1).bpt)/2
-		  v = Points(1).bpt - Points(0).bpt
-		  d = v.norme/2
-		  if d <> 0 then
-		    v = v.VecNorPerp
-		    c = p + v*(ori*d/(tan(PI/Npts)))
-		    M1 = new RotationMatrix(c,2*ori*PI/Npts)
-		    u = Points(1).bpt
-		    for i = 2 to Npts-1
-		      u = M1 * u
-		      Points(i).moveto u
-		    next
-		  end if
-		  
-		  
-		  UpdateSkull
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function check() As Boolean
 		  dim i as integer
 		  dim g as BasicPoint
@@ -135,28 +108,7 @@ Inherits Polygon
 		  
 		  super.endconstruction
 		  
-		  'redim sh(-1)
-		  'redim mult(-1)
-		  '
-		  'for i = 0 to npts-1
-		  'for j = 0 to ubound(points(i).parents)
-		  's = points(i).parents(j)
-		  'if s <> self then
-		  'n = sh.indexof(s)
-		  'if n = -1 then
-		  'sh.append s
-		  'mult.append 1
-		  'else
-		  'mult(n) = mult(n)+1
-		  'end if
-		  'end if
-		  'next
-		  'next
-		  '
-		  'n = mult.indexof(2)
-		  'if n <> -1 then
-		  'supp = sh(n)
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -207,6 +159,13 @@ Inherits Polygon
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"

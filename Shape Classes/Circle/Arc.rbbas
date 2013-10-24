@@ -36,7 +36,7 @@ Inherits Circle
 		    computeradius
 		    startangle = GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
-		    Points(2).Moveto p.projection(points(0).bpt, radius)
+		    constructshape
 		    updateangles
 		    CreateExtreAndCtrlPoints
 		    updateskull
@@ -795,12 +795,6 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatecoord()
-		  coord = new TriBPoint(self)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub PaintTipOnArc(g as graphics, col as couleur)
 		  
 		  dim b, e  as BasicPoint
@@ -816,6 +810,16 @@ Inherits Circle
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ConstructShape()
+		  super.ConstructShape
+		  computeradius
+		  updateangles
+		  CreateExtreAndCtrlPoints
+		  'updateskull
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		startangle As double
@@ -827,6 +831,13 @@ Inherits Circle
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="arcangle"
 			Group="Behavior"

@@ -47,15 +47,26 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
+		  dim i, index as integer
+		  dim s as shape
 		  
-		  if  constructedby <> nil and constructedby.oper < 3  then
-		    provis = constructbasis
-		    Points(1).moveto firstp +provis*10
+		  
+		  if constructedby <> nil then
+		    updatecoord
+		    index = constructedby.data(0)
+		    s = constructedby.shape
+		    if s isa polygon or s isa bande or s isa secteur  then
+		      coord.constructshape(fam,forme, s.getbibside(index))
+		    else
+		      coord.constructshape(fam,forme, s.coord)
+		    end if
+		    repositionnerpoints
 		    computeextre
 		    if  nextre = 0 then
 		      points(1).hide
 		    end if
 		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -137,30 +148,10 @@ Inherits Bipoint
 		Sub Fixecoord(p as Basicpoint, n as integer)
 		  dim i as integer
 		  
-		  
-		  if n = 0 then
-		    if constructedby = nil  then
-		      for i = 0 to 1
-		        Points(i).moveto(p)
-		      next
-		    else
-		      Points(0).moveto(p)
-		      constructshape
-		    end if
-		    sk.update(wnd.mycanvas1.transform(p))
-		    if nextre = 0 and constructedby <> nil then
-		      updateskull
-		    end if
-		  elseif n =1 then
-		    if constructedby = nil then
-		      Points(1).moveto(p)
-		    else
-		      Points(1).moveto p.projection(firstp,firstp+provis)
-		    end if
-		    computeextre
-		    Updateskull
-		  end if
-		  
+		  for i = n to 1
+		    Points(i).MoveTo(p)
+		  next
+		  constructshape
 		  
 		  
 		End Sub
@@ -315,8 +306,6 @@ Inherits Bipoint
 		  tsf.supp = constructedby.shape
 		  tsf.supp.tsfi.append tsf
 		  tsf.index = constructedby.data(0)
-		  'fig.SetConstructedBy(constructedby.shape.fig, tsf)
-		  'tsf.constructedfigs.addfigure fig
 		  CurrentContent.TheTransfos.addtsf tsf
 		  
 		  
@@ -482,16 +471,17 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Function Inter(s as circle, byref p() as Basicpoint, byref bq as BasicPoint, Byref w as BasicPoint) As integer
-		  dim B1, B2 as BiBpoint
-		  dim i, n as integer
-		  dim b, v, intersec() as BasicPoint
+		  'dim B1, B2 as BiBpoint
+		  'dim b, v, intersec() as BasicPoint
 		  
-		  B1 = new Bibpoint(firstp, secondp)
-		  B2 = new Bibpoint(s.points(0).bpt, s.points(1).bpt)
+		  'B1 = new Bibpoint(firstp, secondp)
+		  'B2 = new Bibpoint(s.points(0).bpt, s.points(1).bpt)
 		  
-		  n = B1.BiBDroiteInterCercle(B2,p(), bq, w)
-		  return n
-		  
+		  if  ubound(p) > -1 and bq <> nil and w <> nil then
+		    return BiBPoint(coord).BiBDroiteInterCercle(BibPoint(s.coord),p(), bq, w)
+		  else
+		    return 0
+		  end if 
 		  
 		  'if s isa arc then
 		  'for i = 0 to 1
@@ -685,18 +675,6 @@ Inherits Bipoint
 		  
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldDroite(ol as objectslist, coord as nBPoint, n As integer)
-		  Droite(ol,coord.tab(0),n)
-		  Points.append new Point(ol,coord.tab(1))
-		  setpoint Points(1)
-		  nextre = n
-		  ComputeExtre
-		  updateskull
-		  endconstruction
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

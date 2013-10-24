@@ -8,22 +8,6 @@ Inherits Triangle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape()
-		  dim a,b,p as BasicPoint
-		  dim M as Matrix
-		  
-		  a = (Points(0).bpt+Points(1).bpt)/2
-		  M = new RotationMatrix(a,ori*PIDEMI)
-		  p = Points(1).bpt
-		  p = M*p
-		  Points(2).moveto(p)
-		  
-		  updateSkull
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub TriangRectIso(ol as Objectslist, p as BasicPoint)
 		  Triangle(ol,2,p)
 		  ori = 1

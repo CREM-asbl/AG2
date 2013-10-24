@@ -53,8 +53,6 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       UseFocusRing    =   "False"
       Visible         =   True
@@ -79,8 +77,6 @@ Begin Window WorkWindow
       LockTop         =   "True"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       TopLeftColor    =   0
       Visible         =   True
@@ -324,8 +320,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
@@ -351,8 +345,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
@@ -378,8 +370,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
@@ -405,8 +395,6 @@ Begin Window WorkWindow
             LockTop         =   ""
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
@@ -458,8 +446,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -485,8 +471,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -512,8 +496,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -539,8 +521,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -566,8 +546,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -593,8 +571,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -620,8 +596,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   537
             UseFocusRing    =   "True"
             Visible         =   True
@@ -2844,7 +2818,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if mousedispo then
 		    closefw
 		    select case index
@@ -2886,7 +2860,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -2918,14 +2892,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -2941,7 +2915,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -2957,7 +2931,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -2969,7 +2943,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -2986,12 +2960,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then

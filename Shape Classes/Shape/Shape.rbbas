@@ -210,13 +210,13 @@ Implements StringProvider
 		        cs.border = 100
 		      end if
 		    end if
-		    if n = 0 then
-		      sk.update(wnd.mycanvas1.transform(p))
-		    else
-		      for j = n to npts-1
-		        Updateskull(j,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		      next
-		    end if
+		    'if n = 0 then
+		    'sk.update(wnd.mycanvas1.transform(p))
+		    'else
+		    'for j = n to npts-1
+		    'Updateskull(j,wnd.mycanvas1.dtransform(p-Points(0).bpt))
+		    'next
+		    'end if
 		  end if
 		  
 		  
@@ -578,6 +578,10 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Shape(ol as objectslist, ncp as integer)
+		  if currentcontent.currentoperation isa shapeconstruction then
+		    fam = shapeconstruction(currentcontent.currentoperation).famille
+		    forme = shapeconstruction(currentcontent.currentoperation).forme
+		  end if
 		  if id=0 then
 		    id = ol.newId
 		  end if
@@ -635,12 +639,6 @@ Implements StringProvider
 		  RemoveChild Q
 		  Q.removeParent self
 		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub ConstructShape()
 		  
 		End Sub
 	#tag EndMethod
@@ -1055,6 +1053,9 @@ Implements StringProvider
 		    secteur(self).computeextre
 		  end if
 		  Updateskull
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1415,9 +1416,7 @@ Implements StringProvider
 		  end if
 		  
 		  invalid = false
-		  'if t2 then                                     //Introduit le 19/10/2012 pour récupérer un carré qui a été à rien (ou autre forme)
-		  'constructshape
-		  'end if
+		  
 		  for i = npts to ubound(childs)
 		    if childs(i).invalid then
 		      if childs(i).pointsur.count < 2 then
@@ -1548,7 +1547,6 @@ Implements StringProvider
 		    auto = 0
 		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle then
 		    auto = 1
-		    // + Formes fusionnées
 		  elseif (self isa polyqcq and npts = 3 and not self isa Lacet) or (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then
 		    auto = 2
 		  elseif self isa triangiso or self isa triangrect or self isa rect or self isa losange or self isa arc  then
@@ -3590,6 +3588,7 @@ Implements StringProvider
 		    coord = new nBPoint(self)
 		  end select
 		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3887,6 +3886,49 @@ Implements StringProvider
 		    end if
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub repositionnerpoints()
+		  dim j as integer
+		  
+		  if self isa point then
+		    point(self).moveto coord.tab(0)
+		  else                  //On va rechercher la forme
+		    for j = 0 to ubound(points)
+		      points(j).moveto coord.tab(j)   //On repositionne les sommets
+		      points(j).modified = true
+		    next
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConstructShape()
+		  dim i as integer
+		  dim d as double
+		  
+		  d = Points(0).bpt.distance(Points(1).bpt)
+		  
+		  if d > 0 then
+		    coord = new nBPoint
+		    for i = 0 to ncpts-1
+		      coord.append Points(i).bpt
+		    next
+		    coord.constructshape(fam,forme)
+		    repositionnerpoints
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetBibSide(i as integer) As BiBPoint
+		  
+		  
+		  return new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

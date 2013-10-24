@@ -451,6 +451,23 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetBibSide(i as integer) As BiBPoint
+		  dim j as integer
+		  
+		  if i =0 then
+		    j = 1
+		  else
+		    i = 0
+		    j = 2
+		  end if
+		  
+		  return new BiBPoint(coord.tab(i), coord.tab(j) )
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

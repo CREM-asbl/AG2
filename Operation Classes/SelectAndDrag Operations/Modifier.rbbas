@@ -318,7 +318,7 @@ Inherits SelectAndDragOperation
 		  p = point(s)
 		  p.mobility
 		  
-		  if   p.liberte = 0 then
+		  if   p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
 		    return false
 		  end if
 		  

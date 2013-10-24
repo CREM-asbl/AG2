@@ -35,13 +35,10 @@ Inherits ShapeConstruction
 		    currentshape = new Droite(ol,p,0) // droite perpendiculaire
 		    op = 2
 		  end select
-		  currentshape.fam = famille
-		  currentshape.forme = forme
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
 		  CurrentShape.IsInConstruction = true
 		  Currentshape.InitConstruction
-		  currentshape.constructshape
 		  CurrentShape.IndexConstructedPoint = 0
 		  wnd.setcross
 		  
@@ -53,19 +50,26 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
 		  operation.paint(g)
-		  if currentshape <> nil then
-		    
-		    select case currentitemtoset
-		    case 1
-		      Help g, choose + asegmentoraline
-		    case 2
-		      currentshape.paintall(g)
-		      Help g, fix + apoint
-		    case 3
-		      CurrentShape.PaintAll(g)
-		      Help g, drag
-		    end select
-		  end if
+		  select case currentitemtoset
+		  case 1
+		    display = choose + asegmentoraline
+		  else
+		    if currentattractingshape <> nil then
+		      currentattractingshape.paint(g)
+		      if currentattractingshape isa point or currentattractingshape isa repere then
+		        display  = thispoint + "?"
+		      elseif nextcurrentattractingshape <> nil then
+		        display = attheinter + "?"
+		      else
+		        display = sur + this + " " +currentattractingshape.gettype +"?"
+		      end if
+		    end if
+		    showattraction
+		    currentshape.paintall(g)
+		  end select
+		  
+		  Help g, display
+		  
 		End Sub
 	#tag EndMethod
 
@@ -86,16 +90,23 @@ Inherits ShapeConstruction
 		  case 1
 		    Refe = GetBiPoint(p)
 		    currentattractingshape = Refe
-		  case 2, 3
+		  else
 		    CurrentShape.Fixecoord(p, currentshape.IndexConstructedPoint)
 		    magnetism = Magnetisme(currentshape,magneticD)
 		    if magnetism>0 then
 		      currentattractedshape = currentshape.points(currentshape.IndexConstructedPoint)
-		      CurrentShape.Fixecoord(magneticD, currentshape.IndexConstructedPoint)
+		      ShowAttraction
+		      wnd.mycanvas1.RefreshBackground
+		      if nextcurrentattractingshape = nil then
+		        CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
+		      elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
+		        TraitementIntersec()
+		      end if
 		    end if
 		  end select
+		  showattraction
 		  
-		  ShowAttraction
+		  
 		End Sub
 	#tag EndMethod
 
@@ -138,7 +149,7 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
 		  dim magneticD, p As BasicPoint   // s est identique à "currentshape" (voir "shapeconstruction")
-		  dim magnetism as Integer
+		  dim magnetism, i as Integer
 		  dim curshape  as Point
 		  
 		  
@@ -152,48 +163,32 @@ Inherits ShapeConstruction
 		  select case  currentitemtoset
 		  case 1
 		    if forme >2 then
-		      currentshape.Points(1).hide
+		      s.Points(1).hide
 		    end if
 		    s.setconstructedby(Refe,op)
 		    s.constructedby.data.append index(iobj)
-		  case 2
-		    magnetism = Magnetisme(currentshape,magneticD)
-		    if magnetism > 0 then
-		      s.Fixecoord(magneticD,0)
-		    end if
-		    if forme < 3 then
-		      s.Points(1).show
-		    end if
+		    for i = 0 to 1
+		      s.points(i).moveto Refe.points(i).bpt
+		    next
+		  else
+		    curshape = s.points(s.IndexConstructedPoint)
 		    
-		  case 3
-		    magnetism = Magnetisme(currentshape,magneticD)
-		    if magnetism > 0 then
-		      s.Fixecoord(magneticD,1)
-		    end if
-		    if currentshape.points(1).distanceto(currentshape.points(0))< epsilon   then
+		    AdjustMagnetism(curshape)
+		    if curshape.invalid then
 		      CurrentContent.abortconstruction
 		      return false
 		    end if
-		  end select
-		  
-		  if currentitemtoset >1 then
-		    curshape = s.points(currentitemtoset-2)
-		    AdjustMagnetism(curshape)
+		    ReinitAttraction
+		    s.IndexConstructedPoint = s.IndexConstructedPoint+1
+		    
 		    if currentattractingshape isa polygon and currentitemtoset = 3 then
 		      curshape.surseg = true
 		    end if
-		    s.updateskull
-		    s.IndexConstructedPoint = s.IndexConstructedPoint+1
-		    ReInitAttraction
-		  end if
+		    if currentitemtoset = 2 and droite(s).nextre = 0 then
+		      nextitem
+		    end if
+		  end select
 		  
-		  if currentitemtoset = 2 and droite(s).nextre = 0 then
-		    s.constructshape
-		    nextitem
-		  end if
-		  
-		  
-		  ResetVisible
 		  return true
 		  
 		End Function

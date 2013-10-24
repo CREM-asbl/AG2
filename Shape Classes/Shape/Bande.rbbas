@@ -286,6 +286,16 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetBibSide(i as integer) As BiBPoint
+		  
+		  
+		  return new BiBPoint(coord.tab(0), coord.tab(1))
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

@@ -16,19 +16,6 @@ Inherits Trap
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructshape()
-		  dim a,b,p as BasicPoint
-		  a = Points(1).bpt - Points(0).bpt
-		  b = Points(0).bpt + a.vecnorperp
-		  p = Points(2).bpt.projection(Points(0).bpt,b)
-		  Points(3).moveto(p)
-		  figskull(sk).UpdateSommet(3,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
 		  dim s as shape
 		  
@@ -451,6 +438,13 @@ Inherits Trap
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"
