@@ -222,6 +222,8 @@ Protected Class Macro
 		        MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
 		        
 		        if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
+		          s = currentcontent.theobjects.getshape(ifmac.RealId)
+		          ifmac.coord = s.coord
 		          if oper = 19 then            //On met ifmac à jour
 		            ifmac.location = point(s).location(0)
 		            ifmac.side = point(s).numside(0)

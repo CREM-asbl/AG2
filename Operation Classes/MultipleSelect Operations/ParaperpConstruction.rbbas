@@ -257,6 +257,20 @@ Inherits ShapeConstruction
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Famille"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="ShapeConstruction"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Forme"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="ShapeConstruction"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ntsf"
 			Group="Behavior"
 			InitialValue="0"

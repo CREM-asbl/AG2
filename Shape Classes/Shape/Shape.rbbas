@@ -1273,10 +1273,10 @@ Implements StringProvider
 		  end if
 		  
 		  CreateExtreAndCtrlPoints
-		  updateMacConstructedShapes
+		  
 		  modified = true  '?
 		  endmove
-		  
+		  updateMacConstructedShapes
 		  
 		End Sub
 	#tag EndMethod

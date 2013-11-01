@@ -598,6 +598,10 @@ Inherits Shape
 		    updatemobilitysucceeding
 		  end if
 		  
+		  if MacConstructedBy <> nil and pointsur.count = 0 and not init then
+		    liberte = 0
+		  end if
+		  
 		  for i = 0 to ubound(parents)
 		    s = parents(i)
 		    if s.std or ( (s.MacConstructedby <> nil  and i = 0)  and (pointsur.count = 0) and not s.init)  then
