@@ -1186,8 +1186,8 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub XMLReadTsf(Temp as XMLElement)
-		  dim i as integer
-		  dim List as XmlNodeList
+		  dim i as integer                                'Ici on crée les transformations, on connait leurs supports mais pas encore leurs images.
+		  dim List as XmlNodeList                 'Les images seront créées dans XMLReadConstructionInfo
 		  dim EL as XMLElement
 		  
 		  redim tsfi(-1)
@@ -1304,11 +1304,8 @@ Implements StringProvider
 		  select case Constructedby.oper
 		  case 1,2
 		    Temp.SetAttribute("Index", str(constructedby.data(0)))
-		    'if ubound(constructedby.data) = 2 then
-		    'Temp.SetAttribute("PrpDup",str(1))
-		    'end if
 		  case 3
-		    M = matrix(constructedby.data(0))  'matrix(points(0).constructedby.data(0))
+		    M = matrix(constructedby.data(0)) 
 		    M.XMLPutAttribute(Temp)
 		  case 5
 		    Form = Doc.CreateElement("CutPoints")
@@ -1323,7 +1320,6 @@ Implements StringProvider
 		    Temp.appendchild(Form)
 		    M = matrix(constructedby.data(0))
 		    M.XMLPutAttribute(Temp)
-		    'Temp.Setattribute("Ncut", str(constructedby.data(1)))
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
@@ -2891,17 +2887,34 @@ Implements StringProvider
 		  
 		  
 		  if Constructedby <> nil and isaparaperp and constructedby.shape.fig <> nil then //si constructedby.shape.fig a déjà été chargé
-		    droite(self).createtsf
-		  end if
-		  
-		  if ubound(ConstructedShapes) > -1 then  // sinon on construit la tsf au moment ou on charge constructedby.shape.fig
-		    for  i = 0 to ubound(constructedshapes)
-		      sh= constructedshapes(i)
-		      if sh.isaparaperp and sh.fig <> nil and ubound(sh.constructedby.data) = 0 then
-		        droite(sh).createtsf
+		    sh = constructedby.shape
+		    for i = 0 to ubound(sh.tsfi)
+		      tsf = sh.tsfi(i)
+		      if tsf.type = 0 and tsf.constructedshapes.count = 0 then
+		        tsf.constructedshapes.addshape self
+		        constructedby.data.append tsf
 		      end if
 		    next
 		  end if
+		  'droite(self).createtsf
+		  'end if
+		  
+		  if ubound(ConstructedShapes) > -1 then  // sinon on fait la même chose au moment ou on charge constructedby.shape.fig
+		    for  i = 0 to ubound(constructedshapes)
+		      sh= constructedshapes(i)
+		      if sh.isaparaperp and sh.fig <> nil and ubound(sh.constructedby.data) = 0 then
+		        for i = 0 to ubound(tsfi)
+		          tsf = tsfi(i)
+		          if tsf.type = 0 and tsf.constructedshapes.count = 0 then
+		            tsf.constructedshapes.addshape sh
+		            sh.constructedby.data.append tsf
+		          end if
+		        next
+		        'droite(sh).createtsf
+		      end if
+		    next
+		  end if
+		  
 		  
 		  
 		  
@@ -3928,6 +3941,19 @@ Implements StringProvider
 		  return new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function XMLPutMacConstructionInfoInContainer(Doc as XMLDocument) As XMLElement
+		  dim Temp as XMLElement
+		  
+		  
+		  Temp = Doc.CreateElement("MacConstructedBy")
+		  Temp.SetAttribute("Macro",MacConstructedby.Mac.Caption)
+		  
+		  
+		  return Temp
 		End Function
 	#tag EndMethod
 

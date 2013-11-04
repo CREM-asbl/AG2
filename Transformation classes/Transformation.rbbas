@@ -243,7 +243,7 @@ Implements StringProvider
 		  oldM = M
 		  
 		  
-		  if type < 3 or type > 6 then
+		  if type <> 0 and  (type < 3 or type > 6 ) then
 		    T = new Tip
 		  end if
 		  

@@ -368,9 +368,10 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Function MakeXML() As XMLDocument
 		  dim Doc as XMLDocument
-		  dim AG, TMP, Grille as XmlElement
+		  dim AG, TMP, EL, Grille as XmlElement
 		  dim i as integer
 		  dim s as shape
+		  dim Mac as Macro
 		  
 		  Doc = new XmlDocument
 		  Doc.Preservewhitespace = true
@@ -407,6 +408,20 @@ Protected Class WindContent
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
 		  
+		  if App.TheMacros.Count > 0 then
+		    TMP = Doc.CreateElement("Macros")
+		    for i = 0 to App.TheMacros.count-1
+		      Mac =App.TheMacros.element(i)
+		      EL = Doc.CreateElement("Macro")
+		      EL.AppendChild Doc.importnode(mac.Histo,true)
+		      EL.AppendChild Mac.ToMac(Doc,0)
+		      EL.AppendChild Mac.ToMac(Doc,1)
+		      EL.AppendChild Mac.ToMac(Doc,2)
+		      EL.AppendChild Mac.DescriptionToMac(Doc)
+		      TMP.AppendChild EL
+		    next
+		    AG.appendchild TMP
+		  end if
 		  
 		  if TheObjects.element(0) isa repere then
 		    TMP = Doc.CreateElement(Dico.Value("Objects"))

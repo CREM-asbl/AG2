@@ -132,14 +132,10 @@ Inherits Application
 		  CheckProcess
 		  
 		  CheckSystem
-		  
 		  InitFolders
-		  
 		  Dico = new Dictionnaire
 		  Config = new Configuration
-		  
 		  CheckUpdate
-		  
 		  autoquit = true
 		  init
 		  themacros = new macroslist

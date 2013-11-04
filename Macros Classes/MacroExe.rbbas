@@ -31,7 +31,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetName() As string
-		  return Mac.Caption
+		  return "Macro " + Mac.Caption
 		End Function
 	#tag EndMethod
 
@@ -307,6 +307,12 @@ Inherits MultipleSelectOperation
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToXML(Doc as XMLDocument) As XMLElement
+		  
+		End Function
 	#tag EndMethod
 
 

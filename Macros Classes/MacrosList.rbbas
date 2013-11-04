@@ -45,6 +45,31 @@ Protected Class MacrosList
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub XMLLoadMacros(EL as XMLElement)
+		  dim List as XmlNodeList
+		  dim macr, temp as XMLElement
+		  dim doc as XMLDocument
+		  dim mac as macro
+		  dim i as integer
+		  
+		  List = EL.XQL(Dico.Value("Macros"))
+		  if  list.Length > 0 then
+		    macr = XMLElement(List.Item(0))
+		    for i = 0 to macr.childcount-1
+		      doc = new XMLDocument
+		      temp = XMLElement(macr.child(i))
+		      doc.appendchild doc.importnode(temp, true)
+		      mac = new macro(doc)
+		      mac.caption = temp.getattribute("Name")
+		      addmac(mac)
+		      mac.CreerMenuItem
+		    next
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		macs(-1) As Macro

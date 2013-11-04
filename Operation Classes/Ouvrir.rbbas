@@ -4,7 +4,7 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub Ouvrir(f as folderitem)
 		  dim Doc as XmlDocument
-		  dim Fag as XmlElement
+		  'dim Fag as XmlElement
 		  dim Cfg as string
 		  dim v1, v2, v3, n as integer
 		  dim version as string
@@ -29,10 +29,6 @@ Inherits Operation
 		    MsgBox Dico.Value("Nofagfile")
 		    return
 		  end if
-		  
-		  
-		  
-		  FichAG = FAG
 		  
 		  version = FAG.GetAttribute("Version")
 		  v1 = val(NthField(version,".", 1))
@@ -63,19 +59,17 @@ Inherits Operation
 		    Config.ChargerConfig
 		  end if
 		  
-		  'wnd.updatemenu
+		  app.themacros.XMLLoadMacros(FAG)
 		  
 		  currentcontent.removeall
-		  Objects.SetId(-1)
-		  
 		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
-		  
 		  BkCol = FAG.GetAttribute("BkCol")
 		  if BkCol = "noir" and wnd.BackColor = &cFFFFFF then
 		    wnd.switchcolors
 		  end if
 		  Objects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
-		  Objects.XMLLoadObjects(FichAG)
+		  Objects.SetId(-1)
+		  Objects.XMLLoadObjects(FAG)
 		  Objects.updateids
 		  currentcontent.FinInitialisation(FAG, f)
 		  wnd.refresh
@@ -87,9 +81,10 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  dim EL as XMLElement
+		  dim EL, Obj as XMLElement
 		  dim EN as XMLNode
 		  dim i, j as integer
+		  dim List as XMLNodeList
 		  
 		  CurrentContent.CreateFigs
 		  
@@ -99,10 +94,15 @@ Inherits Operation
 		  
 		  EL = Doc.CreateElement("ObjetsLus")
 		  EL.SetAttribute("Fichier", FagTitle)
-		  for i = 0 to FichAG.ChildCount-1
-		    EN = Doc.ImportNode(FichAG.Child(i), true)
-		    EL.Appendchild EN
-		  next
+		  
+		  List = FAG.XQL(Dico.Value("Objects"))
+		  If list.Length > 0 then
+		    Obj= XMLElement(List.Item(0))
+		    for i = 0 to Obj.ChildCount-1
+		      EN = Doc.ImportNode(Obj.Child(i), true)
+		      EL.Appendchild EN
+		    next
+		  end if
 		  return EL
 		  
 		End Function
@@ -163,7 +163,7 @@ Inherits Operation
 
 
 	#tag Property, Flags = &h0
-		FichAG As XMLElement
+		FAG As XMLElement
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

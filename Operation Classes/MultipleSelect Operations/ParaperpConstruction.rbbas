@@ -183,7 +183,11 @@ Inherits ShapeConstruction
 		    
 		    if currentattractingshape isa polygon and currentitemtoset = 3 then
 		      curshape.surseg = true
+		      if s.points(0).pointsur.count = 1 and s.points(0).pointsur.element(0) isa polygon then
+		        s.points(0).surseg = true
+		      end if
 		    end if
+		    
 		    if currentitemtoset = 2 and droite(s).nextre = 0 then
 		      nextitem
 		    end if
