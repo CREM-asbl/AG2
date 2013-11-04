@@ -1305,7 +1305,7 @@ Implements StringProvider
 		  case 1,2
 		    Temp.SetAttribute("Index", str(constructedby.data(0)))
 		  case 3
-		    M = matrix(constructedby.data(0)) 
+		    M = matrix(constructedby.data(0))
 		    M.XMLPutAttribute(Temp)
 		  case 5
 		    Form = Doc.CreateElement("CutPoints")
@@ -3016,6 +3016,7 @@ Implements StringProvider
 		  dim p as point
 		  dim inter as intersec
 		  dim pol as polygon
+		  dim MacInfo as MacConstructionInfo
 		  
 		  if constructedby <> nil then
 		    select case  constructedby.oper
@@ -3047,6 +3048,15 @@ Implements StringProvider
 		    end  select
 		    constructedby = nil
 		  end if
+		  
+		  if macconstructedby <> nil then
+		    macinfo = macConstructedby
+		    for i = 0 to ubound(macinfo.realinit)
+		      s = currentcontent.theobjects.getshape(macinfo.realinit(i))
+		      s.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
+		    next
+		  end if
+		  
 		  
 		  if ubound(tsfi) > -1 then
 		    for i =ubound(tsfi) downto 0

@@ -5,7 +5,6 @@ Inherits MultipleSelectOperation
 		Sub MacroExe(n as integer)
 		  MultipleSelectOperation()
 		  OpId = 43
-		  app.drapmac = true
 		  Mac = app.TheMacros.element(n)
 		  NumberOfItemsToSelect = ubound(mac.obinit) +1
 		  MacInfo = new MacConstructionInfo(Mac)
@@ -31,7 +30,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetName() As string
-		  return "Macro " + Mac.Caption
+		  return "MacroExe "
 		End Function
 	#tag EndMethod
 
@@ -158,11 +157,11 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  
 		  super.EndOperation
-		  mw.close
-		  
-		  MacInfo = new MacConstructionInfo(Mac)
+		  if mw <> nil then
+		    mw.close
+		    MacInfo = new MacConstructionInfo(Mac)
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -311,8 +310,105 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
+		  dim EL0, EL1 as XMLElement
+		  dim i as integer
+		  dim s as shape
+		  
+		  EL0 = Doc.CreateElement(Dico.value("Macro"))
+		  EL0.setAttribute("Name", Mac.Caption)
+		  EL1 =  Doc.CreateElement("Initial_Forms")
+		  for i = 0 to ubound(MacInfo.RealInit)
+		    s = Objects.Getshape(MacInfo.RealInit(i))
+		    EL1.appendchild s.XMLPutIdInContainer(Doc)
+		  next
+		  EL0. appendchild EL1
+		  EL1 =  Doc.CreateElement("Final_Forms")
+		  for i = 0 to ubound(MacInfo.RealFinal)
+		    s = Objects.Getshape(MacInfo.RealFinal(i))
+		    EL1.appendchild s.XMLPutIdInContainer(Doc)
+		  next
+		  EL0.appendchild EL1
+		  return EL0
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MacroExe(Macr as Macro)
+		  Super.MultipleSelectOperation
+		  Mac = Macr
+		  OpId = 43
+		  NumberOfItemsToSelect = ubound(macr.obinit) +1
+		  Histo = Macr.Histo
+		  MacInfo = new MacConstructionInfo(Mac)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UndoOperation(Temp as XMLElement)
+		  dim EL, EL1, Obj as XMLElement
+		  dim i, n as integer
+		  dim s as shape
+		  dim List as XmlNodeList
+		  
+		  List = Temp.FirstChild.XQL("Final_Forms")
+		  
+		  If list.Length > 0 then
+		    Obj= XMLElement(List.Item(0))
+		    if obj.childcount > 0 then
+		      for i = Obj.Childcount-1 downto 0
+		        EL1 = XMLelement(Obj.Child(i))
+		        n = val(EL1.GetAttribute("Id"))
+		        s = objects.Getshape(n)
+		        s.delete
+		      next
+		    end if
+		  end if
+		  List = Temp.FirstChild.XQL("Initial_Forms")
+		  
+		  If list.Length > 0 then
+		    Obj= XMLElement(List.Item(0))
+		    if obj.childcount > 0 then
+		      for i =0 to  Obj.Childcount-1
+		        EL1 = XMLelement(Obj.Child(i))
+		        n = val(EL1.GetAttribute("Id"))
+		        s = objects.Getshape(n)
+		        s.init = false
+		      next
+		    end if
+		  end if
+		  
+		  ReDeleteCreatedFigures (Temp)
+		  RecreateDeletedFigures(Temp)
+		  wnd.refresh
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RedoOperation(Temp as XMLElement)
+		  dim EL, EL1, Obj as XMLElement
+		  dim i, n as integer
+		  dim s as shape
+		  dim List as XmlNodeList
+		  dim t as Boolean
+		  List = Temp.FirstChild.XQL("Initial_Forms")
+		  
+		  If list.Length > 0 then
+		    Obj= XMLElement(List.Item(0))
+		    if obj.childcount > 0 then
+		      for i =0 to  Obj.Childcount-1 
+		        EL1 = XMLelement(Obj.Child(i))
+		        n = val(EL1.GetAttribute("Id"))
+		        s = objects.Getshape(n)
+		        t = setitem(s)
+		      next
+		    end if
+		  end if
+		  DoOperation
+		  ReDeleteDeletedFigures (Temp)
+		  RecreateCreatedFigures(Temp)
+		  wnd.refresh
+		End Sub
 	#tag EndMethod
 
 
@@ -326,14 +422,6 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		Histo As XMLElement
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		NOp As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ListInit() As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

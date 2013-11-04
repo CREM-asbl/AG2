@@ -59,6 +59,8 @@ Protected Class WindContent
 		  dim curoper as Operation
 		  dim EL as XMLElement
 		  dim n as integer
+		  dim mac as Macro
+		  dim cap as string
 		  
 		  nop = val(Temp.GetAttribute("OpId"))
 		  
@@ -149,8 +151,11 @@ Protected Class WindContent
 		    curoper = new Unit(n)
 		    
 		    'case 42 //ChooseFinal Pour mémoire
-		    'case 43 //MacroExe
-		    
+		  case 43 //MacroExe
+		    EL = XMLElement(Temp.firstchild)
+		    cap = EL.GetAttribute("Name")
+		    Mac = app.theMacros.GetMacro(cap)
+		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide
 		    curoper = new HideTsf
 		  end select
@@ -414,9 +419,7 @@ Protected Class WindContent
 		      Mac =App.TheMacros.element(i)
 		      EL = Doc.CreateElement("Macro")
 		      EL.AppendChild Doc.importnode(mac.Histo,true)
-		      EL.AppendChild Mac.ToMac(Doc,0)
-		      EL.AppendChild Mac.ToMac(Doc,1)
-		      EL.AppendChild Mac.ToMac(Doc,2)
+		      Mac.ToXML(Doc,EL)
 		      EL.AppendChild Mac.DescriptionToMac(Doc)
 		      TMP.AppendChild EL
 		    next

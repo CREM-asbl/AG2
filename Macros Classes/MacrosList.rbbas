@@ -70,6 +70,18 @@ Protected Class MacrosList
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetMacro(str as string) As Macro
+		  dim i as integer
+		  
+		  for i = 0 to ubound(macs)
+		    if macs(i).Caption = str then
+		      return macs(i)
+		    end if
+		  next
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		macs(-1) As Macro

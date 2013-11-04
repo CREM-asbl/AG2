@@ -420,10 +420,6 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		drapmac As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		TheMacros As MacrosList
 	#tag EndProperty
 

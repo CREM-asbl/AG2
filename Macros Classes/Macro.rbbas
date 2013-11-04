@@ -96,7 +96,7 @@ Protected Class Macro
 		  dim ObCategorie(), FaCategorie(), FOCategorie() as integer
 		  
 		  select case n
-		  case 0 
+		  case 0
 		    categorie = "Initial"
 		    ObCategorie = ObInit
 		    FaCategorie = FaInit
@@ -128,7 +128,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub SaveFileMacro()
-		  Dim file As FolderItem
+		  Dim file As FolderItem              //Sauvegarde d'une macro dans le dossier "Macros" de Mes Documents/Apprenti Geometre lors de la création de la macro
 		  Dim tos as TextOutputStream
 		  dim place as integer
 		  dim i as integer
@@ -145,9 +145,7 @@ Protected Class Macro
 		  
 		  Doc = CurrentContent.OpList
 		  Histo = XMLElement(Doc.FirstChild)
-		  Histo.AppendChild ToMac(Doc,0)
-		  Histo.AppendChild ToMac(Doc,1)
-		  Histo.AppendChild ToMac(Doc,2)
+		  ToXML(Doc, Histo)
 		  
 		  dlg.InitialDirectory=app.MacFolder
 		  dlg.promptText=""
@@ -168,8 +166,6 @@ Protected Class Macro
 		      Histo.SetAttribute("Name",Caption)
 		      if expli <> "" then
 		        Histo.RemoveChild Description
-		        'Description = Doc.CreateElement("Description")
-		        'Description.AppendChild Doc.CreateTextNode(expli)
 		        Histo.appendChild DescriptionToMac(Doc)
 		      end if
 		      tos.write Doc.tostring
@@ -302,6 +298,7 @@ Protected Class Macro
 		  case 35 //Identifier
 		  case 37 //FixPConstruction
 		  case 39 //Flecher
+		  case 43 //Macro
 		  case 45  //Point d'intersection
 		    inter (EL0, EL1, nbp)
 		  end select
@@ -338,7 +335,11 @@ Protected Class Macro
 		    Bib = new BiBPoint(nb0.tab(0), nb1.tab(0))
 		    nbp.append BiB.subdiv(ndiv,div)
 		  elseif ifm.fa = 5 then
-		    Trib = new TriBPoint(ifm.coord)
+		    if ifm.fo = 0 and ifm.coord.taille = 2 then
+		      Trib = new TriBPoint(ifm.coord.tab(0),ifm.coord.tab(1),ifm.coord.tab(1))
+		    else
+		      Trib = new TriBPoint(ifm.coord)
+		    end if
 		    nbp.append TriB.subdiv(ifm.ori,ndiv, div)
 		  elseif ifm.fa = 7 then                                     'cas des lacets
 		  end if
@@ -715,16 +716,17 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Docu as XMLDocument) As XMLElement
-		  Histo.AppendChild ToMac(Docu,0)
-		  Histo.AppendChild ToMac(Docu,1)
-		  Histo.AppendChild ToMac(Docu,2)
-		End Function
+		Sub ToXML(Docu as XMLDocument, EL as XMLElement)
+		  EL.AppendChild ToMac(Docu,0)
+		  EL.AppendChild ToMac(Docu,1)
+		  EL.AppendChild ToMac(Docu,2)
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function DescriptionToMac(Doc as XMLDocument) As XMLElement
-		  dim Descri as XMLElement 
+		  dim Descri as XMLElement
 		  
 		  Descri = Doc.CreateElement("Description")
 		  Descri.AppendChild Doc.CreateTextNode(expli)
