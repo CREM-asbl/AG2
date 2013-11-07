@@ -243,7 +243,7 @@ Implements StringProvider
 		  oldM = M
 		  
 		  
-		  if type < 3 or type > 6 then
+		  if type <> 0 and  (type < 3 or type > 6 ) then
 		    T = new Tip
 		  end if
 		  
@@ -291,7 +291,7 @@ Implements StringProvider
 		  dim s as string
 		  dim r as double
 		  
-		  if supp.hidden or supp.invalid or supp.deleted or (type = 0) then
+		  if supp.hidden or supp.invalid or supp.deleted or hidden2 or  (type = 0) then
 		    return
 		  end if
 		  

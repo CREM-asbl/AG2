@@ -598,9 +598,13 @@ Inherits Shape
 		    updatemobilitysucceeding
 		  end if
 		  
+		  if MacConstructedBy <> nil and pointsur.count = 0 and not init then
+		    liberte = 0
+		  end if
+		  
 		  for i = 0 to ubound(parents)
 		    s = parents(i)
-		    if s.std or ( (s.MacConstructedby <> nil  and i = 0)  and (pointsur.count = 0) and not s.init)  then
+		    if s.std or ( (s.MacConstructedby <> nil  and i = 0)  and (pointsur.count = 0) and not init)  then
 		      liberte = 0
 		    end if
 		    'if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then
@@ -2318,6 +2322,7 @@ Inherits Shape
 		  dim tsf as transformation
 		  dim p as point
 		  dim inter as intersec
+		  dim macinfo as macconstructioninfo
 		  
 		  if constructedby <> nil then
 		    select case  constructedby.oper
@@ -2339,6 +2344,15 @@ Inherits Shape
 		    end  select
 		    constructedby = nil
 		  end if
+		  
+		  if macconstructedby <> nil then
+		    macinfo = macConstructedby
+		    for i = 0 to ubound(macinfo.realinit)
+		      s = currentcontent.theobjects.getshape(macinfo.realinit(i))
+		      s.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
+		    next
+		  end if
+		  
 		  
 		  if ubound(tsfi) > -1 then
 		    for i =ubound(tsfi) downto 0

@@ -575,7 +575,7 @@ Protected Class ObjectsList
 		    if obj.childcount > 0 then
 		      XMLLireobjets(Obj)                                  //ne met pas en cause les figures
 		      XMLLirePointsSur(Obj)
-		      XMLReadTsf(Obj)                       //non plus
+		      XMLReadTsf(Obj)                                    //non plus
 		      XMLLireCondi(Obj)
 		      XMLLireConstructionInfos(Obj)            //non plus
 		      XMLLireIdFigs(Obj)

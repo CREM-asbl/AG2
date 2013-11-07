@@ -481,7 +481,7 @@ Inherits Bipoint
 		    return BiBPoint(coord).BiBDroiteInterCercle(BibPoint(s.coord),p(), bq, w)
 		  else
 		    return 0
-		  end if 
+		  end if
 		  
 		  'if s isa arc then
 		  'for i = 0 to 1
@@ -698,6 +698,13 @@ Inherits Bipoint
 		    M = new  AffiProjectionMatrix(Bib1, Bib2)
 		    if M <> nil and M.v1 <> nil then
 		      nq = M*np
+		      if sh isa polygon then
+		        n =sh.pointonside(nq)
+		        if n <> q.numside(0) then
+		          points(0).moveto ep
+		          return new Matrix(1)
+		        end if
+		      end if
 		    else
 		      nq = nil
 		    end if

@@ -59,6 +59,8 @@ Protected Class WindContent
 		  dim curoper as Operation
 		  dim EL as XMLElement
 		  dim n as integer
+		  dim mac as Macro
+		  dim cap as string
 		  
 		  nop = val(Temp.GetAttribute("OpId"))
 		  
@@ -149,8 +151,11 @@ Protected Class WindContent
 		    curoper = new Unit(n)
 		    
 		    'case 42 //ChooseFinal Pour mémoire
-		    'case 43 //MacroExe
-		    
+		  case 43 //MacroExe
+		    EL = XMLElement(Temp.firstchild)
+		    cap = EL.GetAttribute("Name")
+		    Mac = app.theMacros.GetMacro(cap)
+		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide
 		    curoper = new HideTsf
 		  end select
@@ -368,9 +373,10 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Function MakeXML() As XMLDocument
 		  dim Doc as XMLDocument
-		  dim AG, TMP, Grille as XmlElement
+		  dim AG, TMP, EL, Grille as XmlElement
 		  dim i as integer
 		  dim s as shape
+		  dim Mac as Macro
 		  
 		  Doc = new XmlDocument
 		  Doc.Preservewhitespace = true
@@ -407,6 +413,18 @@ Protected Class WindContent
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
 		  
+		  if App.TheMacros.Count > 0 then
+		    TMP = Doc.CreateElement("Macros")
+		    for i = 0 to App.TheMacros.count-1
+		      Mac =App.TheMacros.element(i)
+		      EL = Doc.CreateElement("Macro")
+		      EL.AppendChild Doc.importnode(mac.Histo,true)
+		      Mac.ToXML(Doc,EL)
+		      EL.AppendChild Mac.DescriptionToMac(Doc)
+		      TMP.AppendChild EL
+		    next
+		    AG.appendchild TMP
+		  end if
 		  
 		  if TheObjects.element(0) isa repere then
 		    TMP = Doc.CreateElement(Dico.Value("Objects"))

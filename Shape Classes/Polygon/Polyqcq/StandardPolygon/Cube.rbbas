@@ -465,6 +465,13 @@ Inherits StandardPolygon
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="NotPossibleCut"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="tobereconstructed"
 			Group="Behavior"
 			InitialValue="0"

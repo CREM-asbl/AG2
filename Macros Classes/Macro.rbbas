@@ -10,30 +10,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Sauvegarder()
-		  
-		  
-		  if ubound(ObFinal) = -1 then
-		    return
-		  end if
-		  
-		  CurrentContent.CurrentOperation = nil
-		  wnd.refreshtitle
-		  
-		  Doc = CurrentContent.OpList
-		  Histo = XMLElement(Doc.FirstChild)
-		  Histo.AppendChild ToMac(Doc,"Initial",ObInit())
-		  Histo.AppendChild ToMac(Doc,"Final",ObFinal())
-		  Histo.AppendChild ToMac(Doc,"Interm",ObInterm())
-		  SaveFileMacro
-		  app.theMacros.addmac self
-		  creermenuitem
-		  wnd.closemacro
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub CreerMenuItem()
 		  dim mitem as Menuitem
 		  dim k, nitem as integer
@@ -65,9 +41,8 @@ Protected Class Macro
 		  dim Temp, EL, EL1 As  XMLElement
 		  dim i as integer
 		  
-		  
 		  Histo =  XMLElement(Doc.FirstChild)
-		  Caption = GetName
+		  Caption =  Histo.GetAttribute("Name")
 		  List = Histo.XQL("Description")
 		  if  List.length > 0 then
 		    Description = XMLElement(List.Item(0))
@@ -113,18 +88,37 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToMac(Doc as XMLDocument, Categorie as string, ObCategorie() as integer) As XMLElement
+		Function ToMac(Doc as XMLDocument, n as integer) As XMLElement
 		  dim Temp, EL as XmlElement
 		  dim i as integer
 		  dim s as shape
+		  dim categorie as string
+		  dim ObCategorie(), FaCategorie(), FOCategorie() as integer
+		  
+		  select case n
+		  case 0
+		    categorie = "Initial"
+		    ObCategorie = ObInit
+		    FaCategorie = FaInit
+		    FoCategorie = FoInit
+		  case 1
+		    categorie = "Final"
+		    ObCategorie = ObFinal
+		    FaCategorie = FaFinal
+		    FoCategorie = FoFinal
+		  case 2
+		    categorie = "Interm"
+		    ObCategorie = ObInterm
+		    FaCategorie = FaInterm
+		    FOCategorie = FoInterm
+		  end select
 		  
 		  Temp=Doc.CreateElement(Categorie)
 		  for i = 0 to ubound(ObCategorie)
 		    EL = Doc.CreateElement("Obj"+Categorie)
 		    EL.SetAttribute("Id", str(ObCategorie(i)))
-		    s = currentcontent.TheObjects.getshape(ObCategorie(i))
-		    EL.SetAttribute("Fa",str(s.fam))
-		    EL.SetAttribute("Fo",str(s.forme))
+		    EL.SetAttribute("Fa",str(FaCategorie(i)))
+		    EL.SetAttribute("Fo",str(FoCategorie(i)))
 		    Temp.AppendChild EL
 		  next
 		  
@@ -134,12 +128,25 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub SaveFileMacro()
-		  Dim file As FolderItem
+		  Dim file As FolderItem              //Sauvegarde d'une macro dans le dossier "Macros" de Mes Documents/Apprenti Geometre lors de la création de la macro
 		  Dim tos as TextOutputStream
 		  dim place as integer
 		  dim i as integer
-		  
+		  dim Doc as XMLDocument
+		  dim Histo as XMLElement
 		  Dim dlg as New SaveAsDialog
+		  
+		  if ubound(ObFinal) = -1 then
+		    return
+		  end if
+		  
+		  CurrentContent.CurrentOperation = nil
+		  wnd.refreshtitle
+		  
+		  Doc = CurrentContent.OpList
+		  Histo = XMLElement(Doc.FirstChild)
+		  ToXML(Doc, Histo)
+		  
 		  dlg.InitialDirectory=app.MacFolder
 		  dlg.promptText=""
 		  dlg.Title= Dico.Value("SaveMacro")
@@ -159,19 +166,18 @@ Protected Class Macro
 		      Histo.SetAttribute("Name",Caption)
 		      if expli <> "" then
 		        Histo.RemoveChild Description
-		        Description = Doc.CreateElement("Description")
-		        Description.AppendChild Doc.CreateTextNode(expli)
-		        Histo.appendChild Description
+		        Histo.appendChild DescriptionToMac(Doc)
 		      end if
 		      tos.write Doc.tostring
 		      tos.close
+		      app.theMacros.addmac self
+		      creermenuitem
 		    end if
-		  End if
-		  
-		  if file = nil or tos = nil then
+		  end if
+		  if  file = nil or tos = nil then
 		    MsgBox Dico.Value("ErrorOnSave")
 		  end if
-		  
+		  wnd.closemacro
 		  
 		  
 		  
@@ -222,6 +228,8 @@ Protected Class Macro
 		        MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
 		        
 		        if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
+		          s = currentcontent.theobjects.getshape(ifmac.RealId)
+		          ifmac.coord = s.coord
 		          if oper = 19 then            //On met ifmac à jour
 		            ifmac.location = point(s).location(0)
 		            ifmac.side = point(s).numside(0)
@@ -290,6 +298,7 @@ Protected Class Macro
 		  case 35 //Identifier
 		  case 37 //FixPConstruction
 		  case 39 //Flecher
+		  case 43 //Macro
 		  case 45  //Point d'intersection
 		    inter (EL0, EL1, nbp)
 		  end select
@@ -326,7 +335,11 @@ Protected Class Macro
 		    Bib = new BiBPoint(nb0.tab(0), nb1.tab(0))
 		    nbp.append BiB.subdiv(ndiv,div)
 		  elseif ifm.fa = 5 then
-		    Trib = new TriBPoint(ifm.coord)
+		    if ifm.fo = 0 and ifm.coord.taille = 2 then
+		      Trib = new TriBPoint(ifm.coord.tab(0),ifm.coord.tab(1),ifm.coord.tab(1))
+		    else
+		      Trib = new TriBPoint(ifm.coord)
+		    end if
 		    nbp.append TriB.subdiv(ifm.ori,ndiv, div)
 		  elseif ifm.fa = 7 then                                     'cas des lacets
 		  end if
@@ -575,7 +588,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function GetName() As string
-		  return Histo.GetAttribute("Name")
+		  'return Histo.GetAttribute("Name")
 		End Function
 	#tag EndMethod
 
@@ -702,6 +715,25 @@ Protected Class Macro
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ToXML(Docu as XMLDocument, EL as XMLElement)
+		  EL.AppendChild ToMac(Docu,0)
+		  EL.AppendChild ToMac(Docu,1)
+		  EL.AppendChild ToMac(Docu,2)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function DescriptionToMac(Doc as XMLDocument) As XMLElement
+		  dim Descri as XMLElement
+		  
+		  Descri = Doc.CreateElement("Description")
+		  Descri.AppendChild Doc.CreateTextNode(expli)
+		  return Descri
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -758,10 +790,6 @@ Protected Class Macro
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Histo As XMLElement
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		ObFinal() As Integer
 	#tag EndProperty
 
@@ -771,10 +799,6 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		ObInterm() As integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Doc As XMLDocument
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -799,6 +823,10 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		si0 As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Histo As XMLElement
 	#tag EndProperty
 
 

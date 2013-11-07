@@ -132,14 +132,10 @@ Inherits Application
 		  CheckProcess
 		  
 		  CheckSystem
-		  
 		  InitFolders
-		  
 		  Dico = new Dictionnaire
 		  Config = new Configuration
-		  
 		  CheckUpdate
-		  
 		  autoquit = true
 		  init
 		  themacros = new macroslist
@@ -421,10 +417,6 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		quitting As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		drapmac As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
