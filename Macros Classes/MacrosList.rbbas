@@ -32,7 +32,7 @@ Protected Class MacrosList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetPosition(m as Macro) As integer
+		Function GetPosition(m as macro) As integer
 		  return macs.indexof(m)
 		  
 		  
@@ -57,11 +57,9 @@ Protected Class MacrosList
 		  if  list.Length > 0 then
 		    macr = XMLElement(List.Item(0))
 		    for i = 0 to macr.childcount-1
-		      doc = new XMLDocument
 		      temp = XMLElement(macr.child(i))
-		      doc.appendchild doc.importnode(temp, true)
+		      doc = new XMLDocument(temp.ToString)
 		      mac = new macro(doc)
-		      mac.caption = temp.getattribute("Name")
 		      addmac(mac)
 		      mac.CreerMenuItem
 		    next

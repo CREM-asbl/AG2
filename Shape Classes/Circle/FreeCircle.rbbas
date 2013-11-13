@@ -130,8 +130,10 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub Updateskull()
-		  radius=Points(0).DistanceTo(Points(1))
-		  super.updateskull
+		  radius=coord.distance01
+		  if radius <> -1 then
+		    super.updateskull
+		  end if
 		End Sub
 	#tag EndMethod
 

@@ -1071,7 +1071,7 @@ Implements StringProvider
 		  for i =  somm.count-1 downto 0
 		    if ubound(point(somm.element(i)).parents) = -1 then
 		      p = point(somm.element(i))
-		      if ubound(p.tsfi) >-1 or ubound(p.constructedshapes) > -1 or (p.constructedby <> nil and p.constructedby.oper = 6) then
+		      if p.tsfi.count > 0 or ubound(p.constructedshapes) > -1 or (p.constructedby <> nil and p.constructedby.oper = 6) then
 		        shapes.addshape p
 		        CurrentContent.Theobjects.addShape p
 		      else
@@ -1199,7 +1199,7 @@ Implements StringProvider
 		  redim ListeSupportsTsf(-1)
 		  
 		  for i = 0 to shapes.count-1
-		    if ubound(shapes.element(i).tsfi) > 0 then
+		    if shapes.element(i).tsfi.count > 1 then
 		      ListeSupportsTsf.append i
 		    end if
 		  next
@@ -1865,28 +1865,28 @@ Implements StringProvider
 		  
 		  
 		  for i = 0 to somm.count-1
-		    for j = 0 to ubound (somm.element(i).tsfi)
-		      somm.element(i).tsfi(j).restore
+		    for j = 0 to somm.element(i).tsfi.count-1
+		      somm.element(i).tsfi.element(j).restore
 		    next
 		  next
 		  
 		  for i = 0 to PtsConsted.count-1
-		    for j = 0 to ubound (ptsconsted.element(i).tsfi)
-		      ptsconsted.element(i).tsfi(j).restore
+		    for j = 0 to ptsconsted.element(i).tsfi.count-1
+		      ptsconsted.element(i).tsfi.element(j).restore
 		    next
 		  next
 		  
 		  for i = 0 to PtsSur.count-1
 		    p = point(PtsSur.element(i))
-		    for j = 0 to ubound (p.tsfi)
-		      p.tsfi(j).restore
+		    for j = 0 to p.tsfi.count-1
+		      p.tsfi.element(j).restore
 		    next
 		  next
 		  
 		  
 		  for i = 0 to shapes.count-1
-		    for j = 0 to ubound (shapes.element(i).tsfi)
-		      tsf = shapes.element(i).tsfi(j)
+		    for j = 0 to shapes.element(i).tsfi.count-1
+		      tsf = shapes.element(i).tsfi.element(j)
 		      if tsf.type > 0 then
 		        tsf.restore
 		      end if
@@ -3171,8 +3171,8 @@ Implements StringProvider
 		    sh = shape(ci.data(2))
 		    Figs.addfigure sh.fig
 		  end if
-		  for k = 0 to ubound(s.tsfi)
-		    figs.appendlist s.tsfi(k).constructedfigs
+		  for k = 0 to s.tsfi.count-1
+		    figs.appendlist s.tsfi.element(k).constructedfigs
 		  next
 		  for k = 0 to ubound(s.constructedshapes)
 		    'if s.constructedshapes(k).constructedby.oper = 6 then

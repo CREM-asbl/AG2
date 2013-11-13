@@ -402,6 +402,7 @@ Protected Class ObjectsList
 		    if pl <> 0 and pl <> -1 then
 		      s.plan = pl
 		    else
+		      MsgBox "Fichier de sauvegarde incorrect"
 		      s.plan = ubound(Objects)+1
 		    end if
 		  end if
@@ -577,7 +578,8 @@ Protected Class ObjectsList
 		      XMLLirePointsSur(Obj)
 		      XMLReadTsf(Obj)                                    //non plus
 		      XMLLireCondi(Obj)
-		      XMLLireConstructionInfos(Obj)            //non plus
+		      XMLLireConstructionInfos(Obj)           //non plus
+		      XMLLireMacConstructionInfos(Obj)
 		      XMLLireIdFigs(Obj)
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
@@ -1254,6 +1256,35 @@ Protected Class ObjectsList
 		  
 		  for i = 1 to count-1
 		    element(i).decreasedecimals
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLLireMacConstructionInfos(Obj as XMLElement)
+		  dim i, j as integer
+		  dim s as shape
+		  dim List1 as XMLNodeList
+		  dim Pt as XMLNode
+		  dim Temp as XMLElement
+		  dim fam as integer
+		  
+		  for i=0 to Obj.ChildCount-1
+		    Temp = XMLElement(Obj.Child(i))
+		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
+		    if fam > -1 then
+		      s = GetShape(val(Temp.GetAttribute("Id")))
+		      s.XMLReadMacConstructionInfo(Temp)
+		      List1 = Temp.XQL("Childs")
+		      if List1.length > 0 then
+		        Pt = List1.Item(0)
+		        for j = 0 to Pt.Childcount-1
+		          s.childs(j).XMLReadMacConstructionInfo(XMLElement(Pt.child(j)))
+		          s.childs(j).mobility
+		          s.childs(j).updateguides
+		        next
+		      end if
+		    end if
 		  next
 		End Sub
 	#tag EndMethod

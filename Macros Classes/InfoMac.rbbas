@@ -7,6 +7,62 @@ Protected Class InfoMac
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
+		  dim temp as XMLElement
+		  
+		  temp =  Doc.CreateElement("IfMac")
+		  'temp.appendchild Coord.XMLPutInContainer(Doc)
+		  temp.SetAttribute(Dico.Value("NrFam"), str(fa))
+		  temp.SetAttribute(Dico.Value("NrForm"),str(fo))
+		  'M.XMLPutAttribute(Temp)
+		  temp.setattribute("loc",str(location))
+		  temp.SetAttribute("MId",str(MacId))
+		  temp.SetAttribute("Ori",str(ori))
+		  temp.SetAttribute("PtSur",str(ptsur))
+		  temp.Setattribute("RId",str(RealId))
+		  temp.setAttribute("Side",str(side))
+		  temp.SetAttribute("T",str(T))
+		  temp.setAttribute("Tsf", str(TsfId))
+		  if final then
+		    Temp.SetAttribute("Fin",str(1))
+		  else
+		    Temp.SetAttribute("Fin",str(0))
+		  end if
+		  if Init then
+		    Temp.SetAttribute("Ini",str(1))
+		  else
+		    Temp.SetAttribute("Ini",str(0))
+		  end if
+		  if Interm then
+		    Temp.SetAttribute("Int",str(1))
+		  else
+		    Temp.SetAttribute("Int",str(0))
+		  end if
+		  return temp
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InfoMac(Temp as XMLElement)
+		  fa = val(Temp.GetAttribute(Dico.Value("NrFam")))
+		  fo= val(Temp.GetAttribute(Dico.Value("NrForm")))
+		  
+		  location = val(temp.Getattribute("loc"))
+		  MacId = val(temp.GetAttribute("MId"))
+		  ori = val(temp.GetAttribute("Ori"))
+		  ptsur = val(temp.GetAttribute("PtSur"))
+		  RealId = val(temp.Getattribute("RId"))
+		  side = val(temp.GetAttribute("Side"))
+		  T = val(temp.GetAttribute("T"))
+		  TsfId = val(temp.GetAttribute("Tsf"))
+		  final = (val(Temp.GetAttribute("Fin")) = 1)
+		  init = ( val(Temp.GetAttribute("Ini")) = 1)
+		  interm = (val(Temp.GetAttribute("Int")) = 1)
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Interprétations
 		

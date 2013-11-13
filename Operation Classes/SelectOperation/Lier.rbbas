@@ -300,7 +300,7 @@ Inherits SelectOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s1 = visible.element(i)
-		    if s1.constructedby <> nil and s1.constructedby.oper = 6 then
+		    if ( s1.constructedby <> nil and s1.constructedby.oper = 6)  then
 		      visible.removeshape s1
 		    end  if
 		  next

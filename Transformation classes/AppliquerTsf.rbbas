@@ -134,7 +134,7 @@ Inherits MultipleSelectOperation
 		  
 		  EL1 = XMLElement(EL.Child(0))
 		  num = val(EL1.GetAttribute("NumTSF"))
-		  tsf = s.tsfi(num)
+		  tsf = s.tsfi.element(num)
 		  
 		  EL1 = XMLElement(EL.Child(2))
 		  for i = 0 to EL1.childcount-1
@@ -291,7 +291,7 @@ Inherits MultipleSelectOperation
 		  EL1 = XMLElement(EL.FirstChild)
 		  s = Objects.getshape(val(EL1.GetAttribute("Id")))
 		  i = val(EL1.GetAttribute("NumTSF"))
-		  ListTsf.AddTsf  s.tsfi(i)
+		  ListTsf.AddTsf  s.tsfi.element(i)
 		  itsf = 0
 		  SelectIdForms(EL)
 		  Config.Trace = true
@@ -311,7 +311,7 @@ Inherits MultipleSelectOperation
 		  
 		  EL1 = XMLElement(EL.Child(0))
 		  num = val(EL1.GetAttribute("NumTSF"))
-		  tsf = s.tsfi(num)
+		  tsf = s.tsfi.element(num)
 		  
 		  SelectIdForms(EL)
 		  CreerCopies

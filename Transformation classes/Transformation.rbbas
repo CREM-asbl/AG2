@@ -239,9 +239,10 @@ Implements StringProvider
 		  type = n
 		  index = i
 		  self.ori = ori
-		  computematrix
-		  oldM = M
-		  
+		  if type <> 0 then
+		    computematrix
+		    oldM = M
+		  end if
 		  
 		  if type <> 0 and  (type < 3 or type > 6 ) then
 		    T = new Tip
@@ -524,6 +525,10 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub setconstructioninfos2(s1 as shape, s2 as shape)
 		  
+		  if s2.fig = nil or s1.fig = nil then
+		    return
+		  end if
+		  
 		  s2.fig.setconstructedby s1.fig, self
 		  updateconstructioninfos(s2)
 		  
@@ -677,7 +682,7 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function Equal(tsf as Transformation) As Boolean
 		  if type = 0 then
-		    return (tsf.type = 0) and (supp=tsf.supp) and (index = tsf.index) and (constructedshapes.element(0) = tsf.constructedshapes.element(0))
+		    return (tsf.type = 0) and (supp=tsf.supp) and (index = tsf.index) 'and (constructedshapes.element(0) = tsf.constructedshapes.element(0))
 		  else
 		    return (Type = tsf.type) and (supp = tsf.supp) and (ori = tsf.ori) and (index = tsf.index)
 		  end if

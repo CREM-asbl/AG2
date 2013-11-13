@@ -196,8 +196,8 @@ Implements StringProvider
 		  
 		  for i = 0 to s.fig.shapes.count-1
 		    s1 = s.fig.shapes.element(i)   //toutes les formes de la même figure que s
-		    for j = 0 to ubound(s1.tsfi)
-		      tsf = s1.tsfi(j)                           //tous les supports de tsf situés dans la même figure que s
+		    for j = 0 to s1.tsfi.count-1
+		      tsf = s1.tsfi.element(j)                           //tous les supports de tsf situés dans la même figure que s
 		      for h = 0 to tsf.constructedfigs.count-1
 		        fig1 = tsf.constructedfigs.element(h)   //on teste toutes les figures images de ces tsfi
 		        ffl = tsf.getfigsources(fig1)                     //toutes les sources de ces tsf

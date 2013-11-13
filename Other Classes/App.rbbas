@@ -485,12 +485,6 @@ Inherits Application
 			InitialValue="0"
 			Type="Boolean"
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="drapmac"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

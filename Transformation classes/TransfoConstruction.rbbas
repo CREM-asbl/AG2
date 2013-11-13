@@ -24,7 +24,7 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  
 		  tsf = new transformation (currentshape, type, index(iobj) , ori)
-		  currentshape.tsfi.append tsf
+		  currentshape.tsfi.addtsf tsf
 		  if currentshape isa point then
 		    currentshape.borderwidth = 2
 		  end if
@@ -148,9 +148,9 @@ Inherits MultipleSelectOperation
 		  EL = XMLElement(Temp.firstchild)
 		  supp = SelectForm(EL)
 		  num = val(EL.Getattribute("NumTSF"))
-		  CurrentContent.TheTransfos.RemoveTsf(supp.tsfi(num))
-		  supp.tsfi.Remove(num)
-		  if ubound(supp.tsfi) = - 1 then
+		  CurrentContent.TheTransfos.RemoveTsf(supp.tsfi.element(num))
+		  supp.tsfi.Transfos.Remove num
+		  if supp.tsfi.count = 0 then
 		    'if val(EL.GetAttribute("NewSupp")) = 1 then
 		    'supp.delete
 		    'end if
@@ -311,8 +311,8 @@ Inherits MultipleSelectOperation
 		  EL1 = XMLElement(EL.FirstChild)
 		  CurrentShape =objects.Getshape(val(EL1.Getattribute("Id")))
 		  num = val(EL.GetAttribute("Num"))
-		  if UBound(CurrentShape.tsfi)>=num then
-		    tsf = CurrentShape.tsfi(num)
+		  if CurrentShape.tsfi.count-1>=num then
+		    tsf = CurrentShape.tsfi.element(num)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -334,7 +334,7 @@ Inherits MultipleSelectOperation
 		    ReCreateCreatedFigures(Temp)
 		  end if
 		  tsf = new Transformation(supp,EL)
-		  supp.tsfi.append tsf
+		  supp.tsfi.addtsf tsf
 		  if supp isa point then
 		    supp.borderwidth = 2
 		  end if
@@ -392,8 +392,8 @@ Inherits MultipleSelectOperation
 		      elseif s isa Bande or S isa Polygon or s isa secteur then
 		        k = s.pointonside(p)
 		        t = false
-		        for j = ubound(s.tsfi) downto 0
-		          t = (s.tsfi(j).type = 6) and  (s.tsfi(j).index = k)
+		        for j = s.tsfi.count-1 downto 0
+		          t = (s.tsfi.element(j).type = 6) and  (s.tsfi.element(j).index = k)
 		        next
 		        if k > -1 and not t then
 		          index.insert 0, s.pointonside(p)         // index contient les numéros de côtés
@@ -568,9 +568,9 @@ Inherits MultipleSelectOperation
 		        if h > k  then
 		          ori = -1
 		        end if
-		        if ubound(curshape.tsfi) > -1  then
-		          for j = 0 to ubound(curshape.tsfi)
-		            if curshape.tsfi(j).ori = ori then
+		        if curshape.tsfi.count > 0  then
+		          for j = 0 to curshape.tsfi.count-1
+		            if curshape.tsfi.element(j).ori = ori then
 		              return false
 		            end if
 		          next
@@ -591,9 +591,9 @@ Inherits MultipleSelectOperation
 		Sub ExclureDoublons(s as shape, p as Basicpoint)
 		  dim j as integer
 		  
-		  if  ubound(s.tsfi)> -1 then
-		    for j = 0 to ubound(s.tsfi)
-		      if s.tsfi(j).type = type and s.tsfi(j).index = s.pointonside(p)  then
+		  if  s.tsfi.count > 0 then
+		    for j = 0 to s.tsfi.count-1
+		      if s.tsfi.element(j).type = type and s.tsfi.element(j).index = s.pointonside(p)  then
 		        visremove(s)
 		      end if
 		    next

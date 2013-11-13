@@ -3,7 +3,14 @@ Protected Class Circle
 Inherits Shape
 	#tag Method, Flags = &h0
 		Function aire() As double
-		  return PI*Pow(getradius,2)*ori
+		  dim r as double
+		  
+		  r = getradius
+		  if r = -1 then
+		    return -10000
+		  else
+		    return PI*Pow(r,2)*ori
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -37,7 +44,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub computeradius()
-		  radius = points(0).bpt.distance(points(1).bpt)
+		  radius = coord.distance01
 		End Sub
 	#tag EndMethod
 

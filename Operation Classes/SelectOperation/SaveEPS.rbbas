@@ -153,9 +153,9 @@ Inherits SelectOperation
 		        adapterparamdessin(s, tos)
 		        s.toeps(tos)
 		      end if
-		      if ubound (s.tsfi) > -1 then
-		        for j = 0 to ubound(s.tsfi)
-		          s.tsfi(j).toEps(tos)
+		      if s.tsfi.count > 0 then
+		        for j = 0 to s.tsfi.count-1
+		          s.tsfi.element(j).toEps(tos)
 		        next
 		      end if
 		      for j = 0 to  s.labs.count -1

@@ -144,8 +144,9 @@ Inherits SelectOperation
 		  if s <> nil then
 		    highlight(s)
 		    wnd.mycanvas1.refreshbackground
+		    currenthighlightedshape = s
 		  end if
-		  currenthighlightedshape = s
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -175,9 +176,9 @@ Inherits SelectOperation
 		    highlight(s.ConstructedShapes(i))
 		  next
 		  
-		  for i = 0 to ubound(s.tsfi)
-		    for j = 0 to s.tsfi(i).constructedshapes.count -1
-		      highlight(s.tsfi(i).constructedshapes.element(j))
+		  for i = 0 to s.tsfi.count-1
+		    for j = 0 to s.tsfi.element(i).constructedshapes.count -1
+		      highlight(s.tsfi.element(i).constructedshapes.element(j))
 		    next
 		  next
 		  
