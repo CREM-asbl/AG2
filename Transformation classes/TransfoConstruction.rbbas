@@ -98,17 +98,13 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLelement
 		  dim Temp  as XMLElement
-		  dim EL as XMLElement
+		  
 		  
 		  Temp=Doc.CreateElement("Transformation")
 		  if qp <> nil then
 		    Temp.SetAttribute("NewSupp", str(1))
-		    Temp.appendchild tsf.supp.XMLPutINContainer(Doc)
-		    Temp.AppendChild EL
-		  else
-		    Temp.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  end if
-		  
+		  Temp.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  Temp.SetAttribute("TsfType", str(type))
 		  Temp.setattribute("Ori",str(ori))
 		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
@@ -627,6 +623,20 @@ Inherits MultipleSelectOperation
 		    return Dico.value("Deplacement")
 		  end select
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
+		  EL.appendchild tsf.supp.XMLPutIdINContainer(Doc)
+		  EL.SetAttribute("TsfType", str(type))
+		  EL.setattribute("Ori",str(ori))
+		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
+		    EL.setattribute("Index", str(index(iobj)))
+		  end if
+		  'EL.SetAttribute("NumTSF",str(tsf.GetNum))
+		  return EL
 		  
 		End Function
 	#tag EndMethod

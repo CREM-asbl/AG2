@@ -9,7 +9,7 @@ Protected Class Label
 		  Text = chr(Etiquette)
 		  loc = n
 		  size = sizelabel
-		  p=2
+		  
 		End Sub
 	#tag EndMethod
 
@@ -301,7 +301,7 @@ Protected Class Label
 		  else
 		    correction = can.idtransform(corr)
 		  end if
-		  p =2
+		  
 		End Sub
 	#tag EndMethod
 
@@ -418,7 +418,7 @@ Protected Class Label
 		  psw = lab.psw
 		  setsize(lab.size)
 		  text = lab.text
-		  p=lab.p
+		  
 		End Sub
 	#tag EndMethod
 
@@ -434,6 +434,9 @@ Protected Class Label
 		  dim r, k as double
 		  dim m, n, i as integer
 		  dim b as boolean
+		  dim p as integer
+		  
+		  p = currentcontent.ndec
 		  
 		  b = d < 0
 		  
@@ -448,7 +451,7 @@ Protected Class Label
 		  k = round(d*r)
 		  if k >= r then
 		    n = n+1
-		    k = k-1
+		    k = 0
 		  end if
 		  k = k/r
 		  
@@ -578,10 +581,6 @@ Protected Class Label
 
 	#tag Property, Flags = &h0
 		Oldcol As Color
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		p As integer
 	#tag EndProperty
 
 

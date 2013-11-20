@@ -381,6 +381,19 @@ Inherits MultipleSelectOperation
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
+		  dim s1, s2 as shape
+		  
+		  s1 = tempshape.element(0)
+		  s2 = copies.element(0)
+		  
+		  EL.AppendChild s2.XMLPutIdINContainer(Doc)
+		  EL.appendchild  s2.XMLPutConstructionInfoInContainer(Doc)
+		  return EL
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

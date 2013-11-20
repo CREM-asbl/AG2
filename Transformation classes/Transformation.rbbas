@@ -792,6 +792,14 @@ Implements StringProvider
 		nn As Integer
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		final As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Interm As Boolean
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

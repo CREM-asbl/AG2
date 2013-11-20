@@ -53,8 +53,6 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   -5
       UseFocusRing    =   "False"
       Visible         =   True
@@ -79,8 +77,6 @@ Begin Window WorkWindow
       LockTop         =   "True"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       TopLeftColor    =   0
       Visible         =   True
@@ -324,8 +320,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
@@ -351,8 +345,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
@@ -378,8 +370,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
@@ -405,8 +395,6 @@ Begin Window WorkWindow
             LockTop         =   ""
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
@@ -458,8 +446,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -485,8 +471,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -512,8 +496,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -539,8 +521,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -566,8 +546,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -593,8 +571,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -620,8 +596,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   537
             UseFocusRing    =   "True"
             Visible         =   True
@@ -689,11 +663,13 @@ End
 		    tw.source2 = true  //fag
 		    tw.visible = true
 		  case 42
-		    currentcontent.TheObjects.increasedecimals
+		    currentcontent.ndec = currentcontent.ndec+1
 		    mycanvas1.refreshbackground
 		  case 36
-		    currentcontent.TheObjects.decreasedecimals
-		    mycanvas1.refreshbackground
+		    if currentcontent.ndec > 0 then
+		      currentcontent.ndec = currentcontent.ndec-1
+		      mycanvas1.refreshbackground
+		    end if
 		  case 99  'c
 		    switchcolors
 		  case 100 'd

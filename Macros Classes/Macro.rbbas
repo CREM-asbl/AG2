@@ -206,55 +206,29 @@ Protected Class Macro
 		Sub MacExe(MacInfo as MacConstructionInfo)
 		  dim i, j, k, n, oper,  MacId as integer
 		  dim EL, EL1 as XMLElement
-		  dim codesoper() as integer
+		  dim codesoper(), tsftype as integer
 		  dim ifmac As InfoMac
 		  dim s, newshape as shape
-		  dim nbp as nBPoint
 		  
-		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,17,24,25,26,27,43,45)
+		  
+		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,24,25,26,27,43,45)
 		  
 		  MacInf = MacInfo
 		  
 		  for i = 0 to Histo.Childcount-1  // i: numéro de l'opération
-		    nbp = new nBPoint
-		    numop = i
+		    NumOp = i
 		    EL = XMLElement(Histo.Child(i))
 		    
 		    if EL.Name = Dico.Value("Operation") then
 		      oper = val(EL.GetAttribute("OpId"))  //oper: code de l'opération
 		      ifmac = MacInfo.ifmacs(i)
 		      
-		      if codesoper.indexof(oper) <> -1 then //est-ce une opération de construction ?
-		        MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
-		        
-		        if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
-		          s = currentcontent.theobjects.getshape(ifmac.RealId)
-		          ifmac.coord = s.coord
-		          if oper = 19 then            //On met ifmac à jour
-		            ifmac.location = point(s).location(0)
-		            ifmac.side = point(s).numside(0)
-		          end if
-		        end if
-		        
-		        if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
-		          ExeOper(EL,nbp)                                     //on recalcule ou récupère les coordonnées
-		          ifmac.coord = nbp
-		          ifmac.location =loc0
-		          ifmac.side = si0
-		        end if
-		        
-		        k = ObFinal.indexof(MacId)
-		        if k <> -1 then      //Si c'est une forme finale
-		          ExeOper(EL,nbp)
-		          ifmac.coord = nbp
-		          ifmac.location = loc0
-		          ifmac.side = si0                    //On recalcule les coordonnées
-		          s = currentcontent.theobjects.getshape(ifmac.RealId)
-		          s.coord = ifmac.coord
-		          s.repositionnerpoints
-		          s.modified = true
-		        end if
+		      if codesoper.indexof(oper) <> -1 then //est-ce une opération de construction d'un objet?
+		        ComputeObject(ifmac,EL)
+		      elseif oper =17 then   'On doit calculer la matrice de la transfo et la stocker dans ifmac
+		        ComputeMatrix(ifmac, EL)
 		      end if
+		      
 		    end if
 		  next
 		  
@@ -289,6 +263,7 @@ Protected Class Macro
 		  case 19 //Dupliquer
 		    dupliquer(EL0,EL1,ifm1,nbp)
 		  case 24 //AppliquerTsf
+		    Transformer(EL0,EL1,ifm1,nbp)
 		  case 25 //Decouper
 		  case 26 //Point de division
 		    divide(EL0,EL1,ifm1,nbp)
@@ -734,6 +709,75 @@ Protected Class Macro
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm as InfoMac, byref nbp as nBPoint)
+		  dim MacId, i, n, oper as integer
+		  dim ifm0, ifm1 as InfoMac
+		  dim EL01, EL02 as XMLElement
+		  dim nbp1 as nBPoint
+		  dim fa, fo as integer
+		  
+		  
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ComputeMatrix(ifmac as InfoMac, EL as XMLElement)
+		  
+		  dim  tsftype as integer
+		  
+		  
+		  
+		  tsftype =  val(EL.GetAttribute("TsfType"))
+		  select case tsftype
+		  case 2
+		    ifmac.M=TriBPoint(ifmac.coord).RotationMatrix
+		  end select
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ComputeObject(ifmac as InfoMac, EL as XMLElement)
+		  dim k, oper,  MacId as integer
+		  dim s as shape
+		  dim nbp as nBPoint
+		  
+		  
+		  
+		  MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
+		  
+		  if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
+		    s = currentcontent.theobjects.getshape(ifmac.RealId)
+		    ifmac.coord = s.coord
+		    if oper = 19 then            //On met ifmac à jour
+		      ifmac.location = point(s).location(0)
+		      ifmac.side = point(s).numside(0)
+		    end if
+		  end if
+		  
+		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
+		    ExeOper(EL,nbp)                                     //on recalcule ou récupère les coordonnées
+		    ifmac.coord = nbp
+		    ifmac.location =loc0
+		    ifmac.side = si0
+		  end if
+		  
+		  k = ObFinal.indexof(MacId)
+		  if k <> -1 then      //Si c'est une forme finale
+		    ExeOper(EL,nbp)
+		    ifmac.coord = nbp
+		    ifmac.location = loc0
+		    ifmac.side = si0                    //On recalcule les coordonnées
+		    s = currentcontent.theobjects.getshape(ifmac.RealId)
+		    s.coord = ifmac.coord
+		    s.repositionnerpoints
+		    s.modified = true
+		  end if
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -806,10 +850,6 @@ Protected Class Macro
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NumOp As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Expli As string
 	#tag EndProperty
 
@@ -827,6 +867,22 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		Histo As XMLElement
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TsfInterm() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TsfTyInterm() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TsfSidInterm() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		NumOp As Integer
 	#tag EndProperty
 
 

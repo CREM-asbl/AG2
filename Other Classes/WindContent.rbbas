@@ -175,6 +175,7 @@ Protected Class WindContent
 		  TheIntersecs = new IntersecList
 		  OpenOpList
 		  Etiquette=64
+		  ndec = 2
 		  Polygpointes = config.PolPointes
 		  SHUA = nil
 		  SHUL = nil
@@ -958,6 +959,10 @@ Protected Class WindContent
 
 	#tag Property, Flags = &h0
 		plans() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ndec As Integer
 	#tag EndProperty
 
 

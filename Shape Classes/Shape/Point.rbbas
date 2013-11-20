@@ -835,7 +835,7 @@ Inherits Shape
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
 		  end if
 		  
-		  if Macconstructedby <> nil  then 
+		  if Macconstructedby <> nil  then
 		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
 		  

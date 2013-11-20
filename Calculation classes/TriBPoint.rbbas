@@ -79,6 +79,12 @@ Inherits nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function RotationMatrix() As Matrix
+		  return new SimilarityMatrix(tab(0),tab(1),tab(0),tab(2))
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = A propos de l 'orientation
 		A propos de l'orientation

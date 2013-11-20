@@ -51,55 +51,17 @@ Inherits MultipleSelectOperation
 		  dim t as boolean
 		  dim sh as shape
 		  dim op as integer
+		  dim tsf as Transformation
 		  
 		  if  s.interm or s.init then
 		    return
 		  end if
-		  
 		  if s isa point then
-		    if s.constructedby <> nil then
-		      AddInterm(s)
-		      op = s.constructedby.oper
-		      select case op
-		      case 0, 3, 5, 6, 7
-		        IdentifyInit(s.constructedby.shape)
-		      case 4
-		        IdentifyInit(s.constructedby.shape)
-		        IdentifyInit(s.constructedby.data(0))
-		        IdentifyInit(s.constructedby.data(1))
-		      case 9
-		      case 10
-		        IdentifyInit(point(s).pointsur.element(0))
-		        identifyinit(s.constructedby.shape)
-		      end select
-		    else
-		      select case point(s).pointsur.count
-		      case 0
-		        t = true
-		        for i = 0 to ubound(point(s).parents)
-		          t = t and  (s.id < point(s).parents(i).id)
-		        next
-		        if t then
-		          Addinit(s)
-		        else
-		          for i = 0 to ubound(point(s).parents)
-		            if s.id > point(s).parents(i).id  then
-		              IdentifyInit(point(s).parents(i))
-		            end if
-		          next
-		        end if
-		      case 1
-		        IdentifyInit(point(s).pointsur.element(0))
-		        if s.constructedby = nil then
-		          AddInit(s)
-		        end if
-		      case 2
-		        AddInterm(s)
-		        IdentifyInit(point(s).pointsur.element(0))
-		        IdentifyInit(point(s).pointsur.element(1))
-		      end select
-		    end if
-		  else
+		    IdentifyInit(point(s))
+		    return
+		  end if
+		  
+		  if s.constructedby = nil then
 		    t = true
 		    for i =0 to s.ncpts-1
 		      t = t and s.id < s.points(i).id
@@ -114,16 +76,26 @@ Inherits MultipleSelectOperation
 		        end if
 		      next
 		    end if
-		    if s.constructedby <> nil then
-		      identifyinit(s.constructedby.shape)
-		      if s.isaparaperp then
-		        identifyinit(s.points(0))
-		        if droite(s).nextre=2 then
-		          identifyinit(s.points(1))
-		        end if
-		      end if
-		    end if
+		    return
 		  end if
+		  
+		  select case s.constructedby.oper
+		  case 1,2
+		    identifyinit(s.constructedby.shape)
+		    identifyinit(s.points(0))
+		    if droite(s).nextre=2 then
+		      identifyinit(s.points(1))
+		    end if
+		  case 3, 5, 9
+		  case  6 ' Transfos
+		    tsf = transformation(s.constructedby.Data(0))
+		    IdentifyInit(s.constructedby.shape)
+		    AddTsfInterm(tsf)
+		    IdentifyInit(tsf.supp)
+		  case 8  'Prolongements
+		  end select
+		  
+		  
 		  
 		  
 		  
@@ -289,6 +261,77 @@ Inherits MultipleSelectOperation
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddTsfFinal(tsf As Transformation)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddTsfInterm(tsf As Transformation)
+		  if not tsf.Final  then
+		    wnd.mac.TsfInterm.append  Tsf.supp.id
+		    wnd.mac.TsfTyInterm.append tsf.type
+		    wnd.mac.TsfSidInterm.append tsf.index
+		    tsf.Interm = true
+		  end if
+		  
+		  // Les id ci-dessus sont relatifs à la macro
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PointIdentifyInit(p as point)
+		  dim op as integer
+		  dim t as boolean
+		  dim i as integer
+		  
+		  if p.constructedby <> nil then
+		    AddInterm(p)
+		    op = p.constructedby.oper
+		    select case op
+		    case 0, 3, 5,  7
+		      IdentifyInit(p.constructedby.shape)
+		    case 4
+		      IdentifyInit(p.constructedby.shape)
+		      IdentifyInit(p.constructedby.data(0))
+		      IdentifyInit(p.constructedby.data(1))
+		    case 6
+		      IdentifyInit(p.constructedby.shape)
+		      IdentifyInit(transformation(p.constructedby.Data(0)).supp)
+		    case 9
+		    case 10
+		      IdentifyInit(p.pointsur.element(0))
+		      identifyinit(p.constructedby.shape)
+		    end select
+		  else
+		    select case p.pointsur.count
+		    case 0
+		      t = true
+		      for i = 0 to ubound(p.parents)
+		        t = t and  (p.id < p.parents(i).id)
+		      next
+		      if t then
+		        Addinit(p)
+		      else
+		        for i = 0 to ubound(p.parents)
+		          if p.id > p.parents(i).id  then
+		            IdentifyInit(p.parents(i))
+		          end if
+		        next
+		      end if
+		    case 1
+		      IdentifyInit(p.pointsur.element(0))
+		      AddInit(p)
+		    case 2
+		      AddInterm(p)
+		      IdentifyInit(p.pointsur.element(0))
+		      IdentifyInit(p.pointsur.element(1))
+		    end select
+		  end if
+		End Sub
 	#tag EndMethod
 
 
