@@ -222,15 +222,14 @@ End
 		  dim f as FolderItem
 		  
 		  #if TargetWin32
-		    f = GetFolderItem("Updates").Child(newversion)
+		    f = DesktopFolder.Child(newversion)
 		  #else
-		    f = GetFolderItem("Updates")
+		    f = DesktopFolder
 		  #endif
 		  StaticText1.Text = "Ouverture de la mise à jour..."
-		  f.Launch
 		  api.updateDone
+		  f.Launch
 		  Quit
-		  
 		  
 		  
 		  
@@ -332,8 +331,7 @@ End
 	#tag Event
 		Function NextFiles() As boolean
 		  if not updated then
-		    CurrentFolder = GetFolderItem("Updates")
-		    CurrentFolder.CreateAsFolder
+		    CurrentFolder = DesktopFolder
 		    me.CurrentFile = newVersion
 		    me.DataSocket.SetFTT(CurrentFolder.Child(newversion))
 		    me.Commande("PWD","")
