@@ -497,9 +497,9 @@ Implements StringProvider
 		  
 		  if not invalid and not deleted  then
 		    Paint(g)
-		    for i = 0 to ubound(tsfi)
+		    for i = 0 to tsfi.count-1
 		      if not hidden then
-		        tsfi(i).paint(g)
+		        tsfi.element(i).paint(g)
 		      end if
 		    next
 		    for i = 0 to ubound(constructedshapes)
@@ -522,15 +522,15 @@ Implements StringProvider
 		  if not nonpointed then
 		    for i=0 to Ubound(childs)
 		      childs(i).Paint(g)
-		      for j = 0 to ubound(childs(i).tsfi)
-		        childs(i).tsfi(j).paint(g)
+		      for j = 0 to childs(i).tsfi.count-1
+		        childs(i).tsfi.element(j).paint(g)
 		      next
 		    next
 		  else
 		    for i=npts to Ubound(childs)
 		      childs(i).Paint(g)
-		      for j = 0 to ubound(childs(i).tsfi)
-		        childs(i).tsfi(j).paint(g)
+		      for j = 0 to childs(i).tsfi.count-1
+		        childs(i).tsfi.element(j).paint(g)
 		      next
 		    next
 		  end if
@@ -587,6 +587,7 @@ Implements StringProvider
 		  end if
 		  objects = ol
 		  labs = new LabList
+		  tsfi = new transfoslist
 		  Autos
 		  Ncpts = ncp
 		  IdGroupe = -1
@@ -801,6 +802,7 @@ Implements StringProvider
 		  IdGroupe = -1
 		  objects = ol
 		  labs = new lablist
+		  tsfi = new transfoslist
 		  Autos
 		  Fixecouleurtrait(Config.bordercolor,Config.Border)
 		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
@@ -1170,14 +1172,14 @@ Implements StringProvider
 		  dim i as integer
 		  dim Form as XMLElement
 		  
-		  if ubound(tsfi) = -1 then
+		  if tsfi.count = 0 then
 		    return nil
 		  end if
 		  
 		  Form = Doc.CreateElement(Dico.value("TransfosMenu"))
 		  
-		  for i = 0 to Ubound(tsfi)
-		    Form.appendchild tsfi(i).XMLPutInContainer(Doc)
+		  for i = 0 to tsfi.count-1
+		    Form.appendchild tsfi.element(i).XMLPutInContainer(Doc)
 		  next
 		  
 		  return Form
@@ -1190,13 +1192,13 @@ Implements StringProvider
 		  dim List as XmlNodeList                 'Les images seront créées dans XMLReadConstructionInfo
 		  dim EL as XMLElement
 		  
-		  redim tsfi(-1)
+		  tsfi.RemoveAll
 		  
 		  List = Temp.XQL(Dico.value("TransfosMenu"))
 		  if list.length > 0 then
 		    EL = XMLElement(List.Item(0))
 		    for i = 0 to EL.Childcount-1
-		      tsfi. append new Transformation(self, XMLElement(EL.child(i)))
+		      tsfi.addtsf new Transformation(self, XMLElement(EL.child(i)))
 		    next
 		  end if
 		  
@@ -1226,6 +1228,9 @@ Implements StringProvider
 		  updatecoord
 		  computeori
 		  a = aire
+		  if a = -10000 then
+		    return
+		  end if
 		  if signaire*sign(a) <0  and Ti <> nil and (fillcolor.equal(poscolor) or fillcolor.equal(negcolor))  then
 		    signaire = sign(a)
 		    if signaire > 0 then
@@ -1429,10 +1434,10 @@ Implements StringProvider
 		    ConstructedShapes(j).valider
 		  next
 		  
-		  for i = 0 to ubound(tsfi)
-		    tsfi(i).ModifyImages
-		    for j = 0 to tsfi(i).constructedshapes.count -1
-		      tsfi(i).constructedshapes.element(j).valider
+		  for i = 0 to tsfi.count-1
+		    tsfi.element(i).ModifyImages
+		    for j = 0 to tsfi.element(i).constructedshapes.count -1
+		      tsfi.element(i).constructedshapes.element(j).valider
 		    next
 		  next
 		  
@@ -1471,8 +1476,8 @@ Implements StringProvider
 		Function GetIndexTsf(tsf as transformation) As integer
 		  dim i as integer
 		  
-		  for i = 0 to Ubound(tsfi)
-		    if tsfi(i) = tsf then
+		  for i = 0 to tsfi.count-1
+		    if tsfi.element(i) = tsf then
 		      return i
 		    end if
 		  next
@@ -1689,9 +1694,9 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  updatecoord
-		  if UBound(tsfi)>-1 then
-		    for i=0 to Ubound(tsfi)
-		      tsfi(i).update
+		  if tsfi.count > 0 then
+		    for i=0 to tsfi.count-1
+		      tsfi.element(i).update
 		    next
 		  end  if
 		  updatelab
@@ -1820,6 +1825,7 @@ Implements StringProvider
 		  fam = Val(EL.GetAttribute(Dico.value("Nrfam")))
 		  forme = Val(EL.GetAttribute(Dico.value("Nrform")))
 		  Ori = val(EL.GetAttribute(Dico.value("Ori")))
+		  tsfi = new transfosList
 		  autos
 		  
 		  if val(EL.GetAttribute("Auto")) <> 0 then
@@ -1942,9 +1948,9 @@ Implements StringProvider
 		      s.invalider
 		    next
 		    
-		    for i = 0 to ubound(tsfi)                                   // on invalide les objets images par un tsf de support self
-		      for j = 0 to tsfi(i).constructedshapes.count -1
-		        s = tsfi(i).constructedshapes.element(j)
+		    for i = 0 to tsfi.count-1                                   // on invalide les objets images par un tsf de support self
+		      for j = 0 to tsfi.element(i).constructedshapes.count -1
+		        s = tsfi.element(i).constructedshapes.element(j)
 		        s.invalider
 		      next
 		    next
@@ -2064,7 +2070,9 @@ Implements StringProvider
 		  if constructedby <> nil then
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
 		  end if
-		  
+		  if Macconstructedby <> nil then
+		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
+		  end if
 		  if not app.macrocreation then
 		    if self isa polygon and not self isa Lacet then
 		      if self isa cube then
@@ -2110,7 +2118,6 @@ Implements StringProvider
 		  
 		  if Constructedby <> nil then
 		    s = constructedby.shape
-		    
 		    select case constructedby.oper
 		    case 6
 		      tsf = transformation(constructedby.data(0))
@@ -2226,8 +2233,8 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  for k = 0 to ubound(tsfi)
-		    if s2.constructedby<> nil and s2.constructedby.oper = 6 and Transformation(s2.constructedby.data(0)) = tsfi(k) then
+		  for k = 0 to tsfi.count-1
+		    if s2.constructedby<> nil and s2.constructedby.oper = 6 and Transformation(s2.constructedby.data(0)) = tsfi.element(k) then
 		      return true
 		    end if
 		  next
@@ -2323,8 +2330,8 @@ Implements StringProvider
 		Sub updateoldM()
 		  dim i as integer
 		  
-		  for i = 0 to ubound(tsfi)
-		    tsfi(i).oldM = tsfi(i).M
+		  for i = 0 to tsfi.count-1
+		    tsfi.element(i).oldM = tsfi.element(i).M
 		  next
 		End Sub
 	#tag EndMethod
@@ -2803,7 +2810,7 @@ Implements StringProvider
 		    if j = -1 then
 		      j = 0
 		    end if
-		    tsf = s1.tsfi(j)
+		    tsf = s1.tsfi.element(j)
 		  elseif self isa point and ubound(point(self).parents) > -1 then
 		    s1 = point(self).parents(0)
 		    if  s1.constructedby <> nil and s1.constructedby.oper = 6 then
@@ -2842,7 +2849,7 @@ Implements StringProvider
 		  n = val(Tmp.GetAttribute("SuppTsf"))
 		  s1 = Objects.GetShape(n)
 		  j = val(Tmp.GetAttribute("Nr"))
-		  tsf = s1.tsfi(j)
+		  tsf = s1.tsfi.element(j)
 		  constructedby.data.append tsf
 		  tsf.Fixpt = point(self)
 		End Sub
@@ -2863,7 +2870,7 @@ Implements StringProvider
 		  dim List0 as figslist
 		  dim figu as figure
 		  dim o as shapeconstruction
-		  dim i, op as integer
+		  dim i, j, op as integer
 		  dim sh as shape
 		  dim tsf as transformation
 		  
@@ -2888,9 +2895,9 @@ Implements StringProvider
 		  
 		  if Constructedby <> nil and isaparaperp and constructedby.shape.fig <> nil then //si constructedby.shape.fig a déjà été chargé
 		    sh = constructedby.shape
-		    for i = 0 to ubound(sh.tsfi)
-		      tsf = sh.tsfi(i)
-		      if tsf.type = 0 and tsf.constructedshapes.count = 0 then
+		    for i = 0 to sh.tsfi.count-1
+		      tsf = sh.tsfi.element(i)
+		      if tsf.type = 0 then 'and tsf.constructedshapes.count = 0 then
 		        tsf.constructedshapes.addshape self
 		        constructedby.data.append tsf
 		      end if
@@ -2903,8 +2910,8 @@ Implements StringProvider
 		    for  i = 0 to ubound(constructedshapes)
 		      sh= constructedshapes(i)
 		      if sh.isaparaperp and sh.fig <> nil and ubound(sh.constructedby.data) = 0 then
-		        for i = 0 to ubound(tsfi)
-		          tsf = tsfi(i)
+		        for j = 0 to tsfi.count-1
+		          tsf = tsfi.element(j)
 		          if tsf.type = 0 and tsf.constructedshapes.count = 0 then
 		            tsf.constructedshapes.addshape sh
 		            sh.constructedby.data.append tsf
@@ -3025,7 +3032,7 @@ Implements StringProvider
 		      if ubound(constructedby.data) = 1 and constructedby.data(1) <> nil then
 		        tsf = transformation (constructedby.data(1))
 		        tsf.constructedshapes.removeshape self                        'en cas d'avortement tsf n'est pas encore définie
-		        tsf.supp.tsfi.remove tsf.supp.tsfi.indexof(tsf)
+		        tsf.supp.tsfi.removetsf tsf
 		        currentcontent.TheTransfos.removetsf  tsf
 		      end if
 		    case 3
@@ -3058,9 +3065,9 @@ Implements StringProvider
 		  end if
 		  
 		  
-		  if ubound(tsfi) > -1 then
-		    for i =ubound(tsfi) downto 0
-		      CurrentContent.Thetransfos.RemoveTsF tsfi(i)
+		  if tsfi.count > 0 then
+		    for i =tsfi.count-1 downto 0
+		      CurrentContent.Thetransfos.RemoveTsF tsfi.element(i)
 		    next
 		  end if
 		  
@@ -3807,12 +3814,12 @@ Implements StringProvider
 		  dim j, k, m as integer
 		  dim ffbut as figure
 		  
-		  for j = 0 to ubound(tsfi)
-		    for k = 0 to tsfi(j).constructedfigs.count -1
-		      if  tsfi(j).type <> 1 then
-		        ffbut = tsfi(j).constructedfigs.element(k)
+		  for j = 0 to tsfi.count-1
+		    for k = 0 to tsfi.element(j).constructedfigs.count -1
+		      if  tsfi.element(j).type <> 1 then
+		        ffbut = tsfi.element(j).constructedfigs.element(k)
 		        for m = 0 to  ubound(ffbut.Constructioninfos)
-		          if (ffbut.ConstructionInfos(m).tsf = tsfi(j)) and (ffbut = ffbut.ConstructionInfos(m).Sourcefig) and (ffbut <> fig) then
+		          if (ffbut.ConstructionInfos(m).tsf = tsfi.element(j)) and (ffbut = ffbut.ConstructionInfos(m).Sourcefig) and (ffbut <> fig) then
 		            return false
 		          end if
 		        next
@@ -3886,32 +3893,6 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub increasedecimals()
-		  dim i as integer
-		  dim lab as label
-		  
-		  for i = 0 to labs.count-1
-		    Lab = labs.element(i)
-		    lab.p =Lab.p +1
-		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub decreasedecimals()
-		  dim i as integer
-		  dim lab as label
-		  
-		  for i = 0 to labs.count-1
-		    Lab = labs.element(i)
-		    if lab.p >= 1 then
-		      lab.p =Lab.p -1
-		    end if
-		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub repositionnerpoints()
 		  dim j as integer
 		  
@@ -3958,13 +3939,46 @@ Implements StringProvider
 		Function XMLPutMacConstructionInfoInContainer(Doc as XMLDocument) As XMLElement
 		  dim Temp as XMLElement
 		  
-		  
 		  Temp = Doc.CreateElement("MacConstructedBy")
 		  Temp.SetAttribute("Macro",MacConstructedby.Mac.Caption)
-		  
+		  Temp.AppendChild MacConstructedBy.XMLPutInContainer(Doc)
 		  
 		  return Temp
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLReadMacConstructionInfo(Temp as XMLElement)
+		  dim List as XmlNodeList
+		  dim Tmp as XmlElement
+		  dim m as integer
+		  dim s as shape
+		  dim cap as string
+		  dim MacInfo as MacConstructionInfo
+		  dim Mac as Macro
+		  
+		  List = Temp.XQL("MacConstructedBy")
+		  if List.Length > 0 then
+		    Tmp = XMLElement(List.Item(0))
+		    cap = TMP.GetAttribute("Macro")
+		    Mac =app.TheMacros.GetMacro(cap)
+		    MacInfo = new MacConstructionInfo(Mac,Tmp)
+		    SetMacConstructedBy MacInfo
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetMacConstructedBy(MacInfo as MacConstructionInfo)
+		  dim i as integer
+		  dim s as shape
+		  
+		  MacConstructedBy = MacInfo
+		  for i = 0 to ubound(MacInfo.RealInit)
+		    s = currentcontent.TheObjects.getshape(macinfo.RealInit(i))
+		    s.AddMacConstructedShape self
+		  next
+		End Sub
 	#tag EndMethod
 
 
@@ -4115,7 +4129,7 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		tsfi(-1) As Transformation
+		tsfi As TransfosList
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

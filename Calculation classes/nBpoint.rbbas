@@ -299,6 +299,29 @@ Protected Class nBpoint
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
+		  dim temp as XMLElement
+		  dim i as integer
+		  
+		  Temp = Doc.CreateElement("Coords")
+		  for i = 0 to taille-1
+		    Temp.appendchild tab(i).XMLPutInContainer(Doc)
+		  next
+		  return temp
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function distance01() As double
+		  if tab(0) <> nil and tab(1) <> nil then
+		    return tab(0).distance(tab(1))
+		  else
+		    return -1
+		  end if
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint

@@ -539,15 +539,15 @@ Protected Class Operation
 		    if s isa polygon or s isa bande or s isa secteur then
 		      ind = val(EL.GetAttribute("Index"))
 		    end if
-		    for i = 0 to ubound(s.tsfi)
+		    for i = 0 to s.tsfi.count-1
 		      t = true
-		      t = t and ty = s.tsfi(i).type
-		      t = t and  orien = s.tsfi(i).ori
+		      t = t and ty = s.tsfi.element(i).type
+		      t = t and  orien = s.tsfi.element(i).ori
 		      if s isa polygon or s isa bande or s isa secteur then
-		        t = t and ind = s.tsfi(i).index
+		        t = t and ind = s.tsfi.element(i).index
 		      end if
 		      if t then
-		        return s.tsfi(i)
+		        return s.tsfi.element(i)
 		      end if
 		    next
 		  end if

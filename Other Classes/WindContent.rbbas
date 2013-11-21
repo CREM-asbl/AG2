@@ -175,6 +175,7 @@ Protected Class WindContent
 		  TheIntersecs = new IntersecList
 		  OpenOpList
 		  Etiquette=64
+		  ndec = 2
 		  Polygpointes = config.PolPointes
 		  SHUA = nil
 		  SHUL = nil
@@ -417,10 +418,8 @@ Protected Class WindContent
 		    TMP = Doc.CreateElement("Macros")
 		    for i = 0 to App.TheMacros.count-1
 		      Mac =App.TheMacros.element(i)
-		      EL = Doc.CreateElement("Macro")
-		      EL.AppendChild Doc.importnode(mac.Histo,true)
+		      EL = XMLElement(Doc.importnode(mac.Histo,true))
 		      Mac.ToXML(Doc,EL)
-		      EL.AppendChild Mac.DescriptionToMac(Doc)
 		      TMP.AppendChild EL
 		    next
 		    AG.appendchild TMP
@@ -436,7 +435,7 @@ Protected Class WindContent
 		  TheObjects.unselectall //désélection  pour que les objets soient dans le même ordre que dans la mémoire
 		  for i = 1 to TheObjects.count-1
 		    s = TheObjects.element(i)
-		    's.plan = CurrentContent.plans.IndexOf(s.id)
+		    s.plan = CurrentContent.plans.IndexOf(s.id)
 		    TMP.appendchild s.XMLPutInContainer(Doc)
 		  next
 		  AG.AppendChild TMP
@@ -660,9 +659,8 @@ Protected Class WindContent
 		  
 		  if plans.indexof(n) <> -1 then
 		    plans.remove  plans.indexof(n)
-		    plans.append n
 		  end if
-		  
+		  plans.append n
 		  
 		  
 		End Sub
@@ -961,6 +959,10 @@ Protected Class WindContent
 
 	#tag Property, Flags = &h0
 		plans() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ndec As Integer
 	#tag EndProperty
 
 

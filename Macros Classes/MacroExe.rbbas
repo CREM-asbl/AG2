@@ -144,6 +144,7 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		    s.endconstruction
+		    s.setMacConstructedBy(MacInfo)
 		    s.CreateExtreAndCtrlPoints
 		    s.updateskull
 		  next
@@ -396,7 +397,7 @@ Inherits MultipleSelectOperation
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
 		    if obj.childcount > 0 then
-		      for i =0 to  Obj.Childcount-1 
+		      for i =0 to  Obj.Childcount-1
 		        EL1 = XMLelement(Obj.Child(i))
 		        n = val(EL1.GetAttribute("Id"))
 		        s = objects.Getshape(n)
@@ -554,12 +555,6 @@ Inherits MultipleSelectOperation
 			Type="string"
 			EditorType="MultiLineEditor"
 			InheritedFrom="Operation"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NOp"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="side"

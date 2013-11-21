@@ -37,7 +37,7 @@ Protected Class TransfosList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RemoveTsf(tsf as transformation)
+		Sub RemoveTsf(tsf as Transformation)
 		  dim pos as integer
 		  
 		  pos = GetPosition(tsf)
@@ -133,6 +133,12 @@ Protected Class TransfosList
 		  for i =0 to ubound(transfos)
 		    transfos(i).unhighlight
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RemoveAll()
+		  redim Transfos(-1)
 		End Sub
 	#tag EndMethod
 

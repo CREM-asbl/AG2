@@ -126,7 +126,7 @@ Inherits SelectOperation
 		  EL1 = XMLElement(Temp.Child(0))
 		  s = SelectForm(EL1)
 		  EL = XMLElement(EL1.Child(1))
-		  tsf = s.tsfi(Val(EL.GetAttribute("Num")))
+		  tsf = s.tsfi.element(Val(EL.GetAttribute("Num")))
 		  p = tsf.fixpt
 		  p.delete
 		  
@@ -157,10 +157,10 @@ Inherits SelectOperation
 		  
 		  for j = 0 to Visible.count-1
 		    s=Visible.element(j)
-		    if ubound(s.tsfi) > -1 then
-		      for i = 0 to ubound(s.tsfi)
-		        if s.tsfi(i).Type > 7 and  s.tsfi(i).Type <> 9 then
-		          CurrentTsf.Append (s.tsfi(i))
+		    if s.tsfi.count > 0 then
+		      for i = 0 to s.tsfi.count-1
+		        if s.tsfi.element(i).Type > 7 and  s.tsfi.element(i).Type <> 9 then
+		          CurrentTsf.Append (s.tsfi.element(i))
 		        end if
 		      next
 		    end if

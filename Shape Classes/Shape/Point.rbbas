@@ -323,12 +323,12 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function XMLPutCoordinContainer(Doc as XMLDocument) As XMLElement
-		  dim Temp as XmlElement
-		  
-		  Temp = Doc.CreateElement("Coord")
-		  Temp.SetAttribute("X", str(Bpt.x))
-		  Temp.SetAttribute("Y", str(Bpt.y))
-		  return Temp
+		  'dim Temp as XmlElement
+		  '
+		  'Temp = Doc.CreateElement("Coord")
+		  'Temp.SetAttribute("X", str(Bpt.x))
+		  'Temp.SetAttribute("Y", str(Bpt.y))
+		  return Bpt.XMLPutInContainer(Doc)
 		End Function
 	#tag EndMethod
 
@@ -820,7 +820,7 @@ Inherits Shape
 		    if fig <> nil then
 		      Form.SetAttribute("FigId",str(fig.idfig))
 		    end if
-		    Form.AppendChild XMLPutCoordInContainer(Doc)
+		    Form.AppendChild Bpt.XMLPutInContainer(Doc)
 		  end if
 		  
 		  if labs.count = 1 then
@@ -833,6 +833,10 @@ Inherits Shape
 		  
 		  if constructedby <> nil  and constructedby.oper <> 5 then 'and constructedby.oper <> 3
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
+		  end if
+		  
+		  if Macconstructedby <> nil  then
+		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
 		  
 		  Form.AppendChild Bordercolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorBorder"))
@@ -890,10 +894,10 @@ Inherits Shape
 		    ConstructedShapes(i).Valider
 		  next
 		  
-		  for i = 0 to ubound(tsfi)
-		    tsfi(i).ModifyImages
-		    for j = 0 to tsfi(i).constructedshapes.count -1
-		      tsfi(i).constructedshapes.element(j).valider
+		  for i = 0 to tsfi.count-1
+		    tsfi.element(i).ModifyImages
+		    for j = 0 to tsfi.element(i).constructedshapes.count -1
+		      tsfi.element(i).constructedshapes.element(j).valider
 		    next
 		  next
 		  validating = false
@@ -922,9 +926,9 @@ Inherits Shape
 		      ConstructedShapes(i).Invalider
 		    next
 		    
-		    for i = 0 to ubound(tsfi)
-		      for j = 0 to tsfi(i).constructedshapes.count -1
-		        s = tsfi(i).constructedshapes.element(j)
+		    for i = 0 to tsfi.count-1
+		      for j = 0 to tsfi.element(i).constructedshapes.count -1
+		        s = tsfi.element(i).constructedshapes.element(j)
 		        s.invalider
 		      next
 		    next
@@ -2354,9 +2358,9 @@ Inherits Shape
 		  end if
 		  
 		  
-		  if ubound(tsfi) > -1 then
-		    for i =ubound(tsfi) downto 0
-		      CurrentContent.Thetransfos.RemoveTsF tsfi(i)
+		  if tsfi.count > 0 then
+		    for i =tsfi.count-1 downto 0
+		      CurrentContent.Thetransfos.RemoveTsF  tsfi.element(i)
 		    next
 		  end if
 		  

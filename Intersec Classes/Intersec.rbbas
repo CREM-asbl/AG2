@@ -233,7 +233,7 @@ Implements StringProvider
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
 		    g2 = circle(sh2)
-		    redim p(-1)
+		    redim p(1)
 		    k = d1.inter(g2,p(),b,w)
 		    
 		    select case k

@@ -395,6 +395,17 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
+		  
+		  dim temp as XMLElement
+		  Temp = Doc.CreateElement("Coord")
+		  Temp.SetAttribute("X", str(x))
+		  Temp.SetAttribute("Y", str(y))
+		  return temp
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

@@ -304,7 +304,7 @@ Inherits Bipoint
 		  
 		  tsf.constructedshapes.addshape self
 		  tsf.supp = constructedby.shape
-		  tsf.supp.tsfi.append tsf
+		  tsf.supp.tsfi.addtsf tsf
 		  tsf.index = constructedby.data(0)
 		  CurrentContent.TheTransfos.addtsf tsf
 		  
@@ -477,7 +477,7 @@ Inherits Bipoint
 		  'B1 = new Bibpoint(firstp, secondp)
 		  'B2 = new Bibpoint(s.points(0).bpt, s.points(1).bpt)
 		  
-		  if  ubound(p) > -1 and bq <> nil and w <> nil then
+		  if  ubound(p) = 1 then 'and -1 and bq <> nil and w <> nil then
 		    return BiBPoint(coord).BiBDroiteInterCercle(BibPoint(s.coord),p(), bq, w)
 		  else
 		    return 0
