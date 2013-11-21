@@ -26,7 +26,7 @@ Inherits Operation
 		  OpId = 34
 		  
 		  wnd.Title = Histfile.Name
-		  wnd.DisableToolBar
+		  
 		  HistMenu.Child("FileMenu").Text = Dico.Value("FileMenu")
 		  HistMenu.Child("FileMenu").Child("HistClose").Text = Dico.Value("FileClose")
 		  HistMenu.Child("FileMenu").Child("FileSaveEps").Text = Dico.Value("FileSaveEps")
@@ -53,13 +53,12 @@ Inherits Operation
 		  wnd.draphisto = true
 		  wnd.rh = self
 		  
-		  
 		  'objects = CurrentContent.TheObjects
+		  XMLLoadOperations(CurrentContent.OpList)
+		  wnd.mycanvas1.mousecursor = arrowcursor
 		  Hcmd = New HistCmd
 		  Hcmd.ShowWithin(wnd)
 		  Hcmd.HistCtrl.rh = self
-		  XMLLoadOperations(CurrentContent.OpList)
-		  wnd.mycanvas1.mousecursor = arrowcursor
 		  
 		  
 		End Sub
@@ -103,7 +102,6 @@ Inherits Operation
 		    MsgBox Dico.Value("End_of_file")
 		    return
 		  end if
-		  
 		  
 		  currentop = currentop+1
 		  EL = XMLElement(Histo.Child(currentop))
@@ -193,8 +191,7 @@ Inherits Operation
 		  wnd.menubar = menu
 		  wnd.MenuBar.Child("Fenetres").Item(wnd.GetNumWindow).Checked = true
 		  wnd.draphisto = false
-		  wnd.refreshtitle
-		  wnd.EnableToolbar
+		  wnd.Refresh
 		  
 		  CurrentContent.SaveHisto
 		  CurrentContent.currentop = currentop

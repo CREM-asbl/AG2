@@ -27,8 +27,10 @@ Inherits Application
 		    return true
 		  end if
 		  
+		  
 		  Log = DocFolder.Child("AG2.log")
 		  tos = Log.CreateTextFile
+		  curoper = CurrentContent.CurrentOperation
 		  
 		  if (System.Network.IsConnected or TargetLinux) and tos <> nil then
 		    NWI = System.GetNetworkInterface
@@ -48,7 +50,6 @@ Inherits Application
 		      tos.WriteLine "**** Operation ****"
 		      tos.WriteLine ""
 		    end if
-		    curoper = CurrentContent.CurrentOperation
 		    
 		    if curoper <>nil then
 		      tos.WriteLine "Opération active : "+curoper.GetName
@@ -118,6 +119,14 @@ Inherits Application
 		  bugw = new BugFindW
 		  bugw.showModal
 		  if not quitting then
+		    if wnd.draphisto then
+		      if curoper <> nil then
+		        ReadHisto(curoper).Hcmd.close
+		      end if
+		      wnd.menubar = menu
+		      wnd.draphisto = false
+		      wnd.Refresh
+		    end if
 		    wnd.deleteContent
 		    if UBound (wnd.wcontent) = -1 then
 		      wnd.NewContent

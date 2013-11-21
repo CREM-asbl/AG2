@@ -29,18 +29,14 @@ Begin Window GetUpdateW
       Address         =   ""
       ControlOrder    =   0
       dataport        =   12345
-      Height          =   32
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       Port            =   0
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       transfert       =   0
-      Width           =   32
       BehaviorIndex   =   0
    End
    Begin StaticText StaticText1
@@ -177,8 +173,6 @@ Begin Window GetUpdateW
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   68
       Value           =   0
       Visible         =   "False"
