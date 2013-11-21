@@ -110,34 +110,6 @@ Begin Window WorkWindow
          Width           =   120
          BehaviorIndex   =   2
       End
-      Begin PushButton MouvBut
-         AutoDeactivate  =   "True"
-         Bold            =   "True"
-         Cancel          =   ""
-         Caption         =   "Modifier"
-         ControlOrder    =   3
-         Default         =   ""
-         Enabled         =   True
-         Height          =   30
-         HelpTag         =   ""
-         Index           =   0
-         InitialParent   =   "Tools"
-         Italic          =   ""
-         Left            =   1
-         LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
-         Scope           =   0
-         TabPanelIndex   =   0
-         TextFont        =   "System"
-         TextSize        =   0
-         Top             =   30
-         Underline       =   ""
-         Visible         =   True
-         Width           =   120
-         BehaviorIndex   =   3
-      End
       Begin GroupBox MoveBox
          AutoDeactivate  =   "True"
          Bold            =   "True"
@@ -162,7 +134,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   4
+         BehaviorIndex   =   3
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
             Bold            =   "True"
@@ -189,7 +161,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   4
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -217,7 +189,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   4
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -245,7 +217,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   4
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -273,7 +245,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   3
+            BehaviorIndex   =   4
          End
       End
       Begin GroupBox StdBox
@@ -602,6 +574,34 @@ Begin Window WorkWindow
             Width           =   50
             BehaviorIndex   =   8
          End
+      End
+      Begin PushButton MouvBut
+         AutoDeactivate  =   "True"
+         Bold            =   "True"
+         Cancel          =   ""
+         Caption         =   "Modifier"
+         ControlOrder    =   3
+         Default         =   ""
+         Enabled         =   True
+         Height          =   30
+         HelpTag         =   ""
+         Index           =   0
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   0
+         LockBottom      =   ""
+         LockLeft        =   ""
+         LockRight       =   ""
+         LockTop         =   ""
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   31
+         Underline       =   ""
+         Visible         =   True
+         Width           =   120
+         BehaviorIndex   =   4
       End
    End
 End
@@ -952,7 +952,7 @@ End
 			md = New MessageDialog
 			md.Title = Dico.value("HelpAbout")
 			md.Icon = 0
-			md.Message = "Apprenti géomètre v."+str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion)  +EndOfLine+"Copyright CREM "+mois(App.BuildDate.Month-1)+" "+str(App.BuildDate.Year)+ EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
+			md.Message = "Apprenti géomètre v."+App.LongVersion+EndOfLine+"Copyright CREM "+mois(App.BuildDate.Month-1)+" "+str(App.BuildDate.Year)+ EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
 			b = md.ShowModal
 			end if
 			return true
@@ -1963,6 +1963,7 @@ End
 		  if not draphisto then
 		    updatemenu
 		  end if
+		  PushButton1.Visible = not draphisto
 		  Mycanvas1.RefreshBackground
 		  MoveBoxRefresh
 		  StdBoxRefresh
@@ -2491,7 +2492,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub StdBoxRefresh()
-		  StdBox.Visible = Config.ShowStdTools
+		  StdBox.Visible = Config.ShowStdTools and not draphisto
 		  
 		  
 		End Sub
@@ -2499,7 +2500,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub LibBoxRefresh()
-		  LibBox.Visible = Config.ShowTools or (CurrentContent <> nil and CurrentContent.TheGrid <>nil)
+		  LibBox.Visible = (Config.ShowTools and not draphisto) or (CurrentContent <> nil and CurrentContent.TheGrid <>nil)
 		  if LibBox.Visible then
 		    dim i as integer
 		    for i=0 to 6
@@ -2598,8 +2599,11 @@ End
 	#tag Method, Flags = &h0
 		Sub MoveBoxRefresh()
 		  dim i as integer
+		  MoveBox.Visible = false
+		  
 		  for i=0 to 4
-		    MouvBut(i) .visible = Config.MvBt(i)
+		    MouvBut(i) .visible = Config.MvBt(i) and not draphisto
+		    MoveBox.Visible = MoveBox.Visible or MouvBut(i) .visible
 		  next
 		  
 		End Sub
@@ -2820,7 +2824,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action(Index As Integer, index as Integer)
 		  if mousedispo then
 		    closefw
 		    select case index
@@ -2862,7 +2866,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -2894,14 +2898,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(Index As Integer, index as Integer, g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -2917,7 +2921,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open(Index As Integer, index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -2933,7 +2937,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -2945,7 +2949,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -2962,12 +2966,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit(Index As Integer, index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(Index As Integer, index as Integer, g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then

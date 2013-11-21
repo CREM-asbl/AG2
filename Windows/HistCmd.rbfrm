@@ -5,7 +5,7 @@ Begin Window HistCmd
    BalloonHelp     =   ""
    CloseButton     =   "False"
    Composite       =   "False"
-   Frame           =   3
+   Frame           =   7
    FullScreen      =   "False"
    HasBackColor    =   "False"
    Height          =   22
@@ -34,7 +34,6 @@ Begin Window HistCmd
       EraseBackground =   "True"
       Height          =   22
       HelpTag         =   ""
-      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   ""
@@ -43,8 +42,6 @@ Begin Window HistCmd
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       UseFocusRing    =   ""
       Visible         =   "True"
