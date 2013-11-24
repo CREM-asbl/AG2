@@ -12,10 +12,8 @@ Protected Class InfoMac
 		  dim temp as XMLElement
 		  
 		  temp =  Doc.CreateElement("IfMac")
-		  'temp.appendchild Coord.XMLPutInContainer(Doc)
 		  temp.SetAttribute(Dico.Value("NrFam"), str(fa))
 		  temp.SetAttribute(Dico.Value("NrForm"),str(fo))
-		  'M.XMLPutAttribute(Temp)
 		  temp.setattribute("loc",str(location))
 		  temp.SetAttribute("MId",str(MacId))
 		  temp.SetAttribute("Ori",str(ori))
@@ -23,7 +21,6 @@ Protected Class InfoMac
 		  temp.Setattribute("RId",str(RealId))
 		  temp.setAttribute("Side",str(side))
 		  temp.SetAttribute("T",str(T))
-		  temp.setAttribute("Tsf", str(TsfId))
 		  if final then
 		    Temp.SetAttribute("Fin",str(1))
 		  else
@@ -55,7 +52,6 @@ Protected Class InfoMac
 		  RealId = val(temp.Getattribute("RId"))
 		  side = val(temp.GetAttribute("Side"))
 		  T = val(temp.GetAttribute("T"))
-		  TsfId = val(temp.GetAttribute("Tsf"))
 		  final = (val(Temp.GetAttribute("Fin")) = 1)
 		  init = ( val(Temp.GetAttribute("Ini")) = 1)
 		  interm = (val(Temp.GetAttribute("Int")) = 1)
@@ -91,7 +87,7 @@ Protected Class InfoMac
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		TsfId As Integer
+		num As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -132,6 +128,10 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		final As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		type As Integer
 	#tag EndProperty
 
 

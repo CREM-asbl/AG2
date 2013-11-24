@@ -1249,13 +1249,30 @@ End
 
 #tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
+			dim i as integer
+			
 			closefw
 			app.macrocreation = true
+			MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = false
 			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
 			MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
 			MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
+			MenuMenus.Child("OperaMenu").Child("OperaClone").checked=false
+			MenuMenus.Child("OperaMenu").Child("OperaCut").checked=false
+			MenuMenus.Child("OperaMenu").Child("OperaMerge").checked=false
 			EraseMenuBar
 			CopyMenuBar
+			MenuBar.Child("FileMenu").Child("FileNew").visible = false
+			MenuBar.Child("FileMenu").Child("FileOpen").visible=false
+			MenuBar.Child("FileMenu").Child("FileSave").visible =false
+			MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
+			
+			for i = 0 to 4
+			MouvBut(i).visible =false
+			next
+			MoveBox.visible =false
+			newcontent
+			wnd.refreshtitle
 			mac = new macro
 			newcontent
 			return true
@@ -1286,6 +1303,7 @@ End
 			choosefinal(op).endoperation
 			mac.SaveFileMacro
 			end if
+			CloseMacro
 			return true
 		End Function
 #tag EndMenuHandler
@@ -1318,17 +1336,8 @@ End
 
 #tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
-			closefw
-			app.macrocreation = false
-			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
-			MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
-			MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-			EraseMenuBar
-			CopyMenuBar
-			mac = nil
+			
 			CloseMacro
-			NewContent
-			wnd.mycanvas1.refreshbackground
 			return true
 		End Function
 #tag EndMenuHandler
@@ -2353,19 +2362,27 @@ End
 		Sub CloseMacro()
 		  dim i as integer
 		  
+		  closefw
 		  app.macrocreation = false
-		  'if currentcontent.currentoperation <> nil then
 		  currentcontent.currentoperation = nil
-		  'end if
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = true
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=true
 		  MenuBar.Child("FileMenu").Child("FileSave").visible = true
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible = true
 		  MenuMenus.Child("OperaMenu").Child("OperaClone").checked=true
+		  MenuMenus.Child("OperaMenu").Child("OperaCut").checked=true
+		  MenuMenus.Child("OperaMenu").Child("OperaMerge").checked=true
 		  for i = 0 to 4
 		    MouvBut(i).visible =true
 		  next
 		  MoveBox.visible = true
+		  MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = true
+		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
+		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
+		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
+		  EraseMenuBar
+		  CopyMenuBar
+		  mac = nil
 		  newcontent
 		  wnd.refreshtitle
 		End Sub

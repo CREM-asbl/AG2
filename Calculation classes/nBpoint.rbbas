@@ -322,6 +322,12 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function RotationMatrix() As Matrix
+		  return new SimilarityMatrix(tab(0),tab(1),tab(0),tab(2))
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint

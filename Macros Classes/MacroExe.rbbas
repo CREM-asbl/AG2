@@ -80,7 +80,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i, j, k, n, m, index, p, type,oper, fa, fo, side as integer
-		  dim EL, EL0 as XMLElement
+		  dim EL as XMLElement
 		  dim codesoper() as integer
 		  dim ifmac As InfoMac
 		  dim s, newshape as shape
@@ -88,48 +88,24 @@ Inherits MultipleSelectOperation
 		  dim pt as Point
 		  
 		  
-		  codesoper = Array(0,1,14,16,19,28,35,37,39,17,24,25,26,27,43,45)  //codes des opérations
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45)  //codes des opérations
 		  
 		  
 		  for i = 0 to Histo.Childcount-1  // i : numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
-		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction ? prévoir le cas contraire!
+		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction (forme ou tsf) ? prévoir le cas contraire!
 		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
 		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
-		      if codesoper.indexof(oper) = -1 then
-		        return
+		      if codesoper.indexof(oper) <>  -1 then
+		        CreateIfMacObject(EL,oper)
+		      elseif oper = 17 then
+		        CreateIfMacTsf(EL,oper)
 		      end if
-		      EL0 = XMLElement(EL.Child(0))
-		      n = val(EL0.GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
-		      if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
-		        return
-		      end if
-		      
-		      fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		      fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		      ifmac = new InfoMac(fa, fo)
-		      ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
-		      ifmac.MacId = n
-		      
-		      if Mac.ObInit.indexof(n) <> -1 then
-		        ifmac.RealId =MacInfo.RealInit(Mac.ObInit.indexof(n))
-		        ifmac.init = true
-		        s = currentcontent.TheObjects.GetShape(ifmac.RealId)
-		        ifmac.coord = s.coord
-		      end if
-		      if Mac.ObInterm.indexof(n) <> -1 then
-		        ifmac.interm = true
-		      end if
-		      if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
-		        CreateFinal(oper,ifmac,EL0)
-		        ifmac.RealId = MacInfo.RealFinal(Mac.ObFinal.indexof(n))
-		        ifmac.final = true
-		      end if
-		      MacInfo.IfMacs.append ifmac
 		    end if
 		  next
 		  
 		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
+		                                                                                //Pour une tsf, calculer la matrice
 		  
 		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
 		    n = MacInfo.RealFinal(i)
@@ -410,6 +386,80 @@ Inherits MultipleSelectOperation
 		  RecreateCreatedFigures(Temp)
 		  wnd.refresh
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateIfMacObject(EL as XMLElement, oper as integer)
+		  dim n, fa, fo as integer
+		  dim EL0 as XMLElement
+		  dim ifmac As InfoMac
+		  dim s as shape
+		  
+		  
+		  
+		  EL0 = XMLElement(EL.Child(0))
+		  n = val(EL0.GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
+		  if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
+		    return
+		  end if
+		  
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  ifmac = new InfoMac(fa, fo)
+		  ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
+		  ifmac.MacId = n
+		  
+		  if Mac.ObInit.indexof(n) <> -1 then
+		    ifmac.RealId =GetRealInit(n)
+		    ifmac.init = true
+		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		    ifmac.coord = s.coord
+		  end if
+		  if Mac.ObInterm.indexof(n) <> -1 then
+		    ifmac.interm = true
+		  end if
+		  if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
+		    CreateFinal(oper,ifmac,EL0)
+		    ifmac.RealId = GetRealFinal(n)
+		    ifmac.final = true
+		  end if
+		  MacInfo.IfMacs.append ifmac
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateIfMacTsf(EL as XMLElement, oper as integer)
+		  dim  EL0 as XMLElement
+		  dim ifmac as InfoMac
+		  dim fa, fo, MacId as integer
+		  
+		  EL0 = XMLElement(EL.Child(0))
+		  MacId = val(EL0.GetAttribute("Id"))                    //numéro pour la macro du support de la tsf
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))  //concerne le support
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  
+		  ifmac = new InfoMac(fa, fo)
+		  ifmac.MacId = MacId
+		  ifmac.type = val(EL.GetAttribute("TsfType"))
+		  ifmac.ori = val(EL.GetAttribute("TsfOri"))
+		  ifmac.Side = val(EL.GetAttribute("TsfSide"))
+		  ifmac.num = val(EL.GetAttribute("TsfNum"))
+		  
+		  MacInfo.IfMacs.append ifmac
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRealInit(n as integer) As integer
+		  return MacInfo.RealInit(Mac.ObInit.indexof(n))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRealFinal(n as integer) As integer
+		  return MacInfo.RealFinal(Mac.ObFinal.indexof(n))
+		End Function
 	#tag EndMethod
 
 
