@@ -20,19 +20,6 @@ Protected Class MacConstructionInfo
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInfoTsf(n as integer) As InfoMac
-		  dim i as integer
-		  
-		  for i = 0 to ubound (IfMacs)
-		    if IfMacs(i).TsfId = n then
-		      return IfMacs(i)
-		    end if
-		  next
-		  return nil
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  dim Temp, EL as XMLElement
 		  dim i as integer

@@ -631,11 +631,11 @@ Inherits MultipleSelectOperation
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  EL.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  EL.SetAttribute("TsfType", str(type))
-		  EL.setattribute("Ori",str(ori))
+		  EL.setattribute("TsfOri",str(ori))
 		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
-		    EL.setattribute("Index", str(index(iobj)))
+		    EL.setattribute("TsfSide", str(index(iobj)))
 		  end if
-		  'EL.SetAttribute("NumTSF",str(tsf.GetNum))
+		  EL.SetAttribute("TsfNum",str(tsf.GetNum))
 		  return EL
 		  
 		End Function

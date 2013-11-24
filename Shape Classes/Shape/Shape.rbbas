@@ -1328,7 +1328,7 @@ Implements StringProvider
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
-		    i = tsf.supp.GetIndexTsf(tsf)
+		    i = tsf.GetNum                                              'pour le cas ou une forme supporte plusieurs tsf
 		    Temp.SetAttribute("Nr", str(i))
 		  case 8
 		    if ubound(constructedby.data)= 0 then

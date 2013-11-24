@@ -111,7 +111,7 @@ Inherits MultipleSelectOperation
 		  
 		  Myself= Doc.CreateElement(GetName)
 		  Temp= tsf.supp.XMLPutIdINContainer(Doc)
-		  Temp.SetAttribute("NumTSF", str(tsf.GetNum))
+		  Temp.SetAttribute("NumTSF", str(tsf.GetNum))    'pour le cas où une forme supporte plusieurs tsf
 		  Myself.AppendChild Temp
 		  Myself.appendchild tempshape.XMLPutIdINContainer(Doc)
 		  Myself.appendchild copies.XMLPutInContainer(Doc)

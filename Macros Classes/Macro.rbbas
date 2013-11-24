@@ -259,7 +259,6 @@ Protected Class Macro
 		  case 14 //Centre
 		    centre(ifm1,nbp)
 		  case 16 //Retourner
-		  case 17 //TransfoConstruction
 		  case 19 //Dupliquer
 		    dupliquer(EL0,EL1,ifm1,nbp)
 		  case 24 //AppliquerTsf
@@ -364,22 +363,19 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function GetCoord(n as integer) As nBpoint
-		  dim i, j, k, m as integer
+		  dim i, j, k as integer
 		  dim s as shape
 		  dim ifm as infomac
 		  dim EL, EL0, EL1 as XMLElement
 		  
-		  m = Obinit.indexof(n)
-		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n)
-		    k = ifm.RealId
-		    s= currentcontent.theobjects.getshape(k)
+		  ifm = MacInf.GetInfoMac(n)
+		  
+		  if (ObInit.indexof(n) <> -1) or (ObFinal.indexof(n) <> -1) then        //Si c'est une forme initiale ou finale 
+		    s= currentcontent.theobjects.getshape(ifm.RealId)
 		    return new nBPoint(s)
 		  end if
 		  
-		  m = ObInterm.indexof(n)
-		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n)
+		  if (ObInterm.indexof(n) <> -1) then        //Si c'est une forme intermédiaire
 		    return ifm.coord
 		  end if
 		  
@@ -563,7 +559,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function GetName() As string
-		  'return Histo.GetAttribute("Name")
+		  return Caption
 		End Function
 	#tag EndMethod
 
@@ -711,15 +707,25 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm as InfoMac, byref nbp as nBPoint)
-		  dim MacId, i, n, oper as integer
-		  dim ifm0, ifm1 as InfoMac
-		  dim EL01, EL02 as XMLElement
+		  dim MacId, i, n as integer
 		  dim nbp1 as nBPoint
-		  dim fa, fo as integer
+		  dim M as Matrix
+		  
+		  nbp1 = ifm.coord
+		  n = nbp1.taille
+		  M = GetMatrix(EL1)
+		  for i = 0 to n-1
+		    nbp.append  M*nbp1.tab(i)
+		  next
 		  
 		  
-		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  
+		  'MacId = val(EL1.GetAttribute("SuppTsf"))
+		  '
+		  'for i = 0 to NumOp -1
+		  'ifm1 = MacInf.Ifmacs(i)
+		  ''if (ifm1.MacId = SuppId) and
+		  'next
 		End Sub
 	#tag EndMethod
 
@@ -727,13 +733,14 @@ Protected Class Macro
 		Sub ComputeMatrix(ifmac as InfoMac, EL as XMLElement)
 		  
 		  dim  tsftype as integer
+		  dim n as integer
+		  dim nbp as nBpoint
 		  
 		  
-		  
-		  tsftype =  val(EL.GetAttribute("TsfType"))
-		  select case tsftype
+		  select case ifmac.type
 		  case 2
-		    ifmac.M=TriBPoint(ifmac.coord).RotationMatrix
+		    nbp  = GetCoord(ifmac.MacId)
+		    ifmac.M=nbp.RotationMatrix
 		  end select
 		End Sub
 	#tag EndMethod
@@ -742,7 +749,7 @@ Protected Class Macro
 		Sub ComputeObject(ifmac as InfoMac, EL as XMLElement)
 		  dim k, oper,  MacId as integer
 		  dim s as shape
-		  dim nbp as nBPoint
+		  dim nbp as new nBPoint
 		  
 		  
 		  
@@ -776,6 +783,27 @@ Protected Class Macro
 		    s.modified = true
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetMatrix(EL as XMLElement) As Matrix
+		  dim i as integer
+		  dim t as Boolean
+		  dim ifm as InfoMac
+		  
+		  for i = 0 to ubound(MacInf.ifmacs)
+		    ifm = MacInf.ifmacs(i)
+		    t = true
+		    if ifm.M <> nil then
+		      t = ifm.MacId = val(EL.GetAttribute("MacId"))
+		      t = t and (ifm.type = val(EL.GetAttribute("TsfType")))
+		      t = t and (ifm.num = val(EL.GetAttribute("TsfType")))
+		      if t then
+		        return ifm.M
+		      end if
+		    end if
+		  next
+		End Function
 	#tag EndMethod
 
 
@@ -867,18 +895,6 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		Histo As XMLElement
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		TsfInterm() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		TsfTyInterm() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		TsfSidInterm() As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
