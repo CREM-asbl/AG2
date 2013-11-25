@@ -1673,7 +1673,7 @@ Inherits Shape
 		    Arc(S).Positionner(self) 'PutOnArc(arc(s)) selon le principe que chaque classe doit se gérer elle-même
 		  end if
 		  
-		  
+		  mobility
 		  
 		  
 		  

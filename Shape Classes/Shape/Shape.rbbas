@@ -3035,7 +3035,7 @@ Implements StringProvider
 		        tsf.supp.tsfi.removetsf tsf
 		        currentcontent.TheTransfos.removetsf  tsf
 		      end if
-		    case 3
+		    case 3, 8
 		      constructedby.shape.removeconstructedshape self
 		    case 5
 		      constructedby.shape.removeconstructedshape self
@@ -3051,7 +3051,6 @@ Implements StringProvider
 		    case 9
 		      shape(constructedby.data(0)).removeconstructedshape self
 		      shape(constructedby.data(2)).removeconstructedshape self
-		    case 5
 		    end  select
 		    constructedby = nil
 		  end if

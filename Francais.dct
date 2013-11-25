@@ -363,7 +363,7 @@
     <toputatforeground Name=" à mettre à l'avant-plan" />
     <letturn Name=" faire tourner" />
     <letzoom Name=" redimensionner" />
-    <onabuttonoramenu Name=" sur un bouton ou un menu" />
+    <onabuttonoramenu Name=" sur un bouton, un menu ou une touche" />
     <Chooseafile Name="Sélectionnez un fichier" />
     <MsgPWFalse Name="Mot de passe incorrect" />
     <PWchanged Name="Mot de passe modifié" />
@@ -392,7 +392,7 @@
     <ErrorOnSave Name="Erreur à la sauvegarde" />
     <Nowritingpermission Name="AG2 n' a pas les droits en écriture" />
     <MacroDescription Name="Description de la macro" />
-    <chgTextSize Name="Modifie la taille du texte avec les touches +, - ou 0" />
+    <chgTextSize Name="     (les touches +, - ou 0 permettent de modifier la taille des textes des boutons)" />
   </Messages>
   <Controles>
     <Oui Name="Oui" />

@@ -593,7 +593,9 @@ Protected Class WindContent
 		  else
 		    currentcontent.polygpointes = false
 		  end if
-		  wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = currentcontent.polygpointes
+		  if wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
+		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = currentcontent.polygpointes
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -1095,6 +1097,12 @@ Protected Class WindContent
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ndec"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

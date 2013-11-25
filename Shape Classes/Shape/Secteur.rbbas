@@ -150,13 +150,13 @@ Inherits Shape
 		    distmin = dist
 		    imin = 1
 		  end if
-		  if distmin < wnd.Mycanvas1.MagneticDist  then
+		  if distmin < wnd.Mycanvas1.MagneticDist  and p.audela(points(0).bpt, points(imin+1).bpt) then
 		    return imin
 		  else
 		    return -1
 		  end if
 		  
-		  //PointOnSide retourne 0 ou 1
+		  //PointOnSide retourne 0 ou 1 (ou -1)
 		  
 		  
 		  

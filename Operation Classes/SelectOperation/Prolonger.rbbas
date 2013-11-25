@@ -88,6 +88,7 @@ Inherits SelectOperation
 		    Dr = droite(objects.getshape(val(EL2.GetAttribute("Id"))))
 		    ibip = val(EL2.GetAttribute("Ibip"))
 		    polygon(Bip).prol(ibip) = false
+		    
 		  end if
 		  replacerperp
 		  
