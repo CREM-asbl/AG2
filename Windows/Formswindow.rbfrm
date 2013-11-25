@@ -383,6 +383,12 @@ End
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Close()
+		  wnd.fw = nil
+		End Sub
+	#tag EndEvent
+
 
 	#tag Method, Flags = &h0
 		Sub Formswindow(k as integer, f as integer, selection As boolean)
@@ -497,7 +503,7 @@ End
 
 #tag Events Bouton
 	#tag Event
-		Sub MouseEnter(index as Integer)
+		Sub MouseEnter(Index As Integer, index as Integer)
 		  if selection then
 		    return
 		  end if
@@ -510,7 +516,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action(Index As Integer, index as Integer)
 		  if  selection then
 		    if index =0 then
 		      Config.ToggleFLib(fam)
@@ -546,7 +552,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open(Index As Integer, index as Integer)
 		  select case kit
 		  case 0
 		    if index < config.nstdf(fam) then
@@ -587,7 +593,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit(Index As Integer, index as Integer)
 		  if selection then
 		    return
 		  end if
@@ -598,12 +604,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent

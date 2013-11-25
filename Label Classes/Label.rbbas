@@ -106,7 +106,7 @@ Protected Class Label
 		        dat = arrondi2(polygon(shape).getside(loc).longueur/currentcontent.UL)
 		      end if
 		    elseif shape isa arc and loc <>-1 then
-		      dat = str(round(arc(shape).arcangle*180/PI))
+		      dat = str(round(arc(shape).arcangle*180/PI))+"°"
 		    elseif shape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
 		      dat = arrondi2(2*PI*Freecircle(shape).getradius/currentcontent.UL)
 		    end if
@@ -696,12 +696,6 @@ Protected Class Label
 			Group="Behavior"
 			InitialValue="&h000000"
 			Type="Color"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="p"
-			Group="Behavior"
-			InitialValue="0"
-			Type="integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

@@ -234,6 +234,8 @@ Implements StringProvider
 		    d1 = sh1.getside(i)
 		    g2 = circle(sh2)
 		    redim p(1)
+		    b = new BasicPoint(0,0)
+		    w = new BasicPoint(0,0)
 		    k = d1.inter(g2,p(),b,w)
 		    
 		    select case k
@@ -314,8 +316,9 @@ Implements StringProvider
 		  g2 = circle(sh2)
 		  k = g1.inter(g2,bq())
 		  
-		  if ubound(bq) = -1 or bq(0) = nil or bq(1) = nil then
-		    return
+		  if  k = 0 then
+		    bq.append nil
+		    bq.append nil
 		  end if
 		  
 		  bptinters(0,0) = bq(0)

@@ -276,7 +276,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint)
+		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer)
 		  dim  w as BasicPoint
 		  dim M as Matrix
 		  
@@ -286,12 +286,16 @@ Protected Class nBpoint
 		    w=w.VecNorPerp
 		  end if
 		  
-		  select case fo
-		  case 1, 2
-		    M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
-		    tab(1) = M*tab(1)
-		  case 4,5
-		    tab(1) = tab(0) +w*10
+		  select case n
+		  case 0
+		    tab(1) = tab(0)+w
+		  case 1
+		    if fo = 1 or fo = 2 then
+		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
+		      tab(1)=M*tab(1)
+		    else
+		      tab(1) = tab(0) +w
+		    end if
 		  end select
 		  
 		  

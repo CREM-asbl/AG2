@@ -25,6 +25,7 @@ Inherits SelectAndDragOperation
 		  elseif Lab.text = "" then
 		    currentshape.labs.removelab lab
 		  end if
+		  currentshape.dounselect
 		  
 		End Sub
 	#tag EndMethod
@@ -90,25 +91,17 @@ Inherits SelectAndDragOperation
 		    elseif  currentshape isa secteur and loc <> -1 then
 		      Secteur(currentshape).paintside(g,loc,2,Config.highlightcolor)
 		      display = display + " " + ontheline
-		    elseif currentshape isa FreeCircle and loc <> -1 then
+		    else
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)
-		      display = display +" "+  onthecircle
-		    elseif currentshape isa FreeCircle and loc = -1 then
-		      currenthighlightedshape.highlight
-		      currenthighlightedshape.paint(g)
-		      display = display +" "+  onthedisk
-		    elseif currentshape isa Arc and loc <> -1 then
-		      currenthighlightedshape.highlight
-		      currenthighlightedshape.paint(g)
-		      display = display +" "+  onthearc
-		    elseif currenthighlightedshape <> nil and not currentshape isa repere then
-		      currenthighlightedshape.highlight
-		      currenthighlightedshape.paint(g)
-		      if currenthighlightedshape isa Freecircle then
-		        display = display + " " + onthedisk
-		      else
-		        display = display + sur + this + lowercase(currenthighlightedshape.GetType)
+		      if currentshape isa FreeCircle and loc <> -1 then
+		        display = display +" "+  onthecircle
+		      elseif currentshape isa FreeCircle and loc = -1 then
+		        display = display +" "+  onthedisk
+		      elseif currentshape isa Arc  then
+		        display = display +" "+  onthearc
+		      elseif not currentshape isa repere then
+		        display = display + sur + this + " "+  lowercase(currenthighlightedshape.GetType)
 		      end if
 		    end if
 		    
@@ -150,7 +143,7 @@ Inherits SelectAndDragOperation
 		    currenthighlightedshape.tsp = false
 		    currenthighlightedshape.dounselect
 		  end if
-		  Currentshape = GetShape(p) //retourne par priorité les points, ensuite les formes
+		  Currentshape = GetShape(p)                            //retourne par priorité les points, ensuite les formes
 		  if loc = -1 then
 		    currenthighlightedshape = currentshape   'on n'a pas choisi un cote de polygone, ni de bande, ni de secteur
 		  end if
@@ -242,7 +235,6 @@ Inherits SelectAndDragOperation
 		  correction = nil
 		  lab = nil
 		  oldlabel = nil
-		  finished = true
 		  drapnew = false
 		  
 		  
@@ -327,11 +319,11 @@ Inherits SelectAndDragOperation
 		  
 		  s = Operation.GetShape(p)
 		  
-		  if s <> nil  then
-		    loc = s.PointOnSide(p)
-		  end if
+		  'if s <> nil  then
+		  'loc = s.PointOnSide(p)
+		  'end if
 		  
-		  if s = nil or (s isa arc and loc <> 0)  then
+		  if s = nil  then
 		    return wnd.mycanvas1.getrepere
 		  end if
 		  
@@ -346,14 +338,11 @@ Inherits SelectAndDragOperation
 		    elseif loc > 7 then
 		      loc  =(loc-9)*2
 		    end if
-		  elseif s isa polygon or s isa Bande or s isa secteur or s isa Freecircle or s isa arc then
+		  elseif s isa polygon or s isa Bande or s isa secteur or s isa Freecircle  then
 		    loc = s.PointOnSide(p)
 		  else
-		    loc = -1
+		    loc = -1 //on a choisi un intérieur ou une courbe sans intérieur: on devra pas chipoter pour afficher l'objet en déterminant un n0 de côté
 		  end if
-		  'if loc = -1 and s isa arc then
-		  'return nil
-		  'end if
 		  return s
 		End Function
 	#tag EndMethod

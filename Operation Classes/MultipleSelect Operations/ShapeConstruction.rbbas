@@ -182,7 +182,14 @@ Inherits MultipleSelectOperation
 		      elseif nextcurrentattractingshape <> nil then
 		        display = attheinter + "?"
 		      else
-		        display = sur + this + " " +currentattractingshape.gettype +"?"
+		        if currentattractingshape isa arc then
+		          display = sur+cet
+		        elseif ((currentattractingshape isa droite) and (droite(currentattractingshape).nextre < 2)) or currentattractingshape isa Bande then
+		          display = sur+cette
+		        else
+		          display = sur + this
+		        end if
+		        display = display + " " +currentattractingshape.gettype +"?"
 		      end if
 		    else
 		      if currentshape.std then

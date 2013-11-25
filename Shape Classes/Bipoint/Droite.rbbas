@@ -56,9 +56,9 @@ Inherits Bipoint
 		    index = constructedby.data(0)
 		    s = constructedby.shape
 		    if s isa polygon or s isa bande or s isa secteur  then
-		      coord.constructshape(fam,forme, s.getbibside(index))
+		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
 		    else
-		      coord.constructshape(fam,forme, s.coord)
+		      coord.constructshape(fam,forme, s.coord, indexconstructedpoint)
 		    end if
 		    repositionnerpoints
 		    computeextre
@@ -226,7 +226,7 @@ Inherits Bipoint
 		  Points.append p1
 		  Points.append p2
 		  nextre = 2
-		  'coord = new BiBpoint(firstp, secondp)
+		  coord = new BiBpoint(firstp, secondp)
 		End Sub
 	#tag EndMethod
 
@@ -471,23 +471,21 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Function Inter(s as circle, byref p() as Basicpoint, byref bq as BasicPoint, Byref w as BasicPoint) As integer
-		  'dim B1, B2 as BiBpoint
-		  'dim b, v, intersec() as BasicPoint
+		  dim B1 as BiBpoint
+		  dim k as integer
 		  
-		  'B1 = new Bibpoint(firstp, secondp)
-		  'B2 = new Bibpoint(s.points(0).bpt, s.points(1).bpt)
-		  
-		  if  ubound(p) = 1 then 'and -1 and bq <> nil and w <> nil then
-		    return BiBPoint(coord).BiBDroiteInterCercle(BibPoint(s.coord),p(), bq, w)
+		  if  ubound(p) = 1 then
+		    if s isa arc then
+		      B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
+		    else
+		      B1 = BibPoint(s.coord)
+		    end if
+		    k = BiBPoint(coord).BiBDroiteInterCercle(B1,p(), bq, w)
 		  else
-		    return 0
+		    k = 0
 		  end if
+		  return k
 		  
-		  'if s isa arc then
-		  'for i = 0 to 1
-		  't(i) = t(i) and arc(s).Inside(intersec(i))
-		  'next
-		  'end if
 		  
 		End Function
 	#tag EndMethod

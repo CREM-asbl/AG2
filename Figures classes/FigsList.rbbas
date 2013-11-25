@@ -474,23 +474,20 @@ Implements StringProvider
 		    n2 = ubound(listetsf)+1
 		    for i = 0 to tsflist.count-1
 		      tsf = TsfList.element(i)
-		      if  not (tsf.M.Equal(MatId)) or  ((not curoper isa glisser ) and (not curoper isa redimensionner) ) then
-		        
-		        for j = 0 to tsf.constructedfigs.count-1
-		          if not tsf.constructedfigs.element(j).chosen then
-		            ff = tsf.constructedfigs.element(j).constructioninfos(0).sourcefig
-		            m0 = figs0.getposition(ff)
-		            m1 = figs0.getposition(tsf.supp.fig)
-		            if (m0 > n0 and m0 <= n1) or (m1 > n0 and m1 <= n1) then
-		              listesources.append ff
-		              listetsf.append tsf
-		              listebuts.append tsf.constructedfigs.element(j)
-		              figs0.addfigure tsf.constructedfigs.element(j)
-		              tsf.constructedfigs.element(j).chosen = true
-		            end if
+		      for j = 0 to tsf.constructedfigs.count-1
+		        if not tsf.constructedfigs.element(j).chosen then
+		          ff = tsf.constructedfigs.element(j).constructioninfos(0).sourcefig
+		          m0 = figs0.getposition(ff)
+		          m1 = figs0.getposition(tsf.supp.fig)
+		          if (m0 > n0 and m0 <= n1) or (m1 > n0 and m1 <= n1) then
+		            listesources.append ff
+		            listetsf.append tsf
+		            listebuts.append tsf.constructedfigs.element(j)
+		            figs0.addfigure tsf.constructedfigs.element(j)
+		            tsf.constructedfigs.element(j).chosen = true
 		          end if
-		        next
-		      end if
+		        end if
+		      next
 		    next
 		    n0 = n1
 		  wend

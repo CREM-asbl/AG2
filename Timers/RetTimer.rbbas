@@ -180,6 +180,7 @@ Inherits TsfTimer
 		    CurrentContent.isaundoredo = false
 		    wnd.Mycanvas1.Mousecursor = ArrowCursor
 		  end if
+		  wnd.mycanvas1.refreshbackground
 		End Sub
 	#tag EndMethod
 

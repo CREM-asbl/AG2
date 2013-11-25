@@ -178,6 +178,7 @@ Inherits ShapeConstruction
 		      CurrentContent.abortconstruction
 		      return false
 		    end if
+		    curshape.mobility
 		    ReinitAttraction
 		    s.IndexConstructedPoint = s.IndexConstructedPoint+1
 		    

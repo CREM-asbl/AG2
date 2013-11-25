@@ -2172,6 +2172,9 @@ Implements StringProvider
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.element(i))
+		    if p.pointsur.count = 2 and p.pointsur.element(0).modified and p.pointsur.element(1).modified then
+		      p.unmodifiable = true
+		    end if
 		    if ubound(p.parents) >=1 then
 		      n = 0
 		      for k = 0 to ubound(p.parents)
@@ -2188,8 +2191,8 @@ Implements StringProvider
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =point(somm.element(i))
-		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile and ListPtsModifs.indexof(i)=-1 )  and PtsConsted.getposition(p) = -1 then
+		    p =point(somm.element(i))                                                                                                                                              '25-11-2013 pour puzzlecinq
+		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 then 'and ListPtsModifs.indexof(i)=-1 
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
 		        NbUnModif = NbUnModif+1

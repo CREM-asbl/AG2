@@ -655,13 +655,15 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub AfficherChoixContext()
-		  currenthighlightedshape.HighLight
-		  sctxt = currenthighlightedshape
-		  info = sctxt.Identifiant + ", " + Dico.Value("rightclick")+Dico.Value("toseecontextmenu")
-		  if nobj > 1 then
-		    info = info + " (" + str(nobj) + "," + str(iobj+1) + ")"
+		  if currenthighlightedshape <> nil then
+		    currenthighlightedshape.HighLight
+		    sctxt = currenthighlightedshape
+		    info = sctxt.Identifiant + ", " + Dico.Value("rightclick")+Dico.Value("toseecontextmenu")
+		    if nobj > 1 then
+		      info = info + " (" + str(nobj) + "," + str(iobj+1) + ")"
+		    end if
+		    RefreshBackGround
 		  end if
-		  RefreshBackGround
 		End Sub
 	#tag EndMethod
 
