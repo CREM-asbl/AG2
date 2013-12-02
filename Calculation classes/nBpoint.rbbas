@@ -238,6 +238,7 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Sub nBPoint(p as BasicPoint)
+		  nBPoint
 		  Tab.append p
 		End Sub
 	#tag EndMethod
@@ -329,6 +330,12 @@ Protected Class nBpoint
 	#tag Method, Flags = &h0
 		Function RotationMatrix() As Matrix
 		  return new SimilarityMatrix(tab(0),tab(1),tab(0),tab(2))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TranslationMatrix() As Matrix
+		  return new TranslationMatrix (tab(1)-tab(0))
 		End Function
 	#tag EndMethod
 

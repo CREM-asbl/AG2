@@ -56,10 +56,10 @@ Inherits MultipleSelectOperation
 		  if  s.interm or s.init then
 		    return
 		  end if
-		  if s isa point then
-		    IdentifyInit(point(s))
-		    return
-		  end if
+		  'if s isa point then
+		  'IdentifyInit(point(s))
+		  'return
+		  'end if
 		  
 		  if s.constructedby = nil then
 		    t = true

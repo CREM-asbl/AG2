@@ -169,7 +169,8 @@ Implements StringProvider
 		    v = supp.points((index+1)mod supp.npts).bpt- supp.points(index) .bpt
 		    M = new translationmatrix (v*ori)
 		  case 2
-		    M = new rotationmatrix (supp.points(0).bpt, arc(supp).arcangle)
+		    M = supp.coord.RotationMatrix
+		    'M = new rotationmatrix (supp.points(0).bpt, arc(supp).arcangle)
 		  case 3
 		    M = new rotationmatrix(point(supp).bpt, PI)
 		  case 4
@@ -894,6 +895,18 @@ Implements StringProvider
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="final"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Interm"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

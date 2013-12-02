@@ -1251,6 +1251,8 @@ Implements StringProvider
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
 		      s.endmove
 		    end if
+		    s.updateMacConstructedShapes
+		    
 		  next
 		  
 		  modified = true
@@ -2192,7 +2194,7 @@ Implements StringProvider
 		  
 		  for i = 0 to somm.count-1
 		    p =point(somm.element(i))                                                                                                                                              '25-11-2013 pour puzzlecinq
-		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 then 'and ListPtsModifs.indexof(i)=-1 
+		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 then 'and ListPtsModifs.indexof(i)=-1
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
 		        NbUnModif = NbUnModif+1

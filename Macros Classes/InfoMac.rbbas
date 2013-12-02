@@ -20,7 +20,7 @@ Protected Class InfoMac
 		  temp.SetAttribute("PtSur",str(ptsur))
 		  temp.Setattribute("RId",str(RealId))
 		  temp.setAttribute("Side",str(side))
-		  temp.SetAttribute("T",str(T))
+		  
 		  if final then
 		    Temp.SetAttribute("Fin",str(1))
 		  else
@@ -51,7 +51,6 @@ Protected Class InfoMac
 		  ptsur = val(temp.GetAttribute("PtSur"))
 		  RealId = val(temp.Getattribute("RId"))
 		  side = val(temp.GetAttribute("Side"))
-		  T = val(temp.GetAttribute("T"))
 		  final = (val(Temp.GetAttribute("Fin")) = 1)
 		  init = ( val(Temp.GetAttribute("Ini")) = 1)
 		  interm = (val(Temp.GetAttribute("Int")) = 1)
@@ -80,10 +79,6 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		M As Matrix
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		T As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -182,12 +177,6 @@ Protected Class InfoMac
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="TsfId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="RealId"
 			Group="Behavior"
 			InitialValue="0"
@@ -246,6 +235,18 @@ Protected Class InfoMac
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="num"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="type"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

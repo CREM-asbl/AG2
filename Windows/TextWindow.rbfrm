@@ -169,7 +169,7 @@ End
 		Function mess(s As shape) As string
 		  
 		  dim m as string
-		  m = Type(s)
+		  m = Type(s) +" Plan : "+ str(s.plan)
 		  if s.std then
 		    m = m+ " std"
 		  end if

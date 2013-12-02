@@ -651,6 +651,7 @@ Protected Class WindContent
 		  
 		  plans.remove  plans.indexof(n)
 		  plans.insert 1,n
+		  UpdatePlans
 		  
 		  
 		End Sub
@@ -663,6 +664,7 @@ Protected Class WindContent
 		    plans.remove  plans.indexof(n)
 		  end if
 		  plans.append n
+		  UpdatePlans
 		  
 		  
 		End Sub
@@ -752,6 +754,7 @@ Protected Class WindContent
 		    plans.remove  plans.indexof(s.id)
 		  end if
 		  TheObjects.removeshape s
+		  UpdatePlans
 		  
 		  #if TargetLinux then
 		    EnableMenuItems
@@ -800,6 +803,16 @@ Protected Class WindContent
 		    else
 		      s.MovetoFront
 		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdatePlans()
+		  dim i as integer
+		  
+		  for i = 0 to TheObjects.count-1
+		    TheObjects.element(i).plan = plans.indexof(TheObjects.element(i).id)
 		  next
 		End Sub
 	#tag EndMethod

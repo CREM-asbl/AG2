@@ -335,17 +335,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function Aire() As double
-		  dim a as double
-		  dim i as integer
-		  
-		  a = 0
-		  for i = 0 to npts-2
-		    a = a + points(i).bpt.x*points(i+1).bpt.y - points(i+1).bpt.x*points(i).bpt.y
-		  next
-		  
-		  a = a+ points(npts-1).bpt.x*points(0).bpt.y - points(0).bpt.x*points(npts-1).bpt.y
-		  
-		  return a/2
+		  return coord.aire
 		End Function
 	#tag EndMethod
 

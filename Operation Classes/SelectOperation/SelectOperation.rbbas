@@ -154,7 +154,12 @@ Implements StringProvider
 		  // Déterminer les choix valides pour les "mouvements" glisser, tourner, retourner, redimensionner
 		  // Pour éviter des problèmes avec les figures images par des transfos (on verra plus tard si on peut assouplir) :
 		  
-		  // On invalide d'abord les formes appartenant à une figure qui contient une image sans contenir la source et le support de la transformation
+		  'On ne peut pas déplacer une figure construite par une macro.
+		  
+		  if s.macconstructedby <> nil then
+		    return false
+		  end if
+		  // On invalide ensuite les formes appartenant à une figure qui contient une image sans contenir la source et le support de la transformation
 		  // idem si une des formes liées à s est dans le même cas
 		  // Il y a des exceptions
 		  

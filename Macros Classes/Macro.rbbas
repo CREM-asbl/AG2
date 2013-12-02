@@ -370,7 +370,7 @@ Protected Class Macro
 		  
 		  ifm = MacInf.GetInfoMac(n)
 		  
-		  if (ObInit.indexof(n) <> -1) or (ObFinal.indexof(n) <> -1) then        //Si c'est une forme initiale ou finale 
+		  if (ObInit.indexof(n) <> -1) or (ObFinal.indexof(n) <> -1) then        //Si c'est une forme initiale ou finale
 		    s= currentcontent.theobjects.getshape(ifm.RealId)
 		    return new nBPoint(s)
 		  end if
@@ -706,41 +706,46 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm as InfoMac, byref nbp as nBPoint)
-		  dim MacId, i, n as integer
+		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
+		  dim MacId, i, n, op as integer
 		  dim nbp1 as nBPoint
 		  dim M as Matrix
 		  
-		  nbp1 = ifm.coord
+		  nbp1 = ifm1.coord
 		  n = nbp1.taille
-		  M = GetMatrix(EL1)
-		  for i = 0 to n-1
-		    nbp.append  M*nbp1.tab(i)
-		  next
+		  redim nbp.tab(n)
+		  M = GetMatrix(ifm1, EL1)
+		  if M <> nil then
+		    for i = 0 to n-1
+		      nbp.tab(i) =  M*nbp1.tab(i)
+		    next
+		  end if
 		  
 		  
 		  
-		  'MacId = val(EL1.GetAttribute("SuppTsf"))
-		  '
-		  'for i = 0 to NumOp -1
-		  'ifm1 = MacInf.Ifmacs(i)
-		  ''if (ifm1.MacId = SuppId) and
-		  'next
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ComputeMatrix(ifmac as InfoMac, EL as XMLElement)
-		  
 		  dim  tsftype as integer
 		  dim n as integer
 		  dim nbp as nBpoint
+		  dim bp as BasicPoint
 		  
-		  
+		  nbp  = GetCoord(ifmac.MacId)
 		  select case ifmac.type
+		  case 1
+		    ifmac.M = nbp.TranslationMatrix
 		  case 2
-		    nbp  = GetCoord(ifmac.MacId)
 		    ifmac.M=nbp.RotationMatrix
+		  case 3
+		    bp = nbp.tab(0)
+		    nbp = new nbPoint(bp)
+		    nbp.append  bp+new BasicPoint(1,0)
+		    nbp.append  bp+new BasicPoint(-1,0)
+		    ifmac.M = nbp.RotationMatrix
 		  end select
 		End Sub
 	#tag EndMethod
@@ -786,23 +791,39 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetMatrix(EL as XMLElement) As Matrix
-		  dim i as integer
-		  dim t as Boolean
+		Function GetMatrix(ifm1 as infomac, EL1 as XMLElement) As Matrix
+		  dim i, op as integer
 		  dim ifm as InfoMac
+		  dim tsfnum, supp as integer
+		  
+		  tsfnum = val(EL1.GetAttribute("Nr"))
+		  supp = val(EL1.GetAttribute("SuppTsf"))
 		  
 		  for i = 0 to ubound(MacInf.ifmacs)
 		    ifm = MacInf.ifmacs(i)
-		    t = true
-		    if ifm.M <> nil then
-		      t = ifm.MacId = val(EL.GetAttribute("MacId"))
-		      t = t and (ifm.type = val(EL.GetAttribute("TsfType")))
-		      t = t and (ifm.num = val(EL.GetAttribute("TsfType")))
-		      if t then
-		        return ifm.M
-		      end if
+		    if (ifm.MacId = supp) and  (ifm.num = tsfnum) and (ifm.M <> nil) then
+		      return ifm.M
 		    end if
 		  next
+		  return nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInstrucConstruction(n as integer) As integer
+		  dim i, op, Mid as integer
+		  dim EL, EL1 as XMLElement
+		  
+		  for i = 0 to Histo.ChildCount-1
+		    EL = XMLElement(Histo.Child(i))
+		    op = val(EL.GetAttribute("OpId"))
+		    EL1 = XMLElement(EL.FirstChild)
+		    Mid = val(EL1.GetAttribute("Id"))
+		    if op = 0 and Mid = n then
+		      return i
+		    end if
+		  next
+		  
 		End Function
 	#tag EndMethod
 
