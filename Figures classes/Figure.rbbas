@@ -1450,7 +1450,7 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  if shapes.element(0).tobereconstructed = true then
+		  if (shapes.element(0).tobereconstructed = true) or (shapes.element(0).macconstructedby <> nil) then
 		    return true
 		  end if
 		  
@@ -2193,8 +2193,8 @@ Implements StringProvider
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =point(somm.element(i))                                                                                                                                              '25-11-2013 pour puzzlecinq
-		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 then 'and ListPtsModifs.indexof(i)=-1
+		    p =point(somm.element(i))               'Un point qui a déjà bougé ne peut plus être pris comme point fixe
+		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
 		        NbUnModif = NbUnModif+1
@@ -3550,21 +3550,19 @@ Implements StringProvider
 		  dim i as integer
 		  dim p as point
 		  
-		  if auto = 3 then
-		    if shapes.element(0) isa arc then
-		      arc(shapes.element(0)).Updateangles
-		      'arc(shapes.element(0)).UpdatePtsConsted
+		  if shapes.element(0) isa arc then
+		    arc(shapes.element(0)).Updateangles
+		    'arc(shapes.element(0)).UpdatePtsConsted
+		  end if 'else
+		  for i = 0 to PtsConsted.count-1
+		    p = Point(Ptsconsted.element(i))
+		    if somm.getposition(p)=-1 then
+		      p.transform(M)
 		    end if
-		  else
-		    for i = 0 to PtsConsted.count-1
-		      p = Point(Ptsconsted.element(i))
-		      if somm.getposition(p)=-1 then
-		        p.transform(M)
-		      end if
-		      ptsconsted.element(i).modified = true
-		      ptsconsted.element(i).updateshape
-		    next
-		  end if
+		    ptsconsted.element(i).modified = true
+		    ptsconsted.element(i).updateshape
+		  next
+		  'end if
 		End Sub
 	#tag EndMethod
 

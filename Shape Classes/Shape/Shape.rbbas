@@ -736,8 +736,6 @@ Implements StringProvider
 		  if fam <> 0 then
 		    Form.SetAttribute(Dico.value("Npts"),Str(Npts))
 		    Form.SetAttribute(Dico.value("Ncpts"),Str(Ncpts))
-		    'end if
-		    'if not self isa point then
 		    Form.SetAttribute("Ori", str(ori))
 		  end if
 		  if nonpointed then

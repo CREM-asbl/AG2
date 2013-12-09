@@ -325,6 +325,7 @@ Protected Class ObjectsList
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère
 		    CurrentContent.CreateFigs
 		    addshape s
+		    currentcontent.addplan(s)
 		    wnd.MyCanvas1.Setrepere(Repere(s))
 		    return s
 		  case 0
@@ -396,7 +397,7 @@ Protected Class ObjectsList
 		  end select
 		  
 		  s.id = id
-		  pl = val(Temp.GetAttribute("Plan"))
+		  'pl = val(Temp.GetAttribute("Plan"))
 		  
 		  if (not  s isa point) or (s isa point and  ubound(point(s).parents) = -1) then
 		    currentcontent.addplan(s)
@@ -427,7 +428,7 @@ Protected Class ObjectsList
 		  end if
 		  s.signaire = sign(s.aire)
 		  if s.plan <> -1 then
-		    addshape s
+		    addshape(s)
 		  end if
 		  return s
 		  
@@ -1104,7 +1105,7 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreateShape(fa as integer, fo as integer) As shape
+		Function CreateShape(fa as integer, fo as integer) As Shape
 		  dim i as integer
 		  dim specs as StdPolygonSpecifications
 		  dim currentshape as shape

@@ -654,7 +654,7 @@ End
 		    wnd.mycanvas1.sctxt = nil
 		    tw = new TextWindow
 		    tw.visible = true
-		  case 21 'ctrl-shft u
+		  case 21 'ctrl-shft u0002716707
 		    tw = new textwindow
 		    tw.source1 = true  //historique
 		    tw.visible = true
@@ -1253,6 +1253,7 @@ End
 			
 			closefw
 			app.macrocreation = true
+			newcontent
 			MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = false
 			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
 			MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
@@ -1271,10 +1272,12 @@ End
 			MouvBut(i).visible =false
 			next
 			MoveBox.visible =false
-			newcontent
+			for i = 0 to 2
+			stdoutil(i).visible = false
+			next
+			stdbox.visible = false
 			wnd.refreshtitle
 			mac = new macro
-			newcontent
 			return true
 			
 			
@@ -2382,6 +2385,10 @@ End
 		    MouvBut(i).visible =true
 		  next
 		  MoveBox.visible = true
+		  for i = 0 to 2
+		    StdOutil(i).visible =true
+		  next
+		  StdBox.visible = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
@@ -2428,6 +2435,7 @@ End
 		  for i = 0 to nmen-1
 		    MenuBar.append CopyMenuItem(MenuMenus.item(i))
 		  next
+		  CopyCFGMenu
 		End Sub
 	#tag EndMethod
 

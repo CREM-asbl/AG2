@@ -19,7 +19,7 @@ Protected Class InfoMac
 		  temp.SetAttribute("Ori",str(ori))
 		  temp.SetAttribute("PtSur",str(ptsur))
 		  temp.Setattribute("RId",str(RealId))
-		  temp.setAttribute("Side",str(side))
+		  temp.setAttribute("Side",str(Realside))
 		  
 		  if final then
 		    Temp.SetAttribute("Fin",str(1))
@@ -50,7 +50,7 @@ Protected Class InfoMac
 		  ori = val(temp.GetAttribute("Ori"))
 		  ptsur = val(temp.GetAttribute("PtSur"))
 		  RealId = val(temp.Getattribute("RId"))
-		  side = val(temp.GetAttribute("Side"))
+		  Realside = val(temp.GetAttribute("RealSide"))
 		  final = (val(Temp.GetAttribute("Fin")) = 1)
 		  init = ( val(Temp.GetAttribute("Ini")) = 1)
 		  interm = (val(Temp.GetAttribute("Int")) = 1)
@@ -66,6 +66,10 @@ Protected Class InfoMac
 		Coord: coordonnées des sommets de l'objet construit
 		
 		Un IFMac pour chacune des opérations de la macro
+		
+		
+		RealSide est utilisé pour mémoriser le numéro du côté d'un polygone, d'un secteur ou d'une bande utilisé comme segment ou droite
+		numside et location sont utilisés pour les pointsur un côté de figure (polygone, etc...)
 	#tag EndNote
 
 
@@ -90,15 +94,11 @@ Protected Class InfoMac
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		location As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		ptsur As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		side As Integer
+		RealSide As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -127,6 +127,14 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		type As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		numside As integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		location As double
 	#tag EndProperty
 
 
@@ -166,12 +174,6 @@ Protected Class InfoMac
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="MacId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="T"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

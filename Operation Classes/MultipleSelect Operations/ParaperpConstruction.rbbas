@@ -65,7 +65,9 @@ Inherits ShapeConstruction
 		      end if
 		    end if
 		    showattraction
-		    currentshape.paintall(g)
+		    if constructed then
+		      currentshape.paintall(g)
+		    end if
 		  end select
 		  
 		  Help g, display
@@ -92,8 +94,9 @@ Inherits ShapeConstruction
 		    currentattractingshape = Refe
 		  else
 		    CurrentShape.Fixecoord(p, currentshape.IndexConstructedPoint)
+		    constructed = true
 		    magnetism = Magnetisme(currentshape,magneticD)
-		    if magnetism>0 then
+		    if magnetism>0  then
 		      currentattractedshape = currentshape.points(currentshape.IndexConstructedPoint)
 		      ShowAttraction
 		      wnd.mycanvas1.RefreshBackground
@@ -167,28 +170,23 @@ Inherits ShapeConstruction
 		    end if
 		    s.setconstructedby(Refe,op)
 		    s.constructedby.data.append index(iobj)
-		    for i = 0 to 1
-		      s.points(i).moveto Refe.points(i).bpt
-		    next
 		  else
 		    curshape = s.points(s.IndexConstructedPoint)
-		    
 		    AdjustMagnetism(curshape)
 		    if curshape.invalid then
 		      CurrentContent.abortconstruction
 		      return false
 		    end if
+		    currentshape.constructshape
 		    curshape.mobility
 		    ReinitAttraction
 		    s.IndexConstructedPoint = s.IndexConstructedPoint+1
-		    
 		    if currentattractingshape isa polygon and currentitemtoset = 3 then
 		      curshape.surseg = true
 		      if s.points(0).pointsur.count = 1 and s.points(0).pointsur.element(0) isa polygon then
 		        s.points(0).surseg = true
 		      end if
 		    end if
-		    
 		    if currentitemtoset = 2 and droite(s).nextre = 0 then
 		      nextitem
 		    end if
@@ -204,6 +202,7 @@ Inherits ShapeConstruction
 		  
 		  refe = nil
 		  super.endoperation
+		  constructed = false
 		End Sub
 	#tag EndMethod
 
@@ -257,6 +256,10 @@ Inherits ShapeConstruction
 
 	#tag Property, Flags = &h0
 		op As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		constructed As boolean
 	#tag EndProperty
 
 

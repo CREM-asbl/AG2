@@ -170,7 +170,6 @@ Implements StringProvider
 		    M = new translationmatrix (v*ori)
 		  case 2
 		    M = supp.coord.RotationMatrix
-		    'M = new rotationmatrix (supp.points(0).bpt, arc(supp).arcangle)
 		  case 3
 		    M = new rotationmatrix(point(supp).bpt, PI)
 		  case 4

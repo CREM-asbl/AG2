@@ -169,7 +169,7 @@ End
 		Function mess(s As shape) As string
 		  
 		  dim m as string
-		  m = Type(s) +" Plan : "+ str(s.plan)
+		  m = Type(s) 
 		  if s.std then
 		    m = m+ " std"
 		  end if
@@ -236,13 +236,15 @@ End
 		  dim m as string
 		  dim i as integer
 		  
-		  m = mess(s) + " Fig. "+ str(s.fig.idfig) +chr(13)
+		  m = mess(s) + " Plan " + str(s.plan)+ " Fig. "+ str(s.fig.idfig) + " "
 		  if s isa triangle or s isa arc then
 		    m = m + "Orientation " + str(s.ori)+chr(13)
 		  end if
+		  m = m+chr(10)
 		  if s.constructedby <> nil or s.conditionedby <> nil or ubound(s.constructedshapes) > -1 then
-		    m = m + messlinks(s)+chr(13)
+		    m = m + messlinks(s)
 		  end if
+		  m = m +chr(10)
 		  if not s isa point then
 		    m = m + "Sommets"+chr(13)
 		    for i = 0 to ubound(s.points)
@@ -258,7 +260,7 @@ End
 		    m = m + mess(point(s))
 		  end if
 		  
-		  return m
+		  return m +chr(10)
 		End Function
 	#tag EndMethod
 
@@ -312,7 +314,6 @@ End
 		  
 		  m = Type(p)
 		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "+chr(10)
-		  
 		  if P.PointSur <> Nil then
 		    for i = 0 to P.Pointsur.count-1
 		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", " + chr(10)
@@ -321,7 +322,7 @@ End
 		  if p.constructedby <> nil or p.conditionedby<> nil or ubound(p.constructedshapes)>-1 then
 		    m = m+ messlinks(p) +chr(10)
 		  end if
-		  return m
+		  return m 
 		End Function
 	#tag EndMethod
 
@@ -346,7 +347,7 @@ End
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "
 		    s = f.shapes.element(i)
-		    EF.Text = EF.Text+ messages(s)
+		    EF.Text = EF.Text+ messages(s)+chr(10)
 		  next
 		  
 		End Sub

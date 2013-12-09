@@ -31,16 +31,16 @@ Protected Class MacConstructionInfo
 		  next
 		  Temp.SetAttribute("NRF",str(ubound(realfinal)+1))
 		  Temp.SetAttribute("NRI",str(ubound(realinit)+1))
-		  Temp.SetAttribute("NRS",str(ubound(realside)+1))
-		  for i = 0 to ubound(RealFinal)
-		    Temp.SetAttribute("RF"+str(i),str(RealFinal(i)))
-		  next
+		  Temp.SetAttribute("NRS",str(ubound(realInitside)+1))
+		  'for i = 0 to ubound(RealFinal)
+		  'Temp.SetAttribute("RF"+str(i),str(RealFinal(i)))
+		  'next
 		  for i = 0 to ubound(RealInit)
 		    Temp.SetAttribute("RI"+str(i),str(RealInit(i)))
 		  next
-		  for i = 0 to ubound(RealSide)
-		    Temp.SetAttribute("RS"+str(i),str(RealSide(i)))
-		  next
+		  'for i = 0 to ubound(RealSide)
+		  'Temp.SetAttribute("RS"+str(i),str(RealSide(i)))
+		  'next
 		  return Temp
 		  
 		End Function
@@ -60,27 +60,59 @@ Protected Class MacConstructionInfo
 		    nrf = val(EL.GetAttribute("NRF"))
 		    nri = val(EL.GetAttribute("NRI"))
 		    nrs = val(EL.GetAttribute("NRS"))
-		    if nrf > 0 then
-		      for i = 0 to nrf-1
-		        RealFinal.append val(EL.GetAttribute("RF"+str(i)))
-		      next
-		    end if
+		    'if nrf > 0 then
+		    'for i = 0 to nrf-1
+		    'RealFinal.append val(EL.GetAttribute("RF"+str(i)))
+		    'next
+		    'end if
 		    if nri > 0 then
 		      for i = 0 to nri-1
 		        RealInit.append val(EL.GetAttribute("RI"+str(i)))
 		      next
 		    end if
-		    if nrs > 0 then
-		      for i = 0 to nrs-1
-		        RealSide.append val(EL.GetAttribute("RS"+str(i)))
-		      next
-		    end if
+		    'if nrs > 0 then
+		    'for i = 0 to nrs-1
+		    'RealSide.append val(EL.GetAttribute("RS"+str(i)))
+		    'next
+		    'end if
 		    for i = 0 to EL.ChildCount-1
 		      IfMacs.append new InfoMac(XMLElement(EL.Child(i)))
 		    next
 		  end if
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRealInit(n as integer) As integer
+		  if Mac.ObInit.indexof(n) <> -1 then
+		    return RealInit(Mac.ObInit.indexof(n))
+		  else
+		    return -1
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRealFinal(n as integer) As integer
+		  if Mac.ObFinal.indexof(n) <> -1 then
+		    return RealFinal(Mac.ObFinal.indexof(n))
+		  else
+		    return -1
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRealSide(n as integer) As integer
+		  if Mac.ObInit.indexof(n) <> -1 then
+		    return RealInitSide(Mac.ObInit.indexof(n))
+		  elseif Mac.ObInterm.indexof(n) <> -1 then
+		    return RealIntermSide(Mac.ObInterm.indexof(n))
+		  elseif Mac.ObFinal.indexof(n) <> -1 then
+		    return RealFinalSide(Mac.ObFinal.indexof(n))
+		  end if
+		End Function
 	#tag EndMethod
 
 
@@ -101,7 +133,25 @@ Protected Class MacConstructionInfo
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		RealSide() As Integer
+		RealInitSide() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealIntermSide() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealFinalSide() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		#tag Note
+			//Note: Cette liste ne concerne que les points intermédiaires qui appartiennent à un objet initial
+			//Dont on doit donc retrouver les coordonnées facilement
+			
+			
+		#tag EndNote
+		RealInterm As Integer
 	#tag EndProperty
 
 
