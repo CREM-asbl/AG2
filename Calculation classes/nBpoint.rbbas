@@ -45,7 +45,7 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Function Aire() As double
-		  dim i, n as integer
+		  dim i as integer
 		  dim a as double
 		  
 		  a = 0
@@ -53,7 +53,7 @@ Protected Class nBpoint
 		    a = a + Tab(i).Vect( Tab((i+1) mod Taille) )
 		  next
 		  
-		  return a
+		  return a/2
 		End Function
 	#tag EndMethod
 
