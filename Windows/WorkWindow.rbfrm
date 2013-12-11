@@ -2113,7 +2113,6 @@ End
 		Sub updatemenu()
 		  EraseMenuBar
 		  CopyMenuBar
-		  CopyCFGMenu
 		  ReadNomsMouvBut
 		  ReadStTexts
 		  TradMenu
