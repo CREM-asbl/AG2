@@ -47,17 +47,13 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub IdentifyInit(s as shape)
-		  dim  i as integer  //lors du premier passage, s est un objet sélectionné comme final
+		  dim  i, j as integer  //lors du premier passage, s est un objet sélectionné comme final
 		  dim t as boolean
 		  dim sh as shape
 		  dim op as integer
 		  dim tsf as Transformation
 		  
 		  if  s.interm or s.init then
-		    return
-		  end if
-		  if s isa point then
-		    IdentifyInit(point(s))
 		    return
 		  end if
 		  
@@ -72,29 +68,37 @@ Inherits MultipleSelectOperation
 		      AddInterm(s)
 		      for i = 0 to s.ncpts-1
 		        if s.id > s.points(i).id then
-		          identifyinit(s.points(i))
+		          if ubound(s.points(i).parents) > -1 then
+		            for j = 0 to ubound(s.points(i).parents)
+		              if s.points(i).parents(j) <> s then
+		                identifyinit(s.points(i).parents(j))
+		              end if
+		            next
+		          else
+		            identifyinit(s.points(i))
+		          end if
 		        end if
 		      next
 		    end if
 		    return
-		  end if
-		  
-		  select case s.constructedby.oper
-		  case 1,2
-		    identifyinit(s.constructedby.shape)
-		    identifyinit(s.points(0))
-		    if droite(s).nextre=2 then
-		      identifyinit(s.points(1))
-		    end if
-		  case 3, 5, 9
-		  case  6 ' Transfos
-		    tsf = transformation(s.constructedby.Data(0))
+		  else
+		    AddInterm(s)
 		    IdentifyInit(s.constructedby.shape)
-		    AddTsfInterm(tsf)
-		    IdentifyInit(tsf.supp)
-		  case 8  'Prolongements
-		  end select
-		  
+		    select case s.constructedby.oper
+		    case 1,2
+		      identifyinit(s.points(0))
+		      if droite(s).nextre=2 then
+		        identifyinit(s.points(1))
+		      end if
+		    case 3, 5, 9
+		    case  6 ' Transfos
+		      tsf = transformation(s.constructedby.Data(0))
+		      IdentifyInit(s.constructedby.shape)
+		      AddTsfInterm(tsf)
+		      IdentifyInit(tsf.supp)
+		    case 8  'Prolongements
+		    end select
+		  end if
 		  
 		  
 		  
@@ -264,21 +268,18 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddTsfFinal(tsf As Transformation)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub AddTsfInterm(tsf As Transformation)
 		  if not tsf.Final  then
+<<<<<<< HEAD
 		    'wnd.mac.TsfInterm.append  Tsf.supp.id
 		    'wnd.mac.TsfTyInterm.append tsf.type
 		    'wnd.mac.TsfSidInterm.append tsf.index
+=======
+>>>>>>> origin/Macros
 		    tsf.Interm = true
 		  end if
 		  
-		  // Les id ci-dessus sont relatifs à la macro
+		  
 		End Sub
 	#tag EndMethod
 

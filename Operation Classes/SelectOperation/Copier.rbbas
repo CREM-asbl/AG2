@@ -66,19 +66,8 @@ Inherits SelectOperation
 		  
 		  Finished = false
 		  wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
-		  
 		  currentcontent.MoveFront(CurrentHighlightedShape.id)
 		  CurrentHighlightedShape.SelectNeighboor
-		  
-		  'for i = 0 to tempshape.count -1
-		  'for j = 0 to ubound(tempshape.element(i).Constructedshapes)
-		  's =  tempshape.element(i).constructedshapes(j)
-		  'if s.centerordivpoint and s.constructedby.oper <> 7 then
-		  'objects.selectobject s
-		  'end if
-		  'next
-		  'next
-		  
 		  wnd.refreshtitle
 		  DoOperation
 		  

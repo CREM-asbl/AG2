@@ -725,7 +725,7 @@ Protected Module Dictionnaires
 
 	#tag Method, Flags = &h0
 		Function parall() As string
-		  return dico.value("parall")
+		  return dico.value("parallelogram")
 		End Function
 	#tag EndMethod
 

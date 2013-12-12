@@ -325,6 +325,7 @@ Protected Class ObjectsList
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère
 		    CurrentContent.CreateFigs
 		    addshape s
+		    currentcontent.addplan(s)
 		    wnd.MyCanvas1.Setrepere(Repere(s))
 		    return s
 		  case 0
@@ -396,15 +397,16 @@ Protected Class ObjectsList
 		  end select
 		  
 		  s.id = id
-		  pl = val(Temp.GetAttribute("Plan"))
+		  'pl = val(Temp.GetAttribute("Plan"))
 		  
 		  if (not  s isa point) or (s isa point and  ubound(point(s).parents) = -1) then
-		    if pl <> 0 and pl <> -1 then
-		      s.plan = pl
-		    else
-		      MsgBox "Fichier de sauvegarde incorrect"
-		      s.plan = ubound(Objects)+1
-		    end if
+		    currentcontent.addplan(s)
+		    'if pl <> 0 and pl <> -1 then
+		    's.plan = pl
+		    'else
+		    'MsgBox "Fichier de sauvegarde incorrect"
+		    's.plan = ubound(Objects)+1
+		    'end if
 		  end if
 		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
@@ -426,7 +428,7 @@ Protected Class ObjectsList
 		  end if
 		  s.signaire = sign(s.aire)
 		  if s.plan <> -1 then
-		    addshape s
+		    addshape(s)
 		  end if
 		  return s
 		  
@@ -742,9 +744,9 @@ Protected Class ObjectsList
 		    s = XMLLoadObject(Temp)
 		  next
 		  OptimizeGroups
-		  if self = currentcontent.TheObjects then
-		    currentcontent.createplans
-		  end if
+		  'if self = currentcontent.TheObjects then
+		  currentcontent.createplans
+		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -1103,7 +1105,7 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreateShape(fa as integer, fo as integer) As shape
+		Function CreateShape(fa as integer, fo as integer) As Shape
 		  dim i as integer
 		  dim specs as StdPolygonSpecifications
 		  dim currentshape as shape
@@ -1151,11 +1153,11 @@ Protected Class ObjectsList
 		      case 3
 		        currentshape = new TrapIso(self, 3)
 		      case 4
-		        currentshape = new Parallelogram(self, 3)
+		        currentshape = new Parallelogram(self, 3,4)
 		      case 5
-		        currentshape = new Rect(self, 3)
+		        currentshape = new Rect(self, 3,4)
 		      case 6
-		        currentshape = new Losange(self, 3)
+		        currentshape = new Losange(self, 3,4)
 		      case 7
 		        currentshape = new Polreg(self,4)
 		      end select

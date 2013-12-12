@@ -222,10 +222,14 @@ AppMenuBar=Menu
 MajorVersion=2
 MinorVersion=4
 SubVersion=0
+<<<<<<< HEAD
 NonRelease=619
+=======
+NonRelease=628
+>>>>>>> origin/Macros
 Release=0
 InfoVersion=
-LongVersion=2.4.0
+LongVersion=2.4.0.0
 ShortVersion=2
 WinCompanyName=CREM
 WinInternalName=AG2

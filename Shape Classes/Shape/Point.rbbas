@@ -2590,7 +2590,7 @@ Inherits Shape
 		  
 		  'Utilisé pour la construction à la souris (notamment)
 		  
-		  Shape(ol,1,1)
+		  Shape(ol,0,0)
 		  fam = 0
 		  forme = 0
 		  auto = 4

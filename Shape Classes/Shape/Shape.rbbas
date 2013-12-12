@@ -736,8 +736,6 @@ Implements StringProvider
 		  if fam <> 0 then
 		    Form.SetAttribute(Dico.value("Npts"),Str(Npts))
 		    Form.SetAttribute(Dico.value("Ncpts"),Str(Ncpts))
-		    'end if
-		    'if not self isa point then
 		    Form.SetAttribute("Ori", str(ori))
 		  end if
 		  if nonpointed then
@@ -2379,15 +2377,6 @@ Implements StringProvider
 		      list0.addfigure constructedshapes(i).fig
 		    end if
 		  next
-		  
-		  if macconstructedby <> nil then
-		    for i = 0 to ubound(macconstructedby.ifmacs)
-		      ifm = macconstructedby.ifmacs(i)
-		      if ifm.init then
-		        list0.addfigure currentcontent.theobjects.getshape(ifm.realid).fig
-		      end if
-		    next
-		  end if
 		  return list0
 		  
 		End Function
@@ -3113,8 +3102,6 @@ Implements StringProvider
 		  if currentcontent.SHUL = self then
 		    currentcontent.SHUL = nil
 		  end if
-		  
-		  
 		  
 		  currentcontent.removeshape self
 		  

@@ -201,11 +201,11 @@ Protected Class nBpoint
 		      append tab(0)-tab(1)+tab(2)
 		    case 6
 		      d = tab(0).distance(tab(1))
+		      b = tab(2)-tab(1)
 		      if tab(1).distance(tab(2)) > 0 then
-		        b = tab(2)-tab(1)
 		        tab(2) = tab(1)+(b.normer)*d
-		        append tab(0)-tab(1)+tab(2)
 		      end if
+		      append tab(0)-tab(1)+tab(2)
 		    case 7
 		      constructshape(4,1)
 		    end select
@@ -238,6 +238,7 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Sub nBPoint(p as BasicPoint)
+		  nBPoint
 		  Tab.append p
 		End Sub
 	#tag EndMethod
@@ -332,6 +333,21 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+<<<<<<< HEAD
+=======
+	#tag Method, Flags = &h0
+		Function TranslationMatrix() As Matrix
+		  return new TranslationMatrix (tab(1)-tab(0))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SimilarityMatrix() As Matrix
+		  return new SimilarityMatrix(tab(0),tab(1),tab(2), tab(3))
+		End Function
+	#tag EndMethod
+
+>>>>>>> origin/Macros
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint
