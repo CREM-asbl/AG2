@@ -430,7 +430,7 @@ Protected Class Label
 
 	#tag Method, Flags = &h0
 		Function arrondi2(d as double) As string
-		  dim s1, s2 as string
+		  dim s1, s2, s3 as string
 		  dim r, k as double
 		  dim m, n, i as integer
 		  dim b as boolean
@@ -444,29 +444,28 @@ Protected Class Label
 		    d = abs(d)
 		  end if
 		  
-		  n = floor(d)
 		  r = pow(10,p)
-		  d = d-n
-		  
 		  k = round(d*r)
-		  if k >= r then
-		    n = n+1
-		    k = 0
-		  end if
 		  k = k/r
 		  
-		  s2 = str(k)
-		  m = instr(s2,".")
-		  s2 = s2. right(len(s2)-m)
-		  s2=s2.left(p)
-		  s1 = str(n)
-		  if b then
-		    s1 = "-"+s1
-		  end if
-		  if s2 ="" then
+		  s1 = str(k)
+		  m = instr(s1,".")
+		  if m = 0 then
 		    return s1
+		  elseif m = 1 then
+		    s2= str(0)
 		  else
-		    return s1+","+s2
+		    s2 = s1.left(m-1)
+		    s3 = s1. right(len(s1)-m)
+		    s3=s3.left(p)
+		  end if
+		  if b then
+		    s2 = "-"+s2
+		  end if
+		  if s3 ="" then
+		    return s2
+		  else
+		    return s2+","+s3
 		  end if
 		End Function
 	#tag EndMethod
