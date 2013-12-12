@@ -375,11 +375,7 @@ Protected Class Macro
 		  
 		  ifm = MacInf.GetInfoMac(n)
 		  
-<<<<<<< HEAD
-		  if (ObInit.indexof(n) <> -1) or (ObFinal.indexof(n) <> -1) then        //Si c'est une forme initiale ou finale 
-=======
 		  if (ObInit.indexof(n) <> -1) or (ObFinal.indexof(n) <> -1) then        //Si c'est une forme initiale ou finale
->>>>>>> origin/Macros
 		    s= currentcontent.theobjects.getshape(ifm.RealId)
 		    return new nBPoint(s)
 		  end if
@@ -715,12 +711,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-<<<<<<< HEAD
-		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm as InfoMac, byref nbp as nBPoint)
-		  dim MacId, i, n as integer
-		  dim nbp1 as nBPoint
-		  dim M as Matrix
-=======
 		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
 		  dim MacId, i, n, op as integer
 		  dim nbp1 as nBPoint
@@ -737,26 +727,8 @@ Protected Class Macro
 		  end if
 		  
 		  
->>>>>>> origin/Macros
-		  
-		  nbp1 = ifm.coord
-		  n = nbp1.taille
-		  M = GetMatrix(EL1)
-		  for i = 0 to n-1
-		    nbp.append  M*nbp1.tab(i)
-		  next
-		  
-<<<<<<< HEAD
 		  
 		  
-		  'MacId = val(EL1.GetAttribute("SuppTsf"))
-		  '
-		  'for i = 0 to NumOp -1
-		  'ifm1 = MacInf.Ifmacs(i)
-		  ''if (ifm1.MacId = SuppId) and
-		  'next
-=======
->>>>>>> origin/Macros
 		End Sub
 	#tag EndMethod
 
@@ -769,17 +741,6 @@ Protected Class Macro
 		  dim ar(-1) as basicPoint
 		  dim s as shape
 		  
-<<<<<<< HEAD
-		  dim  tsftype as integer
-		  dim n as integer
-		  dim nbp as nBpoint
-		  
-		  
-		  select case ifmac.type
-		  case 2
-		    nbp  = GetCoord(ifmac.MacId)
-		    ifmac.M=nbp.RotationMatrix
-=======
 		  MacId = val(EL.Child(0).GetAttribute("Id"))
 		  
 		  nbp  = GetCoord(MacId)
@@ -807,7 +768,6 @@ Protected Class Macro
 		    ifmac.M = new SimilarityMatrix(nbp.tab(0),nbp.tab(1),nbp.tab(3),nbp.tab(2))
 		  case 8
 		    ifmac.M = nbp.SimilarityMatrix
->>>>>>> origin/Macros
 		  end select
 		  
 		  k = ObFinal.indexof(MacId)
@@ -859,25 +819,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-<<<<<<< HEAD
-		Function GetMatrix(EL as XMLElement) As Matrix
-		  dim i as integer
-		  dim t as Boolean
-		  dim ifm as InfoMac
-		  
-		  for i = 0 to ubound(MacInf.ifmacs)
-		    ifm = MacInf.ifmacs(i)
-		    t = true
-		    if ifm.M <> nil then
-		      t = ifm.MacId = val(EL.GetAttribute("MacId"))
-		      t = t and (ifm.type = val(EL.GetAttribute("TsfType")))
-		      t = t and (ifm.num = val(EL.GetAttribute("TsfType")))
-		      if t then
-		        return ifm.M
-		      end if
-		    end if
-		  next
-=======
 		Function GetMatrix(ifm1 as infomac, EL1 as XMLElement) As Matrix
 		  dim i, op as integer
 		  dim ifm as InfoMac
@@ -911,7 +852,6 @@ Protected Class Macro
 		    end if
 		  next
 		  
->>>>>>> origin/Macros
 		End Function
 	#tag EndMethod
 
@@ -1000,8 +940,6 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		NumOp As Integer
-<<<<<<< HEAD
-=======
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1010,7 +948,6 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		loc0 As double
->>>>>>> origin/Macros
 	#tag EndProperty
 
 

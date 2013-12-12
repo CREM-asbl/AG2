@@ -2193,13 +2193,8 @@ Implements StringProvider
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-<<<<<<< HEAD
-		    p =point(somm.element(i))                                                                                                                                              '25-11-2013 pour puzzlecinq
-		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 then 'and ListPtsModifs.indexof(i)=-1 
-=======
 		    p =point(somm.element(i))               'Un point qui a déjà bougé ne peut plus être pris comme point fixe
 		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
->>>>>>> origin/Macros
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
 		        NbUnModif = NbUnModif+1

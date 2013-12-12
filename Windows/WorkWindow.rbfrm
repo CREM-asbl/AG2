@@ -1253,10 +1253,7 @@ End
 			
 			closefw
 			app.macrocreation = true
-<<<<<<< HEAD
-=======
 			newcontent
->>>>>>> origin/Macros
 			MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = false
 			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
 			MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
@@ -1275,14 +1272,10 @@ End
 			MouvBut(i).visible =false
 			next
 			MoveBox.visible =false
-<<<<<<< HEAD
-			newcontent
-=======
 			for i = 0 to 2
 			stdoutil(i).visible = false
 			next
 			stdbox.visible = false
->>>>>>> origin/Macros
 			wnd.refreshtitle
 			mac = new macro
 			return true
@@ -2391,13 +2384,10 @@ End
 		    MouvBut(i).visible =true
 		  next
 		  MoveBox.visible = true
-<<<<<<< HEAD
-=======
 		  for i = 0 to 2
 		    StdOutil(i).visible =true
 		  next
 		  StdBox.visible = true
->>>>>>> origin/Macros
 		  MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false

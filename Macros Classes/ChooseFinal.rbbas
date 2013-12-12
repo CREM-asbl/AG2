@@ -270,12 +270,6 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AddTsfInterm(tsf As Transformation)
 		  if not tsf.Final  then
-<<<<<<< HEAD
-		    'wnd.mac.TsfInterm.append  Tsf.supp.id
-		    'wnd.mac.TsfTyInterm.append tsf.type
-		    'wnd.mac.TsfSidInterm.append tsf.index
-=======
->>>>>>> origin/Macros
 		    tsf.Interm = true
 		  end if
 		  

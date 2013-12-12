@@ -95,13 +95,7 @@ Inherits MultipleSelectOperation
 		  dim bp() as BasicPoint
 		  dim pt as Point
 		  
-<<<<<<< HEAD
-		  
 		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45)  //codes des opérations
-		  
-=======
-		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45)  //codes des opérations
->>>>>>> origin/Macros
 		  
 		  for i = 0 to Histo.Childcount-1  // i : numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
@@ -117,11 +111,7 @@ Inherits MultipleSelectOperation
 		  next
 		  
 		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
-<<<<<<< HEAD
-		                                                                                //Pour une tsf, calculer la matrice
-=======
 		  //Pour une tsf, calculer la matrice
->>>>>>> origin/Macros
 		  
 		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
 		    n = MacInfo.RealFinal(i)
@@ -395,22 +385,12 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateIfMacObject(EL as XMLElement, oper as integer)
-<<<<<<< HEAD
-		  dim n, fa, fo as integer
-		  dim EL0 as XMLElement
-		  dim ifmac As InfoMac
-		  dim s as shape
-		  
-		  
-		  
-=======
 		  dim pid, rid, fa1, fo1 as integer
 		  dim n, fa, fo as integer
 		  dim EL0 as XMLElement
 		  dim ifmac, ifm As InfoMac
 		  dim s as shape
 		  
->>>>>>> origin/Macros
 		  EL0 = XMLElement(EL.Child(0))
 		  n = val(EL0.GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
 		  if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
@@ -424,26 +404,12 @@ Inherits MultipleSelectOperation
 		  ifmac.MacId = n
 		  
 		  if Mac.ObInit.indexof(n) <> -1 then
-<<<<<<< HEAD
-		    ifmac.RealId =GetRealInit(n)
-=======
 		    ifmac.RealId =MacInfo.GetRealInit(n)
 		    ifmac.RealSide = MacInfo.GetRealSide(n)
->>>>>>> origin/Macros
 		    ifmac.init = true
 		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
 		    ifmac.coord = s.coord
 		  end if
-<<<<<<< HEAD
-		  if Mac.ObInterm.indexof(n) <> -1 then
-		    ifmac.interm = true
-		  end if
-		  if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
-		    CreateFinal(oper,ifmac,EL0)
-		    ifmac.RealId = GetRealFinal(n)
-		    ifmac.final = true
-		  end if
-=======
 		  
 		  if Mac.ObInterm.indexof(n) <> -1 then
 		    ifmac.interm = true
@@ -455,7 +421,6 @@ Inherits MultipleSelectOperation
 		    ifmac.final = true
 		  end if
 		  
->>>>>>> origin/Macros
 		  MacInfo.IfMacs.append ifmac
 		  
 		End Sub
@@ -466,22 +431,6 @@ Inherits MultipleSelectOperation
 		  dim  EL0 as XMLElement
 		  dim ifmac as InfoMac
 		  dim fa, fo, MacId as integer
-<<<<<<< HEAD
-		  
-		  EL0 = XMLElement(EL.Child(0))
-		  MacId = val(EL0.GetAttribute("Id"))                    //numéro pour la macro du support de la tsf
-		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))  //concerne le support
-		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  
-		  ifmac = new InfoMac(fa, fo)
-		  ifmac.MacId = MacId
-		  ifmac.type = val(EL.GetAttribute("TsfType"))
-		  ifmac.ori = val(EL.GetAttribute("TsfOri"))
-		  ifmac.Side = val(EL.GetAttribute("TsfSide"))
-		  ifmac.num = val(EL.GetAttribute("TsfNum"))
-		  
-		  MacInfo.IfMacs.append ifmac
-=======
 		  dim n as integer
 		  dim s as shape
 		  dim tsf as transformation
@@ -506,15 +455,10 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  //Cas des tsf à support initial ou interm ??
->>>>>>> origin/Macros
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-<<<<<<< HEAD
-		Function GetRealInit(n as integer) As integer
-		  return MacInfo.RealInit(Mac.ObInit.indexof(n))
-=======
 		Function CreateTsf(s as shape, n as integer, side as integer, ori as integer) As transformation
 		  dim tsf as Transformation
 		  
@@ -535,16 +479,10 @@ Inherits MultipleSelectOperation
 		  return tsf
 		  
 		  
->>>>>>> origin/Macros
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-<<<<<<< HEAD
-		Function GetRealFinal(n as integer) As integer
-		  return MacInfo.RealFinal(Mac.ObFinal.indexof(n))
-		End Function
-=======
 		Sub MouseMove(p as BasicPoint)
 		  dim MacId, ninstruc as integer
 		  dim EL, EL1 as XMLElement
@@ -568,7 +506,6 @@ Inherits MultipleSelectOperation
 		  
 		  
 		End Sub
->>>>>>> origin/Macros
 	#tag EndMethod
 
 

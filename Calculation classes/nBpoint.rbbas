@@ -333,8 +333,6 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
-<<<<<<< HEAD
-=======
 	#tag Method, Flags = &h0
 		Function TranslationMatrix() As Matrix
 		  return new TranslationMatrix (tab(1)-tab(0))
@@ -347,7 +345,6 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
->>>>>>> origin/Macros
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint

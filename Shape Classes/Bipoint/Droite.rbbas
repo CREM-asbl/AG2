@@ -55,15 +55,7 @@ Inherits Bipoint
 		    updatecoord
 		    index = constructedby.data(0)
 		    s = constructedby.shape
-<<<<<<< HEAD
-		    if s isa polygon or s isa bande or s isa secteur  then
-		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
-		    else
-		      coord.constructshape(fam,forme, s.coord, indexconstructedpoint)
-		    end if
-=======
 		    coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
->>>>>>> origin/Macros
 		    repositionnerpoints
 		    computeextre
 		    if  nextre = 0 then

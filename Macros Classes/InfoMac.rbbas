@@ -19,13 +19,8 @@ Protected Class InfoMac
 		  temp.SetAttribute("Ori",str(ori))
 		  temp.SetAttribute("PtSur",str(ptsur))
 		  temp.Setattribute("RId",str(RealId))
-<<<<<<< HEAD
-		  temp.setAttribute("Side",str(side))
-		  temp.SetAttribute("T",str(T))
-=======
 		  temp.setAttribute("Side",str(Realside))
 		  
->>>>>>> origin/Macros
 		  if final then
 		    Temp.SetAttribute("Fin",str(1))
 		  else
@@ -55,12 +50,7 @@ Protected Class InfoMac
 		  ori = val(temp.GetAttribute("Ori"))
 		  ptsur = val(temp.GetAttribute("PtSur"))
 		  RealId = val(temp.Getattribute("RId"))
-<<<<<<< HEAD
-		  side = val(temp.GetAttribute("Side"))
-		  T = val(temp.GetAttribute("T"))
-=======
 		  Realside = val(temp.GetAttribute("RealSide"))
->>>>>>> origin/Macros
 		  final = (val(Temp.GetAttribute("Fin")) = 1)
 		  init = ( val(Temp.GetAttribute("Ini")) = 1)
 		  interm = (val(Temp.GetAttribute("Int")) = 1)
@@ -96,13 +86,6 @@ Protected Class InfoMac
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-<<<<<<< HEAD
-		T As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-=======
->>>>>>> origin/Macros
 		num As Integer
 	#tag EndProperty
 
@@ -146,8 +129,6 @@ Protected Class InfoMac
 		type As Integer
 	#tag EndProperty
 
-<<<<<<< HEAD
-=======
 	#tag Property, Flags = &h0
 		numside As integer
 	#tag EndProperty
@@ -156,7 +137,6 @@ Protected Class InfoMac
 		location As double
 	#tag EndProperty
 
->>>>>>> origin/Macros
 
 	#tag ViewBehavior
 		#tag ViewProperty
