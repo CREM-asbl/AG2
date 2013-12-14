@@ -2683,7 +2683,7 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoParaperp(Tmp as XMLelement)
 		  constructedby.data.append val(Tmp.GetAttribute("Index"))
-		  
+		  droite(self).createtsf
 		End Sub
 	#tag EndMethod
 
@@ -2856,7 +2856,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub AddToFigure(ff as figure, idf as integer)
-		  dim List0 as figslist
+		  dim List0 as figslist                                 //N'est utilisé que par ObjectsList.XMLLireIdFigs
 		  dim figu as figure
 		  dim o as shapeconstruction
 		  dim i, j, op as integer
@@ -2882,34 +2882,32 @@ Implements StringProvider
 		  CurrentContent.TheFigs.AddFigure fig
 		  
 		  
-		  if Constructedby <> nil and isaparaperp and constructedby.shape.fig <> nil then //si constructedby.shape.fig a déjà été chargé
-		    sh = constructedby.shape
-		    for i = 0 to sh.tsfi.count-1
-		      tsf = sh.tsfi.element(i)
-		      if tsf.type = 0 then 'and tsf.constructedshapes.count = 0 then
-		        tsf.constructedshapes.addshape self
-		        constructedby.data.append tsf
-		      end if
-		    next
-		  end if
-		  'droite(self).createtsf
+		  'if Constructedby <> nil and isaparaperp and constructedby.shape.fig <> nil then //si constructedby.shape.fig a déjà été chargé
+		  'sh = constructedby.shape
+		  'for i = 0 to sh.tsfi.count-1
+		  'tsf = sh.tsfi.element(i)
+		  'if tsf.type = 0 then 
+		  'tsf.constructedshapes.addshape self
+		  'constructedby.data.append tsf
 		  'end if
-		  
-		  if ubound(ConstructedShapes) > -1 then  // sinon on fait la même chose au moment ou on charge constructedby.shape.fig
-		    for  i = 0 to ubound(constructedshapes)
-		      sh= constructedshapes(i)
-		      if sh.isaparaperp and sh.fig <> nil and ubound(sh.constructedby.data) = 0 then
-		        for j = 0 to tsfi.count-1
-		          tsf = tsfi.element(j)
-		          if tsf.type = 0 and tsf.constructedshapes.count = 0 then
-		            tsf.constructedshapes.addshape sh
-		            sh.constructedby.data.append tsf
-		          end if
-		        next
-		        'droite(sh).createtsf
-		      end if
-		    next
-		  end if
+		  'next
+		  'end if
+		  '
+		  'if ubound(ConstructedShapes) > -1 then  // sinon on fait la même chose au moment ou on charge constructedby.shape.fig
+		  'for  i = 0 to ubound(constructedshapes)
+		  'sh= constructedshapes(i)
+		  'if sh.isaparaperp and sh.fig <> nil and ubound(sh.constructedby.data) = 0 then
+		  'for j = 0 to tsfi.count-1
+		  'tsf = tsfi.element(j)
+		  'if tsf.type = 0 and tsf.constructedshapes.count = 0 then
+		  'tsf.constructedshapes.addshape sh
+		  'sh.constructedby.data.append tsf
+		  'end if
+		  'next
+		  ''droite(sh).createtsf
+		  'end if
+		  'next
+		  'end if
 		  
 		  
 		  

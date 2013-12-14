@@ -81,7 +81,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  dim EL, Obj as XMLElement
+		  dim EL, Obj, Temp as XMLElement
 		  dim EN as XMLNode
 		  dim i, j as integer
 		  dim List as XMLNodeList
@@ -92,17 +92,19 @@ Inherits Operation
 		    CurrentContent.TheFigs.element(i).XMLPutIncontainer(1,CurrentContent.OpList)
 		  next
 		  
-		  EL = Doc.CreateElement("ObjetsLus")
+		  EL = Doc.CreateElement(Dico.value("ObjectsLus"))
 		  EL.SetAttribute("Fichier", FagTitle)
+		  Temp = Doc.CreateElement(Dico.value("Objects"))
 		  
 		  List = FAG.XQL(Dico.Value("Objects"))
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
 		    for i = 0 to Obj.ChildCount-1
 		      EN = Doc.ImportNode(Obj.Child(i), true)
-		      EL.Appendchild EN
+		      Temp.Appendchild EN
 		    next
 		  end if
+		  EL.AppendChild Temp
 		  return EL
 		  
 		End Function

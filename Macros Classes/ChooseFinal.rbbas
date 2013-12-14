@@ -67,7 +67,7 @@ Inherits MultipleSelectOperation
 		    else
 		      AddInterm(s)
 		      for i = 0 to s.ncpts-1
-		        if s.id > s.points(i).id then
+		        if s.id > s.points(i).id and s.points(i).constructedby = nil then
 		          if ubound(s.points(i).parents) > -1 then
 		            for j = 0 to ubound(s.points(i).parents)
 		              if s.points(i).parents(j) <> s then
@@ -77,6 +77,8 @@ Inherits MultipleSelectOperation
 		          else
 		            identifyinit(s.points(i))
 		          end if
+		        else
+		          identifyinit(s.points(i))
 		        end if
 		      next
 		    end if

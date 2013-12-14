@@ -46,7 +46,6 @@ Implements StringProvider
 		  
 		  ' bptsinter est la liste de tous les points d'inter possibles des droites supports des cotés de sh1 et de sh2
 		  ' val indique si ces points appartiennent aux cotes eux-memes et que les points peuvent donc etre validés
-		  'sides1 et sides2 indiquent les numéros des cotes de sh1 et sh2 auxquels appartiennent les bptsinter
 		  'points est un tableau de (pointeurs vers les) points d'intersection effectivement présents
 		  'pts est la liste de ces points dans leur ordre de construction
 		End Sub
@@ -77,7 +76,6 @@ Implements StringProvider
 		    p.moveto bptinters(i1,j1)
 		    bezet(i1,j1) = true
 		    ids(i1,j1) = p.id
-		    
 		    setlocation(p,i1,j1)
 		    if val(i1,j1) and (p.conditionedby=nil or not point(p.conditionedby).invalid) then
 		      p.valider
@@ -158,6 +156,7 @@ Implements StringProvider
 		  
 		  redim reset(nlig,ncol)
 		  redim bezet(nlig,ncol)
+		  redim ids(nlig, ncol)
 		  
 		  for i = 0 to nlig
 		    for j = 0 to ncol
@@ -473,14 +472,7 @@ Implements StringProvider
 		    end if
 		  end if
 		  
-		  'if bptinters(i,j) <> nil  and not sh1.invalid and not sh2.invalid then
-		  'pt.moveto bptinters(i,j)
-		  'bezet(i,j) = true
-		  'setlocation(pt,i,j)
-		  'pt.modified = true
-		  'pt.updateshape
-		  'pt.valider
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -544,6 +536,8 @@ Implements StringProvider
 		  else
 		    return bptinters(i1,j1)
 		  end if
+		  
+		  //détermine la position valide et libre la plus proche
 		End Function
 	#tag EndMethod
 

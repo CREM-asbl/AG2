@@ -105,6 +105,7 @@ Protected Class MacConstructionInfo
 
 	#tag Method, Flags = &h0
 		Function GetRealSide(n as integer) As integer
+		  
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    return RealInitSide(Mac.ObInit.indexof(n))
 		  elseif Mac.ObInterm.indexof(n) <> -1 then
@@ -112,6 +113,38 @@ Protected Class MacConstructionInfo
 		  elseif Mac.ObFinal.indexof(n) <> -1 then
 		    return RealFinalSide(Mac.ObFinal.indexof(n))
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetSommet(ni as integer, n as integer, byref m as integer) As InfoMac
+		  
+		  
+		  dim i, j as integer
+		  dim EL, EL0, EL1 as XMLElement
+		  
+		  if (Mac.Obinit.indexof(n) <> -1) or   (Mac.ObInterm.indexof(n) <> -1) or (Mac.ObFinal.indexof(n) <> -1) then
+		    return GetInfoMac(n)
+		  end if
+		  
+		  //Si c'est un point qui n'est ni initial ni intermédiaire, il appartient à un autre objet construit antérieurement
+		  m = -1
+		  
+		  for i = ni downto 0
+		    EL = XMLElement(Mac.Histo.Child(i))
+		    if EL.Name = Dico.Value("Operation") then
+		      EL0 = XMLElement(EL.Child(0))
+		      if EL0.Childcount > 0 then
+		        EL1 = XMLElement(EL0.FirstChild)
+		        for j = 0 to EL1.Childcount-1
+		          if n = val(EL1.Child(j).GetAttribute("Id")) then
+		            m = j
+		            return IfMacs(i)
+		          end if
+		        next
+		      end if
+		    end if
+		  next
 		End Function
 	#tag EndMethod
 
@@ -148,8 +181,6 @@ Protected Class MacConstructionInfo
 		#tag Note
 			//Note: Cette liste ne concerne que les points intermédiaires qui appartiennent à un objet initial
 			//Dont on doit donc retrouver les coordonnées facilement
-			
-			
 		#tag EndNote
 		RealInterm As Integer
 	#tag EndProperty
@@ -188,6 +219,12 @@ Protected Class MacConstructionInfo
 			Group="Position"
 			InitialValue="0"
 			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="RealInterm"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

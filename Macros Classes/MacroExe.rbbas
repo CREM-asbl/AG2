@@ -110,8 +110,7 @@ Inherits MultipleSelectOperation
 		    end if
 		  next
 		  
-		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points
-		  //Pour une tsf, calculer la matrice
+		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice
 		  
 		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
 		    n = MacInfo.RealFinal(i)
@@ -237,11 +236,12 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreateFinal( ifmac as InfoMac, EL0 as XMLElement)
+		Sub CreateFinal(ifmac as InfoMac, EL0 as XMLElement)
 		  dim newshape, s as shape
 		  dim EL1, EL2 as XMLElement
-		  dim i, j, m, n, p, pid, index, fa, fo as integer
+		  dim i, j, m, n, p, pid, index, fa, fo, ni as integer
 		  dim pt as point
+		  dim ifm as infomac
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		  newshape.initconstruction
@@ -254,24 +254,37 @@ Inherits MultipleSelectOperation
 		  EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
 		    EL2 = XMLElement(EL1.Child(j))
-		    m = val(EL2.GetAttribute("Id"))     //m est l'id dans la macro du point associé à newshape.points(j)
+		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
+		    ni = ubound(MacInfo.IfMacs)
 		    
-		    p = -1
-		    index = -1
-		    Mac.GetInfoSommet(m, pid, index, fa , fo)  //pid est la Macro-Id du premier parent dans la macro du point associé à newshape.points(j). Normalement pid <> -1
-		    //On peut avoir m = pid si le point associé à newshape.points(j) est un point isolé
-		    //index est le  numéro de newshape.points(j) dans ce premier parent (fa et fo sont relatifs au parent)
-		    p = Mac.ObInit.indexof(pid)
-		    
-		    if p <> -1 then                                                                     //points(j) appartient à un objet initial ou est un objet initial
-		      n = MacInfo.RealInit(p)                                                                 //p est l'id de l'objet initial en question
-		      s = currentcontent.TheObjects.GetShape(n)             // s est cet objet initial
-		      if index = -1  then                          //newshape.points(j) correspond à un point initial isolé
+		    ifm = MacInfo.GetSommet(ni,m,index)
+		    if ifm.init  then
+		      p = ifm.RealId
+		      s = currentcontent.TheObjects.GetShape(p)
+		      if index = -1  then
 		        pt = point(s)
-		        newshape.substitutepoint(pt,newshape.points(j))
+		      else
+		        pt = s.points(index)
 		      end if
+		      newshape.substitutepoint(pt,newshape.points(j))
 		    end if
 		  next
+		  'p = -1
+		  'index = -1
+		  'Mac.GetInfoSommet(m, pid, index, fa , fo)  //pid est la Macro-Id du premier parent dans la macro du point associé à newshape.points(j). Normalement pid <> -1
+		  '//On peut avoir m = pid si le point associé à newshape.points(j) est un point isolé
+		  '//index est le  numéro de newshape.points(j) dans ce premier parent (fa et fo sont relatifs au parent)
+		  'p = Mac.ObInit.indexof(pid)
+		  '
+		  'if p <> -1 then                                                                     //points(j) appartient à un objet initial ou est un objet initial
+		  'n = MacInfo.RealInit(p)                                                                 //p est l'id de l'objet initial en question
+		  's = currentcontent.TheObjects.GetShape(n)             // s est cet objet initial
+		  'if index = -1  then                          //newshape.points(j) correspond à un point initial isolé
+		  'pt = point(s)
+		  'newshape.substitutepoint(pt,newshape.points(j))
+		  'end if
+		  'end if
+		  'next
 		  
 		  currentcontent.addshape newshape
 		  MacInfo.RealFinal.append newshape.id
@@ -420,8 +433,9 @@ Inherits MultipleSelectOperation
 		    ifmac.RealId = MacInfo.GetRealFinal(n)
 		    ifmac.final = true
 		  end if
-		  
 		  MacInfo.IfMacs.append ifmac
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -487,7 +501,6 @@ Inherits MultipleSelectOperation
 		  dim MacId, ninstruc as integer
 		  dim EL, EL1 as XMLElement
 		  
-		  'currenthighlightedshape = nil
 		  
 		  if fa = -1 then
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
@@ -497,9 +510,6 @@ Inherits MultipleSelectOperation
 		    fa = val(EL1.GetAttribute(Dico.Value("NrFam")))
 		    fo = val(EL1.GetAttribute(Dico.Value("NrForm")))
 		  end if
-		  
-		  'currenthighlightedshape = GetShape(p)
-		  'wnd.mycanvas1.refreshbackground
 		  
 		  super.mousemove(p)
 		  

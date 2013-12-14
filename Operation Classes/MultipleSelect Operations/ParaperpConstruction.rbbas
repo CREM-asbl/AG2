@@ -155,6 +155,7 @@ Inherits ShapeConstruction
 		  dim magnetism, i as Integer
 		  dim curshape  as Point
 		  
+		  currentshape = s
 		  
 		  if Refe = nil then
 		    return false
@@ -166,12 +167,12 @@ Inherits ShapeConstruction
 		  select case  currentitemtoset
 		  case 1
 		    if forme >2 then
-		      s.Points(1).hide
+		      currentshape.Points(1).hide
 		    end if
-		    s.setconstructedby(Refe,op)
-		    s.constructedby.data.append index(iobj)
+		    currentshape.setconstructedby(Refe,op)
+		    currentshape.constructedby.data.append index(iobj)
 		  else
-		    curshape = s.points(s.IndexConstructedPoint)
+		    curshape = currentshape.points(currentshape.IndexConstructedPoint)
 		    AdjustMagnetism(curshape)
 		    if curshape.invalid then
 		      CurrentContent.abortconstruction
@@ -180,14 +181,14 @@ Inherits ShapeConstruction
 		    currentshape.constructshape
 		    curshape.mobility
 		    ReinitAttraction
-		    s.IndexConstructedPoint = s.IndexConstructedPoint+1
+		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
 		    if currentattractingshape isa polygon and currentitemtoset = 3 then
 		      curshape.surseg = true
-		      if s.points(0).pointsur.count = 1 and s.points(0).pointsur.element(0) isa polygon then
-		        s.points(0).surseg = true
+		      if currentshape.points(0).pointsur.count = 1 and currentshape.points(0).pointsur.element(0) isa polygon then
+		        currentshape.points(0).surseg = true
 		      end if
 		    end if
-		    if currentitemtoset = 2 and droite(s).nextre = 0 then
+		    if currentitemtoset = 2 and droite(currentshape).nextre = 0 then
 		      nextitem
 		    end if
 		  end select
@@ -219,7 +220,8 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
+		  currentshape.setconstructedby(Refe,op)
+		  currentshape.constructedby.data.append index(iobj)
 		  droite(currentshape).createtsf
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
@@ -398,6 +400,12 @@ Inherits ShapeConstruction
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="constructed"
+			Group="Behavior"
+			InitialValue="0"
+			Type="boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

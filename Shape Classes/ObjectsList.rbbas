@@ -833,7 +833,7 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub XMLLireIdFigs(Obj as XMLelement)
+		Sub XMLLireIdFigs(Obj as XMLElement)
 		  dim i, idf, fam, n as integer
 		  dim s as shape
 		  dim Temp as XMLElement
