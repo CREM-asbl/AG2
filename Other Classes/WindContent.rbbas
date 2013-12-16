@@ -267,16 +267,19 @@ Protected Class WindContent
 		Sub abortConstruction()
 		  dim s as shape
 		  
-		  s = currentoperation.currentshape
-		  if s.isinconstruction and (s.indexconstructedpoint = 0) then
-		    s.points(0).delete
+		  if currentoperation isa shapeconstruction then
+		    s = currentoperation.currentshape
+		    if s.isinconstruction and (s.indexconstructedpoint = 0) then
+		      s.points(0).delete
+		    end if
+		    s.delete
+		    
+		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
+		      Theobjects.XMLLoadObjects(FigsDeleted)
+		    end if
+		  elseif currentoperation isa macroexe then
+		    macroexe(currentoperation).mw.close
 		  end if
-		  s.delete
-		  
-		  if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
-		    Theobjects.XMLLoadObjects(FigsDeleted)
-		  end if
-		  
 		  currentoperation = nil
 		  wnd.refreshtitle
 		End Sub

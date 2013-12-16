@@ -128,13 +128,16 @@ Protected Class MacConstructionInfo
 		  end if
 		  
 		  //Si c'est un point qui n'est ni initial ni intermédiaire, il appartient à un autre objet construit antérieurement
-		  m = -1
+		  
 		  
 		  for i = ni downto 0
 		    EL = XMLElement(Mac.Histo.Child(i))
 		    if EL.Name = Dico.Value("Operation") then
 		      EL0 = XMLElement(EL.Child(0))
-		      if EL0.Childcount > 0 then
+		      if EL0.GetAttribute("Type") = "Point" and n = val(EL0.GetAttribute("Id")) then
+		        m = 0
+		        return Ifmacs(i)
+		      elseif EL0.Childcount > 0 then
 		        EL1 = XMLElement(EL0.FirstChild)
 		        for j = 0 to EL1.Childcount-1
 		          if n = val(EL1.Child(j).GetAttribute("Id")) then

@@ -1433,10 +1433,12 @@ Implements StringProvider
 		  next
 		  
 		  for i = 0 to tsfi.count-1
-		    tsfi.element(i).ModifyImages
-		    for j = 0 to tsfi.element(i).constructedshapes.count -1
-		      tsfi.element(i).constructedshapes.element(j).valider
-		    next
+		    if tsfi.element(i).type <> 0 then
+		      tsfi.element(i).ModifyImages
+		      for j = 0 to tsfi.element(i).constructedshapes.count -1
+		        tsfi.element(i).constructedshapes.element(j).valider
+		      next
+		    end if
 		  next
 		  
 		  
@@ -2886,7 +2888,7 @@ Implements StringProvider
 		  'sh = constructedby.shape
 		  'for i = 0 to sh.tsfi.count-1
 		  'tsf = sh.tsfi.element(i)
-		  'if tsf.type = 0 then 
+		  'if tsf.type = 0 then
 		  'tsf.constructedshapes.addshape self
 		  'constructedby.data.append tsf
 		  'end if

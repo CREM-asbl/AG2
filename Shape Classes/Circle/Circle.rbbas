@@ -220,11 +220,13 @@ Inherits Shape
 		  BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
 		  q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
 		  
-		  ctrl(0) = Startp*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
-		  ctrl(1) = extre(0)*5/9 +q*4/9
-		  for i = 2 to 5
-		    ctrl(i) = M*ctrl(i-2)
-		  next
+		  if q <> nil then
+		    ctrl(0) = Startp*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
+		    ctrl(1) = extre(0)*5/9 +q*4/9
+		    for i = 2 to 5
+		      ctrl(i) = M*ctrl(i-2)
+		    next
+		  end if
 		  
 		  
 		End Sub

@@ -431,7 +431,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Construction(EL0 as XMLElement, EL1 as XMLElement, byref nbp as nBPoint)
 		  dim MacId, i, n, oper as integer
-		  dim ifm0, ifm1 as InfoMac
+		  dim ifm as InfoMac
 		  dim EL01, EL02 as XMLElement
 		  dim nbp1 as nBPoint
 		  dim fa, fo,m as integer
@@ -479,11 +479,13 @@ Protected Class Macro
 		  case 6 'Polyqcq
 		    n = fo+2
 		  end select
-		  
+		  redim nbp.tab(n)
 		  for i = 0 to n
+		    m = 0
 		    EL02 = XMLElement(EL01.child(i))
 		    MacId = val(EL02.GetAttribute("Id"))
-		    nbp.append  MacInf.GetSommet(NumOp-1,MacId,m).coord.tab(0)
+		    ifm = MacInf.GetSommet(NumOp-1,MacId,m)
+		    nbp.tab(i) = ifm.coord.tab(m)
 		  next
 		  nbp.constructshape(fa,fo)
 		  

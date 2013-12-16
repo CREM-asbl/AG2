@@ -2065,8 +2065,10 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
+		  dim op as operation
+		  op =CurrentContent.CurrentOperation
 		  closefw
-		  if CurrentContent.CurrentOperation isa ShapeConstruction and  CurrentContent.CurrentOperation.CurrentShape.isinconstruction and Shapeconstruction(CurrentContent.currentoperation).currentitemtoset > 1 then
+		  if ( op isa ShapeConstruction and op.CurrentShape.isinconstruction and ShapeConstruction(op).currentitemtoset > 1) or (op isa macroexe)  then
 		    CurrentContent.abortconstruction
 		  else
 		    CurrentContent.UndoLastOperation

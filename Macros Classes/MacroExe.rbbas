@@ -271,9 +271,7 @@ Inherits MultipleSelectOperation
 		  next
 		  'p = -1
 		  'index = -1
-		  'Mac.GetInfoSommet(m, pid, index, fa , fo)  //pid est la Macro-Id du premier parent dans la macro du point associé à newshape.points(j). Normalement pid <> -1
-		  '//On peut avoir m = pid si le point associé à newshape.points(j) est un point isolé
-		  '//index est le  numéro de newshape.points(j) dans ce premier parent (fa et fo sont relatifs au parent)
+		  
 		  'p = Mac.ObInit.indexof(pid)
 		  '
 		  'if p <> -1 then                                                                     //points(j) appartient à un objet initial ou est un objet initial

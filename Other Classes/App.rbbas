@@ -116,6 +116,7 @@ Inherits Application
 		  
 		  ErrorType = NthField(st(0),"%",1)
 		  
+		  
 		  bugw = new BugFindW
 		  bugw.showModal
 		  if not quitting then
