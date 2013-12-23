@@ -41,7 +41,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
-		  
+		  //Les deux infos doivent toujours être lues ensemble: l'id de l'objet choisi et ne numéro de côté (0 s'il n'y en a qu'un)
 		  MacInfo.RealInit.append s.id
 		  MacInfo.RealInitSide.append side
 		  s.init = true
@@ -61,7 +61,7 @@ Inherits MultipleSelectOperation
 		  if visible  = nil or currentshape = nil then
 		    display = choose + un + " " +str
 		  else
-		    if side <> -1 then
+		    if currentshape isa polygon and side <> -1 then
 		      currentshape.unhighlight
 		      polygon(currentshape).paintside(g,side,2,config.highlightcolor)
 		      obj = lowercase(segment)
@@ -217,18 +217,14 @@ Inherits MultipleSelectOperation
 		  
 		  for i = 0 to visible.count-1
 		    sh = visible.element(i)
-		    if sh isa polygon or sh isa Bande or sh isa secteur  then
-		      index(i) =sh.pointonside(p)
-		    else
-		      index(i)=-1
-		    end if
+		    index(i) =sh.pointonside(p)
 		  next
 		  
 		  sh = visible.element(iobj)
 		  if sh = nil then
 		    return nil
 		  end if
-		  side = index(iobj)  // side <> -1 ssi on a choisi un côté de polygone
+		  side = index(iobj)
 		  return sh
 		  
 		  
@@ -244,48 +240,20 @@ Inherits MultipleSelectOperation
 		  dim ifm as infomac
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
+		  newshape.auto = 0
 		  newshape.initconstruction
 		  newshape.MacConstructedBy = MacInfo
 		  for i = 0 to ubound(MacInfo.Realinit)
 		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
 		    s.addMacConstructedshape newshape
 		  next
-		  
-		  EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
-		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
-		    EL2 = XMLElement(EL1.Child(j))
-		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
-		    ni = ubound(MacInfo.IfMacs)
-		    
-		    ifm = MacInfo.GetSommet(ni,m,index)
-		    if ifm.init  then
-		      p = ifm.RealId
-		      s = currentcontent.TheObjects.GetShape(p)
-		      if index = -1  then
-		        pt = point(s)
-		      else
-		        pt = s.points(index)
-		      end if
-		      newshape.substitutepoint(pt,newshape.points(j))
-		    end if
-		  next
-		  'p = -1
-		  'index = -1
-		  
-		  'p = Mac.ObInit.indexof(pid)
-		  '
-		  'if p <> -1 then                                                                     //points(j) appartient à un objet initial ou est un objet initial
-		  'n = MacInfo.RealInit(p)                                                                 //p est l'id de l'objet initial en question
-		  's = currentcontent.TheObjects.GetShape(n)             // s est cet objet initial
-		  'if index = -1  then                          //newshape.points(j) correspond à un point initial isolé
-		  'pt = point(s)
-		  'newshape.substitutepoint(pt,newshape.points(j))
-		  'end if
-		  'end if
-		  'next
-		  
 		  currentcontent.addshape newshape
 		  MacInfo.RealFinal.append newshape.id
+		  ifmac.RealId = newshape.id
+		  ifmac.final = true
+		  
+		  
+		  
 		  
 		  
 		End Sub
@@ -398,11 +366,12 @@ Inherits MultipleSelectOperation
 		Sub CreateIfMacObject(EL as XMLElement, oper as integer)
 		  dim pid, rid, fa1, fo1 as integer
 		  dim n, fa, fo as integer
-		  dim EL0 as XMLElement
+		  dim EL0, EL1 as XMLElement
 		  dim ifmac, ifm As InfoMac
 		  dim s as shape
 		  
 		  EL0 = XMLElement(EL.Child(0))
+		  EL1 = XMLElement(EL.Child(1))
 		  n = val(EL0.GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
 		  if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
 		    return
@@ -411,8 +380,9 @@ Inherits MultipleSelectOperation
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ifmac = new InfoMac(fa, fo)
-		  ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
 		  ifmac.MacId = n
+		  ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
+		  ifmac.ori = val(EL0.GetAttribute("Ori"))
 		  
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    ifmac.RealId =MacInfo.GetRealInit(n)
@@ -424,13 +394,17 @@ Inherits MultipleSelectOperation
 		  
 		  if Mac.ObInterm.indexof(n) <> -1 then
 		    ifmac.interm = true
+		    CopyParam (EL0, EL1, oper, ifmac)
 		  end if
 		  
 		  if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
 		    CreateFinal(ifmac,EL0)
-		    ifmac.RealId = MacInfo.GetRealFinal(n)
-		    ifmac.final = true
+		    IdentifyPoints(ifmac,EL0)
+		    if EL1 <> nil then
+		      CopyParam (EL0, EL1, oper,  ifmac)
+		    end if
 		  end if
+		  
 		  MacInfo.IfMacs.append ifmac
 		  
 		  
@@ -512,6 +486,61 @@ Inherits MultipleSelectOperation
 		  super.mousemove(p)
 		  
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IdentifyPoints(ifmac as InfoMac, EL0 as XMLElement)
+		  dim newshape, s as shape
+		  dim EL1, EL2 as XMLElement
+		  dim j, m, ni, index as integer
+		  dim ifm as infomac
+		  dim pt as point
+		  
+		  EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
+		  newshape = currentcontent.theObjects.GetShape(ifmac.RealId)
+		  
+		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
+		    EL2 = XMLElement(EL1.Child(j))
+		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
+		    ni = ubound(MacInfo.IfMacs)
+		    
+		    ifm = MacInfo.GetSommet(ni,m,index)
+		    if ifm.init  then
+		      s = currentcontent.TheObjects.GetShape(ifm.RealId)
+		      if s isa point  then
+		        pt = point(s)
+		      else
+		        pt = s.points(index)
+		      end if
+		      newshape.substitutepoint(pt,newshape.points(j))
+		    end if
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CopyParam(EL0 as XMLElement,  EL1 as XMLElement, op as integer, ifmac as InfoMac)
+		  
+		  dim EL2 as XMLElement
+		  
+		  
+		  'ifmac.RealSide =  val(EL1.GetAttribute("Index"))  'Pour un objet non initial, le n° de coté d'un polygone est le même que celui relatif à la macro
+		  
+		  select case op
+		  case 1
+		    ifmac.Forme0 = val(EL1.GetAttribute("Id"))
+		    ifmac.NumSide0= val(EL1.GetAttribute("Index"))
+		  case 45
+		    ifmac.numside0 = val(EL1.GetAttribute("NumSide0"))
+		    ifmac.numside1 = val(EL1.GetAttribute("NumSide1"))
+		    EL2 = XMLElement(EL1.child(0))
+		    ifmac.forme0 = val(EL2.GetAttribute("Id"))
+		    EL2 = XMLElement(EL1.child(1))
+		    ifmac.forme1 = val(EL2.GetAttribute("Id"))
+		  end select
 		  
 		End Sub
 	#tag EndMethod

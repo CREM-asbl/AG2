@@ -195,6 +195,7 @@ Implements StringProvider
 		    Restorebpt
 		    RestoreLab
 		    Restoretsf
+		    
 		    if supfig = nil then
 		      for i = 0 to shapes.count-1
 		        if shapes.element(i) isa arc then

@@ -169,7 +169,7 @@ End
 		Function mess(s As shape) As string
 		  
 		  dim m as string
-		  m = Type(s) 
+		  m = Type(s)
 		  if s.std then
 		    m = m+ " std"
 		  end if
@@ -322,7 +322,7 @@ End
 		  if p.constructedby <> nil or p.conditionedby<> nil or ubound(p.constructedshapes)>-1 then
 		    m = m+ messlinks(p) +chr(10)
 		  end if
-		  return m 
+		  return m
 		End Function
 	#tag EndMethod
 
@@ -389,7 +389,7 @@ End
 		  n = EL.ChildCount-1
 		  for i = 0 to n
 		    tabul(s, tab)
-		    s = s + ToString(XMLElement( EL.child(i)))
+		    s = s + XMLElement( EL.child(i)).ToString
 		  next
 		  tab = tab-6
 		  if n>-1 then

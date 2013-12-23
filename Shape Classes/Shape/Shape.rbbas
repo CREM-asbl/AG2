@@ -1029,6 +1029,10 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As integer
 		  return -1
+		  
+		  
+		  //PointOnSide vaut 0 ou -1 pour un cercle ou une droite ou un segment
+		  //                               un numéro ou -1 pour un polygone ou un lacet
 		End Function
 	#tag EndMethod
 
@@ -1544,7 +1548,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  if (constructedby <> nil and constructedby.oper = 6) or std then
+		  if (constructedby <> nil and constructedby.oper = 6)  or macconstructedby <> nil  or std then
 		    auto = 0
 		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle then
 		    auto = 1
@@ -2322,6 +2326,15 @@ Implements StringProvider
 		    end if
 		  next
 		  
+		  if macconstructedshapes.indexof(s2) <> - 1 then
+		    return true
+		  end if
+		  
+		  for i = 0 to ubound(childs)
+		    if childs(i).macconstructedshapes.indexof(s2) <> -1 then
+		      return true
+		    end if
+		  next
 		  
 		End Function
 	#tag EndMethod
@@ -3664,16 +3677,15 @@ Implements StringProvider
 		  dim i, j as integer
 		  dim s1 as shape
 		  
+		  
 		  for i = 0 to ubound(MacConstructedShapes)
 		    s1 = MacConstructedShapes(i)
 		    MacInfo = s1.MacConstructedby
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
-		    
 		    for j = 0 to ubound(s1.childs)
 		      if not s1.childs(j).modified and  s1.childs(j).macconstructedby = nil then
 		        s1.childs(j).updateshape
-		        s1.childs(j).modified = true
 		      end if
 		    next
 		    s1.updateshape
@@ -3887,7 +3899,7 @@ Implements StringProvider
 		  else                  //On va rechercher la forme
 		    for j = 0 to ubound(points)
 		      points(j).moveto coord.tab(j)   //On repositionne les sommets
-		      points(j).modified = true
+		      'points(j).modified = true
 		    next
 		  end if
 		End Sub
@@ -3965,6 +3977,15 @@ Implements StringProvider
 		    s.AddMacConstructedShape self
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetCoord() As nBPoint
+		  if coord = nil then
+		    updatecoord
+		  end if
+		  return coord
+		End Function
 	#tag EndMethod
 
 

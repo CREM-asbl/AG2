@@ -558,14 +558,18 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub AddOperationToMac(OpList as XMLDocument, EL1 as XMLElement)
 		  dim EL as XmlElement
+		  dim str as string
 		  
 		  if (self isa shapeconstruction) and (currentshape isa point) and  (point(currentshape).pointsur.count = 2) then
 		    opId = 45
+		    str = "Intersection"
+		  else
+		    str = GetName
 		  end if
 		  if (not self isa shapeconstruction) or (not currentshape isa repere) then
 		    El=Oplist.CreateElement(Dico.Value("Operation"))
 		    El.SetAttribute(Dico.Value("Numero"),str(Currentcontent.TotalOperation))
-		    El.SetAttribute(Dico.Value("Type"), GetName)
+		    El.SetAttribute(Dico.Value("Type"), str)
 		    EL.SetAttribute("OpId", str(opId))
 		    EL1.AppendChild ToMac(OpList,EL)
 		  end if

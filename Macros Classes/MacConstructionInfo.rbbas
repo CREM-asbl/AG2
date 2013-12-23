@@ -112,6 +112,8 @@ Protected Class MacConstructionInfo
 		    return RealIntermSide(Mac.ObInterm.indexof(n))
 		  elseif Mac.ObFinal.indexof(n) <> -1 then
 		    return RealFinalSide(Mac.ObFinal.indexof(n))
+		  else 
+		    return 0
 		  end if
 		End Function
 	#tag EndMethod
@@ -181,10 +183,6 @@ Protected Class MacConstructionInfo
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		#tag Note
-			//Note: Cette liste ne concerne que les points intermédiaires qui appartiennent à un objet initial
-			//Dont on doit donc retrouver les coordonnées facilement
-		#tag EndNote
 		RealInterm As Integer
 	#tag EndProperty
 

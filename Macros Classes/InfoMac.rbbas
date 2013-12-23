@@ -61,15 +61,29 @@ Protected Class InfoMac
 
 	#tag Note, Name = Interprétations
 		
-		MacId: Id interne à la macro de l'objet créé par l'oper n°NumOper
-		Les vraies id des objets initiaux sont stockés dans MacInfo.RealInit
-		Coord: coordonnées des sommets de l'objet construit
-		
 		Un IFMac pour chacune des opérations de la macro
 		
 		
 		RealSide est utilisé pour mémoriser le numéro du côté d'un polygone, d'un secteur ou d'une bande utilisé comme segment ou droite
 		numside et location sont utilisés pour les pointsur un côté de figure (polygone, etc...)
+		
+		coord: liste des abscisses
+		fa et fo: détermination dy type d'objet (famille, forme)
+		final, interm, init : vrai si l'objet a cette propriété (à remplacer par stade = 0, 1 ou 2 (d'init à final)
+		forme0 et forme1: macId des formes dont on prend l'inter
+		numside0 et numside1 (pour ptsur et ptinter) : numéros des côtés des formes dont on prend l'inter
+		                numside1 sert aussi pour les ptssur "simples"
+		                location : abscisse d'un pointsur (pas d'un pt inter)
+		forme0 et numside0 sont également utilisés pour les ParaperpConstruction
+		ptsur: id de l'objet sur lequel un point se trouve
+		M : matrice d'une transfo
+		MacId: id relatif à la macro
+		num ?
+		ori: orientation
+		RealId: id de l'objet réel (pour init et final)
+		RealSide : numéro du côté d'un polyg choisi comme segment
+		Type: type d'une transfo
+		
 	#tag EndNote
 
 
@@ -91,10 +105,6 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		RealId As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ptsur As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -130,11 +140,27 @@ Protected Class InfoMac
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		numside As integer
+		numside0 As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		location As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		numside1 As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ptsur As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Forme0 As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Forme1 As Integer
 	#tag EndProperty
 
 
@@ -197,12 +223,6 @@ Protected Class InfoMac
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="side"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="fa"
 			Group="Behavior"
 			InitialValue="0"
@@ -249,6 +269,18 @@ Protected Class InfoMac
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="RealSide"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="numside"
+			Group="Behavior"
+			InitialValue="0"
+			Type="integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

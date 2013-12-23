@@ -101,7 +101,7 @@ Inherits SelectAndDragOperation
 		      elseif currentshape isa Arc  then
 		        display = display +" "+  onthearc
 		      elseif not currentshape isa repere then
-		        display = display + sur + this + " "+  lowercase(currenthighlightedshape.GetType)
+		        display = display + sur + this(lowercase(currenthighlightedshape.GetType))
 		      end if
 		    end if
 		    

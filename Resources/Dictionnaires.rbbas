@@ -343,8 +343,20 @@ Protected Module Dictionnaires
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function this() As string
-		  return Dico.Value("this")
+		Function this(st as string) As string
+		  
+		  if config.langue = "francais" then
+		    select case st
+		    case "arc"
+		      return "cet arc"
+		    case "droite"
+		      return "cette droite"
+		    else
+		      return "ce " + st
+		    end select
+		  else
+		    return Dico.value("this") +" "+ dico.value(st)
+		  end if
 		End Function
 	#tag EndMethod
 

@@ -36,7 +36,6 @@ Inherits MultipleSelectOperation
 		  Myself.appendchild firstpoint.XMLPutInContainer(Doc)
 		  Myself.appendchild secondpoint.XMLPutInContainer(Doc)
 		  Myself.appendchild createdshapes.XMLPutIdInContainer(Doc)
-		  
 		  return Myself
 		End Function
 	#tag EndMethod
@@ -221,6 +220,7 @@ Inherits MultipleSelectOperation
 		    Q.constructedBy.data.append secondpoint
 		    Q.ConstructedBy.data.append numberofdivisions
 		    Q.ConstructedBy.data.append i
+		    Q.ConstructedBy.data.append side
 		    CreatedShapes.addshape  Q
 		  next
 		  
@@ -241,6 +241,7 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  super.EndOperation
 		  CreatedShapes.removeall
+		  side = 0
 		End Sub
 	#tag EndMethod
 
@@ -363,7 +364,7 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		side As double
+		side As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

@@ -573,7 +573,6 @@ Inherits Shape
 		      if guide <> nil and guide.pointsur.count = 1  and guide <> self then
 		        liberte = liberte-1
 		      end if
-		      
 		      p = point(predecesseur)
 		      liberte = min(liberte, p.liberte)
 		      if p.predecesseur <> nil then
@@ -583,14 +582,11 @@ Inherits Shape
 		          return
 		        end if
 		      end if
-		      
 		      while p.predecesseur <> nil
 		        p = point(p.predecesseur)
 		      wend
-		      
 		      p.liberte = liberte
 		      p.updatemobilitysucceeding
-		      
 		    case 10
 		      liberte = constructedby.shape.liberte
 		    end select
@@ -604,7 +600,7 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(parents)
 		    s = parents(i)
-		    if s.std or ( (s.MacConstructedby <> nil  and i = 0)  and (pointsur.count = 0) and not init)  then
+		    if s.std or ( (s.MacConstructedby <> nil  )  and (pointsur.count = 0) and macconstructedshapes.indexof(s) = -1 )  then
 		      liberte = 0
 		    end if
 		    'if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then
@@ -1595,12 +1591,14 @@ Inherits Shape
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
-		  modified = true
-		  'if modified then
-		  updateconstructedpoints
-		  updateMacConstructedShapes
-		  endmove
+		  'if macconstructedby = nil then
+		  'modified = true
 		  'end if
+		  if modified then
+		    updateconstructedpoints
+		    updateMacConstructedShapes
+		    endmove
+		  end if
 		  
 		  
 		  
@@ -1716,9 +1714,9 @@ Inherits Shape
 		  case 4
 		    Temp.SetAttribute("Id0",str(shape(ConstructedBy.data(0)).id))
 		    Temp.SetAttribute("Id1",str(shape(ConstructedBy.data(1)).id))
-		    n = constructedby.data(2)
-		    Temp.SetAttribute("NDivP",str(n))
+		    Temp.SetAttribute("NDivP",str(ConstructedBy.data(2)))
 		    Temp.SetAttribute("DivP",str(ConstructedBy.data(3)))
+		    'Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))

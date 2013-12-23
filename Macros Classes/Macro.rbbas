@@ -293,15 +293,12 @@ Protected Class Macro
 		  dim ni as integer
 		  
 		  MacId = val(EL1.GetAttribute("Id"))
-		  ifmac = MacInf.GetInfoMac(MacId)
+		  ifmac = MacInf.GetInfoMac(MacId)  //ifmac correspondant à l'objet constructeur
+		  si = MacInf.GetRealSide(MacId)
 		  ni = MacInf.IfMacs.IndexOf(ifmac)
 		  ndiv = val(EL1.GetAttribute("NDivP"))
 		  div = val(EL1.GetAttribute("DivP"))
-		  si = ifmac.RealSide
 		  
-		  'if ifmac.RealId <> -1 then
-		  's= currentcontent.theobjects.getshape(ifmac.RealId)
-		  'if s.init and
 		  if ifmac.fa = 1 and ifmac.fo = 0 then
 		    bp1 = ifmac.coord.tab(si)
 		    bp2 = ifmac.coord.tab((si +1) mod ifmac.coord.taille)
@@ -331,21 +328,22 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub paraperp(EL0 as XMLElement, EL1 as XMLElement, byref nbp as nBPoint)
 		  dim p, q, w0, w as BasicPoint
-		  dim n0, index, npt,fam, fom, ni as integer
+		  dim n0, side, npt,fam, fom, ni as integer
 		  dim EL2, EL3 as XmlElement
 		  dim ifmac,  ifm1, ifm2 as infoMac
 		  dim pere, num, macid as integer
 		  dim c as nBPoint
 		  
-		  MacId = val(EL1.GetAttribute("Id"))
+		  MacId = val(EL0.GetAttribute("Id"))
 		  ifmac = MacInf.GetInfoMac(MacId)
+		  pere = ifmac.forme0
+		  ifm1 = MacInf.GetInfoMac(pere)
+		  c = ifm1.coord
+		  side = Ifmac.NumSide0
 		  //On calcule d'abord le vecteur directeur de la paraperp
-		  
-		  index = ifmac.RealSide
-		  c = ifmac.coord
 		  npt = c.taille
-		  p = c.tab(index)
-		  q = c.tab ((index+1) mod npt)
+		  p = c.tab(side)
+		  q = c.tab ((side+1) mod npt)
 		  w0 = q - p
 		  w=w0.normer
 		  if val(EL1.GetAttribute("Oper")) = 2 Then
@@ -371,42 +369,46 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Inter(EL0 as XMLElement, EL1 as XMLElement, byref nbp as nBPoint)
 		  dim EL10, EL11 as XMLElement
-		  dim mid1, mid2, ncot1, ncot2, m as integer
-		  dim nb1, nb2 as nBPoint
-		  dim Bib1, Bib2 as BiBPoint
+		  dim Mid,  mid0, mid1, ncot0, ncot1, m as integer
+		  dim nb1, nb0 as nBPoint
+		  dim Bib1, Bib0 as BiBPoint
 		  dim r1, r2 as double
-		  dim fa1, fa2, fo1, fo2 as integer
+		  dim fa1, fa0, fo1, fo0 as integer
 		  dim ar1() as integer
 		  dim bp as BasicPoint
+		  dim ifmac as infomac
+		  
+		  Mid = val(EL0.GetAttribute("Id"))
+		  ifmac = MacInf.GetInfoMac(Mid)
 		  
 		  EL10 = XMLElement(EL1.Child(0))
-		  fa1 = val(EL10.GetAttribute(Dico.Value("NrFam")))
-		  fo1 = val(EL10.GetAttribute(Dico.Value("NrForm")))
-		  mid1 = val(EL10.GetAttribute("Id"))
-		  nb1 =MacInf.GetInfoMac(mid1).coord
+		  fa0 = val(EL10.GetAttribute(Dico.Value("NrFam")))
+		  fo0 = val(EL10.GetAttribute(Dico.Value("NrForm")))
+		  mid0 = ifmac.forme0
+		  nb0 =MacInf.GetInfoMac(mid0).coord
 		  
 		  EL11 = XMLElement(EL1.Child(1))
-		  fa2 = val(EL11.GetAttribute(Dico.Value("NrFam")))
-		  fo2 = val(EL11.GetAttribute(Dico.Value("NrForm")))
-		  mid2 = val(EL11.GetAttribute("Id"))
-		  nb2 = MacInf.GetInfoMac(mid2).coord
+		  fa1 = val(EL11.GetAttribute(Dico.Value("NrFam")))
+		  fo1 = val(EL11.GetAttribute(Dico.Value("NrForm")))
+		  mid1 = ifmac.forme1
+		  nb1 = MacInf.GetInfoMac(mid1).coord
 		  
-		  if fa1 <> 5  then
-		    ncot1 = val(EL1.GetAttribute("NumSide0"))
+		  if fa0 <> 5  then
+		    ncot0 = ifmac.NumSide0
+		    Bib0 = new BiBPoint(nb0.tab(ncot0), nb0.tab((ncot0+1) mod nb0.taille))
+		  else
+		  end if
+		  if fa1 <> 5 then
+		    ncot1 = ifmac.Numside1
 		    Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
 		  else
 		  end if
-		  if fa2 <> 5 then
-		    ncot2 = val(EL1.GetAttribute("NumSide1"))
-		    Bib2 = new BiBPoint(nb2.tab(ncot2), nb2.tab((ncot2+1) mod nb2.taille))
-		  else
-		  end if
 		  
-		  if fa1 <> 5 and fa2 <> 5 then
-		    bp =  bib1.BiBInterDroites(Bib2,0,0,r1,r2)
-		    if(( fa1 = 2) or (fa1 = 3) or (fa1 = 6) or (fa1 = 7)) and ((r1<0)or (r1> 1)) then
+		  if fa0 <> 5 and fa1 <> 5 then
+		    bp =  bib0.BiBInterDroites(Bib1,0,0,r1,r2)
+		    if(( fa0 = 2) or (fa0 = 3) or (fa0 = 6) or (fa0 = 7)) and ((r1<0)or (r1> 1)) then
 		      nbp.append nil
-		    elseif(( fa2 = 2) or (fa2 = 3) or (fa2 = 6) or (fa2 = 7)) and ((r2<0)or (r2> 1)) then
+		    elseif(( fa1 = 2) or (fa1 = 3) or (fa1 = 6) or (fa1 = 7)) and ((r2<0)or (r2> 1)) then
 		      nbp.append nil
 		    else
 		      nbp.append bp
@@ -417,7 +419,7 @@ Protected Class Macro
 		    
 		  end if
 		  
-		  
+		  //A revoir pour le cas des arcs et cercles et  pour les points d'inter qui sont des objets finaux
 		  
 		  
 		  
@@ -750,20 +752,18 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub ComputeObject(ifmac as InfoMac, EL as XMLElement)
-		  dim k, oper,  MacId as integer
+		  dim  oper,  MacId as integer
 		  dim s as shape
 		  dim nbp as new nBPoint
-		  
-		  
 		  
 		  MacId = val(EL.Child(0).GetAttribute("Id"))  //numéro pour la macro de la forme construite
 		  
 		  if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
-		    ifmac.coord = s.coord
+		    ifmac.coord = s.GetCoord
 		    if oper = 19 then            //On met ifmac à jour
 		      ifmac.location = point(s).location(0)
-		      ifmac.numside = point(s).numside(0)
+		      ifmac.numside1 = point(s).numside(0)
 		    end if
 		  end if
 		  
@@ -771,15 +771,13 @@ Protected Class Macro
 		    ExeOper(EL,nbp)                                     //on recalcule ou récupère les coordonnées
 		    ifmac.coord = nbp
 		    ifmac.location =loc0
-		    'ifmac.side = si0
 		  end if
 		  
-		  k = ObFinal.indexof(MacId)
-		  if k <> -1 then      //Si c'est une forme finale
+		  if ObFinal.indexof(MacId) <> -1 then      //Si c'est une forme finale
 		    ExeOper(EL,nbp)
 		    ifmac.coord = nbp
 		    ifmac.location = loc0
-		    'ifmac.side = si0                    //On recalcule les coordonnées
+		                                                 //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.coord = ifmac.coord
 		    s.repositionnerpoints

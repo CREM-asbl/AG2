@@ -60,7 +60,7 @@ Inherits SelectOperation
 		  
 		  
 		  if CurrentHighlightedShape <> nil then
-		    display = this +  " " +currenthighlightedshape.gettype + " ?"
+		    display = this(currenthighlightedshape.gettype) + " ?"
 		  elseif objects.count > 1 then
 		    display = choose+aform+asupprimer
 		  end if

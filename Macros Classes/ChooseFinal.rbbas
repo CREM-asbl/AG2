@@ -57,7 +57,11 @@ Inherits MultipleSelectOperation
 		    return
 		  end if
 		  
-		  if s.constructedby = nil then
+		  if s isa point and point(s).pointsur.count = 2 then
+		    AddInterm(s)
+		    IdentifyInit(point(s).pointsur.element(0))
+		    IdentifyInit(point(s).pointsur.element(1))
+		  elseif s.constructedby = nil then
 		    t = true
 		    for i =0 to s.ncpts-1
 		      t = t and s.id < s.points(i).id
@@ -67,7 +71,7 @@ Inherits MultipleSelectOperation
 		    else
 		      AddInterm(s)
 		      for i = 0 to s.ncpts-1
-		        if s.id > s.points(i).id and s.points(i).constructedby = nil then
+		        if s.id > s.points(i).id and s.points(i).constructedby = nil and s.points(i).pointsur.count < 2 then
 		          if ubound(s.points(i).parents) > -1 then
 		            for j = 0 to ubound(s.points(i).parents)
 		              if s.points(i).parents(j) <> s then

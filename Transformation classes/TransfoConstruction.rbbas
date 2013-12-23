@@ -78,13 +78,11 @@ Inherits MultipleSelectOperation
 		      if currenthighlightedshape isa point then
 		        display = thispoint+" ?"
 		      elseif currenthighlightedshape isa arc then
-		        display = this + " "+ arc + " ?"
+		        display = this("arc") + " ?"
 		      elseif  currenthighlightedshape isa droite then
-		        display = thissegment + "/"+cette+" "+droite+" ?"
-		      elseif currenthighlightedshape isa trap then
-		        display = this+ " " +trap+" ?"
-		      elseif currenthighlightedshape isa quadri then
-		        display = this + " "+ quadri+" ?"
+		        display = thissegment + "/"+this("droite")+" ?"
+		      else
+		        display = this(currenthighlightedshape.gettype)+" ?"
 		      end if
 		    else
 		      display = thispoint+" ?"

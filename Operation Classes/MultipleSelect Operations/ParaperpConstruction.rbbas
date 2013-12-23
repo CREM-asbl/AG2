@@ -61,7 +61,7 @@ Inherits ShapeConstruction
 		      elseif nextcurrentattractingshape <> nil then
 		        display = attheinter + "?"
 		      else
-		        display = sur + this + " " +currentattractingshape.gettype +"?"
+		        display = sur + this (currentattractingshape.gettype) +"?"
 		      end if
 		    end if
 		    showattraction
