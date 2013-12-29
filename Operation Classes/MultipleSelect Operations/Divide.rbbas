@@ -498,7 +498,7 @@ Inherits MultipleSelectOperation
 			Name="side"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

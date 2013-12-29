@@ -125,7 +125,6 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		    s.endconstruction
-		    's.setMacConstructedBy(MacInfo)
 		    s.CreateExtreAndCtrlPoints
 		    s.updateskull
 		  next
@@ -394,10 +393,13 @@ Inherits MultipleSelectOperation
 		  
 		  if Mac.ObInterm.indexof(n) <> -1 then
 		    ifmac.interm = true
+		    if EL1 <> nil then
+		      ifmac.RealSide =  val(EL1.GetAttribute("Index"))  'Pour un objet non initial, le n° de coté d'un polygone est le même que celui relatif à la macro
+		    end if
 		    CopyParam (EL0, EL1, oper, ifmac)
 		  end if
 		  
-		  if Mac.ObFinal.indexof(n) <> -1 then // A-t-on affaire  à un objet final?
+		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
 		    CreateFinal(ifmac,EL0)
 		    IdentifyPoints(ifmac,EL0)
 		    if EL1 <> nil then
@@ -430,12 +432,11 @@ Inherits MultipleSelectOperation
 		  ifmac.type = val(EL.GetAttribute("TsfType"))
 		  ifmac.ori = val(EL.GetAttribute("TsfOri"))
 		  ifmac.RealSide = val(EL.GetAttribute("TsfSide"))
-		  'ifmac.num = val(EL.GetAttribute("TsfNum"))
-		  
+		  ifmac.RealId =  MacInfo.GetRealFinal(ifmac.MacId)
 		  MacInfo.IfMacs.append ifmac
-		  n =  MacInfo.GetRealFinal(ifmac.MacId)
-		  if n<> -1 then
-		    s = objects.getshape(n)
+		  
+		  if ifmac.RealId <> -1 then
+		    s = objects.getshape(ifmac.RealId)
 		    tsf = CreateTsf(s, ifmac.type,ifmac.Realside, ifmac.ori)
 		    ifmac.num = s.tsfi.GetPosition(tsf)
 		  end if
@@ -507,7 +508,7 @@ Inherits MultipleSelectOperation
 		    ni = ubound(MacInfo.IfMacs)
 		    
 		    ifm = MacInfo.GetSommet(ni,m,index)
-		    if ifm.init  then
+		    if ifm <> nil and ifm.init  then
 		      s = currentcontent.TheObjects.GetShape(ifm.RealId)
 		      if s isa point  then
 		        pt = point(s)
@@ -522,12 +523,12 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CopyParam(EL0 as XMLElement,  EL1 as XMLElement, op as integer, ifmac as InfoMac)
+		Sub CopyParam(EL0 as XMLElement, EL1 as XMLElement, op as integer, ifmac as InfoMac)
 		  
 		  dim EL2 as XMLElement
 		  
 		  
-		  'ifmac.RealSide =  val(EL1.GetAttribute("Index"))  'Pour un objet non initial, le n° de coté d'un polygone est le même que celui relatif à la macro
+		  
 		  
 		  select case op
 		  case 1

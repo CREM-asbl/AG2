@@ -83,7 +83,6 @@ Protected Class InfoMac
 		RealId: id de l'objet réel (pour init et final)
 		RealSide : numéro du côté d'un polyg choisi comme segment
 		Type: type d'une transfo
-		
 	#tag EndNote
 
 
@@ -277,10 +276,28 @@ Protected Class InfoMac
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="numside"
+			Name="numside0"
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="numside1"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Forme0"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Forme1"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

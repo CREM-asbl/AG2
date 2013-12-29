@@ -259,6 +259,22 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
+		  dim i as integer
+		  dim pt as point
+		  dim oper as operation
+		  
+		  
+		  if app.macrocreation then
+		    for i = 0 to currentshape.ncpts-1
+		      pt = currentshape.points(i)
+		      if pt.pointsur.count = 2 then
+		        oper = new shapeconstruction
+		        oper.currentshape = pt
+		        currentcontent.addoperation(oper)
+		      end if
+		    next
+		  end if
+		  
 		  super.EndOperation
 		  currentshape = nil
 		  CreateShape

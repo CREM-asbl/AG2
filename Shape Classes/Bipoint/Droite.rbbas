@@ -201,16 +201,20 @@ Inherits Bipoint
 		  dim t as boolean
 		  
 		  delta = wnd.Mycanvas1.MagneticDist
-		  t = p.Distance(FirstP,SecondP) < delta
 		  
-		  select case nextre
-		  case 0
-		    return  t
-		  case 1
-		    return ( t and p.audela(firstp,secondp) ) or (p.distance(firstp) < delta)
-		  case 2
-		    return  (t and p.between(FirstP,SecondP))  or (p.distance(firstp) < delta)   or (p.distance(secondp) < delta)
-		  end select
+		  if firstp <> nil and secondp <> nil then
+		    t = p.Distance(FirstP,SecondP) < delta
+		    
+		    select case nextre
+		    case 0
+		      return  t
+		    case 1
+		      return ( t and p.audela(firstp,secondp) ) or (p.distance(firstp) < delta)
+		    case 2
+		      return  (t and p.between(FirstP,SecondP))  or (p.distance(firstp) < delta)   or (p.distance(secondp) < delta)
+		    end select
+		  end if
+		  
 		  return false
 		End Function
 	#tag EndMethod
@@ -614,7 +618,9 @@ Inherits Bipoint
 		  dim D1 as BiBpoint
 		  dim mi, ma as double
 		  
-		  
+		  if firstp = nil or secondp = nil then
+		    return
+		  end if
 		  
 		  if firstp.distance(secondp) < wnd.mycanvas1.magneticdist  then
 		    extre1= firstp

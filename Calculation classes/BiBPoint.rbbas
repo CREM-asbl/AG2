@@ -20,11 +20,7 @@ Inherits nBpoint
 		  q = D.First.Projection(First,Second)  // q est le milieu de la corde
 		  redim p(-1)
 		  
-		  'if abs(ray-dist) < epsilon then
-		  'cot = 0
-		  'else
 		  cot = sqrt(abs(ray*ray-dist*dist))
-		  'end if
 		  v = Second-first
 		  v = v.normer
 		  v = v*cot                                            // L'orientation de v est celle de self (de first vers second)
@@ -41,6 +37,8 @@ Inherits nBpoint
 		    p.append q+v
 		    return 0
 		  end if
+		  
+		  //Il faudrait unifier Bibdroiteintercercle, Bibdemidroiteintercercle et Bibsegmentintercerle
 		  
 		End Function
 	#tag EndMethod

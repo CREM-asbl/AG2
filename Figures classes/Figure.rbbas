@@ -2130,7 +2130,7 @@ Implements StringProvider
 		  for i = 0 to somm.count-1
 		    p = point(somm.element(i))
 		    getoldnewpos(p,ep,np)
-		    if ep.distance(np) > epsilon then
+		    if ep <> nil and np <> nil and ep.distance(np) > epsilon then
 		      select case  p.pointsur.count
 		      case  1
 		        p.puton p.pointsur.element(0)

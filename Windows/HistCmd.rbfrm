@@ -30,10 +30,11 @@ Begin Window HistCmd
       AcceptTabs      =   ""
       AutoDeactivate  =   "True"
       ControlOrder    =   0
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   22
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   ""
@@ -42,6 +43,8 @@ Begin Window HistCmd
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   0
       UseFocusRing    =   ""
       Visible         =   "True"

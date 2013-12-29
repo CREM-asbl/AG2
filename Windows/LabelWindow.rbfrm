@@ -35,7 +35,7 @@ Begin Window LabelWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window LabelWindow
       Top             =   13
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   547
       BehaviorIndex   =   0
    End
@@ -75,7 +75,7 @@ Begin Window LabelWindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -95,7 +95,7 @@ Begin Window LabelWindow
       Top             =   49
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   45
       BehaviorIndex   =   1
    End
@@ -106,7 +106,7 @@ Begin Window LabelWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -124,7 +124,7 @@ Begin Window LabelWindow
       Top             =   48
       Underline       =   ""
       Value           =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   60
       BehaviorIndex   =   2
    End
@@ -135,7 +135,7 @@ Begin Window LabelWindow
       Caption         =   "OK"
       ControlOrder    =   3
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -152,7 +152,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   82
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   3
    End
@@ -162,7 +162,7 @@ Begin Window LabelWindow
       ControlOrder    =   4
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -183,7 +183,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   13
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   4
    End
@@ -193,7 +193,7 @@ Begin Window LabelWindow
       ControlOrder    =   5
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -214,7 +214,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   49
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   5
    End
@@ -223,7 +223,7 @@ Begin Window LabelWindow
       BorderWidth     =   1
       BottomRightColor=   0
       ControlOrder    =   6
-      Enabled         =   True
+      Enabled         =   "True"
       FillColor       =   16777215
       Height          =   21
       HelpTag         =   ""
@@ -240,7 +240,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   49
       TopLeftColor    =   0
-      Visible         =   True
+      Visible         =   "True"
       Width           =   20
       BehaviorIndex   =   6
    End
@@ -250,7 +250,7 @@ Begin Window LabelWindow
       ControlOrder    =   7
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -271,7 +271,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   49
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   47
       BehaviorIndex   =   7
    End
@@ -281,7 +281,7 @@ Begin Window LabelWindow
       ControlOrder    =   8
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -302,7 +302,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   81
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   8
    End
@@ -312,7 +312,7 @@ Begin Window LabelWindow
       ControlOrder    =   9
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -333,7 +333,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   81
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   45
       BehaviorIndex   =   9
    End
@@ -347,7 +347,7 @@ Begin Window LabelWindow
       ControlOrder    =   10
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -376,7 +376,7 @@ Begin Window LabelWindow
       Top             =   81
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   29
       BehaviorIndex   =   10
    End
@@ -390,7 +390,7 @@ Begin Window LabelWindow
       ControlOrder    =   11
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
@@ -419,7 +419,7 @@ Begin Window LabelWindow
       Top             =   81
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   29
       BehaviorIndex   =   11
    End
@@ -427,7 +427,7 @@ Begin Window LabelWindow
       AcceptFocus     =   "False"
       AutoDeactivate  =   "True"
       ControlOrder    =   12
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   23
       HelpTag         =   ""
       Index           =   -2147483648
@@ -442,7 +442,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0
       Top             =   81
-      Visible         =   True
+      Visible         =   "True"
       Width           =   13
       BehaviorIndex   =   12
    End
@@ -450,7 +450,7 @@ Begin Window LabelWindow
       AcceptFocus     =   "False"
       AutoDeactivate  =   "True"
       ControlOrder    =   13
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   23
       HelpTag         =   ""
       Index           =   -2147483648
@@ -465,7 +465,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0
       Top             =   80
-      Visible         =   True
+      Visible         =   "True"
       Width           =   13
       BehaviorIndex   =   13
    End
@@ -476,7 +476,7 @@ Begin Window LabelWindow
       Caption         =   "Cancel"
       ControlOrder    =   14
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -493,7 +493,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   82
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   14
    End
@@ -503,7 +503,7 @@ Begin Window LabelWindow
       ControlOrder    =   15
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -524,7 +524,7 @@ Begin Window LabelWindow
       TextSize        =   0
       Top             =   49
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   40
       BehaviorIndex   =   15
    End
@@ -539,7 +539,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
-      Enabled         =   True
+      Enabled         =   "True"
       EnableDrag      =   ""
       EnableDragReorder=   ""
       GridLinesHorizontal=   0
@@ -569,7 +569,7 @@ Begin Window LabelWindow
       Top             =   49
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   172
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
@@ -582,7 +582,7 @@ Begin Window LabelWindow
       Caption         =   "Delete"
       ControlOrder    =   17
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -610,7 +610,7 @@ Begin Window LabelWindow
       ControlOrder    =   18
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -628,7 +628,7 @@ Begin Window LabelWindow
       Top             =   48
       Underline       =   ""
       Value           =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   78
       BehaviorIndex   =   18
    End

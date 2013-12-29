@@ -29,14 +29,18 @@ Begin Window GetUpdateW
       Address         =   ""
       ControlOrder    =   0
       dataport        =   12345
+      Height          =   32
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       Port            =   0
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   0
       transfert       =   0
+      Width           =   32
       BehaviorIndex   =   0
    End
    Begin StaticText StaticText1
@@ -45,7 +49,7 @@ Begin Window GetUpdateW
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   77
       HelpTag         =   ""
       Index           =   -2147483648
@@ -66,7 +70,7 @@ Begin Window GetUpdateW
       TextSize        =   18
       Top             =   0
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   438
       BehaviorIndex   =   1
    End
@@ -77,7 +81,7 @@ Begin Window GetUpdateW
       Caption         =   "Mettre à jour"
       ControlOrder    =   2
       Default         =   "True"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -94,7 +98,7 @@ Begin Window GetUpdateW
       TextSize        =   12
       Top             =   134
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   134
       BehaviorIndex   =   2
    End
@@ -104,7 +108,7 @@ Begin Window GetUpdateW
       ControlOrder    =   3
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   33
       HelpTag         =   ""
       Index           =   -2147483648
@@ -125,7 +129,7 @@ Begin Window GetUpdateW
       TextSize        =   0
       Top             =   89
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   350
       BehaviorIndex   =   3
    End
@@ -136,7 +140,7 @@ Begin Window GetUpdateW
       Caption         =   "Annuler"
       ControlOrder    =   4
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -153,14 +157,14 @@ Begin Window GetUpdateW
       TextSize        =   12
       Top             =   134
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   4
    End
    Begin ProgressBar TotalBar
       AutoDeactivate  =   "True"
       ControlOrder    =   5
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -173,6 +177,8 @@ Begin Window GetUpdateW
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   68
       Value           =   0
       Visible         =   "False"

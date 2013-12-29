@@ -140,7 +140,6 @@ Inherits Application
 	#tag Event
 		Sub Open()
 		  CheckProcess
-		  
 		  CheckSystem
 		  InitFolders
 		  Dico = new Dictionnaire

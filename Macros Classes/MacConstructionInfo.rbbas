@@ -108,11 +108,11 @@ Protected Class MacConstructionInfo
 		  
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    return RealInitSide(Mac.ObInit.indexof(n))
-		  elseif Mac.ObInterm.indexof(n) <> -1 then
-		    return RealIntermSide(Mac.ObInterm.indexof(n))
+		    'elseif Mac.ObInterm.indexof(n) <> -1 then
+		    'return RealIntermSide(Mac.ObInterm.indexof(n))
 		  elseif Mac.ObFinal.indexof(n) <> -1 then
 		    return RealFinalSide(Mac.ObFinal.indexof(n))
-		  else 
+		  else
 		    return 0
 		  end if
 		End Function
@@ -172,10 +172,6 @@ Protected Class MacConstructionInfo
 
 	#tag Property, Flags = &h0
 		RealInitSide() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealIntermSide() As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

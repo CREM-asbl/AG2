@@ -388,7 +388,7 @@ Inherits MultipleSelectOperation
 		  s1 = tempshape.element(0)
 		  s2 = copies.element(0)
 		  
-		  EL.AppendChild s2.XMLPutIdINContainer(Doc)
+		  EL.AppendChild s2.XMLPutINContainer(Doc)
 		  EL.appendchild  s2.XMLPutConstructionInfoInContainer(Doc)
 		  return EL
 		End Function

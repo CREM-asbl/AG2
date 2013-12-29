@@ -237,8 +237,10 @@ Protected Class Macro
 		  
 		  EL0 = XMLElement(EL.Child(0))                   'Forme construite
 		  EL1 = XMLElement(EL.Child(1))                   'Instructions de construction (s'il y en a)
-		  
+		  MacId = val(EL0.GetAttribute("Id"))
+		  ifm0 = MacInf.GetInfoMac(MacId)
 		  oper = val(EL.GetAttribute("OpId"))
+		  
 		  if EL1 <> nil and oper > 0 then                     'Données de l'éventuelle forme-constructeur
 		    MacId = val(EL1.GetAttribute("Id"))
 		    ifm1 = MacInf.GetInfoMac(MacId)
@@ -253,7 +255,7 @@ Protected Class Macro
 		    centre(ifm1,nbp)
 		  case 16 //Retourner
 		  case 19 //Dupliquer
-		    dupliquer(EL0,EL1,ifm1,nbp)
+		    dupliquerpoint(EL0,EL1,ifm1,nbp)
 		  case 24 //AppliquerTsf
 		    Transformer(EL0,EL1,ifm1,nbp)
 		  case 25 //Decouper
@@ -267,7 +269,7 @@ Protected Class Macro
 		  case 39 //Flecher
 		  case 43 //Macro
 		  case 45  //Point d'intersection
-		    inter (EL0, EL1, nbp)
+		    inter (ifm0, nbp)
 		  end select
 		  
 		  
@@ -294,7 +296,7 @@ Protected Class Macro
 		  
 		  MacId = val(EL1.GetAttribute("Id"))
 		  ifmac = MacInf.GetInfoMac(MacId)  //ifmac correspondant à l'objet constructeur
-		  si = MacInf.GetRealSide(MacId)
+		  si =ifmac.RealSide
 		  ni = MacInf.IfMacs.IndexOf(ifmac)
 		  ndiv = val(EL1.GetAttribute("NDivP"))
 		  div = val(EL1.GetAttribute("DivP"))
@@ -367,56 +369,86 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Inter(EL0 as XMLElement, EL1 as XMLElement, byref nbp as nBPoint)
+		Sub Inter(ifmac as infomac, byref nbp as nBPoint)
 		  dim EL10, EL11 as XMLElement
-		  dim Mid,  mid0, mid1, ncot0, ncot1, m as integer
+		  dim Mid,  mid0, mid1, ncot0, ncot1, m, nextre0, nextre1, n as integer
 		  dim nb1, nb0 as nBPoint
 		  dim Bib1, Bib0 as BiBPoint
 		  dim r1, r2 as double
 		  dim fa1, fa0, fo1, fo0 as integer
-		  dim ar1() as integer
 		  dim bp as BasicPoint
-		  dim ifmac as infomac
+		  dim  ifm0, ifm1 as infomac
+		  dim bb(), q, v as BasicPoint
 		  
-		  Mid = val(EL0.GetAttribute("Id"))
-		  ifmac = MacInf.GetInfoMac(Mid)
-		  
-		  EL10 = XMLElement(EL1.Child(0))
-		  fa0 = val(EL10.GetAttribute(Dico.Value("NrFam")))
-		  fo0 = val(EL10.GetAttribute(Dico.Value("NrForm")))
+		  Mid = ifmac.MacId
 		  mid0 = ifmac.forme0
-		  nb0 =MacInf.GetInfoMac(mid0).coord
+		  ifm0 = MacInf.GetInfoMac(mid0)
+		  fa0 = ifm0.fa
+		  fo0 = ifm0.fo
+		  nb0 = ifm0.coord
 		  
-		  EL11 = XMLElement(EL1.Child(1))
-		  fa1 = val(EL11.GetAttribute(Dico.Value("NrFam")))
-		  fo1 = val(EL11.GetAttribute(Dico.Value("NrForm")))
 		  mid1 = ifmac.forme1
-		  nb1 = MacInf.GetInfoMac(mid1).coord
+		  ifm1 = MacInf.GetInfoMac(mid1)
+		  fa1 = ifm1.fa
+		  fo1 = ifm1.fo
+		  nb1 = ifm1.coord
+		  
+		  if fa0 = 1 and (fo0 = 3 or fo0 = 4 or fo0 = 5) then
+		    nextre0 = 0
+		  elseif fa0 = 1 and fo0 = 6 then
+		    nextre0 = 1
+		  else
+		    nextre0 = 2
+		  end if
+		  
+		  if fa1 = 1 and (fo1 = 3 or fo1 = 4 or fo1 = 5) then
+		    nextre1 = 0
+		  elseif fa1 = 1 and fo1 = 6 then
+		    nextre1 = 1
+		  else
+		    nextre1 = 2
+		  end if
 		  
 		  if fa0 <> 5  then
 		    ncot0 = ifmac.NumSide0
-		    Bib0 = new BiBPoint(nb0.tab(ncot0), nb0.tab((ncot0+1) mod nb0.taille))
 		  else
+		    ncot0 = 0
 		  end if
+		  Bib0 = new BiBPoint(nb0.tab(ncot0), nb0.tab((ncot0+1) mod nb0.taille))
+		  
+		  
 		  if fa1 <> 5 then
 		    ncot1 = ifmac.Numside1
-		    Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
 		  else
+		    ncot1 = 0
 		  end if
+		  Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
+		  
 		  
 		  if fa0 <> 5 and fa1 <> 5 then
-		    bp =  bib0.BiBInterDroites(Bib1,0,0,r1,r2)
-		    if(( fa0 = 2) or (fa0 = 3) or (fa0 = 6) or (fa0 = 7)) and ((r1<0)or (r1> 1)) then
-		      nbp.append nil
-		    elseif(( fa1 = 2) or (fa1 = 3) or (fa1 = 6) or (fa1 = 7)) and ((r2<0)or (r2> 1)) then
-		      nbp.append nil
-		    else
-		      nbp.append bp
-		    end if
-		    
-		    
+		    bp =  bib0.BiBInterDroites(Bib1,nextre0,nextre1,r1,r2)
+		    nbp.append bp
 		  else
-		    
+		    if fa0 = 5 and Fa1 = 5 then
+		      m = BiB0.BibInterCercles(BiB1,bb,q,v)
+		      n = ifmac.numside1
+		    else
+		      if fa1 = 5 then
+		        m = bib0.bibdroiteintercercle(bib1,bb,q,v)
+		        n = ifmac.numside1
+		      elseif fa0 = 5 then
+		        m = bib1.bibdroiteintercercle(bib0,bb,q,v)
+		        n = ifmac.numside0
+		      end if
+		    end if
+		    select case m
+		    case 0
+		      nbp.append nil
+		    case 1
+		      nbp.append bb(0)
+		    case 2
+		      nbp.append bb(n)
+		    end select
 		  end if
 		  
 		  //A revoir pour le cas des arcs et cercles et  pour les points d'inter qui sont des objets finaux
@@ -466,7 +498,9 @@ Protected Class Macro
 		    select case fo
 		    case 7
 		      n = 1
-		    else
+		    case 3,4,5,6
+		      n = 2
+		    case 2
 		      n = 3
 		    end select
 		  case 4 'Polreg
@@ -554,7 +588,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub dupliquer(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
+		Sub dupliquerpoint(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
 		  dim id1, id0 ,  k, n, np, m as integer
 		  dim fp, sp, bp as BasicPoint
 		  dim nb as nBPoint
@@ -773,11 +807,11 @@ Protected Class Macro
 		    ifmac.location =loc0
 		  end if
 		  
-		  if ObFinal.indexof(MacId) <> -1 then      //Si c'est une forme finale
+		  if (ObFinal.indexof(MacId) <> -1)  then      //Si c'est une forme finale
 		    ExeOper(EL,nbp)
 		    ifmac.coord = nbp
 		    ifmac.location = loc0
-		                                                 //On recalcule les coordonnées
+		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.coord = ifmac.coord
 		    s.repositionnerpoints

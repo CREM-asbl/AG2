@@ -57,11 +57,12 @@ Inherits MultipleSelectOperation
 		    return
 		  end if
 		  
-		  if s isa point and point(s).pointsur.count = 2 then
-		    AddInterm(s)
-		    IdentifyInit(point(s).pointsur.element(0))
-		    IdentifyInit(point(s).pointsur.element(1))
-		  elseif s.constructedby = nil then
+		  if s isa point then
+		    pointidentifyinit(point(s))
+		    return
+		  end if
+		  
+		  if s.constructedby = nil then
 		    t = true
 		    for i =0 to s.ncpts-1
 		      t = t and s.id < s.points(i).id
@@ -79,10 +80,10 @@ Inherits MultipleSelectOperation
 		              end if
 		            next
 		          else
-		            identifyinit(s.points(i))
+		            pointidentifyinit(s.points(i))
 		          end if
 		        else
-		          identifyinit(s.points(i))
+		          pointidentifyinit(s.points(i))
 		        end if
 		      next
 		    end if
@@ -92,9 +93,9 @@ Inherits MultipleSelectOperation
 		    IdentifyInit(s.constructedby.shape)
 		    select case s.constructedby.oper
 		    case 1,2
-		      identifyinit(s.points(0))
+		      pointidentifyinit(s.points(0))
 		      if droite(s).nextre=2 then
-		        identifyinit(s.points(1))
+		        pointidentifyinit(s.points(1))
 		      end if
 		    case 3, 5, 9
 		    case  6 ' Transfos
@@ -160,7 +161,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddFinal(s as shape)
-		  if not s.Final and not s.Init and not s.Interm then
+		  if not s.Final  then 'and not s.init and not s.interm
 		    wnd.mac.ObFinal.append s.id
 		    wnd.mac.FaFinal.append s.fam
 		    wnd.mac.FoFinal.append s.forme
@@ -173,7 +174,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddInit(s as shape)
-		  if not s.Final and not s.Init and not s.Interm then
+		  if not s.Init and not s.Interm then
 		    wnd.mac.ObInit.append s.id
 		    wnd.mac.FaInit.append s.fam
 		    wnd.mac.FoInit.append s.forme
@@ -302,7 +303,10 @@ Inherits MultipleSelectOperation
 		    case 6
 		      IdentifyInit(p.constructedby.shape)
 		      IdentifyInit(transformation(p.constructedby.Data(0)).supp)
+		    case 7
+		      IdentifyInit(p.constructedby.shape)
 		    case 9
+		      //A compléter
 		    case 10
 		      IdentifyInit(p.pointsur.element(0))
 		      identifyinit(p.constructedby.shape)

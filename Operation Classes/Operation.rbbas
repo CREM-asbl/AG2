@@ -621,8 +621,8 @@ Protected Class Operation
 		1) Operations
 		Ouvrir un fichier : -1
 		ShapeConstruction: 0  
-		ParaperpConstruction: 1 
-		SaveBitmap: 2 Pour mémoire
+		ParaperpConstruction: 1 ou 2
+		SaveBitmap:  Pour mémoire
 		Selectionner: 4 
 		CreateGrid : 29 
 		ReadHisto : 34 Pour mémoire
