@@ -557,9 +557,10 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Mobility()
-		  dim i as integer
+		  dim i, j as integer
 		  dim s, sh as Shape
 		  dim p, p1 as point
+		  dim t as boolean
 		  
 		  liberte = 2
 		  liberte = liberte-pointsur.count
@@ -594,22 +595,32 @@ Inherits Shape
 		    updatemobilitysucceeding
 		  end if
 		  
-		  if MacConstructedBy <> nil and pointsur.count = 0 and not init then
+		  if   MacConstructedBy <>  nil  then
 		    liberte = 0
 		  end if
+		  for i = 0 to ubound(parents)
+		    if parents(i).macconstructedby <> nil then
+		      for j = 0 to ubound(parents(i).macconstructedby.RealInit)
+		        s = currentcontent.TheObjects.getshape(parents(i).macconstructedby.RealInit(j))
+		        if s.getindexpoint(self) = -1 then
+		          liberte = 0
+		        end if
+		      next
+		    end if
+		  next
 		  
 		  for i = 0 to ubound(parents)
 		    s = parents(i)
-		    if s.std or ( (s.MacConstructedby <> nil  )  and (pointsur.count = 0) and macconstructedshapes.indexof(s) = -1 )  then
+		    if s.std  then
 		      liberte = 0
 		    end if
-		    'if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then
-		    'sh = pointsur.element(0)
-		    '''if (not sh isa circle or (sh.points(0) <> s.points(0))) and (not sh isa Lacet or  s.points(0).bpt.distance (Lacet(sh).support) > epsilon)   then
-		    ''liberte = 0
-		    ''end if
-		    'end if
 		  next
+		  'if s isa arc and s.getindexpoint(self) = 2 and pointsur.count = 1 then
+		  'sh = pointsur.element(0)
+		  '''if (not sh isa circle or (sh.points(0) <> s.points(0))) and (not sh isa Lacet or  s.points(0).bpt.distance (Lacet(sh).support) > epsilon)   then
+		  ''liberte = 0
+		  ''end if
+		  'end if
 		  
 		  if liberte<0 then
 		    liberte=0
@@ -1590,6 +1601,7 @@ Inherits Shape
 		    else
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
+		    modified = true
 		  end if
 		  'if macconstructedby = nil then
 		  'modified = true

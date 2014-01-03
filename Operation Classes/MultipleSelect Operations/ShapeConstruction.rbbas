@@ -283,7 +283,6 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i as integer
 		  
 		  currentshape.endconstruction  //insère la forme dans currentcontent.TheObjects et crée la figure
 		  finished = true

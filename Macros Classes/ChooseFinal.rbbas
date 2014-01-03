@@ -134,7 +134,7 @@ Inherits MultipleSelectOperation
 		  if CurrentHighLightedShape <> nil then
 		    display = click+pour+selectionner
 		  else
-		    display =  choose + aform + ou + save + themacro
+		    display =  choose + aform + ou + savethemacro
 		  end if
 		  
 		  Help g, display

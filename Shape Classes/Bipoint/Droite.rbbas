@@ -299,13 +299,13 @@ Inherits Bipoint
 		Sub createtsf()
 		  dim tsf as transformation
 		  
-		  tsf = new Transformation(self, 0,  constructedby.data(0), 0)
+		  tsf = new Transformation (self, 0,  constructedby.data(0), 0)
 		  constructedby.data.append tsf
 		  
 		  tsf.constructedshapes.addshape self
 		  'tsf.supp = constructedby.shape
 		  tsf.supp.tsfi.addtsf tsf
-		  'tsf.index =
+		  'tsf.index =constructedby.data(0)
 		  CurrentContent.TheTransfos.addtsf tsf
 		  
 		  

@@ -451,7 +451,7 @@ Protected Class Macro
 		    end select
 		  end if
 		  
-		  //A revoir pour le cas des arcs et cercles et  pour les points d'inter qui sont des objets finaux
+		  //A revoir pour le cas des arcs (et cercles) et  pour les points d'inter qui sont des objets finaux
 		  
 		  
 		  

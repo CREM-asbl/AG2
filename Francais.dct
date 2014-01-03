@@ -318,6 +318,7 @@
     <putatitle Name=" placer un titre" />
     <putalabel Name=" placer une étiquette" />
     <rigidifier Name="Punaiser " />
+    <savethemacro Name="sauvegarde la macro" />
     <select Name=" sélectionner" />
     <theotherendpoint Name=" l'autre extrémité" />
     <onthearc Name="sur l'arc" />

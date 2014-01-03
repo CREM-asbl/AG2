@@ -195,19 +195,6 @@ Implements StringProvider
 		    Restorebpt
 		    RestoreLab
 		    Restoretsf
-		    
-		    if supfig = nil then
-		      for i = 0 to shapes.count-1
-		        if shapes.element(i) isa arc then
-		          Arc(shapes.element(i)).updateangles
-		          Arc(shapes.element(i)).CreateExtreAndCtrlPoints
-		        elseif shapes.element(i) isa  circle or shapes.element(i) isa lacet then
-		          shapes.element(i).CreateExtreAndCtrlPoints
-		        end if
-		        shapes.element(i).updateskull
-		      next
-		    end if
-		    
 		    for i = 0 to subs.count - 1
 		      subs.element(i).restore
 		    next
@@ -1447,7 +1434,7 @@ Implements StringProvider
 		  dim t as boolean
 		  dim d, d1 as double
 		  
-		  if auto = 3 and shapes.element(0) isa arc then
+		  if  shapes.element(0) isa arc then
 		    return true
 		  end if
 		  
@@ -1956,11 +1943,17 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  
-		  
+		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
+		  //Pas compris pourquoi...
 		  for i = 0 to shapes.count-1
-		    shapes.element(i).updateskull
 		    shapes.element(i).updatecoord
+		    if shapes.element(i) isa arc then
+		      Arc(shapes.element(i)).updateangles
+		    end if
+		    if shapes.element(i) isa circle or shapes.element(i) isa lacet then
+		      shapes.element(i).CreateExtreAndCtrlPoints
+		    end if
+		    shapes.element(i).updateskull
 		  next
 		  
 		  

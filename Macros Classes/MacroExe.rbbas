@@ -341,6 +341,9 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim List as XmlNodeList
 		  dim t as Boolean
+		  
+		  ReDeleteDeletedFigures (Temp)
+		  
 		  List = Temp.FirstChild.XQL("Initial_Forms")
 		  
 		  If list.Length > 0 then
@@ -354,9 +357,10 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		  end if
+		  
 		  DoOperation
-		  ReDeleteDeletedFigures (Temp)
-		  RecreateCreatedFigures(Temp)
+		  
+		  'RecreateCreatedFigures(Temp)
 		  wnd.refresh
 		End Sub
 	#tag EndMethod

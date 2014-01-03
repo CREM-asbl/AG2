@@ -2697,8 +2697,16 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoParaperp(Tmp as XMLelement)
-		  constructedby.data.append val(Tmp.GetAttribute("Index"))
-		  droite(self).createtsf
+		  dim m as integer
+		  dim tsf as transformation
+		  
+		  m = val(Tmp.GetAttribute("Index"))
+		  constructedby.data.append m
+		  tsf = constructedby.shape.gettsf(0,m)
+		  if tsf <> nil then
+		    constructedby.data.append tsf
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3894,12 +3902,16 @@ Implements StringProvider
 		Sub repositionnerpoints()
 		  dim j as integer
 		  
-		  if self isa point then
+		  if self isa point and coord.tab(0) <> nil then
 		    point(self).moveto coord.tab(0)
-		  else                  //On va rechercher la forme
+		  else
+		    for j = 0 to npts-1
+		      if coord.tab(j) = nil then
+		        return
+		      end if
+		    next
 		    for j = 0 to ubound(points)
 		      points(j).moveto coord.tab(j)   //On repositionne les sommets
-		      'points(j).modified = true
 		    next
 		  end if
 		End Sub
@@ -3985,6 +3997,19 @@ Implements StringProvider
 		    updatecoord
 		  end if
 		  return coord
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetTsf(n as integer, m as integer) As transformation
+		  dim tsf as transformation
+		  dim i as integer
+		  
+		  for i = 0 to tsfi.count-1
+		    if tsfi.element(i).type = n and tsfi.element(i).index = m  then
+		      return tsfi.element(i)
+		    end if
+		  next
 		End Function
 	#tag EndMethod
 

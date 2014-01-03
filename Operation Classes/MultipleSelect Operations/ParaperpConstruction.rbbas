@@ -220,9 +220,17 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
+		  dim tsf as transformation
+		  
 		  currentshape.setconstructedby(Refe,op)
 		  currentshape.constructedby.data.append index(iobj)
-		  droite(currentshape).createtsf
+		  tsf = refe.gettsf(0,index(iobj))
+		  if tsf = nil then
+		    tsf = new Transformation(Refe,0,index(iobj), 0)
+		  end if
+		  currentshape.constructedby.data.append tsf
+		  tsf.constructedshapes.addshape currentshape
+		  refe.tsfi.addtsf tsf
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
 		  

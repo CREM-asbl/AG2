@@ -939,6 +939,12 @@ Protected Module Dictionnaires
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function savethemacro() As string
+		  return Dico.value("savethemacro")
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
