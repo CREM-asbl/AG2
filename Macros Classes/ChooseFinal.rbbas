@@ -88,24 +88,25 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		    return
-		  else
-		    AddInterm(s)
-		    IdentifyInit(s.constructedby.shape)
-		    select case s.constructedby.oper
-		    case 1,2
-		      pointidentifyinit(s.points(0))
-		      if droite(s).nextre=2 then
-		        pointidentifyinit(s.points(1))
-		      end if
-		    case 3, 5, 9
-		    case  6 ' Transfos
-		      tsf = transformation(s.constructedby.Data(0))
-		      IdentifyInit(s.constructedby.shape)
-		      AddTsfInterm(tsf)
-		      IdentifyInit(tsf.supp)
-		    case 8  'Prolongements
-		    end select
 		  end if
+		  
+		  AddInterm(s)
+		  IdentifyInit(s.constructedby.shape)
+		  select case s.constructedby.oper
+		  case 1,2
+		    pointidentifyinit(s.points(0))
+		    if droite(s).nextre=2 then
+		      pointidentifyinit(s.points(1))
+		    end if
+		  case 3, 5, 9
+		  case  6 ' Transfos
+		    tsf = transformation(s.constructedby.Data(0))
+		    IdentifyInit(s.constructedby.shape)
+		    AddTsfInterm(tsf)
+		    IdentifyInit(tsf.supp)
+		  case 8  'Prolongements
+		  end select
+		  
 		  
 		  
 		  

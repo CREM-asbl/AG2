@@ -577,7 +577,7 @@ Inherits Circle
 		  dim n as integer
 		  
 		  if inside(p) then
-		    return super.pointonside(p)
+		    return  super.pointonside(p)
 		  end if
 		  
 		  return -1

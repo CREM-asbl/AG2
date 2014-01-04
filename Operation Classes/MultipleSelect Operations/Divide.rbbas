@@ -166,9 +166,7 @@ Inherits MultipleSelectOperation
 		    
 		  case 2
 		    secondpoint = point(s)
-		    if not firstpoint.OnSameShape(secondpoint, Shapetodivide) then
-		      Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance" si les deux points ne sont pas sommets consécutifs d'une même forme
-		    end if
+		    Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance" 
 		  end select
 		  return true
 		  

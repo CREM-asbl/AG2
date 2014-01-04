@@ -57,9 +57,8 @@ Implements StringProvider
 		    end if
 		  end if
 		  
-		  if figures.indexof(f) <> -1 then
-		    figures.remove figures.indexof(f)
-		  end if
+		  figures.remove figures.indexof(f)
+		  
 		  
 		  
 		End Sub

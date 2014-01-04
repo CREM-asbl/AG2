@@ -1,6 +1,15 @@
 #tag Class
 Protected Class Figure
 Implements StringProvider
+#tag MenuHandler
+		Function Sans_titre() As Boolean Handles Sans_titre.Action
+			
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
+
 	#tag Method, Flags = &h0
 		Sub Figure(s as shape)
 		  dim ff as figure
@@ -2865,7 +2874,11 @@ Implements StringProvider
 		  dim EL, EL1, Temp as XMLElement
 		  dim i as integer
 		  
-		  if k = 0 then
+		  if k = 0 and currentcontent.drapabort then
+		    return
+		  end if
+		  
+		  if k = 0  then
 		    EL = CurrentContent.FigsDeleted
 		  else
 		    EL = CurrentContent.FigsCreated

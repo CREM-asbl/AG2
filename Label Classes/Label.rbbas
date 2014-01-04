@@ -82,7 +82,7 @@ Protected Class Label
 		    Type = 2
 		  end if
 		  ////////////////////// Longueurs
-		  if (shape isa droite) or ((shape isa polygon or shape isa arc or shape isa freecircle) and loc <>-1 ) then
+		  if (shape isa droite)  or (shape isa arc) or ((shape isa polygon  or shape isa freecircle) and loc <>-1 ) then
 		    Type = 0
 		    if shape isa droite then
 		      if droite(shape).nextre = 2 then
@@ -105,7 +105,7 @@ Protected Class Label
 		      elseif currentcontent.UL <> 0 then
 		        dat = arrondi2(polygon(shape).getside(loc).longueur/currentcontent.UL)
 		      end if
-		    elseif shape isa arc and loc <>-1 then
+		    elseif shape isa arc  then
 		      dat = str(round(arc(shape).arcangle*180/PI))+"°"
 		    elseif shape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
 		      dat = arrondi2(2*PI*Freecircle(shape).getradius/currentcontent.UL)

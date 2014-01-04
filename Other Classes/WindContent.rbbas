@@ -268,11 +268,14 @@ Protected Class WindContent
 		  dim s as shape
 		  
 		  if currentoperation isa shapeconstruction then
+		    drapabort = true
 		    s = currentoperation.currentshape
 		    if s.isinconstruction and (s.indexconstructedpoint = 0) then
 		      s.points(0).delete
 		    end if
-		    s.delete
+		    if currentcontent.TheObjects.getposition(s) <> -1 then
+		      s.delete
+		    end if
 		    
 		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
 		      Theobjects.XMLLoadObjects(FigsDeleted)
@@ -280,6 +283,7 @@ Protected Class WindContent
 		  elseif currentoperation isa macroexe then
 		    macroexe(currentoperation).mw.close
 		  end if
+		  drapabort = false
 		  currentoperation = nil
 		  wnd.refreshtitle
 		End Sub
@@ -981,6 +985,10 @@ Protected Class WindContent
 
 	#tag Property, Flags = &h0
 		ndec As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		drapabort As Boolean
 	#tag EndProperty
 
 
