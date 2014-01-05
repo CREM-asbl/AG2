@@ -610,8 +610,7 @@ Inherits Shape
 		  next
 		  
 		  for i = 0 to ubound(parents)
-		    s = parents(i)
-		    if s.std  then
+		    if parents(i).std  then
 		      liberte = 0
 		    end if
 		  next
@@ -1243,6 +1242,10 @@ Inherits Shape
 		    if not p.labs.element(0).fixe then
 		      p.labs.element(0).setposition
 		    end if
+		  end if
+		  
+		  if p.pointsur.count = 1 and p.pointsur.element(0).getindexpoint(self) <> -1 then
+		    p.removepointsur(p.pointsur.element(0))
 		  end if
 		  
 		  Identify1(p)

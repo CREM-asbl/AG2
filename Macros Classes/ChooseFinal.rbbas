@@ -65,32 +65,22 @@ Inherits MultipleSelectOperation
 		  if s.constructedby = nil then
 		    t = true
 		    for i =0 to s.ncpts-1
-		      t = t and s.id < s.points(i).id
+		      t = t and s.id < s.points(i).id  // t = true si tous les sommets de s sont postérieurs à s --> s est initial
 		    next
 		    if t then  'and (s isa droite or s isa polyqcq or ( (s.fam = 2 or s.fam = 3) and (s.forme = 0) ) ) then  's a été créé avant ses sommets et est un polyqcq ou une droite (segment)
 		      AddInit(s)
 		    else
 		      AddInterm(s)
 		      for i = 0 to s.ncpts-1
-		        if s.id > s.points(i).id and s.points(i).constructedby = nil and s.points(i).pointsur.count < 2 then
-		          if ubound(s.points(i).parents) > -1 then
-		            for j = 0 to ubound(s.points(i).parents)
-		              if s.points(i).parents(j) <> s then
-		                identifyinit(s.points(i).parents(j))
-		              end if
-		            next
-		          else
-		            pointidentifyinit(s.points(i))
-		          end if
-		        else
-		          pointidentifyinit(s.points(i))
+		        if s.id > s.points(i).id  then
+		          PointIdentifyInit(s.points(i)) //on identifie l'origine des points de construction de s plus vieux que s
 		        end if
 		      next
 		    end if
 		    return
 		  end if
 		  
-		  AddInterm(s)
+		  AddInterm(s)          // s est une forme construite
 		  IdentifyInit(s.constructedby.shape)
 		  select case s.constructedby.oper
 		  case 1,2
@@ -104,7 +94,7 @@ Inherits MultipleSelectOperation
 		    IdentifyInit(s.constructedby.shape)
 		    AddTsfInterm(tsf)
 		    IdentifyInit(tsf.supp)
-		  case 8  'Prolongements
+		  case 8  'Prolongements (A faire)
 		  end select
 		  
 		  
@@ -291,6 +281,10 @@ Inherits MultipleSelectOperation
 		  dim t as boolean
 		  dim i as integer
 		  
+		  
+		  
+		  
+		  
 		  if p.constructedby <> nil then
 		    AddInterm(p)
 		    op = p.constructedby.oper
@@ -313,29 +307,29 @@ Inherits MultipleSelectOperation
 		      identifyinit(p.constructedby.shape)
 		    end select
 		  else
-		    select case p.pointsur.count
-		    case 0
-		      t = true
+		    'select case p.pointsur.count
+		    'case 0
+		    t = true
+		    for i = 0 to ubound(p.parents)
+		      t = t and  (p.id < p.parents(i).id)
+		    next
+		    if t then
+		      Addinit(p)
+		    else
 		      for i = 0 to ubound(p.parents)
-		        t = t and  (p.id < p.parents(i).id)
+		        if p.id > p.parents(i).id  then
+		          IdentifyInit(p.parents(i))
+		        end if
 		      next
-		      if t then
-		        Addinit(p)
-		      else
-		        for i = 0 to ubound(p.parents)
-		          if p.id > p.parents(i).id  then
-		            IdentifyInit(p.parents(i))
-		          end if
-		        next
-		      end if
-		    case 1
-		      IdentifyInit(p.pointsur.element(0))
-		      AddInit(p)
-		    case 2
-		      AddInterm(p)
-		      IdentifyInit(p.pointsur.element(0))
-		      IdentifyInit(p.pointsur.element(1))
-		    end select
+		    end if
+		    'case 1
+		    'IdentifyInit(p.pointsur.element(0))
+		    'AddInit(p)
+		    'case 2
+		    'AddInterm(p)
+		    'IdentifyInit(p.pointsur.element(0))
+		    'IdentifyInit(p.pointsur.element(1))
+		    'end select
 		  end if
 		End Sub
 	#tag EndMethod
