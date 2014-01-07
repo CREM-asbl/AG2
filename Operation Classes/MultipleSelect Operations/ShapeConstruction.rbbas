@@ -146,7 +146,6 @@ Inherits MultipleSelectOperation
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
 		    ShowAttraction
-		    wnd.mycanvas1.RefreshBackground
 		    if nextcurrentattractingshape = nil then
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then

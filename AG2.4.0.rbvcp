@@ -220,16 +220,12 @@ Module=api;Connexion/api.rbbas;&h2902F7FF;&h476F47FF;false
 DefaultWindow=WorkWindow
 AppMenuBar=Menu
 MajorVersion=2
-MinorVersion=4
-SubVersion=0
-<<<<<<< HEAD
-NonRelease=619
-=======
+MinorVersion=3
+SubVersion=9
 NonRelease=628
->>>>>>> origin/Macros
-Release=0
+Release=3
 InfoVersion=
-LongVersion=2.4.0.0
+LongVersion=2.3.9.5
 ShortVersion=2
 WinCompanyName=CREM
 WinInternalName=AG2
