@@ -42,7 +42,7 @@ Begin Window WorkWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   134
+      Left            =   122
       LockBottom      =   "True"
       LockLeft        =   "True"
       LockRight       =   "True"
@@ -53,7 +53,7 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
-      Top             =   -5
+      Top             =   0
       UseFocusRing    =   "False"
       Visible         =   True
       Width           =   676
@@ -588,7 +588,7 @@ Begin Window WorkWindow
          Index           =   0
          InitialParent   =   "Tools"
          Italic          =   ""
-         Left            =   0
+         Left            =   1
          LockBottom      =   ""
          LockLeft        =   ""
          LockRight       =   ""
