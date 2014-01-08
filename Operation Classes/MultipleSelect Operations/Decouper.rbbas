@@ -364,14 +364,14 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function Choixvalide(pt as point) As Boolean
 		  select case currentitemtoset
-		  case 1
+		  case 2
 		    if not currentshape.std then
 		      return  currentshape.PointOnSide (Pt.bpt) <> -1
 		    else
 		      return  (currentshape.getindexpoint(pt) <> -1) or ((pt.constructedby <> nil) and (pt.constructedby.shape = currentshape) )
 		    end if
 		  else
-		    if  currentitemtoset > 2 and (Pt = CutPts(ncutpt-1) or Pt = CutPts(0))  then
+		    if  (Pt = CutPts(ncutpt-1) or Pt = CutPts(0))  then
 		      return false
 		    end if
 		    if currentshape.std then
