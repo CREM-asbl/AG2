@@ -145,7 +145,7 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetShape(id as integer) As Shape
+		Function GetShape(id as integer) As shape
 		  
 		  dim i as Integer
 		  dim temp as Shape

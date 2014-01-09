@@ -15,6 +15,8 @@ Inherits MultipleSelectOperation
 		  wnd.setfocus
 		  fa = -1
 		  
+		  
+		  
 		  //Cette classe a pour objet de choisir de nouveaux objets initiaux et de construire la MacConstructionInfo associée
 		  //Dans SetItem, complété par "InstructionsSuivantes", on se borne à déterminer les objets initiaux
 		  
@@ -59,12 +61,19 @@ Inherits MultipleSelectOperation
 		  currentshape = currenthighlightedshape
 		  
 		  if visible  = nil or currentshape = nil then
-		    display = choose + un + " " +str
+		    if drappoint  then
+		      display = choose +un +" "+ point
+		    else
+		      display = choose + un + " " +str
+		    end if
 		  else
 		    if currentshape isa polygon and side <> -1 then
 		      currentshape.unhighlight
 		      polygon(currentshape).paintside(g,side,2,config.highlightcolor)
 		      obj = lowercase(segment)
+		    elseif drappoint and currentshape isa point then
+		      obj ="point"
+		      currentshape.highlight
 		    else
 		      obj = lowercase(currenthighlightedshape.gettype)
 		      currentshape.highlight
@@ -139,6 +148,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub EndOperation()
 		  super.EndOperation
+		  drappoint = false
 		  if mw <> nil then
 		    mw.close
 		    MacInfo = new MacConstructionInfo(Mac)
@@ -152,80 +162,37 @@ Inherits MultipleSelectOperation
 		  dim  sh as shape
 		  dim b as boolean
 		  
-		  'n = CurrentItemToSet
+		  
 		  
 		  sh = operation.getshape(p)
 		  str = lowercase(identifier(fa, fo))
 		  nobj = visible.count
-		  
-		  for i = visible.count-1 downto 0
-		    sh = visible.element(i)
-		    b = (sh.fam = fa)
-		    
-		    select case fa                        //une macro valable pour (par ex) un Triangle doit pouvoir être appliquée à un triangiso ou un triangrect ou...
-		    case 1               //une macro valable pour un segment  (fa = 1, fo < 3) doit pouvoir être appliquée à un côté de polygone
-		      select case fo
-		      case 0
-		        b = (b and sh.forme <3) or  sh.validsegment(p, side)
-		      case 1, 2, 4, 5, 6, 7, 8
-		        b = b and (sh.forme = fo)
-		      case 3
-		        b = b and ((sh.forme >2)  and  (sh.forme < 6))
-		      end select
-		    case 2
-		      select case fo
-		      case 0
-		        b = b or (sh isa polreg and sh.npts = 3)
-		      case 1
-		        b =( b and ((sh.forme =1) or (sh.forme = 2)or (sh.forme = 4))) or (sh isa polreg and sh.npts = 3)
-		      case 2
-		        b = (b and  (sh.forme = 2)) or ( sh isa polreg and sh.npts = 3)
-		      case 3, 4
-		        b = b and  (sh.forme = fo)
-		      end select
-		    case 3
-		      select case fo
-		      case 0
-		        b = b or  (sh isa polreg and sh.npts = 4)
-		      case 1
-		        b = b and (sh.forme > 0)
-		      case 2
-		        b = ( b and (sh.forme  =2 or sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
-		      case 3
-		        b = (b and (sh.forme > 2)) or  (sh isa polreg and sh.npts = 4)
-		      case 4
-		        b = b and (sh.forme >= 4)
-		      case 5
-		        b = (b and (sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
-		      case 6, 7
-		        b = (b and sh.forme = fo) or (sh isa polreg and sh.npts = 4)
-		      end select
-		    case 4, 5, 6
-		      b = b and sh.forme = fo
-		    end select
-		    
-		    if not b then
-		      visremove(sh)
-		    end if
-		  next
-		  
-		  nobj = visible.count-1
-		  redim index(nobj)
-		  
 		  iobj = 0
 		  
-		  for i = 0 to visible.count-1
-		    sh = visible.element(i)
-		    index(i) =sh.pointonside(p)
-		  next
-		  
-		  sh = visible.element(iobj)
-		  if sh = nil then
-		    return nil
+		  if not drappoint then
+		    SelectionnerObjetIni(p)
+		    nobj = visible.count-1
+		    redim index(nobj)
+		    
+		    for i = 0 to visible.count-1
+		      sh = visible.element(i)
+		      index(i) =sh.pointonside(p)
+		    next
+		    sh = visible.element(iobj)
+		    if sh = nil then
+		      return nil
+		    end if
+		    side = index(iobj)
+		    return sh
+		  else
+		    for i = 0 to visible.count-1
+		      sh=visible.element(i)
+		      if (not sh isa point) or (sh isa point and father.getindexpoint(point(sh)) = -1) then
+		        visremove(sh)
+		      end if
+		    next
+		    return sh
 		  end if
-		  side = index(iobj)
-		  return sh
-		  
 		  
 		End Function
 	#tag EndMethod
@@ -239,7 +206,7 @@ Inherits MultipleSelectOperation
 		  dim ifm as infomac
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
-		  newshape.auto = 0
+		  newshape.auto = 4
 		  newshape.initconstruction
 		  newshape.MacConstructedBy = MacInfo
 		  for i = 0 to ubound(MacInfo.Realinit)
@@ -247,6 +214,9 @@ Inherits MultipleSelectOperation
 		    s.addMacConstructedshape newshape
 		  next
 		  currentcontent.addshape newshape
+		  if ifmac.fa = 1 and (ifmac.fo=4 or ifmac.fo = 5)  then
+		    newshape.points(1).hide
+		  end if
 		  MacInfo.RealFinal.append newshape.id
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
@@ -368,8 +338,8 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub CreateIfMacObject(EL as XMLElement, oper as integer)
 		  dim pid, rid, fa1, fo1 as integer
-		  dim n, fa, fo as integer
-		  dim EL0, EL1 as XMLElement
+		  dim i, n, fa, fo as integer
+		  dim EL0, EL1,EL01, EL02 as XMLElement
 		  dim ifmac, ifm As InfoMac
 		  dim s as shape
 		  
@@ -383,9 +353,12 @@ Inherits MultipleSelectOperation
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ifmac = new InfoMac(fa, fo)
+		  ifmac.oper=val(EL.GetAttribute("OpId"))
 		  ifmac.MacId = n
 		  ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
 		  ifmac.ori = val(EL0.GetAttribute("Ori"))
+		  ifmac.Npts = val(EL0.GetAttribute(Dico.Value("Npts")))
+		  ifmac.Ncpts = val(EL0.GetAttribute(Dico.Value("Ncpts")))
 		  
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    ifmac.RealId =MacInfo.GetRealInit(n)
@@ -411,6 +384,22 @@ Inherits MultipleSelectOperation
 		    end if
 		  end if
 		  
+		  EL01 = XMLElement(EL0.FirstChild)
+		  for i = 0 to ifmac.npts-1
+		    EL02 = XMLElement(EL01.Child(i))
+		    ifm = new InfoMac(0,0)
+		    ifm.MacId = val(EL02.GetAttribute("Id"))
+		    ifm.PtSur = val(EL0.GetAttribute("PointSur"))
+		    if Mac.ObInit.indexof(ifm.MacId) <> -1 then
+		      ifm.RealId =MacInfo.GetRealInit(ifm.MacId)
+		      ifm.RealSide = MacInfo.GetRealSide(ifm.MacId)
+		      ifm.init = true
+		    end if
+		    if Mac.ObInterm.indexof(Ifm.MacId) <> -1 then
+		      ifm.interm = true
+		    end if
+		    ifmac.childs.append ifm
+		  next
 		  MacInfo.IfMacs.append ifmac
 		  
 		  
@@ -475,20 +464,23 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  dim MacId, ninstruc as integer
+		  dim MacId, PId,  ninstruc as integer
 		  dim EL, EL1 as XMLElement
 		  
 		  
-		  if fa = -1 then
+		  if fa = -1 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
-		    ninstruc = Mac.GetInstrucConstruction(MacId)
+		    ninstruc = Mac.GetInstrucConstruction(MacId, PId)
 		    EL = XMLElement(Mac.Histo.Child(ninstruc))
 		    EL1 = XMLElement(EL.FirstChild)
-		    fa = val(EL1.GetAttribute(Dico.Value("NrFam")))
-		    fo = val(EL1.GetAttribute(Dico.Value("NrForm")))
+		    fa = val(EL1.GetAttribute(Dico.Value("NrFam")))       //l'objet initial à choisir est soit une forme  "autonome" soit (si drappoint est true)
+		    fo = val(EL1.GetAttribute(Dico.Value("NrForm")))     //un sommet d'une telle forme. Dans les deux cas fa et fo concernent la forme
+		    if drappoint then
+		      father = currentcontent.TheObjects.GetShape(MacInfo.GetRealInit(Pid))
+		    end if
 		  end if
 		  
-		  super.mousemove(p)
+		  super.mousemove(p)  //appelle getshape
 		  
 		  
 		  
@@ -509,17 +501,24 @@ Inherits MultipleSelectOperation
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
 		    EL2 = XMLElement(EL1.Child(j))
 		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
-		    ni = ubound(MacInfo.IfMacs)
 		    
-		    ifm = MacInfo.GetSommet(ni,m,index)
-		    if ifm <> nil and ifm.init  then
-		      s = currentcontent.TheObjects.GetShape(ifm.RealId)
-		      if s isa point  then
-		        pt = point(s)
-		      else
-		        pt = s.points(index)
-		      end if
+		    if Mac.ObInit.indexof(m) <> -1  then
+		      index = MacInfo.GetRealInit(m)
+		      s = CurrentContent.TheObjects.Getshape(index)
+		      pt = point(s)
 		      newshape.substitutepoint(pt,newshape.points(j))
+		    else
+		      ni = ubound(MacInfo.IfMacs)
+		      ifm = MacInfo.GetSommet(ni,m,index)
+		      if ifm <> nil and ifm.init  then
+		        s = currentcontent.TheObjects.GetShape(ifm.RealId)
+		        if s isa point  then
+		          pt = point(s)
+		        else
+		          pt = s.points(index)
+		        end if
+		        newshape.substitutepoint(pt,newshape.points(j))
+		      end if
 		    end if
 		  next
 		  
@@ -547,6 +546,66 @@ Inherits MultipleSelectOperation
 		    ifmac.forme1 = val(EL2.GetAttribute("Id"))
 		  end select
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SelectionnerObjetIni(p as Basicpoint)
+		  dim i as integer
+		  dim b as Boolean
+		  dim sh as shape
+		  
+		  
+		  for i = visible.count-1 downto 0
+		    sh = visible.element(i)
+		    b = (sh.fam = fa)
+		    
+		    select case fa                        //une macro valable pour (par ex) un Triangle doit pouvoir être appliquée à un triangiso ou un triangrect ou...
+		    case 1               //une macro valable pour un segment  (fa = 1, fo < 3) doit pouvoir être appliquée à un côté de polygone
+		      select case fo
+		      case 0
+		        b = (b and sh.forme <3) or  sh.validsegment(p, side)
+		      case 1, 2, 4, 5, 6, 7, 8
+		        b = b and (sh.forme = fo)
+		      case 3
+		        b = b and ((sh.forme >2)  and  (sh.forme < 6))
+		      end select
+		    case 2
+		      select case fo
+		      case 0
+		        b = b or (sh isa polreg and sh.npts = 3)
+		      case 1
+		        b =( b and ((sh.forme =1) or (sh.forme = 2)or (sh.forme = 4))) or (sh isa polreg and sh.npts = 3)
+		      case 2
+		        b = (b and  (sh.forme = 2)) or ( sh isa polreg and sh.npts = 3)
+		      case 3, 4
+		        b = b and  (sh.forme = fo)
+		      end select
+		    case 3
+		      select case fo
+		      case 0
+		        b = b or  (sh isa polreg and sh.npts = 4)
+		      case 1
+		        b = b and (sh.forme > 0)
+		      case 2
+		        b = ( b and (sh.forme  =2 or sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
+		      case 3
+		        b = (b and (sh.forme > 2)) or  (sh isa polreg and sh.npts = 4)
+		      case 4
+		        b = b and (sh.forme >= 4)
+		      case 5
+		        b = (b and (sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
+		      case 6, 7
+		        b = (b and sh.forme = fo) or (sh isa polreg and sh.npts = 4)
+		      end select
+		    case 4, 5, 6
+		      b = b and sh.forme = fo
+		    end select
+		    
+		    if not b then
+		      visremove(sh)
+		    end if
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -581,6 +640,14 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		fo As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		drappoint As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		father As shape
 	#tag EndProperty
 
 
@@ -725,6 +792,12 @@ Inherits MultipleSelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="drappoint"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

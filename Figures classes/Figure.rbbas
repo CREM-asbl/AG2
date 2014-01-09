@@ -1,15 +1,6 @@
 #tag Class
 Protected Class Figure
 Implements StringProvider
-#tag MenuHandler
-		Function Sans_titre() As Boolean Handles Sans_titre.Action
-			
-			Return True
-			
-		End Function
-#tag EndMenuHandler
-
-
 	#tag Method, Flags = &h0
 		Sub Figure(s as shape)
 		  dim ff as figure

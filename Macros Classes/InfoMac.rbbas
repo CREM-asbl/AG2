@@ -54,7 +54,7 @@ Protected Class InfoMac
 		  final = (val(Temp.GetAttribute("Fin")) = 1)
 		  init = ( val(Temp.GetAttribute("Ini")) = 1)
 		  interm = (val(Temp.GetAttribute("Int")) = 1)
-		  
+		  oper = val(temp.GetAttribute("OpId"))
 		End Sub
 	#tag EndMethod
 
@@ -160,6 +160,22 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		Forme1 As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		oper As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Npts As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Ncpts As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		childs(-1) As infomac
 	#tag EndProperty
 
 

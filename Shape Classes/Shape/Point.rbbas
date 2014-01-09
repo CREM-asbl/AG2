@@ -598,15 +598,11 @@ Inherits Shape
 		    liberte = 0
 		  end if
 		  for i = 0 to ubound(parents)
-		    if parents(i).macconstructedby <> nil then
-		      for j = 0 to ubound(parents(i).macconstructedby.RealInit)
-		        s = currentcontent.TheObjects.getshape(parents(i).macconstructedby.RealInit(j))
-		        if s.getindexpoint(self) = -1 then
-		          liberte = 0
-		        end if
-		      next
+		    if  parents(i).macconstructedby <> nil and not init  then
+		      liberte = 0
 		    end if
 		  next
+		  
 		  
 		  for i = 0 to ubound(parents)
 		    if parents(i).std  then

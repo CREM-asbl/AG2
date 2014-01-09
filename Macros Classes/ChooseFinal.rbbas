@@ -53,7 +53,7 @@ Inherits MultipleSelectOperation
 		  dim op as integer
 		  dim tsf as Transformation
 		  
-		  if  s.interm or s.init then
+		  if   s.interm or s.init then
 		    return
 		  end if
 		  
@@ -140,6 +140,7 @@ Inherits MultipleSelectOperation
 		    s.borderwidth = 2
 		  elseif s.init then
 		    s.fixecouleurtrait(red, 100)
+		    s.borderwidth = 2
 		  elseif s.interm then
 		    s.fixecouleurtrait(black,100)
 		  else
@@ -309,29 +310,44 @@ Inherits MultipleSelectOperation
 		  else
 		    'select case p.pointsur.count
 		    'case 0
-		    t = true
-		    for i = 0 to ubound(p.parents)
-		      t = t and  (p.id < p.parents(i).id)
-		    next
-		    if t then
-		      Addinit(p)
+		    if NbreParentsNonFinal(p) <= 0 then
+		      AddInit(p)
 		    else
+		      t = true
 		      for i = 0 to ubound(p.parents)
-		        if p.id > p.parents(i).id  then
-		          IdentifyInit(p.parents(i))
-		        end if
+		        t = t and  (p.id < p.parents(i).id)
 		      next
+		      if t then
+		        Addinit(p)
+		      else
+		        for i = 0 to ubound(p.parents)
+		          if p.id > p.parents(i).id  then
+		            IdentifyInit(p.parents(i))
+		          end if
+		        next
+		      end if
+		      'case 1
+		      'IdentifyInit(p.pointsur.element(0))
+		      'AddInit(p)
+		      'case 2
+		      'AddInterm(p)
+		      'IdentifyInit(p.pointsur.element(0))
+		      'IdentifyInit(p.pointsur.element(1))
+		      'end select
 		    end if
-		    'case 1
-		    'IdentifyInit(p.pointsur.element(0))
-		    'AddInit(p)
-		    'case 2
-		    'AddInterm(p)
-		    'IdentifyInit(p.pointsur.element(0))
-		    'IdentifyInit(p.pointsur.element(1))
-		    'end select
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NbreParentsNonFinal(p as point) As integer
+		  dim i, n as integer
+		  for i = 0 to ubound(p.parents)
+		    if not p.parents(i).final then
+		      n = n+1
+		    end if
+		  next
+		End Function
 	#tag EndMethod
 
 

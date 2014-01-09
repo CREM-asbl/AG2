@@ -233,17 +233,18 @@ Protected Class Macro
 		  dim MacId, oper as integer
 		  dim ifm0,  ifm1 as InfoMac
 		  dim EL0, EL1 as XMLElement
+		  dim num as integer
 		  
 		  
 		  EL0 = XMLElement(EL.Child(0))                   'Forme construite
 		  EL1 = XMLElement(EL.Child(1))                   'Instructions de construction (s'il y en a)
 		  MacId = val(EL0.GetAttribute("Id"))
-		  ifm0 = MacInf.GetInfoMac(MacId)
+		  ifm0 = MacInf.GetInfoMac(MacId,num )
 		  oper = val(EL.GetAttribute("OpId"))
 		  
 		  if EL1 <> nil and oper > 0 then                     'Données de l'éventuelle forme-constructeur
 		    MacId = val(EL1.GetAttribute("Id"))
-		    ifm1 = MacInf.GetInfoMac(MacId)
+		    ifm1 = MacInf.GetInfoMac(MacId, num)
 		  end if
 		  
 		  select case oper
@@ -284,7 +285,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub divide(EL0 as XMLElement, EL1 as XMLElement, byref nbp as nBPoint)
-		  dim id0, id1, MacId as integer
+		  dim id0, id1, MacId, num as integer
 		  dim m, ndiv, div,si as integer
 		  dim Trib as TriBpoint
 		  dim Bib as BiBPoint
@@ -295,7 +296,7 @@ Protected Class Macro
 		  dim ni as integer
 		  
 		  MacId = val(EL1.GetAttribute("Id"))
-		  ifmac = MacInf.GetInfoMac(MacId)  //ifmac correspondant à l'objet constructeur
+		  ifmac = MacInf.GetInfoMac(MacId, num)  //ifmac correspondant à l'objet constructeur
 		  si =ifmac.RealSide
 		  ni = MacInf.IfMacs.IndexOf(ifmac)
 		  ndiv = val(EL1.GetAttribute("NDivP"))
@@ -335,11 +336,12 @@ Protected Class Macro
 		  dim ifmac,  ifm1, ifm2 as infoMac
 		  dim pere, num, macid as integer
 		  dim c as nBPoint
+		  dim pt as point
 		  
 		  MacId = val(EL0.GetAttribute("Id"))
-		  ifmac = MacInf.GetInfoMac(MacId)
+		  ifmac = MacInf.GetInfoMac(MacId, num)
 		  pere = ifmac.forme0
-		  ifm1 = MacInf.GetInfoMac(pere)
+		  ifm1 = MacInf.GetInfoMac(pere,num)
 		  c = ifm1.coord
 		  side = Ifmac.NumSide0
 		  //On calcule d'abord le vecteur directeur de la paraperp
@@ -353,16 +355,17 @@ Protected Class Macro
 		  end if
 		  
 		  //Ensuite on recherche l'origine
-		  EL2 = XMLElement(EL0.Child(0))
-		  EL3 = XMLElement(EL2.Child(0))
-		  n0 = val(EL3.GetAttribute("Id"))   //MacId de l'origine de la paraperp
-		  ifm1 = MacInf.GetInfoMac(n0)
-		  if ifm1 <> nil then                         //Cas d'un point isolé, on le retrouve illico
-		    nbp.append ifm1.Coord.tab(0)
-		  else                                                 //Sinon, il faut retourner chercher dans Histo quel est l'objet dont  l'origine de la paraperp est un sommet
-		    ni = MacInf.IfMacs.Indexof(ifmac)
-		    ifm2 = MacInf.GetSommet(ni,n0,num)
-		    nbp.append ifm2.Coord.tab(num)
+		  ifm1=ifmac.childs(0)
+		  if ifm1.init then
+		    pt = point(currentcontent.TheObjects.Getshape(ifm1.realid))
+		    nbp.append pt.bpt
+		  else
+		    ifm2 = MacInf.GetInfoMac(ifm1.MacId,num)
+		    if num = 999 then
+		      nbp.append ifm2.coord.tab(0)
+		    else
+		      nbp.append ifm2.Coord.tab(num)
+		    end if
 		  end if
 		  nbp.Append nbp.tab(0)+w
 		End Sub
@@ -371,7 +374,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Inter(ifmac as infomac, byref nbp as nBPoint)
 		  dim EL10, EL11 as XMLElement
-		  dim Mid,  mid0, mid1, ncot0, ncot1, m, nextre0, nextre1, n as integer
+		  dim Mid,  mid0, mid1, ncot0, ncot1, m, nextre0, nextre1, n, num as integer
 		  dim nb1, nb0 as nBPoint
 		  dim Bib1, Bib0 as BiBPoint
 		  dim r1, r2 as double
@@ -382,13 +385,13 @@ Protected Class Macro
 		  
 		  Mid = ifmac.MacId
 		  mid0 = ifmac.forme0
-		  ifm0 = MacInf.GetInfoMac(mid0)
+		  ifm0 = MacInf.GetInfoMac(mid0, num)
 		  fa0 = ifm0.fa
 		  fo0 = ifm0.fo
 		  nb0 = ifm0.coord
 		  
 		  mid1 = ifmac.forme1
-		  ifm1 = MacInf.GetInfoMac(mid1)
+		  ifm1 = MacInf.GetInfoMac(mid1, num)
 		  fa1 = ifm1.fa
 		  fo1 = ifm1.fo
 		  nb1 = ifm1.coord
@@ -529,43 +532,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldGetInfoSommet(mid as integer, byref pid as integer, byref rid as integer, byref fa as integer, byref fo as integer)
-		  'dim i, j, n as integer
-		  'dim EL, EL0, EL1, EL2 as XMLElement  // On va chercher l'objet auquel un point  de macroid mid appartient comme sommet
-		  '//pid est la macroid de la forme père et rid est le numéro du sommet en tant que tel
-		  '
-		  'for i = 0 to Histo.ChildCount-1
-		  'EL = XMLElement(Histo.Child(i))
-		  'if EL.Name =  Dico.Value("Operation") then
-		  'EL0 = XMLElement(EL.Child(0))
-		  'pid = val(EL0.GetAttribute("Id"))
-		  'fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		  'fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  '
-		  'if fa = 0 and fo = 0 and pid = mid then
-		  'rid = 0
-		  'return
-		  'else
-		  'EL1= XMLElement(EL0.Child(0))
-		  'if EL1 <> nil and EL1.Childcount > 0 then
-		  'for j = 0 to EL1.Childcount -1
-		  'EL2 = XMLElement(EL1.Child(j))
-		  'n = val(EL2.GetAttribute("Id"))
-		  'if n = mid then
-		  'rid = j
-		  'return
-		  'end if
-		  'next
-		  'end if
-		  'end if
-		  '
-		  'end if
-		  'next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetName() As string
 		  return Caption
 		End Function
@@ -612,14 +578,14 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function GetLocation(n as integer) As double
-		  dim i, j, k, m as integer
+		  dim i, j, k, m, num as integer
 		  dim s as shape
 		  dim ifm as infomac
 		  dim EL, EL0, EL1 as XMLElement
 		  
 		  m = Obinit.indexof(n)
 		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n)
+		    ifm = MacInf.GetInfoMac(n, num)
 		    return ifm.location
 		    's= currentcontent.theobjects.getshape(ifm.realid)
 		    'if s isa point and point(s).pointsur.count = 1 then
@@ -629,7 +595,7 @@ Protected Class Macro
 		  
 		  m = ObInterm.indexof(n)
 		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n)
+		    ifm = MacInf.GetInfoMac(n, num)
 		    return ifm.location
 		  end if
 		  
@@ -656,14 +622,14 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function GetSide(n as integer) As integer
-		  dim i, j, k, m as integer
+		  dim i, j, k, m, num as integer
 		  dim s as shape
 		  dim ifm as infomac
 		  dim EL, EL0, EL1 as XMLElement
 		  
 		  m = Obinit.indexof(n)
 		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n)
+		    ifm = MacInf.GetInfoMac(n,num)
 		    k = ifm.realid
 		    s= currentcontent.theobjects.getshape(k)
 		    if s isa point and point(s).pointsur.count = 1 then
@@ -673,7 +639,7 @@ Protected Class Macro
 		  
 		  m = ObInterm.indexof(n)
 		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n)
+		    ifm = MacInf.GetInfoMac(n,num)
 		    return ifm.Realside
 		  end if
 		  
@@ -840,17 +806,31 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInstrucConstruction(n as integer) As integer
-		  dim i, op, Mid as integer
-		  dim EL, EL1 as XMLElement
+		Function GetInstrucConstruction(n as integer, Byref Pid as integer) As integer
+		  dim i, j, op, Mid, m as integer
+		  dim EL, EL1, EL2 as XMLElement
 		  
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.Child(i))
 		    op = val(EL.GetAttribute("OpId"))
 		    EL1 = XMLElement(EL.FirstChild)
-		    Mid = val(EL1.GetAttribute("Id"))
-		    if op = 0 and Mid = n then
-		      return i
+		    if EL1 <> nil then
+		      Pid = val(EL1.GetAttribute("Id"))  'PId est la macid de la forme soit que l'on construit, soit dont on recherche un des sommets
+		      if op = 0 and   Pid = n then
+		        return i                                          'i est le numéro de l'instruction
+		      else
+		        EL1 = XmlElement(EL1.FirstChild)
+		        if EL1 <> nil then
+		          for j = 0 to EL1.ChildCount-1
+		            EL2 = XmlElement(EL1.Child(j))
+		            m = val(EL2.GetAttribute("Id"))
+		            if m = n then
+		              MacroExe(CurrentContent.CurrentOperation).DrapPoint = true ' le drapeau indique qu'on est en train de s'occuper d'un 
+		              return i                                                                                                  ' de la forme de macid Pid plutôt que de cette forme rlle-même 
+		            end if
+		          next
+		        end if
+		      end if
 		    end if
 		  next
 		  

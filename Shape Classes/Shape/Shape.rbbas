@@ -1548,7 +1548,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  if (constructedby <> nil and constructedby.oper = 6)  or macconstructedby <> nil  or std then
+		  if (constructedby <> nil and constructedby.oper = 6)   or std then
 		    auto = 0
 		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle then
 		    auto = 1

@@ -394,8 +394,10 @@ Implements StringProvider
 		  //Les faux points d'intersection sont les  sommets communs aux deux formes sh1 ou sh2
 		  // ou les sommets de l'un qui sont pointsur sur l'autre. Ces points n'ont pas le statut de pointinter mais occupent la place
 		  //d'un point inter. Celle-ci doit être mentionnée comme occupée. On les calcule en premier lieu.
+		  //Idem pour les points de subdivision
 		  
 		  dim i,h,k as integer
+		  dim p as point
 		  
 		  for h = 0 to nlig
 		    for k = 0 to ncol
@@ -403,6 +405,27 @@ Implements StringProvider
 		        for i = 0 to ubound(sh1.childs)
 		          if   sh2.getindex(sh1.childs(i)) <> -1 and sh1.childs(i).pointsur.count < 2  and  sh1.childs(i).bpt.distance(bptinters(h,k)) < epsilon then
 		            bezet(h, k) = true      ' on ne peut placer aucun vrai pt d'inter ici
+		          end if
+		        next
+		        for i = 0 to ubound(sh2.childs)
+		          if   sh1.getindex(sh2.childs(i)) <> -1 and sh2.childs(i).pointsur.count < 2  and  sh2.childs(i).bpt.distance(bptinters(h,k)) < epsilon then
+		            bezet(h, k) = true      ' ici non plus
+		          end if
+		        next
+		        for i = 0 to ubound(sh1.constructedshapes)
+		          if sh1.constructedshapes(i) isa point  then
+		            p = point(sh1.constructedshapes(i))
+		            if p.constructedby.oper = 4 and p.constructedby.data(4) = h and  p.bpt.distance (bptinters(h,k)) < epsilon then
+		              bezet(h,k) = true
+		            end if
+		          end if
+		        next
+		        for i = 0 to ubound(sh2.constructedshapes)
+		          if sh2.constructedshapes(i) isa point  then
+		            p = point(sh2.constructedshapes(i))
+		            if p.constructedby.oper = 4 and p.constructedby.data(4) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then
+		              bezet(h,k) = true
+		            end if
 		          end if
 		        next
 		      end if

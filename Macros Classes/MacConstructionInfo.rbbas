@@ -7,12 +7,17 @@ Protected Class MacConstructionInfo
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInfoMac(n as integer) As InfoMac
+		Function GetInfoMac(mid as integer, byref num as integer) As InfoMac
 		  dim i as integer
 		  
 		  for i = 0 to ubound (IfMacs)
-		    if IfMacs(i).MacId = n then
+		    if IfMacs(i).MacId = mid then
 		      return IfMacs(i)
+		    else
+		      num = GetInfoMacIn(ifmacs(i),mid)
+		    end if
+		    if num <> -1 then
+		      return ifmacs(i)
 		    end if
 		  next
 		  return nil
@@ -125,9 +130,9 @@ Protected Class MacConstructionInfo
 		  dim i, j as integer
 		  dim EL, EL0, EL1 as XMLElement
 		  
-		  if (Mac.Obinit.indexof(n) <> -1) or   (Mac.ObInterm.indexof(n) <> -1) or (Mac.ObFinal.indexof(n) <> -1) then
-		    return GetInfoMac(n)
-		  end if
+		  'if (Mac.Obinit.indexof(n) <> -1) or   (Mac.ObInterm.indexof(n) <> -1) or (Mac.ObFinal.indexof(n) <> -1) then
+		  'return GetInfoMac(n)
+		  'end if
 		  
 		  //Si c'est un point qui n'est ni initial ni intermédiaire, il appartient à un autre objet construit antérieurement
 		  
@@ -150,6 +155,21 @@ Protected Class MacConstructionInfo
 		      end if
 		    end if
 		  next
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInfoMacIn(IfMac as InfoMac, mid as integer) As integer
+		  dim i as Integer
+		  dim ifm  as infomac
+		  
+		  for i=0 to Ubound(IfMac.Childs)
+		    if IfMac.Childs(i).Macid = mid  then
+		      return i
+		    end if
+		  next
+		  return -1
+		  
 		End Function
 	#tag EndMethod
 
