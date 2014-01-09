@@ -42,7 +42,7 @@ Begin Window WorkWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   134
+      Left            =   122
       LockBottom      =   "True"
       LockLeft        =   "True"
       LockRight       =   "True"
@@ -53,7 +53,7 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
-      Top             =   -5
+      Top             =   0
       UseFocusRing    =   "False"
       Visible         =   True
       Width           =   676
@@ -110,39 +110,11 @@ Begin Window WorkWindow
          Width           =   120
          BehaviorIndex   =   2
       End
-      Begin PushButton MouvBut
-         AutoDeactivate  =   "True"
-         Bold            =   "True"
-         Cancel          =   ""
-         Caption         =   "Modifier"
-         ControlOrder    =   3
-         Default         =   ""
-         Enabled         =   True
-         Height          =   30
-         HelpTag         =   ""
-         Index           =   0
-         InitialParent   =   "Tools"
-         Italic          =   ""
-         Left            =   0
-         LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
-         Scope           =   0
-         TabPanelIndex   =   0
-         TextFont        =   "System"
-         TextSize        =   0
-         Top             =   31
-         Underline       =   ""
-         Visible         =   True
-         Width           =   120
-         BehaviorIndex   =   3
-      End
       Begin GroupBox MoveBox
          AutoDeactivate  =   "True"
          Bold            =   "True"
          Caption         =   "Mouvements"
-         ControlOrder    =   4
+         ControlOrder    =   5
          Enabled         =   True
          Height          =   152
          HelpTag         =   ""
@@ -168,12 +140,12 @@ Begin Window WorkWindow
             Bold            =   "True"
             Cancel          =   ""
             Caption         =   "Glisser"
-            ControlOrder    =   5
+            ControlOrder    =   6
             Default         =   ""
             Enabled         =   True
             Height          =   30
             HelpTag         =   ""
-            Index           =   1
+            Index           =   2
             InitialParent   =   "MoveBox"
             Italic          =   ""
             Left            =   7
@@ -196,12 +168,12 @@ Begin Window WorkWindow
             Bold            =   "True"
             Cancel          =   ""
             Caption         =   "Tourner"
-            ControlOrder    =   6
+            ControlOrder    =   7
             Default         =   ""
             Enabled         =   True
             Height          =   30
             HelpTag         =   ""
-            Index           =   2
+            Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   ""
             Left            =   7
@@ -224,12 +196,12 @@ Begin Window WorkWindow
             Bold            =   "True"
             Cancel          =   ""
             Caption         =   "Retourner"
-            ControlOrder    =   7
+            ControlOrder    =   8
             Default         =   ""
             Enabled         =   True
             Height          =   30
             HelpTag         =   ""
-            Index           =   3
+            Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   ""
             Left            =   7
@@ -252,12 +224,12 @@ Begin Window WorkWindow
             Bold            =   "True"
             Cancel          =   ""
             Caption         =   "Zoomer"
-            ControlOrder    =   8
+            ControlOrder    =   9
             Default         =   ""
             Enabled         =   True
             Height          =   30
             HelpTag         =   ""
-            Index           =   4
+            Index           =   5
             InitialParent   =   "MoveBox"
             Italic          =   ""
             Left            =   7
@@ -280,7 +252,7 @@ Begin Window WorkWindow
          AutoDeactivate  =   "True"
          Bold            =   "True"
          Caption         =   "Formes Standard"
-         ControlOrder    =   9
+         ControlOrder    =   10
          Enabled         =   True
          Height          =   135
          HelpTag         =   ""
@@ -306,7 +278,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "False"
             Backdrop        =   0
-            ControlOrder    =   10
+            ControlOrder    =   11
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -331,7 +303,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   0
-            ControlOrder    =   11
+            ControlOrder    =   12
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -356,7 +328,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   0
-            ControlOrder    =   12
+            ControlOrder    =   13
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -381,7 +353,7 @@ Begin Window WorkWindow
             AcceptTabs      =   ""
             AutoDeactivate  =   "True"
             Backdrop        =   ""
-            ControlOrder    =   13
+            ControlOrder    =   14
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -402,11 +374,67 @@ Begin Window WorkWindow
             BehaviorIndex   =   6
          End
       End
+      Begin PushButton MouvBut
+         AutoDeactivate  =   "True"
+         Bold            =   "True"
+         Cancel          =   ""
+         Caption         =   "Modifier"
+         ControlOrder    =   3
+         Default         =   ""
+         Enabled         =   True
+         Height          =   30
+         HelpTag         =   ""
+         Index           =   0
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   1
+         LockBottom      =   ""
+         LockLeft        =   ""
+         LockRight       =   ""
+         LockTop         =   ""
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   31
+         Underline       =   ""
+         Visible         =   True
+         Width           =   120
+         BehaviorIndex   =   3
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Modifier"
+            ControlOrder    =   4
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "MouvBut$1"
+            Italic          =   ""
+            Left            =   1
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   31
+            Underline       =   ""
+            Visible         =   True
+            Width           =   120
+            BehaviorIndex   =   3
+         End
+      End
       Begin GroupBox LibBox
          AutoDeactivate  =   "True"
          Bold            =   "True"
          Caption         =   "Formes Libres"
-         ControlOrder    =   14
+         ControlOrder    =   15
          Enabled         =   True
          Height          =   238
          HelpTag         =   ""
@@ -432,7 +460,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   1344944127
-            ControlOrder    =   15
+            ControlOrder    =   16
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -457,7 +485,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   8007679
-            ControlOrder    =   16
+            ControlOrder    =   17
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -482,7 +510,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   1584048127
-            ControlOrder    =   17
+            ControlOrder    =   18
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -507,7 +535,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   952131583
-            ControlOrder    =   18
+            ControlOrder    =   19
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -532,7 +560,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   115009535
-            ControlOrder    =   19
+            ControlOrder    =   20
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -557,7 +585,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   623656959
-            ControlOrder    =   20
+            ControlOrder    =   21
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -582,7 +610,7 @@ Begin Window WorkWindow
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
             Backdrop        =   454606847
-            ControlOrder    =   21
+            ControlOrder    =   22
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
@@ -2855,7 +2883,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if mousedispo then
 		    closefw
 		    select case index
@@ -2897,7 +2925,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -2929,14 +2957,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -2952,7 +2980,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -2968,7 +2996,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -2980,7 +3008,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -2997,12 +3025,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then

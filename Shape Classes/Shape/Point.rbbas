@@ -17,9 +17,8 @@ Inherits Shape
 		  end
 		  
 		  if   (wnd.drapshowall or not hidden)  and (not invalid)  and (not deleted)  then
-		    if not allparentsnonpointed then
+		    if highlighted or not allparentsnonpointed then
 		      updateskull
-		      
 		      if tracept and g = wnd.mycanvas1.OffscreenPicture.graphics  then
 		        sk.updateborderwidth(borderwidth)
 		        sk.updatebordercolor(bleu,100)
