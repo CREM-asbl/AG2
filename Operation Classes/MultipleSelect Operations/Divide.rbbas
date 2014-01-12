@@ -166,7 +166,7 @@ Inherits MultipleSelectOperation
 		    
 		  case 2
 		    secondpoint = point(s)
-		    Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance" 
+		    Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
 		  end select
 		  return true
 		  

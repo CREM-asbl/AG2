@@ -670,7 +670,7 @@ Protected Class Configuration
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerBoutons(El As XmlElement)
+		Sub ChargerBoutons(El as XmlElement)
 		  MvBt(0) = EL.XQL("Modify").length > 0
 		  MvBt(1) = EL.XQL("Slide").length > 0
 		  MvBt(2) = EL.XQL("Turn").length > 0

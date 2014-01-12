@@ -715,7 +715,7 @@ Protected Class Macro
 		  ni = MacInf.Ifmacs.indexof(ifmac)
 		  MacId = val(EL.Child(0).GetAttribute("Id"))
 		  
-		  nbp  = MacInf.GetSommet(ni,MacId,m).coord
+		  nbp  = MacInf.GetInfoMac(MacId,m).coord
 		  select case ifmac.type
 		  case 1
 		    ifmac.M = nbp.TranslationMatrix
@@ -825,8 +825,8 @@ Protected Class Macro
 		            EL2 = XmlElement(EL1.Child(j))
 		            m = val(EL2.GetAttribute("Id"))
 		            if m = n then
-		              MacroExe(CurrentContent.CurrentOperation).DrapPoint = true ' le drapeau indique qu'on est en train de s'occuper d'un 
-		              return i                                                                                                  ' de la forme de macid Pid plutôt que de cette forme rlle-même 
+		              MacroExe(CurrentContent.CurrentOperation).DrapPoint = true ' le drapeau indique qu'on est en train de s'occuper d'un
+		              return i                                                                                                  ' de la forme de macid Pid plutôt que de cette forme rlle-même
 		            end if
 		          next
 		        end if

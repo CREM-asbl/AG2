@@ -315,6 +315,24 @@ Protected Class InfoMac
 			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="oper"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Npts"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Ncpts"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

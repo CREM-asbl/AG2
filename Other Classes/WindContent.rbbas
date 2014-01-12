@@ -1128,6 +1128,12 @@ Protected Class WindContent
 			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="drapabort"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass
