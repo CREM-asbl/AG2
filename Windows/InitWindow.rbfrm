@@ -38,7 +38,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   "False"
-      Left            =   559
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   "False"
       LockLeft        =   "False"
@@ -48,7 +48,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   405
+      Top             =   479
       Underline       =   "False"
       Visible         =   "True"
       Width           =   135
@@ -67,7 +67,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   706
+      Left            =   686
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -76,10 +76,10 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   402
+      Top             =   512
       Underline       =   "False"
       Visible         =   "False"
-      Width           =   42
+      Width           =   71
       BehaviorIndex   =   1
    End
    Begin EditField User
@@ -99,7 +99,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   640
+      Left            =   649
       LimitText       =   0
       LockBottom      =   "False"
       LockLeft        =   "False"
@@ -118,7 +118,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   370
+      Top             =   432
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -138,7 +138,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   559
+      Left            =   568
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -147,7 +147,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   330
+      Top             =   392
       Underline       =   "False"
       Visible         =   "True"
       Width           =   112
@@ -166,7 +166,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   559
+      Left            =   568
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -175,7 +175,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   368
+      Top             =   432
       Underline       =   "False"
       Visible         =   "True"
       Width           =   69
@@ -194,7 +194,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   586
+      Left            =   572
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -203,16 +203,54 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   446
+      Top             =   512
       Underline       =   ""
       Visible         =   "True"
       Width           =   108
       BehaviorIndex   =   5
    End
+   Begin PopupMenu ComboBox1
+      AutoDeactivate  =   "True"
+      Bold            =   ""
+      ControlOrder    =   6
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      InitialValue    =   ""
+      Italic          =   ""
+      Left            =   568
+      ListIndex       =   0
+      LockBottom      =   ""
+      LockLeft        =   ""
+      LockRight       =   ""
+      LockTop         =   ""
+      Scope           =   0
+      TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
+      Top             =   348
+      Underline       =   ""
+      Visible         =   True
+      Width           =   189
+      BehaviorIndex   =   6
+   End
 End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Sub Refresh()
+		  PushButton2.Caption = Dico.Value("Enseignant")
+		  PushButton3.Caption = Dico.value("Pupil")
+		  PushButton4.caption = Dico.value("Cancel")
+		End Sub
+	#tag EndMethod
+
+
 	#tag Note, Name = Licence
 		
 		Copyright © 2010 CREM
@@ -339,11 +377,6 @@ End
 		  
 		End Sub
 	#tag EndEvent
-	#tag Event
-		Sub Open()
-		  me.caption = Dico.Value("Enseignant")
-		End Sub
-	#tag EndEvent
 #tag EndEvents
 #tag Events PushButton3
 	#tag Event
@@ -351,11 +384,6 @@ End
 		  user.visible = true
 		  user.setfocus
 		  Config.user = "pup"
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Open()
-		  me.Caption = Dico.value("Pupil")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -366,9 +394,31 @@ End
 		  
 		End Sub
 	#tag EndEvent
+#tag EndEvents
+#tag Events ComboBox1
 	#tag Event
 		Sub Open()
-		  me.caption = Dico.value("Cancel")
+		  dim i,n as integer
+		  dim nom,lg as string
+		  n=-1
+		  
+		  for i=1 to app.AppFolder.count
+		    nom = app.AppFolder.trueItem(i).Name
+		    if right(nom,4)=".dct" then
+		      n = n+1
+		      lg = Left(nom,len(nom)-4)
+		      me.addRow(lg)
+		      if lg = config.Langue then
+		        me.ListIndex = n
+		      end if
+		    end if
+		  next
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Change()
+		  Config.SetLangue(ComboBox1.Text)
+		  refresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents

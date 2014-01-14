@@ -5,7 +5,7 @@ Begin Window HistCmd
    BalloonHelp     =   ""
    CloseButton     =   "False"
    Composite       =   "False"
-   Frame           =   7
+   Frame           =   3
    FullScreen      =   "False"
    HasBackColor    =   "False"
    Height          =   22
