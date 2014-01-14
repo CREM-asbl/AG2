@@ -60,7 +60,6 @@ Inherits Operation
 		  Hcmd.ShowWithin(wnd)
 		  Hcmd.HistCtrl.rh = self
 		  
-		  
 		End Sub
 	#tag EndMethod
 

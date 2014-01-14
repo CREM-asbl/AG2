@@ -171,7 +171,7 @@ Protected Class Configuration
 		        if El2 <> nil then
 		          setLangue( EL2.Value)
 		        else
-		          setLangue("Français")
+		          setLangue("Francais")
 		        end if
 		      end if
 		    end if
@@ -201,7 +201,7 @@ Protected Class Configuration
 		    end if
 		  else
 		    'Si AG_Init n'existe pas, on le recrée"
-		    Langue = "Français"
+		    setLangue("Francais")
 		    Menu = "Menu_AC"
 		    Save
 		  end if
@@ -321,7 +321,7 @@ Protected Class Configuration
 		  if Langue <> NewLang then
 		    OldLangue = Langue
 		    if NewLang = "" then
-		      NewLang = "Français"
+		      NewLang = "Francais" 'pas de caractères spéciaux pour nom de fichier
 		    end if
 		    Langue = NewLang
 		    'todo : doit être déplacé dans Workwindow
