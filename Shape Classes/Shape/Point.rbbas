@@ -1592,8 +1592,7 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  if  PointSur.count =1 and  modified then
-		    modified = false
+		  if  PointSur.count =1 and not modified then                    //Ces instructions sont probablement inutiles
 		    if not pointsur.element(0) isa arc then
 		      puton pointsur.element(0)
 		    else
@@ -1601,9 +1600,7 @@ Inherits Shape
 		    end if
 		    modified = true
 		  end if
-		  'if macconstructedby = nil then
-		  'modified = true
-		  'end if
+		  
 		  if modified then
 		    updateconstructedpoints
 		    updateMacConstructedShapes
@@ -2987,6 +2984,7 @@ Inherits Shape
 		  
 		  if s2 = nil then
 		    PutOn S1
+		    forme = 1
 		    drapmagn = false
 		    mobility
 		    return

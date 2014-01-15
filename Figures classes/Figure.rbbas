@@ -3567,14 +3567,20 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub UpdatePtsSur(M as Matrix)
 		  dim i as integer
+		  dim p as point
 		  
 		  'Les pointssur doivent être considérés comme modifiés même si le déplacement est faible,(pour la mise à jour des formes dont ils sont sommets).
 		  for i = 0 to ptssur.count-1
-		    select case  point(ptssur.element(i)).pointsur.count
+		    p = point(ptssur.element(i))
+		    select case  p.pointsur.count
 		    case 1
-		      Point(ptssur.element(i)).transform(M)        //Pas bon pour les arcs: les affinités ne conservent pas ls angles
-		      ptssur.element(i).modified = true
-		      Point(ptssur.element(i)).updateshape
+		      if not p.pointsur.element(0) isa arc then
+		        p.transform(M)                                  //Pas bon pour les arcs: les affinités ne conservent pas ls angles
+		      else
+		        p.puton p.pointsur.element(0), p.location(0) 
+		      end if   
+		      p.modified = true
+		      p.updateshape
 		    end select
 		  next
 		End Sub

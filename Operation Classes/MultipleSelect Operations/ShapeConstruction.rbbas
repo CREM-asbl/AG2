@@ -377,6 +377,7 @@ Inherits MultipleSelectOperation
 		        curShape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
 		      else
 		        curshape.puton currentattractingshape
+		        curshape.forme = 1
 		      end if
 		      curshape.mobility
 		    end if

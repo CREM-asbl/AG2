@@ -72,6 +72,7 @@ Implements StringProvider
 		  if i1 <> -1 and j1 <> -1 and bptinters(i1,j1) <> nil   then
 		    p.puton sh1
 		    p.puton sh2
+		    p.forme = 2
 		    pts.append p
 		    p.moveto bptinters(i1,j1)
 		    bezet(i1,j1) = true
@@ -415,7 +416,7 @@ Implements StringProvider
 		        for i = 0 to ubound(sh1.constructedshapes)
 		          if sh1.constructedshapes(i) isa point  then
 		            p = point(sh1.constructedshapes(i))
-		            if p.constructedby.oper = 4 and sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)
+		            if p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4) = h
 		              bezet(h,k) = true
 		            end if
 		          end if
@@ -423,7 +424,7 @@ Implements StringProvider
 		        for i = 0 to ubound(sh2.constructedshapes)
 		          if sh2.constructedshapes(i) isa point  then
 		            p = point(sh2.constructedshapes(i))
-		            if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then ' .constructedby.data(4)
+		            if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
 		              bezet(h,k) = true
 		            end if
 		          end if

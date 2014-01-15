@@ -188,6 +188,9 @@ Inherits Canvas
 		      base.append( New MenuItem(Dico.value("ToolsColorFill")))
 		    end if
 		    
+		    base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
+		    base.append(New MenuItem(Dico.Value("ToolsARPlan")))
+		    
 		    if sctxt.borderwidth = 1 then
 		      base.append( New MenuItem(Dico.Value("Epais")))
 		    else
@@ -206,7 +209,6 @@ Inherits Canvas
 		        base.append(New MenuItem(Dico.Value("DeFlecher")))
 		      end if
 		    end if
-		    
 		    
 		    if sctxt.tracept then
 		      base.append(New MenuItem(Dico.Value("DeTracer")))
@@ -274,6 +276,14 @@ Inherits Canvas
 		      curoper = colorchange(currentcontent.currentoperation)
 		      EndOperMenuContext
 		    end if
+		  case Dico.Value("ToolsAVPlan")
+		    CurrentContent.CurrentOperation=new ChangePosition(1)
+		    curoper = ChangePosition(CurrentContent.Currentoperation)
+		    EndOperMenuContext
+		  case Dico.Value("ToolsARPlan")
+		    CurrentContent.CurrentOperation=new ChangePosition(0)
+		    curoper = ChangePosition(CurrentContent.Currentoperation)
+		    EndOperMenuContext
 		  case Dico.Value("Pointer"), Dico.Value("DePointer")
 		    currentcontent.currentoperation = new Pointer
 		    curoper = SelectOperation(currentcontent.currentoperation)
