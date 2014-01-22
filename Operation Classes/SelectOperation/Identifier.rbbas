@@ -295,8 +295,8 @@ Inherits SelectOperation
 		    if q.pointsur.count > 0 or q.constructedby <> nil or q.hasduplicate then
 		      return false
 		    else
-		      remplace = q
-		      remplacement = p
+		      remplacement = q
+		      remplace = p
 		      return true
 		    end if
 		  else
@@ -305,7 +305,8 @@ Inherits SelectOperation
 		    return true
 		  end if
 		  
-		  //remplacement est toujours un point libre (ni sur ni construit et sans dupliqués)
+		  //remplacement est toujours un point libre (ni sur ni construit) et sans dupliqués
+		  //on pourra lui réaffecter les propriétés de remplacé
 		End Function
 	#tag EndMethod
 
