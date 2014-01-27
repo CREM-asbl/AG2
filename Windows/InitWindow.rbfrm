@@ -31,7 +31,7 @@ Begin Window InitWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -48,9 +48,9 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   479
+      Top             =   468
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   135
       BehaviorIndex   =   0
    End
@@ -61,13 +61,13 @@ Begin Window InitWindow
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   686
+      Left            =   681
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -76,7 +76,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   512
+      Top             =   491
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
@@ -92,14 +92,14 @@ Begin Window InitWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
-      Height          =   24
+      Height          =   26
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   649
+      Left            =   644
       LimitText       =   0
       LockBottom      =   "False"
       LockLeft        =   "False"
@@ -118,7 +118,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   432
+      Top             =   441
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -132,13 +132,13 @@ Begin Window InitWindow
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   568
+      Left            =   571
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -147,9 +147,9 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   392
+      Top             =   411
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   112
       BehaviorIndex   =   3
    End
@@ -160,13 +160,13 @@ Begin Window InitWindow
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   568
+      Left            =   571
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -175,9 +175,9 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   432
+      Top             =   440
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   4
    End
@@ -188,13 +188,13 @@ Begin Window InitWindow
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   572
+      Left            =   571
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -203,9 +203,9 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   512
+      Top             =   491
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   108
       BehaviorIndex   =   5
    End
@@ -222,7 +222,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   ""
-      Left            =   568
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   ""
       LockLeft        =   ""
@@ -232,10 +232,10 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-      Top             =   348
+      Top             =   386
       Underline       =   ""
       Visible         =   True
-      Width           =   189
+      Width           =   180
       BehaviorIndex   =   6
    End
 End
