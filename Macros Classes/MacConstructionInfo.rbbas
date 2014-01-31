@@ -12,6 +12,7 @@ Protected Class MacConstructionInfo
 		  
 		  for i = 0 to ubound (IfMacs)
 		    if IfMacs(i).MacId = mid then
+		      num = 0
 		      return IfMacs(i)
 		    else
 		      num = GetInfoMacIn(ifmacs(i),mid)

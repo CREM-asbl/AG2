@@ -595,6 +595,7 @@ Implements StringProvider
 		  FixeCouleurFond(Config.Fillcolor,0)
 		  Borderwidth = Config.Thickness
 		  std = false
+		  plan = -1
 		End Sub
 	#tag EndMethod
 
@@ -809,6 +810,7 @@ Implements StringProvider
 		  Fill = 0
 		  Points.append new Point(ol, new Basicpoint(0,0))
 		  setpoint(Points(0))
+		  plan = -1
 		End Sub
 	#tag EndMethod
 
@@ -1150,6 +1152,7 @@ Implements StringProvider
 		    Points(i).moveto (s.Points(i).bpt)
 		    points(i).hidden = s.points(i).hidden
 		  next
+		  plan = -1
 		End Sub
 	#tag EndMethod
 
@@ -1830,6 +1833,7 @@ Implements StringProvider
 		  forme = Val(EL.GetAttribute(Dico.value("Nrform")))
 		  Ori = val(EL.GetAttribute(Dico.value("Ori")))
 		  tsfi = new transfosList
+		  plan = val(EL.GetAttribute("Plan"))
 		  autos
 		  
 		  if val(EL.GetAttribute("Auto")) <> 0 then
@@ -3285,12 +3289,12 @@ Implements StringProvider
 		      tobereconstructed = true
 		    end if
 		    
-		    if tobereconstructed then
-		      constructshape
-		      if check then
-		        tobereconstructed = false
-		      end if
-		    end if
+		    'if tobereconstructed then
+		    'constructshape
+		    'if check then
+		    'tobereconstructed = false
+		    'end if
+		    'end if
 		  end if
 		  
 		  if ubound(childs) >= npts then
@@ -3925,7 +3929,7 @@ Implements StringProvider
 		  d = Points(0).bpt.distance(Points(1).bpt)
 		  
 		  if d > 0 then
-		    coord = new nBPoint
+		    coord = newcoord(self)
 		    for i = 0 to ncpts-1
 		      coord.append Points(i).bpt
 		    next
@@ -3993,9 +3997,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function GetCoord() As nBPoint
-		  if coord = nil then
-		    updatecoord
-		  end if
+		  updatecoord
 		  return coord
 		End Function
 	#tag EndMethod
@@ -4010,6 +4012,19 @@ Implements StringProvider
 		      return tsfi.element(i)
 		    end if
 		  next
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NewCoord(s as shape) As nBPoint
+		  select case s.npts
+		  case 2
+		    return new BiBPoint
+		  case 3
+		    return new TriBPoint
+		  else
+		    return new nBPoint
+		  end select
 		End Function
 	#tag EndMethod
 

@@ -1141,6 +1141,7 @@ End
 		  LoadButton.Caption = Dico.Value("LoadCfg")
 		  LangChangeButton.Caption = Dico.Value("ChangeLang")
 		  CreateDictButton.Caption = Dico.Value("DictWindow")
+		  PWButton.Caption = Dico.Value("PassCWindow")
 		End Sub
 	#tag EndMethod
 

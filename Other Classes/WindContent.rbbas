@@ -247,7 +247,9 @@ Protected Class WindContent
 		    if CurrentOperation isa ShapeConstruction and shapeconstruction(currentoperation).currentshape <> nil  then
 		      WindowTitle=WindowTitle+ " " + lowercase(Dico.value(ShapeConstruction(CurrentOperation).Currentshape.GetType))
 		    elseif CurrentOperation isa TransfoConstruction then
-		      WindowTitle=WindowTitle+" "+ lowercase(Dico.value(TransfoConstruction(CurrentOperation).GetType(TransfoConstruction(CurrentOperation).type)))
+		      WindowTitle=WindowTitle+" : "+ lowercase(Dico.value(TransfoConstruction(CurrentOperation).GetType(TransfoConstruction(CurrentOperation).type)))
+		    elseif CurrentOperation isa MacroExe then
+		      WindowTitle = WindowTitle+ " : " + lowercase(MacroExe(CurrentOperation).Mac.Caption)
 		    end if
 		  else
 		    windowTitle = windowtitle+" - "+Dico.value("Noactiveop")
@@ -348,7 +350,7 @@ Protected Class WindContent
 		  currentoperation = nil
 		  wnd.closefw
 		  
-		  while currentop > 0 and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
+		  while currentop > 0 and  Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
 		    currentop = currentop-1
 		  wend
 		  
@@ -420,7 +422,7 @@ Protected Class WindContent
 		  else
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
-		  
+		  AG.SetAttribute("NbrDec", str(ndec))
 		  if App.TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")
 		    for i = 0 to App.TheMacros.count-1
@@ -700,12 +702,20 @@ Protected Class WindContent
 		  plans(0)=0
 		  for i = 1 to n
 		    s = TheObjects.element(i)
-		    if s.plan > ubound(plans) then
+		    if plans(s.plan) <> s.id or  s.plan = 0 or s.plan = -1 or s.plan > ubound(plans) then
 		      plans.append s.id
+		      s.plan = ubound(plans)
 		    else
 		      plans(s.plan) = s.id
 		    end if
 		  next
+		  
+		  for i = ubound(plans)  downto 1
+		    if plans(i) = 0 or plans(i) = -1 then
+		      plans.remove i
+		    end if
+		  next
+		  updateplans
 		  
 		  
 		  
@@ -719,14 +729,18 @@ Protected Class WindContent
 		  
 		  TheObjects.addshape s
 		  
-		  if not s isa point then
-		    for i = 0 to s.npts-1
-		      if plans.indexof(s.childs(i).id) <> -1 and  (s.childs(i).constructedby = nil or s.childs(i).constructedby.oper = 10) then
-		        plans.remove plans.indexof(s.childs(i).id)
-		      end if
-		    next
+		  'if not s isa point then
+		  'for i = 0 to s.npts-1
+		  'if plans.indexof(s.childs(i).id) <> -1 and  (s.childs(i).constructedby = nil or s.childs(i).constructedby.oper = 10) then
+		  'plans.remove plans.indexof(s.childs(i).id)
+		  'end if
+		  'next
+		  'end if
+		  if s.plan = -1 then
+		    AddPlan(s)
+		  else
+		    Plans(s.plan) = s.id
 		  end if
-		  AddPlan(s)
 		  
 		  #if TargetLinux then
 		    EnableMenuItems

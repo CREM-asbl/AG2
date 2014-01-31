@@ -34,7 +34,7 @@ Inherits Circle
 		    arcangle = 0
 		  case 1
 		    computeradius
-		    startangle = GetAngle(Points(0).bpt, Points(1).bpt)
+		    startangle = coord.startangle         'GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
 		    constructshape
 		    updateangles
@@ -55,7 +55,7 @@ Inherits Circle
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
 		  if not drapori then
-		    ori = points(0).bpt.orientation(points(1).bpt,points(2).bpt)
+		    ori = coord.orientation                         'points(0).bpt.orientation(points(1).bpt,points(2).bpt)
 		  end if
 		  
 		  arcangle = computeangle(points(2).bpt)
@@ -66,23 +66,8 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function computeangle(q as Basicpoint) As double
-		  dim e, a as double
 		  
-		  e = GetAngle(points(0).bpt,q)
-		  a = e - startangle
-		  
-		  if ori >0 then
-		    if a < 0 then
-		      a = a + 2*PI
-		    end if
-		  elseif ori <0 then
-		    if a >0 then
-		      a = a -2*PI
-		    end if
-		  end if
-		  
-		  return a
-		  'a a toujours meme signe que ori
+		  return coord.computeangle(q,ori)
 		End Function
 	#tag EndMethod
 
@@ -618,8 +603,8 @@ Inherits Circle
 		Sub Updateangles()
 		  dim q as basicpoint
 		  
-		  startangle = GetAngle(Points(0).bpt, Points(1).bpt)
-		  endangle = GetAngle(Points(0).bpt, Points(2).bpt)
+		  startangle = coord.startangle    'GetAngle(Points(0).bpt, Points(1).bpt)
+		  endangle = coord.endangle     'GetAngle(Points(0).bpt, Points(2).bpt)
 		  computearcangle
 		  
 		  // startangle et endangle  sont toujours entre 0 et 2 pi

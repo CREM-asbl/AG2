@@ -256,6 +256,16 @@ End
 		        m = m + mess(s.childs(i))
 		      next
 		    end if
+		    if ubound(s.constructedshapes)> -1 then
+		      m = m + "Formes Construites"+chr(13)
+		      for i = 0 to ubound(s.constructedshapes)
+		        if s.ConstructedShapes(i) isa point then
+		          m = m+ mess(point(s.constructedshapes(i)))
+		        else
+		          m = m + mess(s.constructedshapes(i))
+		        end if
+		      next
+		    end if
 		  else
 		    m = m + mess(point(s))
 		  end if
@@ -349,6 +359,8 @@ End
 		    s = f.shapes.element(i)
 		    EF.Text = EF.Text+ messages(s)+chr(10)
 		  next
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

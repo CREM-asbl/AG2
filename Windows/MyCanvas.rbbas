@@ -197,6 +197,14 @@ Inherits Canvas
 		      base.append(New MenuItem(Dico.Value("Mince")))
 		    end if
 		    
+		    if sctxt isa point and  point(sctxt).pointsur.count = 0 then
+		      if not Point(sctxt).std  then
+		        base.append(New MenuItem(Dico.Value("Rigidifier")))
+		      else
+		        base.append(New MenuItem(Dico.Value("Derigidifier")))
+		      end if
+		    end if
+		    
 		    if not sctxt isa point then
 		      if sctxt.nonpointed then
 		        base.append(New MenuItem(Dico.Value("Pointer")))
@@ -283,6 +291,10 @@ Inherits Canvas
 		  case Dico.Value("ToolsARPlan")
 		    CurrentContent.CurrentOperation=new ChangePosition(0)
 		    curoper = ChangePosition(CurrentContent.Currentoperation)
+		    EndOperMenuContext
+		  case Dico.Value("Rigidifier"), Dico.Value("Derigidifier")
+		    currentcontent.currentoperation = new Rigidifier
+		    curoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Pointer"), Dico.Value("DePointer")
 		    currentcontent.currentoperation = new Pointer

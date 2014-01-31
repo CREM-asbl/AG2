@@ -277,12 +277,6 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function orientation() As integer
-		  return 0
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer)
 		  dim  w as BasicPoint
 		  dim M as Matrix
@@ -348,6 +342,30 @@ Protected Class nBpoint
 	#tag Method, Flags = &h0
 		Function SimilarityMatrix() As Matrix
 		  return new SimilarityMatrix(tab(0),tab(1),tab(2), tab(3))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function startangle() As double
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function endangle() As double
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function orientation() As integer
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function computeangle(q as basicpoint, ori as integer) As double
+		  
 		End Function
 	#tag EndMethod
 

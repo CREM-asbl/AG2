@@ -873,6 +873,16 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub fx1cancel()
+		  dim i as integer
+		  
+		  for i=0 to count-1
+		    element(i).fx1cancel
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
