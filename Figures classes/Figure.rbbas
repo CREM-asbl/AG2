@@ -257,6 +257,7 @@ Implements StringProvider
 		Function subfigupdate() As Boolean
 		  dim M as Matrix
 		  
+		  NbUnModif = 0
 		  select case auto
 		  case 0
 		    if standard then
@@ -290,6 +291,8 @@ Implements StringProvider
 		  
 		  
 		  if M = nil or M.v1 = nil then
+		    QQupdateshapes
+		    EndQQupdateshapes
 		    return true                                             ////faut-il bloquer plus ?  (arc d'angle 0)...
 		  else
 		    updatesomm(M)
@@ -1240,6 +1243,9 @@ Implements StringProvider
 		      s.endmove
 		    end if
 		    s.updateMacConstructedShapes
+		    for i = 0 to ubound(s.childs)
+		      s.childs(i).updatemacconstructedshapes
+		    next
 		    
 		  next
 		  
@@ -3577,11 +3583,22 @@ Implements StringProvider
 		      if not p.pointsur.element(0) isa arc then
 		        p.transform(M)                                  //Pas bon pour les arcs: les affinités ne conservent pas ls angles
 		      else
-		        p.puton p.pointsur.element(0), p.location(0) 
-		      end if   
+		        p.puton p.pointsur.element(0), p.location(0)
+		      end if
 		      p.modified = true
 		      p.updateshape
 		    end select
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub fx1cancel()
+		  dim i as integer
+		  
+		  fx1 = -1
+		  for i = 0 to subs.count-1
+		    subs.element(i).fx1=-1
 		  next
 		End Sub
 	#tag EndMethod

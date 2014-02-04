@@ -72,7 +72,7 @@ Inherits MultipleSelectOperation
 		    else
 		      AddInterm(s)
 		      for i = 0 to s.ncpts-1
-		        if s.id > s.points(i).id  then
+		        if s.id > s.points(i).id  or ubound(s.points(i).parents) = 0 or s.points(i).pointsur.count > 0 then
 		          PointIdentifyInit(s.points(i)) //on identifie l'origine des points de construction de s plus vieux que s
 		        end if
 		      next
@@ -166,7 +166,17 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddInit(s as shape)
-		  if not s.Init and not s.Interm then
+		  dim i as integer
+		  
+		  if s isa point then
+		    for i = 0 to ubound(point(s).parents)
+		      if point(s).parents(i).init then
+		        return
+		      end if
+		    next
+		  end if
+		  
+		  if not s.Init and not s.Interm and not s.final then
 		    wnd.mac.ObInit.append s.id
 		    wnd.mac.FaInit.append s.fam
 		    wnd.mac.FoInit.append s.forme
@@ -223,7 +233,7 @@ Inherits MultipleSelectOperation
 		  
 		  CurrentItemtoSet = NumberOfItemsToSelect +1
 		  
-		  for i = 1 to currentcontent.TheObjects.count -1
+		  for i =  currentcontent.TheObjects.count -1 downto 1
 		    s =  currentcontent.TheObjects.element(i)
 		    if s.init or s.Interm or s.final then
 		      fixecouleurs(s)
@@ -282,10 +292,6 @@ Inherits MultipleSelectOperation
 		  dim t as boolean
 		  dim i as integer
 		  
-		  
-		  
-		  
-		  
 		  if p.constructedby <> nil then
 		    AddInterm(p)
 		    op = p.constructedby.oper
@@ -308,32 +314,30 @@ Inherits MultipleSelectOperation
 		      identifyinit(p.constructedby.shape)
 		    end select
 		  else
-		    'select case p.pointsur.count
-		    'case 0
-		    if NbreParentsNonFinal(p) <= 0 then
+		    if p.pointsur.count > 0 then
+		      AddInterm(p)
+		      for i = 0 to p.pointsur.count-1
+		        IdentifyInit(p.pointsur.element(i))
+		      next
+		    elseif NbreParentsNonFinal(p) <= 0 then
 		      AddInit(p)
 		    else
 		      t = true
 		      for i = 0 to ubound(p.parents)
-		        t = t and  (p.id < p.parents(i).id)
+		        t = t and  (p.id < p.parents(i).id)   'p est-il plus vieux que tous ses parents?
 		      next
-		      if t then
+		      if t then                                                 'oui
 		        Addinit(p)
-		      else
+		      else                                                         'non certains de ses parents sont plus vieux que p
 		        for i = 0 to ubound(p.parents)
-		          if p.id > p.parents(i).id  then
-		            IdentifyInit(p.parents(i))
+		          if p.id > p.parents(i).id and not p.parents(i).final  then
+		            AddInterm(p)     'si p.parents(i) est plus vieux que p sans être un objet final
+		            IdentifyInit(p.parents(i))                                                       'on identifie les initiaux avant parents(i)
+		          else
+		            AddInit(p)                                                                                'p devient un objet initial sinon il y a risque de boucle
 		          end if
 		        next
 		      end if
-		      'case 1
-		      'IdentifyInit(p.pointsur.element(0))
-		      'AddInit(p)
-		      'case 2
-		      'AddInterm(p)
-		      'IdentifyInit(p.pointsur.element(0))
-		      'IdentifyInit(p.pointsur.element(1))
-		      'end select
 		    end if
 		  end if
 		End Sub
@@ -347,6 +351,8 @@ Inherits MultipleSelectOperation
 		      n = n+1
 		    end if
 		  next
+		  
+		  return n
 		End Function
 	#tag EndMethod
 

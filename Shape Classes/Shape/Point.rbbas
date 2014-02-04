@@ -491,10 +491,11 @@ Inherits Shape
 		    q =  ar.GetGravityCenter + q * ar.GetRadius
 		  elseif S isa circle then
 		    circ = circle(s)
-		    q = circ.Points(1).bpt-circ.GetGravityCenter
-		    r = q.Anglepolaire+ r*2*Pi*circ.ori
-		    q = new BasicPoint(cos(r),sin(r))
-		    q =  circ.getgravitycenter + q * circ.getradius
+		    q=BiBPoint(circ.coord).positionOnCircle(r,s.ori)
+		    'q = circ.Points(1).bpt-circ.GetGravityCenter
+		    'r = q.Anglepolaire+ r*2*Pi*circ.ori
+		    'q = new BasicPoint(cos(r),sin(r))
+		    'q =  circ.getgravitycenter + q * circ.getradius
 		  end if
 		  Moveto q
 		  
@@ -527,7 +528,7 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function isPointOn(S as Shape, byref k as integer) As Boolean
+		Function isPointOn(S as Shape, byref k as integer) As boolean
 		  
 		  
 		  for k=0 to pointsur.count-1
@@ -563,7 +564,9 @@ Inherits Shape
 		  
 		  liberte = 2
 		  liberte = liberte-pointsur.count
-		  
+		  if std then
+		    liberte = 0
+		  end if
 		  if constructedby <> nil then
 		    select case constructedby.oper
 		    case 0, 4, 6, 7
@@ -590,18 +593,13 @@ Inherits Shape
 		    case 10
 		      liberte = constructedby.shape.liberte
 		    end select
-		  else
-		    updatemobilitysucceeding
 		  end if
-		  
 		  if   MacConstructedBy <>  nil  then
 		    liberte = 0
 		  end if
-		  for i = 0 to ubound(parents)
-		    if  parents(i).macconstructedby <> nil and not init  then
-		      liberte = 0
-		    end if
-		  next
+		  if  ubound(parents) > -1 and   parents(0).macconstructedby <> nil and not parents(0).init and not init  then
+		    liberte = 0
+		  end if
 		  
 		  
 		  for i = 0 to ubound(parents)
@@ -619,6 +617,8 @@ Inherits Shape
 		  if liberte<0 then
 		    liberte=0
 		  end if
+		  
+		  updatemobilitysucceeding
 		  
 		  
 		  
@@ -810,8 +810,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  //Pas utilisé dans le cadre des macros
-		  
 		  dim Form, Temp as XMLElement
 		  dim i, n as integer
 		  
@@ -822,6 +820,17 @@ Inherits Shape
 		      Form.SetAttribute("FigId",str(fig.idfig))
 		    end if
 		    Form.AppendChild Bpt.XMLPutInContainer(Doc)
+		    Form.AppendChild Bordercolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorBorder"))
+		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
+		    Temp.SetAttribute("Value", str(borderwidth))
+		    Form.AppendChild Temp
+		    if Hidden then
+		      Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
+		    end if
+		    if Invalid then
+		      Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
+		    end if
+		    
 		  end if
 		  
 		  if labs.count = 1 then
@@ -839,18 +848,6 @@ Inherits Shape
 		  if Macconstructedby <> nil  then
 		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
-		  
-		  Form.AppendChild Bordercolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorBorder"))
-		  Temp = Doc.CreateElement(Dico.Value("Thickness"))
-		  Temp.SetAttribute("Value", str(borderwidth))
-		  Form.AppendChild Temp
-		  if Hidden then
-		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
-		  end if
-		  if Invalid then
-		    Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
-		  end if
-		  
 		  
 		  Form.AppendChild XMLPutTsfInContainer(Doc)
 		  
@@ -1220,11 +1217,12 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Identify2(p as point)
 		  //Méthode utilisée uniquement dans le dooperation de identifier
-		  dim i, n as integer
+		  dim i, j, n as integer
 		  dim s as shape
 		  dim ff as figure
+		  dim ol as objectslist
 		  
-		  // p est le Point  qui doit remplacer self
+		  // p est le Point  "remplacement" qui doit remplacer self (qui est le "remplacé")
 		  
 		  if  P = self or gGetSpecialkey = 4 or p.hasstdparent then
 		    return
@@ -1239,13 +1237,13 @@ Inherits Shape
 		    end if
 		  end if
 		  
-		  if p.pointsur.count = 1 and p.pointsur.element(0).getindexpoint(self) <> -1 then
-		    p.removepointsur(p.pointsur.element(0))
-		  end if
+		  'if p.pointsur.count = 1 and p.pointsur.element(0).getindexpoint(self) <> -1 then               //inutile: le remplacement n'est jamais un point "sur"
+		  'p.removepointsur(p.pointsur.element(0))
+		  'end if
+		  ol = isInvolvedInSubdivPoints //cas des points de subdivision (voir plus bas)
+		  Identify1(p)    //le remplacement est effectué chez les parents
 		  
-		  Identify1(p)
-		  
-		  if pointsur.count > 0 then
+		  if pointsur.count > 0 then   //cas où remplacé est un point sur
 		    p.drapmagn = true
 		    select case pointsur.count
 		    case 1
@@ -1255,8 +1253,7 @@ Inherits Shape
 		    end select
 		  end if
 		  
-		  if constructedby <> nil then
-		    // p remplace les ptsconsted avec lesquels il coïncide
+		  if constructedby <> nil then   //cas où remplacé est un point construit
 		    s = constructedby.shape                    // valable pour les transfos, duplicata, découpes  ...
 		    if s isa point then
 		      if point(s) <> p then
@@ -1269,12 +1266,24 @@ Inherits Shape
 		    end if
 		  end if
 		  
-		  for i =  ubound(constructedshapes) downto 0
+		  for i =  ubound(constructedshapes) downto 0  //ceci ne s'applique pas au cas ou remplacé est un des deux points utilisés pour une subdivision
 		    s = constructedshapes(i)
 		    s.constructedby.shape = p
 		    p.constructedshapes.append s
 		    RemoveConstructedShape(s)
 		  next
+		  
+		  if ol.count>0 then
+		    for i = 0 to ol.count-1
+		      s = point(ol.element(i))
+		      for j = 0 to 1
+		        if s.constructedby.data(j)= self then
+		          s.constructedby.data(j) = p
+		        end if
+		      next
+		    next
+		  end if
+		  
 		  
 		  // Adaptation des figures
 		  
@@ -2688,6 +2697,9 @@ Inherits Shape
 		  List = EL1.XQL("PointSur")
 		  if List.length > 0 then
 		    EL2=XMLElement(List.Item(0))
+		    if val(EL2.GetAttribute("Surseg")) =1 then
+		      surseg = true
+		    end if
 		    for j = 0 to EL2.Childcount-1
 		      old = Val(EL2.Child(j).GetAttribute("Id"))
 		      sh = CurrentContent.theobjects.GetShape(old)
@@ -3003,6 +3015,33 @@ Inherits Shape
 		    invalider
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsInvolvedInSubdivPoints() As objectslist
+		  dim ol as objectslist
+		  dim i, j as integer
+		  dim s, sc as shape
+		  
+		  
+		  ol = new ObjectsList
+		  
+		  for i = 0 to ubound(parents)
+		    s = parents(i)
+		    for j = 0 to ubound(s.constructedshapes)
+		      sc = s.constructedshapes(j)
+		      if sc.constructedby.oper = 4 then
+		        if (point(sc.constructedby.data(0)) = self) or (point(sc.constructedby.data(1)) = self) then
+		          ol.addshape point(sc)
+		        end if
+		      end if
+		    next
+		  next
+		  
+		  return ol
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

@@ -178,6 +178,22 @@ Protected Class InfoMac
 		childs(-1) As infomac
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		ndiv As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		idiv As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Forme2 As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		seg As Boolean
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -329,6 +345,24 @@ Protected Class InfoMac
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Ncpts"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ndiv"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="idiv"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Forme2"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

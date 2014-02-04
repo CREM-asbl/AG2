@@ -12,23 +12,17 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function Subdiv(orien as integer, n As integer, i as integer) As basicpoint
-		  dim c, o, e as basicpoint
-		  dim r as double
-		  dim a1, a2, a as double
-		  dim Bib as BiBPoint
 		  
-		  c = tab(0)   //centre
-		  o = tab(1)  //origine
-		  e = tab(2)  //extremite
-		  r = c.distance(o)
-		  a1 = getangle(c,o)
-		  a2 = getangle(c,e)
-		  a2 = Normalize(a2-a1,orien)   //Ne pas utiliser Angle qui tient compte de l'orientation du TriB et non de celle de l'arc qu'on veut diviser
-		  if o = e then
+		  dim r as double
+		  dim  a2, a as double
+		  
+		  r = tab(1).distance(tab(0))
+		  a2 = Normalize(endangle-startangle,orien)   //Ne pas utiliser Angle qui tient compte de l'orientation du TriB et non de celle de l'arc qu'on veut diviser
+		  if tab(1) = tab(2) then
 		    a2=2*PI
 		  end if
-		  a = a1+i*a2/n
-		  return c + new BasicPoint(r*cos(a), r*sin(a))
+		  a = startangle +i*a2/n
+		  return tab(0) + new BasicPoint(r*cos(a), r*sin(a))
 		  
 		  
 		End Function
@@ -36,12 +30,8 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function Angle() As double
-		  dim bpf, bps as BasicPoint
-		  dim fa, sa as double
 		  
-		  fa  = getangle(tab(0), tab(1))
-		  sa = getangle(tab(0), tab(2))
-		  return Normalize(sa-fa, ori)
+		  return Normalize(endangle-startangle, ori)
 		End Function
 	#tag EndMethod
 
@@ -79,6 +69,48 @@ Inherits nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function PositionOnArc(a as double, orien as integer) As BasicPoint
+		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviling relative à ce cercle
+		  dim r, b as double
+		  
+		  
+		  if abs(ori) = 1 then
+		    q = tab(1) - tab(0)
+		    r = q.norme
+		    b = startangle + a*Angle*orien
+		    q = new BasicPoint(cos(b),sin(b))
+		    q =  tab(0) + q *r
+		    return q
+		  end if             'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à cet arc
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Computeangle(p as BasicPoint, orien as integer) As double
+		  dim e, a as double
+		  
+		  
+		  
+		  e = GetAngle(tab(0),p)
+		  a = e - startangle
+		  return Normalize(a,orien)
+		  'a a toujours meme signe que orien
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function StartAngle() As double
+		  return getangle(tab(0),tab(1))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function EndAngle() As double
+		  return getangle(tab(0),tab(2))
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = A propos de l 'orientation
 		A propos de l'orientation
@@ -92,6 +124,8 @@ Inherits nBpoint
 		son orientation doit changer. Il importe donc qu'elle soit recalculée lors d'une telle symétrie. Par contre la routine "modifier" ne doit pas provoquer de changement d'orientation. 
 		 
 		L'angle du triplet, c-à-d l'angle tab(1)-tab(0)-tab(2) doit toujours avoir le même signe que l'orientation. D'où la méthode Normalize
+		
+		On n'utilise guère l'orientation du triplet qui ne coincide pas nécessairement avec celle de l'arc. D'où le paramètre orien dans Normalize
 	#tag EndNote
 
 

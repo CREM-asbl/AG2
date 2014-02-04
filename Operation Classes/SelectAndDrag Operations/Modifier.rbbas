@@ -704,6 +704,7 @@ Inherits SelectAndDragOperation
 		  
 		  figs.createstate("FinalState",pointmobile)
 		  figs.updateoldM
+		  figs.fx1cancel
 		  
 		  super.endoperation
 		  

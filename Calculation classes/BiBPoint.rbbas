@@ -385,7 +385,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function BptSurBiBpt(r as double) As Basicpoint
+		Function BptSurBiBpt(r as double) As basicPoint
 		  
 		  return First * (1-r) + second * r
 		End Function
@@ -627,7 +627,14 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function subdiv(ndiv as integer, i as integer) As BasicPoint
-		  return first + (second-first)*(i/ndiv)
+		  dim n as double
+		  
+		  if first.distance(second) < epsilon then
+		    return first
+		  end if
+		  
+		  n = ndiv
+		  return first + (second-first)*(i/n)
 		End Function
 	#tag EndMethod
 
@@ -653,6 +660,22 @@ Inherits nBpoint
 		  tab = nBP.tab
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PositionOnCircle(a as double, ori as integer) As BasicPoint
+		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviling relative à ce cercle
+		  dim r, b as double
+		  
+		  if abs(ori) = 1 then
+		    q = second - first
+		    r = q.norme
+		    b = q.Anglepolaire+ a*2*Pi*ori
+		    q = new BasicPoint(cos(b),sin(b))
+		    q =  first + q *r
+		    return q
+		  end if
+		End Function
 	#tag EndMethod
 
 

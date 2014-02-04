@@ -62,6 +62,10 @@ Inherits Operation
 		  app.themacros.XMLLoadMacros(FAG)
 		  
 		  currentcontent.removeall
+		  currentcontent.ndec = val(FAG.GetAttribute("NbrDec"))
+		  if currentcontent.ndec =0 then
+		    currentcontent.ndec = 2
+		  end if
 		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
 		  BkCol = FAG.GetAttribute("BkCol")
 		  if BkCol = "noir" and wnd.BackColor = &cFFFFFF then

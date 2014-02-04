@@ -267,9 +267,11 @@ Inherits MultipleSelectOperation
 		    for i = 0 to currentshape.ncpts-1
 		      pt = currentshape.points(i)
 		      if pt.pointsur.count = 2 then
-		        oper = new shapeconstruction
-		        oper.currentshape = pt
-		        currentcontent.addoperation(oper)
+		        if CheckNoIntersec(pt) then
+		          oper = new shapeconstruction
+		          oper.currentshape = pt
+		          currentcontent.addoperation(oper)
+		        end if
 		      end if
 		    next
 		  end if
@@ -398,6 +400,29 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CheckNoIntersec(p as point) As Boolean
+		  dim Histo as XMLElement
+		  dim i as integer
+		  dim EL, EL1 as XMLElement
+		  
+		  Histo = currentcontent.Histo
+		  
+		  for i = 0 to Histo.ChildCount-1
+		    EL = XMLElement(Histo.child(i))
+		    EL1 = XMLElement(EL.Child(0))
+		    if val(EL.GetAttribute("OpId")) = 45 and val(EL1.GetAttribute("Id")) = p.id then
+		      return false
+		    end if
+		  next
+		  return true
+		  
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

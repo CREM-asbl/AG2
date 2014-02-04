@@ -324,8 +324,8 @@ Protected Class ObjectsList
 		    s = new Repere(self,temp)
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère
 		    CurrentContent.CreateFigs
-		    addshape s
-		    currentcontent.addplan(s)
+		    currentcontent.addshape s
+		    'currentcontent.addplan(s)
 		    wnd.MyCanvas1.Setrepere(Repere(s))
 		    return s
 		  case 0
@@ -397,7 +397,13 @@ Protected Class ObjectsList
 		  end select
 		  
 		  s.id = id
-		  'pl = val(Temp.GetAttribute("Plan"))
+		  
+		  if self = currentcontent.TheObjects then
+		    currentcontent.addshape(s)
+		  else
+		    addshape(s)
+		  end if
+		  pl = val(Temp.GetAttribute("Plan"))
 		  
 		  if (not  s isa point) or (s isa point and  ubound(point(s).parents) = -1) then
 		    currentcontent.addplan(s)
@@ -427,9 +433,7 @@ Protected Class ObjectsList
 		    s.IdGroupe = -1
 		  end if
 		  s.signaire = sign(s.aire)
-		  if s.plan <> -1 then
-		    addshape(s)
-		  end if
+		  
 		  return s
 		  
 		End Function
@@ -568,14 +572,15 @@ Protected Class ObjectsList
 		Sub XMLLoadObjects(Shapes as XMLElement)
 		  dim Obj, Prem As XMLElement
 		  dim List as XMLNodeList
-		  dim i, j as integer
+		  dim nobj, i, j as integer
 		  dim s as shape
 		  
 		  List = Shapes.XQL(Dico.Value("Objects"))
 		  
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
-		    if obj.childcount > 0 then
+		    nobj = obj.childcount
+		    if nobj >0 then
 		      XMLLireobjets(Obj)                                  //ne met pas en cause les figures
 		      XMLLirePointsSur(Obj)
 		      XMLReadTsf(Obj)                                    //non plus
@@ -586,6 +591,7 @@ Protected Class ObjectsList
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
 		      CurrentContent.optimize
+		      currentcontent.createplans
 		    end if
 		    updateids
 		  end if
@@ -604,7 +610,6 @@ Protected Class ObjectsList
 		  if List.length > 0 then
 		    XMLLoadGrille(List)
 		  end if
-		  'wnd.Mycanvas1.RefreshBackground
 		  
 		  
 		End Sub
@@ -744,9 +749,7 @@ Protected Class ObjectsList
 		    s = XMLLoadObject(Temp)
 		  next
 		  OptimizeGroups
-		  'if self = currentcontent.TheObjects then
-		  currentcontent.createplans
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
