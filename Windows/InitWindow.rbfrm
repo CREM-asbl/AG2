@@ -48,7 +48,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   468
+      Top             =   430
       Underline       =   "False"
       Visible         =   True
       Width           =   135
@@ -62,7 +62,7 @@ Begin Window InitWindow
       ControlOrder    =   1
       Default         =   "False"
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -76,7 +76,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   491
+      Top             =   460
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
@@ -94,7 +94,7 @@ Begin Window InitWindow
       DataSource      =   ""
       Enabled         =   True
       Format          =   ""
-      Height          =   26
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -118,7 +118,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   441
+      Top             =   395
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -126,14 +126,14 @@ Begin Window InitWindow
       BehaviorIndex   =   2
    End
    Begin PushButton PushButton2
-      AutoDeactivate  =   "True"
+      AutoDeactivate  =   "False"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -147,7 +147,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   411
+      Top             =   360
       Underline       =   "False"
       Visible         =   True
       Width           =   112
@@ -161,7 +161,7 @@ Begin Window InitWindow
       ControlOrder    =   4
       Default         =   "False"
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -175,7 +175,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   440
+      Top             =   395
       Underline       =   "False"
       Visible         =   True
       Width           =   69
@@ -189,7 +189,7 @@ Begin Window InitWindow
       ControlOrder    =   5
       Default         =   ""
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -203,7 +203,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   491
+      Top             =   460
       Underline       =   ""
       Visible         =   True
       Width           =   108
@@ -216,7 +216,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -232,7 +232,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-      Top             =   386
+      Top             =   330
       Underline       =   ""
       Visible         =   True
       Width           =   180
