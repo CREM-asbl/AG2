@@ -702,7 +702,7 @@ Protected Class WindContent
 		  plans(0)=0
 		  for i = 1 to n
 		    s = TheObjects.element(i)
-		    if plans(s.plan) <> s.id or  s.plan = 0 or s.plan = -1 or s.plan > ubound(plans) then
+		    if s.plan = -1 or plans(s.plan) <> s.id or  s.plan = 0  or s.plan > ubound(plans) then
 		      plans.append s.id
 		      s.plan = ubound(plans)
 		    else

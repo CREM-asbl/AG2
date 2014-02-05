@@ -631,11 +631,11 @@ Inherits Bipoint
 		    
 		    select case nextre
 		    case 0
-		      extre1 = D1.BptSurBiBpt(mi)
-		      extre2 = D1.BptSurBiBpt(ma)
+		      extre1 = D1.BptOnBiBpt(mi)
+		      extre2 = D1.BptOnBiBpt(ma)
 		    case 1
 		      extre1 = firstp
-		      extre2 = D1.BptSurBiBpt(ma)
+		      extre2 = D1.BptOnBiBpt(ma)
 		    case 2
 		      extre1= firstp
 		      extre2 = secondp

@@ -469,7 +469,7 @@ Inherits MultipleSelectOperation
 		Sub IdentifyPoints(ifmac as InfoMac, EL0 as XMLElement)
 		  dim newshape, s as shape
 		  dim EL1, EL2 as XMLElement
-		  dim j, m, ni, index as integer
+		  dim j, m, ni, index, num as integer
 		  dim ifm as infomac
 		  dim pt as point
 		  
@@ -479,22 +479,16 @@ Inherits MultipleSelectOperation
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
 		    EL2 = XMLElement(EL1.Child(j))
 		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
-		    
-		    if Mac.ObInit.indexof(m) <> -1  then
-		      index = MacInfo.GetRealInit(m)
-		      s = CurrentContent.TheObjects.Getshape(index)
-		      pt = point(s)
-		      newshape.substitutepoint(pt,newshape.points(j))
-		    else
-		      ni = ubound(MacInfo.IfMacs)
-		      ifm = MacInfo.GetSommet(ni,m,index)
-		      if ifm <> nil and ifm.init  then
-		        s = currentcontent.TheObjects.GetShape(ifm.RealId)
-		        if s isa point  then
-		          pt = point(s)
-		        else
-		          pt = s.points(index)
+		    ifm = MacInfo.GetInfoMac(m,num)
+		    if ifm <> nil then
+		      if ifm.MacId = m then
+		        if Mac.ObInit.indexof(m) <> -1  then
+		          pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		        end if
+		      elseif ifm.init then
+		        pt = Currentcontent.TheObjects.Getshape(ifm.realId).points(num)
+		      end if
+		      if pt <> nil then
 		        newshape.substitutepoint(pt,newshape.points(j))
 		      end if
 		    end if

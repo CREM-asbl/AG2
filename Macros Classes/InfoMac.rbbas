@@ -107,10 +107,6 @@ Protected Class InfoMac
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		RealSide As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		fa As Integer
 	#tag EndProperty
 
@@ -192,6 +188,10 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		seg As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RealSide As Integer
 	#tag EndProperty
 
 
@@ -366,6 +366,12 @@ Protected Class InfoMac
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="seg"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
