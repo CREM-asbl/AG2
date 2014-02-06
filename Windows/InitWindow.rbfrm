@@ -31,7 +31,7 @@ Begin Window InitWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -48,9 +48,13 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   468
+=======
+      Top             =   430
+>>>>>>> origin/master
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   135
       BehaviorIndex   =   0
    End
@@ -61,8 +65,8 @@ Begin Window InitWindow
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   "True"
-      Height          =   28
+      Enabled         =   True
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -76,7 +80,11 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   491
+=======
+      Top             =   460
+>>>>>>> origin/master
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
@@ -92,9 +100,9 @@ Begin Window InitWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
-      Height          =   24
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -118,7 +126,11 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   440
+=======
+      Top             =   395
+>>>>>>> origin/master
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -126,19 +138,23 @@ Begin Window InitWindow
       BehaviorIndex   =   2
    End
    Begin PushButton PushButton2
-      AutoDeactivate  =   "True"
+      AutoDeactivate  =   "False"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
-      Height          =   28
+      Enabled         =   True
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
+<<<<<<< HEAD
       Left            =   572
+=======
+      Left            =   571
+>>>>>>> origin/master
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -147,9 +163,13 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   408
+=======
+      Top             =   360
+>>>>>>> origin/master
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   112
       BehaviorIndex   =   3
    End
@@ -160,13 +180,17 @@ Begin Window InitWindow
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   "True"
-      Height          =   28
+      Enabled         =   True
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
+<<<<<<< HEAD
       Left            =   572
+=======
+      Left            =   571
+>>>>>>> origin/master
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -175,9 +199,13 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   440
+=======
+      Top             =   395
+>>>>>>> origin/master
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   4
    End
@@ -188,13 +216,13 @@ Begin Window InitWindow
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
-      Enabled         =   "True"
-      Height          =   28
+      Enabled         =   True
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   572
+      Left            =   571
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -203,9 +231,13 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   491
+=======
+      Top             =   460
+>>>>>>> origin/master
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   108
       BehaviorIndex   =   5
    End
@@ -215,8 +247,13 @@ Begin Window InitWindow
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
+<<<<<<< HEAD
       Enabled         =   "True"
       Height          =   20
+=======
+      Enabled         =   True
+      Height          =   28
+>>>>>>> origin/master
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -232,10 +269,17 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
+<<<<<<< HEAD
       Top             =   386
       Underline       =   ""
       Visible         =   "True"
       Width           =   189
+=======
+      Top             =   330
+      Underline       =   ""
+      Visible         =   True
+      Width           =   180
+>>>>>>> origin/master
       BehaviorIndex   =   6
    End
 End
