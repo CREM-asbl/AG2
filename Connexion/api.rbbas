@@ -7,7 +7,7 @@ Protected Module api
 		  
 		  info = EL.FirstChild.FirstChild.Value
 		  validite  = EL.Child(1).FirstChild.value
-		  version = str(App.MajorVersion)+str(App.MinorVersion)+str(App.BugVersion)
+		  version =app.LongVersion
 		  if version < validite and info<>Config.LastInfo  then
 		    msgBox EL.LastChild.FirstChild.Value
 		    Config.LastInfo = info

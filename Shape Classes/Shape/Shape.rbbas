@@ -2131,6 +2131,10 @@ Implements StringProvider
 		      tsf = transformation(constructedby.data(0))
 		      tsf.setconstructioninfos2(s,self)
 		    case 1, 2
+		      if  ubound(constructedby.data) = 0 then
+		        tsf = new Transformation(constructedby.shape,0,constructedby.data(0), 0)
+		        constructedby.data.append tsf
+		      end if
 		      tsf = transformation(constructedby.data(1))
 		      fig.SetConstructedBy(s.fig, tsf)
 		      tsf.constructedfigs.addfigure fig

@@ -337,7 +337,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub paraperp(ifmac as infomac, byref nbp as nBPoint)
+		Sub paraperp(ifmac as InfoMac, byref nbp as nBPoint)
 		  dim p, q,v, w0, w, u(1)  as BasicPoint
 		  dim n, n0, n1, n2, side, npt as integer
 		  dim EL2, EL3 as XmlElement
@@ -394,6 +394,7 @@ Protected Class Macro
 		          nbp.tab(1)=nil
 		        end if
 		      end if
+		      ifm1.location = nbp.tab(1).Location(BiB2)
 		    end if
 		    
 		  end if
@@ -478,7 +479,8 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Construction(ifmac as InfoMac, byref nbp as nBPoint)
 		  dim i, n, m, num as integer
-		  dim ifm1 as infomac
+		  dim ifm1, ifm2 as infomac
+		  dim Bib as BiBPoint
 		  
 		  if ifmac.fa = 0 then
 		    redim nbp.tab(0)
@@ -491,11 +493,18 @@ Protected Class Macro
 		  else
 		    redim nbp.tab(ifmac.ncpts-1)
 		    for i = 0 to ifmac.ncpts-1
-		      ifm1 = MacInf.GetInfoMac(ifmac.childs(i).MacId, num)
-		      if ifm1.macid = ifmac.childs(i).MacId then
-		        nbp.tab(i) = ifm1.coord.tab(0)
+		      ifm1 = ifmac.childs(i)
+		      if ifm1.ptsur = 1 then
+		        ifm2 = MacInf.GetInfoMac(ifm1.forme0, num)
+		        Bib = new BiBPoint(ifm2.coord.tab(ifm1.numside0), ifm2.coord.tab((ifm1.numside0+1) mod ifm2.coord.taille))
+		        nbp.tab(i) =Bib.BptOnBiBpt( ifm1.location)
 		      else
-		        nbp.tab(i) = ifm1.coord.tab(num)
+		        ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
+		        if ifm2.macid = ifm1.MacId then
+		          nbp.tab(i) = ifm2.coord.tab(0)
+		        else
+		          nbp.tab(i) = ifm2.coord.tab(num)
+		        end if
 		      end if
 		    next
 		    nbp.constructshape(ifmac.fa, ifmac.fo)
@@ -555,10 +564,6 @@ Protected Class Macro
 		  if m <> -1 then        //Si c'est une forme initiale
 		    ifm = MacInf.GetInfoMac(n, num)
 		    return ifm.location
-		    's= currentcontent.theobjects.getshape(ifm.realid)
-		    'if s isa point and point(s).pointsur.count = 1 then
-		    'return point(s).location(0)
-		    'end if
 		  end if
 		  
 		  m = ObInterm.indexof(n)
@@ -572,19 +577,7 @@ Protected Class Macro
 		  ifm = MacInf.GetSommet(numop-1,n,m)
 		  return ifm.location
 		  
-		  'for i = numop -1 downto 0
-		  'EL = XMLElement(Histo.Child(i))
-		  'EL0 = XMLElement(EL.Child(0))
-		  'if EL0.Childcount > 0 then
-		  'EL1 = XMLElement(EL0.FirstChild)
-		  'for j = 0 to EL1.Childcount-1
-		  'if n = val(EL1.Child(j).GetAttribute("Id")) then
-		  'ifm = Macinf.IfMacs(i)
-		  'return ifm.location
-		  'end if
-		  'next
-		  'end if
-		  'next
+		  
 		End Function
 	#tag EndMethod
 
@@ -659,9 +652,13 @@ Protected Class Macro
 		  n = nbp1.taille
 		  redim nbp.tab(n)
 		  M = GetMatrix(ifm1, EL1)
-		  if M <> nil then
+		  if M <> nil and M.v1 <> nil  then
 		    for i = 0 to n-1
-		      nbp.tab(i) =  M*nbp1.tab(i)
+		      if nbp1.tab(i) <> nil then
+		        nbp.tab(i) =  M*nbp1.tab(i)
+		      else
+		        nbp.tab(i) = nil
+		      end if
 		    next
 		  end if
 		  
@@ -860,7 +857,8 @@ Protected Class Macro
 		  
 		  dim nextre as integer
 		  
-		  if fa = 1 then
+		  select case fa
+		  case  1 
 		    if (fo = 3 or fo = 4 or fo = 5) then
 		      nextre = 0
 		    elseif fo = 6 then
@@ -868,7 +866,9 @@ Protected Class Macro
 		    else
 		      nextre = 2
 		    end if
-		  end if
+		  case 2, 3, 4, 6
+		    nextre = 2
+		  end select
 		  return nextre
 		  
 		End Function

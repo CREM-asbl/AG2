@@ -88,10 +88,10 @@ Inherits Shape
 		  else
 		    D1 = new BiBPoint(p0,p1)
 		    D1.Interscreen(mi,ma)
-		    extre(0) = D1.BptSurBiBpt(ma+0.1)
+		    extre(0) = D1.BptOnBiBpt(ma+0.1)
 		    D1 = new BiBPoint(p0,p2)
 		    D1.Interscreen(mi,ma)
-		    extre(1) = D1.BptSurBiBpt(ma+0.1)
+		    extre(1) = D1.BptOnBiBpt(ma+0.1)
 		  end if
 		  
 		  

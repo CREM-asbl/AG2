@@ -100,12 +100,12 @@ Inherits Shape
 		  else
 		    D1 = new BiBPoint(p1,p2)
 		    D1.Interscreen(mi,ma)
-		    extre(0) = D1.BptSurBiBpt(mi-0.1)
-		    extre(1) = D1.BptSurBiBpt(ma+0.1)
+		    extre(0) = D1.BptOnBiBpt(mi-0.1)
+		    extre(1) = D1.BptOnBiBpt(ma+0.1)
 		    D1 = new BiBPoint(q1,q2)
 		    D1.Interscreen(mi,ma)
-		    extre(3) = D1.BptSurBiBpt(mi-0.1)
-		    extre(2) = D1.BptSurBiBpt(ma+0.2)
+		    extre(3) = D1.BptOnBiBpt(mi-0.1)
+		    extre(2) = D1.BptOnBiBpt(ma+0.2)
 		  end if
 		  
 		  
