@@ -217,6 +217,24 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function FixPt() As BasicPoint
+		  dim MId, M1 as Matrix
+		  dim Pt as BasicPoint
+		  
+		  MId = new Matrix(1)
+		  M1 = self - MId
+		  M1 = M1.inv
+		  
+		  if M1 <> nil then
+		    pt = new BasicPoint(0,0)
+		    return  M1*pt
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

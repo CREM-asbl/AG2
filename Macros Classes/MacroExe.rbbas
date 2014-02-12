@@ -104,7 +104,7 @@ Inherits MultipleSelectOperation
 		  dim bp() as BasicPoint
 		  dim pt as Point
 		  
-		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45)  //codes des opérations
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
 		  
 		  for i = 0 to Histo.Childcount-1  // i : numéro de l'opération
 		    EL = XMLElement(Histo.Child(i))
@@ -340,10 +340,13 @@ Inherits MultipleSelectOperation
 		  ifmac = new InfoMac(fa, fo)
 		  ifmac.oper=oper
 		  ifmac.MacId = n
-		  ifmac.ptsur = val(EL0.GetAttribute("PointSur"))
 		  ifmac.ori = val(EL0.GetAttribute("Ori"))
 		  ifmac.Npts = val(EL0.GetAttribute(Dico.Value("Npts")))
-		  ifmac.Ncpts = val(EL0.GetAttribute(Dico.Value("Ncpts")))
+		  if fa = 0 then
+		    ifmac.ptsur = fo
+		  else
+		    ifmac.Ncpts = val(EL0.GetAttribute(Dico.Value("Ncpts")))
+		  end if
 		  
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    ifmac.RealId =MacInfo.GetRealInit(n)
@@ -477,6 +480,7 @@ Inherits MultipleSelectOperation
 		  newshape = currentcontent.theObjects.GetShape(ifmac.RealId)
 		  
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
+		    pt = nil
 		    EL2 = XMLElement(EL1.Child(j))
 		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
 		    ifm = MacInfo.GetInfoMac(m,num)
@@ -486,7 +490,7 @@ Inherits MultipleSelectOperation
 		          pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		        end if
 		      elseif ifm.init then
-		        pt = Currentcontent.TheObjects.Getshape(ifm.realId).points(num)
+		        pt = Currentcontent.TheObjects.Getshape(ifm.realId).childs(num)
 		      end if
 		      if pt <> nil then
 		        newshape.substitutepoint(pt,newshape.points(j))
@@ -531,6 +535,11 @@ Inherits MultipleSelectOperation
 		    ifmac.forme0 = val(EL2.GetAttribute("Id"))
 		    EL2 = XMLElement(EL1.child(1))
 		    ifmac.forme1 = val(EL2.GetAttribute("Id"))
+		  case 46 //PointSur
+		    ifmac.numside0 = val(EL1.GetAttribute("NumSide0"))
+		    ifmac.location = val(EL1.GetAttribute("Location"))
+		    EL2 = XMLElement(EL1.child(0))
+		    ifmac.forme0 = val(EL2.GetAttribute("Id"))
 		  end select
 		  
 		End Sub
@@ -602,14 +611,22 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim ifm, ifm2 as InfoMac
 		  dim EL1, EL2 as XMLElement
-		  dim num as integer
+		  dim n, num as integer
 		  dim sh  as shape
 		  dim p as point
 		  
 		  for i = 0 to ifmac.npts-1
 		    EL1 = XMLElement(EL.Child(i))
-		    ifm = new InfoMac(0,0)
-		    ifm.MacId = val(EL1.GetAttribute("Id"))
+		    n =val(EL1.GetAttribute("Id"))
+		    ifm =MacInfo.GetInfoMac(n,num)
+		    if ifm <> nil then
+		      if  ifm.macId <> n and num <> -1 then
+		        ifm = ifm.childs(num)
+		      end if
+		    else
+		      ifm = new InfoMac(0,0)
+		      ifm.MacId = n
+		    end if
 		    if s <> nil then
 		      ifm.RealId =s.points(i).id
 		    elseif Mac.ObInit.indexof(Ifm.MacId) <> -1 then
@@ -618,31 +635,35 @@ Inherits MultipleSelectOperation
 		    elseif Mac.ObInterm.indexof(Ifm.MacId) <> -1 then
 		      ifm.interm = true
 		    end if
-		    List = EL1.XQL("PointSur")
-		    if List.length = 0 then
-		      ifm.PtSur = 0
-		    else
-		      EL2 = XMLElement(List.Item(0))
-		      ifm.PtSur=EL2.ChildCount
-		      if ifm.PtSur = 1 then
-		        EL2=XMLElement(EL2.Child(0))
-		        ifm.Forme0=val(EL2.GetAttribute("Id"))
-		        ifm.NumSide0=val(EL2.GetAttribute("NrCote"))
-		        ifm.Location= val(EL2.GetAttribute("Location"))
-		        if ifmac.final then
-		          ifm2 = MacInfo.GetInfoMac(ifm.Forme0, num)
-		          ifm2.childs.append ifm
-		          if ifm2.init or ifm2.final then
-		            sh = currentcontent.TheObjects.Getshape(ifm2.RealId)
-		            s.points(i).puton sh, ifm.Location
-		          end if
-		        end if
-		      else
-		        ifm.PtSur = 2
-		      end if
-		    end if
 		    ifmac.childs.append ifm
 		  next
+		  
+		  'List = EL1.XQL("PointSur")
+		  'if List.length = 0 then
+		  'ifm.PtSur = 0
+		  'else
+		  'EL2 = XMLElement(List.Item(0))
+		  'ifm.PtSur=EL2.ChildCount
+		  'if ifm.PtSur = 1 then
+		  'EL2=XMLElement(EL2.Child(0))
+		  'ifm.Forme0=val(EL2.GetAttribute("Id"))
+		  'ifm.NumSide0=val(EL2.GetAttribute("NrCote"))
+		  'ifm.Location= val(EL2.GetAttribute("Location"))
+		  'if ifmac.final then
+		  'ifm2 = MacInfo.GetInfoMac(ifm.Forme0, num)
+		  'ifm2.childs.append ifm
+		  'if ifm2.init or ifm2.final then
+		  'sh = currentcontent.TheObjects.Getshape(ifm2.RealId)
+		  's.points(i).puton sh, ifm.Location
+		  'end if
+		  'end if
+		  'else
+		  'ifm.PtSur = 2
+		  'end if
+		  'end if
+		  ''end if
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

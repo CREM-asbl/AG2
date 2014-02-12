@@ -406,6 +406,12 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function projection(Bib as BiBPoint) As BasicPoint
+		  return projection(BiB.first, Bib.Second)
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

@@ -266,7 +266,7 @@ Inherits MultipleSelectOperation
 		  if app.macrocreation then
 		    for i = 0 to currentshape.ncpts-1
 		      pt = currentshape.points(i)
-		      if pt.pointsur.count = 2 then
+		      if pt.pointsur.count > 0 then
 		        if CheckNoIntersec(pt) then
 		          oper = new shapeconstruction
 		          oper.currentshape = pt
@@ -413,7 +413,7 @@ Inherits MultipleSelectOperation
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.child(i))
 		    EL1 = XMLElement(EL.Child(0))
-		    if val(EL.GetAttribute("OpId")) = 45 and val(EL1.GetAttribute("Id")) = p.id then
+		    if (val(EL.GetAttribute("OpId")) = 45 or val(EL.GetAttribute("OpId")) = 46) and val(EL1.GetAttribute("Id")) = p.id then
 		      return false
 		    end if
 		  next

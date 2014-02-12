@@ -863,6 +863,7 @@ Inherits Shape
 		  dim  s, s1, s2 as shape
 		  dim pt as point
 		  dim inter as intersec
+		  dim t as Boolean
 		  
 		  if validating then
 		    return
@@ -871,6 +872,7 @@ Inherits Shape
 		  if (conditionedby <> nil and conditionedby.invalid)   or (constructedby <> nil and (constructedby.shape <> nil) and constructedby.shape.invalid) then
 		    return
 		  end if
+		  
 		  invalid = false
 		  validating = true
 		  
@@ -2838,18 +2840,20 @@ Inherits Shape
 		  Form = XMLPutIdInContainer(Doc)
 		  Form.AppendChild XMLPutTsfInContainer(Doc)
 		  
-		  if pointsur.count = 1 then
-		    Form.setAttribute("PointSur", str(pointsur.element(0).id))
-		    if surseg then
-		      Form.SetAttribute("Surseg","1")
-		    end if
-		  elseif pointsur.count=2 then
+		  if app.macrocreation and pointsur.count > 0 then
+		    'Form.setAttribute("PointSur", str(pointsur.element(0).id))
 		    temp = pointsur.XMLPutIdInContainer(Doc)
-		    temp.setAttribute("NumSide0",str(numside(0)))
-		    temp.setAttribute("NumSide1",str(numside(1)))
-		  end if
-		  EL.AppendChild Form
-		  if pointsur.count = 2 then
+		    if pointsur.count = 1 then
+		      temp.setAttribute("NumSide0",str(numside(0)))
+		      temp.setattribute("Location",str(location(0)))
+		      if surseg then
+		        Form.SetAttribute("Surseg","1")
+		      end if
+		    elseif pointsur.count=2 then
+		      temp.setAttribute("NumSide0",str(numside(0)))
+		      temp.setAttribute("NumSide1",str(numside(1)))
+		    end if
+		    EL.AppendChild Form
 		    EL.AppendChild Temp
 		  end if
 		  

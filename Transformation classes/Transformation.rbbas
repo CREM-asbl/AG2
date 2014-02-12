@@ -480,19 +480,21 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function ComputeFixPt() As BasicPoint
-		  dim MId, M1 as Matrix
-		  dim Pt as BasicPoint
+		  'dim MId, M1 as Matrix
+		  'dim Pt as BasicPoint
+		  '
+		  'MId = new Matrix(1)
+		  'M1 = M - MId
+		  'M1 = M1.inv
+		  '
+		  'if M1 <> nil then
+		  'pt = new BasicPoint(0,0)
+		  'return  M1*pt
+		  'else
+		  'return nil
+		  'end if
 		  
-		  MId = new Matrix(1)
-		  M1 = M - MId
-		  M1 = M1.inv
-		  
-		  if M1 <> nil then
-		    pt = new BasicPoint(0,0)
-		    return  M1*pt
-		  else
-		    return nil
-		  end if
+		  return M.FixPt
 		End Function
 	#tag EndMethod
 

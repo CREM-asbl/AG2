@@ -5,7 +5,9 @@ Inherits nBpoint
 		Sub BiBPoint(p as BasicPoint, q as BasicPoint)
 		  Tab.append p
 		  Tab.append q
-		  setlongueur
+		  if p <> nil and  q <> nil then
+		    setlongueur
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -480,8 +482,14 @@ Inherits nBpoint
 		  dim p, q, u, v as BasicPoint
 		  
 		  p = D.VecteurDirecteur
+		  if p = nil then
+		    return nil
+		  end if
 		  p = p.Vecnorperp
 		  u = VecteurDirecteur
+		  if u = nil then
+		    return nil
+		  end if
 		  q = D.first-first
 		  r1= p*u
 		  
@@ -499,7 +507,7 @@ Inherits nBpoint
 		  end if
 		  
 		  r1 = (p*q)/(p*u)   // r = 999: parallelisme r = 1000: alignement  et return = nil sinon r réel  et return <> nil
-		  q= first*(1-r1)+second*r1 // r1 est la position du point d'intersection sur self
+		  q= BptOnBiBpt(r1) // r1 est la position du point d'intersection sur self
 		  r2 = q.location(D.first,D.second)  //Position sur D
 		  
 		  setlongueur
@@ -509,7 +517,6 @@ Inherits nBpoint
 		  
 		  if (n1 = 1 and r1 <-epsilon)  or(n1 = 2 and ((r1<0 and abs(r1)*longueur > epsilon) or (r1>1 and (r1-1)*longueur > epsilon)) ) then
 		    return nil
-		    
 		    'elseif (n2 = 1 and r2 <0) or(n2 = 2 and (r2<0 or r2>1)) then
 		  elseif (n2 = 1 and r2 <-epsilon) or(n2 = 2 and ((r2<0 and abs(r2)*D.longueur > epsilon) or (r2>1 and (r2-1)*D.longueur > epsilon)) ) then
 		    return nil
@@ -585,7 +592,11 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function VecteurDirecteur() As BasicPoint
-		  return second -first
+		  if first <> nil and second <> nil then
+		    return second -first
+		  else
+		    return nil
+		  end if
 		End Function
 	#tag EndMethod
 

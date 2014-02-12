@@ -208,7 +208,7 @@ Protected Class Macro
 		  dim ifmac As InfoMac
 		  dim s as shape
 		  
-		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,24,25,26,27,43,45)
+		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,24,25,26,27,43,45,46)
 		  
 		  MacInf = MacInfo
 		  
@@ -279,6 +279,8 @@ Protected Class Macro
 		  case 43 //Macro
 		  case 45  //Point d'intersection
 		    inter (ifmac, nbp)
+		  case 46 //PointSur
+		    PointSur (ifmac, nbp)
 		  end select
 		  
 		  
@@ -341,16 +343,15 @@ Protected Class Macro
 		  dim p, q,v, w0, w, u(1)  as BasicPoint
 		  dim n, n0, n1, n2, side, npt as integer
 		  dim EL2, EL3 as XmlElement
-		  dim  ifm1, ifm2 as infoMac
-		  dim pere, num, macid as integer
+		  dim  ifm1, ifm2, ifm3 as infoMac
+		  dim  num, macid as integer
 		  dim c as nBPoint
 		  dim pt as point
 		  dim BiB1, BiB2 as BiBPoint
 		  dim r1,r2 as double
 		  
 		  MacId = ifmac.MacId
-		  pere = ifmac.forme0
-		  ifm1 = MacInf.GetInfoMac(pere,num)
+		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
 		  side = Ifmac.Numside0
 		  c = ifm1.coord
 		  //On calcule d'abord le vecteur directeur de la paraperp
@@ -365,22 +366,25 @@ Protected Class Macro
 		  redim  nbp.tab(1)
 		  //Ensuite on recherche l'origine
 		  nbp.tab(0) = GetCoordChild(ifmac.childs(0))
+		  if nbp.tab(0) = nil then
+		    return
+		  end if
 		  // et le deuxième point. Le cas où l'objet est une droite est facile
 		  if ifmac.fo = 4 or ifmac.fo = 5 then
 		    nbp.tab(1) = nbp.tab(0)+w
 		    //pour les segments, il y a deux possibilités selon que le deuxième point est un point sur ou pas
 		  else
-		    ifm1 = ifmac.childs(1)
-		    if ifm1.ptsur <> 1 then
+		    BiB1 = new BiBPoint(nbp.tab(0),nbp.tab(0)+w)
+		    ifm2 = ifmac.childs(1)
+		    if ifm2.ptsur <> 1 then
 		      nbp.tab(1) = GetCoordChild(ifmac.childs(1))
-		      nbp.tab(1) = nbp.tab(1).projection(nbp.tab(0), nbp.tab(0)+w)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
+		      nbp.tab(1) = nbp.tab(1).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
-		      ifm2 = MacInf.GetInfoMac(ifm1.forme0,num)    //infomac de l'objet sur lequel est le point
-		      BiB1 = new BiBPoint(nbp.tab(0),nbp.tab(0)+w)
-		      BiB2 = new BiBPoint(ifm2.coord.tab(ifm1.numside0), ifm2.coord.tab((ifm1.numside0+1)mod ifm2.coord.taille))
+		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
+		      BiB2 = new BiBPoint(ifm3.coord.tab(ifm2.numside0), ifm3.coord.tab((ifm2.numside0+1)mod ifm3.coord.taille))
 		      n1 = 0
-		      if ifm2.fa <> 5 then
-		        if ifm2.fo < 3 then
+		      if ifm3.fa <> 5 then
+		        if ifm3.fo < 3 then
 		          n2 = 2
 		        else
 		          n2 = 0
@@ -394,9 +398,8 @@ Protected Class Macro
 		          nbp.tab(1)=nil
 		        end if
 		      end if
-		      ifm1.location = nbp.tab(1).Location(BiB2)
+		      'ifm2.location = nbp.tab(1).Location(BiB2)
 		    end if
-		    
 		  end if
 		  
 		End Sub
@@ -479,7 +482,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Construction(ifmac as InfoMac, byref nbp as nBPoint)
 		  dim i, n, m, num as integer
-		  dim ifm1, ifm2 as infomac
+		  dim ifm1, ifm2, ifm3 as infomac
 		  dim Bib as BiBPoint
 		  
 		  if ifmac.fa = 0 then
@@ -494,20 +497,22 @@ Protected Class Macro
 		    redim nbp.tab(ifmac.ncpts-1)
 		    for i = 0 to ifmac.ncpts-1
 		      ifm1 = ifmac.childs(i)
-		      if ifm1.ptsur = 1 then
-		        ifm2 = MacInf.GetInfoMac(ifm1.forme0, num)
-		        Bib = new BiBPoint(ifm2.coord.tab(ifm1.numside0), ifm2.coord.tab((ifm1.numside0+1) mod ifm2.coord.taille))
-		        nbp.tab(i) =Bib.BptOnBiBpt( ifm1.location)
+		      ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
+		      if ifm2.macid = ifm1.MacId then
+		        nbp.tab(i) = ifm2.coord.tab(0)
 		      else
-		        ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
-		        if ifm2.macid = ifm1.MacId then
-		          nbp.tab(i) = ifm2.coord.tab(0)
-		        else
-		          nbp.tab(i) = ifm2.coord.tab(num)
-		        end if
+		        nbp.tab(i) = ifm2.coord.tab(num)
 		      end if
 		    next
 		    nbp.constructshape(ifmac.fa, ifmac.fo)
+		    'for i = 0 to ifmac.ncpts-1
+		    'ifm1 = ifmac.childs(i)
+		    'if ifm1.ptsur = 1 then
+		    'ifm3 = MacInf.GetInfoMac(ifm1.forme0,num)
+		    'ifm1.location = ifm1.coord.tab(0).location(ifm3.coord.tab(ifm1.numside0), ifm3.coord.tab((ifm1.numside0+1) mod ifm3.coord.taille))
+		    'end if
+		    'next
+		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -532,9 +537,10 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub dupliquerpoint(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
-		  dim id1, id0 ,  k, n, np, m as integer
+		  dim id1, id0 ,  k, n, np, m, si0 as integer
 		  dim fp, sp, bp as BasicPoint
 		  dim nb as nBPoint
+		  dim loc0 as double
 		  
 		  id1 =  val(EL1.GetAttribute("Id")) //point source
 		  loc0 = GetLocation(id1)
@@ -745,18 +751,24 @@ Protected Class Macro
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
 		    ExeOper(ifmac, EL,nbp)                                     //on recalcule ou récupère les coordonnées
 		    ifmac.coord = nbp
-		    ifmac.location =loc0
+		    for i =0 to ifmac.npts-1
+		      ifmac.childs(i).coord = new nBPoint(nbp.tab(i))
+		    next
 		  end if
 		  
 		  if (ObFinal.indexof(MacId) <> -1)  then      //Si c'est une forme finale
 		    ExeOper(ifmac, EL,nbp)
 		    ifmac.coord = nbp
-		    ifmac.location = loc0
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.coord = ifmac.coord
 		    s.repositionnerpoints
-		    s.modified = true
+		    'for i = 0 to s.npts-1
+		    'if s.points(i).pointsur.count = 1 then
+		    's.points(i).puton ( s.points(i).pointsur.element(0), ifmac.childs(i).location)
+		    's.modified = true
+		    'end if
+		    'next
 		  end if
 		End Sub
 	#tag EndMethod
@@ -818,6 +830,7 @@ Protected Class Macro
 		  dim p as point
 		  dim bp as BasicPoint
 		  dim ifm1 as infomac
+		  dim Bib as BiBPoint
 		  
 		  
 		  if ifm.init then                                                      'si le point cherché est un point initial
@@ -826,19 +839,20 @@ Protected Class Macro
 		    bp=p.bpt
 		  else
 		    select case ifm.ptsur
-		    case 0, 2                                                                    'cas des points libres et aussi des points construits ou d'inter
+		    case 0, 2                                                                    'cas des points libres et aussi des points  d'inter ou des pts construits
 		      ifm1 = MacInf.GetInfoMac(ifm.MacId,m)
 		      if ifm1.MacId = ifm.MacId then
 		        bp = ifm1.coord.tab(0)
 		      else     'Si le point cherché n'est pas ptsur, c'est un sommet de la forme dont on reçoit l'infomac, son numéro nous suffit
 		        bp = ifm1.coord.tab(m)
 		      end if                              'Il faut aller chercher ses coord dans sa première occurrence dans un objet (on remonte dans les infomac)
-		    case 1                                                                       'sinon il faut le recalculer donc savoir sur qulle forme il est ptsur; cela se trouve dans son infomac personnel , ifm
+		    case 1                                 'sinon il faut le recalculer donc savoir sur qulle forme il est ptsur; cela se trouve dans son infomac personnel , ifm
 		      n0 = ifm.numside0
 		      ifm1 = MacInf.GetInfoMac(ifm.forme0, m)
 		      if ifm1.fa <> 5 then
 		        n1 = (n0+1) mod ifm1.coord.taille
-		        bp = ifm1.coord.tab(n0)+(ifm1.coord.tab(n1)-ifm1.coord.tab(n0))*(ifm.location)
+		        Bib = new BiBPoint(ifm1.coord.tab(n0), ifm1.coord.tab(n1))
+		        bp =BiB.BptOnBiBpt(ifm.location)
 		      else                                                                         'cas des arcs et cercles
 		        if ifm1.fo = 0 then
 		          bp =BiBPoint(ifm1.coord).PositionOnCircle(ifm.location,ifm1.ori)
@@ -858,7 +872,7 @@ Protected Class Macro
 		  dim nextre as integer
 		  
 		  select case fa
-		  case  1 
+		  case  1
 		    if (fo = 3 or fo = 4 or fo = 5) then
 		      nextre = 0
 		    elseif fo = 6 then
@@ -890,6 +904,24 @@ Protected Class Macro
 		  end if
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PointSur(ifmac as infomac, byref nbp as nbpoint)
+		  dim  MacId, side, num as integer
+		  dim ifm1 as infomac
+		  dim Bib as BiBPoint
+		  
+		  
+		  redim nbp.tab(0)
+		  
+		  MacId = ifmac.MacId
+		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
+		  side = Ifmac.Numside0
+		  BiB = new BiBpoint( ifm1.coord.tab(side), ifm1.coord.tab((side+1) mod ifm1.coord.taille))
+		  nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
+		  
+		End Sub
 	#tag EndMethod
 
 
@@ -977,14 +1009,6 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		NumOp As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		si0 As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		loc0 As double
 	#tag EndProperty
 
 

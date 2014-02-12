@@ -314,12 +314,12 @@ Inherits MultipleSelectOperation
 		      identifyinit(p.constructedby.shape)
 		    end select
 		  else
-		    if p.pointsur.count > 0 then
-		      AddInterm(p)
-		      for i = 0 to p.pointsur.count-1
-		        IdentifyInit(p.pointsur.element(i))
-		      next
-		    elseif NbreParentsNonFinal(p) <= 0 then
+		    'if p.pointsur.count > 0 then
+		    'AddInterm(p)
+		    'for i = 0 to p.pointsur.count-1
+		    'IdentifyInit(p.pointsur.element(i))
+		    'next
+		    if NbreParentsNonFinal(p) <= 0 then
 		      AddInit(p)
 		    else
 		      t = true

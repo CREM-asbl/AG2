@@ -361,10 +361,15 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLelement
+		  dim Temp as XMLElement
+		  
 		  if not Bip isa Polygon then
 		    return nil
 		  end if
-		  EL.appendchild Dr.XMLPutIdINContainer(Doc)
+		  
+		  Temp =  Dr.XMLPutIdInContainer(Doc)
+		  Temp.AppendChild DR.XMLPutChildsInContainer(Doc)
+		  EL.appendchild Temp
 		  EL.AppendChild Dr.XMLPutConstructionInfoInContainer(Doc)
 		  
 		  return EL

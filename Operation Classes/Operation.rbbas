@@ -560,9 +560,15 @@ Protected Class Operation
 		  dim EL as XmlElement
 		  dim str as string
 		  
-		  if (self isa shapeconstruction) and (currentshape isa point) and  (point(currentshape).pointsur.count = 2) then
-		    opId = 45
-		    str = "Intersection"
+		  if (self isa shapeconstruction) and (currentshape isa point)  then
+		    select case point(currentshape).pointsur.count
+		    case 1
+		      OpId = 46
+		      str = "PointSur"
+		    case 2
+		      opId = 45
+		      str = "Intersection"
+		    end select
 		  else
 		    str = GetName
 		  end if
@@ -657,7 +663,7 @@ Protected Class Operation
 		Unit : 41
 		HideTsf: 44
 		Inter : 45                  //N'est utilisé que pour les macros: on assimile l'intersection de deux objets à une opération
-		
+		PointSur: 46            // Idem pour la construction d'un Point Sur
 		3) SelectandDragOperation
 		Duplicate: 19 
 		Glisser: 20  
