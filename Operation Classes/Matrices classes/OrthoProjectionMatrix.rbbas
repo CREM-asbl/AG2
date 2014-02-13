@@ -1,27 +1,18 @@
 #tag Class
-Protected Class ProjectionMatrix
-Inherits Matrix
+Protected Class OrthoProjectionMatrix
+Inherits AffiProjectionMatrix
 	#tag Method, Flags = &h0
 		Sub OrthoProjectionMatrix(a as BasicPoint, b as BasicPoint)
-		  dim d , n as double
-		  dim u as basicpoint
+		  dim bib1, bib2 as BiBPoint
+		  dim w as Basicpoint
 		  
-		  d = b.sqrdistance(a)
+		  bib2 = new BiBPoint(a,b)
+		  w = b-a
+		  w=w.vecnorperp
+		  bib1=new BiBPoint(a,a+w)
+		  AffiProjectionMatrix(Bib1,bib2)
 		  
-		  if a <> nil and b <> nil and d > epsilon then
-		    u = b-a
-		    n = 1 /d
-		    v1 = u*((u.x)*n)
-		    v2 = u*((u.y)*n)
-		    v3 = a - u* (a*u)/d^2
-		    
-		    'v1 = new BasicPoint((b.x-a.x)*(b.x-a.x),(b.x-a.x)*(b.y-a.y))
-		    'v2 = new BasicPoint((b.x-a.x)*(b.y-a.y),(b.y-a.y)*(b.y-a.y))
-		    'v1 = v1/d
-		    'v2 = v2/d
-		    'v3 = a - v1*a.x -v2*a.y
-		    
-		  end if
+		  
 		End Sub
 	#tag EndMethod
 

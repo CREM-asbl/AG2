@@ -65,7 +65,7 @@ Inherits MultipleSelectOperation
 		  if s.constructedby = nil then
 		    t = true
 		    for i =0 to s.ncpts-1
-		      t = t and s.id < s.points(i).id  // t = true si tous les sommets de s sont postérieurs à s --> s est initial
+		      t = t and (s.id < s.points(i).id and s.points(i).pointsur.count < 2)  // t = true si tous les sommets de s sont postérieurs à s --> s est initial
 		    next
 		    if t then  'and (s isa droite or s isa polyqcq or ( (s.fam = 2 or s.fam = 3) and (s.forme = 0) ) ) then  's a été créé avant ses sommets et est un polyqcq ou une droite (segment)
 		      AddInit(s)
@@ -322,21 +322,27 @@ Inherits MultipleSelectOperation
 		    if NbreParentsNonFinal(p) <= 0 then
 		      AddInit(p)
 		    else
-		      t = true
-		      for i = 0 to ubound(p.parents)
-		        t = t and  (p.id < p.parents(i).id)   'p est-il plus vieux que tous ses parents?
-		      next
-		      if t then                                                 'oui
-		        Addinit(p)
-		      else                                                         'non certains de ses parents sont plus vieux que p
+		      if p.pointsur.count = 2 then
+		        AddInterm(p)
+		        IdentifyInit(p.pointsur.element(0))
+		        IdentifyInit(p.pointsur.element(1))
+		      else
+		        t = true
 		        for i = 0 to ubound(p.parents)
-		          if p.id > p.parents(i).id and not p.parents(i).final  then
-		            AddInterm(p)     'si p.parents(i) est plus vieux que p sans être un objet final
-		            IdentifyInit(p.parents(i))                                                       'on identifie les initiaux avant parents(i)
-		          else
-		            AddInit(p)                                                                                'p devient un objet initial sinon il y a risque de boucle
-		          end if
+		          t = t and  (p.id < p.parents(i).id)   'p est-il plus vieux que tous ses parents?
 		        next
+		        if t then                                                 'oui
+		          Addinit(p)
+		        else                                                         'non certains de ses parents sont plus vieux que p
+		          for i = 0 to ubound(p.parents)
+		            if p.id > p.parents(i).id and not p.parents(i).final  then
+		              AddInterm(p)     'si p.parents(i) est plus vieux que p sans être un objet final
+		              IdentifyInit(p.parents(i))                                                       'on identifie les initiaux avant parents(i)
+		            else
+		              AddInit(p)                                                                                'p devient un objet initial sinon il y a risque de boucle
+		            end if
+		          next
+		        end if
 		      end if
 		    end if
 		  end if

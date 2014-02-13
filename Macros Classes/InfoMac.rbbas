@@ -9,18 +9,29 @@ Protected Class InfoMac
 
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  dim temp as XMLElement
+		  dim EL, temp as XMLElement
+		  dim i as integer
 		  
 		  temp =  Doc.CreateElement("IfMac")
 		  temp.SetAttribute(Dico.Value("NrFam"), str(fa))
 		  temp.SetAttribute(Dico.Value("NrForm"),str(fo))
-		  temp.setattribute("loc",str(location))
+		  temp.Setattribute("Npts",str(Npts))
+		  temp.setattribute("Ncpts",str(Ncpts))
+		  temp.SetAttribute("Oper",str(Oper))
 		  temp.SetAttribute("MId",str(MacId))
 		  temp.SetAttribute("Ori",str(ori))
 		  temp.SetAttribute("PtSur",str(ptsur))
 		  temp.Setattribute("RId",str(RealId))
 		  temp.setAttribute("Side",str(Realside))
-		  
+		  temp.setattribute("Forme0",str(Forme0))
+		  temp.setattribute("Forme1",str(Forme1))
+		  temp.setattribute("Forme2",str(Forme2))
+		  temp.SetAttribute("Numside0",str(numside0))
+		  temp.SetAttribute("Numside1",str(numside1))
+		  temp.SetAttribute("Ndiv",str(ndiv))
+		  temp.SetAttribute("Idiv", str(idiv))
+		  temp.setattribute("Location",str(location))
+		  temp.setattribute("Type",str(type))
 		  if final then
 		    Temp.SetAttribute("Fin",str(1))
 		  else
@@ -36,25 +47,76 @@ Protected Class InfoMac
 		  else
 		    Temp.SetAttribute("Int",str(0))
 		  end if
+		  if seg then
+		    Temp.setattribute("Seg",str(1))
+		  else
+		    Temp.setattribute("Seg",str(0))
+		  end if
+		  EL = Doc.CreateElement("Childs")
+		  for i = 0 to ubound(childs)
+		    EL.appendChild(childs(i).XMLPutInContainer(Doc))
+		  next
+		  Temp.Appendchild EL
+		  if coord <> nil then
+		    Temp.AppendChild coord.XMLPutInContainer(Doc)
+		  end if
+		  if M <> nil then
+		    M.XMLPutAttribute(Temp)
+		  end if
+		  
 		  return temp
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub InfoMac(Temp as XMLElement)
+		  dim List as XMLNodeList
+		  dim i as integer
+		  dim EL1 as XMLElement
+		  
+		  coord = new nBPoint
 		  fa = val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  fo= val(Temp.GetAttribute(Dico.Value("NrForm")))
-		  
-		  location = val(temp.Getattribute("loc"))
+		  Npts = val(Temp.GetAttribute("Npts"))
+		  Ncpts = val(Temp.GetAttribute("Ncpts"))
+		  oper = val(temp.GetAttribute("Oper"))
 		  MacId = val(temp.GetAttribute("MId"))
 		  ori = val(temp.GetAttribute("Ori"))
 		  ptsur = val(temp.GetAttribute("PtSur"))
 		  RealId = val(temp.Getattribute("RId"))
-		  Realside = val(temp.GetAttribute("RealSide"))
+		  Realside = val(temp.GetAttribute("Side"))
+		  Forme0 = val(temp.GetAttribute("Forme0"))
+		  Forme1 = val(temp.GetAttribute("Forme1"))
+		  Forme2 = val(temp.GetAttribute("Forme2"))
+		  numside0 = val(temp.GetAttribute("Numside0"))
+		  numside1 = val(temp.GetAttribute("Numside1"))
+		  ndiv = val(temp.GetAttribute("Ndiv"))
+		  idiv = val(temp.GetAttribute("Idiv"))
+		  location = val(temp.Getattribute("Location"))
+		  type = val(temp.GetAttribute("Type"))
+		  
 		  final = (val(Temp.GetAttribute("Fin")) = 1)
 		  init = ( val(Temp.GetAttribute("Ini")) = 1)
 		  interm = (val(Temp.GetAttribute("Int")) = 1)
-		  oper = val(temp.GetAttribute("OpId"))
+		  seg = (val(Temp.GetAttribute("Seg"))=1)
+		  
+		  M = new Matrix(temp)
+		  
+		  List = Temp.XQL("Coords")
+		  if List.length > 0 then
+		    EL1 = XMLElement(List.Item(0))
+		    for i = 0 to EL1.Childcount-1
+		      coord.append new BasicPoint (XMLElement(EL1.Child(i)))
+		    next
+		  end if
+		  
+		  List = Temp.XQL("Childs")
+		  if List.length > 0 then
+		    EL1 = XMLElement(List.Item(0))
+		    for i = 0 to EL1.Childcount-1
+		      childs.append new InfoMac(XMLElement(EL1.Child(i)))
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 

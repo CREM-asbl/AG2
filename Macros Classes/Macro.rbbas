@@ -1064,18 +1064,6 @@ Protected Class Macro
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="loc0"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="si0"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

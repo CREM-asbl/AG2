@@ -2830,7 +2830,11 @@ Implements StringProvider
 		    if j = -1 then
 		      j = 0
 		    end if
-		    tsf = s1.tsfi.element(j)
+		    if s1 <> nil then
+		      tsf = s1.tsfi.element(j)
+		    else
+		      return
+		    end if
 		  elseif self isa point and ubound(point(self).parents) > -1 then
 		    s1 = point(self).parents(0)
 		    if  s1.constructedby <> nil and s1.constructedby.oper = 6 then
@@ -3700,9 +3704,8 @@ Implements StringProvider
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
 		    for j = 0 to ubound(s1.childs)
-		      if not s1.childs(j).modified and  s1.childs(j).macconstructedby = nil then
-		        s1.childs(j).updateshape
-		      end if
+		      s1.childs(j).modified = true
+		      s1.childs(j).updateshape
 		    next
 		    s1.updateshape
 		  next
@@ -3977,9 +3980,11 @@ Implements StringProvider
 		  
 		  List = Temp.XQL("MacConstructedBy")
 		  if List.Length > 0 then
+		    Final = true
 		    Tmp = XMLElement(List.Item(0))
 		    cap = TMP.GetAttribute("Macro")
 		    Mac =app.TheMacros.GetMacro(cap)
+		    Tmp = XMLElement(Tmp.Child(0))
 		    MacInfo = new MacConstructionInfo(Mac,Tmp)
 		    SetMacConstructedBy MacInfo
 		  end if

@@ -1599,8 +1599,8 @@ Inherits Shape
 		Sub UpdateShape()
 		  dim sh  as shape
 		  
-		  if invalid or deleted then
-		    return
+		  if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
+		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
 		  end if
 		  
 		  if  PointSur.count =1 and not modified then                    //Ces instructions sont probablement inutiles

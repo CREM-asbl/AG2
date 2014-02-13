@@ -1324,7 +1324,6 @@ End
 			Doc = new XmlDocument(f)
 			mac =new Macro(Doc)
 			app.themacros.addmac mac
-			mac.creermenuitem
 			end if
 			return true
 			
