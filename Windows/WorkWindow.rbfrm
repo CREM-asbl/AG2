@@ -2339,7 +2339,7 @@ End
 		    CurrentContent.currentoperation = new ReadHisto(f)
 		  elseif f.Type = "SAVE" then
 		    CurrentContent.CurrentOperation = new Ouvrir(f)
-		    CurrentContent.CurrentOperation = nil
+		    'CurrentContent.CurrentOperation = nil
 		  else  'if f.name <> "vss" then
 		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
 		    if nc then

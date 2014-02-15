@@ -119,7 +119,7 @@ Inherits Bipoint
 	#tag Method, Flags = &h0
 		Sub Droite(ol as ObjectsList, k as integer, EL as XMLElement)
 		  Shape(ol,EL)
-		  
+		  ncpts = 2
 		  select case k
 		  case 0 to 2
 		    nextre = 2
@@ -557,6 +557,7 @@ Inherits Bipoint
 		  dim M as Matrix
 		  
 		  Shape(obj,dr)
+		  ncpts = 2
 		  if dr.isaparaperp then
 		    auto = 1
 		    if dr.forme = 1 or dr.forme = 2 then

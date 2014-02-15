@@ -259,6 +259,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Secteur(ol as objectslist, Temp as XMLElement)
 		  Shape(ol,Temp)
+		  ncpts = 3
 		  sk = new Secteurskull(wnd.mycanvas1.transform(Points(0).bpt))
 		  Updateskull
 		End Sub

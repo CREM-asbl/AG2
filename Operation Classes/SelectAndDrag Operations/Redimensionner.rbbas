@@ -315,7 +315,6 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  
 		  if currentshape = nil then
-		    currentcontent.currentoperation = nil
 		    wnd.mycanvas1.mousecursor = arrowcursor
 		    oldvisible.tspfalse
 		  else

@@ -138,7 +138,7 @@ Inherits Operation
 		Sub Ouvrir()
 		  Operation
 		  OpId = -1
-		  
+		  currentcontent.currentoperation = self
 		  
 		  
 		  

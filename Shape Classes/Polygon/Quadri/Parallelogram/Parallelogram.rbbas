@@ -24,6 +24,7 @@ Inherits Quadri
 	#tag Method, Flags = &h0
 		Sub Parallelogram(ol as ObjectsList, Temp as XMLElement)
 		  Polygon(ol,Temp)
+		  ncpts = 3
 		End Sub
 	#tag EndMethod
 

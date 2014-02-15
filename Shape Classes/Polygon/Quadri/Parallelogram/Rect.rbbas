@@ -5,6 +5,7 @@ Inherits Parallelogram
 		Sub Rect(ol as objectslist, p as basicpoint)
 		  Parallelogram(ol, p)
 		  liberte = 5
+		  
 		End Sub
 	#tag EndMethod
 
@@ -27,6 +28,7 @@ Inherits Parallelogram
 		Sub Rect(ol as ObjectsList, Temp as XMLElement)
 		  Polygon(ol,Temp)
 		  liberte = 5
+		  ncpts = 3
 		End Sub
 	#tag EndMethod
 

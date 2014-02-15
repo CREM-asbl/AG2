@@ -27,6 +27,7 @@ Inherits Trap
 		Sub TrapIso(ol as objectslist, Temp as XMLElement)
 		  Polygon(ol,Temp)
 		  liberte = 6
+		  ncpts = 3
 		End Sub
 	#tag EndMethod
 

@@ -678,9 +678,11 @@ Implements StringProvider
 		    nonpointed = true
 		  end if
 		  
-		  Currentcontent.addShape self
-		  if CurrentContent.ForHisto then
-		    addtofigure
+		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
+		    Currentcontent.addShape self
+		    if CurrentContent.ForHisto then
+		      addtofigure
+		    end if
 		  end if
 		  
 		  signaire = sign(aire)
@@ -1207,12 +1209,14 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  List = Temp.XQL("Childs")
-		  if list.length > 0 then
-		    EL =  XMLElement(List.Item(0))
-		    for i = 0 to EL.ChildCount-1
-		      childs(i).XMLReadTsf(XMLElement(EL.child(i)))
-		    next
+		  if not self isa point then
+		    List = Temp.XQL("Childs")
+		    if list.length > 0 then
+		      EL =  XMLElement(List.Item(0))
+		      for i = 0 to EL.ChildCount-1
+		        childs(i).XMLReadTsf(XMLElement(EL.child(i)))
+		      next
+		    end if
 		  end if
 		  
 		  
@@ -2057,21 +2061,16 @@ Implements StringProvider
 		  dim i, n as integer
 		  
 		  Form = XMLPutIdInContainer(Doc)
-		  
 		  if fig <> nil and not self isa repere then
 		    Form.SetAttribute("FigId",str(fig.idfig))
 		  end if
-		  
 		  for i = 0 to labs.count-1
 		    form.appendchild labs.element(i).toXML(Doc)
 		  next
-		  
 		  Form.AppendChild  XMLPutChildsInContainer(Doc)
-		  
 		  if  NbPtsConsted > 0 then
 		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
 		  end if
-		  
 		  if self isa Lacet then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
 		  end if
@@ -2094,7 +2093,6 @@ Implements StringProvider
 		    else
 		      Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		    end if
-		    
 		    if not self isa bipoint  then
 		      Temp = fillcolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorFill"))
 		      Temp.SetAttribute("Opacity", str(fill))
@@ -2104,16 +2102,13 @@ Implements StringProvider
 		    Temp.SetAttribute("Value", str(borderwidth))
 		    Form.AppendChild Temp
 		  end if
-		  
 		  if Hidden then
 		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
 		  end if
-		  
 		  if Invalid then
 		    Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
 		  end if
 		  Form.AppendChild XMLPutTsfInContainer(Doc)
-		  
 		  return Form
 		End Function
 	#tag EndMethod

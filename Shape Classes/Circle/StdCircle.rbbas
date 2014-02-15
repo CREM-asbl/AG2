@@ -37,7 +37,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  dim sc as double
+		  dim i as integer
 		  
 		  Points(1).Moveto Points(0).bpt + new BasicPoint(radius,0)
 		  CreateExtreAndCtrlPoints
@@ -102,8 +102,8 @@ Inherits Circle
 		  angles.append Val(EL.getAttribute("Angle"))
 		  sc = wnd.Mycanvas1.scaling
 		  rsk= radius*Config.StdSize*sc
-		  nsk = new CircleSkull(wnd.Mycanvas1.transform(Points(0).bpt))
-		  nsk.updatesize(1)
+		  'nsk = new CircleSkull(wnd.Mycanvas1.transform(Points(0).bpt))
+		  'nsk.updatesize(1)
 		  std = true
 		  autos
 		  file = config.stdfile

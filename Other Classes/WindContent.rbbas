@@ -702,7 +702,7 @@ Protected Class WindContent
 		  plans(0)=0
 		  for i = 1 to n
 		    s = TheObjects.element(i)
-		    if s.plan = -1 or plans(s.plan) <> s.id or  s.plan = 0  or s.plan > ubound(plans) then
+		    if s.plan = -1  or  s.plan = 0  or s.plan > ubound(plans) then
 		      plans.append s.id
 		      s.plan = ubound(plans)
 		    else
@@ -729,13 +729,6 @@ Protected Class WindContent
 		  
 		  TheObjects.addshape s
 		  
-		  'if not s isa point then
-		  'for i = 0 to s.npts-1
-		  'if plans.indexof(s.childs(i).id) <> -1 and  (s.childs(i).constructedby = nil or s.childs(i).constructedby.oper = 10) then
-		  'plans.remove plans.indexof(s.childs(i).id)
-		  'end if
-		  'next
-		  'end if
 		  if s.plan = -1 then
 		    AddPlan(s)
 		  else

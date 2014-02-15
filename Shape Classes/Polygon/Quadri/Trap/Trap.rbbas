@@ -28,6 +28,7 @@ Inherits Quadri
 		Sub Trap(ol as objectslist, Temp as XMLElement)
 		  Polygon(ol,Temp)
 		  Liberte = 7
+		  ncpts=4
 		End Sub
 	#tag EndMethod
 
@@ -388,6 +389,7 @@ Inherits Quadri
 		Sub Trap(ol as objectslist, fp as point, sp as point, qp as point, tp as point)
 		  
 		  Polygon(ol, fp , sp , qp , tp)
+		  ncpts = 4
 		  forme = 1
 		  
 		End Sub

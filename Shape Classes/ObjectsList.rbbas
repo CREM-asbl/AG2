@@ -324,10 +324,7 @@ Protected Class ObjectsList
 		    s = new Repere(self,temp)
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère
 		    CurrentContent.CreateFigs
-		    'currentcontent.addshape s
-		    'currentcontent.addplan(s)
 		    wnd.MyCanvas1.Setrepere(Repere(s))
-		    'return s
 		  case 0
 		    s = new Point(self,Temp)
 		  case 1
@@ -390,30 +387,14 @@ Protected Class ObjectsList
 		    s = new Lacet(self,temp)
 		  else
 		    fstd = Temp.GetAttribute("StdFile")
-		    if fstd <> Config.stdfile then
+		    if fstd <> "" and fstd <> Config.stdfile then
 		      Config.setStdFile(fstd)
 		    end if
 		    s = XMLLoadStdForm (temp)
 		  end select
 		  
 		  s.id = id
-		  
-		  'if self = currentcontent.TheObjects then
-		  'currentcontent.addshape(s)
-		  'else
 		  addshape(s)
-		  'end if
-		  'pl = val(Temp.GetAttribute("Plan"))
-		  
-		  'if (not  s isa point) or (s isa point and  ubound(point(s).parents) = -1) then
-		  'currentcontent.addplan(s)
-		  ''if pl <> 0 and pl <> -1 then
-		  ''s.plan = pl
-		  ''else
-		  ''MsgBox "Fichier de sauvegarde incorrect"
-		  ''s.plan = ubound(Objects)+1
-		  ''end if
-		  'end if
 		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
 		    s.std = true
@@ -591,7 +572,6 @@ Protected Class ObjectsList
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
 		      CurrentContent.optimize
-		      currentcontent.createplans
 		    end if
 		    updateids
 		  end if
@@ -749,6 +729,7 @@ Protected Class ObjectsList
 		    s = XMLLoadObject(Temp)
 		  next
 		  OptimizeGroups
+		  currentcontent.createplans
 		  
 		End Sub
 	#tag EndMethod

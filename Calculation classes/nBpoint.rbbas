@@ -156,6 +156,7 @@ Protected Class nBpoint
 		  ori = 1
 		  
 		  select case fa
+		  case 1
 		  case 2 'Triangles
 		    select case  fo
 		    case 1 'TriIso

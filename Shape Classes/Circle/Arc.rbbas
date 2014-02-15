@@ -126,6 +126,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Arc(ol as ObjectsList, Temp as XMLElement)
 		  Shape(ol,Temp)
+		  ncpts = 3
 		  liberte = 5
 		  drapori = true
 		  updateangles

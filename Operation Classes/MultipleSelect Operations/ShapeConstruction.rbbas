@@ -146,7 +146,7 @@ Inherits MultipleSelectOperation
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
 		    ShowAttraction
-		    if nextcurrentattractingshape = nil then
+		    if currentattractingshape isa repere or  nextcurrentattractingshape = nil then
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
 		      TraitementIntersec()

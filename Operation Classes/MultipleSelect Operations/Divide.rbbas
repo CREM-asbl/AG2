@@ -141,6 +141,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function SetItem(s As Shape) As Boolean
 		  dim ff as figure
+		  dim d as droite
 		  
 		  select case CurrentItemToSet
 		  case 1
@@ -157,6 +158,10 @@ Inherits MultipleSelectOperation
 		      elseif s  isa Circle then
 		        Firstpoint = s.Points(1)
 		        secondpoint = firstpoint
+		      elseif s isa cube then
+		        d = cube(s).getside(side)
+		        firstpoint = d.points(0)
+		        secondpoint= d.points(1)
 		      elseif s isa polygon then
 		        firstpoint = s.points(side)
 		        secondpoint = s.points((side +1) mod s.npts)

@@ -4,6 +4,7 @@ Inherits Parallelogram
 	#tag Method, Flags = &h0
 		Sub Losange(ol as Objectslist, p as BasicPoint)
 		  Parallelogram(ol, p)
+		  ncpts = 3
 		  liberte = 5
 		End Sub
 	#tag EndMethod
@@ -27,6 +28,7 @@ Inherits Parallelogram
 		Sub Losange(ol as ObjectsList, Temp as XMLElement)
 		  Polygon(ol,Temp)
 		  liberte = 5
+		  ncpts=3
 		End Sub
 	#tag EndMethod
 

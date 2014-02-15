@@ -153,6 +153,7 @@ Inherits Shape
 		Sub Bande(ol as Objectslist, temp as XMLElement)
 		  Shape(ol,Temp)
 		  npts = 3
+		  ncpts = 3
 		  sk = new Figskull(wnd.mycanvas1.transform(Points(0).bpt),4)
 		  computeextre
 		  Updateskull

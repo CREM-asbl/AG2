@@ -36,6 +36,7 @@ Inherits Polyqcq
 		  for i=0 to npts-1
 		    figskull(sk).getcote(i).order = 0
 		  next
+		  redim curved(npts-1)
 		  redim prol(npts-1)
 		  std = true
 		  autos
@@ -142,7 +143,6 @@ Inherits Polyqcq
 		  //Points(i).moveto(Points(0).bpt + wnd.mycanvas1.idtransform(q))
 		  //next
 		  
-		  'points(0).hide
 		  cap = angles(0)
 		  for i = 1 to npts-1
 		    q = new BasicPoint(cos(cap),sin(cap))
@@ -150,9 +150,7 @@ Inherits Polyqcq
 		    if i < npts-1 then
 		      cap = cap + ori*angles(i)
 		    end if
-		    'points(i).hide
 		  next
-		  
 		  
 		  UpdateSkull
 		  
