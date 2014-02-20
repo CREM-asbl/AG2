@@ -290,7 +290,7 @@ Protected Class nBpoint
 		  
 		  select case n
 		  case 0
-		    tab(1) = tab(0)+w
+		    tab(1) = tab(0)
 		  case 1
 		    if fo = 1 or fo = 2 then
 		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)

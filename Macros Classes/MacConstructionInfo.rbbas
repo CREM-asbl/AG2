@@ -54,9 +54,10 @@ Protected Class MacConstructionInfo
 	#tag Method, Flags = &h0
 		Sub MacConstructionInfo(m as Macro, Temp as XMLElement)
 		  dim List as XmlNodeList
-		  dim EL as XMLElement
+		  dim EL , EL1, EL2 as XMLElement
 		  dim nrf, nri, nrs as integer
-		  dim i as integer
+		  dim i, j, n, num as integer
+		  dim ifm, ifmac as InfoMac
 		  
 		  MacConstructionInfo(m)
 		  nrf = val(Temp.GetAttribute("NRF"))
@@ -77,7 +78,26 @@ Protected Class MacConstructionInfo
 		  if List.Length > 0 then
 		    EL = XMLElement(List.Item(0))
 		    for i = 0 to EL.ChildCount-1
-		      IfMacs.append new InfoMac(XMLElement(EL.Child(i)))
+		      EL1 = XMLElement(EL.Child(i))
+		      ifmac = new InfoMac(EL1)
+		      List = EL1.XQL("Childs")
+		      if List.Length > 0 then
+		        EL2= XMLElement(List.Item(0))
+		        for j = 0 to ifmac.npts-1
+		          n = ifmac.childs(j).MacId
+		          ifm = GetInfoMac(n,num)
+		          if ifm <> nil then
+		            if  ifm.macId <> n and num <> -1 then
+		              ifmac.childs(j) = ifm.childs(num)
+		            else
+		              ifmac.childs(j) = ifm
+		            end if
+		          else
+		            ifmac.childs(j) = new InfoMac(XMLElement(EL2.Child(j)))
+		          end if
+		        next
+		      end if
+		      ifmacs.append ifmac
 		    next
 		  end if
 		  
@@ -228,12 +248,6 @@ Protected Class MacConstructionInfo
 			Group="Position"
 			InitialValue="0"
 			InheritedFrom="Object"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="RealInterm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

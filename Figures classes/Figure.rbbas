@@ -2310,14 +2310,16 @@ Implements StringProvider
 		  
 		  s = droite(shapes.element(0))
 		  
-		  select case NbPtsModif
-		  case 0
-		    return s.prppupdate0
-		  case 1
-		    return s.prppupdate1
-		  case 2
-		    return s.prppupdate2
-		  end select
+		  if s <> nil then
+		    select case NbPtsModif
+		    case 0
+		      return s.prppupdate0
+		    case 1
+		      return s.prppupdate1
+		    case 2
+		      return s.prppupdate2
+		    end select
+		  end if
 		  
 		  
 		End Function

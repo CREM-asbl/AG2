@@ -181,7 +181,7 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Function Magnetisme(sh as shape, byref magneticD as BasicPoint) As integer
 		  // Utilisé pour déterminer le magnétisme lors d'une modification ou de la duplication d'un point
-		  // ou encore lors d'une construction. Attractedshape est nécessairement le point sur lequel on tire
+		  // ou encore lors d'une construction. Attractedshape (c-a-d currentpoint) est nécessairement le point sur lequel on tire
 		  
 		  dim  AttractingShape, NextAttractingShape as Shape
 		  dim magnetism, gridmagnetism as integer

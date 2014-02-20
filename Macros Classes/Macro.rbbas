@@ -169,13 +169,12 @@ Protected Class Macro
 		      tos.write Doc.tostring
 		      tos.close
 		      app.theMacros.addmac self
-		      creermenuitem
 		    end if
 		  end if
 		  if  file = nil or tos = nil then
 		    MsgBox Dico.Value("ErrorOnSave")
 		  end if
-		  wnd.closemacro
+		  
 		  
 		  
 		  
@@ -188,12 +187,12 @@ Protected Class Macro
 		  dim i, ObId as integer
 		  dim EL, EL1 as XmlElement
 		  
-		  for i = wnd.mac.Histo.childcount -1 downto 0
+		  for i = currentcontent.mac.Histo.childcount -1 downto 0
 		    EL = XMLElement(Histo.Child(i))
 		    EL1 = XMLElement(EL.firstChild)
 		    ObId = val(EL1.GetAttribute("Id"))
 		    if currentcontent.theobjects.getshape(ObId) = nil then
-		      wnd.mac.Histo.RemoveChild EL
+		      currentcontent.mac.Histo.RemoveChild EL
 		    end if
 		  next
 		  

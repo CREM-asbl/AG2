@@ -607,13 +607,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateChildren(EL as XMLElement, ifmac as InfoMac, s as shape)
-		  dim List as XmlNodeList
 		  dim i as integer
-		  dim ifm, ifm2 as InfoMac
-		  dim EL1, EL2 as XMLElement
+		  dim ifm as InfoMac
+		  dim EL1 as XMLElement
 		  dim n, num as integer
-		  dim sh  as shape
-		  dim p as point
 		  
 		  for i = 0 to ifmac.npts-1
 		    EL1 = XMLElement(EL.Child(i))
@@ -638,30 +635,7 @@ Inherits MultipleSelectOperation
 		    ifmac.childs.append ifm
 		  next
 		  
-		  'List = EL1.XQL("PointSur")
-		  'if List.length = 0 then
-		  'ifm.PtSur = 0
-		  'else
-		  'EL2 = XMLElement(List.Item(0))
-		  'ifm.PtSur=EL2.ChildCount
-		  'if ifm.PtSur = 1 then
-		  'EL2=XMLElement(EL2.Child(0))
-		  'ifm.Forme0=val(EL2.GetAttribute("Id"))
-		  'ifm.NumSide0=val(EL2.GetAttribute("NrCote"))
-		  'ifm.Location= val(EL2.GetAttribute("Location"))
-		  'if ifmac.final then
-		  'ifm2 = MacInfo.GetInfoMac(ifm.Forme0, num)
-		  'ifm2.childs.append ifm
-		  'if ifm2.init or ifm2.final then
-		  'sh = currentcontent.TheObjects.Getshape(ifm2.RealId)
-		  's.points(i).puton sh, ifm.Location
-		  'end if
-		  'end if
-		  'else
-		  'ifm.PtSur = 2
-		  'end if
-		  'end if
-		  ''end if
+		  
 		  
 		  
 		  

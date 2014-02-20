@@ -191,18 +191,18 @@ Inherits Application
 		  dim i as integer
 		  
 		  
-		  
-		  MenuBar.Child("FileMenu").Child("FileNew").enabled = not macrocreation
-		  MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not macrocreation
-		  
+		  if currentcontent <> nil  then
+		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  end if
 		  
 		  if wnd<>nil and wnd.MyCanvas1.rep <> nil and currentcontent <> nil then
 		    B =  CurrentContent.TheObjects.count > 1
 		    B1 = CurrentContent.TheGrid <> nil
 		    B2 = wnd.MyCanvas1.rep.labs.count > 0
-		    B = (B or B1 or B2) and not macrocreation
+		    B = (B or B1 or B2) and not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not macrocreation
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
 		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
 		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = (CurrentContent.Currentop > 0)
 		      wnd.pushbutton1.enabled = (CurrentContent.Currentop > 0)
@@ -231,7 +231,6 @@ Inherits Application
 		  iw=new initWindow
 		  iw.ShowModal
 		  Tampon = new ObjectsList
-		  macrocreation = false
 		  
 		  
 		End Sub
@@ -377,10 +376,6 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Macrocreation As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		prtsetup As printerSetup
 	#tag EndProperty
 
@@ -446,12 +441,6 @@ Inherits Application
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="Macrocreation"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ErrorType"
 			Group="Behavior"

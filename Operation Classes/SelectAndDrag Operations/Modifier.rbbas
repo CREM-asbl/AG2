@@ -218,7 +218,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as basicpoint)
-		      dim Magnetism as integer
+		  dim Magnetism as integer
 		  dim i as integer
 		  
 		  CurrentContent.TheObjects.tracept = false

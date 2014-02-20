@@ -318,7 +318,7 @@ Inherits Shape
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
 		  end if
 		  
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
 		    Temp.SetAttribute("Value", str(borderwidth))

@@ -750,7 +750,7 @@ Implements StringProvider
 		  if Ti <> Nil then
 		    Form.setattribute("TiP","1")
 		  end if
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    Form.SetAttribute("Auto",str(auto))
 		    Form.SetAttribute(Dico.Value("IdGroupe"), str(IdGroupe))
 		    plan = CurrentContent.plans.IndexOf(id)
@@ -1311,7 +1311,7 @@ Implements StringProvider
 		    Temp.setattribute("Id", str(ConstructedBy.shape.id))
 		  end if
 		  Temp.Setattribute("Oper",str(ConstructedBy.oper))
-		  if not app.macrocreation and constructedby.oper <> 9 then
+		  if not currentcontent.macrocreation and constructedby.oper <> 9 then
 		    Temp.appendchild constructedby.shape.XMLPutIdInContainer(Doc)  //redondance par souci de compatibilité
 		  end if
 		  // Id ou pas Id ? sans Id, peut devenir atroce
@@ -2080,7 +2080,7 @@ Implements StringProvider
 		  if Macconstructedby <> nil then
 		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    if self isa polygon and not self isa Lacet then
 		      if self isa cube then
 		        n = 8
@@ -3103,7 +3103,7 @@ Implements StringProvider
 		      inter.removepoint p
 		    end if
 		    for j =  p.pointsur.count-1 downto 0
-		      if p.id > id then
+		      if p.id > id then ' p.pointsur.element(j).id then
 		        p.removepointsur(p.pointsur.element(j))
 		      end if
 		    next
@@ -3114,9 +3114,6 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  if conditionedby <> nil then
-		    conditionedby.conditioned.removeshape self
-		  end if
 		  removefromfigure
 		  
 		  if self isa droite and droite(self).isaprolongement(pol,n) then

@@ -749,7 +749,7 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
-		  if not CurrentContent.currentoperation isa shapeconstruction then
+		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
 		    MyCanvas1.mousecursor = arrowcursor
 		  else
 		    setcross
@@ -1026,7 +1026,7 @@ End
 			if mousedispo then
 			closefw
 			NewContent
-			wnd.mycanvas1.refreshBackground
+			refresh
 			end if
 			return true
 		End Function
@@ -1140,6 +1140,8 @@ End
 			ReadHisto(CurrentContent.CurrentOperation).Hcmd.visible = true
 			wnd.draphisto = true
 			wnd.DisableToolBar
+			elseif CurrentContent.Macrocreation then
+			MenuMacros
 			end if
 			MenuBar.Child("Fenetres").Item(index).checked = true
 			wnd.mycanvas1.sctxt = nil
@@ -1246,32 +1248,11 @@ End
 			dim i as integer
 			
 			closefw
-			app.macrocreation = true
 			newcontent
-			MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = false
-			MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
-			MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
-			MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
-			MenuMenus.Child("OperaMenu").Child("OperaClone").checked=false
-			MenuMenus.Child("OperaMenu").Child("OperaCut").checked=false
-			MenuMenus.Child("OperaMenu").Child("OperaMerge").checked=false
-			EraseMenuBar
-			CopyMenuBar
-			MenuBar.Child("FileMenu").Child("FileNew").visible = false
-			MenuBar.Child("FileMenu").Child("FileOpen").visible=false
-			MenuBar.Child("FileMenu").Child("FileSave").visible =false
-			MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
-			
-			for i = 0 to 4
-			MouvBut(i).visible =false
-			next
-			MoveBox.visible =false
-			for i = 0 to 2
-			stdoutil(i).visible = false
-			next
-			stdbox.visible = false
+			currentcontent.macrocreation = true
+			MenuMacros
 			wnd.refreshtitle
-			mac = new macro
+			currentcontent.mac = new macro
 			return true
 			
 			
@@ -1298,7 +1279,7 @@ End
 			op = currentcontent.currentoperation
 			if op isa choosefinal then
 			choosefinal(op).endoperation
-			mac.SaveFileMacro
+			currentcontent.mac.SaveFileMacro
 			end if
 			CloseMacro
 			return true
@@ -1342,7 +1323,6 @@ End
 		Function FileClose() As Boolean Handles FileClose.Action
 			
 			deletecontent
-			
 			if UBound (wcontent) = -1 then
 			NewContent
 			end if
@@ -1827,6 +1807,7 @@ End
 			if mousedispo then
 			closefw
 			CurrentContent.CurrentOperation=new ChooseFinal
+			MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
 			refreshtitle
 			end if
 			Return True
@@ -1879,9 +1860,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub refreshtitle()
-		  if app.macrocreation then
-		    Title=Dico.Value("MacrosCreate") + "*"
-		  elseif draphisto then
+		  'if currentcontent.macrocreation then
+		  'Title=Dico.Value("MacrosCreate") + "*"
+		  if draphisto then
 		    Title =  Rh.Histfile.Name
 		  else
 		    Title=CurrentContent.GetWindTitle
@@ -1964,22 +1945,17 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Refresh()
-		  refreshtitle
-		  if not draphisto then
-		    updatemenu
+		  if not currentcontent.macrocreation then
+		    refreshtitle
+		    if not draphisto then
+		      updatemenu
+		    end if
+		    PushButton1.Visible = not draphisto
+		    Mycanvas1.RefreshBackground
+		    MoveBoxRefresh
+		    StdBoxRefresh
+		    LibBoxRefresh
 		  end if
-		  PushButton1.Visible = not draphisto
-		  Mycanvas1.RefreshBackground
-		  MoveBoxRefresh
-		  StdBoxRefresh
-		  LibBoxRefresh
-		  'if CurrentContent.currentoperation isa shapeconstruction and fw <> nil  then
-		  'if fw.kit = 0 then
-		  'stdoutil(fw.fam).refresh
-		  'else
-		  'liboutils(fw.fam).refresh
-		  'end if
-		  'end if
 		  
 		End Sub
 	#tag EndMethod
@@ -2283,36 +2259,39 @@ End
 		  
 		  val = 0
 		  
-		  if CurrentContent.TheObjects.count > 1 and not CurrentContent.CurrentFileUptoDate then
-		    conf = new Confirmation(CurrentContent.id)
-		    Conf.ShowModal
-		    val = Conf.result      ''Yes
-		    conf.close
+		  if not currentcontent.macrocreation then
+		    if CurrentContent.TheObjects.count > 1 and not CurrentContent.CurrentFileUptoDate then
+		      conf = new Confirmation(CurrentContent.id)
+		      Conf.ShowModal
+		      val = Conf.result      ''Yes
+		      conf.close
+		    end if
+		    if val<>-1 then            '-1: annuler
+		      if val = 1 then
+		        CurrentContent.Save
+		      end if
+		    end if
 		  end if
 		  
-		  if val<>-1 then            '-1: annuler
-		    if val = 1 then
-		      CurrentContent.Save
-		    end if
-		    n = GetNumWindow
-		    wcontent.Remove(n)
-		    MenuBar.Child("Fenetres").Remove(n)
-		    
-		    if ubound(wcontent) >= n then
-		      for i=n to UBound (wcontent)
-		        MenuBar.Child("Fenetres").item(i).index = i
-		      next
-		      CurrentContent = wcontent(n)
-		    elseif ubound(wcontent) >-1 then
-		      currentcontent = wcontent(ubound(wcontent))
-		    else
-		      CurrentContent = nil
-		    end if
-		    if CurrentContent <> nil then
-		      MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
-		      refresh
-		    end if
+		  n = GetNumWindow
+		  wcontent.Remove(n)
+		  MenuBar.Child("Fenetres").Remove(n)
+		  
+		  if ubound(wcontent) >= n then
+		    for i=n to UBound (wcontent)
+		      MenuBar.Child("Fenetres").item(i).index = i
+		    next
+		    CurrentContent = wcontent(n)
+		  elseif ubound(wcontent) >-1 then
+		    currentcontent = wcontent(ubound(wcontent))
+		  else
+		    CurrentContent = nil
 		  end if
+		  if CurrentContent <> nil then
+		    MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
+		    refresh
+		  end if
+		  
 		  
 		  
 		  
@@ -2366,8 +2345,7 @@ End
 		  dim i as integer
 		  
 		  closefw
-		  app.macrocreation = false
-		  currentcontent.currentoperation = nil
+		  deletecontent
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = true
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=true
 		  MenuBar.Child("FileMenu").Child("FileSave").visible = true
@@ -2375,22 +2353,15 @@ End
 		  MenuMenus.Child("OperaMenu").Child("OperaClone").checked=true
 		  MenuMenus.Child("OperaMenu").Child("OperaCut").checked=true
 		  MenuMenus.Child("OperaMenu").Child("OperaMerge").checked=true
-		  for i = 0 to 4
-		    MouvBut(i).visible =true
-		  next
-		  MoveBox.visible = true
-		  for i = 0 to 2
-		    StdOutil(i).visible =true
-		  next
-		  StdBox.visible = true
-		  MenuMenus.Child("MacrosMenu").Child("MacrosCreate").checked = true
+		  PushButton1.visible = true
+		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
+		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
+		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  updateMenu
-		  mac = nil
-		  newcontent
-		  wnd.refreshtitle
+		  EraseMenuBar
+		  CopyMenuBar
 		End Sub
 	#tag EndMethod
 
@@ -2516,7 +2487,14 @@ End
 
 	#tag Method, Flags = &h0
 		Sub StdBoxRefresh()
+		  dim i as integer
+		  
 		  StdBox.Visible = Config.ShowStdTools and not draphisto
+		  for i = 0 to 2
+		    StdOutil(i).visible =true
+		  next
+		  StdBox.visible = true
+		  
 		  
 		  
 		End Sub
@@ -2633,6 +2611,39 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub MenuMacros()
+		  dim i as integer
+		  
+		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
+		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
+		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
+		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = true
+		  EraseMenuBar
+		  CopyMenuBar
+		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
+		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
+		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
+		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute").count > 0 then
+		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
+		  'end if
+		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
+		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
+		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
+		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
+		  MenuBar.Child("OperaMenu").Child("OperaClone").visible =false
+		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =false
+		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =false
+		  MenuBar.Child("ToolsMenu").visible = false
+		  MenuBar.Child("EditMenu").visible = false
+		  for i = 0 to 3
+		    MouvBut(i).visible =false
+		  next
+		  PushButton1.visible=false
+		  stdbox.visible = false
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -2710,10 +2721,6 @@ End
 
 	#tag Property, Flags = &h0
 		ntemp As integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Mac As Macro
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

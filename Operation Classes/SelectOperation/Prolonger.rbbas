@@ -41,7 +41,7 @@ Inherits SelectOperation
 		  sh = currenthighlightedshape
 		  display = ""
 		  if visible  = nil or sh = nil then
-		    if app.macrocreation then
+		    if currentcontent.macrocreation then
 		      display = choose + asideofpoly
 		    else
 		      display = choose + asegment
@@ -49,7 +49,7 @@ Inherits SelectOperation
 		  else
 		    super.paint(g)
 		    sh.highlightsegment(g, cot)
-		    if app.macrocreation then
+		    if currentcontent.macrocreation then
 		      display = thissideofpoly + "?"
 		    else
 		      display = thissegment + "?"
@@ -327,7 +327,7 @@ Inherits SelectOperation
 		    if not s.ValidSegment(p,ibip) or ( s isa polygon and polygon(s).prol(ibip) ) then  //le côté a déjà été prolongé
 		      visible.removeshape(s)
 		    end if
-		    if s isa droite and app.macrocreation then
+		    if s isa droite and currentcontent.macrocreation then
 		      visible.removeshape s
 		    end if
 		  next

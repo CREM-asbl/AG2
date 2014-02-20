@@ -597,7 +597,7 @@ Inherits Shape
 		  if   MacConstructedBy <>  nil  then
 		    liberte = 0
 		  end if
-		  if  ubound(parents) > -1 and   parents(0).macconstructedby <> nil and not parents(0).init and not init  then
+		  if  forme <> 1 and ubound(parents) > -1 and   parents(0).macconstructedby <> nil and not parents(0).init and not init  then
 		    liberte = 0
 		  end if
 		  
@@ -815,7 +815,7 @@ Inherits Shape
 		  
 		  Form = XMLPutIdInContainer(Doc)
 		  
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    if fig <> nil then
 		      Form.SetAttribute("FigId",str(fig.idfig))
 		    end if
@@ -1121,6 +1121,7 @@ Inherits Shape
 		  s.removechild self
 		  removeparent s
 		  mobility
+		  removefromfigure
 		  
 		  
 		  
@@ -2840,7 +2841,7 @@ Inherits Shape
 		  Form = XMLPutIdInContainer(Doc)
 		  Form.AppendChild XMLPutTsfInContainer(Doc)
 		  
-		  if app.macrocreation and pointsur.count > 0 then
+		  if currentcontent.macrocreation and pointsur.count > 0 then
 		    'Form.setAttribute("PointSur", str(pointsur.element(0).id))
 		    temp = pointsur.XMLPutIdInContainer(Doc)
 		    if pointsur.count = 1 then

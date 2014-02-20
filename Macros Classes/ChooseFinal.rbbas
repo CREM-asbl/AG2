@@ -154,9 +154,9 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AddFinal(s as shape)
 		  if not s.Final  then 'and not s.init and not s.interm
-		    wnd.mac.ObFinal.append s.id
-		    wnd.mac.FaFinal.append s.fam
-		    wnd.mac.FoFinal.append s.forme
+		    currentcontent.mac.ObFinal.append s.id
+		    currentcontent.mac.FaFinal.append s.fam
+		    currentcontent.mac.FoFinal.append s.forme
 		    s.Final = true
 		  end if
 		  
@@ -177,9 +177,9 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  if not s.Init and not s.Interm and not s.final then
-		    wnd.mac.ObInit.append s.id
-		    wnd.mac.FaInit.append s.fam
-		    wnd.mac.FoInit.append s.forme
+		    currentcontent.mac.ObInit.append s.id
+		    currentcontent.mac.FaInit.append s.fam
+		    currentcontent.mac.FoInit.append s.forme
 		    s.Init = true
 		  end if
 		  
@@ -190,9 +190,9 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AddInterm(s as shape)
 		  if not s.Final and not s.Init and not s.Interm then
-		    wnd.mac.ObInterm.append  s.id
-		    wnd.mac.FaInterm.append s.fam
-		    wnd.mac.FoInterm.append s.forme
+		    currentcontent.mac.ObInterm.append  s.id
+		    currentcontent.mac.FaInterm.append s.fam
+		    currentcontent.mac.FoInterm.append s.forme
 		    s.Interm = true
 		  end if
 		  
@@ -241,11 +241,11 @@ Inherits MultipleSelectOperation
 		      s.delete
 		    end if
 		  next
-		  wnd.mac.Histo = currentcontent.Histo
-		  wnd.mac.Elaguer
-		  wnd.mac.ObInit.sort
-		  wnd.mac.ObInterm.sort
-		  wnd.mac.ObFinal.sort
+		  currentcontent.mac.Histo = currentcontent.Histo
+		  currentcontent.mac.Elaguer
+		  currentcontent.mac.ObInit.sort
+		  currentcontent.mac.ObInterm.sort
+		  currentcontent.mac.ObFinal.sort
 		  
 		  
 		  

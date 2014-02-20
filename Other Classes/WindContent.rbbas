@@ -8,7 +8,7 @@ Protected Class WindContent
 		  OpList.PreserveWhiteSpace = true
 		  Histo = OpList.CreateElement("AG")
 		  OpList.Appendchild (Histo)
-		  if not app.macrocreation then
+		  if not macrocreation then
 		    Histo.SetAttribute(Dico.Value("Langage"),Config.Langue)
 		    Histo.SetAttribute(Dico.value("Config"),Config.Menu)
 		    Histo.SetAttribute("Version",str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion))
@@ -199,7 +199,7 @@ Protected Class WindContent
 		  
 		  if o <> nil and codes.indexof(o.OpId) = -1 then    // 34: on ne crée pas d'historique de la lecture d'un historique
 		    currentop = totaloperation
-		    if (Histo<> nil) and app.macrocreation then
+		    if (Histo<> nil) and macrocreation then
 		      o.AddOperationToMac(OpList, Histo)
 		    elseif (Histo <> nil)  then    //On élimine la sélection
 		      El=Oplist.CreateElement(Dico.Value("Operation"))
@@ -262,6 +262,9 @@ Protected Class WindContent
 		  end if
 		  
 		  return WindowTitle
+		  
+		  'if currentcontent.macrocreation then
+		  'Title=Dico.Value("MacrosCreate") + "*"
 		End Function
 	#tag EndMethod
 
@@ -731,6 +734,8 @@ Protected Class WindContent
 		  
 		  if s.plan = -1 then
 		    AddPlan(s)
+		  elseif s.Plan > ubound(plans) then
+		    plans.append s.id
 		  else
 		    Plans(s.plan) = s.id
 		  end if
@@ -790,7 +795,7 @@ Protected Class WindContent
 		  dim n as integer
 		  
 		  
-		  if not app.macrocreation then
+		  if not macrocreation then
 		    n = currentop
 		    while n > 0 and val(XMLElement(Histo.child(n)).GetAttribute("Undone")) = 1
 		      n = n-1
@@ -998,6 +1003,14 @@ Protected Class WindContent
 		drapabort As Boolean
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		MacroCreation As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Mac As Macro
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -1137,6 +1150,12 @@ Protected Class WindContent
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="drapabort"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="MacroCreation"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

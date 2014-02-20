@@ -35,7 +35,7 @@ Begin Window NotesWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   482
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window NotesWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   600
       BehaviorIndex   =   0
    End
@@ -347,7 +347,7 @@ End
 		  dim n as integer
 		  
 		  if currentcontent.currentoperation isa choosefinal then
-		    wnd.Mac.Expli =  EF.text
+		    currentcontent.Mac.Expli =  EF.text
 		    return
 		  end if
 		  

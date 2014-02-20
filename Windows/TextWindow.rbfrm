@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -83,8 +83,8 @@ End
 		  EF.ReadOnly = true
 		  if wnd.MyCanvas1.sctxt = nil then
 		    Title = "Objets"
-		  elseif  app.Macrocreation then
-		    Title = wnd.Mac.GetName
+		  elseif  currentcontent.Macrocreation then
+		    Title =currentcontent.Mac.GetName
 		    EF.ReadOnly = false
 		  else
 		    sc = wnd.MyCanvas1.sctxt

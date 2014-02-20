@@ -37,7 +37,7 @@ Inherits ShapeConstruction
 		  end select
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
-		  CurrentShape.IsInConstruction = true
+		  'CurrentShape.IsInConstruction = true
 		  Currentshape.InitConstruction
 		  CurrentShape.IndexConstructedPoint = 0
 		  wnd.setcross
@@ -50,6 +50,7 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
 		  operation.paint(g)
+		  display = ""
 		  select case currentitemtoset
 		  case 1
 		    display = choose + asegmentoraline
@@ -171,8 +172,8 @@ Inherits ShapeConstruction
 		    end if
 		    currentshape.setconstructedby(Refe,op)
 		    currentshape.constructedby.data.append index(iobj)
-		  else
-		    curshape = currentshape.points(currentshape.IndexConstructedPoint)
+		  case 2
+		    curshape = currentshape.points(0)
 		    AdjustMagnetism(curshape)
 		    if curshape.invalid then
 		      CurrentContent.abortconstruction
@@ -182,15 +183,25 @@ Inherits ShapeConstruction
 		    curshape.mobility
 		    ReinitAttraction
 		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
-		    if currentattractingshape isa polygon and currentitemtoset = 3 then
+		    if droite(currentshape).nextre = 0 then
+		      nextitem
+		    end if
+		  case 3
+		    curshape = currentshape.points(1)
+		    AdjustMagnetism(curshape)
+		    if curshape.invalid or currentshape.points(0).distanceto(curshape.bpt)< epsilon   then
+		      CurrentContent.abortconstruction
+		      return false
+		    end if
+		    if currentattractingshape isa polygon  then
 		      curshape.surseg = true
 		      if currentshape.points(0).pointsur.count = 1 and currentshape.points(0).pointsur.element(0) isa polygon then
 		        currentshape.points(0).surseg = true
 		      end if
 		    end if
-		    if currentitemtoset = 2 and droite(currentshape).nextre = 0 then
-		      nextitem
-		    end if
+		    curshape.mobility
+		    ReinitAttraction
+		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
 		  end select
 		  
 		  return true

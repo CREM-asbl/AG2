@@ -263,7 +263,7 @@ Inherits MultipleSelectOperation
 		  dim oper as operation
 		  
 		  
-		  if app.macrocreation then
+		  if currentcontent.macrocreation then
 		    for i = 0 to currentshape.ncpts-1
 		      pt = currentshape.points(i)
 		      if pt.pointsur.count > 0 then

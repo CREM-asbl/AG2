@@ -250,7 +250,7 @@ Protected Class ObjectsList
 		      else
 		        for j = 0 to ubound(s.childs)
 		          pt = s.childs(j)
-		          if (not pt.invalid) and (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or wnd.DrapShowALL)   and pt.pinshape(p)  then
+		          if (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or wnd.DrapShowALL)   and pt.pinshape(p)  then
 		            visible.addshape pt
 		          end if
 		        next
@@ -551,7 +551,7 @@ Protected Class ObjectsList
 
 	#tag Method, Flags = &h0
 		Sub XMLLoadObjects(Shapes as XMLElement)
-		  dim Obj, Prem As XMLElement
+		  dim Obj As XMLElement
 		  dim List as XMLNodeList
 		  dim nobj, i, j as integer
 		  dim s as shape

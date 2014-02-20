@@ -35,7 +35,7 @@ Begin Window MacWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   143
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window MacWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   420
       BehaviorIndex   =   0
    End
@@ -75,7 +75,7 @@ Begin Window MacWindow
       Caption         =   "Cancel"
       ControlOrder    =   1
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -92,7 +92,7 @@ Begin Window MacWindow
       TextSize        =   0
       Top             =   148
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   1
    End
@@ -103,7 +103,7 @@ Begin Window MacWindow
       Caption         =   "Close"
       ControlOrder    =   2
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -120,7 +120,7 @@ Begin Window MacWindow
       TextSize        =   0
       Top             =   148
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   2
    End
@@ -130,7 +130,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  if app.macrocreation then
+		  if currentcontent.macrocreation then
 		    Title =  Dico.Value("MacroDescription")
 		    PushButton2.Caption = Dico.Value("Cancel")
 		    PushButton3.Caption = Dico.Value("FileClose")
@@ -148,7 +148,7 @@ End
 	#tag Method, Flags = &h0
 		Sub Save()
 		  if result = 1 then
-		    wnd.Mac.expli = EditField1.text
+		    currentcontent.Mac.expli = EditField1.text
 		  end if
 		  close
 		End Sub
