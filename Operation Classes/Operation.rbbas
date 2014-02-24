@@ -562,6 +562,9 @@ Protected Class Operation
 		  
 		  if (self isa shapeconstruction) and (currentshape isa point)  then
 		    select case point(currentshape).pointsur.count
+		    case 0
+		      OpId = 0
+		      str = GetName
 		    case 1
 		      OpId = 46
 		      str = "PointSur"

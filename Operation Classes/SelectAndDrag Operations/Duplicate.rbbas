@@ -361,6 +361,7 @@ Inherits SelectAndDragOperation
 		  if copyPtSur then
 		    s1 = tempshape.element(0)
 		    cop = new point(objects, point(s1).bpt)
+		    cop.forme = s1.forme
 		    cop.surseg = point(s1).surseg
 		    copies.addshape cop
 		  else
@@ -398,7 +399,6 @@ Inherits SelectAndDragOperation
 		    for i = 0 to tempshape.count-1
 		      figs.addfigure copies.element(i).fig
 		    next
-		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -578,6 +578,9 @@ Inherits SelectAndDragOperation
 		          visible.removeshape s
 		        end if
 		      end if
+		      if currentcontent.macrocreation and not s.isptsur then
+		        visible.removeshape s
+		      end if
 		      nobj = visible.count
 		    next
 		  end if
@@ -595,12 +598,12 @@ Inherits SelectAndDragOperation
 		  dim Temp as XMLElement
 		  
 		  if copyptsur then
-		    Temp = cop.XMLPutIdINContainer(Doc,EL)
-		    'if constructedby <> nil  and constructedby.oper <> 5 then                           'and constructedby.oper <> 3
-		    Temp.appendchild cop.XMLPutConstructionInfoInContainer(Doc)
-		    'end if
+		    Temp = cop.XMLPutIdINContainer(Doc)
+		    Temp.setAttribute("Forme0", str(cop.pointsur.element(0).id))
+		    EL.appendchild Temp
+		    EL.appendchild cop.XMLPutConstructionInfoInContainer(Doc)
 		  end if
-		  return Temp
+		  return EL
 		End Function
 	#tag EndMethod
 

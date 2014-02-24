@@ -130,7 +130,7 @@ Inherits Application
 		    end if
 		    wnd.deleteContent
 		    if UBound (wnd.wcontent) = -1 then
-		      wnd.NewContent
+		      wnd.NewContent(false)
 		    end if
 		  end if
 		  return true

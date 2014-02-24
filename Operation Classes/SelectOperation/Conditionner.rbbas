@@ -31,7 +31,7 @@ Inherits SelectOperation
 		  elseif (currenthighlightedshape <> nil) and (currenthighlightedshape isa point) and (point(currenthighlightedshape).pointsur.count = 2) then
 		    if point(currenthighlightedshape).conditioned.getposition(sctxt) =-1 then
 		      point(currenthighlightedshape).conditioned.objects.append sctxt
-		    end if                                                                                  //addshape n'ajoute pas à une liste d'objets un point dont un parent est déjà membre de la liste
+		    end if                                               //addshape n'ajoute pas à une liste d'objets un point dont un parent est déjà membre de la liste
 		    sctxt.conditionedby = point(CurrentHighlightedShape)
 		    endoperation
 		  end if

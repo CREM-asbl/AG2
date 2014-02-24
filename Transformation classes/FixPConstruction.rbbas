@@ -159,7 +159,7 @@ Inherits SelectOperation
 		    s=Visible.element(j)
 		    if s.tsfi.count > 0 then
 		      for i = 0 to s.tsfi.count-1
-		        if s.tsfi.element(i).Type > 7 and  s.tsfi.element(i).Type <> 9 then
+		        if s.tsfi.element(i).Type > 6 and  s.tsfi.element(i).Type <> 9 then
 		          CurrentTsf.Append (s.tsfi.element(i))
 		        end if
 		      next
@@ -201,6 +201,28 @@ Inherits SelectOperation
 		  end if
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMac(Doc As XMLDocument, EL as XMLElement) As XMLElement
+		  
+		  
+		  EL.AppendChild tsf.FixPt.XMLPutIdINContainer(Doc)
+		  EL.appendchild  tsf.FixPt.XMLPutConstructionInfoInContainer(Doc)
+		  
+		  return EL
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

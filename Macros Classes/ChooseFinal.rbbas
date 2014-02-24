@@ -168,7 +168,7 @@ Inherits MultipleSelectOperation
 		Sub AddInit(s as shape)
 		  dim i as integer
 		  
-		  if s isa point then
+		  if s isa point and not s.isptsur then
 		    for i = 0 to ubound(point(s).parents)
 		      if point(s).parents(i).init then
 		        return
@@ -313,39 +313,36 @@ Inherits MultipleSelectOperation
 		      IdentifyInit(p.pointsur.element(0))
 		      identifyinit(p.constructedby.shape)
 		    end select
+		  elseif NbreParentsNonFinal(p) <= 0 then
+		    AddInit(p)
 		  else
-		    'if p.pointsur.count > 0 then
-		    'AddInterm(p)
-		    'for i = 0 to p.pointsur.count-1
-		    'IdentifyInit(p.pointsur.element(i))
-		    'next
-		    if NbreParentsNonFinal(p) <= 0 then
+		    if p.pointsur.count = 1 and  ubound(p.parents) = 0 then
 		      AddInit(p)
+		      IdentifyInit(p.pointsur.element(0))
+		    elseif p.pointsur.count = 2 then
+		      AddInterm(p)
+		      IdentifyInit(p.pointsur.element(0))
+		      IdentifyInit(p.pointsur.element(1))
 		    else
-		      if p.pointsur.count = 2 then
-		        AddInterm(p)
-		        IdentifyInit(p.pointsur.element(0))
-		        IdentifyInit(p.pointsur.element(1))
-		      else
-		        t = true
+		      t = true
+		      for i = 0 to ubound(p.parents)
+		        t = t and  (p.id < p.parents(i).id)   'p est-il plus vieux que tous ses parents?
+		      next
+		      if t then                                                 'oui
+		        Addinit(p)
+		      else                                                         'non certains de ses parents sont plus vieux que p
 		        for i = 0 to ubound(p.parents)
-		          t = t and  (p.id < p.parents(i).id)   'p est-il plus vieux que tous ses parents?
+		          if p.id > p.parents(i).id and not p.parents(i).final  then
+		            AddInterm(p)     'si p.parents(i) est plus vieux que p sans être un objet final
+		            IdentifyInit(p.parents(i))                                                       'on identifie les initiaux avant parents(i)
+		          else
+		            AddInit(p)                                                                                'p devient un objet initial sinon il y a risque de boucle
+		          end if
 		        next
-		        if t then                                                 'oui
-		          Addinit(p)
-		        else                                                         'non certains de ses parents sont plus vieux que p
-		          for i = 0 to ubound(p.parents)
-		            if p.id > p.parents(i).id and not p.parents(i).final  then
-		              AddInterm(p)     'si p.parents(i) est plus vieux que p sans être un objet final
-		              IdentifyInit(p.parents(i))                                                       'on identifie les initiaux avant parents(i)
-		            else
-		              AddInit(p)                                                                                'p devient un objet initial sinon il y a risque de boucle
-		            end if
-		          next
-		        end if
 		      end if
 		    end if
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 

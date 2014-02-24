@@ -673,22 +673,6 @@ Inherits nBpoint
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function PositionOnCircle(a as double, ori as integer) As BasicPoint
-		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviling relative à ce cercle
-		  dim r, b as double
-		  
-		  if abs(ori) = 1 then
-		    q = second - first
-		    r = q.norme
-		    b = q.Anglepolaire+ a*2*Pi*ori
-		    q = new BasicPoint(cos(b),sin(b))
-		    q =  first + q *r
-		    return q
-		  end if
-		End Function
-	#tag EndMethod
-
 
 	#tag Note, Name = Licence
 		

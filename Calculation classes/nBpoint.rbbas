@@ -290,7 +290,11 @@ Protected Class nBpoint
 		  
 		  select case n
 		  case 0
-		    tab(1) = tab(0)
+		    if fo < 4 then
+		      tab(1) = tab(0)
+		    else
+		      tab(1) = tab(0)+w
+		    end if
 		  case 1
 		    if fo = 1 or fo = 2 then
 		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
@@ -367,6 +371,22 @@ Protected Class nBpoint
 	#tag Method, Flags = &h0
 		Function computeangle(q as basicpoint, ori as integer) As double
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PositionOnCircle(a as double, ori as integer) As BasicPoint
+		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à ce cercle
+		  dim r, b as double
+		  
+		  if abs(ori) = 1 then
+		    q = tab(1) - tab(0)
+		    r = q.norme
+		    b = q.Anglepolaire+ a*2*Pi*ori
+		    q = new BasicPoint(cos(b),sin(b))
+		    q = tab(0) + q *r
+		    return q
+		  end if
 		End Function
 	#tag EndMethod
 

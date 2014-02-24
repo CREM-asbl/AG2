@@ -265,7 +265,7 @@ Protected Class Macro
 		  case 19 //Dupliquer
 		    dupliquerpoint(EL0,EL1,ifm1,nbp)
 		  case 24 //AppliquerTsf
-		    Transformer(EL0,EL1,ifm1,nbp)
+		    Transformer(ifmac,nbp)
 		  case 25 //Decouper
 		  case 26 //Point de division
 		    divide(ifmac, nbp)
@@ -274,6 +274,7 @@ Protected Class Macro
 		    extend(ifmac, nbp)
 		  case 35 //Identifier
 		  case 37 //FixPConstruction
+		    computefix(ifmac,nbp)
 		  case 39 //Flecher
 		  case 43 //Macro
 		  case 45  //Point d'intersection
@@ -648,15 +649,22 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Transformer(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
-		  dim MacId, i, n, op as integer
+		Sub Transformer(ifmac as InfoMac, byref nbp as nBPoint)
+		  dim  i, n, num as integer
 		  dim nbp1 as nBPoint
 		  dim M as Matrix
+		  dim ifm1 as infomac
 		  
+		  
+		  ifm1 = MacInf.GetInfoMac(ifmac.forme0, num)
+		  if ifm1.MacId <> ifmac.forme0 and num <> -1 then
+		    ifm1=ifm1.childs(num)
+		  end if
 		  nbp1 = ifm1.coord
 		  n = nbp1.taille
 		  redim nbp.tab(n)
-		  M = GetMatrix(ifm1, EL1)
+		  
+		  M = GetMatrix(ifm1)
 		  if M <> nil and M.v1 <> nil  then
 		    for i = 0 to n-1
 		      if nbp1.tab(i) <> nil then
@@ -741,9 +749,10 @@ Protected Class Macro
 		    else
 		      ifmac.coord = s.GetCoord
 		    end if
-		    if oper = 19 then            //Dupliquer Point  -- On met ifmac à jour
+		    if s.isptsur then
 		      ifmac.location = point(s).location(0)
-		      ifmac.numside1 = point(s).numside(0)
+		      ifmac.forme0 = point(s).pointsur.element(0).id
+		      ifmac.numside0 = point(s).numside(0)
 		    end if
 		  end if
 		  
@@ -757,37 +766,62 @@ Protected Class Macro
 		  
 		  if (ObFinal.indexof(MacId) <> -1)  then      //Si c'est une forme finale
 		    ExeOper(ifmac, EL,nbp)
+		    if nbp = nil or nbp.taille = 0 then
+		      return
+		    end if
+		    for i = 0 to ifmac.npts-1
+		      if nbp.tab(i) = nil then
+		        return
+		      end if
+		    next
 		    ifmac.coord = nbp
 		    //On recalcule les coordonnées
-		    s = currentcontent.theobjects.getshape(ifmac.RealId)
+		     s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.coord = ifmac.coord
 		    s.repositionnerpoints
-		    'for i = 0 to s.npts-1
-		    'if s.points(i).pointsur.count = 1 then
-		    's.points(i).puton ( s.points(i).pointsur.element(0), ifmac.childs(i).location)
-		    's.modified = true
-		    'end if
-		    'next
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetMatrix(ifm1 as infomac, EL1 as XMLElement) As Matrix
-		  dim i, op as integer
-		  dim ifm as InfoMac
-		  dim tsfnum, supp as integer
+		Function GetMatrix(ifmac as InfoMac) As Matrix
 		  
-		  tsfnum = val(EL1.GetAttribute("Nr"))
-		  supp = val(EL1.GetAttribute("SuppTsf"))
+		  dim ifm as infomac
+		  dim i as integer
 		  
 		  for i = 0 to ubound(MacInf.ifmacs)
 		    ifm = MacInf.ifmacs(i)
-		    if (ifm.MacId = supp) and  (ifm.num = tsfnum) and (ifm.M <> nil) then
+		    if ifm.MacId = ifmac.Forme0 and ifm.num = ifmac.num and ifm.M <> nil and ifm.M.v1 <> nil then
 		      return ifm.M
 		    end if
 		  next
-		  return nil
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  'dim i, op as integer
+		  'dim ifm as InfoMac
+		  'dim tsfnum, supp as integer
+		  '
+		  'tsfnum = val(EL1.GetAttribute("Nr"))
+		  'supp = val(EL1.GetAttribute("SuppTsf"))
+		  '
+		  'for i = 0 to ubound(MacInf.ifmacs)
+		  'ifm = MacInf.ifmacs(i)
+		  'if (ifm.MacId = supp) and  (ifm.num = tsfnum) and (ifm.M <> nil) then
+		  'return ifm.M
+		  'end if
+		  'next
+		  'return nil
 		End Function
 	#tag EndMethod
 
@@ -919,6 +953,37 @@ Protected Class Macro
 		  side = Ifmac.Numside0
 		  BiB = new BiBpoint( ifm1.coord.tab(side), ifm1.coord.tab((side+1) mod ifm1.coord.taille))
 		  nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ComputeFix(ifmac as infomac, nbp as nbpoint)
+		  dim ifm as infomac
+		  dim i as integer
+		  dim M as Matrix
+		  
+		  M = GetMatrix(ifmac)
+		  if M <> nil and M.v1 <> nil then
+		    nbp.append M.fixpt
+		  end if
+		  
+		  'for i = 0 to ubound(MacInf.ifmacs)
+		  'ifm = MacInf.ifmacs(i)
+		  'if ifm.MacId = ifmac.Forme0 and ifm.num = ifmac.num and ifm.M <> nil and ifm.M.v1 <> nil then
+		  'nbp.append ifm.M.FixPt
+		  'end if
+		  'next
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

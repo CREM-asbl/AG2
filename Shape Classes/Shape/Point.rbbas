@@ -448,6 +448,7 @@ Inherits Shape
 		  dim Hyb as Lacet
 		  dim k , n as integer
 		  dim angle,alpha as double
+		  dim Bib as BibPoint
 		  
 		  if  not ispointon(s,k)  then
 		    PointSur.addshape s
@@ -490,12 +491,7 @@ Inherits Shape
 		    q = new BasicPoint(cos(r),sin(r))
 		    q =  ar.GetGravityCenter + q * ar.GetRadius
 		  elseif S isa circle then
-		    circ = circle(s)
-		    q=BiBPoint(circ.coord).positionOnCircle(r,s.ori)
-		    'q = circ.Points(1).bpt-circ.GetGravityCenter
-		    'r = q.Anglepolaire+ r*2*Pi*circ.ori
-		    'q = new BasicPoint(cos(r),sin(r))
-		    'q =  circ.getgravitycenter + q * circ.getradius
+		    q=s.coord.positionOnCircle(r,s.ori)
 		  end if
 		  Moveto q
 		  
@@ -1610,14 +1606,14 @@ Inherits Shape
 		    else
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
-		    modified = true
 		  end if
+		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  if modified then
-		    updateconstructedpoints
-		    updateMacConstructedShapes
-		    endmove
-		  end if
+		  'if modified then
+		  updateconstructedpoints
+		  updateMacConstructedShapes
+		  endmove
+		  'end if
 		  
 		  
 		  
@@ -1741,6 +1737,7 @@ Inherits Shape
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
 		    i = tsf.supp.GetIndexTsf(tsf)
 		    Temp.SetAttribute("Nr", str(i))
+		    Temp.SetAttribute("NumSide", str(tsf.index))
 		  case 9
 		    Temp.SetAttribute("IdParent", str(Parents(0).Id))
 		    if constructedby.shape <> nil then
@@ -2838,27 +2835,28 @@ Inherits Shape
 		  dim Form, Temp as XMLElement
 		  dim i, n as integer
 		  
-		  Form = XMLPutIdInContainer(Doc)
-		  Form.AppendChild XMLPutTsfInContainer(Doc)
-		  
-		  if currentcontent.macrocreation and pointsur.count > 0 then
-		    'Form.setAttribute("PointSur", str(pointsur.element(0).id))
-		    temp = pointsur.XMLPutIdInContainer(Doc)
-		    if pointsur.count = 1 then
-		      temp.setAttribute("NumSide0",str(numside(0)))
-		      temp.setattribute("Location",str(location(0)))
-		      if surseg then
-		        Form.SetAttribute("Surseg","1")
-		      end if
-		    elseif pointsur.count=2 then
-		      temp.setAttribute("NumSide0",str(numside(0)))
-		      temp.setAttribute("NumSide1",str(numside(1)))
+		  if currentcontent.macrocreation  then
+		    Form = XMLPutIdInContainer(Doc)
+		    EL.appendchild Form
+		    
+		    if pointsur.count > 0 then
+		      temp = pointsur.XMLPutIdInContainer(Doc)
+		      select case pointsur.count
+		      case 1
+		        temp.setAttribute("NumSide0",str(numside(0)))
+		        temp.setattribute("Location",str(location(0)))
+		        if surseg then
+		          temp.SetAttribute("Surseg","1")
+		        end if
+		      case 2
+		        temp.setAttribute("NumSide0",str(numside(0)))
+		        temp.setAttribute("NumSide1",str(numside(1)))
+		      end select
 		    end if
-		    EL.AppendChild Form
 		    EL.AppendChild Temp
+		    
+		    return EL
 		  end if
-		  
-		  return EL
 		End Function
 	#tag EndMethod
 

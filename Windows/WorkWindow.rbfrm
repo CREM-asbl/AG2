@@ -725,7 +725,7 @@ End
 		  
 		  initParams()
 		  updateMenu
-		  NewContent
+		  NewContent(false)
 		  DrapShowall = false
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
@@ -1025,7 +1025,7 @@ End
 		Function FileNew() As Boolean Handles FileNew.Action
 			if mousedispo then
 			closefw
-			NewContent
+			NewContent(false)
 			refresh
 			end if
 			return true
@@ -1248,8 +1248,8 @@ End
 			dim i as integer
 			
 			closefw
-			newcontent
-			currentcontent.macrocreation = true
+			newcontent(true)
+			'currentcontent.macrocreation = true
 			MenuMacros
 			wnd.refreshtitle
 			currentcontent.mac = new macro
@@ -1324,7 +1324,7 @@ End
 			
 			deletecontent
 			if UBound (wcontent) = -1 then
-			NewContent
+			NewContent(false)
 			end if
 		End Function
 #tag EndMenuHandler
@@ -2230,7 +2230,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub NewContent()
+		Sub NewContent(t as Boolean)
 		  dim mitem as MenuItem
 		  
 		  if (GetNumWindow<>-1) then
@@ -2240,6 +2240,7 @@ End
 		  numfig=numfig+1
 		  currentContent = new WindContent(numfig)
 		  wcontent.Append(currentContent)
+		  currentcontent.macrocreation = t
 		  currentcontent.Creerrepere
 		  mitem = new MenuItem
 		  mitem.Name = "winitem"
@@ -2310,7 +2311,7 @@ End
 		  
 		  if  CurrentContent.TheObjects.count > 1 then
 		    closefw
-		    NewContent
+		    NewContent(false)
 		    nc = true
 		  end if
 		  
@@ -2631,7 +2632,7 @@ End
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
 		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
-		  MenuBar.Child("OperaMenu").Child("OperaClone").visible =false
+		  'MenuBar.Child("OperaMenu").Child("OperaClone").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =false
 		  MenuBar.Child("ToolsMenu").visible = false

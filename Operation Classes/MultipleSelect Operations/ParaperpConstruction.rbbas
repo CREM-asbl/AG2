@@ -179,7 +179,6 @@ Inherits ShapeConstruction
 		      CurrentContent.abortconstruction
 		      return false
 		    end if
-		    currentshape.constructshape
 		    curshape.mobility
 		    ReinitAttraction
 		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
@@ -187,6 +186,7 @@ Inherits ShapeConstruction
 		      nextitem
 		    end if
 		  case 3
+		    currentshape.constructshape
 		    curshape = currentshape.points(1)
 		    AdjustMagnetism(curshape)
 		    if curshape.invalid or currentshape.points(0).distanceto(curshape.bpt)< epsilon   then

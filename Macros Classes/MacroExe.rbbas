@@ -361,18 +361,16 @@ Inherits MultipleSelectOperation
 		  
 		  if Mac.ObInterm.indexof(n) <> -1 then
 		    ifmac.interm = true
-		    if EL1 <> nil then
-		      CopyParam (EL0, EL1, oper, ifmac)
-		    end if
 		  end if
 		  
 		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
 		    CreateFinal(ifmac,EL0)
 		    IdentifyPoints(ifmac,EL0)
 		    s =  currentcontent.TheObjects.GetShape(ifmac.RealId)
-		    if EL1 <> nil then
-		      CopyParam (EL0, EL1, oper,  ifmac)
-		    end if
+		  end if
+		  
+		  if EL1 <> nil then
+		    CopyParam (EL0, EL1, oper,  ifmac)
 		  end if
 		  
 		  EL01 = XMLElement(EL0.FirstChild)
@@ -503,7 +501,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CopyParam(EL0 as XMLElement, EL1 as XMLElement, op as integer, ifmac as InfoMac)
-		  //On copie les infos de construction dans l'infomac du nouvel objet
+		  //On copie les infos de construction qui ne changeront pas  dans l'infomac du nouvel objet
 		  dim num as integer
 		  dim EL2 as XMLElement
 		  dim ifm as infomac
@@ -519,6 +517,13 @@ Inherits MultipleSelectOperation
 		    end if
 		  case 14 //centre
 		    ifmac.forme0 = val(EL1.GetAttribute("Id"))
+		  case 19 //DupliquerPoint
+		    ifmac.Forme0 = val(EL1.GetAttribute("Id"))
+		    //numside et location peuvent être modifiés, donc à recalculer chaque fois
+		  case 24, 37 //Transformer, FixPtConstruction
+		    ifmac.Forme0 = val(EL1.GetAttribute("SuppTsf"))
+		    ifmac.numside0 = val(EL1.GetAttribute("Numside"))
+		    ifmac.num = val(EL1.GetAttribute("Nr"))
 		  case 26 //diviser
 		    ifmac.Forme0 =  val(EL1.GetAttribute("Id"))
 		    ifmac.forme1 = val(EL1.GetAttribute("Id0"))
@@ -535,7 +540,7 @@ Inherits MultipleSelectOperation
 		    ifmac.forme0 = val(EL2.GetAttribute("Id"))
 		    EL2 = XMLElement(EL1.child(1))
 		    ifmac.forme1 = val(EL2.GetAttribute("Id"))
-		  case 46 //PointSur
+		  case 46 //PointSur (construction)
 		    ifmac.numside0 = val(EL1.GetAttribute("NumSide0"))
 		    ifmac.location = val(EL1.GetAttribute("Location"))
 		    EL2 = XMLElement(EL1.child(0))
@@ -582,7 +587,7 @@ Inherits MultipleSelectOperation
 		      case 0
 		        b = b or  (sh isa polreg and sh.npts = 4)
 		      case 1
-		        b = b and (sh.forme > 0)
+		        b = b and (sh.forme > 0) 'and (sh.forme < 4)
 		      case 2
 		        b = ( b and (sh.forme  =2 or sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
 		      case 3

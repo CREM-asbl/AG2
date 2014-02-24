@@ -1288,7 +1288,7 @@ Implements StringProvider
 		  
 		  CreateExtreAndCtrlPoints
 		  
-		  modified = true  '?
+		  modified = true  
 		  endmove
 		  updateMacConstructedShapes
 		  
@@ -3696,8 +3696,10 @@ Implements StringProvider
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
 		    for j = 0 to ubound(s1.childs)
-		      s1.childs(j).modified = true
-		      s1.childs(j).updateshape
+		      if s1.childs(j).MacConstructedShapes.indexof(s1) = -1 then
+		        s1.childs(j).modified = true
+		        s1.childs(j).updateshape
+		      end if
 		    next
 		    s1.updateshape
 		  next
