@@ -642,7 +642,7 @@ Inherits Shape
 		  delta = wnd.Mycanvas1.MagneticDist
 		  
 		  for i = 0  to npts-1
-		    if curved(i) = 0 then
+		    if curved(i) = 0  then
 		      dr1 = getBiBside(i)
 		      for j = 0 to S.npts-1
 		        if s.curved(j) = 0 then
