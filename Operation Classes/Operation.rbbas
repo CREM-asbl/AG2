@@ -276,8 +276,6 @@ Protected Class Operation
 		Sub ShowAttraction()
 		  
 		  dim icot as integer
-		  dim CAS as shape
-		  dim p as basicpoint
 		  
 		  if CurrentAttractedShape<>nil then
 		    CurrentAttractedShape.HighLight

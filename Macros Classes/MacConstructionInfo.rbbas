@@ -189,6 +189,17 @@ Protected Class MacConstructionInfo
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetRealId(n as integer) As integer
+		  dim m as integer
+		  m = GetRealInit(n)
+		  if m = -1 then
+		    m = GetRealFinal(n)
+		  end if
+		  return m
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Mac As Macro

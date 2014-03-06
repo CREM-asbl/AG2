@@ -266,7 +266,7 @@ Inherits MultipleSelectOperation
 		  if currentcontent.macrocreation then
 		    for i = 0 to currentshape.ncpts-1
 		      pt = currentshape.points(i)
-		      if pt.pointsur.count > 0 then
+		      if pt.pointsur.count > 0 and pt.constructedby = nil then
 		        if CheckNoIntersec(pt) then
 		          oper = new shapeconstruction
 		          oper.currentshape = pt

@@ -710,6 +710,7 @@ Inherits Shape
 		  end if
 		  q.constructedby.data.append k
 		  q.mobility
+		  'q.updateguides
 		  
 		  
 		  
@@ -1731,7 +1732,6 @@ Inherits Shape
 		    Temp.SetAttribute("Id1",str(shape(ConstructedBy.data(1)).id))
 		    Temp.SetAttribute("NDivP",str(ConstructedBy.data(2)))
 		    Temp.SetAttribute("DivP",str(ConstructedBy.data(3)))
-		    'Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
@@ -2453,16 +2453,25 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatefirstpoint(M as Matrix)
-		  Moveto M*bpt
-		  if pointsur.count = 1 then
-		    puton pointsur.element(0)
+		Sub updatefirstpoint(np as BasicPoint)
+		  dim M as Matrix
+		  dim delta as BasicPoint
+		  dim d as double
+		  
+		  delta = np-bpt
+		  
+		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
+		    d = delta.norme
+		    if d > 0.05 then
+		      np = bpt+ (delta.normer)*0.05
+		    end if
 		  end if
+		  M = new TranslationMatrix(np-bpt)
+		  Moveto M*bpt
+		  puton pointsur.element(0)
 		  modified = true
 		  updateshape
-		  
 		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
-		  
 		End Sub
 	#tag EndMethod
 
@@ -2963,7 +2972,7 @@ Inherits Shape
 		  
 		  Currentcontent.addShape self
 		  if CurrentContent.ForHisto then
-		    if macconstructedby <> nil then
+		    if macconstructedby <> nil and forme <> 1 then
 		      super.addtofigure
 		    else
 		      addtofigure

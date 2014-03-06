@@ -108,17 +108,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
-		  dim i, j as integer
-		  dim s as shape
 		  
-		  for i = 0 to currentcontent.theobjects.count-1
-		    s= currentcontent.TheObjects.element(i)
-		    if not s isa point then
-		      for j = 0 to s.npts-1
-		        fixecouleurs(s.points(j))
-		      next
-		    end if
-		  next
 		  Super.Paint(g)
 		  
 		  
@@ -228,10 +218,15 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim i as integer
+		  dim i, j as integer
 		  dim s as shape
 		  
 		  CurrentItemtoSet = NumberOfItemsToSelect +1
+		  currentcontent.mac.Histo = currentcontent.Histo
+		  currentcontent.mac.Elaguer
+		  currentcontent.mac.ObInit.sort
+		  currentcontent.mac.ObInterm.sort
+		  currentcontent.mac.ObFinal.sort
 		  
 		  for i =  currentcontent.TheObjects.count -1 downto 1
 		    s =  currentcontent.TheObjects.element(i)
@@ -240,15 +235,12 @@ Inherits MultipleSelectOperation
 		    else
 		      s.delete
 		    end if
+		    if not s isa point then
+		      for j = 0 to s.npts-1
+		        fixecouleurs(s.points(j))
+		      next
+		    end if
 		  next
-		  currentcontent.mac.Histo = currentcontent.Histo
-		  currentcontent.mac.Elaguer
-		  currentcontent.mac.ObInit.sort
-		  currentcontent.mac.ObInterm.sort
-		  currentcontent.mac.ObFinal.sort
-		  
-		  
-		  
 		  super.endoperation
 		  
 		  mw = new  MacWindow
@@ -316,7 +308,7 @@ Inherits MultipleSelectOperation
 		  elseif NbreParentsNonFinal(p) <= 0 then
 		    AddInit(p)
 		  else
-		    if p.pointsur.count = 1 and  ubound(p.parents) = 0 then
+		    if p.pointsur.count = 1 and  p.constructedby = nil then
 		      AddInit(p)
 		      IdentifyInit(p.pointsur.element(0))
 		    elseif p.pointsur.count = 2 then

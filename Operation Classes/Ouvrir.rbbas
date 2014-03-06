@@ -4,7 +4,6 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub Ouvrir(f as folderitem)
 		  dim Doc as XmlDocument
-		  'dim Fag as XmlElement
 		  dim Cfg as string
 		  dim v1, v2, v3, n as integer
 		  dim version as string
@@ -13,8 +12,6 @@ Inherits Operation
 		  dim BkCol as string
 		  
 		  Ouvrir
-		  
-		  'MsgBox "Ouvrir 6"
 		  
 		  try
 		    Doc=new XMLDocument(f)
@@ -79,6 +76,8 @@ Inherits Operation
 		  wnd.refresh
 		  finished = true
 		  CurrentContent.AddOperation(self)
+		  wnd.mycanvas1.mousecursor = arrowcursor
+		  
 		  
 		End Sub
 	#tag EndMethod

@@ -662,32 +662,25 @@ Implements StringProvider
 		  for i = 0 to npts-1
 		    points(i).isinconstruction = false
 		  next
-		  
 		  if self isa arc or self isa secteur then
 		    drapori = true
 		  end if
-		  
 		  if currentcontent.PolygFleches and not self isa Lacet then
 		    Ti = new Tip
 		  end if
-		  
-		  
 		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
 		    nonpointed = not currentcontent.PolygPointes
 		  elseif constructedby <> nil and constructedby.shape.nonpointed = true then
 		    nonpointed = true
 		  end if
-		  
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
 		    Currentcontent.addShape self
 		    if CurrentContent.ForHisto then
 		      addtofigure
 		    end if
 		  end if
-		  
 		  signaire = sign(aire)
 		  computeori
-		  
 		  dounselect
 		  currentcontent.optimize
 		  currentcontent.RemettreTsfAvantPlan
@@ -1288,7 +1281,7 @@ Implements StringProvider
 		  
 		  CreateExtreAndCtrlPoints
 		  
-		  modified = true  
+		  modified = true
 		  endmove
 		  updateMacConstructedShapes
 		  
@@ -2207,17 +2200,6 @@ Implements StringProvider
 		      end if
 		    case 3, 5, 6, 9
 		      return true
-		      'case 3
-		      'if isaparaperp then
-		      'return true
-		      'end if
-		      'if   not self isa point then
-		      'for i = 0 to npts-1
-		      'if points(i).pointsur.count = 2 then
-		      'return true
-		      'end if
-		      'next
-		      'end if
 		    end select
 		  elseif constructedby <> nil and constructedby.oper = 6 then
 		    if constructedby.shape.fig <> s2.fig and NbSomCommuns(ff) > 0 then
@@ -2246,16 +2228,6 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  'for k = 0 to ubound(tsfi)
-		  'if not s2 isa point then
-		  'for h = 0 to s2.npts-1
-		  'if s2.points(h).constructedby <> nil and s2.points(h).constructedby.oper = 6 and Transformation(s2.points(h).constructedby.data(0)) = tsfi(k) then
-		  'return true
-		  'end if
-		  'next
-		  'end if
-		  'next
-		  
 		  if not s2 isa point then
 		    for h = 0 to s2.npts-1
 		      if s2.points(h).constructedby <> nil and s2.points(h).constructedby.oper = 6  then
@@ -2273,7 +2245,7 @@ Implements StringProvider
 		  end if
 		  
 		  
-		  if s2.haspointon(self, p)  and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
+		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
 		    t =  (constructedby = nil or constructedby.shape <> s2)   ''si un sommet de s2 est pointsur self (sans que self soit construit par s2)
 		    for k = 0 to npts-1
 		      t = t or ( (points(k).constructedby = nil) or (points(k).constructedby.shape isa point and s2.getindex(point(points(k).constructedby.shape)) <> -1) )
@@ -2283,11 +2255,6 @@ Implements StringProvider
 		    end if
 		  end if
 		  
-		  'if self isa bipoint then   //Ennuyeux si le bipoint est commun à deux polygones de figures différentes BH F15_3.fag
-		  'if s2 isa polygon and s2.getindexpoint(points(0)) <> -1 and s2.getindexpoint(points(1)) <> -1 then
-		  'return true
-		  'end if
-		  'end if
 		  
 		  if s2 isa polygon then
 		    for i = 0 to s2.npts-1

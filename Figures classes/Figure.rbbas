@@ -1457,7 +1457,7 @@ Implements StringProvider
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
-		    if not p.invalid  and  (p.pointsur.count < 2)  and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))  then
+		    if (not p.invalid)  and  (p.pointsur.count < 2)  and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))  then
 		      ep = oldbpts(i)
 		      np = p.bpt
 		      d =np.distance(M*ep)

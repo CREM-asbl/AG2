@@ -946,7 +946,7 @@ End
 			md = New MessageDialog
 			md.Title = Dico.value("HelpAbout")
 			md.Icon = 0
-			md.Message = "Apprenti géomètre v."+App.LongVersion+EndOfLine+"Copyright CREM "+mois(App.BuildDate.Month-1)+" "+str(App.BuildDate.Year)+ EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
+			md.Message = "Apprenti géomètre v."+App.LongVersion+EndOfLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
 			b = md.ShowModal
 			end if
 			return true

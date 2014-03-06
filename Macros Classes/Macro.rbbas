@@ -239,20 +239,20 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ExeOper(ifmac as infomac, EL as XMLElement, byref nbp As nBPoint)
+		Sub ExeOper(ifmac as infomac, byref nbp As nBPoint)
 		  dim MacId, oper as integer
 		  dim ifm0,  ifm1 as InfoMac
 		  dim EL0, EL1 as XMLElement
 		  dim num as integer
 		  
-		  
-		  EL0 = XMLElement(EL.Child(0))                   'Forme construite
-		  EL1 = XMLElement(EL.Child(1))                   'Instructions de construction (s'il y en a)
-		  
-		  if EL1 <> nil and ifmac.oper > 0 then                     'Données de l'éventuelle forme-constructeur
-		    MacId = val(EL1.GetAttribute("Id"))
-		    ifm1 = MacInf.GetInfoMac(MacId, num)
-		  end if
+		  '
+		  'EL0 = XMLElement(EL.Child(0))                   'Forme construite
+		  'EL1 = XMLElement(EL.Child(1))                   'Instructions de construction (s'il y en a)
+		  '
+		  'if EL1 <> nil and ifmac.oper > 0 then                     'Données de l'éventuelle forme-constructeur
+		  'MacId = val(EL1.GetAttribute("Id"))
+		  'ifm1 = MacInf.GetInfoMac(MacId, num)
+		  'end if
 		  
 		  select case ifmac.oper
 		  case 0 //Construction
@@ -263,7 +263,7 @@ Protected Class Macro
 		    centre(ifmac,nbp)
 		  case 16 //Retourner
 		  case 19 //Dupliquer
-		    dupliquerpoint(EL0,EL1,ifm1,nbp)
+		    dupliquerpoint(ifmac,nbp)
 		  case 24 //AppliquerTsf
 		    Transformer(ifmac,nbp)
 		  case 25 //Decouper
@@ -501,17 +501,14 @@ Protected Class Macro
 		      if ifm2.macid = ifm1.MacId then
 		        nbp.tab(i) = ifm2.coord.tab(0)
 		      else
-		        nbp.tab(i) = ifm2.coord.tab(num)
+		        if num < ifm2.npts then
+		          nbp.tab(i) = ifm2.coord.tab(num)
+		        else
+		          nbp.tab(i) = ifm2.childs(num).coord.tab(0)
+		        end if
 		      end if
 		    next
 		    nbp.constructshape(ifmac.fa, ifmac.fo)
-		    'for i = 0 to ifmac.ncpts-1
-		    'ifm1 = ifmac.childs(i)
-		    'if ifm1.ptsur = 1 then
-		    'ifm3 = MacInf.GetInfoMac(ifm1.forme0,num)
-		    'ifm1.location = ifm1.coord.tab(0).location(ifm3.coord.tab(ifm1.numside0), ifm3.coord.tab((ifm1.numside0+1) mod ifm3.coord.taille))
-		    'end if
-		    'next
 		    
 		  end if
 		End Sub
@@ -536,26 +533,29 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub dupliquerpoint(EL0 as XMLElement, EL1 as XMLElement, ifm1 as InfoMac, byref nbp as nBPoint)
-		  dim id1, id0 ,  k, n, np, m, si0 as integer
-		  dim fp, sp, bp as BasicPoint
+		Sub dupliquerpoint(ifmac as InfoMac, byref nbp as nBPoint)
+		  dim num, k, side as integer
 		  dim nb as nBPoint
-		  dim loc0 as double
+		  dim ifm1, ifm2 as infomac
+		  dim Bib as BiBPoint
 		  
-		  id1 =  val(EL1.GetAttribute("Id")) //point source
-		  loc0 = GetLocation(id1)
-		  si0 = GetSide(id1)
+		  if ifmac.ptsur <> 1 then
+		    return
+		  end if
 		  
-		  k = val(EL1.GetAttribute("Data0")) //Point image
-		  n = val(EL0.GetAttribute("PointSur"))
-		  nb = MacInf.GetSommet(numop-1,n,m).Coord
-		  np = nb.Taille
+		  ifm1 = MacInf.GetInfoMac(ifmac.Forme0, num)   //ifmac du support du dupliqué
+		  ifm2 = MacInf.GetInfoMac(ifmac.Forme1, num)
+		  ifmac.location = ifm2.childs(num).location
+		  side = ifm2.childs(num).numside0                           //numero de coté du dupliqué
+		  k = ifmac.num
+		  side = (side+k) mod ifm1.npts                                   //numero du coté du duplicat
+		  ifmac.numside0 = side
+		  nb = ifm1.coord
+		  BiB = new BiBPoint (nb.tab(side), nb.tab((side+1) mod nb.taille))
+		  nbp.append BiB.BptOnBiBpt(ifmac.location)
 		  
-		  si0 = ( si0+k ) mod np
-		  fp = nb.tab(si0)
-		  sp = nb.tab((si0+1) mod np)
-		  bp = fp*(1-loc0)+sp*loc0
-		  nbp.append bp
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -757,7 +757,7 @@ Protected Class Macro
 		  end if
 		  
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
-		    ExeOper(ifmac, EL,nbp)                                     //on recalcule ou récupère les coordonnées
+		    ExeOper(ifmac, nbp)                                     //on recalcule ou récupère les coordonnées
 		    ifmac.coord = nbp
 		    for i =0 to ifmac.npts-1
 		      ifmac.childs(i).coord = new nBPoint(nbp.tab(i))
@@ -765,7 +765,7 @@ Protected Class Macro
 		  end if
 		  
 		  if (ObFinal.indexof(MacId) <> -1)  then      //Si c'est une forme finale
-		    ExeOper(ifmac, EL,nbp)
+		    ExeOper(ifmac, nbp)
 		    if nbp = nil or nbp.taille = 0 then
 		      return
 		    end if
@@ -776,8 +776,12 @@ Protected Class Macro
 		    next
 		    ifmac.coord = nbp
 		    //On recalcule les coordonnées
-		     s = currentcontent.theobjects.getshape(ifmac.RealId)
+		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.coord = ifmac.coord
+		    if s isa point and s.forme = 1 then
+		      point(s).location(0) = ifmac.location
+		      point(s).numside(0) = ifmac.numside0
+		    end if
 		    s.repositionnerpoints
 		  end if
 		End Sub

@@ -380,10 +380,12 @@ Inherits Canvas
 		  dim op As operation
 		  dim pt as point
 		  
+		  
 		  if Background = nil or CurrentContent.GetRepere = nil then
 		    return
 		  end if
 		  
+		  cnt = cnt+1
 		  EraseBackground
 		  
 		  if drapzone then
@@ -881,6 +883,10 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		FondsEcran As Picture
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		cnt As Integer
 	#tag EndProperty
 
 

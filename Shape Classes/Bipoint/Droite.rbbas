@@ -509,7 +509,7 @@ Inherits Bipoint
 		Function prppupdate2() As Matrix
 		  dim sf as figure
 		  dim  p, q as Point
-		  dim  ep, np, eq, nq as Basicpoint
+		  dim  ep, np, eq, nq, w as Basicpoint
 		  dim t as Boolean
 		  dim n as integer
 		  
@@ -523,7 +523,10 @@ Inherits Bipoint
 		  
 		  select case n
 		  case 0
-		    return new Matrix(1)
+		    w = constructbasis
+		    nq = nq.Projection(np,np+w)
+		    q.moveto nq
+		    return new SimilarityMatrix(ep,eq,np,nq)
 		  case 1
 		    n = sf.ListSommSur(0)
 		    t = sf.replacerpoint(points(n))

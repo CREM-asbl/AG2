@@ -56,8 +56,6 @@ Inherits MultipleSelectOperation
 		Sub Paint(g as graphics)
 		  dim obj as string
 		  
-		  
-		  
 		  currentshape = currenthighlightedshape
 		  
 		  if visible  = nil or currentshape = nil then
@@ -67,7 +65,7 @@ Inherits MultipleSelectOperation
 		      display = choose + un + " " +str
 		    end if
 		  else
-		    if currentshape isa polygon and side <> -1 then
+		    if currentshape isa polygon and side <> -1 and fa = 1 then
 		      currentshape.unhighlight
 		      polygon(currentshape).paintside(g,side,2,config.highlightcolor)
 		      obj = lowercase(segment)
@@ -131,7 +129,6 @@ Inherits MultipleSelectOperation
 		      s.createskull(s.points(0).bpt)
 		    end if
 		    s.CreateExtreAndCtrlPoints
-		    s.endconstruction
 		  next
 		  
 		  
@@ -162,9 +159,6 @@ Inherits MultipleSelectOperation
 		  
 		  sh = operation.getshape(p)
 		  str = lowercase(identifier(fa, fo))
-		  nobj = visible.count
-		  iobj = 0
-		  
 		  nobj = visible.count-1
 		  redim index(nobj)
 		  selectionnerobjetini(p)
@@ -183,12 +177,10 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreateFinal(ifmac as InfoMac, EL0 as XMLElement)
+		Sub CreateFinal(ifmac as InfoMac)
 		  dim newshape, s as shape
-		  dim EL1, EL2 as XMLElement
-		  dim i, j, m, n, p, pid, index, fa, fo, ni as integer
-		  dim pt as point
-		  dim ifm as infomac
+		  dim i as integer
+		  
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		  newshape.auto = 4
@@ -198,6 +190,10 @@ Inherits MultipleSelectOperation
 		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
 		    s.addMacConstructedshape newshape
 		  next
+		  if ifmac.oper = 19 then
+		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
+		    point(newshape).puton s, ifmac.location
+		  end if
 		  currentcontent.addshape newshape
 		  if ifmac.fa = 1 and (ifmac.fo=4 or ifmac.fo = 5)  then
 		    newshape.points(1).hide
@@ -363,20 +359,27 @@ Inherits MultipleSelectOperation
 		    ifmac.interm = true
 		  end if
 		  
-		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
-		    CreateFinal(ifmac,EL0)
-		    IdentifyPoints(ifmac,EL0)
-		    s =  currentcontent.TheObjects.GetShape(ifmac.RealId)
-		  end if
-		  
 		  if EL1 <> nil then
 		    CopyParam (EL0, EL1, oper,  ifmac)
 		  end if
+		  
+		  
+		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
+		    CreateFinal(ifmac)
+		    IdentifyPoints(ifmac,EL0)
+		    s =  currentcontent.TheObjects.GetShape(ifmac.RealId)
+		    s.endconstruction
+		  end if
+		  
 		  
 		  EL01 = XMLElement(EL0.FirstChild)
 		  if EL01 <> nil then
 		    CreateChildren(EL01,ifmac,s)
 		  end if
+		  if ifmac.ptsur = 1 then
+		    CreateChildPtSur(ifmac)
+		  end if
+		  
 		  MacInfo.IfMacs.append ifmac
 		  
 		  
@@ -484,11 +487,11 @@ Inherits MultipleSelectOperation
 		    ifm = MacInfo.GetInfoMac(m,num)
 		    if ifm <> nil then
 		      if ifm.MacId = m then
-		        if Mac.ObInit.indexof(m) <> -1  then
+		        if ifm.init  then
 		          pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		        end if
-		      elseif ifm.init then
-		        pt = Currentcontent.TheObjects.Getshape(ifm.realId).childs(num)
+		      elseif ifm.childs(num).init then
+		        pt = point(Currentcontent.TheObjects.Getshape(ifm.realId).childs(num))
 		      end if
 		      if pt <> nil then
 		        newshape.substitutepoint(pt,newshape.points(j))
@@ -518,7 +521,9 @@ Inherits MultipleSelectOperation
 		  case 14 //centre
 		    ifmac.forme0 = val(EL1.GetAttribute("Id"))
 		  case 19 //DupliquerPoint
-		    ifmac.Forme0 = val(EL1.GetAttribute("Id"))
+		    ifmac.Forme0 = val(EL0.GetAttribute("Forme0"))  //Support du duplicat
+		    ifmac.Forme1 = val(EL1.GetAttribute("Id"))   //MacId du point dupliqué
+		    ifmac.num = val(EL1.GetAttribute("Data0")) //Ecart entre les numéros de coté du dupliqué et du duplicat
 		    //numside et location peuvent être modifiés, donc à recalculer chaque fois
 		  case 24, 37 //Transformer, FixPtConstruction
 		    ifmac.Forme0 = val(EL1.GetAttribute("SuppTsf"))
@@ -544,7 +549,7 @@ Inherits MultipleSelectOperation
 		    ifmac.numside0 = val(EL1.GetAttribute("NumSide0"))
 		    ifmac.location = val(EL1.GetAttribute("Location"))
 		    EL2 = XMLElement(EL1.child(0))
-		    ifmac.forme0 = val(EL2.GetAttribute("Id"))
+		    ifmac.forme0 = val(EL2.GetAttribute("Id")) //Support du point sur
 		  end select
 		  
 		End Sub
@@ -644,6 +649,16 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateChildPtSur(ifmac as infomac)
+		  dim ifm as infomac
+		  dim num as integer
+		  
+		  ifm = MacInfo.GetInfoMac(ifmac.forme0, num)
+		  ifm.childs.append ifmac
 		End Sub
 	#tag EndMethod
 
