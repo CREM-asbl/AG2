@@ -8,10 +8,16 @@ Implements StringProvider
 		  dim data as string
 		  
 		  data = me.ReadAll
+		  MsgBox data
 		  if data <> "focus" then
-		    f = new FolderItem(data)
-		    if (f =nil) then
+		    'try
+		    f =  GetFolderItem(data)
+		    'catch
+		    'f = nil
+		    'end try
+		    if (f = nil) then
 		      MsgBox  Dico.Value("MsgErrOpenFile")
+		      listen
 		      return
 		    end if
 		    wnd.Restore
@@ -38,7 +44,7 @@ Implements StringProvider
 
 
 	#tag Method, Flags = &h0
-		Sub Send(file As folderItem)
+		Sub Send(file as string)
 		  Connect
 		  while not IsConnected
 		    Poll
@@ -46,8 +52,8 @@ Implements StringProvider
 		      return
 		    end if
 		  wend
-		  if file <> nil then
-		    Write(file.AbsolutePath)
+		  if file <> "" then
+		    Write(file)
 		  else
 		    Write("focus")
 		  end if

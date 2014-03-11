@@ -722,6 +722,9 @@ End
 
 	#tag Event
 		Sub Open()
+		  if app.ipctransfert then
+		    Quit
+		  end if
 		  
 		  initParams()
 		  updateMenu
