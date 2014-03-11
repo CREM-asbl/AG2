@@ -8,13 +8,10 @@ Implements StringProvider
 		  dim data as string
 		  
 		  data = me.ReadAll
-		  MsgBox data
+		  data = DefineEncoding(data,Encodings.UTF8)
+		  
 		  if data <> "focus" then
-		    'try
 		    f =  GetFolderItem(data)
-		    'catch
-		    'f = nil
-		    'end try
 		    if (f = nil) then
 		      MsgBox  Dico.Value("MsgErrOpenFile")
 		      listen
@@ -45,6 +42,8 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Send(file as string)
+		  file = DefineEncoding(file,Encodings.UTF8)
+		  
 		  Connect
 		  while not IsConnected
 		    Poll

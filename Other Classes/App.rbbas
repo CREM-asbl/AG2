@@ -164,13 +164,11 @@ Inherits Application
 		  dim s As string
 		  s = item.AbsolutePath
 		  
-		  MsgBox s
-		  
 		  if Right(s,1) = "\" then
 		    s = s.mid(1,Len(s)-1)
-		  end if 
-		  if FileName <> "" and Left(s,1) <> "\" then
-		    s = " "+s 
+		  end if
+		  if FileName <> "" then
+		    s = " "+s
 		  end if
 		  
 		  FileName = FileName+s
