@@ -740,9 +740,15 @@ End
 		    app.iw.Close
 		  end if
 		  maximize
-		  if app.currentfile <> nil then
-		    OpenFile(app.currentfile)
-		    app.currentfile = nil
+		  if app.fileName <> "" then
+		    dim f as FolderItem
+		    f = GetFolderItem(app.FileName)
+		    if f <> nil then
+		      OpenFile(f)
+		    else
+		      MsgBox  Dico.Value("MsgErrOpenFile")
+		    end if
+		    app.FileName = ""
 		  end if
 		  
 		  
