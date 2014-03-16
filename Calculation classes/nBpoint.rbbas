@@ -85,62 +85,6 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ComputeMatrix(t as integer, index as integer, npts as integer, ori as integer) As Matrix
-		  dim k as double
-		  dim u,v,w as BasicPoint
-		  dim M as Matrix
-		  
-		  select case t
-		  case 1
-		    v = tab((index+1)mod npts)- tab(index)
-		    M = new translationmatrix (v*ori)
-		    'case 2
-		    'M = new rotationmatrix (tab(0).bpt, arc(supp).arcangle)
-		    'case 3
-		    'M = new rotationmatrix(tab(0).bpt, PI)
-		    'case 4
-		    'M = new rotationmatrix(tab(0).bpt,PIDEMI)
-		    'case 5
-		    'M = new rotationmatrix(tab(0).bpt, -PIDEMI)
-		    'case 6
-		    'if  supp isa droite then
-		    'M = new SymmetryMatrix(tab(0),tab(1))
-		    'elseif supp isa bande then
-		    'if index = 0 then
-		    'v = tab(1)
-		    'else
-		    'v = Bande(supp).Point3
-		    'end if
-		    'M = new SymmetryMatrix(tab(2*index), v)
-		    'elseif supp isa polygon then
-		    'M = new SymmetryMatrix(tab(index), tab((index+1) mod supp.npts))
-		    'elseif supp isa secteur then
-		    'M = new SymmetryMatrix(tab(0), tab(index))
-		    'end if
-		    'case 7, 72
-		    'M = new HomothetyMatrix(tab(0),tab(1),tab(3), tab(2))
-		    'case 71
-		    'u = tab(0)
-		    'v = tab(1)
-		    'w = supphom(supp).tab(3)
-		    'k = w.location(u,v)
-		    'M = new HomothetyMatrix(u, k)
-		    'case 8
-		    'M = new SimilarityMatrix(tab(0),tab(1),tab(3), tab(2))
-		    'case 81
-		    'M = new SimilarityMatrix(tab(0),tab(1),tab(0), tab(2))
-		    'case 82
-		    'M = new SimilarityMatrix(tab(0),tab(1),tab(1), tab(2))
-		    'case 9
-		    'M = new AffinityMatrix(tab(0),tab(1),tab(2), tab(0),tab(1),tab(3))
-		    'case 10
-		    'M = new IsometryMatrix(tab(0),tab(1),tab(3), tab(2))
-		  end select
-		  return M
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ConstructShape(fa as integer, fo as integer)
 		  dim a, b, c as BasicPoint
 		  dim d as double
@@ -346,31 +290,42 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Function SimilarityMatrix() As Matrix
-		  return new SimilarityMatrix(tab(0),tab(1),tab(2), tab(3))
+		  return new SimilarityMatrix(tab(0),tab(1),tab(3), tab(2))
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function startangle() As double
-		  
+		  return getangle(tab(0),tab(1))
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function endangle() As double
-		  
+		  return getangle(tab(0),tab(2))
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function orientation() As integer
+		  dim u, v as BasicPoint
 		  
+		  u = tab(1)-tab(0)
+		  v = tab(2)-tab(0)
+		  return sign(u.vect(v))
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function computeangle(q as basicpoint, ori as integer) As double
+		Function computeangle(p as basicpoint, orien as integer) As double
+		  dim e, a as double
 		  
+		  
+		  
+		  e = GetAngle(tab(0),p)
+		  a = e - startangle
+		  return Normalize(a,orien)
+		  'a a toujours meme signe que orien
 		End Function
 	#tag EndMethod
 
@@ -387,6 +342,28 @@ Protected Class nBpoint
 		    q = tab(0) + q *r
 		    return q
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Normalize(alpha as double, orien as integer) As double
+		  if orien >0 then
+		    if alpha < 0 then
+		      alpha = alpha + 2*PI
+		    end if
+		  elseif orien <0 then
+		    if alpha >0 then
+		      alpha = alpha -2*PI
+		    end if
+		  end if
+		  
+		  return alpha
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SymmetryMatrix() As Matrix
+		  return new SymmetryMatrix(tab(0),tab(1))
 		End Function
 	#tag EndMethod
 

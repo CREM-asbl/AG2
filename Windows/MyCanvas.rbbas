@@ -1176,6 +1176,12 @@ Inherits Canvas
 			InitialValue="0"
 			Type="Picture"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="cnt"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

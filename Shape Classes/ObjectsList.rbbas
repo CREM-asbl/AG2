@@ -1152,7 +1152,7 @@ Protected Class ObjectsList
 		      case 0
 		        currentshape = new FreeCircle(self)
 		      case 1
-		        currentshape = new Arc(self)
+		        currentshape = new Arc(self,3,3)
 		      end select
 		    case 6
 		      currentshape = new Polyqcq(self, fo+3)

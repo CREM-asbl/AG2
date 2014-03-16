@@ -571,10 +571,6 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Obj(-1) As Objectslist
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		figsimges As figslist
 	#tag EndProperty
 

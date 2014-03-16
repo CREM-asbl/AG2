@@ -31,6 +31,7 @@ Protected Class InfoMac
 		  temp.SetAttribute("Ndiv",str(ndiv))
 		  temp.SetAttribute("Idiv", str(idiv))
 		  temp.setattribute("Location",str(location))
+		  temp.SetAttribute("Num",str(num))
 		  temp.setattribute("Type",str(type))
 		  if final then
 		    Temp.SetAttribute("Fin",str(1))
@@ -117,6 +118,145 @@ Protected Class InfoMac
 		      childs.append new InfoMac(XMLElement(EL1.Child(i)))
 		    next
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InfoMac(MacInfo as MacConstructionInfo, EL0 as XMLElement, EL1 as XMLElement, oper as integer)
+		  
+		  dim m as integer
+		  dim ifm as infomac
+		  dim EL01 as XMLElement
+		  
+		  
+		  self.MacInfo = MacInfo
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  self.oper=oper
+		  MacId = val(EL0.GetAttribute("Id"))
+		  ori = val(EL0.GetAttribute("Ori"))
+		  Npts = val(EL0.GetAttribute(Dico.Value("Npts")))
+		  
+		  if EL1 <> nil then
+		    CopyParam (EL0, EL1, oper)
+		  end if
+		  if fa = 0 then
+		    ptsur = fo
+		    if ptsur = 1 then
+		      ifm = MacInfo.GetInfoMac(forme0, m)
+		      ifm.childs.append self
+		    end if
+		  else
+		    Ncpts = val(EL0.GetAttribute(Dico.Value("Ncpts")))
+		  end if
+		  
+		  EL01 = XMLElement(EL0.FirstChild)
+		  if EL01 <> nil then
+		    CreateChildren(EL01)
+		  end if
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CopyParam(EL0 as XMLElement, EL1 as XMLElement, op as integer)
+		  //On copie les infos de construction qui ne changeront pas  dans l'infomac du nouvel objet
+		  dim EL2 as XMLElement
+		  dim ifm as infomac
+		  dim m as integer
+		  
+		  select case op
+		    
+		  case 1 //paraperp
+		    Forme0 = val(EL1.GetAttribute("Id"))
+		    NumSide0= val(EL1.GetAttribute("Index"))
+		    ifm = MacInfo.GetInfoMac(forme0, m)
+		    if ifm.npts > 2 then
+		      seg = true
+		    end if
+		    if fo = 4 or fo = 5 then 'droites paraperp
+		      ncpts=1
+		    end if
+		  case 14 //centre
+		    forme0 = val(EL1.GetAttribute("Id"))
+		  case 19 //DupliquerPoint
+		    Forme0 = val(EL0.GetAttribute("Forme0"))  //Support du duplicat
+		    Forme2 = val(EL1.GetAttribute("Id"))   //MacId du point dupliqué
+		    num = val(EL1.GetAttribute("Data0")) //Ecart entre les numéros de coté du dupliqué et du duplicat
+		    ifm = MacInfo.GetInfoMac(forme2,m)
+		    if ifm.macId <> forme2 then
+		      ifm = ifm.childs(m)
+		    end if                              //infomac du point dupliqué
+		    forme1 = ifm.forme0   //macId du support du dupliqué
+		    numside1 = ifm.numside0 //numside du dupliqué
+		    numside0 = (numside1+num) mod npts
+		  case 24 //AppliquerTsf
+		    Forme0 = val(EL1.GetAttribute("SuppTsf")) //MacId du support
+		    Forme1 = val(EL1.GetAttribute("Id"))             //MacId de la source
+		    numside0 = val(EL1.GetAttribute("Numside")) //Nr de coté du support (éventuel)
+		    num = val(EL1.GetAttribute("Nr"))                    //Nr de la tsf
+		  case 26 //diviser
+		    Forme0 =  val(EL1.GetAttribute("Id"))
+		    forme1 = val(EL1.GetAttribute("Id0"))
+		    forme2 = val(EL1.GetAttribute("Id1"))
+		    ndiv = val(EL1.GetAttribute("NDivP"))
+		    idiv = val(EL1.GetAttribute("DivP"))
+		  case 28 //prolonger
+		    Forme0 = val(EL1.GetAttribute("Id"))
+		    NumSide0= val(EL1.GetAttribute("Index"))
+		  case  37 // FixPtConstruction
+		    Forme0 = val(EL1.GetAttribute("SuppTsf"))
+		    numside0 = val(EL1.GetAttribute("Numside"))
+		    num = val(EL1.GetAttribute("Nr"))
+		  case 45 //inter
+		    numside0 = val(EL1.GetAttribute("NumSide0"))
+		    numside1 = val(EL1.GetAttribute("NumSide1"))
+		    EL2 = XMLElement(EL1.child(0))
+		    forme0 = val(EL2.GetAttribute("Id"))
+		    EL2 = XMLElement(EL1.child(1))
+		    forme1 = val(EL2.GetAttribute("Id"))
+		  case 46 //PointSur (construction)
+		    numside0 = val(EL1.GetAttribute("NumSide0"))
+		    location = val(EL1.GetAttribute("Location"))
+		    EL2 = XMLElement(EL1.child(0))
+		    forme0 = val(EL2.GetAttribute("Id")) //Support du point sur
+		  end select
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateChildren(EL as XMLElement)
+		  dim i as integer
+		  dim ifm as InfoMac
+		  dim EL1 as XMLElement
+		  dim n, m as integer
+		  
+		  for i = 0 to npts-1
+		    EL1 = XMLElement(EL.Child(i))
+		    n =val(EL1.GetAttribute("Id"))
+		    ifm =MacInfo.GetInfoMac(n,m)
+		    if ifm <> nil then
+		      if  ifm.macId <> n and m <> -1 then
+		        ifm = ifm.childs(m)
+		      end if
+		    else
+		      ifm = new InfoMac(0,0)
+		      ifm.MacId = n
+		    end if
+		    childs.append ifm
+		  next
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -254,6 +394,10 @@ Protected Class InfoMac
 
 	#tag Property, Flags = &h0
 		RealSide As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MacInfo As MacConstructionInfo
 	#tag EndProperty
 
 

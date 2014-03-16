@@ -4289,6 +4289,10 @@ Implements StringProvider
 		NotPossibleCut As Boolean
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		ifmac As InfoMac
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

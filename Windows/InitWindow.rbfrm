@@ -26,6 +26,9 @@ Begin Window InitWindow
    Visible         =   "True"
    Width           =   772
    Begin PopupMenu PopupMenu1
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       ControlOrder    =   0
@@ -48,17 +51,16 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   468
-=======
       Top             =   430
->>>>>>> origin/master
       Underline       =   "False"
       Visible         =   True
       Width           =   135
       BehaviorIndex   =   0
    End
    Begin PushButton PushButton1
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
@@ -80,17 +82,16 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   491
-=======
       Top             =   460
->>>>>>> origin/master
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
       BehaviorIndex   =   1
    End
    Begin EditField User
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AcceptTabs      =   "False"
       Alignment       =   1
       AutoDeactivate  =   "True"
@@ -126,11 +127,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   440
-=======
       Top             =   395
->>>>>>> origin/master
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -138,6 +135,9 @@ Begin Window InitWindow
       BehaviorIndex   =   2
    End
    Begin PushButton PushButton2
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "False"
       Bold            =   "True"
       Cancel          =   "False"
@@ -150,11 +150,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-<<<<<<< HEAD
-      Left            =   572
-=======
       Left            =   571
->>>>>>> origin/master
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -163,17 +159,16 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   408
-=======
       Top             =   360
->>>>>>> origin/master
       Underline       =   "False"
       Visible         =   True
       Width           =   112
       BehaviorIndex   =   3
    End
    Begin PushButton PushButton3
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
@@ -186,11 +181,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-<<<<<<< HEAD
-      Left            =   572
-=======
       Left            =   571
->>>>>>> origin/master
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -199,17 +190,16 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   440
-=======
       Top             =   395
->>>>>>> origin/master
       Underline       =   "False"
       Visible         =   True
       Width           =   69
       BehaviorIndex   =   4
    End
    Begin PushButton PushButton4
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   ""
@@ -231,29 +221,23 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   491
-=======
       Top             =   460
->>>>>>> origin/master
       Underline       =   ""
       Visible         =   True
       Width           =   108
       BehaviorIndex   =   5
    End
    Begin PopupMenu ComboBox1
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   ""
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-<<<<<<< HEAD
-      Enabled         =   "True"
-      Height          =   20
-=======
       Enabled         =   True
       Height          =   28
->>>>>>> origin/master
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -269,17 +253,10 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-<<<<<<< HEAD
-      Top             =   386
-      Underline       =   ""
-      Visible         =   "True"
-      Width           =   189
-=======
       Top             =   330
       Underline       =   ""
       Visible         =   True
       Width           =   180
->>>>>>> origin/master
       BehaviorIndex   =   6
    End
 End

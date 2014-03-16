@@ -1596,6 +1596,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
 		  dim sh  as shape
+		  dim i as integer
 		  
 		  if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
 		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
@@ -1607,6 +1608,9 @@ Inherits Shape
 		    else
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
+		  end if
+		  if ifmac <>nil and forme = 1 then
+		    ifmac.location = location(0)
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
@@ -2468,7 +2472,9 @@ Inherits Shape
 		  end if
 		  M = new TranslationMatrix(np-bpt)
 		  Moveto M*bpt
-		  puton pointsur.element(0)
+		  if pointsur.count = 1 then
+		    puton pointsur.element(0)
+		  end if
 		  modified = true
 		  updateshape
 		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures

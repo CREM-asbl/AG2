@@ -475,11 +475,11 @@ Inherits Bipoint
 		  dim k as integer
 		  
 		  if  ubound(p) = 1 then
-		    if s isa arc then
-		      B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
-		    else
-		      B1 = BibPoint(s.coord)
-		    end if
+		    'if s isa arc then
+		    B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
+		    'else
+		    'B1 = BibPoint(s.coord)
+		    'end if
 		    k = BiBPoint(coord).BiBDroiteInterCercle(B1,p(), bq, w)
 		  else
 		    k = 0

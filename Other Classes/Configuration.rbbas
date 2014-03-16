@@ -189,6 +189,19 @@ Protected Class Configuration
 		      end if
 		    end if
 		    
+		    List = EL.XQL("StdSize")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(El1.FirstChild)
+		        if El2 <> nil then
+		          StdSize = val(EL2.Value)
+		        else
+		          StdSize=1
+		        end if
+		      end if
+		    end if
+		    
 		    List = EL.XQL("LastInfo")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -203,6 +216,7 @@ Protected Class Configuration
 		    'Si AG_Init n'existe pas, on le recrée"
 		    setLangue("Francais")
 		    Menu = "Menu_AC"
+		    StdSize = 1
 		    Save
 		  end if
 		  
@@ -297,13 +311,13 @@ Protected Class Configuration
 		    if List.Length > 0 then
 		      Temp = XMLElement(List.Item(0))
 		      StdFile = Temp.GetAttribute("Name")
-		      List = EL.XQL("TailleFormesStandard")
-		      if List.length > 0 then
-		        Temp = XMLElement(List.Item(0))
-		        StdSize=Val(Temp.GetAttribute("Value"))
-		      else
-		        StdSize = 1
-		      end if
+		      'List = EL.XQL("TailleFormesStandard")
+		      'if List.length > 0 then
+		      'Temp = XMLElement(List.Item(0))
+		      'StdSize=Val(Temp.GetAttribute("Value"))
+		      'else
+		      'StdSize = 1
+		      'end if
 		      ChargerStdForms
 		    else
 		      ShowStdTools = false
@@ -355,6 +369,9 @@ Protected Class Configuration
 		  
 		  EL2 = temp.appendchild(Doc.CreateElement("Configuration"))
 		  EL2.AppendChild(Doc.CreateTextNode(Menu))
+		  
+		  EL3 = temp.appendchild(Doc.CreateElement("StdSize"))
+		  EL3.AppendChild(Doc.CreateTextNode(str(StdSize)))
 		  
 		  EL4 = temp.appendchild(Doc.CreateElement("LastInfo"))
 		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))

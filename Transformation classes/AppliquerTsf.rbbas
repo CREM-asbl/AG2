@@ -337,7 +337,7 @@ Inherits MultipleSelectOperation
 		    else
 		      p=new BasicPoint(0,0)
 		      s2 = s1.paste(Objects,p)
-		      s2.auto = 0                           ' = s1.auto
+		      s2.auto = 0                           
 		    end if
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i)

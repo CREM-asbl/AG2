@@ -20,8 +20,6 @@ Inherits MultipleSelectOperation
 		  //Cette classe a pour objet de choisir de nouveaux objets initiaux et de construire la MacConstructionInfo associée
 		  //Dans SetItem, complété par "InstructionsSuivantes", on se borne à déterminer les objets initiaux
 		  
-		  
-		  
 		  //Dans le DoOperation, on commence par créer les "InfoMac" associés aux différentes opérations de la macro et d'y placer
 		  //les informations ne changeant pas d'une instance de la macro à une autre (essentiellement les id-macros et les numéros de forme et de famille).
 		  
@@ -43,7 +41,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
-		  //Les deux infos doivent toujours être lues ensemble: l'id de l'objet choisi et ne numéro de côté (0 s'il n'y en a qu'un)
+		  //Les deux infos doivent toujours être lues ensemble: l'id de l'objet choisi et le numéro de côté (0 s'il n'y en a qu'un)
 		  MacInfo.RealInit.append s.id
 		  MacInfo.RealInitSide.append side
 		  s.init = true
@@ -94,13 +92,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, j, k, n, m, index, p, type,oper, fa, fo, side as integer
+		  dim i, n, oper  as integer
 		  dim EL as XMLElement
 		  dim codesoper() as integer
-		  dim ifmac As InfoMac
-		  dim s, newshape as shape
-		  dim bp() as BasicPoint
-		  dim pt as Point
+		  dim s as shape
 		  
 		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
 		  
@@ -128,10 +123,7 @@ Inherits MultipleSelectOperation
 		    else
 		      s.createskull(s.points(0).bpt)
 		    end if
-		    s.CreateExtreAndCtrlPoints
 		  next
-		  
-		  
 		  
 		  wnd.mycanvas1.refreshbackground
 		  
@@ -140,10 +132,12 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
+		  
 		  super.EndOperation
 		  drappoint = false
 		  if mw <> nil then
 		    mw.close
+		    mw=nil
 		    MacInfo = new MacConstructionInfo(Mac)
 		  end if
 		End Sub
@@ -177,14 +171,15 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreateFinal(ifmac as InfoMac)
-		  dim newshape, s as shape
+		Function CreateFinal(ifmac as InfoMac) As shape
+		  dim  s, newshape as shape
 		  dim i as integer
 		  
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
-		  newshape.auto = 4
+		  newshape.autos
 		  newshape.initconstruction
+		  newshape.ori = ifmac.ori
 		  newshape.MacConstructedBy = MacInfo
 		  for i = 0 to ubound(MacInfo.Realinit)
 		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
@@ -197,16 +192,26 @@ Inherits MultipleSelectOperation
 		  currentcontent.addshape newshape
 		  if ifmac.fa = 1 and (ifmac.fo=4 or ifmac.fo = 5)  then
 		    newshape.points(1).hide
+		    newshape.ncpts = 1
+		  end if
+		  if newshape isa arc then
+		    arc(newshape).drapori = true
 		  end if
 		  MacInfo.RealFinal.append newshape.id
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
+		  for i = 0 to newshape.npts-1
+		    if ifmac.childs(i).RealId = 0 then                           //cas où des points devront être identifiés
+		      ifmac.childs(i).RealId = newshape.points(i).id
+		    end if
+		  next
+		  return newshape
 		  
 		  
 		  
 		  
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -247,7 +252,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim EL, EL1, Obj as XMLElement
+		  dim  EL1, Obj as XMLElement
 		  dim i, n as integer
 		  dim s as shape
 		  dim List as XmlNodeList
@@ -287,7 +292,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim EL, EL1, Obj as XMLElement
+		  dim  EL1, Obj as XMLElement
 		  dim i, n as integer
 		  dim s as shape
 		  dim List as XmlNodeList
@@ -318,70 +323,68 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateIfMacObject(EL as XMLElement, oper as integer)
-		  dim n, fa, fo as integer
-		  dim EL0, EL1,EL01 as XMLElement
-		  dim ifmac As InfoMac
-		  dim s as shape
+		  dim i, n as integer
+		  dim EL0, EL1 as XMLElement
+		  dim ifmac, ifm As InfoMac
+		  dim s, newshape as shape
 		  
-		  
+		  //Pemière partie: création de l'infomac
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
-		  n = val(EL0.GetAttribute("Id"))                    //numéro pour la macro de la forme construite (à placer dans la MacId)
-		  if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n)  = -1) and  (Mac.ObFinal.indexof(n)  = -1) then
-		    return
-		  end if
+		  n = val(EL0.GetAttribute("Id"))
 		  
-		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  ifmac = new InfoMac(fa, fo)
-		  ifmac.oper=oper
-		  ifmac.MacId = n
-		  ifmac.ori = val(EL0.GetAttribute("Ori"))
-		  ifmac.Npts = val(EL0.GetAttribute(Dico.Value("Npts")))
-		  if fa = 0 then
-		    ifmac.ptsur = fo
-		  else
-		    ifmac.Ncpts = val(EL0.GetAttribute(Dico.Value("Ncpts")))
-		  end if
-		  
-		  if Mac.ObInit.indexof(n) <> -1 then
-		    ifmac.RealId =MacInfo.GetRealInit(n)
-		    ifmac.init = true
-		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
-		    ifmac.ori = s.ori
-		    if ifmac.Npts < s.npts then    'cas où l'objet initial est un segment - côté de polygone
-		      ifmac.seg = true
-		      ifmac.RealSide = MacInfo.GetRealSide(n)
+		  if (Mac.ObInit.indexof(n) <> -1) or  (Mac.ObInterm.indexof(n) <> -1) or  (Mac.ObFinal.indexof(n)  <> -1) then
+		    ifmac = new InfoMac(MacInfo, EL0,EL1,oper)
+		    
+		    //Deuxième partie : adaptation selon la classe (init, interm, final)
+		    
+		    if Mac.ObInit.indexof(n) <> -1 then
+		      ifmac.RealId =MacInfo.GetRealInit(n)
+		      ifmac.init = true
+		      s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		      s.ifmac = ifmac
+		      if ifmac.npts < s.npts then
+		        ifmac.seg = true
+		        ifmac.RealSide = MacInfo.GetRealSide(n)
+		      end if
+		      for i = 0 to ifmac.npts-1
+		        ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
+		      next
+		      ifmac.ori = s.ori
+		      
 		    end if
+		    
+		    if Mac.ObInterm.indexof(n) <> -1 then
+		      ifmac.interm = true
+		      for i = 0 to ubound(ifmac.childs)
+		        ifm = ifmac.childs(i)
+		        if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
+		          ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
+		        end if
+		      next
+		    end if
+		    
+		    if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
+		      newshape = CreateFinal(ifmac)
+		      IdentifyPoints(newshape, ifmac,EL0)
+		      newshape.endconstruction
+		      newshape.ifmac = ifmac
+		      for i = 0 to newshape.npts-1
+		        newshape.points(i).forme = ifmac.childs(i).fo
+		        if newshape.points(i).forme = 1 then
+		          s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifmac.childs(i).forme0))
+		          newshape.points(i).puton s, ifmac.childs(i).location
+		          newshape.points(i).numside(0) = ifmac.childs(i).numside0
+		          newshape.points(i).placerptsursurfigure
+		          newshape.points(i).ifmac = ifmac.childs(i)
+		        end if
+		      next
+		      
+		    end if
+		    
+		    MacInfo.IfMacs.append ifmac
+		    
 		  end if
-		  
-		  if Mac.ObInterm.indexof(n) <> -1 then
-		    ifmac.interm = true
-		  end if
-		  
-		  if EL1 <> nil then
-		    CopyParam (EL0, EL1, oper,  ifmac)
-		  end if
-		  
-		  
-		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
-		    CreateFinal(ifmac)
-		    IdentifyPoints(ifmac,EL0)
-		    s =  currentcontent.TheObjects.GetShape(ifmac.RealId)
-		    s.endconstruction
-		  end if
-		  
-		  
-		  EL01 = XMLElement(EL0.FirstChild)
-		  if EL01 <> nil then
-		    CreateChildren(EL01,ifmac,s)
-		  end if
-		  if ifmac.ptsur = 1 then
-		    CreateChildPtSur(ifmac)
-		  end if
-		  
-		  MacInfo.IfMacs.append ifmac
-		  
 		  
 		  
 		End Sub
@@ -391,8 +394,7 @@ Inherits MultipleSelectOperation
 		Sub CreateIfMacTsf(EL as XMLElement, oper as integer)
 		  dim  EL0 as XMLElement
 		  dim ifmac as InfoMac
-		  dim fa, fo, MacId as integer
-		  dim n as integer
+		  dim fa, fo as integer
 		  dim s as shape
 		  dim tsf as transformation
 		  
@@ -402,11 +404,11 @@ Inherits MultipleSelectOperation
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ifmac = new InfoMac(fa, fo)
 		  ifmac.oper = oper
-		  ifmac.MacId = val(EL0.GetAttribute("Id"))   //numéro pour la macro du support de la tsf
+		  ifmac.forme0 = val(EL0.GetAttribute("Id"))   //numéro pour la macro du support de la tsf
 		  ifmac.type = val(EL.GetAttribute("TsfType"))
 		  ifmac.ori = val(EL.GetAttribute("TsfOri"))
 		  ifmac.RealSide = val(EL.GetAttribute("TsfSide"))
-		  ifmac.RealId =  MacInfo.GetRealFinal(ifmac.MacId)
+		  ifmac.RealId =  MacInfo.GetRealId(ifmac.forme0)
 		  MacInfo.IfMacs.append ifmac
 		  
 		  if ifmac.RealId <> -1 then
@@ -415,18 +417,18 @@ Inherits MultipleSelectOperation
 		    ifmac.num = s.tsfi.GetPosition(tsf)
 		  end if
 		  
-		  //Cas des tsf à support initial ou interm ??
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreateTsf(s as shape, n as integer, side as integer, ori as integer) As transformation
+		Function CreateTsf(s as shape, n as integer, cote as integer, ori as integer) As transformation
 		  dim tsf as Transformation
 		  
 		  tsf = new transformation
 		  tsf.supp = s
 		  tsf.type = n
-		  tsf.index = side
+		  tsf.index = cote
 		  tsf.ori = ori
 		  
 		  if n <> 0 and  (n < 3 or n > 6 ) then
@@ -449,7 +451,7 @@ Inherits MultipleSelectOperation
 		  dim EL, EL1 as XMLElement
 		  
 		  
-		  if fa = -1 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
+		  if fa = -1 and CurrentItemToSet > 0 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
 		    ninstruc = Mac.GetInstrucConstruction(MacId, PId)
 		    EL = XMLElement(Mac.Histo.Child(ninstruc))
@@ -470,87 +472,32 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub IdentifyPoints(ifmac as InfoMac, EL0 as XMLElement)
-		  dim newshape, s as shape
+		Sub IdentifyPoints(newshape as shape, ifmac as InfoMac, EL0 as XMLElement)
+		  
 		  dim EL1, EL2 as XMLElement
-		  dim j, m, ni, index, num as integer
+		  dim j, m,  num as integer
 		  dim ifm as infomac
 		  dim pt as point
 		  
 		  EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
-		  newshape = currentcontent.theObjects.GetShape(ifmac.RealId)
 		  
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
 		    pt = nil
 		    EL2 = XMLElement(EL1.Child(j))
 		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
 		    ifm = MacInfo.GetInfoMac(m,num)
-		    if ifm <> nil then
+		    if ifm <> nil and (ifm.init or ifm.final)   then
 		      if ifm.MacId = m then
-		        if ifm.init  then
-		          pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
-		        end if
-		      elseif ifm.childs(num).init then
-		        pt = point(Currentcontent.TheObjects.Getshape(ifm.realId).childs(num))
+		        pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
+		      else
+		        ifm.childs(num) = ifmac.childs(j)
+		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
-		      if pt <> nil then
+		      if pt <> nil and pt <> newshape.points(j) then
 		        newshape.substitutepoint(pt,newshape.points(j))
 		      end if
 		    end if
 		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CopyParam(EL0 as XMLElement, EL1 as XMLElement, op as integer, ifmac as InfoMac)
-		  //On copie les infos de construction qui ne changeront pas  dans l'infomac du nouvel objet
-		  dim num as integer
-		  dim EL2 as XMLElement
-		  dim ifm as infomac
-		  
-		  select case op
-		    
-		  case 1 //paraperp
-		    ifmac.Forme0 = val(EL1.GetAttribute("Id"))
-		    ifmac.NumSide0= val(EL1.GetAttribute("Index"))
-		    ifm = MacInfo.GetInfoMac(ifmac.forme0, num)
-		    if ifm.npts > 2 then
-		      ifmac.seg = true
-		    end if
-		  case 14 //centre
-		    ifmac.forme0 = val(EL1.GetAttribute("Id"))
-		  case 19 //DupliquerPoint
-		    ifmac.Forme0 = val(EL0.GetAttribute("Forme0"))  //Support du duplicat
-		    ifmac.Forme1 = val(EL1.GetAttribute("Id"))   //MacId du point dupliqué
-		    ifmac.num = val(EL1.GetAttribute("Data0")) //Ecart entre les numéros de coté du dupliqué et du duplicat
-		    //numside et location peuvent être modifiés, donc à recalculer chaque fois
-		  case 24, 37 //Transformer, FixPtConstruction
-		    ifmac.Forme0 = val(EL1.GetAttribute("SuppTsf"))
-		    ifmac.numside0 = val(EL1.GetAttribute("Numside"))
-		    ifmac.num = val(EL1.GetAttribute("Nr"))
-		  case 26 //diviser
-		    ifmac.Forme0 =  val(EL1.GetAttribute("Id"))
-		    ifmac.forme1 = val(EL1.GetAttribute("Id0"))
-		    ifmac.forme2 = val(EL1.GetAttribute("Id1"))
-		    ifmac.ndiv = val(EL1.GetAttribute("NDivP"))
-		    ifmac.idiv = val(EL1.GetAttribute("DivP"))
-		  case 28 //prolonger
-		    ifmac.Forme0 = val(EL1.GetAttribute("Id"))
-		    ifmac.NumSide0= val(EL1.GetAttribute("Index"))
-		  case 45 //inter
-		    ifmac.numside0 = val(EL1.GetAttribute("NumSide0"))
-		    ifmac.numside1 = val(EL1.GetAttribute("NumSide1"))
-		    EL2 = XMLElement(EL1.child(0))
-		    ifmac.forme0 = val(EL2.GetAttribute("Id"))
-		    EL2 = XMLElement(EL1.child(1))
-		    ifmac.forme1 = val(EL2.GetAttribute("Id"))
-		  case 46 //PointSur (construction)
-		    ifmac.numside0 = val(EL1.GetAttribute("NumSide0"))
-		    ifmac.location = val(EL1.GetAttribute("Location"))
-		    EL2 = XMLElement(EL1.child(0))
-		    ifmac.forme0 = val(EL2.GetAttribute("Id")) //Support du point sur
-		  end select
 		  
 		End Sub
 	#tag EndMethod
@@ -615,53 +562,6 @@ Inherits MultipleSelectOperation
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub CreateChildren(EL as XMLElement, ifmac as InfoMac, s as shape)
-		  dim i as integer
-		  dim ifm as InfoMac
-		  dim EL1 as XMLElement
-		  dim n, num as integer
-		  
-		  for i = 0 to ifmac.npts-1
-		    EL1 = XMLElement(EL.Child(i))
-		    n =val(EL1.GetAttribute("Id"))
-		    ifm =MacInfo.GetInfoMac(n,num)
-		    if ifm <> nil then
-		      if  ifm.macId <> n and num <> -1 then
-		        ifm = ifm.childs(num)
-		      end if
-		    else
-		      ifm = new InfoMac(0,0)
-		      ifm.MacId = n
-		    end if
-		    if s <> nil then
-		      ifm.RealId =s.points(i).id
-		    elseif Mac.ObInit.indexof(Ifm.MacId) <> -1 then
-		      ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
-		      ifm.init = true
-		    elseif Mac.ObInterm.indexof(Ifm.MacId) <> -1 then
-		      ifm.interm = true
-		    end if
-		    ifmac.childs.append ifm
-		  next
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CreateChildPtSur(ifmac as infomac)
-		  dim ifm as infomac
-		  dim num as integer
-		  
-		  ifm = MacInfo.GetInfoMac(ifmac.forme0, num)
-		  ifm.childs.append ifmac
-		End Sub
-	#tag EndMethod
-
 
 	#tag Property, Flags = &h0
 		Mac As Macro
@@ -697,10 +597,6 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		drappoint As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		father As shape
 	#tag EndProperty
 
 

@@ -31,7 +31,7 @@ Begin Window Languagewindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -50,7 +50,7 @@ Begin Window Languagewindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   126
       BehaviorIndex   =   0
    End
@@ -61,7 +61,7 @@ Begin Window Languagewindow
       Caption         =   "OK"
       ControlOrder    =   1
       Default         =   "True"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -78,7 +78,7 @@ Begin Window Languagewindow
       TextSize        =   12
       Top             =   15
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   1
    End

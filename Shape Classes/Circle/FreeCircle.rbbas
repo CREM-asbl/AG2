@@ -194,6 +194,14 @@ Inherits Circle
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint)
+		  computeradius
+		  CreateExtreAndCtrlPoints
+		  updateskull
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

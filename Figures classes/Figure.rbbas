@@ -948,7 +948,6 @@ Implements StringProvider
 		    return Modifeucli(p)
 		  else
 		    listersubfigs(p)
-		    
 		    for i = 0 to ubound(index)
 		      sf = subs.element(index(i))
 		      t = sf.subfigupdate and t
@@ -980,26 +979,11 @@ Implements StringProvider
 		Sub updatesomm(M as Matrix)
 		  dim i as integer
 		  dim p as Point
-		  dim t as Boolean
-		  dim sh as shape
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
 		    p.Transform(M)
 		    p.modified = true
-		    'if  p.pointsur.count = 1 then
-		    'sh = p.pointsur.element(0)
-		    'if sh isa droite then
-		    't = droite(sh).pinshape(p.bpt)
-		    'else
-		    't =  (sh.pointonside(p.bpt) <> -1)
-		    'end if
-		    'if  t then
-		    'p.valider
-		    'else
-		    'p.invalider
-		    'end if
-		    'end if
 		    p.updateshape
 		    if  p.pointsur.count = 0 then
 		      p.unmodifiable = true

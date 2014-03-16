@@ -702,6 +702,7 @@ Inherits Circle
 		Sub InitConstruction()
 		  super.initconstruction
 		  CreateExtreAndCtrlPoints
+		  
 		End Sub
 	#tag EndMethod
 
@@ -802,7 +803,39 @@ Inherits Circle
 		  computeradius
 		  updateangles
 		  CreateExtreAndCtrlPoints
-		  'updateskull
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Arc(ol as objectslist, n as integer, m as integer)
+		  dim p as BasicPoint
+		  
+		  shape(ol, 3, 3)
+		  liberte = 5
+		  p = new BasicPoint(0,0)
+		  nsk = new ArcSkull(wnd.Mycanvas1.transform(p))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint)
+		  computeradius
+		  updateangles
+		  CreateExtreAndCtrlPoints
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EndConstruction()
+		  super.endconstruction
+		  
+		  'if currentcontent.currentoperation isa macroexe then
+		  'computeradius
+		  'updateangles
+		  'CreateExtreAndCtrlPoints
+		  'end if
 		End Sub
 	#tag EndMethod
 

@@ -290,8 +290,11 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  
-		  
-		  return new BiBPoint(coord.tab(0), coord.tab(1))
+		  if i = 0 then 
+		    return new BiBPoint(coord.tab(0), coord.tab(1))
+		  else
+		    return new BiBPoint(coord.tab(2),Point3)
+		  end if
 		  
 		  
 		End Function

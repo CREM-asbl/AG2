@@ -31,7 +31,7 @@ Begin Window DivideWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -50,7 +50,7 @@ Begin Window DivideWindow
       TextSize        =   12
       Top             =   8
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   0
    End
@@ -61,7 +61,7 @@ Begin Window DivideWindow
       Caption         =   "OK"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -78,7 +78,7 @@ Begin Window DivideWindow
       TextSize        =   12
       Top             =   45
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   1
    End
