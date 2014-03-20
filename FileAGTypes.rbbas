@@ -38,4 +38,13 @@
 		Name=EPS
 	#tag EndFileType
 
+	#tag FileType
+		CodeName=STD
+		Extension=std;xml
+		Flags=&h0
+		MacCreator=CREM
+		MacType=STD
+		Name=STD
+	#tag EndFileType
+
 #tag EndFileTypeSet

@@ -138,8 +138,9 @@ Inherits MultipleSelectOperation
 		  if mw <> nil then
 		    mw.close
 		    mw=nil
-		    MacInfo = new MacConstructionInfo(Mac)
 		  end if
+		  MacInfo = new MacConstructionInfo(Mac)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -298,8 +299,10 @@ Inherits MultipleSelectOperation
 		  dim List as XmlNodeList
 		  dim t as Boolean
 		  
-		  ReDeleteDeletedFigures (Temp)
+		  'ReDeleteDeletedFigures (Temp)
+		  currentcontent.currentoperation = self
 		  
+		  MacInfo = new MacConstructionInfo(Mac)
 		  List = Temp.FirstChild.XQL("Initial_Forms")
 		  
 		  If list.Length > 0 then

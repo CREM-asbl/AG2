@@ -551,7 +551,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Second() As BasicPoint
+		Function Second() As basicPoint
 		  return Tab(1)
 		End Function
 	#tag EndMethod
@@ -671,6 +671,15 @@ Inherits nBpoint
 		  tab = nBP.tab
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Anglepolaire() As double
+		  dim bp as Basicpoint
+		  
+		  bp = second - first
+		  return bp.anglepolaire
+		End Function
 	#tag EndMethod
 
 

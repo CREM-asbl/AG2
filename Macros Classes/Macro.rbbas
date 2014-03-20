@@ -722,18 +722,13 @@ Protected Class Macro
 		  if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    if ifmac.seg then
-		      ifmac.coord = new BiBPoint
-		      for i = 0 to 1
-		        ifmac.coord.append s.points((ifmac.RealSide +i) mod s.npts).bpt
-		      next
+		      ifmac.coord = s.GetBiBSide(ifmac.RealSide)
 		    else
 		      ifmac.coord = s.GetCoord
 		    end if
-		    if s.isptsur then
-		      ifmac.location = point(s).location(0)
-		      ifmac.forme0 = point(s).pointsur.element(0).id
-		      ifmac.numside0 = point(s).numside(0)
-		    end if
+		    for i = 0 to ifmac.npts-1
+		      ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
+		    next
 		  end if
 		  
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
@@ -766,9 +761,11 @@ Protected Class Macro
 		      end if
 		    else
 		      for i = 0 to s.npts-1
-		        s.points(i).location(0) = ifmac.childs(i).location
-		        s.points(i).numside(0) = ifmac.childs(i).numside0
-		        ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
+		        if s.points(i).forme=1 then
+		          s.points(i).location(0) = ifmac.childs(i).location
+		          s.points(i).numside(0) = ifmac.childs(i).numside0
+		          ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
+		        end if
 		      next
 		    end if
 		    s.repositionnerpoints

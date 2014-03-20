@@ -614,7 +614,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function ForHisto() As Boolean
-		  return  not isaundoredo and not (currentoperation isa ReadHisto)
+		  return  (not isaundoredo and not (currentoperation isa ReadHisto)) 
 		End Function
 	#tag EndMethod
 

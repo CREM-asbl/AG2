@@ -665,6 +665,8 @@ Protected Class Operation
 		HideTsf: 44
 		Inter : 45                  //N'est utilisé que pour les macros: on assimile l'intersection de deux objets à une opération
 		PointSur: 46            // Idem pour la construction d'un Point Sur
+		SaveStd : 47 Pour mémoire
+		
 		3) SelectandDragOperation
 		Duplicate: 19 
 		Glisser: 20  

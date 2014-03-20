@@ -675,7 +675,7 @@ Implements StringProvider
 		  end if
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
 		    Currentcontent.addShape self
-		    if CurrentContent.ForHisto then
+		    if CurrentContent.ForHisto or currentcontent.currentoperation isa macroexe then
 		      addtofigure
 		    end if
 		  end if

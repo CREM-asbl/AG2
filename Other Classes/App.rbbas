@@ -219,6 +219,7 @@ Inherits Application
 		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
 		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
