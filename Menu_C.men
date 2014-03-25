@@ -33,9 +33,12 @@
 	<Rot90D/>
 	<Rot90G/>
 	<SymCentrale/>
+                  <Deplacement/>
 	<SymOrtho/>
 	<Homothetie/>
 	<Similitude/>
+                  <Etirement/>
+                 <Cisaillement/>
 	<PtsFix/>
 	<HideTsf/>
 	<Traj/>

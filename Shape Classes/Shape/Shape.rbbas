@@ -1226,6 +1226,7 @@ Implements StringProvider
 		  dim bp as BasicPoint
 		  dim M as Matrix
 		  dim a as double
+		  dim tsf as transformation
 		  
 		  updatecoord
 		  computeori
@@ -1280,7 +1281,6 @@ Implements StringProvider
 		  end if
 		  
 		  CreateExtreAndCtrlPoints
-		  
 		  modified = true
 		  endmove
 		  updateMacConstructedShapes

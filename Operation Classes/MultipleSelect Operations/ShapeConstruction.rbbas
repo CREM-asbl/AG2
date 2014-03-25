@@ -31,6 +31,7 @@ Inherits MultipleSelectOperation
 		  dim specs as StdPolygonSpecifications
 		  dim fam as integer
 		  
+		  
 		  if famille <> -1 then
 		    p = wnd.mycanvas1.MouseUser
 		  end if

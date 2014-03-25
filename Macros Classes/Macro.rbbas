@@ -462,7 +462,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Construction(ifmac as InfoMac, byref nbp as nBPoint)
+		Sub Construction(ifmac as infomac, byref nbp As nBPoint)
 		  dim i,  num as integer
 		  dim ifm1, ifm2 as infomac
 		  

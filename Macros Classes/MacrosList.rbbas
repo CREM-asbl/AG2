@@ -20,7 +20,11 @@ Protected Class MacrosList
 		  
 		  for i = 0 to ubound(macs)
 		    if m.caption = macs(i).caption then
-		      return
+		      if currentcontent.macrocreation then
+		        removemac macs(i)
+		      else
+		        return
+		      end if
 		    end if
 		  next
 		  macs.append m
@@ -83,6 +87,7 @@ Protected Class MacrosList
 		      return macs(i)
 		    end if
 		  next
+		  return nil
 		End Function
 	#tag EndMethod
 

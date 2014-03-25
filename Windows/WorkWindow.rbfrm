@@ -1899,6 +1899,19 @@ End
 		End Function
 #tag EndMenuHandler
 
+#tag MenuHandler
+		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation = new TransfoConstruction(11)
+			refreshtitle
+			end if
+			return true
+			
+			
+		End Function
+#tag EndMenuHandler
+
 
 	#tag Method, Flags = &h0
 		Sub refreshtitle()
@@ -2361,7 +2374,6 @@ End
 		    CurrentContent.currentoperation = new ReadHisto(f)
 		  elseif f.Type = "SAVE" then
 		    CurrentContent.CurrentOperation = new Ouvrir(f)
-		    'CurrentContent.CurrentOperation = nil
 		  else  'if f.name <> "vss" then
 		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
 		    if nc then
@@ -2399,7 +2411,10 @@ End
 		  PushButton1.visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
+		  if MenuBar.Child("MacrosMenu").Child("MacrosExecute") <> nil then
+		    MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
+		  end if
+		  MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
@@ -2667,9 +2682,9 @@ End
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
-		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute").count > 0 then
-		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
-		  'end if
+		  if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
+		    MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
+		  end if
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
 		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
@@ -2903,7 +2918,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(Index As Integer, index as Integer)
+		Sub Action(index as Integer)
 		  if mousedispo then
 		    closefw
 		    select case index
@@ -2945,7 +2960,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -2977,14 +2992,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(Index As Integer, index as Integer, g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3000,7 +3015,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(Index As Integer, index as Integer)
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3016,7 +3031,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3028,7 +3043,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -3045,12 +3060,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(Index As Integer, index as Integer)
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(Index As Integer, index as Integer, g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then

@@ -36,6 +36,9 @@
 <SymOrtho/>
 <Homothetie/>
 <Similitude/>
+<Deplacement/>
+<Etirement/>
+<Cisaillement/>
 <PtsFix/>
 <HideTsf/>
 <Traj/>

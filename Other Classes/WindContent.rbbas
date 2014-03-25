@@ -61,6 +61,8 @@ Protected Class WindContent
 		  dim n as integer
 		  dim mac as Macro
 		  dim cap as string
+		  dim f as folderitem
+		  dim Doc as XMLDocument
 		  
 		  nop = val(Temp.GetAttribute("OpId"))
 		  
@@ -155,6 +157,12 @@ Protected Class WindContent
 		    EL = XMLElement(Temp.firstchild)
 		    cap = EL.GetAttribute("Name")
 		    Mac = app.theMacros.GetMacro(cap)
+		    if Mac = nil then
+		      cap = cap+".xmag"
+		      Doc = new XmlDocument(app.MacFolder.Child(cap))
+		      mac =new Macro(Doc)
+		      app.themacros.addmac mac
+		    end if
 		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide
 		    curoper = new HideTsf
@@ -614,7 +622,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function ForHisto() As Boolean
-		  return  (not isaundoredo and not (currentoperation isa ReadHisto)) 
+		  return  (not isaundoredo and not (currentoperation isa ReadHisto))
 		End Function
 	#tag EndMethod
 

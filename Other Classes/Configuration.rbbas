@@ -660,6 +660,7 @@ Protected Class Configuration
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
 		  

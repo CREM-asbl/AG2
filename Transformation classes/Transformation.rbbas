@@ -78,6 +78,10 @@ Implements StringProvider
 		      s2 = Constructedshapes.element(i)
 		      s1 = s2.constructedby.shape
 		      Appliquer(s1,s2)
+		      if s1 isa circle  then
+		        AppliquerExtreCtrl(circle(s1),circle(s2))
+		        s2.updateskull
+		      end if
 		    next
 		    'constructedfigs.updatematrixduplicatedshapes(M)
 		  end if
@@ -209,8 +213,10 @@ Implements StringProvider
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(1).bpt, supp.points(2).bpt)
 		  case 9  //Etirements
 		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt)
-		  case 10
+		  case 10 //Deplacement
 		    M = new IsometryMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		  case 11 //Cisaillement  Support trapezoidal
+		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt)
 		  end select
 		  
 		  if M = nil then
@@ -627,9 +633,6 @@ Implements StringProvider
 		    case  71, 81
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
-		      'case 81
-		      'a = can.transform(supp.points(1).bpt)
-		      'b = can.transform(supp.points(2).bpt)
 		    case 7, 8, 72,10
 		      a = can.transform(supp.points(0).bpt)
 		      b = can.transform(supp.points(3).bpt)
@@ -644,7 +647,7 @@ Implements StringProvider
 		      g.DrawObject T, b.x, b.y
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
-		    case 9
+		    case 9, 11
 		      a = can.transform(supp.points(2).bpt)
 		      b = can.transform(supp.points(3).bpt)
 		    end select

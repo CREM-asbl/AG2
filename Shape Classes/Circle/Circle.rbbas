@@ -205,27 +205,37 @@ Inherits Shape
 		  dim BiB1, Bib2 as BiBPoint
 		  dim r1,r2 as double
 		  dim i as integer
+		  dim s2 as shape
+		  dim tsf as transformation
 		  
-		  p = Points(0).bpt
-		  M = new RotationMatrix(p,2*Pi/3)
-		  
-		  extre(0) = M*StartP
-		  extre(1) = M*extre(0)
-		  
-		  bp1 = StartP-p
-		  bp1 = bp1.vecnorperp
-		  BiB1 = new BiBPoint(StartP, StartP+bp1)
-		  bp2 = extre(0)-p
-		  bp2 = bp2.VecNorPerp
-		  BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
-		  q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
-		  
-		  if q <> nil then
-		    ctrl(0) = Startp*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
-		    ctrl(1) = extre(0)*5/9 +q*4/9
-		    for i = 2 to 5
-		      ctrl(i) = M*ctrl(i-2)
-		    next
+		  if constructedby <> nil and constructedby.oper = 6 then
+		    s2 = constructedby.shape
+		    circle(s2).createextreandctrlpoints
+		    tsf = transformation(constructedby.data(0))
+		    tsf.AppliquerExtreCtrl(circle(s2),circle(self))
+		  else
+		    p = Points(0).bpt
+		    M = new RotationMatrix(p,2*Pi/3)
+		    
+		    extre(0) = M*StartP
+		    extre(1) = M*extre(0)
+		    
+		    bp1 = StartP-p
+		    bp1 = bp1.vecnorperp
+		    BiB1 = new BiBPoint(StartP, StartP+bp1)
+		    bp2 = extre(0)-p
+		    bp2 = bp2.VecNorPerp
+		    BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
+		    q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
+		    
+		    if q <> nil then
+		      ctrl(0) = Startp*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
+		      ctrl(1) = extre(0)*5/9 +q*4/9
+		      for i = 2 to 5
+		        ctrl(i) = M*ctrl(i-2)
+		      next
+		    end if
+		    
 		  end if
 		  
 		  

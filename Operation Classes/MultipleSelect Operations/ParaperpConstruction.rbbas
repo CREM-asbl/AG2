@@ -15,6 +15,8 @@ Inherits ShapeConstruction
 		Sub CreateShape()
 		  dim ol as Objectslist
 		  dim p as BasicPoint
+		  
+		  
 		  if famille <> 1 then
 		    return
 		  end if

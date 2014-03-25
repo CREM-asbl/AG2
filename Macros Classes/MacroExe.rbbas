@@ -298,13 +298,18 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim List as XmlNodeList
 		  dim t as Boolean
+		  dim Nom as string
 		  
-		  'ReDeleteDeletedFigures (Temp)
-		  currentcontent.currentoperation = self
+		  
+		  Nom = Temp.child(0).GetAttribute("Name")
+		  Mac = App.TheMacros.GetMacro(Nom)
+		  currentcontent.currentoperation = new macroexe(mac)
+		  if Mac = Nil then
+		    return
+		  end if
 		  
 		  MacInfo = new MacConstructionInfo(Mac)
 		  List = Temp.FirstChild.XQL("Initial_Forms")
-		  
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
 		    if obj.childcount > 0 then
@@ -316,10 +321,7 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		  end if
-		  
 		  DoOperation
-		  
-		  'RecreateCreatedFigures(Temp)
 		  wnd.refresh
 		End Sub
 	#tag EndMethod
