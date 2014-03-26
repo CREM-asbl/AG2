@@ -189,6 +189,7 @@ Inherits MultipleSelectOperation
 		  if ifmac.oper = 19 then
 		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
 		    point(newshape).puton s, ifmac.location
+		    point(newshape).ifmac = ifmac
 		  end if
 		  currentcontent.addshape newshape
 		  if ifmac.fa = 1 and (ifmac.fo=4 or ifmac.fo = 5)  then
@@ -495,10 +496,11 @@ Inherits MultipleSelectOperation
 		      if ifm.MacId = m then
 		        pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		      else
-		        ifm.childs(num) = ifmac.childs(j)
+		        'ifm.childs(num) = ifmac.childs(j)
 		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
 		      if pt <> nil and pt <> newshape.points(j) then
+		        pt.moveto newshape.points(j).bpt
 		        newshape.substitutepoint(pt,newshape.points(j))
 		      end if
 		    end if
@@ -565,6 +567,34 @@ Inherits MultipleSelectOperation
 		    end if
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
+		  dim EL0, EL1, EL01 as XMLElement
+		  dim i as integer
+		  dim s as shape
+		  
+		  EL0 =  Doc.CreateElement("Final_Forms")
+		  for i = 0 to ubound(MacInfo.RealFinal)
+		    s = Objects.Getshape(MacInfo.RealFinal(i))
+		    EL0.appendchild s.XMLPutIdInContainer(Doc)
+		  next
+		  EL.appendchild EL0
+		  
+		  EL1 = Doc.CreateElement(Dico.value("Macro"))
+		  EL1.setAttribute("Name", Mac.Caption)
+		  EL01 =  Doc.CreateElement("Initial_Forms")
+		  for i = 0 to ubound(MacInfo.RealInit)
+		    s = Objects.Getshape(MacInfo.RealInit(i))
+		    EL1.appendchild s.XMLPutIdInContainer(Doc)
+		  next
+		  EL. appendchild EL1
+		  
+		  return EL
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

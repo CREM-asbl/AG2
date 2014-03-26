@@ -73,6 +73,7 @@
     <DefinirSimilitude Name="Similitude" />
     <DefinirEtirement Name="Etirement" />
     <DefinirDeplacement Name="Déplacement" />
+    <DefinirCisaillement Name="Cisaillement"/>
     <TransfosMontrerCacher Name="Montrer-Cacher" />
     <TransfosAppliquer Name="Appliquer" />
     <TransfosFixedPoints Name="Point fixe" />

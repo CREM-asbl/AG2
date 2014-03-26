@@ -515,7 +515,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub dupliquerpoint(ifmac as infomac, byref nbp as nBPoint)
+		Sub dupliquerpoint(ifmac as infomac, byref nbp As nBPoint)
 		  dim num0, side, m as integer
 		  dim nb as nBPoint
 		  dim ifm0, ifm1 as infomac

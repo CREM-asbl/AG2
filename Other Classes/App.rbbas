@@ -146,8 +146,9 @@ Inherits Application
 		  Config = new Configuration
 		  autoquit = true
 		  init
-		  themacros = new macroslist
 		  CheckUpdate
+		  themacros = new macroslist
+		  
 		  
 		  
 		  

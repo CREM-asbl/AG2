@@ -26,9 +26,6 @@ Begin Window InitWindow
    Visible         =   "True"
    Width           =   772
    Begin PopupMenu PopupMenu1
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       ControlOrder    =   0
@@ -58,9 +55,6 @@ Begin Window InitWindow
       BehaviorIndex   =   0
    End
    Begin PushButton PushButton1
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
@@ -89,9 +83,6 @@ Begin Window InitWindow
       BehaviorIndex   =   1
    End
    Begin EditField User
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AcceptTabs      =   "False"
       Alignment       =   1
       AutoDeactivate  =   "True"
@@ -135,9 +126,6 @@ Begin Window InitWindow
       BehaviorIndex   =   2
    End
    Begin PushButton PushButton2
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "False"
       Bold            =   "True"
       Cancel          =   "False"
@@ -166,9 +154,6 @@ Begin Window InitWindow
       BehaviorIndex   =   3
    End
    Begin PushButton PushButton3
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
@@ -197,9 +182,6 @@ Begin Window InitWindow
       BehaviorIndex   =   4
    End
    Begin PushButton PushButton4
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   ""
@@ -228,9 +210,6 @@ Begin Window InitWindow
       BehaviorIndex   =   5
    End
    Begin PopupMenu ComboBox1
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/master"
       AutoDeactivate  =   "True"
       Bold            =   ""
       ControlOrder    =   6

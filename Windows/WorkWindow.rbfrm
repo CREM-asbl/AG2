@@ -53,8 +53,6 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       UseFocusRing    =   "False"
       Visible         =   True
@@ -79,8 +77,6 @@ Begin Window WorkWindow
       LockTop         =   "True"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   0
       TopLeftColor    =   0
       Visible         =   True
@@ -324,8 +320,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
@@ -351,8 +345,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
@@ -378,8 +370,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
@@ -405,8 +395,6 @@ Begin Window WorkWindow
             LockTop         =   ""
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
@@ -458,8 +446,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -485,8 +471,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -512,8 +496,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -539,8 +521,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -566,8 +546,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -593,8 +571,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -620,8 +596,6 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
             Top             =   537
             UseFocusRing    =   "True"
             Visible         =   True
@@ -2414,7 +2388,6 @@ End
 		  if MenuBar.Child("MacrosMenu").Child("MacrosExecute") <> nil then
 		    MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
 		  end if
-		  MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
@@ -2682,9 +2655,9 @@ End
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
-		  if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
-		    MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
-		  end if
+		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
+		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
+		  'end if
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
 		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
