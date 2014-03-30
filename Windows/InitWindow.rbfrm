@@ -48,7 +48,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   430
+      Top             =   400
       Underline       =   "False"
       Visible         =   True
       Width           =   135
@@ -76,7 +76,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   460
+      Top             =   454
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
@@ -118,7 +118,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   395
+      Top             =   368
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -138,7 +138,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   571
+      Left            =   572
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -147,7 +147,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   360
+      Top             =   336
       Underline       =   "False"
       Visible         =   True
       Width           =   112
@@ -166,7 +166,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   571
+      Left            =   572
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -175,7 +175,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   395
+      Top             =   368
       Underline       =   "False"
       Visible         =   True
       Width           =   69
@@ -194,7 +194,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   571
+      Left            =   572
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -203,7 +203,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-      Top             =   460
+      Top             =   454
       Underline       =   ""
       Visible         =   True
       Width           =   108
@@ -232,7 +232,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-      Top             =   330
+      Top             =   428
       Underline       =   ""
       Visible         =   True
       Width           =   180

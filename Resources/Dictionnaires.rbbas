@@ -945,6 +945,24 @@ Protected Module Dictionnaires
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function thefile() As string
+		  return Dico.Value("thefile")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function toomanyfamilies() As string
+		  return Dico.Value("toomanyfamilies")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function only4() As string
+		  return dico.value("only4")
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

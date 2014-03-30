@@ -431,11 +431,16 @@ Protected Class Configuration
 		  if not ShowStdTools then
 		    return
 		  end if
-		  
-		  fi=GetFolderItem(stdfile)
+		  'if right(stdfile,4) <>".std" then
+		  'stdfile = stdfile+".std"
+		  'end if
+		  fi = getfolderitem(stdfile)
+		  if not fi.exists then
+		    fi = app.StdFolder.Child(stdfile)
+		  end if
 		  if not fi.exists then
 		    MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
-		    Quit
+		    return
 		  end if
 		  
 		  Doc = new XMLDocument(fi)
@@ -443,8 +448,8 @@ Protected Class Configuration
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
 		  if nstdfam > 4 then
-		    MsgBox Dico.Value("Toomanystdf")
-		    Quit
+		    MsgBox  TooManyFiles(stdfile) + EndOfLine + only4
+		    nstdfam = 4
 		  end if
 		  
 		  for i = 0 to nstdfam-1
@@ -731,6 +736,12 @@ Protected Class Configuration
 		    Libvisible(fam,i) = nlibvis(fam)
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TooManyFiles(s as string) As string
+		  return thefile + stdfile +toomanyfamilies
+		End Function
 	#tag EndMethod
 
 

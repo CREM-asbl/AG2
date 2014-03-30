@@ -303,8 +303,10 @@ Inherits Application
 		  if not MenusFolder.Exists then
 		    MenusFolder.CreateAsFolder
 		  end if
-		  
-		  
+		  StdFolder = DocFolder.Child("StdFiles")
+		  if not StdFolder.Exists then
+		    StdFolder.CreateAsFolder
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -343,6 +345,29 @@ Inherits Application
 		  next
 		  
 		  return menus
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function StdFilesDispo() As string()
+		  dim stdfiles(-1),nom as String
+		  dim i as integer
+		  
+		  for i=1 to AppFolder.count
+		    nom = app.AppFolder.trueItem(i).Name
+		    if right(nom,4)=".std" then
+		      stdfiles.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  for i=1 to StdFolder.count
+		    nom = app.StdFolder.trueItem(i).Name
+		    if right(nom,4)=".std" then
+		      stdfiles.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  return stdfiles
 		End Function
 	#tag EndMethod
 
@@ -439,6 +464,10 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		MenusFolder As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		stdfolder As folderitem
 	#tag EndProperty
 
 

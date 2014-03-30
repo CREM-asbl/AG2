@@ -16,15 +16,17 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim Tos as TextOutputStream
 		  dim titre as string
-		  dim n, i, j,  nfam as integer
+		  dim n, i, j as integer
 		  dim f as folderitem
 		  dim stdw as StdFamWindow
-		  dim Doc as XmlDocument
+		  dim Doc, NewDoc as XmlDocument
 		  dim FStd, Temp, EL, EL1  As XmlElement
 		  dim s as shape
 		  dim Bib as BiBPoint
 		  dim alpha, beta as double
-		  Dim dlg as New SaveAsDialog
+		  Dim dlg as New MessageDialog
+		  dim Mess as MessageDialogButton
+		  dim dlg2 As SaveAsDialog
 		  
 		  if tempshape.count =  0 then
 		    return
@@ -32,7 +34,13 @@ Inherits SelectOperation
 		  
 		  stdw = new stdfamwindow
 		  stdw.ShowModal
+		  if stdw.result = 0 then
+		    return
+		  end if
 		  
+		  if wnd.Nomfam = "" then
+		    wnd.nomFam = "Untitled"
+		  end if
 		  
 		  Doc = new XmlDocument
 		  Doc.Preservewhitespace = true
@@ -41,14 +49,14 @@ Inherits SelectOperation
 		  Temp = Doc.CreateElement("Famille")
 		  Temp.setAttribute("Nom",wnd.NomFam)
 		  FStd.AppendChild Temp
-		  Temp.AppendChild wnd.coul.XMLPutInContainer(Doc,"Couleur")
-		  
-		  nfam = 1
+		  if wnd.coul <> nil then
+		    Temp.AppendChild wnd.coul.XMLPutInContainer(Doc,"Couleur")
+		  end if
 		  
 		  for i = 0 to tempshape.count-1
 		    s = tempshape.element(i)
 		    EL = Doc.CreateElement("Forme")
-		    EL.SetAttribute("Nom", "Piece"+str(i))
+		    EL.SetAttribute("Nom", "Forme "+str(i+1))
 		    alpha = 0
 		    for j = 0 to s.npts-2
 		      EL1 = Doc.CreateElement("Arete")
@@ -62,21 +70,54 @@ Inherits SelectOperation
 		    Temp.Appendchild EL
 		  next
 		  
-		  dlg.InitialDirectory=app.AppFolder
-		  dlg.promptText=""
+		  dlg.Message = "Pour sauvegarder la famille de formes standard créées :" +EndofLine  + "choisissez une action."
+		  dlg.ActionButton.Caption = "Créer un nouveau fichier"
+		  dlg.AlternateActionButton.Caption = "Adjoindre à un fichier existant"
+		  dlg.AlternateActionButton.Visible = true
+		  dlg.CancelButton.Visible = true
+		  dlg.CancelButton.Caption = Dico.Value("Cancel")
+		  dlg.Explanation = "Attention, il ne peut y avoir plus de 4 familles par fichier."
 		  dlg.Title= Dico.Value("SaveStd")
-		  dlg.filter=FileAGTypes.STD
+		  mess = dlg.ShowModal()
 		  
-		  f=dlg.ShowModal()
+		  dlg2 = new SaveAsDialog
+		  dlg2.filter=FileAGTypes.STD
+		  dlg2.InitialDirectory = app.StdFolder
+		  
+		  select case mess
+		  case dlg.ActionButton
+		    dlg2.SuggestedFileName= "*.std"
+		    dlg2.Title =  "Créez un nouveau fichier en remplaçant l'étoile par un nom. N'utilisez pas un nom déjà existant."
+		    f = dlg2.ShowModal
+		  case dlg.AlternateActionButton
+		    dlg2.title = "Choisissez un nom dans la liste."
+		    f = dlg2.ShowModal
+		  case dlg.CancelButton
+		    return
+		  end select
+		  
+		  
+		  
+		  if f = nil then
+		    return
+		  end if
+		  
 		  n = f.name.Instr(".")
 		  if n = 0 then
 		    f.name = f.name +".std"
 		  else
 		    f.name = Left(f.name, n-1) +".std"
 		  end if
-		  if f <> nil then
-		    tos=f.createTextFile
-		    tos.write Doc.ToString
+		  if f <> nil  then
+		    if f.exists then
+		      NewDoc = new XMLDocument(f)
+		      NewDoc.Child(0).appendchild NewDoc.ImportNode(temp, true)
+		      tos = f.CreateTextFile
+		      tos.write NewDoc.ToString
+		    else
+		      tos = f.CreateTextFile
+		      tos.write Doc.ToString
+		    end if
 		    tos.close
 		  end if
 		  
@@ -192,17 +233,6 @@ Inherits SelectOperation
 			Group="Behavior"
 			Type="string"
 			InheritedFrom="Operation"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NomFam"
-			Group="Behavior"
-			Type="string"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="col"
-			Group="Behavior"
-			InitialValue="&h000000"
-			Type="color"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

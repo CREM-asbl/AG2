@@ -35,7 +35,7 @@ Begin Window WorkWindow
       ControlOrder    =   0
       ctxt            =   0
       drapzone        =   0
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       FondsEcran      =   0
       Height          =   592
@@ -55,7 +55,7 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       Top             =   0
       UseFocusRing    =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   676
       BehaviorIndex   =   0
    End
@@ -2655,14 +2655,13 @@ End
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
-		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
-		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
-		  'end if
+		  if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
+		    MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
+		  end if
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
 		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
-		  'MenuBar.Child("OperaMenu").Child("OperaClone").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =false
 		  MenuBar.Child("ToolsMenu").visible = false

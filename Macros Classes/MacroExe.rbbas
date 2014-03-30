@@ -92,39 +92,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, n, oper  as integer
-		  dim EL as XMLElement
-		  dim codesoper() as integer
-		  dim s as shape
 		  
-		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
-		  
-		  for i = 0 to Histo.Childcount-1  // i : numéro de l'opération
-		    EL = XMLElement(Histo.Child(i))
-		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction (forme ou tsf) ? prévoir le cas contraire!
-		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
-		      oper = val(EL.GetAttribute("OpId"))                           //oper: code de l'opération
-		      if codesoper.indexof(oper) <>  -1 then
-		        CreateIfMacObject(EL,oper)
-		      elseif oper = 17 then
-		        CreateIfMacTsf(EL,oper)
-		      end if
-		    end if
-		  next
-		  
-		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice
-		  
-		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
-		    n = MacInfo.RealFinal(i)
-		    s = objects.GetShape(n)
-		    if s isa point then
-		      s.createskull(point(s).bpt)
-		      point(s).mobility
-		    else
-		      s.createskull(s.points(0).bpt)
-		    end if
-		  next
-		  
+		  CreateIfMacs(Histo)
+		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice de la tsf
+		  CreateFinalSkulls
 		  wnd.mycanvas1.refreshbackground
 		  
 		End Sub
@@ -571,30 +542,79 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
-		  dim EL0, EL1, EL01 as XMLElement
+		  dim EL0, Temp as XMLElement
 		  dim i as integer
-		  dim s as shape
-		  
-		  EL0 =  Doc.CreateElement("Final_Forms")
-		  for i = 0 to ubound(MacInfo.RealFinal)
-		    s = Objects.Getshape(MacInfo.RealFinal(i))
-		    EL0.appendchild s.XMLPutIdInContainer(Doc)
+		  'dim s as shape
+		  '
+		  'EL0 =  Doc.CreateElement("Final_Forms")
+		  'for i = 0 to ubound(MacInfo.RealFinal)
+		  's = Objects.Getshape(MacInfo.RealFinal(i))
+		  'EL0.appendchild s.XMLPutIdInContainer(Doc)
+		  'next
+		  'EL.appendchild EL0
+		  '
+		  'EL1 = Doc.CreateElement(Dico.value("Macro"))
+		  'EL1.setAttribute("Name", Mac.Caption)
+		  'EL01 =  Doc.CreateElement("Initial_Forms")
+		  'for i = 0 to ubound(MacInfo.RealInit)
+		  's = Objects.Getshape(MacInfo.RealInit(i))
+		  'EL1.appendchild s.XMLPutIdInContainer(Doc)
+		  'next
+		  'EL. appendchild EL01
+		  '
+		  'return EL
+		  Temp = Doc.CreateElement(Dico.value("Operation"))
+		  for i = 0 to EL.childcount-1
+		    EL0 = XMLElement(EL.Child(i))
+		    if EL0.Name = Dico.Value("Operation") then
+		      Temp.appendchild Doc.ImportNode(EL0,true)
+		    end if
 		  next
-		  EL.appendchild EL0
-		  
-		  EL1 = Doc.CreateElement(Dico.value("Macro"))
-		  EL1.setAttribute("Name", Mac.Caption)
-		  EL01 =  Doc.CreateElement("Initial_Forms")
-		  for i = 0 to ubound(MacInfo.RealInit)
-		    s = Objects.Getshape(MacInfo.RealInit(i))
-		    EL1.appendchild s.XMLPutIdInContainer(Doc)
-		  next
-		  EL. appendchild EL1
-		  
-		  return EL
-		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateIfMacs(Temp as XMLElement)
+		  dim i, oper as integer
+		  dim EL as XMLElement
+		  dim codesoper() as integer
+		  
+		  
+		  
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
+		  
+		  for i = 0 to Temp.Childcount-1  // i : numéro de l'opération
+		    EL = XMLElement(Temp.Child(i))
+		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction (forme ou tsf) ? prévoir le cas contraire!
+		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
+		      oper = val(EL.GetAttribute("OpId"))
+		      if codesoper.indexof(oper) <>  -1 then
+		        CreateIfMacObject(EL,oper)
+		      elseif oper = 17 then
+		        CreateIfMacTsf(EL,oper)
+		      end if
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateFinalSkulls()
+		  dim i, n as integer
+		  dim s as shape
+		  
+		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
+		    n = MacInfo.RealFinal(i)
+		    s = objects.GetShape(n)
+		    if s isa point then
+		      s.createskull(point(s).bpt)
+		      point(s).mobility
+		    else
+		      s.createskull(s.points(0).bpt)
+		    end if
+		  next
+		End Sub
 	#tag EndMethod
 
 

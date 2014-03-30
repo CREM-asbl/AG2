@@ -256,17 +256,26 @@ End
 		Sub Open()
 		  dim i,j as integer
 		  dim nom as string
+		  dim stdfiles(-1) as string
 		  
-		  for i=1 to app.AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".std" then
-		      me.addRow(nom)
-		      if nom = Config.stdfile then
-		        me.ListIndex= j
-		      end if
-		      j = j+1
-		    end if
+		  
+		  stdfiles = app.StdFilesDispo
+		  for i=0 to UBound(stdfiles)
+		    me.addRow(stdfiles(i))
 		  next
+		  me.ListIndex = max(0,me.ListIndex)
+		  
+		  
+		  'for i=1 to app.AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".std" then
+		  'me.addRow(nom)
+		  'if nom = Config.stdfile then
+		  'me.ListIndex= j
+		  'end if
+		  'j = j+1
+		  'end if
+		  'next
 		  
 		End Sub
 	#tag EndEvent
@@ -276,7 +285,7 @@ End
 		Sub Action()
 		  dim i as integer
 		  
-		  Config.setStdFile(popupmenu1.text)
+		  Config.setStdFile(popupmenu1.text+".std")
 		  Config.stdsize = val(popupmenu2.text)
 		  
 		  'todo : à améliorer

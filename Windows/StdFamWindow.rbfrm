@@ -223,11 +223,17 @@ End
 		  Title = Dico.Value("Standardiser")
 		  OKButton.Caption = Dico.Value("OK")
 		  CancelButton.Caption = Dico.value("Cancel")
-		  StaticText1.Text = Dico.Value("FamilyName")
-		  StaticText2.Text = Dico.Value("FamilyColor")
-		  
+		  if config.langue = "english" then
+		    StaticText1.Text = Dico.Value("Family Name")
+		    StaticText2.Text = Dico.Value("Family Color")
+		  end if
 		End Sub
 	#tag EndEvent
+
+
+	#tag Property, Flags = &h0
+		result As Integer
+	#tag EndProperty
 
 
 #tag EndWindowCode
@@ -235,6 +241,7 @@ End
 #tag Events CancelButton
 	#tag Event
 		Sub Action()
+		  result = 0
 		  close
 		End Sub
 	#tag EndEvent
@@ -242,7 +249,7 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-		  
+		  result = 1
 		  
 		  close
 		End Sub
