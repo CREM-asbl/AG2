@@ -52,34 +52,20 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim obj as string
 		  
 		  currentshape = currenthighlightedshape
 		  
 		  if visible  = nil or currentshape = nil then
-		    if drappoint  then
-		      display = choose +un +" "+ point
-		    else
-		      display = choose + un + " " +str
-		    end if
+		    display = choose + un + " " +str
 		  else
 		    if currentshape isa polygon and side <> -1 and fa = 1 then
 		      currentshape.unhighlight
 		      polygon(currentshape).paintside(g,side,2,config.highlightcolor)
-		      obj = lowercase(segment)
-		    elseif drappoint and currentshape isa point then
-		      obj ="point"
-		      currentshape.highlight
 		    else
-		      obj = lowercase(currenthighlightedshape.gettype)
 		      currentshape.highlight
 		    end if
 		    operation.paint(g)
-		    if obj = "arc" then
-		      display = cet + " " + obj + " ?"
-		    else
-		      display = ce + " " + obj + " ?"
-		    end if
+		    display = this(str) + " ?"
 		  end if
 		  
 		  Help g, display
@@ -430,16 +416,8 @@ Inherits MultipleSelectOperation
 		  
 		  if fa = -1 and CurrentItemToSet > 0 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
-		    ninstruc = Mac.GetInstrucConstruction(MacId, PId)
-		    EL = XMLElement(Mac.Histo.Child(ninstruc))
-		    EL1 = XMLElement(EL.FirstChild)
-		    if MacId = PId then
-		      fa = val(EL1.GetAttribute(Dico.Value("NrFam")))       //l'objet initial à choisir est soit une forme  "autonome" soit (si drappoint est true)
-		      fo = val(EL1.GetAttribute(Dico.Value("NrForm")))    //un sommet d'une telle forme. Dans les deux cas fa et fo concernent la forme
-		    else
-		      fa = 0  'l'objet à choisir est un point
-		      fo = 0
-		    end if
+		    fa = Mac.FaInit(CurrentItemToSet-1)
+		    fo = Mac.FoInit(CurrentItemToSet-1)
 		  end if
 		  super.mousemove(p)  //appelle getshape
 		  
@@ -471,7 +449,7 @@ Inherits MultipleSelectOperation
 		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
 		      if pt <> nil and pt <> newshape.points(j) then
-		        pt.moveto newshape.points(j).bpt
+		        'newshape.points(j).moveto pt.bpt
 		        newshape.substitutepoint(pt,newshape.points(j))
 		      end if
 		    end if

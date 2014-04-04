@@ -159,7 +159,7 @@ Inherits SelectOperation
 		    s=Visible.element(j)
 		    if s.tsfi.count > 0 then
 		      for i = 0 to s.tsfi.count-1
-		        if s.tsfi.element(i).Type > 6 and  s.tsfi.element(i).Type <> 9 then
+		        if s.tsfi.element(i).Type > 6 and  s.tsfi.element(i).Type <> 9  and  s.tsfi.element(i).Type <> 11 then
 		          CurrentTsf.Append (s.tsfi.element(i))
 		        end if
 		      next

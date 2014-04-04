@@ -367,6 +367,24 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function IsometryMatrix() As Matrix
+		  return new IsometryMatrix(tab(0),tab(1),tab(3), tab(2))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AffinityMatrix() As Matrix
+		  return new AffinityMatrix(tab(0), tab(1), tab(2), tab(5), tab(4), tab(3))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function EtirCisailMatrix() As Matrix
+		  return new AffinityMatrix(tab(0),tab(1),tab(2),tab(0),tab(1), tab(3))
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint

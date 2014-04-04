@@ -36,7 +36,9 @@ Protected Class Macro
 		Sub Macro(Doc as XMLDocument)
 		  dim List as XMLNodeList
 		  dim Temp, EL1 As  XMLElement
-		  dim i as integer
+		  dim i, fa, fo as integer
+		  dim drap as Boolean
+		  
 		  
 		  Histo =  XMLElement(Doc.FirstChild)
 		  Caption =  Histo.GetAttribute("Name")
@@ -54,9 +56,15 @@ Protected Class Macro
 		      ObInit.append val(EL1.GetAttribute("Id"))
 		      FaInit.append val(EL1.GetAttribute("Fa"))
 		      FoInit.append val(EL1.GetAttribute("Fo"))
+		      if FaInit(i)=0 and FoInit(i) = 0 then
+		        GetInstrucConstruction(ObInit(i), fa, fo)
+		        FaInit(i) = fa
+		        FoInit(i) = fo
+		        drap = drap or (fa <>0) or (fo <> 0)
+		      end if
 		    next
 		  end if
-		  Histo.RemoveChild Temp
+		  'Histo.RemoveChild Temp
 		  
 		  List = Histo.XQL("Final")
 		  if List.length > 0 then
@@ -68,7 +76,7 @@ Protected Class Macro
 		      FoFinal.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  Histo.RemoveChild Temp
+		  'Histo.RemoveChild Temp
 		  
 		  List = Histo.XQL("Interm")
 		  if List.length > 0 then
@@ -80,7 +88,16 @@ Protected Class Macro
 		      FoInterm.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  Histo.RemoveChild Temp
+		  'Histo.RemoveChild Temp
+		  
+		  if drap then
+		    List = Histo.XQL("Initial")
+		    Temp = XMLElement(List.Item(0))
+		    Histo.RemoveChild Temp
+		    Histo.appendchild ToMac(Doc,0)
+		    SaveMacroCorrected(Doc)
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -115,8 +132,8 @@ Protected Class Macro
 		  for i = 0 to ubound(ObCategorie)
 		    EL = Doc.CreateElement("Obj"+Categorie)
 		    EL.SetAttribute("Id", str(ObCategorie(i)))
-		    'EL.SetAttribute("Fa",str(FaCategorie(i)))
-		    'EL.SetAttribute("Fo",str(FoCategorie(i)))
+		    EL.SetAttribute("Fa",str(FaCategorie(i)))
+		    EL.SetAttribute("Fo",str(FoCategorie(i)))
 		    Temp.AppendChild EL
 		  next
 		  
@@ -347,7 +364,7 @@ Protected Class Macro
 		  
 		  redim  nbp.tab(1)
 		  //Ensuite on recherche l'origine
-		  nbp.tab(0) = GetCoordChild(ifmac.childs(0))
+		  nbp.tab(0) = ifmac.childs(0).coord.tab(0)    'GetCoordChild(ifmac.childs(0))
 		  if nbp.tab(0) = nil then
 		    return
 		  end if
@@ -359,7 +376,7 @@ Protected Class Macro
 		    BiB1 = new BiBPoint(nbp.tab(0),nbp.tab(0)+w)
 		    ifm2 = ifmac.childs(1)
 		    if ifm2.ptsur <> 1 then
-		      nbp.tab(1) = GetCoordChild(ifmac.childs(1))
+		      nbp.tab(1) =  ifmac.childs(1).coord.tab(0)  'GetCoordChild(ifmac.childs(1))
 		      nbp.tab(1) = nbp.tab(1).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
 		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
@@ -699,6 +716,10 @@ Protected Class Macro
 		    ifm.M = new SymmetryMatrix(nbp.tab(0),nbp.tab(1))
 		  case 7,8
 		    ifm.M = nbp.SimilarityMatrix
+		  case 9,11
+		    ifm.M = nbp.EtirCisailMatrix
+		  case 10
+		    ifm.M = nbp.IsometryMatrix
 		  end select
 		  
 		  'k = ObFinal.indexof(MacId)
@@ -776,35 +797,24 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInstrucConstruction(n as integer, Byref Pid as integer) As integer
-		  dim i, j, op,  m as integer
+		Sub GetInstrucConstruction(n as integer, Byref fa as integer, byref fo as integer)
+		  dim i, j, op,  m as integer                                         //méthode à supprimer après conversion de toutes les macros
 		  dim EL, EL1, EL2 as XMLElement
 		  
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.Child(i))
 		    op = val(EL.GetAttribute("OpId"))
 		    EL1 = XMLElement(EL.FirstChild)
-		    if EL1 <> nil then
-		      Pid = val(EL1.GetAttribute("Id"))  'PId est la macid de la forme soit que l'on construit, soit dont on recherche un des sommets
-		      if op = 0 and   Pid = n then
-		        return i                                          'i est le numéro de l'instruction
-		      else
-		        EL1 = XmlElement(EL1.FirstChild)
-		        if EL1 <> nil then
-		          for j = 0 to EL1.ChildCount-1
-		            EL2 = XmlElement(EL1.Child(j))
-		            m = val(EL2.GetAttribute("Id"))
-		            if m = n then
-		              'MacroExe(CurrentContent.CurrentOperation).DrapPoint = true ' le drapeau indique qu'on est en train de s'occuper d'un
-		              return i                                                                                                  ' de la forme de macid Pid plutôt que de cette forme rlle-même
-		            end if
-		          next
-		        end if
-		      end if
+		    if EL1 <> nil and  op = 0 and val(EL1.GetAttribute("Id")) = n then
+		      fa = val(EL1.GetAttribute(Dico.Value("NrFam")))
+		      fo = val(EL1.GetAttribute(Dico.Value("NrForm")))
+		      return
 		    end if
 		  next
 		  
-		End Function
+		  fa = 0
+		  fo = 0
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -910,8 +920,11 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub ComputeFix(ifmac as infomac, nbp as nbpoint)
 		  dim M as Matrix
+		  dim ifm as InfoMac
+		  dim num as integer
 		  
-		  M = ifmac.M
+		  ifm = MacInf.GetInfoMac(ifmac.forme0,num)
+		  M = ifm.M
 		  if M <> nil and M.v1 <> nil then
 		    nbp.append M.fixpt
 		  end if
@@ -926,6 +939,37 @@ Protected Class Macro
 		  
 		  
 		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SaveMacroCorrected(Doc as XMLDocument)
+		  dim f as folderitem                                               // //méthode à supprimer après conversion de toutes les macros
+		  Dim dlg as New SaveAsDialog
+		  dim tos as TextOutputStream
+		  dim place as integer
+		  
+		  dlg.InitialDirectory=app.MacFolder
+		  dlg.promptText=""
+		  dlg.Title= Dico.Value("SaveMacro")
+		  dlg.filter=FileAGTypes.MACR
+		  
+		  f=dlg.ShowModal()
+		  If f <> Nil then
+		    place = Instr(f.name,".xmag")
+		    if place = 0 then
+		      f.name = f.name + ".xmag"
+		    end if
+		  end if
+		  If f <> Nil then
+		    tos = f.CreateTextFile
+		    if tos <> nil then
+		      tos.write Doc.tostring
+		      tos.close
+		    end if
+		  end if
 		  
 		  
 		End Sub
