@@ -7,7 +7,7 @@ Inherits MultipleSelectOperation
 		  OpId = 0
 		  
 		  Objects.unselectAll
-		  Currentcontent.currentoperation = self
+		  'Currentcontent.currentoperation = self
 		  Famille = Fam
 		  Forme = form
 		  CreateShape
@@ -118,6 +118,8 @@ Inherits MultipleSelectOperation
 		      currentshape = new StdCircle(objects,famille, forme, p)
 		    end if
 		  end if
+		  currentshape.fam = famille
+		  currentshape.forme = forme
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
 		  wnd.setcross

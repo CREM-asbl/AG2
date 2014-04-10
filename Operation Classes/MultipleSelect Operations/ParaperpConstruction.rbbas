@@ -37,6 +37,8 @@ Inherits ShapeConstruction
 		    currentshape = new Droite(ol,p,0) // droite perpendiculaire
 		    op = 2
 		  end select
+		  currentshape.fam = 1
+		  currentshape.forme = forme
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
 		  'CurrentShape.IsInConstruction = true

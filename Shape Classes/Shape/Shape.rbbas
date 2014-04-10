@@ -578,10 +578,6 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Shape(ol as objectslist, ncp as integer)
-		  if currentcontent.currentoperation isa shapeconstruction then
-		    fam = shapeconstruction(currentcontent.currentoperation).famille
-		    forme = shapeconstruction(currentcontent.currentoperation).forme
-		  end if
 		  if id=0 then
 		    id = ol.newId
 		  end if
