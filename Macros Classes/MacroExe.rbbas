@@ -3,12 +3,9 @@ Protected Class MacroExe
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub MacroExe(n as integer)
-		  MultipleSelectOperation()
-		  OpId = 43
 		  Mac = app.TheMacros.element(n)
-		  NumberOfItemsToSelect = ubound(mac.obinit) +1
-		  MacInfo = new MacConstructionInfo(Mac)
-		  Histo = Mac.Histo
+		  MacroExe(Mac)
+		  
 		  mw = new MacWindow
 		  mw.Title = Mac.GetName + " : " + Dico.Value("MacroDescription")
 		  mw.EditField1.Text = Mac.expli
@@ -78,12 +75,15 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
-		  CreateIfMacs(Histo)
-		  mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice de la tsf
-		  CreateFinalSkulls
-		  wnd.mycanvas1.refreshbackground
-		  
+		  if currentcontent.macrocreation then   'on utilise une macro à l'intérieur de la construction d'une autre
+		    Mac.MacInf = MacInfo
+		    ExecuteMacroExe(Histo)
+		  else
+		    CreateIfMacs(Histo)
+		    mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice de la tsf
+		    CreateFinalSkulls
+		    wnd.mycanvas1.refreshbackground
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -91,12 +91,11 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  
 		  super.EndOperation
-		  drappoint = false
+		  MacInfo = new MacConstructionInfo(Mac)
 		  if mw <> nil then
 		    mw.close
 		    mw=nil
 		  end if
-		  MacInfo = new MacConstructionInfo(Mac)
 		  
 		End Sub
 	#tag EndMethod
@@ -200,12 +199,14 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MacroExe(Macr as Macro)
-		  Super.MultipleSelectOperation
+		  MultipleSelectOperation
 		  Mac = Macr
 		  OpId = 43
 		  NumberOfItemsToSelect = ubound(macr.obinit) +1
 		  Histo = Macr.Histo
 		  MacInfo = new MacConstructionInfo(Mac)
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
+		  
 		End Sub
 	#tag EndMethod
 
@@ -291,63 +292,66 @@ Inherits MultipleSelectOperation
 		  dim ifmac, ifm As InfoMac
 		  dim s, newshape as shape
 		  
-		  //Pemière partie: création de l'infomac
+		  
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
 		  n = val(EL0.GetAttribute("Id"))
 		  
-		  if (Mac.ObInit.indexof(n) <> -1) or  (Mac.ObInterm.indexof(n) <> -1) or  (Mac.ObFinal.indexof(n)  <> -1) then
-		    ifmac = new InfoMac(MacInfo, EL0,EL1,oper)
-		    
-		    //Deuxième partie : adaptation selon la classe (init, interm, final)
-		    
-		    if Mac.ObInit.indexof(n) <> -1 then
-		      ifmac.RealId =MacInfo.GetRealInit(n)
-		      ifmac.init = true
-		      s = currentcontent.TheObjects.GetShape(ifmac.RealId)
-		      s.ifmac = ifmac
-		      if ifmac.npts < s.npts then
-		        ifmac.seg = true
-		        ifmac.RealSide = MacInfo.GetRealSide(n)
-		      end if
-		      for i = 0 to ifmac.npts-1
-		        ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
-		      next
-		      ifmac.ori = s.ori
-		      
+		  if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n) = -1) and  (Mac.ObFinal.indexof(n) = -1) then
+		    return
+		  end if
+		  
+		  //Pemière partie: création de l'infomac
+		  ifmac = new InfoMac(MacInfo, EL0,EL1,oper)
+		  
+		  //Deuxième partie : adaptation selon la classe (init, interm, final)
+		  
+		  if Mac.ObInit.indexof(n) <> -1 then
+		    ifmac.RealId =MacInfo.GetRealInit(n)
+		    ifmac.init = true
+		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		    s.ifmac = ifmac
+		    if ifmac.npts < s.npts then
+		      ifmac.seg = true
+		      ifmac.RealSide = MacInfo.GetRealSide(n)
 		    end if
-		    
-		    if Mac.ObInterm.indexof(n) <> -1 then
-		      ifmac.interm = true
-		      for i = 0 to ubound(ifmac.childs)
-		        ifm = ifmac.childs(i)
-		        if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
-		          ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
-		        end if
-		      next
-		    end if
-		    
-		    if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
-		      newshape = CreateFinal(ifmac)
-		      IdentifyPoints(newshape, ifmac,EL0)
-		      newshape.endconstruction
-		      newshape.ifmac = ifmac
-		      for i = 0 to newshape.npts-1
-		        newshape.points(i).forme = ifmac.childs(i).fo
-		        if newshape.points(i).forme = 1 then
-		          s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifmac.childs(i).forme0))
-		          newshape.points(i).puton s, ifmac.childs(i).location
-		          newshape.points(i).numside(0) = ifmac.childs(i).numside0
-		          newshape.points(i).placerptsursurfigure
-		          newshape.points(i).ifmac = ifmac.childs(i)
-		        end if
-		      next
-		      
-		    end if
-		    
-		    MacInfo.IfMacs.append ifmac
+		    for i = 0 to ifmac.npts-1
+		      ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
+		    next
+		    ifmac.ori = s.ori
 		    
 		  end if
+		  
+		  if Mac.ObInterm.indexof(n) <> -1 then
+		    ifmac.interm = true
+		    for i = 0 to ubound(ifmac.childs)
+		      ifm = ifmac.childs(i)
+		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
+		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
+		      end if
+		    next
+		  end if
+		  
+		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
+		    newshape = CreateFinal(ifmac)
+		    IdentifyPoints(newshape, ifmac,EL0)
+		    newshape.endconstruction
+		    newshape.ifmac = ifmac
+		    for i = 0 to newshape.npts-1
+		      newshape.points(i).forme = ifmac.childs(i).fo
+		      if newshape.points(i).forme = 1 then
+		        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifmac.childs(i).forme0))
+		        newshape.points(i).puton s, ifmac.childs(i).location
+		        newshape.points(i).numside(0) = ifmac.childs(i).numside0
+		        newshape.points(i).placerptsursurfigure
+		        newshape.points(i).ifmac = ifmac.childs(i)
+		      end if
+		    next
+		    
+		  end if
+		  
+		  MacInfo.IfMacs.append ifmac
+		  
 		  
 		  
 		End Sub
@@ -520,34 +524,20 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
-		  dim EL0, Temp as XMLElement
+		  dim EL0, EL1, EL2 ,Temp as XMLElement
 		  dim i as integer
-		  'dim s as shape
-		  '
-		  'EL0 =  Doc.CreateElement("Final_Forms")
-		  'for i = 0 to ubound(MacInfo.RealFinal)
-		  's = Objects.Getshape(MacInfo.RealFinal(i))
-		  'EL0.appendchild s.XMLPutIdInContainer(Doc)
-		  'next
-		  'EL.appendchild EL0
-		  '
-		  'EL1 = Doc.CreateElement(Dico.value("Macro"))
-		  'EL1.setAttribute("Name", Mac.Caption)
-		  'EL01 =  Doc.CreateElement("Initial_Forms")
-		  'for i = 0 to ubound(MacInfo.RealInit)
-		  's = Objects.Getshape(MacInfo.RealInit(i))
-		  'EL1.appendchild s.XMLPutIdInContainer(Doc)
-		  'next
-		  'EL. appendchild EL01
-		  '
-		  'return EL
-		  Temp = Doc.CreateElement(Dico.value("Operation"))
-		  for i = 0 to EL.childcount-1
-		    EL0 = XMLElement(EL.Child(i))
-		    if EL0.Name = Dico.Value("Operation") then
-		      Temp.appendchild Doc.ImportNode(EL0,true)
-		    end if
+		  dim s as shape
+		  
+		  EL0 = Doc.CreateElement(Dico.value("Forms"))
+		  
+		  for i = 0 to ubound(MacInfo.RealFinal)
+		    s = Objects.Getshape(MacInfo.RealFinal(i))
+		    EL0.appendchild s.XMLPutIdInContainer(Doc)
 		  next
+		  EL.appendchild EL0
+		  
+		  EL.AppendChild MacInfo.ToMac(Doc)
+		  return EL
 		  
 		End Function
 	#tag EndMethod
@@ -574,6 +564,7 @@ Inherits MultipleSelectOperation
 		      end if
 		    end if
 		  next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -592,6 +583,81 @@ Inherits MultipleSelectOperation
 		      s.createskull(s.points(0).bpt)
 		    end if
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ExecuteMacroExe(Histo as XMLElement)
+		  
+		  dim EL as XMLElement  'on exécute une sous-macro d'une macro
+		  dim i, oper as integer
+		  
+		  for i = 0 to Histo.Childcount-1  // i : numéro de l'opération
+		    EL = XMLElement(Histo.Child(i))
+		    if EL.Name = Dico.Value("Operation") then
+		      oper = val(EL.GetAttribute("OpId"))
+		      if codesoper.indexof(oper) <>  -1 then
+		        CreateObject(EL,oper)
+		      elseif oper = 17 then
+		        CreateTransfo(EL,oper)
+		      end if
+		    end if
+		  next
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateObject(EL as XMLElement, oper as integer)
+		  dim Curop as Operation
+		  dim n as integer
+		  dim EL0, EL1 as XMLElement
+		  dim p as point
+		  
+		  EL0 = XMLElement(EL.Child(0))
+		  EL1 = XMLElement(EL.Child(1))
+		  n = val(EL0.GetAttribute("Id"))
+		  
+		  if Mac.ObInit.indexof(n)  <> -1 then  ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
+		    return                                                   ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
+		  else                                                            'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId dans Mac.ObInit
+		    ' (même si ce n'est pas un objet initial de la sous-macro) son id dans MacInfo.RealInit et
+		    ' éventuellement le n° de côté dans MacInfo.RealInitSide. Ces données deviennent les MacId
+		    'dans la macro principale en étant reprises dans le XMLElement créé par ToMac
+		    select case oper
+		      'case 0 //Construction
+		      'curop = new shapeconstruction
+		      'Construction(ifmac, nbp)
+		    case 1 //paraperp
+		      curop = new ParaperpConstruction(EL0,EL1,Mac)
+		      'case 14 //Centre
+		      'centre(ifmac,nbp)
+		      'case 19 //Dupliquer
+		      'dupliquerpoint(ifmac,nbp)
+		      'case 24 //AppliquerTsf
+		      'Transformer(ifmac,nbp)
+		    case 26 //Point de division
+		      curop = new divide(EL0,EL1,Mac)
+		      'case 28 //Prolonger
+		      'extend(ifmac, nbp)
+		      'case 35 //Identifier
+		      'case 37 //FixPConstruction
+		      'computefix(ifmac,nbp)
+		      'case 45  //Point d'intersection
+		      'inter (ifmac, nbp)
+		      'case 46 //PointSur
+		      'PointSur (ifmac, nbp)
+		    end select
+		    
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateTransfo(EL as XMLElement, oper as integer)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -629,7 +695,11 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		drappoint As Boolean
+		curop As MacroExe
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		codesoper(-1) As Integer
 	#tag EndProperty
 
 
@@ -774,12 +844,6 @@ Inherits MultipleSelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="drappoint"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

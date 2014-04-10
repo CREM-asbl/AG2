@@ -614,6 +614,16 @@ Protected Class Operation
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub GetRealId(Mac as Macro, EL1 as XMLElement, rid as integer, side as integer)
+		  dim n as integer
+		  
+		  n = val(EL1.GetAttribute("Id"))
+		  rid = Mac.MacInf.RealInit(Mac.ObInit.indexof(n))
+		  side =  Mac.MacInf.RealInitSide(Mac.ObInit.indexof(n))
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Mcan
 		Mcanx et Mcany sont utilisées pour afficher des "help" à l'écran

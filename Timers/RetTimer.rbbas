@@ -73,7 +73,11 @@ Inherits TsfTimer
 		  for i = 0 to ncop
 		    s = copies.element(i)
 		    s.tsp = false
-		    Td = new TriDshape(s,curtsf.fp)
+		    if curoper isa Retourner then
+		      Td = new TriDshape(s,fp)
+		    else
+		      Td = new TriDshape(s,curtsf.fp)
+		    end if
 		    TridCopies.append Td
 		  next
 		  

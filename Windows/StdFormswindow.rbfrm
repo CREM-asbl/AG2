@@ -266,16 +266,7 @@ End
 		  me.ListIndex = max(0,me.ListIndex)
 		  
 		  
-		  'for i=1 to app.AppFolder.count
-		  'nom = app.AppFolder.trueItem(i).Name
-		  'if right(nom,4)=".std" then
-		  'me.addRow(nom)
-		  'if nom = Config.stdfile then
-		  'me.ListIndex= j
-		  'end if
-		  'j = j+1
-		  'end if
-		  'next
+		  
 		  
 		End Sub
 	#tag EndEvent

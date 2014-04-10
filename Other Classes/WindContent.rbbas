@@ -1019,6 +1019,14 @@ Protected Class WindContent
 		Mac As Macro
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		MacInfos(-1) As MacConstructionInfo
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MacCurop(-1) As MacroExe
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

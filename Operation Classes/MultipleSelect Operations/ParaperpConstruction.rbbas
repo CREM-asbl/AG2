@@ -223,8 +223,8 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
-		  Temp = super.ToMac(Doc,EL)
 		  
+		  Temp = super.ToMac(Doc,EL)
 		  Temp.Appendchild currentshape.XMLPutConstructionInfoInContainer(Doc)
 		  
 		  return Temp
@@ -246,6 +246,48 @@ Inherits ShapeConstruction
 		  refe.tsfi.addtsf tsf
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ParaperpConstruction(EL0 as XMLElement, EL1 as XMLElement, Mac as Macro)
+		  dim  fa, fo, rid, side, n, i  as integer
+		  dim pt as point
+		  
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForme")))
+		  ParaperpConstruction (fa,fo)
+		  CreateShape
+		  GetRealId(Mac, EL1, rid, side)
+		  Refe= objects.GetShape(rid)
+		  side = val(EL1.GetAttribute("Index"))
+		  
+		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
+		  currentshape.constructedby.data.append side
+		  currentshape.constructshape
+		  
+		  GetRealId(Mac, XMLElement(EL0.Child(0)), rid, side)
+		  pt = point(objects.GetShape(rid))
+		  currentshape.substitutepoint(pt,currentshape.points(0))
+		  if fo <3 then
+		    GetRealId(Mac, XMLElement(EL0.Child(1)), rid, side)
+		    pt = point(objects.GetShape(rid))
+		    currentshape.substitutepoint(pt,currentshape.points(1))
+		  end if
+		  
+		  n = val(EL0.GetAttribute("Id"))
+		  Mac.ObInit.Append n
+		  n = currentshape.id
+		  Mac.MacInf.RealInit.Append n
+		  Mac.MacInf.RealInitSide.Append 0
+		  for i = 0 to 1
+		    n = val(XMLELement(EL0.Child(i)).GetAttribute("Id"))
+		    Mac.ObInit.Append n
+		    n = currentshape.points(i).id
+		    Mac.MacInf.RealInit.Append n
+		    Mac.MacInf.RealInitSide.Append 0
+		  next
 		  
 		End Sub
 	#tag EndMethod

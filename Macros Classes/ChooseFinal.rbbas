@@ -323,7 +323,7 @@ Inherits MultipleSelectOperation
 		  dim tsf as transformation
 		  dim macinfo as MacConstructionInfo
 		  dim sh as shape
-		  dim i as integer 
+		  dim i as integer
 		  
 		  AddInterm(s)          // s est une forme construite
 		  if s.constructedby <> nil then
@@ -436,7 +436,7 @@ Inherits MultipleSelectOperation
 		    if t then
 		      Addinit(p)
 		    else
-		      if p.forme=1 and  (ubound(p.constructedshapes) > -1)  then       '(ubound(p.parents) =0) then 'or
+		      if p.constructing  then   'forme=1 and  (ubound(p.constructedshapes) > -1)  then       '(ubound(p.parents) =0) then 'or
 		        AddInit(p)
 		      else
 		        AddInterm(p)

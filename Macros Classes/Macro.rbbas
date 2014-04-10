@@ -56,15 +56,9 @@ Protected Class Macro
 		      ObInit.append val(EL1.GetAttribute("Id"))
 		      FaInit.append val(EL1.GetAttribute("Fa"))
 		      FoInit.append val(EL1.GetAttribute("Fo"))
-		      if FaInit(i)=0 and FoInit(i) = 0 then
-		        GetInstrucConstruction(ObInit(i), fa, fo)
-		        FaInit(i) = fa
-		        FoInit(i) = fo
-		        drap = drap or (fa <>0) or (fo <> 0)
-		      end if
 		    next
 		  end if
-		  'Histo.RemoveChild Temp
+		  Histo.RemoveChild Temp
 		  
 		  List = Histo.XQL("Final")
 		  if List.length > 0 then
@@ -76,7 +70,7 @@ Protected Class Macro
 		      FoFinal.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  'Histo.RemoveChild Temp
+		  Histo.RemoveChild Temp
 		  
 		  List = Histo.XQL("Interm")
 		  if List.length > 0 then
@@ -88,15 +82,8 @@ Protected Class Macro
 		      FoInterm.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  'Histo.RemoveChild Temp
+		  Histo.RemoveChild Temp
 		  
-		  if drap then
-		    List = Histo.XQL("Initial")
-		    Temp = XMLElement(List.Item(0))
-		    Histo.RemoveChild Temp
-		    Histo.appendchild ToMac(Doc,0)
-		    SaveMacroCorrected(Doc)
-		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -750,6 +737,9 @@ Protected Class Macro
 		    for i = 0 to ifmac.npts-1
 		      ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
 		    next
+		    if s isa point and s.forme = 1 then
+		      ifmac.location = point(s).location(0)
+		    end if
 		  end if
 		  
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
@@ -765,12 +755,13 @@ Protected Class Macro
 		    if nbp = nil or nbp.taille = 0 then
 		      return
 		    end if
+		    ifmac.coord = nbp
 		    for i = 0 to ifmac.npts-1
 		      if nbp.tab(i) = nil then
 		        return
 		      end if
 		    next
-		    ifmac.coord = nbp
+		    
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.coord = ifmac.coord
@@ -794,69 +785,6 @@ Protected Class Macro
 		    
 		  end if
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub GetInstrucConstruction(n as integer, Byref fa as integer, byref fo as integer)
-		  dim i, j, op,  m as integer                                         //méthode à supprimer après conversion de toutes les macros
-		  dim EL, EL1, EL2 as XMLElement
-		  
-		  for i = 0 to Histo.ChildCount-1
-		    EL = XMLElement(Histo.Child(i))
-		    op = val(EL.GetAttribute("OpId"))
-		    EL1 = XMLElement(EL.FirstChild)
-		    if EL1 <> nil and  op = 0 and val(EL1.GetAttribute("Id")) = n then
-		      fa = val(EL1.GetAttribute(Dico.Value("NrFam")))
-		      fo = val(EL1.GetAttribute(Dico.Value("NrForm")))
-		      return
-		    end if
-		  next
-		  
-		  fa = 0
-		  fo = 0
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetCoordChild(ifm as infomac) As BasicPoint
-		  dim m, n0, n1 as integer
-		  dim p as point
-		  dim bp as BasicPoint
-		  dim ifm1 as infomac
-		  dim Bib as BiBPoint
-		  
-		  
-		  if ifm.init then                                                      'si le point cherché est un point initial
-		    n0 = MacInf.GetRealInit(ifm.MacId)
-		    p = point(currentcontent.theObjects.Getshape(n0))
-		    bp=p.bpt
-		  else
-		    select case ifm.ptsur
-		    case 0, 2                                                                    'cas des points libres et aussi des points  d'inter ou des pts construits
-		      ifm1 = MacInf.GetInfoMac(ifm.MacId,m)
-		      if ifm1.MacId = ifm.MacId then
-		        bp = ifm1.coord.tab(0)
-		      else     'Si le point cherché n'est pas ptsur, c'est un sommet de la forme dont on reçoit l'infomac, son numéro nous suffit
-		        bp = ifm1.coord.tab(m)
-		      end if                              'Il faut aller chercher ses coord dans sa première occurrence dans un objet (on remonte dans les infomac)
-		    case 1                                 'sinon il faut le recalculer donc savoir sur qulle forme il est ptsur; cela se trouve dans son infomac personnel , ifm
-		      n0 = ifm.numside0
-		      ifm1 = MacInf.GetInfoMac(ifm.forme0, m)
-		      if ifm1.fa <> 5 then
-		        n1 = (n0+1) mod ifm1.coord.taille
-		        Bib = new BiBPoint(ifm1.coord.tab(n0), ifm1.coord.tab(n1))
-		        bp =BiB.BptOnBiBpt(ifm.location)
-		      else                                                                         'cas des arcs et cercles
-		        if ifm1.fo = 0 then
-		          bp =BiBPoint(ifm1.coord).PositionOnCircle(ifm.location,ifm1.ori)
-		        elseif ifm1.fo=1 then
-		          bp = TriBPoint(ifm1.coord).PositionOnArc(ifm.location,ifm1.ori)
-		        end if
-		      end if
-		    end select
-		  end if
-		  return bp
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -904,15 +832,28 @@ Protected Class Macro
 		  dim  MacId, side, num as integer
 		  dim ifm1 as infomac
 		  dim Bib as BiBPoint
+		  dim Trib as TriBPoint
 		  
 		  
 		  redim nbp.tab(0)
 		  
 		  MacId = ifmac.MacId
 		  ifm1 = MacInf.GetInfoMac(ifmac.MacId,num)
-		  side = Ifmac.Numside0
-		  BiB = new BiBpoint( ifm1.coord.tab(side), ifm1.coord.tab((side+1) mod ifm1.coord.taille))
-		  nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
+		  
+		  if ifm1.fa <> 5 then 'cas des segments, droites, côtés de polygones,...
+		    side = Ifmac.Numside0
+		    BiB = new BiBpoint( ifm1.coord.tab(side), ifm1.coord.tab((side+1) mod ifm1.coord.taille))
+		    nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
+		  else
+		    select case  ifm1.fo
+		    case  0   'cas des cercles
+		      BiB = new BiBpoint( ifm1.coord.tab(0), ifm1.coord.tab(1))
+		      nbp.tab(0) = BiB.PositionOnCircle(ifmac.location, ifm1.ori)
+		    case 1 'cas des arcs
+		      TriB = new TriBpoint( ifm1.coord.tab(0), ifm1.coord.tab(1), ifm1.coord.tab(2))
+		      nbp.tab(0) = TriB.PositionOnCircle(ifmac.location, ifm1.ori)
+		    end select
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -939,37 +880,6 @@ Protected Class Macro
 		  
 		  
 		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SaveMacroCorrected(Doc as XMLDocument)
-		  dim f as folderitem                                               // //méthode à supprimer après conversion de toutes les macros
-		  Dim dlg as New SaveAsDialog
-		  dim tos as TextOutputStream
-		  dim place as integer
-		  
-		  dlg.InitialDirectory=app.MacFolder
-		  dlg.promptText=""
-		  dlg.Title= Dico.Value("SaveMacro")
-		  dlg.filter=FileAGTypes.MACR
-		  
-		  f=dlg.ShowModal()
-		  If f <> Nil then
-		    place = Instr(f.name,".xmag")
-		    if place = 0 then
-		      f.name = f.name + ".xmag"
-		    end if
-		  end if
-		  If f <> Nil then
-		    tos = f.CreateTextFile
-		    if tos <> nil then
-		      tos.write Doc.tostring
-		      tos.close
-		    end if
-		  end if
 		  
 		  
 		End Sub

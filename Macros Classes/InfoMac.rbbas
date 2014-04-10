@@ -15,12 +15,18 @@ Protected Class InfoMac
 		  temp =  Doc.CreateElement("IfMac")
 		  temp.SetAttribute(Dico.Value("NrFam"), str(fa))
 		  temp.SetAttribute(Dico.Value("NrForm"),str(fo))
-		  temp.Setattribute("Npts",str(Npts))
-		  temp.setattribute("Ncpts",str(Ncpts))
+		  if fa <> 0 then
+		    temp.Setattribute("Npts",str(Npts))
+		    temp.setattribute("Ncpts",str(Ncpts))
+		    temp.SetAttribute("Ori",str(ori))
+		  else
+		    temp.SetAttribute("PtSur",str(ptsur))
+		    temp.setattribute("Location",str(location))
+		    temp.SetAttribute("Ndiv",str(ndiv))
+		    temp.SetAttribute("Idiv", str(idiv))
+		  end if
 		  temp.SetAttribute("Oper",str(Oper))
 		  temp.SetAttribute("MId",str(MacId))
-		  temp.SetAttribute("Ori",str(ori))
-		  temp.SetAttribute("PtSur",str(ptsur))
 		  temp.Setattribute("RId",str(RealId))
 		  temp.setAttribute("Side",str(Realside))
 		  temp.setattribute("Forme0",str(Forme0))
@@ -28,9 +34,6 @@ Protected Class InfoMac
 		  temp.setattribute("Forme2",str(Forme2))
 		  temp.SetAttribute("Numside0",str(numside0))
 		  temp.SetAttribute("Numside1",str(numside1))
-		  temp.SetAttribute("Ndiv",str(ndiv))
-		  temp.SetAttribute("Idiv", str(idiv))
-		  temp.setattribute("Location",str(location))
 		  temp.SetAttribute("Num",str(num))
 		  temp.setattribute("Type",str(type))
 		  if final then
@@ -58,7 +61,7 @@ Protected Class InfoMac
 		    EL.appendChild(childs(i).XMLPutInContainer(Doc))
 		  next
 		  Temp.Appendchild EL
-		  if coord <> nil then
+		  if coord <> nil and not currentcontent.macrocreation  then
 		    Temp.AppendChild coord.XMLPutInContainer(Doc)
 		  end if
 		  if M <> nil then

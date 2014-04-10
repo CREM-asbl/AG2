@@ -983,9 +983,10 @@ Implements StringProvider
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
 		    p.Transform(M)
-		    p.modified = true
+		    
 		    p.updateshape
 		    if  p.pointsur.count = 0 then
+		      p.modified = true                //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		      p.unmodifiable = true
 		    end if
 		  next

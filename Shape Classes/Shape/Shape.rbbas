@@ -2300,11 +2300,11 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  for i = 0 to ubound(childs)
-		    if childs(i).macconstructedshapes.indexof(s2) <> -1 then
-		      return true
-		    end if
-		  next
+		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
+		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
+		  'return true
+		  'end if
+		  'next
 		  
 		End Function
 	#tag EndMethod
@@ -3256,12 +3256,12 @@ Implements StringProvider
 		      tobereconstructed = true
 		    end if
 		    
-		    'if tobereconstructed then
-		    'constructshape
-		    'if check then
-		    'tobereconstructed = false
-		    'end if
-		    'end if
+		    if tobereconstructed then
+		      constructshape
+		      'if check then
+		      'tobereconstructed = false
+		      'end if
+		    end if
 		  end if
 		  
 		  if ubound(childs) >= npts then
@@ -3654,19 +3654,24 @@ Implements StringProvider
 		  dim Mac as Macro
 		  dim MacInfo as MacConstructionInfo
 		  dim i, j as integer
-		  dim s1 as shape
+		  dim s1, s2 as shape
 		  
 		  
 		  for i = 0 to ubound(MacConstructedShapes)
 		    s1 = MacConstructedShapes(i)
 		    MacInfo = s1.MacConstructedby
+		    
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
-		    for j = 0 to ubound(s1.childs)
+		    for j = 0 to s1.npts-1
 		      if s1.childs(j).MacConstructedShapes.indexof(s1) = -1 then
-		        s1.childs(j).modified = true
+		        's1.childs(j).modified = true    //on ne peut pas marquer les points comme modifiés car ils dépendent éventuellement de plusieurs objets initiaux
 		        s1.childs(j).updateshape
 		      end if
+		    next
+		    for j = 0 to ubound(MacInfo.RealInit)
+		      s2 = objects.Getshape(MacInfo.RealInit(j))
+		      's2.modified = true
 		    next
 		    s1.updateshape
 		  next

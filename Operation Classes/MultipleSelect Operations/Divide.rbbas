@@ -327,6 +327,29 @@ Inherits MultipleSelectOperation
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Divide(EL0 as XMLElement, EL1 as XMLElement, Mac as Macro)
+		  dim n, rid, side, divp as integer
+		  
+		  Divide
+		  GetRealId(Mac, EL1, rid, side)
+		  shapetodivide = objects.getshape(rid)
+		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
+		  divp = val(EL1.GetAttribute("DivP"))
+		  firstpoint = point(shapetodivide.points(side))
+		  secondpoint = point(shapetodivide.points((side+1) mod shapetodivide.npts))
+		  DoOperation
+		  EndOperation
+		  n = val(EL0.GetAttribute("Id"))
+		  Mac.ObInit.Append n
+		  n = createdshapes.element(0).id
+		  Mac.MacInf.RealInit.Append n
+		  Mac.MacInf.RealInitSide.Append 0
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

@@ -131,8 +131,8 @@ Protected Class MacConstructionInfo
 		    return RealInitSide(Mac.ObInit.indexof(n))
 		    'elseif Mac.ObInterm.indexof(n) <> -1 then
 		    'return RealIntermSide(Mac.ObInterm.indexof(n))
-		  elseif Mac.ObFinal.indexof(n) <> -1 then
-		    return RealFinalSide(Mac.ObFinal.indexof(n))
+		    'elseif Mac.ObFinal.indexof(n) <> -1 then
+		    'return RealFinalSide(Mac.ObFinal.indexof(n))
 		  else
 		    return 0
 		  end if
@@ -200,6 +200,38 @@ Protected Class MacConstructionInfo
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ToMac(Doc as XMLDocument) As XMLElement
+		  dim EL, EL1, EL2 as XMLElement
+		  dim i as integer
+		  
+		  EL = Doc.CreateElement("MacConstructionInfo")
+		  EL.setAttribute("Name", Mac.Caption)
+		  
+		  EL1 = Doc.CreateElement("InfoMacs")
+		  for i = 0 to ubound(IfMacs)
+		    EL1. appendchild Ifmacs(i).XMLPutInContainer(Doc)
+		  next
+		  EL.Appendchild EL1
+		  EL1 = Doc.CreateElement("InitialForms")
+		  for i = 0 to Ubound(RealInit)
+		    EL2 = Doc.CreateElement("Init")
+		    EL2.SetAttribute("RealInit",str(RealInit(i)))
+		    EL2.SetAttribute("RealInitSide",str(RealInitSide(i)))
+		    EL1.AppendChild EL2
+		  next
+		  EL.Appendchild EL1
+		  EL1 = Doc.CreateElement("FinalForms")
+		  for i = 0 to Ubound(RealFinal)
+		    EL2 = Doc.CreateElement("Final")
+		    EL2.SetAttribute("RealFinal",str(RealFinal(i)))
+		    EL1.AppendChild EL2
+		  next
+		  EL.Appendchild EL1
+		  return EL
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Mac As Macro
@@ -219,10 +251,6 @@ Protected Class MacConstructionInfo
 
 	#tag Property, Flags = &h0
 		RealInitSide() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealFinalSide() As Integer
 	#tag EndProperty
 
 

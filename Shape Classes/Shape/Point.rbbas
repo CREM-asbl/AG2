@@ -3062,6 +3062,27 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Constructing() As Boolean
+		  dim i as integer   'Utilisé uniquement dans la détermination des points "sur" qui sont initiaux d'une macro
+		  
+		  if forme <> 1 then
+		    return false
+		  end if
+		  
+		  if ubound (constructedshapes)> -1 then
+		    return true
+		  end if
+		  
+		  'for i = 0 to ubound(parents)
+		  'if (parents(i).getindexpoint(self) <> -1) and parents(i).isaparaperp then
+		  'return true
+		  'end if
+		  'next
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
