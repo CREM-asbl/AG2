@@ -160,8 +160,9 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i, j as integer
 		  
-		  
-		  Bip = currenthighlightedshape
+		  if not currentcontent.macrocreation then
+		    Bip = currenthighlightedshape
+		  end if
 		  CurrentContent.TheFigs.Removefigure Bip.fig
 		  GetSide
 		  
@@ -374,6 +375,19 @@ Inherits SelectOperation
 		  
 		  return EL
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Prolonger(MExe as MacroExe, EL1 as XMLElement)
+		  dim n, rid as integer
+		  
+		  Prolonger
+		  n = val(EL1.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  Bip = objects.GetShape(n)
+		  cot = val(EL1.GetAttribute("Index"))
+		  DoOperation
+		End Sub
 	#tag EndMethod
 
 

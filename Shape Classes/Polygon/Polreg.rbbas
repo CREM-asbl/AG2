@@ -103,9 +103,7 @@ Inherits Polygon
 
 	#tag Method, Flags = &h0
 		Sub endconstruction()
-		  dim s, sh() as shape
-		  dim mult() as integer
-		  dim i,j, n as integer
+		  
 		  
 		  super.endconstruction
 		  

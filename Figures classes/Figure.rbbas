@@ -2522,11 +2522,12 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function autospeupdate3() As Matrix
-		  dim p, q , r As point
+		  dim p, q , r, ps As point
 		  dim ep,eq,er,np,nq,nr as BasicPoint
 		  dim i, k, n, n1, n2, n3 as integer
 		  dim t as boolean
 		  dim s as shape
+		  dim ar as arc
 		  
 		  s = shapes.element(0)
 		  if s isa arc or s isa dsect then
@@ -2555,7 +2556,8 @@ Implements StringProvider
 		      return s.Modifier2fixes(r)
 		    end if
 		  case 1
-		    if point(somm.element(ListSommSur(0))) <> supfig.pointmobile then
+		    ps =point(somm.element(ListSommSur(0)))
+		    if ps <> supfig.pointmobile and not (ps.isextremityofarc(n, ar) and (n = 2) and (ar.fig = supfig)) then
 		      t = replacerpoint(point(somm.element(ListSommSur(0))))
 		    else
 		      getoldnewpos(p,ep,np)

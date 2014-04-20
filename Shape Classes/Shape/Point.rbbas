@@ -435,7 +435,10 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Updateskull()
-		  sk.update(wnd.mycanvas1.transform(bpt))
+		  if bpt <> nil then
+		    sk.update(wnd.mycanvas1.transform(bpt))
+		    return
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -461,7 +464,9 @@ Inherits Shape
 		  location(k)=r
 		  
 		  if s isa Bipoint then
-		    q = Bipoint(s).FirstP * (1-r) + BiPoint(s).SecondP*r
+		    Bib = BiBPoint(Bipoint(s).coord)
+		    q = BiB.BptOnBiBpt(r)
+		    'q = Bipoint(s).FirstP * (1-r) + BiPoint(s).SecondP*r
 		  elseif s isa Lacet then
 		    n = numside(k)
 		    if Lacet(s).curved(n) = 0 then
@@ -593,7 +598,7 @@ Inherits Shape
 		  if   MacConstructedBy <>  nil  then
 		    liberte = 0
 		  end if
-		  if  forme <> 1 and ubound(parents) > -1 and   parents(0).macconstructedby <> nil and not parents(0).init and not init  then
+		  if  forme <> 1 and (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
 		    liberte = 0
 		  end if
 		  
@@ -1736,6 +1741,7 @@ Inherits Shape
 		    Temp.SetAttribute("Id1",str(shape(ConstructedBy.data(1)).id))
 		    Temp.SetAttribute("NDivP",str(ConstructedBy.data(2)))
 		    Temp.SetAttribute("DivP",str(ConstructedBy.data(3)))
+		    Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
@@ -3201,27 +3207,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

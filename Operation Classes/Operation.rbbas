@@ -566,9 +566,6 @@ Protected Class Operation
 		    case 1
 		      OpId = 46
 		      str = "PointSur"
-		    case 2
-		      opId = 45
-		      str = "Intersection"
 		    end select
 		  else
 		    str = GetName
@@ -611,16 +608,6 @@ Protected Class Operation
 		    EL = XMLElement(EL.firstchild)
 		    liste.XMLLireIdFigs(EL)
 		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub GetRealId(Mac as Macro, EL1 as XMLElement, rid as integer, side as integer)
-		  dim n as integer
-		  
-		  n = val(EL1.GetAttribute("Id"))
-		  rid = Mac.MacInf.RealInit(Mac.ObInit.indexof(n))
-		  side =  Mac.MacInf.RealInitSide(Mac.ObInit.indexof(n))
 		End Sub
 	#tag EndMethod
 

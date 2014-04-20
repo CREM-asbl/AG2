@@ -12,12 +12,13 @@ Inherits MultipleSelectOperation
 		  finished = false
 		  NumberOfItemsToSelect = 1
 		  CurrentItemToSet = 1
-		  for i = 0 to objects.count -1
-		    s = objects.element(i)
-		    s.init = false
-		    s.interm=false
-		    s.final = false
-		  next
+		  Mac = currentcontent.mac
+		  'for i = 0 to objects.count -1
+		  's = objects.element(i)
+		  's.init = false
+		  's.interm=false
+		  's.final = false
+		  'next
 		  
 		  
 		End Sub
@@ -42,7 +43,7 @@ Inherits MultipleSelectOperation
 		  
 		  for i = 1 to currentcontent.TheObjects.count -1
 		    s =  currentcontent.TheObjects.element(i)
-		    if s.init or s.Interm or s.final then
+		    if DejaClasse(s) <> -1 then
 		      fixecouleurs(s)
 		    end if
 		  next
@@ -59,9 +60,9 @@ Inherits MultipleSelectOperation
 		Sub IdentifyInit(s as shape)
 		  'currentshape est l'objet sélectionné comme final
 		  
-		  if s = currentshape and not currentshape.final then
+		  if s = currentshape and Mac.ObFinal.indexof(s.id) = -1 then
 		    addfinal(currentshape)
-		  elseif dejaclasse(s)  then
+		  elseif dejaclasse(s) <> -1 then
 		    return
 		  end if
 		  
@@ -102,18 +103,22 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Fixecouleurs(s as shape)
+		  dim t as integer
 		  
-		  if s.final then
+		  t = dejaclasse(s)
+		  
+		  select case t
+		  case 2
 		    s.fixecouleurtrait(blue,100)
 		    s.borderwidth = 2
-		  elseif s.init then
+		  case 0
 		    s.fixecouleurtrait(red, 100)
 		    s.borderwidth = 2
-		  elseif s.interm then
+		  case 1
 		    s.fixecouleurtrait(black,100)
 		  else
 		    s.fixecouleurtrait(grey,100)
-		  end if
+		  end select
 		  
 		  
 		End Sub
@@ -121,11 +126,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddFinal(s as shape)
-		  if not s.Final  then 'and not s.init and not s.interm
-		    currentcontent.mac.ObFinal.append s.id
-		    currentcontent.mac.FaFinal.append s.fam
-		    currentcontent.mac.FoFinal.append s.forme
-		    s.Final = true
+		  if DejaClasse(s) <> 2 then 'and not s.init and not s.interm
+		    mac.ObFinal.append s.id
+		    mac.FaFinal.append s.fam
+		    mac.FoFinal.append s.forme
 		  end if
 		  
 		  // Les id ci-dessus sont relatifs à la macro
@@ -136,19 +140,19 @@ Inherits MultipleSelectOperation
 		Sub AddInit(s as shape)
 		  dim i as integer
 		  
+		  
 		  if s isa point and not s.isptsur then
 		    for i = 0 to ubound(point(s).parents)
-		      if point(s).parents(i).init then
+		      if DejaClasse(point(s).parents(i))  =  0  then
 		        return
 		      end if
 		    next
 		  end if
 		  
-		  if not s.Init and not s.Interm and not s.final then
-		    currentcontent.mac.ObInit.append s.id
-		    currentcontent.mac.FaInit.append s.fam
-		    currentcontent.mac.FoInit.append s.forme
-		    s.Init = true
+		  if  DejaClasse(s) = -1 then
+		    mac.ObInit.append s.id
+		    mac.FaInit.append s.fam
+		    mac.FoInit.append s.forme
 		  end if
 		  
 		  // Les id ci-dessus sont relatifs à la macro
@@ -157,11 +161,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddInterm(s as shape)
-		  if not s.Final and not s.Init and not s.Interm then
-		    currentcontent.mac.ObInterm.append  s.id
-		    currentcontent.mac.FaInterm.append s.fam
-		    currentcontent.mac.FoInterm.append s.forme
-		    s.Interm = true
+		  if  DejaClasse(s) = -1 then
+		    mac.ObInterm.append  s.id
+		    mac.FaInterm.append s.fam
+		    mac.FoInterm.append s.forme
 		  end if
 		  
 		  // Les id ci-dessus sont relatifs à la macro
@@ -178,7 +181,7 @@ Inherits MultipleSelectOperation
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
 		      s = Visible.element(i)
-		      if s.final then
+		      if DejaClasse(s) = 2 then
 		        visible.removeshape s
 		        nobj = visible.count
 		      end if
@@ -200,15 +203,15 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  
 		  CurrentItemtoSet = NumberOfItemsToSelect +1
-		  currentcontent.mac.Histo = currentcontent.Histo
-		  currentcontent.mac.Elaguer
-		  currentcontent.mac.ObInit.sort
-		  currentcontent.mac.ObInterm.sort
-		  currentcontent.mac.ObFinal.sort
+		  mac.Histo = currentcontent.Histo
+		  mac.Elaguer
+		  mac.ObInit.sort
+		  mac.ObInterm.sort
+		  mac.ObFinal.sort
 		  
 		  for i =  currentcontent.TheObjects.count -1 downto 1
 		    s =  currentcontent.TheObjects.element(i)
-		    if s.init or s.Interm or s.final then
+		    if DejaClasse(s) <> -1 then
 		      fixecouleurs(s)
 		    else
 		      s.delete
@@ -277,7 +280,7 @@ Inherits MultipleSelectOperation
 		Function NbreParentsNonFinal(p as point) As integer
 		  dim i, n as integer
 		  for i = 0 to ubound(p.parents)
-		    if not p.parents(i).final then
+		    if DejaClasse(p.parents(i)) <> 2 then
 		      n = n+1
 		    end if
 		  next
@@ -287,8 +290,19 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function DejaClasse(s as shape) As Boolean
-		  return s.init or s.interm or s.final
+		Function DejaClasse(s as shape) As integer
+		  dim t as integer
+		  
+		  if  Mac.Obinit.indexof(s.id) <> -1 then
+		    t = 0
+		  elseif   Mac.ObInterm.indexof(s.id) <> -1 then
+		    t = 1
+		  elseif  Mac.ObFinal.indexof(s.id) <> -1 then
+		    t = 2
+		  else
+		    t = -1
+		  end if
+		  return t
 		End Function
 	#tag EndMethod
 
@@ -456,6 +470,10 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		mw As MacWindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Mac As Macro
 	#tag EndProperty
 
 

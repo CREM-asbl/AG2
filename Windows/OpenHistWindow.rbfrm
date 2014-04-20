@@ -36,7 +36,7 @@ Begin Window OpenHistWindow
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
-      Enabled         =   True
+      Enabled         =   "True"
       EnableDrag      =   ""
       EnableDragReorder=   "True"
       GridLinesHorizontal=   0
@@ -66,7 +66,7 @@ Begin Window OpenHistWindow
       Top             =   14
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   350
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
@@ -79,7 +79,7 @@ Begin Window OpenHistWindow
       Caption         =   "OK"
       ControlOrder    =   1
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -96,7 +96,7 @@ Begin Window OpenHistWindow
       TextSize        =   0
       Top             =   298
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   1
    End
@@ -107,7 +107,7 @@ Begin Window OpenHistWindow
       Caption         =   "Annuler"
       ControlOrder    =   2
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -124,7 +124,7 @@ Begin Window OpenHistWindow
       TextSize        =   0
       Top             =   298
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   2
    End

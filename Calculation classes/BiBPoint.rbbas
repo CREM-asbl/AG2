@@ -394,7 +394,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ComputeDroiteFirstIntersect(S as Shape, k as integer, P as BasicPoint) As Basicpoint
+		Function ComputeDroiteFirstIntersect(S as Shape, k as integer, P as BasicPoint) As BasicPoint
 		  dim q() as BasicPoint
 		  dim Bib As  BiBPoint
 		  dim n as integer

@@ -2653,7 +2653,7 @@ End
 		  EraseMenuBar
 		  CopyMenuBar
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
-		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
 		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
 		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
@@ -2664,7 +2664,13 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =false
+		  for i =0 to MenuBar.Child("ToolsMenu").count-1
+		    MenuBar.Child("ToolsMenu").Item(i).visible = false
+		  next
 		  MenuBar.Child("ToolsMenu").visible = false
+		  for i =0 to MenuBar.Child("EditMenu").count-1
+		    MenuBar.Child("EditMenu").Item(i).visible = false
+		  next
 		  MenuBar.Child("EditMenu").visible = false
 		  for i = 0 to 3
 		    MouvBut(i).visible =false

@@ -337,7 +337,7 @@ Inherits MultipleSelectOperation
 		    else
 		      p=new BasicPoint(0,0)
 		      s2 = s1.paste(Objects,p)
-		      s2.auto = 0                           
+		      s2.auto = 0
 		    end if
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i)
@@ -383,15 +383,40 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
-		  dim s1, s2 as shape
+		  dim s2 as shape
 		  
-		  s1 = tempshape.element(0)
 		  s2 = copies.element(0)
 		  
-		  EL.AppendChild s2.XMLPutINContainer(Doc)
+		  EL.AppendChild s2.XMLPutIdINContainer(Doc)
 		  EL.appendchild  s2.XMLPutConstructionInfoInContainer(Doc)
 		  return EL
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AppliquerTsf(Mexe as MacroExe, EL1 as XMLElement)
+		  dim s1, s2, supp as shape
+		  dim tsf as transformation
+		  dim n, rid, num  as integer
+		  
+		  
+		  AppliquerTsf
+		  
+		  n = val(EL1.GetAttribute("SuppTsf"))
+		  MExe.GetRealId(n,rid)
+		  supp = objects.Getshape(rid)
+		  num = val(EL1.GetAttribute("Nr"))
+		  tsf = supp.tsfi.element(num)
+		  
+		  n = val(EL1.GetAttribute("Id"))
+		  MExe.GetRealId(n,rid)
+		  s1 = objects.Getshape(rid)
+		  objects.unselectall
+		  objects.selectobject(s1)
+		  CreerCopies
+		  tsf.appliquer(s1,copies.element(0))
+		  tsf.setconstructioninfos1(s1,copies.element(0))
+		End Sub
 	#tag EndMethod
 
 

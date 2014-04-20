@@ -63,13 +63,22 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as Graphics)
-		  
+		  dim bp as BasicPoint
 		  dim lab1 as Label
 		  dim oldcol as color
+		  dim i as integer
 		  
 		  super.Paint(g)
 		  
 		  if  currentshape isa repere then
+		    oldcol = g.forecolor 
+		    g.forecolor = Config.highlightcolor.col
+		    for i = 0 to currentshape.labs.count-1
+		      bp = currentshape.labs.element(i).position  + currentshape.labs.element(i).correction
+		      bp = wnd.mycanvas1.transform(bp)
+		      g.fillrect(bp.x, bp.y,5,5)
+		    next
+		    g.forecolor = oldcol
 		    display =   click + pour + putatitle
 		  elseif currentshape <> nil then
 		    display =   click+ pour + putalabel

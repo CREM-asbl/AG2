@@ -3,6 +3,7 @@ Protected Class MacConstructionInfo
 	#tag Method, Flags = &h0
 		Sub MacConstructionInfo(m as Macro)
 		  Mac = m
+		  
 		End Sub
 	#tag EndMethod
 

@@ -225,6 +225,26 @@ Inherits SelectOperation
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub FixPConstruction(MExe as MacroExe, EL as XMLElement)
+		  dim n, rid, num as integer
+		  dim Supp as shape
+		  
+		  FixPConstruction
+		  n = val(EL.GetAttribute("SuppTsf"))
+		  MExe.GetRealId(n,rid)
+		  supp = objects.GetShape(rid)
+		  num = val(EL.GetAttribute("Nr"))
+		  tsf = supp.tsfi.element(num)
+		  tsf.computematrix
+		  DoOperation
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

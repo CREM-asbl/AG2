@@ -290,7 +290,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  
-		  if i = 0 then 
+		  if i = 0 then
 		    return new BiBPoint(coord.tab(0), coord.tab(1))
 		  else
 		    return new BiBPoint(coord.tab(2),Point3)
@@ -362,27 +362,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

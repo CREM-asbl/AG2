@@ -3934,15 +3934,12 @@ Implements StringProvider
 		Sub XMLReadMacConstructionInfo(Temp as XMLElement)
 		  dim List as XmlNodeList
 		  dim Tmp as XmlElement
-		  dim m as integer
-		  dim s as shape
 		  dim cap as string
 		  dim MacInfo as MacConstructionInfo
 		  dim Mac as Macro
 		  
 		  List = Temp.XQL("MacConstructedBy")
 		  if List.Length > 0 then
-		    Final = true
 		    Tmp = XMLElement(List.Item(0))
 		    cap = TMP.GetAttribute("Macro")
 		    Mac =app.TheMacros.GetMacro(cap)
@@ -3996,6 +3993,28 @@ Implements StringProvider
 		  else
 		    return new nBPoint
 		  end select
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PassePar(p() as point) As Boolean
+		  dim i, n as integer
+		  dim t as Boolean
+		  
+		  t = true
+		  
+		  for i = 0 to ubound(p)
+		    t = t and (getindex(p(i)) <> -1)
+		  next
+		  
+		  if self isa circle then
+		    for i = 0 to ubound(p)
+		      t = t and (getindex(p(i)) <> 0)
+		    next
+		  end if
+		  
+		  return t
+		  
 		End Function
 	#tag EndMethod
 
@@ -4240,18 +4259,6 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		signaire As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		final As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		init As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		interm As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -4502,24 +4509,6 @@ Implements StringProvider
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="plan"

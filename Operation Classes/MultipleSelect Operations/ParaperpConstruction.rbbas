@@ -41,7 +41,7 @@ Inherits ShapeConstruction
 		  currentshape.forme = forme
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
-		  'CurrentShape.IsInConstruction = true
+		  CurrentShape.IsInConstruction = true
 		  Currentshape.InitConstruction
 		  CurrentShape.IndexConstructedPoint = 0
 		  wnd.setcross
@@ -179,6 +179,7 @@ Inherits ShapeConstruction
 		  case 2
 		    curshape = currentshape.points(0)
 		    AdjustMagnetism(curshape)
+		    droite(currentshape).constructshape
 		    if curshape.invalid then
 		      CurrentContent.abortconstruction
 		      return false
@@ -190,7 +191,7 @@ Inherits ShapeConstruction
 		      nextitem
 		    end if
 		  case 3
-		    currentshape.constructshape
+		    droite(currentshape).constructshape
 		    curshape = currentshape.points(1)
 		    AdjustMagnetism(curshape)
 		    if curshape.invalid or currentshape.points(0).distanceto(curshape.bpt)< epsilon   then
@@ -253,44 +254,63 @@ Inherits ShapeConstruction
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ParaperpConstruction(EL0 as XMLElement, EL1 as XMLElement, Mac as Macro)
-		  dim  fa, fo, rid, side, n, i  as integer
+		Sub ParaperpConstruction(Mexe as MacroExe, EL0 as XMLElement, EL1 as XMLElement)
+		  dim  fa, fo, rid, side, n, i , num as integer
 		  dim pt as point
+		  dim EL as XMLElement
+		  dim sh as shape
+		  dim BiB1 as BiBPoint
 		  
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
-		  fo = val(EL0.GetAttribute(Dico.Value("NrForme")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ParaperpConstruction (fa,fo)
-		  CreateShape
-		  GetRealId(Mac, EL1, rid, side)
+		  n = val(EL1.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
 		  Refe= objects.GetShape(rid)
-		  side = val(EL1.GetAttribute("Index"))
-		  
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
-		  currentshape.constructedby.data.append side
-		  currentshape.constructshape
+		  currentshape.constructedby.data.append val(EL1.GetAttribute("Index"))
 		  
-		  GetRealId(Mac, XMLElement(EL0.Child(0)), rid, side)
+		  'Positionnement aisé du premier point
+		  EL =XMLElement(EL0.Child(0))
+		  n = val(XMLElement(EL.Child(0)).GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
 		  pt = point(objects.GetShape(rid))
 		  currentshape.substitutepoint(pt,currentshape.points(0))
+		  
+		  'Deuxième point
+		  'a) Calculer la direction de la droite/segment
+		  Droite(currentshape).constructshape
+		  currentshape.updatecoord
+		  
+		  'b) Positionner le deuxième point
+		  ' si fo > 3 then  'pas de probleme rien à changer à ce qui précède : une droite n'a qu'un second point caché
 		  if fo <3 then
-		    GetRealId(Mac, XMLElement(EL0.Child(1)), rid, side)
+		    EL = XMLElement(EL.Child(1))
+		    n = val(EL.GetAttribute("Id"))
+		    MExe.GetRealId(n, rid)
 		    pt = point(objects.GetShape(rid))
+		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
+		    'voir remarque correspondante dans  macro.paraperp
+		    BiB1 = new BiBPoint(currentshape.coord)
+		    if val(EL.GetAttribute("NrForm"))  <> 1 then
+		      pt.moveto pt.bpt.projection(BiB1)
+		      
+		      'b2) si l'extrémité est un point sur, il faut repositionner l'extrémité
+		    else
+		      EL = XMLElement(EL.Child(0))
+		      pt.surseg = (val(EL.GetAttribute("Surseg")) = 1)
+		      EL = XMLElement(EL.Child(0))
+		      n = val(EL.GetAttribute("Id")) 'macId du support de pt
+		      MExe.GetRealId(n, rid)
+		      sh = objects.Getshape(rid)
+		      num = val(EL.GetAttribute("NrCote"))
+		      pt.moveto BiB1.ComputeDroiteFirstIntersect(sh,num,pt.bpt)
+		    end if
 		    currentshape.substitutepoint(pt,currentshape.points(1))
+		    'currentshape.Points(1).location(0) = pt.bpt.location(sh, 0)
 		  end if
 		  
-		  n = val(EL0.GetAttribute("Id"))
-		  Mac.ObInit.Append n
-		  n = currentshape.id
-		  Mac.MacInf.RealInit.Append n
-		  Mac.MacInf.RealInitSide.Append 0
-		  for i = 0 to 1
-		    n = val(XMLELement(EL0.Child(i)).GetAttribute("Id"))
-		    Mac.ObInit.Append n
-		    n = currentshape.points(i).id
-		    Mac.MacInf.RealInit.Append n
-		    Mac.MacInf.RealInitSide.Append 0
-		  next
-		  
+		  currentshape.endconstruction
 		End Sub
 	#tag EndMethod
 

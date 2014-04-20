@@ -349,8 +349,8 @@ Protected Module Dictionnaires
 		    select case st
 		    case "arc"
 		      return "cet arc"
-		    case "droite"
-		      return "cette droite"
+		    case "droite", "bande"
+		      return "cette " + st
 		    else
 		      return "ce " + st
 		    end select

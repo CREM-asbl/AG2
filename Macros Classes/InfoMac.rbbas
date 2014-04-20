@@ -206,6 +206,7 @@ Protected Class InfoMac
 		    forme2 = val(EL1.GetAttribute("Id1"))
 		    ndiv = val(EL1.GetAttribute("NDivP"))
 		    idiv = val(EL1.GetAttribute("DivP"))
+		    Numside0 = val(EL1.GetAttribute("Side"))  'Numéro du côté divisé en cas de polygone... sinon 0
 		  case 28 //prolonger
 		    Forme0 = val(EL1.GetAttribute("Id"))
 		    NumSide0= val(EL1.GetAttribute("Index"))

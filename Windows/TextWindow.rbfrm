@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   822
       BehaviorIndex   =   0
    End

@@ -407,7 +407,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function projection(Bib as BiBPoint) As BasicPoint
+		Function projection(Bib as BiBPoint) As basicpoint
 		  return projection(BiB.first, Bib.Second)
 		End Function
 	#tag EndMethod

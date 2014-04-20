@@ -2,7 +2,7 @@
 Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Macro()
-		  
+		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
 		End Sub
 	#tag EndMethod
 
@@ -206,11 +206,8 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub MacExe(MacInfo as MacConstructionInfo)
 		  dim i, j as integer
-		  dim codesoper() as integer
 		  dim ifmac As InfoMac
 		  dim s as shape
-		  
-		  codesoper = Array(0,1,14,16,19,28,33,35,37,39,24,25,26,27,43,45,46)
 		  
 		  MacInf = MacInfo
 		  
@@ -261,7 +258,7 @@ Protected Class Macro
 		  case 27 //Fusionner
 		  case 28 //Prolonger
 		    extend(ifmac, nbp)
-		  case 35 //Identifier
+		  case 35 //Identifier  Pour mémoire
 		  case 37 //FixPConstruction
 		    computefix(ifmac,nbp)
 		  case 39 //Flecher
@@ -277,7 +274,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub centre(ifmac as InfoMac, Byref nbp as nBPoint)
+		Sub centre(ifmac as infomac, byref nbp As nBPoint)
 		  
 		  dim ifm1 as infomac
 		  dim num as integer
@@ -326,7 +323,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub paraperp(ifmac as InfoMac, byref nbp as nBPoint)
+		Sub paraperp(ifmac as infomac, byref nbp As nBPoint)
 		  dim p, q,v, w0, w, u(1)  as BasicPoint
 		  dim n,  n1, n2, side as integer
 		  dim  ifm1, ifm2, ifm3 as infoMac
@@ -339,15 +336,15 @@ Protected Class Macro
 		  MacId = ifmac.MacId
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
 		  side = Ifmac.Numside0
-		  c = ifm1.coord
 		  //On calcule d'abord le vecteur directeur de la paraperp
-		  p = c.tab(side)
-		  q = c.tab((side+1) mod c.taille)
-		  w0 = q - p
-		  w=w0.normer
+		  c = ifm1.coord
+		  BiB1 = new BiBPoint(c.tab(side), c.tab((side+1) mod c.taille))
+		  n = 1
 		  if ifmac.fo = 2 or ifmac.fo = 5 Then
-		    w=w.VecNorPerp
+		    n = 2
 		  end if
+		  w=BiB1.VecNorParaPerp(n)
+		  
 		  
 		  redim  nbp.tab(1)
 		  //Ensuite on recherche l'origine
@@ -370,7 +367,7 @@ Protected Class Macro
 		      BiB2 = new BiBPoint(ifm3.coord.tab(ifm2.numside0), ifm3.coord.tab((ifm2.numside0+1)mod ifm3.coord.taille))
 		      n1 = 0
 		      if ifm3.fa <> 5 then
-		        if ifm3.fo < 3 then
+		        if ifm2.fo < 3 then
 		          n2 = 2
 		        else
 		          n2 = 0
@@ -384,7 +381,6 @@ Protected Class Macro
 		          nbp.tab(1)=nil
 		        end if
 		      end if
-		      'ifm2.location = nbp.tab(1).Location(BiB2)
 		    end if
 		  end if
 		  

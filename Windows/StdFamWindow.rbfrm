@@ -1,6 +1,6 @@
 #tag Window
 Begin Window StdFamWindow
-   BackColor       =   &hFFFFFF
+   BackColor       =   16777215
    Backdrop        =   ""
    BalloonHelp     =   ""
    CloseButton     =   "True"
@@ -31,7 +31,7 @@ Begin Window StdFamWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -47,12 +47,12 @@ Begin Window StdFamWindow
       TabPanelIndex   =   0
       Text            =   "Nom de la famille :"
       TextAlign       =   0
-      TextColor       =   &h000000
+      TextColor       =   0
       TextFont        =   "System"
       TextSize        =   0
       Top             =   14
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   100
       BehaviorIndex   =   0
    End
@@ -62,7 +62,7 @@ Begin Window StdFamWindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -78,12 +78,12 @@ Begin Window StdFamWindow
       TabPanelIndex   =   0
       Text            =   "Couleur de la famille :"
       TextAlign       =   0
-      TextColor       =   &h000000
+      TextColor       =   0
       TextFont        =   "System"
       TextSize        =   0
       Top             =   52
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   100
       BehaviorIndex   =   1
    End
@@ -94,7 +94,7 @@ Begin Window StdFamWindow
       Caption         =   "Cancel"
       ControlOrder    =   2
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -111,7 +111,7 @@ Begin Window StdFamWindow
       TextSize        =   0
       Top             =   97
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   2
    End
@@ -122,7 +122,7 @@ Begin Window StdFamWindow
       Caption         =   "OK"
       ControlOrder    =   3
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -139,7 +139,7 @@ Begin Window StdFamWindow
       TextSize        =   0
       Top             =   97
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   3
    End
@@ -147,13 +147,13 @@ Begin Window StdFamWindow
       AcceptTabs      =   ""
       Alignment       =   0
       AutoDeactivate  =   "True"
-      BackColor       =   &hFFFFFF
+      BackColor       =   16777215
       Bold            =   "True"
       Border          =   "True"
       ControlOrder    =   4
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   21
       HelpTag         =   ""
@@ -176,13 +176,13 @@ Begin Window StdFamWindow
       Styled          =   ""
       TabPanelIndex   =   0
       Text            =   ""
-      TextColor       =   &h000000
+      TextColor       =   0
       TextFont        =   "System"
       TextSize        =   10
       Top             =   13
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   86
       BehaviorIndex   =   4
    End
@@ -193,7 +193,7 @@ Begin Window StdFamWindow
       Caption         =   "Pousser ici"
       ControlOrder    =   5
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -210,7 +210,7 @@ Begin Window StdFamWindow
       TextSize        =   10
       Top             =   50
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   5
    End

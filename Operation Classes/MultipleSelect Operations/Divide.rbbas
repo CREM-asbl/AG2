@@ -32,6 +32,7 @@ Inherits MultipleSelectOperation
 		  
 		  Myself= Doc.CreateElement(GetName)
 		  Myself.setattribute("NumberOfDivisions",str(Numberofdivisions))
+		  Myself.SetAttribute("Side", str(side))
 		  Myself.appendchild shapetodivide.XMLPutIdInContainer(Doc)
 		  Myself.appendchild firstpoint.XMLPutInContainer(Doc)
 		  Myself.appendchild secondpoint.XMLPutInContainer(Doc)
@@ -121,9 +122,7 @@ Inherits MultipleSelectOperation
 		  
 		  select case CurrentItemToSet
 		  case 1
-		    if s isa polygon then
-		      side = s.PointOnSide(p)
-		    end if
+		    side = s.PointOnSide(p)
 		    return s
 		  case 2
 		    if s isa Point   then
@@ -142,6 +141,8 @@ Inherits MultipleSelectOperation
 		Function SetItem(s As Shape) As Boolean
 		  dim ff as figure
 		  dim d as droite
+		  dim sh as shape
+		  dim ar() as point
 		  
 		  select case CurrentItemToSet
 		  case 1
@@ -171,7 +172,12 @@ Inherits MultipleSelectOperation
 		    
 		  case 2
 		    secondpoint = point(s)
-		    Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
+		    ar = array(firstpoint, secondpoint)
+		    if firstpoint.onsameshape(secondpoint, sh)  and ((sh isa droite) or  (sh isa circle)) and sh.PassePar(ar) then
+		      shapetodivide = sh
+		    else
+		      Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
+		    end if
 		  end select
 		  return true
 		  
@@ -328,23 +334,25 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Divide(EL0 as XMLElement, EL1 as XMLElement, Mac as Macro)
-		  dim n, rid, side, divp as integer
+		Sub Divide(Mexe as MacroExe, EL1 as XMLElement)
+		  dim n, rid, side, divp, Id0, Id1 as integer
 		  
 		  Divide
-		  GetRealId(Mac, EL1, rid, side)
+		  n = val(EL1.GetAttribute("Id"))
+		  Mexe.GetRealId( n, rid)
 		  shapetodivide = objects.getshape(rid)
 		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
 		  divp = val(EL1.GetAttribute("DivP"))
-		  firstpoint = point(shapetodivide.points(side))
-		  secondpoint = point(shapetodivide.points((side+1) mod shapetodivide.npts))
+		  Id0 = val(EL1.GetAttribute("Id0"))
+		  MExe.GetRealId(Id0, rid)
+		  firstpoint = point(objects.getshape(rid))
+		  Id1 = val(EL1.GetAttribute("Id1"))
+		  MExe.GetRealId(Id1, rid)
+		  secondpoint = point(objects.getshape(rid))
 		  DoOperation
-		  EndOperation
-		  n = val(EL0.GetAttribute("Id"))
-		  Mac.ObInit.Append n
-		  n = createdshapes.element(0).id
-		  Mac.MacInf.RealInit.Append n
-		  Mac.MacInf.RealInitSide.Append 0
+		  
+		  
+		  
 		  
 		  
 		End Sub

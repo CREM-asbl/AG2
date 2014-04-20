@@ -71,7 +71,7 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function PositionOnArc(a as double, orien as integer) As BasicPoint
-		  dim p, q as BasicPoint   
+		  dim p, q as BasicPoint
 		  dim r, b as double
 		  
 		  
