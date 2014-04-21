@@ -2232,6 +2232,9 @@ Implements StringProvider
 		          return true
 		        end if
 		      end if
+		      if s2.points(h).pointsur.count = 2 and s2.points(h).pointsur.getposition(self) <> -1 then
+		        return true
+		      end if
 		    next
 		  end if
 		  

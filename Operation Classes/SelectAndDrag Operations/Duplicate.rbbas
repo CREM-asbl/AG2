@@ -276,6 +276,11 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  dim sh as shape
 		  
+		  if currentcontent.macrocreation then
+		    super.endoperation
+		    return
+		  end if
+		  
 		  if copyptsur then
 		    if (startpoint.distance(endpoint) < Epsilon)  or (currentattractingshape = nil) then
 		      abort
@@ -605,6 +610,29 @@ Inherits SelectAndDragOperation
 		  end if
 		  return EL
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Duplicate(MExe as MacroExe, EL0 as XMLElement, EL1 as XMLElement)
+		  dim n, rid as integer
+		  dim pt, q as point
+		  dim sh as shape
+		  
+		  Duplicate
+		  n = val(XMLElement(EL1).GetAttribute("Id"))
+		  MExe.GetRealId(n,rid)
+		  pt = point(objects.GetShape(rid))
+		  
+		  n = val(XMLElement(EL0).GetAttribute("Forme0"))
+		  MExe.GetRealId(n,rid)
+		  sh = objects.GetShape(rid)
+		  
+		  q = new point(objects, new basicpoint(0,0))
+		  
+		  pt.putduplicateon (sh, q)
+		  currentshape = q
+		  
+		End Sub
 	#tag EndMethod
 
 

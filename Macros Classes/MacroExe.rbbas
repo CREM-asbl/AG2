@@ -669,8 +669,9 @@ Inherits MultipleSelectOperation
 		    case 14 //Centre
 		      curop = new GCConstruction(self,  EL1)
 		      createdshape = curop.currentshape
-		      'case 19 //Dupliquer
-		      'dupliquerpoint(ifmac,nbp)
+		    case 19 //Dupliquer
+		      curop = new Duplicate(self,EL0, EL1)
+		      createdshape = curop.currentshape
 		    case 24 //AppliquerTsf
 		      curop = new AppliquerTsf(self,  EL1)
 		      createdshape = AppliquerTsf(curop).copies.element(0)
