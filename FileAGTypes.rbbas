@@ -1,7 +1,7 @@
 #tag FileTypeSet
 	#tag FileType
 		CodeName=SAVE
-		DocIcon=AG2.rbres;&h0
+		DocIcon=sans titre.rbres;&h0
 		Extension=fag;xml
 		Flags=&h1
 		MacCreator=CREM
@@ -11,7 +11,7 @@
 
 	#tag FileType
 		CodeName=MACR
-		DocIcon=AG2.rbres;&h1593C
+		DocIcon=sans titre.rbres;&h1593C
 		Extension=xmag;xml
 		Flags=&h1
 		MacCreator=CREM
@@ -21,7 +21,7 @@
 
 	#tag FileType
 		CodeName=HIST
-		DocIcon=AG2.rbres;&h25950
+		DocIcon=sans titre.rbres;&h25950
 		Extension=hag;xml
 		Flags=&h1
 		MacCreator=CREM
@@ -40,7 +40,7 @@
 
 	#tag FileType
 		CodeName=STD
-		DocIcon=AG2.rbres;&h3996C
+		DocIcon=sans titre.rbres;&h3996C
 		Extension=std;xml
 		Flags=&h0
 		MacCreator=CREM

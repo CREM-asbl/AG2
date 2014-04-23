@@ -362,14 +362,13 @@ Protected Class Macro
 		    BiB1 = new BiBPoint(nbp.tab(0),nbp.tab(0)+w)
 		    ifm2 = ifmac.childs(1)
 		    if ifm2.ptsur <> 1 then
-		      nbp.tab(1) =  ifmac.childs(1).coord.tab(0)  'GetCoordChild(ifmac.childs(1))
-		      nbp.tab(1) = nbp.tab(1).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
+		      nbp.tab(1) =  ifm2.coord.tab(0).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
 		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
 		      BiB2 = new BiBPoint(ifm3.coord.tab(ifm2.numside0), ifm3.coord.tab((ifm2.numside0+1)mod ifm3.coord.taille))
 		      n1 = 0
 		      if ifm3.fa <> 5 then
-		        if ifm2.fo < 3 then
+		        if ifm3.fo < 3 then
 		          n2 = 2
 		        else
 		          n2 = 0

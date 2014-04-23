@@ -606,27 +606,6 @@ Inherits Shape
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="plan"
 			Group="Behavior"
 			InitialValue="0"

@@ -30,7 +30,7 @@ Inherits nBpoint
 		    p.append q
 		    p.append q
 		    return 1
-		  elseif ray> dist - epsilon then
+		  elseif ray> dist + epsilon then
 		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
 		    p.append q+v
 		    return 2

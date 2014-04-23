@@ -240,9 +240,9 @@ Protected Class nBpoint
 		      tab(1) = tab(0)+w
 		    end if
 		  case 1                           'Positionnement de l'extrémité du segment
-		                                      'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
-		                                      'Quand on travaille à la souris, c'est le clic qui indique la position finale
-		                                      'Pour les macros, c'est différent
+		    'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
+		    'Quand on travaille à la souris, c'est le clic qui indique la position finale
+		    'Pour les macros, c'est différent
 		    if fo = 1 or fo = 2 then
 		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
 		      tab(1)=M*tab(1)

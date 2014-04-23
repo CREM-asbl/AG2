@@ -277,13 +277,12 @@ Inherits MultipleSelectOperation
 		      pt = point(currentshape)
 		      PrepareXMLandMac(pt)  //se termine par un currentcontent.addoperation
 		    else
-		      
 		      for i = 0 to currentshape.ncpts-1
 		        pt = currentshape.points(i)
 		        PrepareXMLandMac(pt)
 		      next
+		      super.EndOperation
 		    end if
-		    super.EndOperation
 		  else
 		    super.EndOperation
 		  end if
