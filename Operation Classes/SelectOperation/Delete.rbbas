@@ -176,6 +176,10 @@ Inherits SelectOperation
 		    highlight(s.ConstructedShapes(i))
 		  next
 		  
+		  for i = Ubound(s.MacConstructedShapes) downto 0
+		    highlight(s.MacConstructedShapes(i))
+		  next
+		  
 		  for i = 0 to s.tsfi.count-1
 		    for j = 0 to s.tsfi.element(i).constructedshapes.count -1
 		      highlight(s.tsfi.element(i).constructedshapes.element(j))

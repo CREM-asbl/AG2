@@ -130,7 +130,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  if app.macrocreation then
+		  if currentcontent.macrocreation then
 		    Title =  Dico.Value("MacroDescription")
 		    PushButton2.Caption = Dico.Value("Cancel")
 		    PushButton3.Caption = Dico.Value("FileClose")
@@ -148,7 +148,7 @@ End
 	#tag Method, Flags = &h0
 		Sub Save()
 		  if result = 1 then
-		    wnd.Mac.expli = EditField1.text
+		    currentcontent.Mac.expli = EditField1.text
 		  end if
 		  close
 		End Sub

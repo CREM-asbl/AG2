@@ -250,7 +250,7 @@ Protected Class ObjectsList
 		      else
 		        for j = 0 to ubound(s.childs)
 		          pt = s.childs(j)
-		          if (not pt.invalid) and (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or wnd.DrapShowALL)   and pt.pinshape(p)  then
+		          if (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or wnd.DrapShowALL)   and pt.pinshape(p)  then
 		            visible.addshape pt
 		          end if
 		        next
@@ -324,10 +324,7 @@ Protected Class ObjectsList
 		    s = new Repere(self,temp)
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère
 		    CurrentContent.CreateFigs
-		    'currentcontent.addshape s
-		    'currentcontent.addplan(s)
 		    wnd.MyCanvas1.Setrepere(Repere(s))
-		    'return s
 		  case 0
 		    s = new Point(self,Temp)
 		  case 1
@@ -390,30 +387,14 @@ Protected Class ObjectsList
 		    s = new Lacet(self,temp)
 		  else
 		    fstd = Temp.GetAttribute("StdFile")
-		    if fstd <> Config.stdfile then
+		    if fstd <> "" and fstd <> Config.stdfile then
 		      Config.setStdFile(fstd)
 		    end if
 		    s = XMLLoadStdForm (temp)
 		  end select
 		  
 		  s.id = id
-		  
-		  'if self = currentcontent.TheObjects then
-		  'currentcontent.addshape(s)
-		  'else
 		  addshape(s)
-		  'end if
-		  'pl = val(Temp.GetAttribute("Plan"))
-		  
-		  'if (not  s isa point) or (s isa point and  ubound(point(s).parents) = -1) then
-		  'currentcontent.addplan(s)
-		  ''if pl <> 0 and pl <> -1 then
-		  ''s.plan = pl
-		  ''else
-		  ''MsgBox "Fichier de sauvegarde incorrect"
-		  ''s.plan = ubound(Objects)+1
-		  ''end if
-		  'end if
 		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
 		    s.std = true
@@ -570,7 +551,7 @@ Protected Class ObjectsList
 
 	#tag Method, Flags = &h0
 		Sub XMLLoadObjects(Shapes as XMLElement)
-		  dim Obj, Prem As XMLElement
+		  dim Obj As XMLElement
 		  dim List as XMLNodeList
 		  dim nobj, i, j as integer
 		  dim s as shape
@@ -749,7 +730,7 @@ Protected Class ObjectsList
 		    s = XMLLoadObject(Temp)
 		  next
 		  OptimizeGroups
-		  
+		  currentcontent.createplans
 		End Sub
 	#tag EndMethod
 
@@ -1171,7 +1152,7 @@ Protected Class ObjectsList
 		      case 0
 		        currentshape = new FreeCircle(self)
 		      case 1
-		        currentshape = new Arc(self)
+		        currentshape = new Arc(self,3,3)
 		      end select
 		    case 6
 		      currentshape = new Polyqcq(self, fo+3)

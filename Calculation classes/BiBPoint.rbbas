@@ -5,7 +5,9 @@ Inherits nBpoint
 		Sub BiBPoint(p as BasicPoint, q as BasicPoint)
 		  Tab.append p
 		  Tab.append q
-		  setlongueur
+		  if p <> nil and  q <> nil then
+		    setlongueur
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -385,15 +387,13 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-
 		Function BptOnBiBpt(r as double) As BasicPoint
-  
 		  return First * (1-r) + second * r
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ComputeDroiteFirstIntersect(S as Shape, k as integer, P as BasicPoint) As Basicpoint
+		Function ComputeDroiteFirstIntersect(S as Shape, k as integer, P as BasicPoint) As BasicPoint
 		  dim q() as BasicPoint
 		  dim Bib As  BiBPoint
 		  dim n as integer
@@ -481,8 +481,14 @@ Inherits nBpoint
 		  dim p, q, u, v as BasicPoint
 		  
 		  p = D.VecteurDirecteur
+		  if p = nil then
+		    return nil
+		  end if
 		  p = p.Vecnorperp
 		  u = VecteurDirecteur
+		  if u = nil then
+		    return nil
+		  end if
 		  q = D.first-first
 		  r1= p*u
 		  
@@ -500,7 +506,7 @@ Inherits nBpoint
 		  end if
 		  
 		  r1 = (p*q)/(p*u)   // r = 999: parallelisme r = 1000: alignement  et return = nil sinon r réel  et return <> nil
-		  q= first*(1-r1)+second*r1 // r1 est la position du point d'intersection sur self
+		  q= BptOnBiBpt(r1) // r1 est la position du point d'intersection sur self
 		  r2 = q.location(D.first,D.second)  //Position sur D
 		  
 		  setlongueur
@@ -510,7 +516,6 @@ Inherits nBpoint
 		  
 		  if (n1 = 1 and r1 <-epsilon)  or(n1 = 2 and ((r1<0 and abs(r1)*longueur > epsilon) or (r1>1 and (r1-1)*longueur > epsilon)) ) then
 		    return nil
-		    
 		    'elseif (n2 = 1 and r2 <0) or(n2 = 2 and (r2<0 or r2>1)) then
 		  elseif (n2 = 1 and r2 <-epsilon) or(n2 = 2 and ((r2<0 and abs(r2)*D.longueur > epsilon) or (r2>1 and (r2-1)*D.longueur > epsilon)) ) then
 		    return nil
@@ -545,7 +550,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Second() As BasicPoint
+		Function Second() As basicPoint
 		  return Tab(1)
 		End Function
 	#tag EndMethod
@@ -586,7 +591,11 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function VecteurDirecteur() As BasicPoint
-		  return second -first
+		  if first <> nil and second <> nil then
+		    return second -first
+		  else
+		    return nil
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -664,18 +673,28 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function PositionOnCircle(a as double, ori as integer) As BasicPoint
-		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviling relative à ce cercle
+		Function Anglepolaire() As double
+		  dim bp as Basicpoint
+		  
+		  bp = second - first
+		  return bp.anglepolaire
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PositionOnCircle(a as double, orien as integer) As BasicPoint
+		  dim p, q as BasicPoint
 		  dim r, b as double
 		  
-		  if abs(ori) = 1 then
-		    q = second - first
+		  
+		  if abs(orien) = 1 then
+		    q = tab(1) - tab(0)
 		    r = q.norme
-		    b = q.Anglepolaire+ a*2*Pi*ori
+		    b = anglepolaire + a*2*PI*orien
 		    q = new BasicPoint(cos(b),sin(b))
-		    q =  first + q *r
+		    q =  tab(0) + q *r
 		    return q
-		  end if
+		  end if             'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à ce cercle
 		End Function
 	#tag EndMethod
 

@@ -19,7 +19,7 @@ Inherits Skull
 		  
 		  bp.append new BasicPoint(0,0)
 		  
-		  select case f
+		  select case f                                                        //f est le mode
 		  case 0, 2
 		    bp.append new BasicPoint(k,0)
 		    bp.append new BasicPoint(k+0.5,-0.2)

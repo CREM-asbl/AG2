@@ -3,12 +3,23 @@ Protected Class ChooseFinal
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub ChooseFinal()
+		  dim i as integer
+		  dim s as shape
+		  
 		  SelectOperation
 		  OpId = 42
 		  drapcoul = false
 		  finished = false
 		  NumberOfItemsToSelect = 1
 		  CurrentItemToSet = 1
+		  Mac = currentcontent.mac
+		  'for i = 0 to objects.count -1
+		  's = objects.element(i)
+		  's.init = false
+		  's.interm=false
+		  's.final = false
+		  'next
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -28,11 +39,11 @@ Inherits MultipleSelectOperation
 		  objects.unselectall
 		  
 		  currentshape.unhighlight
-		  AddFinal(currentshape)
 		  IdentifyInit(currentshape)
+		  
 		  for i = 1 to currentcontent.TheObjects.count -1
 		    s =  currentcontent.TheObjects.element(i)
-		    if s.init or s.Interm or s.final then
+		    if DejaClasse(s) <> -1 then
 		      fixecouleurs(s)
 		    end if
 		  next
@@ -47,13 +58,11 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub IdentifyInit(s as shape)
-		  dim  i, j as integer  //lors du premier passage, s est un objet sélectionné comme final
-		  dim t as boolean
-		  dim sh as shape
-		  dim op as integer
-		  dim tsf as Transformation
+		  'currentshape est l'objet sélectionné comme final
 		  
-		  if   s.interm or s.init then
+		  if s = currentshape and Mac.ObFinal.indexof(s.id) = -1 then
+		    addfinal(currentshape)
+		  elseif dejaclasse(s) <> -1 then
 		    return
 		  end if
 		  
@@ -62,63 +71,17 @@ Inherits MultipleSelectOperation
 		    return
 		  end if
 		  
-		  if s.constructedby = nil then
-		    t = true
-		    for i =0 to s.ncpts-1
-		      t = t and s.id < s.points(i).id  // t = true si tous les sommets de s sont postérieurs à s --> s est initial
-		    next
-		    if t then  'and (s isa droite or s isa polyqcq or ( (s.fam = 2 or s.fam = 3) and (s.forme = 0) ) ) then  's a été créé avant ses sommets et est un polyqcq ou une droite (segment)
-		      AddInit(s)
-		    else
-		      AddInterm(s)
-		      for i = 0 to s.ncpts-1
-		        if s.id > s.points(i).id  or ubound(s.points(i).parents) = 0 or s.points(i).pointsur.count > 0 then
-		          PointIdentifyInit(s.points(i)) //on identifie l'origine des points de construction de s plus vieux que s
-		        end if
-		      next
-		    end if
-		    return
+		  if s.constructedby = nil and s.MacConstructedby = nil then
+		    IdentifyInit1(s)
+		  else
+		    IdentifyInit2(s)
 		  end if
-		  
-		  AddInterm(s)          // s est une forme construite
-		  IdentifyInit(s.constructedby.shape)
-		  select case s.constructedby.oper
-		  case 1,2
-		    pointidentifyinit(s.points(0))
-		    if droite(s).nextre=2 then
-		      pointidentifyinit(s.points(1))
-		    end if
-		  case 3, 5, 9
-		  case  6 ' Transfos
-		    tsf = transformation(s.constructedby.Data(0))
-		    IdentifyInit(s.constructedby.shape)
-		    AddTsfInterm(tsf)
-		    IdentifyInit(tsf.supp)
-		  case 8  'Prolongements (A faire)
-		  end select
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
-		  dim i, j as integer
-		  dim s as shape
 		  
-		  for i = 0 to currentcontent.theobjects.count-1
-		    s= currentcontent.TheObjects.element(i)
-		    if not s isa point then
-		      for j = 0 to s.npts-1
-		        fixecouleurs(s.points(j))
-		      next
-		    end if
-		  next
 		  Super.Paint(g)
 		  
 		  
@@ -134,18 +97,22 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Fixecouleurs(s as shape)
+		  dim t as integer
 		  
-		  if s.final then
+		  t = dejaclasse(s)
+		  
+		  select case t
+		  case 2
 		    s.fixecouleurtrait(blue,100)
 		    s.borderwidth = 2
-		  elseif s.init then
+		  case 0
 		    s.fixecouleurtrait(red, 100)
 		    s.borderwidth = 2
-		  elseif s.interm then
+		  case 1
 		    s.fixecouleurtrait(black,100)
 		  else
 		    s.fixecouleurtrait(grey,100)
-		  end if
+		  end select
 		  
 		  
 		End Sub
@@ -153,11 +120,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddFinal(s as shape)
-		  if not s.Final  then 'and not s.init and not s.interm
-		    wnd.mac.ObFinal.append s.id
-		    wnd.mac.FaFinal.append s.fam
-		    wnd.mac.FoFinal.append s.forme
-		    s.Final = true
+		  if DejaClasse(s) <> 2 then 'and not s.init and not s.interm
+		    mac.ObFinal.append s.id
+		    mac.FaFinal.append s.fam
+		    mac.FoFinal.append s.forme
 		  end if
 		  
 		  // Les id ci-dessus sont relatifs à la macro
@@ -168,19 +134,18 @@ Inherits MultipleSelectOperation
 		Sub AddInit(s as shape)
 		  dim i as integer
 		  
-		  if s isa point then
+		  if s isa point and not s.isptsur then
 		    for i = 0 to ubound(point(s).parents)
-		      if point(s).parents(i).init then
+		      if DejaClasse(point(s).parents(i))  =  0  then
 		        return
 		      end if
 		    next
 		  end if
 		  
-		  if not s.Init and not s.Interm and not s.final then
-		    wnd.mac.ObInit.append s.id
-		    wnd.mac.FaInit.append s.fam
-		    wnd.mac.FoInit.append s.forme
-		    s.Init = true
+		  if  DejaClasse(s) = -1 then
+		    mac.ObInit.append s.id
+		    mac.FaInit.append s.fam
+		    mac.FoInit.append s.forme
 		  end if
 		  
 		  // Les id ci-dessus sont relatifs à la macro
@@ -189,11 +154,10 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddInterm(s as shape)
-		  if not s.Final and not s.Init and not s.Interm then
-		    wnd.mac.ObInterm.append  s.id
-		    wnd.mac.FaInterm.append s.fam
-		    wnd.mac.FoInterm.append s.forme
-		    s.Interm = true
+		  if  DejaClasse(s) = -1 then
+		    mac.ObInterm.append  s.id
+		    mac.FaInterm.append s.fam
+		    mac.FoInterm.append s.forme
 		  end if
 		  
 		  // Les id ci-dessus sont relatifs à la macro
@@ -210,7 +174,7 @@ Inherits MultipleSelectOperation
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
 		      s = Visible.element(i)
-		      if s.final then
+		      if DejaClasse(s) = 2 then
 		        visible.removeshape s
 		        nobj = visible.count
 		      end if
@@ -228,27 +192,29 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim i as integer
+		  dim i, j as integer
 		  dim s as shape
 		  
 		  CurrentItemtoSet = NumberOfItemsToSelect +1
+		  mac.Histo = currentcontent.Histo
+		  mac.Elaguer
+		  mac.ObInit.sort
+		  mac.ObInterm.sort
+		  mac.ObFinal.sort
 		  
 		  for i =  currentcontent.TheObjects.count -1 downto 1
 		    s =  currentcontent.TheObjects.element(i)
-		    if s.init or s.Interm or s.final then
+		    if DejaClasse(s) <> -1 then
 		      fixecouleurs(s)
 		    else
 		      s.delete
 		    end if
+		    if not s isa point then
+		      for j = 0 to s.npts-1
+		        fixecouleurs(s.points(j))
+		      next
+		    end if
 		  next
-		  wnd.mac.Histo = currentcontent.Histo
-		  wnd.mac.Elaguer
-		  wnd.mac.ObInit.sort
-		  wnd.mac.ObInterm.sort
-		  wnd.mac.ObFinal.sort
-		  
-		  
-		  
 		  super.endoperation
 		  
 		  mw = new  MacWindow
@@ -292,8 +258,142 @@ Inherits MultipleSelectOperation
 		  dim t as boolean
 		  dim i as integer
 		  
+		  if p.constructedby = nil and p.macconstructedby = nil  then
+		    PointIdentifyInit1(p)
+		  else
+		    PointIdentifyInit2(p)
+		    'elseif NbreParentsNonFinal(p) <= 0 then
+		    'AddInit(p)
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NbreParentsNonFinal(p as point) As integer
+		  dim i, n as integer
+		  for i = 0 to ubound(p.parents)
+		    if DejaClasse(p.parents(i)) <> 2 then
+		      n = n+1
+		    end if
+		  next
+		  
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function DejaClasse(s as shape) As integer
+		  dim t as integer
+		  
+		  if  Mac.Obinit.indexof(s.id) <> -1 then
+		    t = 0
+		  elseif   Mac.ObInterm.indexof(s.id) <> -1 then
+		    t = 1
+		  elseif  Mac.ObFinal.indexof(s.id) <> -1 then
+		    t = 2
+		  else
+		    t = -1
+		  end if
+		  return t
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IdentifyInit1(s as shape)
+		  dim t as Boolean  'Cas des formes non construites par une autre
+		  dim i, n as integer
+		  
+		  t = true
+		  n = EtapeDeConstruction(s)
+		  for i =0 to s.ncpts-1
+		    t = t and (EtapeDeConstruction(s.points(i)) = n)
+		  next
+		  if t then
+		    AddInit(s)
+		  else
+		    AddInterm(s)
+		    for i = 0 to s.ncpts-1
+		      if EtapeDeConstruction(s.points(i)) < n then
+		        PointIdentifyInit(s.points(i))
+		      else
+		        AddInit(s.Points(i))
+		      end if
+		    next
+		  end if
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IdentifyInit2(s as shape)
+		  dim tsf as transformation
+		  dim macinfo as MacConstructionInfo
+		  dim sh as shape
+		  dim i as integer
+		  
+		  AddInterm(s)          // s est une forme construite
+		  if s.constructedby <> nil then
+		    IdentifyInit(s.constructedby.shape)
+		    select case s.constructedby.oper
+		    case 1,2
+		      pointidentifyinit(s.points(0))
+		      if droite(s).nextre=2 then
+		        pointidentifyinit(s.points(1))
+		      end if
+		    case 3, 5, 9
+		    case  6 ' Transfos
+		      tsf = transformation(s.constructedby.Data(0))
+		      AddTsfInterm(tsf)
+		      IdentifyInit(tsf.supp)
+		    case 8  'Prolongements (A faire)
+		    end select
+		  elseif s.MacConstructedby <> nil then
+		    MacInfo = s.MacConstructedBy
+		    for i = 0 to ubound(MacInfo.RealInit)
+		      sh = objects.getshape(MacInfo.RealInit(i))
+		      identifyinit(sh)
+		    next
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function EtapeDeConstruction(s as shape) As integer
+		  dim i, j as integer
+		  dim EL, EL1 as XMLElement
+		  
+		  for i =0 to currentcontent.Histo.childcount -1
+		    EL = XMLElement(currentcontent.Histo.Child(i))
+		    EL = XMLElement(EL.Child(0))
+		    if s.id = val(EL.GetAttribute("Id")) then
+		      return i
+		    elseif val(EL.GetAttribute(Dico.Value("Npts"))) > 0 then
+		      EL = XMLElement(EL.Child(0))
+		      for j = 0 to EL.ChildCount -1
+		        EL1=XMLElement(EL.Child(j))
+		        if s.id = val(EL1.GetAttribute("Id")) then
+		          return i
+		        end if
+		      next
+		    end if
+		  next
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PointIdentifyInit2(p as point)
+		  dim op as integer  'cas des points construits
+		  dim macinfo as MacConstructionInfo
+		  dim sh as shape
+		  dim i as integer
+		  
+		  AddInterm(p)
+		  
 		  if p.constructedby <> nil then
-		    AddInterm(p)
 		    op = p.constructedby.oper
 		    select case op
 		    case 0, 3, 5,  7
@@ -313,47 +413,48 @@ Inherits MultipleSelectOperation
 		      IdentifyInit(p.pointsur.element(0))
 		      identifyinit(p.constructedby.shape)
 		    end select
-		  else
-		    if p.pointsur.count > 0 then
-		      AddInterm(p)
-		      for i = 0 to p.pointsur.count-1
-		        IdentifyInit(p.pointsur.element(i))
-		      next
-		    elseif NbreParentsNonFinal(p) <= 0 then
-		      AddInit(p)
-		    else
-		      t = true
-		      for i = 0 to ubound(p.parents)
-		        t = t and  (p.id < p.parents(i).id)   'p est-il plus vieux que tous ses parents?
-		      next
-		      if t then                                                 'oui
-		        Addinit(p)
-		      else                                                         'non certains de ses parents sont plus vieux que p
-		        for i = 0 to ubound(p.parents)
-		          if p.id > p.parents(i).id and not p.parents(i).final  then
-		            AddInterm(p)     'si p.parents(i) est plus vieux que p sans être un objet final
-		            IdentifyInit(p.parents(i))                                                       'on identifie les initiaux avant parents(i)
-		          else
-		            AddInit(p)                                                                                'p devient un objet initial sinon il y a risque de boucle
-		          end if
-		        next
-		      end if
-		    end if
+
+		  elseif p.macconstructedby <> nil then
+		    MacInfo = p.MacConstructedBy
+		    for i = 0 to ubound(MacInfo.RealInit)
+		      sh = objects.getshape(MacInfo.RealInit(i))
+		      identifyinit(sh)
+		    next
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NbreParentsNonFinal(p as point) As integer
+		Sub PointIdentifyInit1(p as point)
+		  'cas des points non construits
+		  dim t as Boolean
 		  dim i, n as integer
-		  for i = 0 to ubound(p.parents)
-		    if not p.parents(i).final then
-		      n = n+1
-		    end if
-		  next
 		  
-		  return n
-		End Function
+		  
+		  if p.pointsur.count = 2 then
+		    AddInterm(p)
+		    IdentifyInit(p.pointsur.element(0))
+		    IdentifyInit(p.pointsur.element(1))
+		  else
+		    n = EtapeDeConstruction(p)
+		    t = true
+		    for i = 0 to ubound(p.parents)
+		      t = t and ( n  < EtapedeConstruction(p.parents(i)) )
+		    next
+		    if t then
+		      Addinit(p)
+		    else
+		      if p.constructing  then   'forme=1 and  (ubound(p.constructedshapes) > -1)  then       '(ubound(p.parents) =0) then 'or
+		        AddInit(p)
+		      else
+		        AddInterm(p)
+		      end if
+		      for i = 0 to ubound(p.parents)
+		        IdentifyInit(p.parents(i))
+		      next
+		    end if
+		  end if
+		End Sub
 	#tag EndMethod
 
 
@@ -363,6 +464,10 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		mw As MacWindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Mac As Macro
 	#tag EndProperty
 
 

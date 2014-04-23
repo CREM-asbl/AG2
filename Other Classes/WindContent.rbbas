@@ -8,7 +8,7 @@ Protected Class WindContent
 		  OpList.PreserveWhiteSpace = true
 		  Histo = OpList.CreateElement("AG")
 		  OpList.Appendchild (Histo)
-		  if not app.macrocreation then
+		  if not macrocreation then
 		    Histo.SetAttribute(Dico.Value("Langage"),Config.Langue)
 		    Histo.SetAttribute(Dico.value("Config"),Config.Menu)
 		    Histo.SetAttribute("Version",str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion))
@@ -61,6 +61,8 @@ Protected Class WindContent
 		  dim n as integer
 		  dim mac as Macro
 		  dim cap as string
+		  dim f as folderitem
+		  dim Doc as XMLDocument
 		  
 		  nop = val(Temp.GetAttribute("OpId"))
 		  
@@ -155,6 +157,12 @@ Protected Class WindContent
 		    EL = XMLElement(Temp.firstchild)
 		    cap = EL.GetAttribute("Name")
 		    Mac = app.theMacros.GetMacro(cap)
+		    if Mac = nil then
+		      cap = cap+".xmag"
+		      Doc = new XmlDocument(app.MacFolder.Child(cap))
+		      mac =new Macro(Doc)
+		      app.themacros.addmac mac
+		    end if
 		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide
 		    curoper = new HideTsf
@@ -199,7 +207,7 @@ Protected Class WindContent
 		  
 		  if o <> nil and codes.indexof(o.OpId) = -1 then    // 34: on ne crée pas d'historique de la lecture d'un historique
 		    currentop = totaloperation
-		    if (Histo<> nil) and app.macrocreation then
+		    if (Histo<> nil) and macrocreation then
 		      o.AddOperationToMac(OpList, Histo)
 		    elseif (Histo <> nil)  then    //On élimine la sélection
 		      El=Oplist.CreateElement(Dico.Value("Operation"))
@@ -262,6 +270,9 @@ Protected Class WindContent
 		  end if
 		  
 		  return WindowTitle
+		  
+		  'if currentcontent.macrocreation then
+		  'Title=Dico.Value("MacrosCreate") + "*"
 		End Function
 	#tag EndMethod
 
@@ -282,7 +293,7 @@ Protected Class WindContent
 		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
 		      Theobjects.XMLLoadObjects(FigsDeleted)
 		    end if
-		  elseif currentoperation isa macroexe then
+		  elseif currentoperation isa macroexe and macroexe(currentoperation).mw <> nil  then
 		    macroexe(currentoperation).mw.close
 		  end if
 		  drapabort = false
@@ -611,7 +622,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function ForHisto() As Boolean
-		  return  not isaundoredo and not (currentoperation isa ReadHisto)
+		  return  (not isaundoredo and not (currentoperation isa ReadHisto))
 		End Function
 	#tag EndMethod
 
@@ -702,7 +713,7 @@ Protected Class WindContent
 		  plans(0)=0
 		  for i = 1 to n
 		    s = TheObjects.element(i)
-		    if s.plan = -1 or plans(s.plan) <> s.id or  s.plan = 0  or s.plan > ubound(plans) then
+		    if s.plan = -1  or  s.plan = 0  or s.plan > ubound(plans) then
 		      plans.append s.id
 		      s.plan = ubound(plans)
 		    else
@@ -729,15 +740,10 @@ Protected Class WindContent
 		  
 		  TheObjects.addshape s
 		  
-		  'if not s isa point then
-		  'for i = 0 to s.npts-1
-		  'if plans.indexof(s.childs(i).id) <> -1 and  (s.childs(i).constructedby = nil or s.childs(i).constructedby.oper = 10) then
-		  'plans.remove plans.indexof(s.childs(i).id)
-		  'end if
-		  'next
-		  'end if
 		  if s.plan = -1 then
 		    AddPlan(s)
+		  elseif s.Plan > ubound(plans) then
+		    plans.append s.id
 		  else
 		    Plans(s.plan) = s.id
 		  end if
@@ -797,7 +803,7 @@ Protected Class WindContent
 		  dim n as integer
 		  
 		  
-		  if not app.macrocreation then
+		  if not macrocreation then
 		    n = currentop
 		    while n > 0 and val(XMLElement(Histo.child(n)).GetAttribute("Undone")) = 1
 		      n = n-1
@@ -1005,6 +1011,22 @@ Protected Class WindContent
 		drapabort As Boolean
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		MacroCreation As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Mac As Macro
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MacInfos(-1) As MacConstructionInfo
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MacCurop(-1) As MacroExe
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -1144,6 +1166,12 @@ Protected Class WindContent
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="drapabort"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="MacroCreation"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

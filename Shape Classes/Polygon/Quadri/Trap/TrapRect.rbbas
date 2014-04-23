@@ -28,6 +28,7 @@ Inherits Trap
 		Sub TrapRect(ol as objectslist, Temp as XMLElement)
 		  Polygon(ol,Temp)
 		  liberte = 6
+		  ncpts=3
 		End Sub
 	#tag EndMethod
 

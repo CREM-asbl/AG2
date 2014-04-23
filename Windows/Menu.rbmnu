@@ -41,6 +41,12 @@ Begin Menu Menu
          Index = -2147483648
          AutoEnable = False
       End
+      Begin MenuItem FileSaveStd
+         SpecialMenu = 0
+         Text = "Standardiser"
+         Index = -2147483648
+         AutoEnable = True
+      End
       Begin MenuItem FileSaveBitmap
          SpecialMenu = 0
          Text = "Sauver comme Image..."

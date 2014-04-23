@@ -412,7 +412,12 @@ Inherits MultipleSelectOperation
 		      else
 		        index.append -1
 		      end if
-		      
+		    case 11 //Cisaillement
+		      if not s isa Trap and not s isa parallelogram and not s isa rect then
+		        visremove(s)
+		      else
+		        index.append -1
+		      end if
 		    end select
 		  next
 		  // index a autant d'éléments que visible

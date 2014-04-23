@@ -276,6 +276,11 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  dim sh as shape
 		  
+		  if currentcontent.macrocreation then
+		    super.endoperation
+		    return
+		  end if
+		  
 		  if copyptsur then
 		    if (startpoint.distance(endpoint) < Epsilon)  or (currentattractingshape = nil) then
 		      abort
@@ -361,6 +366,7 @@ Inherits SelectAndDragOperation
 		  if copyPtSur then
 		    s1 = tempshape.element(0)
 		    cop = new point(objects, point(s1).bpt)
+		    cop.forme = s1.forme
 		    cop.surseg = point(s1).surseg
 		    copies.addshape cop
 		  else
@@ -398,7 +404,6 @@ Inherits SelectAndDragOperation
 		    for i = 0 to tempshape.count-1
 		      figs.addfigure copies.element(i).fig
 		    next
-		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -578,6 +583,9 @@ Inherits SelectAndDragOperation
 		          visible.removeshape s
 		        end if
 		      end if
+		      if currentcontent.macrocreation and not s.isptsur then
+		        visible.removeshape s
+		      end if
 		      nobj = visible.count
 		    next
 		  end if
@@ -595,13 +603,36 @@ Inherits SelectAndDragOperation
 		  dim Temp as XMLElement
 		  
 		  if copyptsur then
-		    Temp = cop.XMLPutIdINContainer(Doc,EL)
-		    'if constructedby <> nil  and constructedby.oper <> 5 then                           'and constructedby.oper <> 3
-		    Temp.appendchild cop.XMLPutConstructionInfoInContainer(Doc)
-		    'end if
+		    Temp = cop.XMLPutIdINContainer(Doc)
+		    Temp.setAttribute("Forme0", str(cop.pointsur.element(0).id))
+		    EL.appendchild Temp
+		    EL.appendchild cop.XMLPutConstructionInfoInContainer(Doc)
 		  end if
-		  return Temp
+		  return EL
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Duplicate(MExe as MacroExe, EL0 as XMLElement, EL1 as XMLElement)
+		  dim n, rid as integer
+		  dim pt, q as point
+		  dim sh as shape
+		  
+		  Duplicate
+		  n = val(XMLElement(EL1).GetAttribute("Id"))
+		  MExe.GetRealId(n,rid)
+		  pt = point(objects.GetShape(rid))
+		  
+		  n = val(XMLElement(EL0).GetAttribute("Forme0"))
+		  MExe.GetRealId(n,rid)
+		  sh = objects.GetShape(rid)
+		  
+		  q = new point(objects, new basicpoint(0,0))
+		  
+		  pt.putduplicateon (sh, q)
+		  currentshape = q
+		  
+		End Sub
 	#tag EndMethod
 
 

@@ -259,6 +259,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Secteur(ol as objectslist, Temp as XMLElement)
 		  Shape(ol,Temp)
+		  ncpts = 3
 		  sk = new Secteurskull(wnd.mycanvas1.transform(Points(0).bpt))
 		  Updateskull
 		End Sub
@@ -317,7 +318,7 @@ Inherits Shape
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
 		  end if
 		  
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
 		    Temp.SetAttribute("Value", str(borderwidth))

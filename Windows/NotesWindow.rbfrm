@@ -347,7 +347,7 @@ End
 		  dim n as integer
 		  
 		  if currentcontent.currentoperation isa choosefinal then
-		    wnd.Mac.Expli =  EF.text
+		    currentcontent.Mac.Expli =  EF.text
 		    return
 		  end if
 		  

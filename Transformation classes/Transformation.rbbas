@@ -78,6 +78,10 @@ Implements StringProvider
 		      s2 = Constructedshapes.element(i)
 		      s1 = s2.constructedby.shape
 		      Appliquer(s1,s2)
+		      if s1 isa circle  then
+		        AppliquerExtreCtrl(circle(s1),circle(s2))
+		        s2.updateskull
+		      end if
 		    next
 		    'constructedfigs.updatematrixduplicatedshapes(M)
 		  end if
@@ -163,6 +167,7 @@ Implements StringProvider
 		Sub computematrix()
 		  dim k as double
 		  dim u,v,w as BasicPoint
+		  dim nbp as nBPoint
 		  
 		  select case type
 		  case 1
@@ -178,7 +183,7 @@ Implements StringProvider
 		    M = new rotationmatrix(point(supp).bpt, -PIDEMI)
 		  case 6
 		    if  supp isa droite then
-		      M = new SymmetryMatrix(droite(supp).firstp, droite(supp).secondp)
+		      M = supp.coord.SymmetryMatrix        '(droite(supp).firstp, droite(supp).secondp)
 		    elseif supp isa bande then
 		      if index = 0 then
 		        v = supp.points(1).bpt
@@ -186,13 +191,14 @@ Implements StringProvider
 		        v = Bande(supp).Point3
 		      end if
 		      M = new SymmetryMatrix(supp.points(2*index).bpt, v)
-		    elseif supp isa polygon then
-		      M = new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
+		    elseif supp isa polygon or supp isa secteur then
+		      nbp = supp.GetBiBSide(index)
+		      M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
 		    elseif supp isa secteur then
 		      M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
 		    end if
 		  case 7, 72
-		    M = new HomothetyMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		    M = supp.coord.SimilarityMatrix    'new HomothetyMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
 		  case 71
 		    u = supp.points(0).bpt
 		    v = supp.points(1).bpt
@@ -200,15 +206,17 @@ Implements StringProvider
 		    k = w.location(u,v)
 		    M = new HomothetyMatrix(u, k)
 		  case 8
-		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		    M = supp.coord.SimilarityMatrix                  '(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
 		  case 81
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(0).bpt, supp.points(2).bpt)
 		  case 82
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(1).bpt, supp.points(2).bpt)
 		  case 9  //Etirements
 		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt)
-		  case 10
+		  case 10 //Deplacement
 		    M = new IsometryMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		  case 11 //Cisaillement  Support trapezoidal
+		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt)
 		  end select
 		  
 		  if M = nil then
@@ -369,6 +377,16 @@ Implements StringProvider
 		  elseif s isa polygon and (type = 1 or type = 6)  then
 		    fp = s.points(index).bpt
 		    sp = s.points((index+1) mod s.npts).bpt
+		  elseif s isa secteur then
+		    fp = s.points(0).bpt
+		    sp = s.points(index+1).bpt
+		  elseif s isa Bande then
+		    fp=s.points(2*index).bpt
+		    if index =0 then
+		      sp = s.points(1).bpt
+		    else
+		      sp=Bande(s).Point3
+		    end if
 		  end if
 		End Sub
 	#tag EndMethod
@@ -480,19 +498,21 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function ComputeFixPt() As BasicPoint
-		  dim MId, M1 as Matrix
-		  dim Pt as BasicPoint
+		  'dim MId, M1 as Matrix
+		  'dim Pt as BasicPoint
+		  '
+		  'MId = new Matrix(1)
+		  'M1 = M - MId
+		  'M1 = M1.inv
+		  '
+		  'if M1 <> nil then
+		  'pt = new BasicPoint(0,0)
+		  'return  M1*pt
+		  'else
+		  'return nil
+		  'end if
 		  
-		  MId = new Matrix(1)
-		  M1 = M - MId
-		  M1 = M1.inv
-		  
-		  if M1 <> nil then
-		    pt = new BasicPoint(0,0)
-		    return  M1*pt
-		  else
-		    return nil
-		  end if
+		  return M.FixPt
 		End Function
 	#tag EndMethod
 
@@ -613,9 +633,6 @@ Implements StringProvider
 		    case  71, 81
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
-		      'case 81
-		      'a = can.transform(supp.points(1).bpt)
-		      'b = can.transform(supp.points(2).bpt)
 		    case 7, 8, 72,10
 		      a = can.transform(supp.points(0).bpt)
 		      b = can.transform(supp.points(3).bpt)
@@ -630,7 +647,7 @@ Implements StringProvider
 		      g.DrawObject T, b.x, b.y
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
-		    case 9
+		    case 9, 11
 		      a = can.transform(supp.points(2).bpt)
 		      b = can.transform(supp.points(3).bpt)
 		    end select

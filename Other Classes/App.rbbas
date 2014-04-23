@@ -131,7 +131,7 @@ Inherits Application
 		    end if
 		    wnd.deleteContent
 		    if UBound (wnd.wcontent) = -1 then
-		      wnd.NewContent
+		      wnd.NewContent(false)
 		    end if
 		  end if
 		  return true
@@ -151,10 +151,6 @@ Inherits Application
 		    themacros = new macroslist
 		    CheckUpdate
 		  end if
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
@@ -193,18 +189,18 @@ Inherits Application
 		  dim i as integer
 		  
 		  
-		  
-		  MenuBar.Child("FileMenu").Child("FileNew").enabled = not macrocreation
-		  MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not macrocreation
-		  
+		  if currentcontent <> nil  then
+		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  end if
 		  
 		  if wnd<>nil and wnd.MyCanvas1.rep <> nil and currentcontent <> nil then
 		    B =  CurrentContent.TheObjects.count > 1
 		    B1 = CurrentContent.TheGrid <> nil
 		    B2 = wnd.MyCanvas1.rep.labs.count > 0
-		    B = (B or B1 or B2) and not macrocreation
+		    B = (B or B1 or B2) and not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not macrocreation
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
 		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
 		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = (CurrentContent.Currentop > 0)
 		      wnd.pushbutton1.enabled = (CurrentContent.Currentop > 0)
@@ -221,6 +217,7 @@ Inherits Application
 		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
 		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
@@ -233,7 +230,6 @@ Inherits Application
 		  iw=new initWindow
 		  iw.ShowModal
 		  Tampon = new ObjectsList
-		  macrocreation = false
 		  
 		  
 		End Sub
@@ -303,8 +299,10 @@ Inherits Application
 		  if not MenusFolder.Exists then
 		    MenusFolder.CreateAsFolder
 		  end if
-		  
-		  
+		  StdFolder = DocFolder.Child("StdFiles")
+		  if not StdFolder.Exists then
+		    StdFolder.CreateAsFolder
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -346,6 +344,29 @@ Inherits Application
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function StdFilesDispo() As string()
+		  dim stdfiles(-1),nom as String
+		  dim i as integer
+		  
+		  for i=1 to AppFolder.count
+		    nom = app.AppFolder.trueItem(i).Name
+		    if right(nom,4)=".std" then
+		      stdfiles.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  for i=1 to StdFolder.count
+		    nom = app.StdFolder.trueItem(i).Name
+		    if right(nom,4)=".std" then
+		      stdfiles.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  return stdfiles
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -375,10 +396,6 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		Tampon As Objectslist
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Macrocreation As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -445,14 +462,12 @@ Inherits Application
 		MenusFolder As FolderItem
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		stdfolder As folderitem
+	#tag EndProperty
+
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="Macrocreation"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ErrorType"
 			Group="Behavior"

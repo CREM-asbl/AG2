@@ -365,7 +365,7 @@ Implements StringProvider
 		  Objects.ReAttractingAll
 		  objects.unhighlightall
 		  
-		  if not self isa saveeps then
+		  if not self isa saveeps and not self isa  savestd then
 		    if CurrentContent.ForHisto and  CurrentContent.currentoperation <> nil  then
 		      CurrentContent.AddOperation(self)  // Ne faut-il pas tester si l'opération est finie?
 		    end if
@@ -568,10 +568,6 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		Figs As FigsList
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Obj(-1) As Objectslist
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

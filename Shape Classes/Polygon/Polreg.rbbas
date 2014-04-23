@@ -73,6 +73,7 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub Polreg(ol as Objectslist, Temp as XMLElement)
 		  Polygon(ol,Temp)
+		  ncpts = 2
 		End Sub
 	#tag EndMethod
 
@@ -102,9 +103,7 @@ Inherits Polygon
 
 	#tag Method, Flags = &h0
 		Sub endconstruction()
-		  dim s, sh() as shape
-		  dim mult() as integer
-		  dim i,j, n as integer
+		  
 		  
 		  super.endconstruction
 		  

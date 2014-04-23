@@ -406,6 +406,19 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function projection(Bib as BiBPoint) As basicpoint
+		  return projection(BiB.first, Bib.Second)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub BasicPoint(EL as XMLElement)
+		  x = val(EL.GetAttribute("X"))
+		  y = val(EL.GetAttribute("Y"))
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

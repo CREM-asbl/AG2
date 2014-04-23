@@ -349,8 +349,8 @@ Protected Module Dictionnaires
 		    select case st
 		    case "arc"
 		      return "cet arc"
-		    case "droite"
-		      return "cette droite"
+		    case "droite", "bande"
+		      return "cette " + st
 		    else
 		      return "ce " + st
 		    end select
@@ -942,6 +942,24 @@ Protected Module Dictionnaires
 	#tag Method, Flags = &h0
 		Function savethemacro() As string
 		  return Dico.value("savethemacro")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function thefile() As string
+		  return Dico.Value("thefile")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function toomanyfamilies() As string
+		  return Dico.Value("toomanyfamilies")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function only4() As string
+		  return dico.value("only4")
 		End Function
 	#tag EndMethod
 

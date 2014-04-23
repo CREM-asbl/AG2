@@ -189,6 +189,19 @@ Protected Class Configuration
 		      end if
 		    end if
 		    
+		    List = EL.XQL("StdSize")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(El1.FirstChild)
+		        if El2 <> nil then
+		          StdSize = val(EL2.Value)
+		        else
+		          StdSize=1
+		        end if
+		      end if
+		    end if
+		    
 		    List = EL.XQL("LastInfo")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -203,6 +216,7 @@ Protected Class Configuration
 		    'Si AG_Init n'existe pas, on le recrée"
 		    setLangue("Francais")
 		    Menu = "Menu_AC"
+		    StdSize = 1
 		    Save
 		  end if
 		  
@@ -297,13 +311,13 @@ Protected Class Configuration
 		    if List.Length > 0 then
 		      Temp = XMLElement(List.Item(0))
 		      StdFile = Temp.GetAttribute("Name")
-		      List = EL.XQL("TailleFormesStandard")
-		      if List.length > 0 then
-		        Temp = XMLElement(List.Item(0))
-		        StdSize=Val(Temp.GetAttribute("Value"))
-		      else
-		        StdSize = 1
-		      end if
+		      'List = EL.XQL("TailleFormesStandard")
+		      'if List.length > 0 then
+		      'Temp = XMLElement(List.Item(0))
+		      'StdSize=Val(Temp.GetAttribute("Value"))
+		      'else
+		      'StdSize = 1
+		      'end if
 		      ChargerStdForms
 		    else
 		      ShowStdTools = false
@@ -355,6 +369,9 @@ Protected Class Configuration
 		  
 		  EL2 = temp.appendchild(Doc.CreateElement("Configuration"))
 		  EL2.AppendChild(Doc.CreateTextNode(Menu))
+		  
+		  EL3 = temp.appendchild(Doc.CreateElement("StdSize"))
+		  EL3.AppendChild(Doc.CreateTextNode(str(StdSize)))
 		  
 		  EL4 = temp.appendchild(Doc.CreateElement("LastInfo"))
 		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))
@@ -414,11 +431,16 @@ Protected Class Configuration
 		  if not ShowStdTools then
 		    return
 		  end if
-		  
-		  fi=GetFolderItem(stdfile)
+		  'if right(stdfile,4) <>".std" then
+		  'stdfile = stdfile+".std"
+		  'end if
+		  fi = getfolderitem(stdfile)
+		  if not fi.exists then
+		    fi = app.StdFolder.Child(stdfile)
+		  end if
 		  if not fi.exists then
 		    MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
-		    Quit
+		    return
 		  end if
 		  
 		  Doc = new XMLDocument(fi)
@@ -426,8 +448,8 @@ Protected Class Configuration
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
 		  if nstdfam > 4 then
-		    MsgBox Dico.Value("Toomanystdf")
-		    Quit
+		    MsgBox  TooManyFiles(stdfile) + EndOfLine + only4
+		    nstdfam = 4
 		  end if
 		  
 		  for i = 0 to nstdfam-1
@@ -643,6 +665,7 @@ Protected Class Configuration
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
 		  
@@ -713,6 +736,12 @@ Protected Class Configuration
 		    Libvisible(fam,i) = nlibvis(fam)
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TooManyFiles(s as string) As string
+		  return thefile + stdfile +toomanyfamilies
+		End Function
 	#tag EndMethod
 
 

@@ -3,6 +3,7 @@ Protected Class MacConstructionInfo
 	#tag Method, Flags = &h0
 		Sub MacConstructionInfo(m as Macro)
 		  Mac = m
+		  
 		End Sub
 	#tag EndMethod
 
@@ -30,23 +31,22 @@ Protected Class MacConstructionInfo
 		  dim Temp, EL as XMLElement
 		  dim i as integer
 		  
-		  
-		  Temp = Doc.CreateElement("IfMacs")
-		  for i = 0 to ubound(ifmacs)
-		    Temp.AppendChild IfMacs(i).XMLPutInContainer(Doc)
-		  next
+		  Temp = Doc.CreateElement("MacConstructionInfo")
 		  Temp.SetAttribute("NRF",str(ubound(realfinal)+1))
 		  Temp.SetAttribute("NRI",str(ubound(realinit)+1))
 		  Temp.SetAttribute("NRS",str(ubound(realInitside)+1))
-		  'for i = 0 to ubound(RealFinal)
-		  'Temp.SetAttribute("RF"+str(i),str(RealFinal(i)))
-		  'next
 		  for i = 0 to ubound(RealInit)
 		    Temp.SetAttribute("RI"+str(i),str(RealInit(i)))
 		  next
-		  'for i = 0 to ubound(RealSide)
-		  'Temp.SetAttribute("RS"+str(i),str(RealSide(i)))
-		  'next
+		  for i = 0 to ubound(RealFinal)
+		    Temp.SetAttribute("RF"+str(i),str(RealFinal(i)))
+		  next
+		  
+		  EL= Doc.CreateElement("IfMacs")
+		  for i = 0 to ubound(ifmacs)
+		    EL.AppendChild IfMacs(i).XMLPutInContainer(Doc)
+		  next
+		  Temp.appendChild EL
 		  return Temp
 		  
 		End Function
@@ -55,34 +55,50 @@ Protected Class MacConstructionInfo
 	#tag Method, Flags = &h0
 		Sub MacConstructionInfo(m as Macro, Temp as XMLElement)
 		  dim List as XmlNodeList
-		  dim EL as XMLElement
+		  dim EL , EL1, EL2 as XMLElement
 		  dim nrf, nri, nrs as integer
-		  dim i as integer
+		  dim i, j, n, num as integer
+		  dim ifm, ifmac as InfoMac
 		  
 		  MacConstructionInfo(m)
+		  nrf = val(Temp.GetAttribute("NRF"))
+		  nri = val(Temp.GetAttribute("NRI"))
+		  nrs = val(Temp.GetAttribute("NRS"))
+		  if nri > 0 then
+		    for i = 0 to nri-1
+		      RealInit.append val(Temp.GetAttribute("RI"+str(i)))
+		    next
+		  end if
+		  if nrf > 0 then
+		    for i = 0 to nrf-1
+		      RealFinal.append val(Temp.GetAttribute("RF"+str(i)))
+		    next
+		  end if
+		  
 		  List = Temp.XQL("IfMacs")
 		  if List.Length > 0 then
 		    EL = XMLElement(List.Item(0))
-		    nrf = val(EL.GetAttribute("NRF"))
-		    nri = val(EL.GetAttribute("NRI"))
-		    nrs = val(EL.GetAttribute("NRS"))
-		    'if nrf > 0 then
-		    'for i = 0 to nrf-1
-		    'RealFinal.append val(EL.GetAttribute("RF"+str(i)))
-		    'next
-		    'end if
-		    if nri > 0 then
-		      for i = 0 to nri-1
-		        RealInit.append val(EL.GetAttribute("RI"+str(i)))
-		      next
-		    end if
-		    'if nrs > 0 then
-		    'for i = 0 to nrs-1
-		    'RealSide.append val(EL.GetAttribute("RS"+str(i)))
-		    'next
-		    'end if
 		    for i = 0 to EL.ChildCount-1
-		      IfMacs.append new InfoMac(XMLElement(EL.Child(i)))
+		      EL1 = XMLElement(EL.Child(i))
+		      ifmac = new InfoMac(EL1)
+		      List = EL1.XQL("Childs")
+		      if List.Length > 0 then
+		        EL2= XMLElement(List.Item(0))
+		        for j = 0 to ifmac.npts-1
+		          n = ifmac.childs(j).MacId
+		          ifm = GetInfoMac(n,num)
+		          if ifm <> nil then
+		            if  ifm.macId <> n and num <> -1 then
+		              ifmac.childs(j) = ifm.childs(num)
+		            else
+		              ifmac.childs(j) = ifm
+		            end if
+		          else
+		            ifmac.childs(j) = new InfoMac(XMLElement(EL2.Child(j)))
+		          end if
+		        next
+		      end if
+		      ifmacs.append ifmac
 		    next
 		  end if
 		  
@@ -116,8 +132,8 @@ Protected Class MacConstructionInfo
 		    return RealInitSide(Mac.ObInit.indexof(n))
 		    'elseif Mac.ObInterm.indexof(n) <> -1 then
 		    'return RealIntermSide(Mac.ObInterm.indexof(n))
-		  elseif Mac.ObFinal.indexof(n) <> -1 then
-		    return RealFinalSide(Mac.ObFinal.indexof(n))
+		    'elseif Mac.ObFinal.indexof(n) <> -1 then
+		    'return RealFinalSide(Mac.ObFinal.indexof(n))
 		  else
 		    return 0
 		  end if
@@ -174,6 +190,49 @@ Protected Class MacConstructionInfo
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetRealId(n as integer) As integer
+		  dim m as integer
+		  m = GetRealInit(n)
+		  if m = -1 then
+		    m = GetRealFinal(n)
+		  end if
+		  return m
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMac(Doc as XMLDocument) As XMLElement
+		  dim EL, EL1, EL2 as XMLElement
+		  dim i as integer
+		  
+		  EL = Doc.CreateElement("MacConstructionInfo")
+		  EL.setAttribute("Name", Mac.Caption)
+		  
+		  EL1 = Doc.CreateElement("InfoMacs")
+		  for i = 0 to ubound(IfMacs)
+		    EL1. appendchild Ifmacs(i).XMLPutInContainer(Doc)
+		  next
+		  EL.Appendchild EL1
+		  EL1 = Doc.CreateElement("InitialForms")
+		  for i = 0 to Ubound(RealInit)
+		    EL2 = Doc.CreateElement("Init")
+		    EL2.SetAttribute("RealInit",str(RealInit(i)))
+		    EL2.SetAttribute("RealInitSide",str(RealInitSide(i)))
+		    EL1.AppendChild EL2
+		  next
+		  EL.Appendchild EL1
+		  EL1 = Doc.CreateElement("FinalForms")
+		  for i = 0 to Ubound(RealFinal)
+		    EL2 = Doc.CreateElement("Final")
+		    EL2.SetAttribute("RealFinal",str(RealFinal(i)))
+		    EL1.AppendChild EL2
+		  next
+		  EL.Appendchild EL1
+		  return EL
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Mac As Macro
@@ -193,14 +252,6 @@ Protected Class MacConstructionInfo
 
 	#tag Property, Flags = &h0
 		RealInitSide() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealFinalSide() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RealInterm As Integer
 	#tag EndProperty
 
 
@@ -237,12 +288,6 @@ Protected Class MacConstructionInfo
 			Group="Position"
 			InitialValue="0"
 			InheritedFrom="Object"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="RealInterm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

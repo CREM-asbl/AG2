@@ -71,7 +71,7 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function PositionOnArc(a as double, orien as integer) As BasicPoint
-		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviling relative à ce cercle
+		  dim p, q as BasicPoint
 		  dim r, b as double
 		  
 		  
@@ -81,8 +81,7 @@ Inherits nBpoint
 		    b = startangle + a*Angle*orien
 		    q = new BasicPoint(cos(b),sin(b))
 		    q =  tab(0) + q *r
-		    return q
-		  end if             'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à cet arc
+		  end if             'positionne un basicpoint sur un circle à partir de son abscisse curviligne relative à ce circle
 		End Function
 	#tag EndMethod
 

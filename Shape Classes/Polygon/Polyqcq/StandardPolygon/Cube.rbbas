@@ -188,6 +188,7 @@ Inherits StandardPolygon
 		  else
 		    cubeskull(sk).updatesommet(n,p,forme)
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -195,7 +196,7 @@ Inherits StandardPolygon
 		Sub Updateskull()
 		  dim i as integer
 		  dim cs as curveshape
-		  
+		  sk.updatesize(wnd.mycanvas1.scaling)
 		  for i=0 to 6
 		    if i=0 then
 		      sk.ref =wnd.myCanvas1.transform(Points(0).bpt)

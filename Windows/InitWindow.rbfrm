@@ -48,7 +48,11 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   430
+=======
+      Top             =   400
+>>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   True
       Width           =   135
@@ -61,7 +65,11 @@ Begin Window InitWindow
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
+<<<<<<< HEAD
       Enabled         =   True
+=======
+      Enabled         =   "True"
+>>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -76,7 +84,11 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   460
+=======
+      Top             =   454
+>>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
@@ -118,7 +130,11 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   395
+=======
+      Top             =   368
+>>>>>>> origin/Macros
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -132,13 +148,21 @@ Begin Window InitWindow
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
+<<<<<<< HEAD
       Enabled         =   True
+=======
+      Enabled         =   "True"
+>>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
+<<<<<<< HEAD
       Left            =   571
+=======
+      Left            =   572
+>>>>>>> origin/Macros
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -147,7 +171,11 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   360
+=======
+      Top             =   336
+>>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   True
       Width           =   112
@@ -160,13 +188,21 @@ Begin Window InitWindow
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
+<<<<<<< HEAD
       Enabled         =   True
+=======
+      Enabled         =   "True"
+>>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
+<<<<<<< HEAD
       Left            =   571
+=======
+      Left            =   572
+>>>>>>> origin/Macros
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -175,7 +211,11 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   395
+=======
+      Top             =   368
+>>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   True
       Width           =   69
@@ -188,7 +228,11 @@ Begin Window InitWindow
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
+<<<<<<< HEAD
       Enabled         =   True
+=======
+      Enabled         =   "True"
+>>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -203,7 +247,11 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
+<<<<<<< HEAD
       Top             =   460
+=======
+      Top             =   454
+>>>>>>> origin/Macros
       Underline       =   ""
       Visible         =   True
       Width           =   108
@@ -215,7 +263,11 @@ Begin Window InitWindow
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
+<<<<<<< HEAD
       Enabled         =   True
+=======
+      Enabled         =   "True"
+>>>>>>> origin/Macros
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -232,9 +284,15 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
+<<<<<<< HEAD
       Top             =   330
       Underline       =   ""
       Visible         =   True
+=======
+      Top             =   428
+      Underline       =   ""
+      Visible         =   "True"
+>>>>>>> origin/Macros
       Width           =   180
       BehaviorIndex   =   6
    End

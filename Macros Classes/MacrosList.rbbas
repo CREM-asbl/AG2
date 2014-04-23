@@ -16,9 +16,20 @@ Protected Class MacrosList
 
 	#tag Method, Flags = &h0
 		Sub AddMac(m as macro)
-		  if GetPosition(m)  = -1 then
-		    macs.append m
-		  end if
+		  dim i as integer
+		  
+		  for i = 0 to ubound(macs)
+		    if m.caption = macs(i).caption then
+		      if currentcontent.macrocreation then
+		        removemac macs(i)
+		      else
+		        return
+		      end if
+		    end if
+		  next
+		  macs.append m
+		  m.creermenuitem
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -61,7 +72,6 @@ Protected Class MacrosList
 		      doc = new XMLDocument(temp.ToString)
 		      mac = new macro(doc)
 		      addmac(mac)
-		      mac.CreerMenuItem
 		    next
 		  end if
 		  
@@ -77,6 +87,7 @@ Protected Class MacrosList
 		      return macs(i)
 		    end if
 		  next
+		  return nil
 		End Function
 	#tag EndMethod
 

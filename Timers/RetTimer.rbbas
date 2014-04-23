@@ -38,26 +38,9 @@ Inherits TsfTimer
 		  TsfTimer(tempshape)
 		  
 		  curtsf = curop.tsf
-		  
-		  if  curtsf.supp isa droite then
-		    fp = droite(curtsf.supp).firstp
-		    sp = droite(curtsf.supp).secondp
-		  elseif curtsf.supp isa bande then
-		    fp = curtsf.supp.points(2*curtsf.index).bpt
-		    if curtsf.index = 0 then
-		      sp = curtsf.supp.points(1).bpt
-		    else
-		      sp = Bande(curtsf.supp).point3
-		    end if
-		  elseif curtsf.supp isa polygon then
-		    fp = curtsf.supp.points(curtsf.index).bpt
-		    sp =curtsf.supp.points((curtsf.index+1) mod curtsf.supp.npts).bpt
-		  elseif curtsf.supp isa secteur then
-		    fp = curtsf.supp.points(0).bpt
-		    sp =curtsf.supp.points(curtsf.index).bpt
-		  end if
-		  
-		  p = sp-fp
+		  fp = curtsf.fp
+		  sp = curtsf.sp
+		  p = sp- fp
 		  beta = p.anglepolaire
 		  if PI <  beta and beta < 2* PI then
 		    beta = beta-PI
@@ -90,7 +73,11 @@ Inherits TsfTimer
 		  for i = 0 to ncop
 		    s = copies.element(i)
 		    s.tsp = false
-		    Td = new TriDshape(s,fp)
+		    if curoper isa Retourner then
+		      Td = new TriDshape(s,fp)
+		    else
+		      Td = new TriDshape(s,curtsf.fp)
+		    end if
 		    TridCopies.append Td
 		  next
 		  

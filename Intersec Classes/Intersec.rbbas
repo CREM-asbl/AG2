@@ -1,8 +1,11 @@
 #tag Class
 Protected Class Intersec
+Inherits Operation
 Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub Intersec(s1 as shape, s2 as shape)
+		  Operation
+		  OpId = 45
 		  
 		  sh1 = s1
 		  sh2 = s2
@@ -478,9 +481,11 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ToMac(Doc as XMLDocument, EL as XMLElement)
+		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  
-		End Sub
+		  Return  Point(currentshape).XMLPutIdInContainer(Doc, EL)
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -565,6 +570,57 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Intersec(MExe as MacroExe, EL1 as XMLElement)
+		  dim EL2 as XMLElement
+		  dim n, id, rid, side, num0, num1 as integer
+		  dim s1, s2 as shape
+		  
+		  Operation
+		  OpId = 45
+		  EL2 = XMLElement(EL1.FirstChild)
+		  n =CDbl(EL2.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  s1 = objects.Getshape(rid)
+		  EL2 = XMLElement(EL1.Child(1))
+		  n = CDbl(EL2.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  s2 = objects.Getshape(rid)
+		  
+		  Intersec(s1,s2)
+		  
+		  num0 = CDbl(EL1.GetAttribute("NumSide0"))
+		  num1 = CDbl(EL1.GetAttribute("NumSide1"))
+		  
+		  currentshape = new point(currentcontent.theobjects, bptinters(num0,num1))
+		  currentshape.forme = 2
+		  currentshape.endconstruction
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetName() As String
+		  return  Dico.Value("Intersection")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EndOperation()
+		  if currentcontent.macrocreation then
+		    CurrentContent.AddOperation(self)
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Intersec()
+		  
+		  Operation
+		  OpId = 45
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		sh1 As shape
@@ -612,6 +668,83 @@ Implements StringProvider
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Std2flag"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="SidetoPaint"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OpId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Finished"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="nobj"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="iobj"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="info"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="HistId"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="display"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ntsf"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="itsf"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			InheritedFrom="Operation"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true

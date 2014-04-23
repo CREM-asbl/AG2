@@ -260,12 +260,6 @@ Begin Menu MenuMenus
          AutoEnable = True
       End
    End
-   Begin MenuItem UntitledMenu0
-      SpecialMenu = 1
-      Text = ""
-      Index = -2147483648
-      AutoEnable = True
-   End
    Begin MenuItem TransfosMenu
       SpecialMenu = 0
       Text = "Transformations"
@@ -313,6 +307,12 @@ Begin Menu MenuMenus
             Index = -2147483648
             AutoEnable = True
          End
+         Begin MenuItem DefinirDeplacement
+            SpecialMenu = 0
+            Text = "Déplacement"
+            Index = -2147483648
+            AutoEnable = True
+         End
          Begin MenuItem DefinirHomothetie
             SpecialMenu = 0
             Text = "Homothétie"
@@ -331,12 +331,11 @@ Begin Menu MenuMenus
             Index = -2147483648
             AutoEnable = True
          End
-         Begin MenuItem DefinirDeplacement
+         Begin MenuItem DefinirCisaillement
             SpecialMenu = 0
-            Text = "Déplacement"
+            Text = "Cisaillement"
             Index = -2147483648
             AutoEnable = True
-            SubMenu = True
          End
       End
       Begin MenuItem TransfosAppliquer
@@ -363,6 +362,12 @@ Begin Menu MenuMenus
          Index = -2147483648
          AutoEnable = True
       End
+   End
+   Begin MenuItem UntitledMenu0
+      SpecialMenu = 1
+      Text = ""
+      Index = -2147483648
+      AutoEnable = True
    End
    Begin MenuBar MacrosMenu
       SpecialMenu = 0

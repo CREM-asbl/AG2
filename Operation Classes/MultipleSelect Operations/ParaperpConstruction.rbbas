@@ -15,6 +15,8 @@ Inherits ShapeConstruction
 		Sub CreateShape()
 		  dim ol as Objectslist
 		  dim p as BasicPoint
+		  
+		  
 		  if famille <> 1 then
 		    return
 		  end if
@@ -35,6 +37,8 @@ Inherits ShapeConstruction
 		    currentshape = new Droite(ol,p,0) // droite perpendiculaire
 		    op = 2
 		  end select
+		  currentshape.fam = 1
+		  currentshape.forme = forme
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
 		  CurrentShape.IsInConstruction = true
@@ -50,6 +54,7 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
 		  operation.paint(g)
+		  display = ""
 		  select case currentitemtoset
 		  case 1
 		    display = choose + asegmentoraline
@@ -171,26 +176,37 @@ Inherits ShapeConstruction
 		    end if
 		    currentshape.setconstructedby(Refe,op)
 		    currentshape.constructedby.data.append index(iobj)
-		  else
-		    curshape = currentshape.points(currentshape.IndexConstructedPoint)
+		  case 2
+		    curshape = currentshape.points(0)
 		    AdjustMagnetism(curshape)
+		    droite(currentshape).constructshape
 		    if curshape.invalid then
 		      CurrentContent.abortconstruction
 		      return false
 		    end if
-		    currentshape.constructshape
 		    curshape.mobility
 		    ReinitAttraction
 		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
-		    if currentattractingshape isa polygon and currentitemtoset = 3 then
+		    if droite(currentshape).nextre = 0 then
+		      nextitem
+		    end if
+		  case 3
+		    droite(currentshape).constructshape
+		    curshape = currentshape.points(1)
+		    AdjustMagnetism(curshape)
+		    if curshape.invalid or currentshape.points(0).distanceto(curshape.bpt)< epsilon   then
+		      CurrentContent.abortconstruction
+		      return false
+		    end if
+		    if currentattractingshape isa polygon  then
 		      curshape.surseg = true
 		      if currentshape.points(0).pointsur.count = 1 and currentshape.points(0).pointsur.element(0) isa polygon then
 		        currentshape.points(0).surseg = true
 		      end if
 		    end if
-		    if currentitemtoset = 2 and droite(currentshape).nextre = 0 then
-		      nextitem
-		    end if
+		    curshape.mobility
+		    ReinitAttraction
+		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
 		  end select
 		  
 		  return true
@@ -210,8 +226,8 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
-		  Temp = super.ToMac(Doc,EL)
 		  
+		  Temp = super.ToMac(Doc,EL)
 		  Temp.Appendchild currentshape.XMLPutConstructionInfoInContainer(Doc)
 		  
 		  return Temp
@@ -234,6 +250,67 @@ Inherits ShapeConstruction
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ParaperpConstruction(Mexe as MacroExe, EL0 as XMLElement, EL1 as XMLElement)
+		  dim  fa, fo, rid, side, n, i , num as integer
+		  dim pt as point
+		  dim EL as XMLElement
+		  dim sh as shape
+		  dim BiB1 as BiBPoint
+		  
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  ParaperpConstruction (fa,fo)
+		  n = val(EL1.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  Refe= objects.GetShape(rid)
+		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
+		  currentshape.constructedby.data.append val(EL1.GetAttribute("Index"))
+		  
+		  'Positionnement aisé du premier point
+		  EL =XMLElement(EL0.Child(0))
+		  n = val(XMLElement(EL.Child(0)).GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  pt = point(objects.GetShape(rid))
+		  currentshape.substitutepoint(pt,currentshape.points(0))
+		  
+		  'Deuxième point
+		  'a) Calculer la direction de la droite/segment
+		  Droite(currentshape).constructshape
+		  currentshape.updatecoord
+		  
+		  'b) Positionner le deuxième point
+		  ' si fo > 3 then  'pas de probleme rien à changer à ce qui précède : une droite n'a qu'un second point caché
+		  if fo <3 then
+		    EL = XMLElement(EL.Child(1))
+		    n = val(EL.GetAttribute("Id"))
+		    MExe.GetRealId(n, rid)
+		    pt = point(objects.GetShape(rid))
+		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
+		    'voir remarque correspondante dans  macro.paraperp
+		    BiB1 = new BiBPoint(currentshape.coord)
+		    if val(EL.GetAttribute("NrForm"))  <> 1 then
+		      pt.moveto pt.bpt.projection(BiB1)
+		      
+		      'b2) si l'extrémité est un point sur, il faut repositionner l'extrémité
+		    else
+		      EL = XMLElement(EL.Child(0))
+		      pt.surseg = (val(EL.GetAttribute("Surseg")) = 1)
+		      EL = XMLElement(EL.Child(0))
+		      n = val(EL.GetAttribute("Id")) 'macId du support de pt
+		      MExe.GetRealId(n, rid)
+		      sh = objects.Getshape(rid)
+		      num = val(EL.GetAttribute("NrCote"))
+		      pt.moveto BiB1.ComputeDroiteFirstIntersect(sh,num,pt.bpt)
+		    end if
+		    currentshape.substitutepoint(pt,currentshape.points(1))
+		    'currentshape.Points(1).location(0) = pt.bpt.location(sh, 0)
+		  end if
+		  
+		  currentshape.endconstruction
 		End Sub
 	#tag EndMethod
 

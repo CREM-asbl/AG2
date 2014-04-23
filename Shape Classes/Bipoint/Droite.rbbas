@@ -119,7 +119,7 @@ Inherits Bipoint
 	#tag Method, Flags = &h0
 		Sub Droite(ol as ObjectsList, k as integer, EL as XMLElement)
 		  Shape(ol,EL)
-		  
+		  ncpts = 2
 		  select case k
 		  case 0 to 2
 		    nextre = 2
@@ -471,16 +471,13 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Function Inter(s as circle, byref p() as Basicpoint, byref bq as BasicPoint, Byref w as BasicPoint) As integer
-		  dim B1 as BiBpoint
+		  dim B1, B2 as BiBpoint
 		  dim k as integer
 		  
 		  if  ubound(p) = 1 then
-		    if s isa arc then
-		      B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
-		    else
-		      B1 = BibPoint(s.coord)
-		    end if
-		    k = BiBPoint(coord).BiBDroiteInterCercle(B1,p(), bq, w)
+		    B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
+		    B2 = new BiBPoint(coord)
+		    k = B2.BiBDroiteInterCercle(B1,p(), bq, w)
 		  else
 		    k = 0
 		  end if
@@ -509,7 +506,7 @@ Inherits Bipoint
 		Function prppupdate2() As Matrix
 		  dim sf as figure
 		  dim  p, q as Point
-		  dim  ep, np, eq, nq as Basicpoint
+		  dim  ep, np, eq, nq, w as Basicpoint
 		  dim t as Boolean
 		  dim n as integer
 		  
@@ -523,7 +520,10 @@ Inherits Bipoint
 		  
 		  select case n
 		  case 0
-		    return new Matrix(1)
+		    w = constructbasis
+		    nq = nq.Projection(np,np+w)
+		    q.moveto nq
+		    return new SimilarityMatrix(ep,eq,np,nq)
 		  case 1
 		    n = sf.ListSommSur(0)
 		    t = sf.replacerpoint(points(n))
@@ -557,6 +557,7 @@ Inherits Bipoint
 		  dim M as Matrix
 		  
 		  Shape(obj,dr)
+		  ncpts = 2
 		  if dr.isaparaperp then
 		    auto = 1
 		    if dr.forme = 1 or dr.forme = 2 then
@@ -877,27 +878,6 @@ Inherits Bipoint
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

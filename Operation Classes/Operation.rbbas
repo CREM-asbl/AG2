@@ -181,7 +181,7 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Function Magnetisme(sh as shape, byref magneticD as BasicPoint) As integer
 		  // Utilisé pour déterminer le magnétisme lors d'une modification ou de la duplication d'un point
-		  // ou encore lors d'une construction. Attractedshape est nécessairement le point sur lequel on tire
+		  // ou encore lors d'une construction. Attractedshape (c-a-d currentpoint) est nécessairement le point sur lequel on tire
 		  
 		  dim  AttractingShape, NextAttractingShape as Shape
 		  dim magnetism, gridmagnetism as integer
@@ -276,8 +276,6 @@ Protected Class Operation
 		Sub ShowAttraction()
 		  
 		  dim icot as integer
-		  dim CAS as shape
-		  dim p as basicpoint
 		  
 		  if CurrentAttractedShape<>nil then
 		    CurrentAttractedShape.HighLight
@@ -560,9 +558,15 @@ Protected Class Operation
 		  dim EL as XmlElement
 		  dim str as string
 		  
-		  if (self isa shapeconstruction) and (currentshape isa point) and  (point(currentshape).pointsur.count = 2) then
-		    opId = 45
-		    str = "Intersection"
+		  if (self isa shapeconstruction) and (currentshape isa point)  then
+		    select case point(currentshape).pointsur.count
+		    case 0
+		      OpId = 0
+		      str = GetName
+		    case 1
+		      OpId = 46
+		      str = "PointSur"
+		    end select
 		  else
 		    str = GetName
 		  end if
@@ -657,6 +661,8 @@ Protected Class Operation
 		Unit : 41
 		HideTsf: 44
 		Inter : 45                  //N'est utilisé que pour les macros: on assimile l'intersection de deux objets à une opération
+		PointSur: 46            // Idem pour la construction d'un Point Sur
+		SaveStd : 47 Pour mémoire
 		
 		3) SelectandDragOperation
 		Duplicate: 19 

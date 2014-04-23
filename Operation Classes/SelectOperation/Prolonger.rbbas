@@ -41,7 +41,7 @@ Inherits SelectOperation
 		  sh = currenthighlightedshape
 		  display = ""
 		  if visible  = nil or sh = nil then
-		    if app.macrocreation then
+		    if currentcontent.macrocreation then
 		      display = choose + asideofpoly
 		    else
 		      display = choose + asegment
@@ -49,7 +49,7 @@ Inherits SelectOperation
 		  else
 		    super.paint(g)
 		    sh.highlightsegment(g, cot)
-		    if app.macrocreation then
+		    if currentcontent.macrocreation then
 		      display = thissideofpoly + "?"
 		    else
 		      display = thissegment + "?"
@@ -160,8 +160,9 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i, j as integer
 		  
-		  
-		  Bip = currenthighlightedshape
+		  if not currentcontent.macrocreation then
+		    Bip = currenthighlightedshape
+		  end if
 		  CurrentContent.TheFigs.Removefigure Bip.fig
 		  GetSide
 		  
@@ -327,7 +328,7 @@ Inherits SelectOperation
 		    if not s.ValidSegment(p,ibip) or ( s isa polygon and polygon(s).prol(ibip) ) then  //le côté a déjà été prolongé
 		      visible.removeshape(s)
 		    end if
-		    if s isa droite and app.macrocreation then
+		    if s isa droite and currentcontent.macrocreation then
 		      visible.removeshape s
 		    end if
 		  next
@@ -361,14 +362,32 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLelement
+		  dim Temp as XMLElement
+		  
 		  if not Bip isa Polygon then
 		    return nil
 		  end if
-		  EL.appendchild Dr.XMLPutIdINContainer(Doc)
+		  
+		  Temp =  Dr.XMLPutIdInContainer(Doc)
+		  Temp.AppendChild DR.XMLPutChildsInContainer(Doc)
+		  EL.appendchild Temp
 		  EL.AppendChild Dr.XMLPutConstructionInfoInContainer(Doc)
 		  
 		  return EL
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Prolonger(MExe as MacroExe, EL1 as XMLElement)
+		  dim n, rid as integer
+		  
+		  Prolonger
+		  n = val(EL1.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  Bip = objects.GetShape(n)
+		  cot = val(EL1.GetAttribute("Index"))
+		  DoOperation
+		End Sub
 	#tag EndMethod
 
 

@@ -315,14 +315,15 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  
 		  if currentshape = nil then
-		    currentcontent.currentoperation = nil
 		    wnd.mycanvas1.mousecursor = arrowcursor
 		    oldvisible.tspfalse
 		  else
 		    ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
-		    M = new HomothetyMatrix(c,ratio)
-		    currentcontent.thefigs.enablemodifyall
-		    figs.updatematrixduplicatedshapes(M)
+		    if abs(ratio) > epsilon then
+		      M = new HomothetyMatrix(c,ratio)
+		      currentcontent.thefigs.enablemodifyall
+		      figs.updatematrixduplicatedshapes(M)
+		    end if
 		    super.mouseup(p)
 		  end if
 		End Sub

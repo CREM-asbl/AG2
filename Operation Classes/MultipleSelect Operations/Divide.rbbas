@@ -32,6 +32,7 @@ Inherits MultipleSelectOperation
 		  
 		  Myself= Doc.CreateElement(GetName)
 		  Myself.setattribute("NumberOfDivisions",str(Numberofdivisions))
+		  Myself.SetAttribute("Side", str(side))
 		  Myself.appendchild shapetodivide.XMLPutIdInContainer(Doc)
 		  Myself.appendchild firstpoint.XMLPutInContainer(Doc)
 		  Myself.appendchild secondpoint.XMLPutInContainer(Doc)
@@ -121,9 +122,7 @@ Inherits MultipleSelectOperation
 		  
 		  select case CurrentItemToSet
 		  case 1
-		    if s isa polygon then
-		      side = s.PointOnSide(p)
-		    end if
+		    side = s.PointOnSide(p)
 		    return s
 		  case 2
 		    if s isa Point   then
@@ -141,6 +140,9 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function SetItem(s As Shape) As Boolean
 		  dim ff as figure
+		  dim d as droite
+		  dim sh as shape
+		  dim ar() as point
 		  
 		  select case CurrentItemToSet
 		  case 1
@@ -157,6 +159,10 @@ Inherits MultipleSelectOperation
 		      elseif s  isa Circle then
 		        Firstpoint = s.Points(1)
 		        secondpoint = firstpoint
+		      elseif s isa cube then
+		        d = cube(s).getside(side)
+		        firstpoint = d.points(0)
+		        secondpoint= d.points(1)
 		      elseif s isa polygon then
 		        firstpoint = s.points(side)
 		        secondpoint = s.points((side +1) mod s.npts)
@@ -166,7 +172,12 @@ Inherits MultipleSelectOperation
 		    
 		  case 2
 		    secondpoint = point(s)
-		    Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
+		    ar = array(firstpoint, secondpoint)
+		    if firstpoint.onsameshape(secondpoint, sh)  and ((sh isa droite) or  (sh isa circle)) and sh.PassePar(ar) then
+		      shapetodivide = sh
+		    else
+		      Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
+		    end if
 		  end select
 		  return true
 		  
@@ -317,6 +328,31 @@ Inherits MultipleSelectOperation
 		    EL.SetAttribute("OpId", str(opId))
 		    EL1.AppendChild ToMac(i, OpList,EL)
 		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Divide(Mexe as MacroExe, EL1 as XMLElement)
+		  dim n, rid, side, divp, Id0, Id1 as integer
+		  
+		  Divide
+		  n = val(EL1.GetAttribute("Id"))
+		  Mexe.GetRealId( n, rid)
+		  shapetodivide = objects.getshape(rid)
+		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
+		  divp = val(EL1.GetAttribute("DivP"))
+		  Id0 = val(EL1.GetAttribute("Id0"))
+		  MExe.GetRealId(Id0, rid)
+		  firstpoint = point(objects.getshape(rid))
+		  Id1 = val(EL1.GetAttribute("Id1"))
+		  MExe.GetRealId(Id1, rid)
+		  secondpoint = point(objects.getshape(rid))
+		  DoOperation
+		  
+		  
+		  
 		  
 		  
 		End Sub

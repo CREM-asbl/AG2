@@ -153,6 +153,7 @@ Inherits Shape
 		Sub Bande(ol as Objectslist, temp as XMLElement)
 		  Shape(ol,Temp)
 		  npts = 3
+		  ncpts = 3
 		  sk = new Figskull(wnd.mycanvas1.transform(Points(0).bpt),4)
 		  computeextre
 		  Updateskull
@@ -289,8 +290,11 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  
-		  
-		  return new BiBPoint(coord.tab(0), coord.tab(1))
+		  if i = 0 then
+		    return new BiBPoint(coord.tab(0), coord.tab(1))
+		  else
+		    return new BiBPoint(coord.tab(2),Point3)
+		  end if
 		  
 		  
 		End Function
@@ -358,27 +362,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

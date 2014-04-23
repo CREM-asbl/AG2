@@ -115,7 +115,7 @@ Inherits SelectOperation
 		  
 		  ReDeleteDeletedFigures (Temp)
 		  ReCreateCreatedFigures(Temp)
-		  'CurrentContent.theobjects.addshape
+		  
 		End Sub
 	#tag EndMethod
 
@@ -148,10 +148,23 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  
-		  EL.AppendChild tempshape.element(0).GetGC.XMLPutIdINContainer(Doc)
-		  EL.appendchild  Tempshape.element(0).GetGC.XMLPutConstructionInfoInContainer(Doc)
+		  EL.AppendChild currentshape.XMLPutIdINContainer(Doc)
+		  EL.appendchild  currentshape.XMLPutConstructionInfoInContainer(Doc)
 		  return EL
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub GCConstruction(MExe as MacroExe, EL1 as XMLElement)
+		  dim sh as shape
+		  dim n, rid, side as integer
+		  
+		  GCConstruction
+		  n = val(EL1.GetAttribute("Id"))
+		  MExe.GetRealId(n, rid)
+		  sh = objects.getshape(rid)
+		  currentshape = sh.GetGC
+		End Sub
 	#tag EndMethod
 
 
@@ -175,11 +188,6 @@ Inherits SelectOperation
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
-
-
-	#tag Property, Flags = &h0
-		createdshapes As objectslist
-	#tag EndProperty
 
 
 	#tag ViewBehavior

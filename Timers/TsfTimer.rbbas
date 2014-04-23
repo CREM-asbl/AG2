@@ -80,6 +80,8 @@ Inherits Timer
 		  dim q, v as BasicPoint
 		  dim u1, u2, u3, u4 As  BasicPoint
 		  dim Mat as SimilarityMatrix
+		  dim bib1, Bib2 as BiBPoint
+		  dim r1, r2 as double
 		  
 		  TsfTimer(copies)
 		  curoper = AppliquerTsf(curop)
@@ -109,16 +111,16 @@ Inherits Timer
 		      M1 = new Similaritymatrix (Mat.centre, (Mat.rapport)^(1/niter), Mat.angle/niter)
 		    end if
 		  case 9
-		    'u1= tsf.supp.points(0).bpt
-		    'u2= tsf.supp.points(1).bpt
-		    'u3= tsf.supp.points(2).bpt
-		    'u4 = tsf.supp.points(3).bpt
-		    'Bib1 = new BiBPoint(u1,u2)
-		    'Bib2 = new BiBPoint(u3,u4)
-		    'q = Bib2.BibInterdroites(bib1,r)
-		    'v = tsf.supp.points(3).bpt-u3
-		    'u4 = u3+v*(abs((1-r)/r)^(1/niter))
-		    'M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
+		    u1= tsf.supp.points(0).bpt
+		    u2= tsf.supp.points(1).bpt
+		    u3= tsf.supp.points(2).bpt
+		    u4 = tsf.supp.points(3).bpt
+		    Bib1 = tsf.supp.getBibside(0)
+		    Bib2 = tsf.supp.getBiBSide(2)
+		    q = Bib2.BibInterdroites(bib1,0,0,r1,r2)
+		    'v = BiB2.second - BiB2.first
+		    u4 = q + (u3-q)*(abs((1-r1)/r1)^(1/niter))
+		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
 		  case 10
 		    Mat = SimilarityMatrix(tsf.M)
 		    if Mat.angle <> 0 then
@@ -126,6 +128,13 @@ Inherits Timer
 		    else
 		      M1 = new Matrix(Mat.v1, Mat.v2, Mat.v3/niter)
 		    end if
+		  case 11
+		    u1= tsf.supp.points(0).bpt
+		    u2= tsf.supp.points(1).bpt
+		    u3= tsf.supp.points(2).bpt
+		    u4 = tsf.supp.points(3).bpt
+		    u4 = u3 + (u4-u3)/niter
+		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
 		  end select
 		  enabled = true
 		End Sub

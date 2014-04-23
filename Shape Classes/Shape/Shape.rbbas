@@ -578,10 +578,6 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Shape(ol as objectslist, ncp as integer)
-		  if currentcontent.currentoperation isa shapeconstruction then
-		    fam = shapeconstruction(currentcontent.currentoperation).famille
-		    forme = shapeconstruction(currentcontent.currentoperation).forme
-		  end if
 		  if id=0 then
 		    id = ol.newId
 		  end if
@@ -662,30 +658,25 @@ Implements StringProvider
 		  for i = 0 to npts-1
 		    points(i).isinconstruction = false
 		  next
-		  
 		  if self isa arc or self isa secteur then
 		    drapori = true
 		  end if
-		  
 		  if currentcontent.PolygFleches and not self isa Lacet then
 		    Ti = new Tip
 		  end if
-		  
-		  
 		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
 		    nonpointed = not currentcontent.PolygPointes
 		  elseif constructedby <> nil and constructedby.shape.nonpointed = true then
 		    nonpointed = true
 		  end if
-		  
-		  Currentcontent.addShape self
-		  if CurrentContent.ForHisto then
-		    addtofigure
+		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
+		    Currentcontent.addShape self
+		    if CurrentContent.ForHisto or currentcontent.currentoperation isa macroexe then
+		      addtofigure
+		    end if
 		  end if
-		  
 		  signaire = sign(aire)
 		  computeori
-		  
 		  dounselect
 		  currentcontent.optimize
 		  currentcontent.RemettreTsfAvantPlan
@@ -748,7 +739,7 @@ Implements StringProvider
 		  if Ti <> Nil then
 		    Form.setattribute("TiP","1")
 		  end if
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    Form.SetAttribute("Auto",str(auto))
 		    Form.SetAttribute(Dico.Value("IdGroupe"), str(IdGroupe))
 		    plan = CurrentContent.plans.IndexOf(id)
@@ -1207,12 +1198,14 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  List = Temp.XQL("Childs")
-		  if list.length > 0 then
-		    EL =  XMLElement(List.Item(0))
-		    for i = 0 to EL.ChildCount-1
-		      childs(i).XMLReadTsf(XMLElement(EL.child(i)))
-		    next
+		  if not self isa point then
+		    List = Temp.XQL("Childs")
+		    if list.length > 0 then
+		      EL =  XMLElement(List.Item(0))
+		      for i = 0 to EL.ChildCount-1
+		        childs(i).XMLReadTsf(XMLElement(EL.child(i)))
+		      next
+		    end if
 		  end if
 		  
 		  
@@ -1229,6 +1222,7 @@ Implements StringProvider
 		  dim bp as BasicPoint
 		  dim M as Matrix
 		  dim a as double
+		  dim tsf as transformation
 		  
 		  updatecoord
 		  computeori
@@ -1283,8 +1277,7 @@ Implements StringProvider
 		  end if
 		  
 		  CreateExtreAndCtrlPoints
-		  
-		  modified = true  '?
+		  modified = true
 		  endmove
 		  updateMacConstructedShapes
 		  
@@ -1307,7 +1300,7 @@ Implements StringProvider
 		    Temp.setattribute("Id", str(ConstructedBy.shape.id))
 		  end if
 		  Temp.Setattribute("Oper",str(ConstructedBy.oper))
-		  if not app.macrocreation and constructedby.oper <> 9 then
+		  if not currentcontent.macrocreation and constructedby.oper <> 9 then
 		    Temp.appendchild constructedby.shape.XMLPutIdInContainer(Doc)  //redondance par souci de compatibilité
 		  end if
 		  // Id ou pas Id ? sans Id, peut devenir atroce
@@ -2057,21 +2050,16 @@ Implements StringProvider
 		  dim i, n as integer
 		  
 		  Form = XMLPutIdInContainer(Doc)
-		  
 		  if fig <> nil and not self isa repere then
 		    Form.SetAttribute("FigId",str(fig.idfig))
 		  end if
-		  
 		  for i = 0 to labs.count-1
 		    form.appendchild labs.element(i).toXML(Doc)
 		  next
-		  
 		  Form.AppendChild  XMLPutChildsInContainer(Doc)
-		  
 		  if  NbPtsConsted > 0 then
 		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
 		  end if
-		  
 		  if self isa Lacet then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
 		  end if
@@ -2081,7 +2069,7 @@ Implements StringProvider
 		  if Macconstructedby <> nil then
 		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    if self isa polygon and not self isa Lacet then
 		      if self isa cube then
 		        n = 8
@@ -2094,7 +2082,6 @@ Implements StringProvider
 		    else
 		      Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		    end if
-		    
 		    if not self isa bipoint  then
 		      Temp = fillcolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorFill"))
 		      Temp.SetAttribute("Opacity", str(fill))
@@ -2104,16 +2091,13 @@ Implements StringProvider
 		    Temp.SetAttribute("Value", str(borderwidth))
 		    Form.AppendChild Temp
 		  end if
-		  
 		  if Hidden then
 		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
 		  end if
-		  
 		  if Invalid then
 		    Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
 		  end if
 		  Form.AppendChild XMLPutTsfInContainer(Doc)
-		  
 		  return Form
 		End Function
 	#tag EndMethod
@@ -2212,17 +2196,6 @@ Implements StringProvider
 		      end if
 		    case 3, 5, 6, 9
 		      return true
-		      'case 3
-		      'if isaparaperp then
-		      'return true
-		      'end if
-		      'if   not self isa point then
-		      'for i = 0 to npts-1
-		      'if points(i).pointsur.count = 2 then
-		      'return true
-		      'end if
-		      'next
-		      'end if
 		    end select
 		  elseif constructedby <> nil and constructedby.oper = 6 then
 		    if constructedby.shape.fig <> s2.fig and NbSomCommuns(ff) > 0 then
@@ -2251,16 +2224,6 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  'for k = 0 to ubound(tsfi)
-		  'if not s2 isa point then
-		  'for h = 0 to s2.npts-1
-		  'if s2.points(h).constructedby <> nil and s2.points(h).constructedby.oper = 6 and Transformation(s2.points(h).constructedby.data(0)) = tsfi(k) then
-		  'return true
-		  'end if
-		  'next
-		  'end if
-		  'next
-		  
 		  if not s2 isa point then
 		    for h = 0 to s2.npts-1
 		      if s2.points(h).constructedby <> nil and s2.points(h).constructedby.oper = 6  then
@@ -2268,6 +2231,9 @@ Implements StringProvider
 		        if sh = self or (sh isa point and  sh.id > id and (( getindex(point(sh)) <> -1) or  (sh.constructedby <> nil and sh.constructedby.shape = self )  ) ) then
 		          return true
 		        end if
+		      end if
+		      if s2.points(h).pointsur.count = 2 and s2.points(h).pointsur.getposition(self) <> -1 then
+		        return true
 		      end if
 		    next
 		  end if
@@ -2278,7 +2244,7 @@ Implements StringProvider
 		  end if
 		  
 		  
-		  if s2.haspointon(self, p)  and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
+		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
 		    t =  (constructedby = nil or constructedby.shape <> s2)   ''si un sommet de s2 est pointsur self (sans que self soit construit par s2)
 		    for k = 0 to npts-1
 		      t = t or ( (points(k).constructedby = nil) or (points(k).constructedby.shape isa point and s2.getindex(point(points(k).constructedby.shape)) <> -1) )
@@ -2288,11 +2254,6 @@ Implements StringProvider
 		    end if
 		  end if
 		  
-		  'if self isa bipoint then   //Ennuyeux si le bipoint est commun à deux polygones de figures différentes BH F15_3.fag
-		  'if s2 isa polygon and s2.getindexpoint(points(0)) <> -1 and s2.getindexpoint(points(1)) <> -1 then
-		  'return true
-		  'end if
-		  'end if
 		  
 		  if s2 isa polygon then
 		    for i = 0 to s2.npts-1
@@ -2338,11 +2299,11 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  for i = 0 to ubound(childs)
-		    if childs(i).macconstructedshapes.indexof(s2) <> -1 then
-		      return true
-		    end if
-		  next
+		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
+		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
+		  'return true
+		  'end if
+		  'next
 		  
 		End Function
 	#tag EndMethod
@@ -2830,7 +2791,11 @@ Implements StringProvider
 		    if j = -1 then
 		      j = 0
 		    end if
-		    tsf = s1.tsfi.element(j)
+		    if s1 <> nil then
+		      tsf = s1.tsfi.element(j)
+		    else
+		      return
+		    end if
 		  elseif self isa point and ubound(point(self).parents) > -1 then
 		    s1 = point(self).parents(0)
 		    if  s1.constructedby <> nil and s1.constructedby.oper = 6 then
@@ -3104,7 +3069,7 @@ Implements StringProvider
 		      inter.removepoint p
 		    end if
 		    for j =  p.pointsur.count-1 downto 0
-		      if p.id > id then
+		      if p.id > id then ' p.pointsur.element(j).id then
 		        p.removepointsur(p.pointsur.element(j))
 		      end if
 		    next
@@ -3115,9 +3080,6 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  if conditionedby <> nil then
-		    conditionedby.conditioned.removeshape self
-		  end if
 		  removefromfigure
 		  
 		  if self isa droite and droite(self).isaprolongement(pol,n) then
@@ -3293,12 +3255,12 @@ Implements StringProvider
 		      tobereconstructed = true
 		    end if
 		    
-		    'if tobereconstructed then
-		    'constructshape
-		    'if check then
-		    'tobereconstructed = false
-		    'end if
-		    'end if
+		    if tobereconstructed then
+		      constructshape
+		      'if check then
+		      'tobereconstructed = false
+		      'end if
+		    end if
 		  end if
 		  
 		  if ubound(childs) >= npts then
@@ -3691,18 +3653,24 @@ Implements StringProvider
 		  dim Mac as Macro
 		  dim MacInfo as MacConstructionInfo
 		  dim i, j as integer
-		  dim s1 as shape
+		  dim s1, s2 as shape
 		  
 		  
 		  for i = 0 to ubound(MacConstructedShapes)
 		    s1 = MacConstructedShapes(i)
 		    MacInfo = s1.MacConstructedby
+		    
 		    Mac = Macinfo.Mac
 		    Mac.Macexe(MacInfo)
-		    for j = 0 to ubound(s1.childs)
-		      if not s1.childs(j).modified and  s1.childs(j).macconstructedby = nil then
+		    for j = 0 to s1.npts-1
+		      if s1.childs(j).MacConstructedShapes.indexof(s1) = -1 then
+		        's1.childs(j).modified = true    //on ne peut pas marquer les points comme modifiés car ils dépendent éventuellement de plusieurs objets initiaux
 		        s1.childs(j).updateshape
 		      end if
+		    next
+		    for j = 0 to ubound(MacInfo.RealInit)
+		      s2 = objects.Getshape(MacInfo.RealInit(j))
+		      's2.modified = true
 		    next
 		    s1.updateshape
 		  next
@@ -3969,8 +3937,6 @@ Implements StringProvider
 		Sub XMLReadMacConstructionInfo(Temp as XMLElement)
 		  dim List as XmlNodeList
 		  dim Tmp as XmlElement
-		  dim m as integer
-		  dim s as shape
 		  dim cap as string
 		  dim MacInfo as MacConstructionInfo
 		  dim Mac as Macro
@@ -3980,6 +3946,7 @@ Implements StringProvider
 		    Tmp = XMLElement(List.Item(0))
 		    cap = TMP.GetAttribute("Macro")
 		    Mac =app.TheMacros.GetMacro(cap)
+		    Tmp = XMLElement(Tmp.Child(0))
 		    MacInfo = new MacConstructionInfo(Mac,Tmp)
 		    SetMacConstructedBy MacInfo
 		  end if
@@ -4032,6 +3999,27 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function PassePar(p() as point) As Boolean
+		  dim i, n as integer
+		  dim t as Boolean
+		  
+		  t = true
+		  
+		  for i = 0 to ubound(p)
+		    t = t and (getindex(p(i)) <> -1)
+		  next
+		  
+		  if self isa circle then
+		    for i = 0 to ubound(p)
+		      t = t and (getindex(p(i)) <> 0)
+		    next
+		  end if
+		  
+		  return t
+		  
+		End Function
+	#tag EndMethod
 
 	#tag Note, Name = Formes
 		
@@ -4276,18 +4264,6 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		final As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		init As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		interm As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		coord As nBPoint
 	#tag EndProperty
 
@@ -4321,6 +4297,10 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		NotPossibleCut As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ifmac As InfoMac
 	#tag EndProperty
 
 
@@ -4531,24 +4511,6 @@ Implements StringProvider
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="plan"

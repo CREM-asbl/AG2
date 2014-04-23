@@ -269,9 +269,9 @@ Inherits MultipleSelectOperation
 		  s.npts = 0
 		  s.ncpts = 0
 		  s.std = currentshape.std
-		  if not s.std then
-		    s.SetConstructedBy currentshape,5
-		  end if
+		  'if not s.std then
+		  s.SetConstructedBy currentshape,5
+		  'end if
 		  
 		  if n = 0 then
 		    for i = 0 to ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
@@ -282,6 +282,8 @@ Inherits MultipleSelectOperation
 		      s.addpoint(CutPts(i).bpt)
 		    next
 		  end if
+		  
+		  
 		  
 		  if n = 0 then                           //pt1 et pt2 sont les deux points de découpe situés sur le bord de currentshape
 		    pt1= cutpts(ncutpt-1)      //partir de cutpts(ncutpt-1), revenir à cutpts(0)  entretemps on va adjoindre les sommets de s rencontrés
@@ -298,10 +300,21 @@ Inherits MultipleSelectOperation
 		      P = new Point(Objects,currentshape.Points(k).bpt)
 		      if not s.std then                                   //on ne relie pas les morceaux des formes standard à leur mère
 		        P.SetConstructedBy currentshape.Points(k),5    // donc on pourra supprimer la mère standard sans tuer les enfants
+		      else
+		        P.constructedby = new constructioninfo(currentshape.points(k),5)
 		      end if
 		      s.InsertPoint(s.npts, P)
 		    end if
 		  wend
+		  
+		  if s.std then
+		    s.constructedby = nil
+		    currentshape.constructedshapes.remove currentshape.constructedshapes.indexof(s)
+		    for i = 0 to s.npts-1
+		      s.points(i).constructedby = nil
+		    next
+		  end if
+		  
 		  s.autos
 		  Tr = CutPts(ncutpt-1).bpt-CutPts(0).bpt
 		  Tr = Tr.VecNorPerp

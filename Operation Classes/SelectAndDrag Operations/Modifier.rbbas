@@ -176,18 +176,16 @@ Inherits SelectAndDragOperation
 		    else
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)
-		      display = thispoint + " ?"
+		      display = thispoint +  " ?"
 		    end if
 		  else
 		    display = dico.value("modifnotposs")
 		    pointmobile = nil
 		  end if
-		  
 		  if pointmobile <> nil then
 		    display = ""
 		    pointmobile.paint(g)
 		  end if
-		  
 		  Help g, display
 		  
 		End Sub
@@ -195,6 +193,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(pc as BasicPoint)
+		  
 		  
 		  if  currentshape = nil  or pc.distance(EndPoint) < epsilon  then
 		    return
@@ -218,7 +217,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as basicpoint)
-		  dim Magnetism as integer
 		  dim i as integer
 		  
 		  CurrentContent.TheObjects.tracept = false
@@ -554,7 +552,10 @@ Inherits SelectAndDragOperation
 		  if cancel then
 		    return
 		  else
-		    super.MouseDrag(pc)
+		    if visi <> nil then
+		      visi.tspfalse
+		    end if
+		    CompleteOperation(pc)
 		    mag= testmagnetisme(magneticd)
 		  end if
 		  
@@ -846,6 +847,14 @@ Inherits SelectAndDragOperation
 		Sp As Point
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		n As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		m As Integer
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -1007,6 +1016,18 @@ Inherits SelectAndDragOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="m"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="n"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

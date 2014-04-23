@@ -27,6 +27,7 @@ Inherits Circle
 		Sub FreeCircle(ol as ObjectsList, El as XMLElement)
 		  
 		  Shape(ol,El)
+		  ncpts=2
 		  Angle=Val(El.GetAttribute("Angle"))
 		  CreateExtreAndCtrlPoints
 		  nsk = new CircleSkull(wnd.Mycanvas1.transform(Points(0).bpt))
@@ -61,6 +62,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub FreeCircle(ol as ObjectsList)
 		  FreeCircle(ol,new BasicPoint(0,0))
+		  ncpts = 2
 		End Sub
 	#tag EndMethod
 
@@ -121,6 +123,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub FreeCircle(Ol as ObjectsList, s as Freecircle, p as BasicPoint)
 		  Shape(ol,s)
+		  ncpts=2
 		  CreateExtreAndCtrlPoints
 		  nsk = new CircleSkull(wnd.Mycanvas1.transform(p))
 		  nsk.updatesize(1)
@@ -189,6 +192,14 @@ Inherits Circle
 		  return p2
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint)
+		  computeradius
+		  CreateExtreAndCtrlPoints
+		  updateskull
+		End Sub
 	#tag EndMethod
 
 

@@ -2,7 +2,7 @@
 	#tag FileType
 		CodeName=SAVE
 		DocIcon=AG2.rbres;&h0
-		Extension=fag
+		Extension=fag;xml
 		Flags=&h1
 		MacCreator=CREM
 		MacType=FAG
@@ -12,7 +12,7 @@
 	#tag FileType
 		CodeName=MACR
 		DocIcon=AG2.rbres;&h1593C
-		Extension=xmag
+		Extension=xmag;xml
 		Flags=&h1
 		MacCreator=CREM
 		MacType=MAG
@@ -36,6 +36,16 @@
 		MacCreator=CREM
 		MacType=EPS
 		Name=EPS
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=STD
+		DocIcon=AG2.rbres;&h3996C
+		Extension=std;xml
+		Flags=&h0
+		MacCreator=CREM
+		MacType=STD
+		Name=STD
 	#tag EndFileType
 
 #tag EndFileTypeSet

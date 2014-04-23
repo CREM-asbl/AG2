@@ -159,7 +159,7 @@ Inherits SelectOperation
 		    s=Visible.element(j)
 		    if s.tsfi.count > 0 then
 		      for i = 0 to s.tsfi.count-1
-		        if s.tsfi.element(i).Type > 7 and  s.tsfi.element(i).Type <> 9 then
+		        if s.tsfi.element(i).Type > 6 and  s.tsfi.element(i).Type <> 9  and  s.tsfi.element(i).Type <> 11 then
 		          CurrentTsf.Append (s.tsfi.element(i))
 		        end if
 		      next
@@ -199,6 +199,48 @@ Inherits SelectOperation
 		    CurrentTsf(itsf).Highlighted = true
 		    Wnd.mycanvas1.refreshbackground
 		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMac(Doc As XMLDocument, EL as XMLElement) As XMLElement
+		  
+		  
+		  EL.AppendChild tsf.FixPt.XMLPutIdINContainer(Doc)
+		  EL.appendchild  tsf.FixPt.XMLPutConstructionInfoInContainer(Doc)
+		  
+		  return EL
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub FixPConstruction(MExe as MacroExe, EL as XMLElement)
+		  dim n, rid, num as integer
+		  dim Supp as shape
+		  
+		  FixPConstruction
+		  n = val(EL.GetAttribute("SuppTsf"))
+		  MExe.GetRealId(n,rid)
+		  supp = objects.GetShape(rid)
+		  num = val(EL.GetAttribute("Nr"))
+		  tsf = supp.tsfi.element(num)
+		  tsf.computematrix
+		  DoOperation
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

@@ -574,6 +574,7 @@ End
 		  DefinirSimilitude.enable
 		  DefinirEtirement.enable
 		  DefinirDeplacement.enable
+		  DefinirCisaillement.enable
 		  TransfosAppliquer.enable
 		  TransfosFixedPoints.enable
 		  TransfosHide.enable
@@ -1111,6 +1112,14 @@ End
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
 			'MacrosSave.checked = not MacrosSave.checked
 			'Return True
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
+			DefinirCisaillement.checked = not DefinirCisaillement.checked
+			Return True
+			
 		End Function
 #tag EndMenuHandler
 

@@ -7,7 +7,6 @@ Inherits MultipleSelectOperation
 		  OpId = 0
 		  
 		  Objects.unselectAll
-		  Currentcontent.currentoperation = self
 		  Famille = Fam
 		  Forme = form
 		  CreateShape
@@ -21,7 +20,11 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetName() As String
-		  return  Dico.Value("Construction")
+		  if currentshape isa point and point(currentshape).forme = 1 then
+		    return "Point Sur Objet"
+		  else
+		    return  Dico.Value("Construction")
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -30,6 +33,7 @@ Inherits MultipleSelectOperation
 		  dim p as BasicPoint
 		  dim specs as StdPolygonSpecifications
 		  dim fam as integer
+		  
 		  
 		  if famille <> -1 then
 		    p = wnd.mycanvas1.MouseUser
@@ -117,6 +121,8 @@ Inherits MultipleSelectOperation
 		      currentshape = new StdCircle(objects,famille, forme, p)
 		    end if
 		  end if
+		  currentshape.fam = famille
+		  currentshape.forme = forme
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
 		  wnd.setcross
@@ -146,7 +152,7 @@ Inherits MultipleSelectOperation
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
 		    ShowAttraction
-		    if nextcurrentattractingshape = nil then
+		    if currentattractingshape isa repere or  nextcurrentattractingshape = nil then
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
 		      TraitementIntersec()
@@ -181,7 +187,7 @@ Inherits MultipleSelectOperation
 		      elseif nextcurrentattractingshape <> nil then
 		        display = attheinter + "?"
 		      else
-		        display = this(currentattractingshape.gettype) +"?"
+		        display = sur + " " + this(currentattractingshape.gettype) +"?"
 		      end if
 		    else
 		      if currentshape.std then
@@ -216,6 +222,9 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
 		  if SetItem(Currentshape) then
+		    if wnd.fw <> nil then
+		      wnd.fw.close
+		    end if
 		    finished = false
 		    NextItem
 		    if CurrentItemToSet>NumberOfItemsToSelect then
@@ -260,25 +269,24 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  dim i as integer
 		  dim pt as point
-		  dim oper as operation
 		  
-		  
-		  if app.macrocreation then
-		    for i = 0 to currentshape.ncpts-1
-		      pt = currentshape.points(i)
-		      if pt.pointsur.count = 2 then
-		        if CheckNoIntersec(pt) then
-		          oper = new shapeconstruction
-		          oper.currentshape = pt
-		          currentcontent.addoperation(oper)
-		        end if
-		      end if
-		    next
+		  if currentcontent.macrocreation then
+		    if currentshape isa point and point(currentshape).Forme > 0 then
+		      pt = point(currentshape)
+		      PrepareXMLandMac(pt)  //se termine par un currentcontent.addoperation
+		    else
+		      
+		      for i = 0 to currentshape.ncpts-1
+		        pt = currentshape.points(i)
+		        PrepareXMLandMac(pt)
+		      next
+		    end if
+		    super.EndOperation
+		  else
+		    super.EndOperation
 		  end if
-		  
-		  super.EndOperation
 		  currentshape = nil
-		  CreateShape
+		  CreateShape  //On relance la construction suivante
 		End Sub
 	#tag EndMethod
 
@@ -413,18 +421,72 @@ Inherits MultipleSelectOperation
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.child(i))
 		    EL1 = XMLElement(EL.Child(0))
-		    if val(EL.GetAttribute("OpId")) = 45 and val(EL1.GetAttribute("Id")) = p.id then
+		    if (val(EL.GetAttribute("OpId")) = 45 or val(EL.GetAttribute("OpId")) = 46) and val(EL1.GetAttribute("Id")) = p.id then
 		      return false
 		    end if
 		  next
 		  return true
-		  
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ShapeConstruction(Mexe as MacroExe, EL0 as XMLElement, EL1 As XMLElement)
+		  dim  fa, fo, rid, side, n, i , num as integer
+		  dim pt as point
+		  dim EL as XMLElement
+		  dim sh as shape
+		  dim loc as double
+		  
+		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
+		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  ShapeConstruction (fa,fo)
+		  
+		  
+		  
+		  if fo = 1 then
+		    pt = point(currentshape)
+		    EL = XMLElement(EL1.Child(0))
+		    n = val(EL.GetAttribute("Id"))
+		    MExe.GetRealId(n, rid)
+		    sh = objects.GetShape(rid)
+		    num = val(EL1.GetAttribute("NumSide0"))
+		    loc = val(EL1.GetAttribute("Location"))
+		    pt.puton sh, loc
+		    pt.numside(0) = num
+		    pt.endconstruction
+		  else
+		    EL =XMLElement(EL0.Child(0))
+		    for i = 0 to CurrentShape.ncpts-1
+		      n = val(XMLElement(EL.Child(i)).GetAttribute("Id"))
+		      MExe.GetRealId(n, rid)
+		      pt = point(objects.GetShape(rid))
+		      currentshape.substitutepoint(pt,currentshape.points(i))
+		    next
+		    currentshape.constructshape
+		    currentshape.endconstruction
+		    currentshape.Createextreandctrlpoints
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PrepareXMLandMac(pt as point)
+		  dim oper as operation
+		  
+		  if checknoIntersec(pt) and pt.forme > 0  then
+		    select case Pt.forme
+		    case 1
+		      oper = new shapeconstruction
+		      oper.OpId = 46
+		    case 2
+		      oper = new Intersec
+		    end select
+		    oper.currentshape = pt
+		    currentcontent.addoperation(oper)
+		  end if
+		End Sub
+	#tag EndMethod
 
 	#tag Note, Name = Licence
 		

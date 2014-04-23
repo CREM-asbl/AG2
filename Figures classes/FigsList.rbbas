@@ -356,14 +356,9 @@ Implements StringProvider
 		Function Update(p as point, np as BasicPoint) As Boolean
 		  dim t as Boolean
 		  dim i as integer
-		  dim M as Matrix
 		  
 		  
-		  
-		  M = new TranslationMatrix(np-p.bpt)
-		  
-		  p.updatefirstpoint(M)
-		  
+		  p.updatefirstpoint(np)
 		  t = true
 		  for i = 0 to count-1
 		    t =element(index(i)).update1(p) and t

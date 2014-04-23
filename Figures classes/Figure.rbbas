@@ -948,7 +948,6 @@ Implements StringProvider
 		    return Modifeucli(p)
 		  else
 		    listersubfigs(p)
-		    
 		    for i = 0 to ubound(index)
 		      sf = subs.element(index(i))
 		      t = sf.subfigupdate and t
@@ -980,28 +979,14 @@ Implements StringProvider
 		Sub updatesomm(M as Matrix)
 		  dim i as integer
 		  dim p as Point
-		  dim t as Boolean
-		  dim sh as shape
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
 		    p.Transform(M)
-		    p.modified = true
-		    'if  p.pointsur.count = 1 then
-		    'sh = p.pointsur.element(0)
-		    'if sh isa droite then
-		    't = droite(sh).pinshape(p.bpt)
-		    'else
-		    't =  (sh.pointonside(p.bpt) <> -1)
-		    'end if
-		    'if  t then
-		    'p.valider
-		    'else
-		    'p.invalider
-		    'end if
-		    'end if
+		    
 		    p.updateshape
 		    if  p.pointsur.count = 0 then
+		      p.modified = true                //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		      p.unmodifiable = true
 		    end if
 		  next
@@ -1440,7 +1425,7 @@ Implements StringProvider
 		  dim t as boolean
 		  dim d, d1 as double
 		  
-		  if  shapes.element(0) isa arc then
+		  if shapes.element(0) = nil or  shapes.element(0) isa arc then
 		    return true
 		  end if
 		  
@@ -1457,7 +1442,7 @@ Implements StringProvider
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
-		    if not p.invalid  and  (p.pointsur.count < 2)  and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))  then
+		    if (not p.invalid)  and  (p.pointsur.count < 2)  and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))  then
 		      ep = oldbpts(i)
 		      np = p.bpt
 		      d =np.distance(M*ep)
@@ -2310,14 +2295,16 @@ Implements StringProvider
 		  
 		  s = droite(shapes.element(0))
 		  
-		  select case NbPtsModif
-		  case 0
-		    return s.prppupdate0
-		  case 1
-		    return s.prppupdate1
-		  case 2
-		    return s.prppupdate2
-		  end select
+		  if s <> nil then
+		    select case NbPtsModif
+		    case 0
+		      return s.prppupdate0
+		    case 1
+		      return s.prppupdate1
+		    case 2
+		      return s.prppupdate2
+		    end select
+		  end if
 		  
 		  
 		End Function
@@ -2535,11 +2522,12 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function autospeupdate3() As Matrix
-		  dim p, q , r As point
+		  dim p, q , r, ps As point
 		  dim ep,eq,er,np,nq,nr as BasicPoint
 		  dim i, k, n, n1, n2, n3 as integer
 		  dim t as boolean
 		  dim s as shape
+		  dim ar as arc
 		  
 		  s = shapes.element(0)
 		  if s isa arc or s isa dsect then
@@ -2568,7 +2556,8 @@ Implements StringProvider
 		      return s.Modifier2fixes(r)
 		    end if
 		  case 1
-		    if point(somm.element(ListSommSur(0))) <> supfig.pointmobile then
+		    ps =point(somm.element(ListSommSur(0)))
+		    if ps <> supfig.pointmobile and not (ps.isextremityofarc(n, ar) and (n = 2) and (ar.fig = supfig)) then
 		      t = replacerpoint(point(somm.element(ListSommSur(0))))
 		    else
 		      getoldnewpos(p,ep,np)

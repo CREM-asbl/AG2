@@ -435,7 +435,10 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Updateskull()
-		  sk.update(wnd.mycanvas1.transform(bpt))
+		  if bpt <> nil then
+		    sk.update(wnd.mycanvas1.transform(bpt))
+		    return
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -448,6 +451,7 @@ Inherits Shape
 		  dim Hyb as Lacet
 		  dim k , n as integer
 		  dim angle,alpha as double
+		  dim Bib as BibPoint
 		  
 		  if  not ispointon(s,k)  then
 		    PointSur.addshape s
@@ -460,7 +464,9 @@ Inherits Shape
 		  location(k)=r
 		  
 		  if s isa Bipoint then
-		    q = Bipoint(s).FirstP * (1-r) + BiPoint(s).SecondP*r
+		    Bib = BiBPoint(Bipoint(s).coord)
+		    q = BiB.BptOnBiBpt(r)
+		    'q = Bipoint(s).FirstP * (1-r) + BiPoint(s).SecondP*r
 		  elseif s isa Lacet then
 		    n = numside(k)
 		    if Lacet(s).curved(n) = 0 then
@@ -490,12 +496,7 @@ Inherits Shape
 		    q = new BasicPoint(cos(r),sin(r))
 		    q =  ar.GetGravityCenter + q * ar.GetRadius
 		  elseif S isa circle then
-		    circ = circle(s)
-		    q=BiBPoint(circ.coord).positionOnCircle(r,s.ori)
-		    'q = circ.Points(1).bpt-circ.GetGravityCenter
-		    'r = q.Anglepolaire+ r*2*Pi*circ.ori
-		    'q = new BasicPoint(cos(r),sin(r))
-		    'q =  circ.getgravitycenter + q * circ.getradius
+		    q=s.coord.positionOnCircle(r,s.ori)
 		  end if
 		  Moveto q
 		  
@@ -597,7 +598,7 @@ Inherits Shape
 		  if   MacConstructedBy <>  nil  then
 		    liberte = 0
 		  end if
-		  if  ubound(parents) > -1 and   parents(0).macconstructedby <> nil and not parents(0).init and not init  then
+		  if  forme <> 1 and (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
 		    liberte = 0
 		  end if
 		  
@@ -714,6 +715,7 @@ Inherits Shape
 		  end if
 		  q.constructedby.data.append k
 		  q.mobility
+		  'q.updateguides
 		  
 		  
 		  
@@ -815,7 +817,7 @@ Inherits Shape
 		  
 		  Form = XMLPutIdInContainer(Doc)
 		  
-		  if not app.macrocreation then
+		  if not currentcontent.macrocreation then
 		    if fig <> nil then
 		      Form.SetAttribute("FigId",str(fig.idfig))
 		    end if
@@ -863,6 +865,7 @@ Inherits Shape
 		  dim  s, s1, s2 as shape
 		  dim pt as point
 		  dim inter as intersec
+		  dim t as Boolean
 		  
 		  if validating then
 		    return
@@ -871,6 +874,7 @@ Inherits Shape
 		  if (conditionedby <> nil and conditionedby.invalid)   or (constructedby <> nil and (constructedby.shape <> nil) and constructedby.shape.invalid) then
 		    return
 		  end if
+		  
 		  invalid = false
 		  validating = true
 		  
@@ -1119,6 +1123,7 @@ Inherits Shape
 		  s.removechild self
 		  removeparent s
 		  mobility
+		  removefromfigure
 		  
 		  
 		  
@@ -1596,9 +1601,10 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
 		  dim sh  as shape
+		  dim i as integer
 		  
-		  if invalid or deleted then
-		    return
+		  if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
+		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
 		  end if
 		  
 		  if  PointSur.count =1 and not modified then                    //Ces instructions sont probablement inutiles
@@ -1607,14 +1613,17 @@ Inherits Shape
 		    else
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
-		    modified = true
 		  end if
+		  if ifmac <>nil and forme = 1 then
+		    ifmac.location = location(0)
+		  end if
+		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  if modified then
-		    updateconstructedpoints
-		    updateMacConstructedShapes
-		    endmove
-		  end if
+		  'if modified then
+		  updateconstructedpoints
+		  updateMacConstructedShapes
+		  endmove
+		  'end if
 		  
 		  
 		  
@@ -1732,12 +1741,13 @@ Inherits Shape
 		    Temp.SetAttribute("Id1",str(shape(ConstructedBy.data(1)).id))
 		    Temp.SetAttribute("NDivP",str(ConstructedBy.data(2)))
 		    Temp.SetAttribute("DivP",str(ConstructedBy.data(3)))
-		    'Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
+		    Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
 		    i = tsf.supp.GetIndexTsf(tsf)
 		    Temp.SetAttribute("Nr", str(i))
+		    Temp.SetAttribute("NumSide", str(tsf.index))
 		  case 9
 		    Temp.SetAttribute("IdParent", str(Parents(0).Id))
 		    if constructedby.shape <> nil then
@@ -2453,16 +2463,27 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatefirstpoint(M as Matrix)
+		Sub updatefirstpoint(np as BasicPoint)
+		  dim M as Matrix
+		  dim delta as BasicPoint
+		  dim d as double
+		  
+		  delta = np-bpt
+		  
+		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
+		    d = delta.norme
+		    if d > 0.05 then
+		      np = bpt+ (delta.normer)*0.05
+		    end if
+		  end if
+		  M = new TranslationMatrix(np-bpt)
 		  Moveto M*bpt
 		  if pointsur.count = 1 then
 		    puton pointsur.element(0)
 		  end if
 		  modified = true
 		  updateshape
-		  
 		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
-		  
 		End Sub
 	#tag EndMethod
 
@@ -2835,25 +2856,28 @@ Inherits Shape
 		  dim Form, Temp as XMLElement
 		  dim i, n as integer
 		  
-		  Form = XMLPutIdInContainer(Doc)
-		  Form.AppendChild XMLPutTsfInContainer(Doc)
-		  
-		  if pointsur.count = 1 then
-		    Form.setAttribute("PointSur", str(pointsur.element(0).id))
-		    if surseg then
-		      Form.SetAttribute("Surseg","1")
+		  if currentcontent.macrocreation  then
+		    Form = XMLPutIdInContainer(Doc)
+		    EL.appendchild Form
+		    
+		    if pointsur.count > 0 then
+		      temp = pointsur.XMLPutIdInContainer(Doc)
+		      select case pointsur.count
+		      case 1
+		        temp.setAttribute("NumSide0",str(numside(0)))
+		        temp.setattribute("Location",str(location(0)))
+		        if surseg then
+		          temp.SetAttribute("Surseg","1")
+		        end if
+		      case 2
+		        temp.setAttribute("NumSide0",str(numside(0)))
+		        temp.setAttribute("NumSide1",str(numside(1)))
+		      end select
 		    end if
-		  elseif pointsur.count=2 then
-		    temp = pointsur.XMLPutIdInContainer(Doc)
-		    temp.setAttribute("NumSide0",str(numside(0)))
-		    temp.setAttribute("NumSide1",str(numside(1)))
-		  end if
-		  EL.AppendChild Form
-		  if pointsur.count = 2 then
 		    EL.AppendChild Temp
+		    
+		    return EL
 		  end if
-		  
-		  return EL
 		End Function
 	#tag EndMethod
 
@@ -2960,7 +2984,7 @@ Inherits Shape
 		  
 		  Currentcontent.addShape self
 		  if CurrentContent.ForHisto then
-		    if macconstructedby <> nil then
+		    if macconstructedby <> nil and forme <> 1 then
 		      super.addtofigure
 		    else
 		      addtofigure
@@ -3044,6 +3068,26 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Constructing() As Boolean
+		  dim i as integer   'Utilisé uniquement dans la détermination des points "sur" qui sont initiaux d'une macro
+		  
+		  if forme <> 1 then
+		    return false
+		  end if
+		  
+		  if ubound (constructedshapes)> -1 then
+		    return true
+		  end if
+		  
+		  'for i = 0 to ubound(parents)
+		  'if (parents(i).getindexpoint(self) <> -1) and parents(i).isaparaperp then
+		  'return true
+		  'end if
+		  'next
+		  
+		End Function
+	#tag EndMethod
 
 	#tag Note, Name = Licence
 		
@@ -3162,27 +3206,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty
