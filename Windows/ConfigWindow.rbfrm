@@ -810,17 +810,17 @@ End
 
 #tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			'MacrosCreate.checked = not MacrosCreate.checked
-			'Return True
-			'
+			MacrosCreate.checked = not MacrosCreate.checked
+			Return True
+			
 			
 		End Function
 #tag EndMenuHandler
 
 #tag MenuHandler
 		Function MacrosLoad() As Boolean Handles MacrosLoad.Action
-			'MacrosLoad.checked = not MacrosLoad.checked
-			'Return True
+			MacrosLoad.checked = not MacrosLoad.checked
+			Return True
 		End Function
 #tag EndMenuHandler
 
@@ -859,8 +859,8 @@ End
 
 #tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
-			'MacrosQuit.checked = not MacrosQuit.checked
-			'Return True
+			MacrosQuit.checked = not MacrosQuit.checked
+			Return True
 		End Function
 #tag EndMenuHandler
 
@@ -1061,8 +1061,8 @@ End
 
 #tag MenuHandler
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
-			'MacrosFinaux.checked = not MacrosFinaux.checked
-			'Return True
+			MacrosFinaux.checked = not MacrosFinaux.checked
+			Return True
 			
 		End Function
 #tag EndMenuHandler
@@ -1085,8 +1085,8 @@ End
 
 #tag MenuHandler
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
-			''MacrosChoose.checked = not MacrosChoose.checked
-			'Return True
+			'MacrosChoose.checked = not MacrosChoose.checked
+			Return True
 			
 		End Function
 #tag EndMenuHandler
@@ -1110,8 +1110,8 @@ End
 
 #tag MenuHandler
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
-			'MacrosSave.checked = not MacrosSave.checked
-			'Return True
+			MacrosSave.checked = not MacrosSave.checked
+			Return True
 		End Function
 #tag EndMenuHandler
 
