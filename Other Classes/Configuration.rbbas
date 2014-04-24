@@ -197,7 +197,7 @@ Protected Class Configuration
 		        if El2 <> nil then
 		          StdSize = val(EL2.Value)
 		        else
-		          StdSize=1
+		          StdSize =1
 		        end if
 		      end if
 		    end if
@@ -772,7 +772,7 @@ Protected Class Configuration
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		StdSize As integer
+		StdSize As integer = 1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
