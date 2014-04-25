@@ -388,7 +388,6 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function BptOnBiBpt(r as double) As BasicPoint
-		  
 		  return First * (1-r) + second * r
 		End Function
 	#tag EndMethod

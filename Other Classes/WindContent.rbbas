@@ -609,12 +609,12 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub setpolygpointes(n as integer)
 		  if n = 1 then
-		    currentcontent.polygpointes = true
+		    polygpointes = true
 		  else
-		    currentcontent.polygpointes = false
+		    polygpointes = false
 		  end if
 		  if wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
-		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = currentcontent.polygpointes
+		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = polygpointes
 		  end if
 		  
 		End Sub

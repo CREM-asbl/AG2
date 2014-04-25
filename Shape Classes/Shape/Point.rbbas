@@ -3089,7 +3089,6 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
-
 	#tag Note, Name = Licence
 		
 		Copyright © Mars 2010 CREM

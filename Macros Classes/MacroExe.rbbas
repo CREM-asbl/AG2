@@ -315,7 +315,6 @@ Inherits MultipleSelectOperation
 		  dim ifmac, ifm As InfoMac
 		  dim s, newshape as shape
 		  
-		  
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
 		  n = val(EL0.GetAttribute("Id"))
@@ -328,7 +327,6 @@ Inherits MultipleSelectOperation
 		  ifmac = new InfoMac(MacInfo, EL0,EL1,oper)
 		  
 		  //Deuxième partie : adaptation selon la classe (init, interm, final)
-		  
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    ifmac.RealId =MacInfo.GetRealInit(n)
 		    ifmac.init = true
@@ -342,7 +340,6 @@ Inherits MultipleSelectOperation
 		      ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
 		    next
 		    ifmac.ori = s.ori
-		    
 		  end if
 		  
 		  if Mac.ObInterm.indexof(n) <> -1 then
@@ -370,13 +367,9 @@ Inherits MultipleSelectOperation
 		        newshape.points(i).ifmac = ifmac.childs(i)
 		      end if
 		    next
-		    
 		  end if
-		  
+
 		  MacInfo.IfMacs.append ifmac
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -451,9 +444,6 @@ Inherits MultipleSelectOperation
 		    fo = Mac.FoInit(CurrentItemToSet-1)
 		  end if
 		  super.mousemove(p)  //appelle getshape
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -736,10 +726,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub GetRealId(n as integer, byref rid as integer)
-		  
-		  
 		  rid = Real(MacId.indexof(n))
-		  
 		End Sub
 	#tag EndMethod
 

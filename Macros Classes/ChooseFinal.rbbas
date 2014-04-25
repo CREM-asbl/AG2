@@ -76,12 +76,6 @@ Inherits MultipleSelectOperation
 		  else
 		    IdentifyInit2(s)
 		  end if
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -139,7 +133,6 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AddInit(s as shape)
 		  dim i as integer
-		  
 		  
 		  if s isa point and not s.isptsur then
 		    for i = 0 to ubound(point(s).parents)
@@ -420,6 +413,7 @@ Inherits MultipleSelectOperation
 		      IdentifyInit(p.pointsur.element(0))
 		      identifyinit(p.constructedby.shape)
 		    end select
+
 		  elseif p.macconstructedby <> nil then
 		    MacInfo = p.MacConstructedBy
 		    for i = 0 to ubound(MacInfo.RealInit)

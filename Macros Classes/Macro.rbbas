@@ -119,8 +119,8 @@ Protected Class Macro
 		  for i = 0 to ubound(ObCategorie)
 		    EL = Doc.CreateElement("Obj"+Categorie)
 		    EL.SetAttribute("Id", str(ObCategorie(i)))
-		    EL.SetAttribute("Fa",str(FaCategorie(i)))
-		    EL.SetAttribute("Fo",str(FoCategorie(i)))
+		    'EL.SetAttribute("Fa",str(FaCategorie(i)))
+		    'EL.SetAttribute("Fo",str(FoCategorie(i)))
 		    Temp.AppendChild EL
 		  next
 		  
@@ -241,7 +241,6 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub ExeOper(ifmac as infomac, byref nbp As nBPoint)
-		  
 		  select case ifmac.oper
 		  case 0 //Construction
 		    Construction(ifmac, nbp)
@@ -347,7 +346,6 @@ Protected Class Macro
 		  end if
 		  w=BiB1.VecNorParaPerp(n)
 		  
-		  
 		  redim  nbp.tab(1)
 		  //Ensuite on recherche l'origine
 		  nbp.tab(0) = ifmac.childs(0).coord.tab(0)    'GetCoordChild(ifmac.childs(0))
@@ -383,6 +381,7 @@ Protected Class Macro
 		        end if
 		      end if
 		    end if
+		    
 		  end if
 		  
 		End Sub
@@ -467,7 +466,6 @@ Protected Class Macro
 		  dim i,  num as integer
 		  dim ifm1, ifm2 as infomac
 		  
-		  
 		  if ifmac.fa = 0 then
 		    redim nbp.tab(0)
 		    ifm1 =  MacInf.GetInfoMac(ifmac.forme1,num)
@@ -492,7 +490,6 @@ Protected Class Macro
 		      end if
 		    next
 		    nbp.constructshape(ifmac.fa, ifmac.fo)
-		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -647,7 +644,6 @@ Protected Class Macro
 		  nbp1 = ifm2.coord
 		  n = nbp1.taille
 		  redim nbp.tab(n)
-		  
 		  M = ifm1.M
 		  if M <> nil and M.v1 <> nil  then
 		    for i = 0 to n-1
@@ -820,7 +816,6 @@ Protected Class Macro
 		    next
 		    return t
 		  end if
-		  
 		End Function
 	#tag EndMethod
 
@@ -866,19 +861,6 @@ Protected Class Macro
 		  if M <> nil and M.v1 <> nil then
 		    nbp.append M.fixpt
 		  end if
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 

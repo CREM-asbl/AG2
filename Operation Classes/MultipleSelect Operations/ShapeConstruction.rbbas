@@ -270,8 +270,6 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim pt as point
 		  
-		  
-		  
 		  if currentcontent.macrocreation then
 		    if currentshape isa point and point(currentshape).Forme > 0 then
 		      pt = point(currentshape)
@@ -288,10 +286,6 @@ Inherits MultipleSelectOperation
 		  end if
 		  currentshape = nil
 		  CreateShape  //On relance la construction suivante
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -431,10 +425,6 @@ Inherits MultipleSelectOperation
 		    end if
 		  next
 		  return true
-		  
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 
@@ -496,7 +486,6 @@ Inherits MultipleSelectOperation
 		  end if
 		End Sub
 	#tag EndMethod
-
 
 	#tag Note, Name = Licence
 		

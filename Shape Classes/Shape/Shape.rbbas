@@ -4021,7 +4021,6 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
-
 	#tag Note, Name = Formes
 		
 		

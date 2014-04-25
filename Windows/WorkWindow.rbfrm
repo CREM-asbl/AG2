@@ -748,6 +748,9 @@ End
 
 	#tag Event
 		Sub Open()
+		  if app.ipctransfert then
+		    Quit
+		  end if
 		  
 		  initParams()
 		  updateMenu
@@ -763,9 +766,15 @@ End
 		    app.iw.Close
 		  end if
 		  maximize
-		  if app.currentfile <> nil then
-		    OpenFile(app.currentfile)
-		    app.currentfile = nil
+		  if app.fileName <> "" then
+		    dim f as FolderItem
+		    f = GetFolderItem(app.FileName)
+		    if f <> nil then
+		      OpenFile(f)
+		    else
+		      MsgBox  Dico.Value("MsgErrOpenFile")
+		    end if
+		    app.FileName = ""
 		  end if
 		  
 		  
@@ -2988,7 +2997,7 @@ End
 		    drapstdcolor = false
 		  else
 		    selectedTool = index
-		    StdOutil(index).refresh
+		    Tools.refresh
 		    drapico = true
 		    openformswindow(0,SelectedTool)
 		  end if
@@ -3053,7 +3062,7 @@ End
 		  if mousedispo then
 		    selectedTool = index
 		    Kit = "Libre"
-		    LibOutils(selectedtool).refresh
+		    Tools.refresh
 		    
 		    if selectedtool <> 0 then
 		      openformswindow(1, selectedtool)

@@ -81,7 +81,6 @@ Inherits nBpoint
 		    b = startangle + a*Angle*orien
 		    q = new BasicPoint(cos(b),sin(b))
 		    q =  tab(0) + q *r
-		    return q
 		  end if             'positionne un basicpoint sur un circle à partir de son abscisse curviligne relative à ce circle
 		End Function
 	#tag EndMethod

@@ -9,6 +9,7 @@ Inherits Application
 		    
 		  end try
 		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -140,48 +141,44 @@ Inherits Application
 	#tag Event
 		Sub Open()
 		  CheckProcess
-		  CheckSystem
-		  InitFolders
-		  Dico = new Dictionnaire
-		  Config = new Configuration
-		  autoquit = true
-		  init
-		  CheckUpdate
-		  themacros = new macroslist
-		  
-		  
-		  
-		  
-		  
+		  if not ipctransfert then
+		    CheckSystem
+		    InitFolders
+		    Dico = new Dictionnaire
+		    Config = new Configuration
+		    autoquit = true
+		    init
+		    themacros = new macroslist
+		    CheckUpdate
+		  end if
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub OpenDocument(item As FolderItem)
-		  if FileName ="" then
-		    FileName = item.AbsolutePath
-		  else
-		    FileName = FileName+" "+item.AbsolutePath
+		  'reste un problème avec accent
+		  dim s As string
+		  s = item.AbsolutePath
+		  
+		  if Right(s,1) = "\" then
+		    s = s.mid(1,Len(s)-1)
 		  end if
-		  Currentfile = GetFolderItem(FileName)
-		  if currentfile.Exists then
-		    if ipctransfert then
-		      ipc.send(currentfile)
-		      ipctransfert = false
-		    end if
-		    FileName = ""
+		  if FileName <> "" then
+		    s = " "+s
 		  end if
 		  
+		  FileName = FileName+s
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Function CancelClose() As Boolean
 		  if ipctransfert then
-		    ipc.Send(nil)
-		  else
-		    Config.Save
+		    ipc.send(FileName)
+		    ipctransfert = false
 		  end if
+		  Config.Save
+		  
 		End Function
 	#tag EndEvent
 
@@ -281,7 +278,6 @@ Inherits Application
 		  
 		  if not mut.TryEnter then
 		    ipctransfert = true
-		    Quit
 		  else
 		    ipc.listen
 		  end if

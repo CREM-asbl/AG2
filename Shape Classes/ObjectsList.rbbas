@@ -572,6 +572,7 @@ Protected Class ObjectsList
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
 		      CurrentContent.optimize
+		      currentcontent.createplans
 		    end if
 		    updateids
 		  end if
@@ -730,7 +731,6 @@ Protected Class ObjectsList
 		  next
 		  OptimizeGroups
 		  currentcontent.createplans
-		  
 		End Sub
 	#tag EndMethod
 

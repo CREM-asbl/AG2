@@ -5,12 +5,14 @@ Protected Module api
 		  dim info as String
 		  dim validite, version as String
 		  
-		  info = EL.FirstChild.FirstChild.Value
-		  validite  = EL.Child(1).FirstChild.value
-		  version =app.LongVersion
-		  if version < validite and info<>Config.LastInfo  then
-		    msgBox EL.LastChild.FirstChild.Value
-		    Config.LastInfo = info
+		  if EL.FirstChild <> nil then
+		    info = EL.FirstChild.FirstChild.Value
+		    validite  = EL.Child(1).FirstChild.value
+		    version =app.LongVersion
+		    if version < validite and info<>Config.LastInfo  then
+		      msgBox EL.LastChild.FirstChild.Value
+		      Config.LastInfo = info
+		    end if
 		  end if
 		End Sub
 	#tag EndMethod
@@ -44,6 +46,7 @@ Protected Module api
 		  dim update As string
 		  
 		  response = http.Post(url+"?method=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
+		  MsgBox response
 		  
 		  try
 		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))

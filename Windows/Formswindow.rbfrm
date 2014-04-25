@@ -1,4 +1,4 @@
-#tag Window
+﻿#tag Window
 Begin Window Formswindow
    BackColor       =   16777215
    Backdrop        =   0
@@ -376,7 +376,7 @@ End
 
 	#tag Event
 		Sub MouseExit()
-		  if kit = 0 and wnd.drapico then
+		  if not selection and kit = 0  then
 		    wnd.setIco(fam,0)
 		    wnd.stdoutil(fam).refresh
 		  end if
@@ -386,6 +386,10 @@ End
 	#tag Event
 		Sub Close()
 		  wnd.fw = nil
+		  if not selection and kit = 0  then
+		    wnd.setIco(fam,0)
+		    wnd.stdoutil(fam).refresh
+		  end if
 		End Sub
 	#tag EndEvent
 
@@ -548,6 +552,7 @@ End
 		    CurrentContent.CurrentOperation  = Op
 		    wnd.setcross
 		    wnd.refreshtitle
+		    Close
 		  end if
 		End Sub
 	#tag EndEvent

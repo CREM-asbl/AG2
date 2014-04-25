@@ -404,7 +404,6 @@ Protected Class InfoMac
 		MacInfo As MacConstructionInfo
 	#tag EndProperty
 
-
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Name"

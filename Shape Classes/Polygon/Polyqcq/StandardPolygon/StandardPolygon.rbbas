@@ -38,6 +38,7 @@ Inherits Polyqcq
 		  next
 		  redim curved(npts-1)
 		  redim prol(npts-1)
+		  redim curved(npts-1)
 		  std = true
 		  autos
 		End Sub
