@@ -24,6 +24,8 @@ Implements StringProvider
 		    return Dico.value("Etirement")
 		  case 10
 		    return Dico.value("Deplacement")
+		  case 11
+		    return Dico.Value("Cisaillement")
 		  end select
 		  
 		  
@@ -212,11 +214,11 @@ Implements StringProvider
 		  case 82
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(1).bpt, supp.points(2).bpt)
 		  case 9  //Etirements
-		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt)
+		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  case 10 //Deplacement
 		    M = new IsometryMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
-		  case 11 //Cisaillement  Support trapezoidal
-		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt)
+		  case 11 //Cisaillement  
+		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  end select
 		  
 		  if M = nil then
@@ -648,8 +650,8 @@ Implements StringProvider
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
 		    case 9, 11
-		      a = can.transform(supp.points(2).bpt)
-		      b = can.transform(supp.points(3).bpt)
+		      a = can.transform(supp.points(3).bpt)
+		      b = can.transform(supp.points(2).bpt)
 		    end select
 		    T.updatetip(a,b,col)
 		    g.DrawObject T, b.x, b.y

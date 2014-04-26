@@ -434,6 +434,10 @@ Protected Class Configuration
 		  'if right(stdfile,4) <>".std" then
 		  'stdfile = stdfile+".std"
 		  'end if
+		  
+		  if stdsize = 0 then
+		    stdsize = 1
+		  end if
 		  fi = getfolderitem(stdfile)
 		  if not fi.exists then
 		    fi = app.StdFolder.Child(stdfile)

@@ -113,13 +113,12 @@ Inherits Timer
 		  case 9
 		    u1= tsf.supp.points(0).bpt
 		    u2= tsf.supp.points(1).bpt
-		    u3= tsf.supp.points(2).bpt
-		    u4 = tsf.supp.points(3).bpt
-		    Bib1 = tsf.supp.getBibside(0)
-		    Bib2 = tsf.supp.getBiBSide(2)
+		    u3= tsf.supp.points(3).bpt
+		    u4 = tsf.supp.points(2).bpt
+		    Bib1 = new BiBPoint(u1,u2)
+		    Bib2 = new BiBPoint(u3,u4)
 		    q = Bib2.BibInterdroites(bib1,0,0,r1,r2)
-		    'v = BiB2.second - BiB2.first
-		    u4 = q + (u3-q)*(abs((1-r1)/r1)^(1/niter))
+		    u4 = q + (u3 -q)*(((r1-1)/r1)^(1/niter))
 		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
 		  case 10
 		    Mat = SimilarityMatrix(tsf.M)
@@ -131,8 +130,8 @@ Inherits Timer
 		  case 11
 		    u1= tsf.supp.points(0).bpt
 		    u2= tsf.supp.points(1).bpt
-		    u3= tsf.supp.points(2).bpt
-		    u4 = tsf.supp.points(3).bpt
+		    u3= tsf.supp.points(3).bpt
+		    u4 = tsf.supp.points(2).bpt
 		    u4 = u3 + (u4-u3)/niter
 		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
 		  end select

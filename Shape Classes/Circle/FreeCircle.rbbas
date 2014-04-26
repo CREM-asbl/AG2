@@ -102,7 +102,11 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function GetType() As string
-		  return Dico.value("FreeCircle")
+		  if constructedby <> nil and constructedby.oper = 6 and ((transformation(constructedby.data(0)).type = 9) or (transformation(constructedby.data(0)).type = 11 )) then
+		    return Dico.value("Ellipse")
+		  else
+		    return Dico.value("FreeCircle")
+		  end if
 		End Function
 	#tag EndMethod
 

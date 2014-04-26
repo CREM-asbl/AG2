@@ -349,7 +349,7 @@ Protected Module Dictionnaires
 		    select case st
 		    case "arc"
 		      return "cet arc"
-		    case "droite", "bande"
+		    case "droite", "bande", "ellipse", "hyperbole", "parabole"
 		      return "cette " + st
 		    else
 		      return "ce " + st

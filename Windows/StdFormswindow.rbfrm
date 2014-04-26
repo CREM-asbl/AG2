@@ -31,7 +31,7 @@ Begin Window StdFormswindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window StdFormswindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   100
       BehaviorIndex   =   0
    End
@@ -62,7 +62,7 @@ Begin Window StdFormswindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -81,7 +81,7 @@ Begin Window StdFormswindow
       TextSize        =   12
       Top             =   13
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   126
       BehaviorIndex   =   1
    End
@@ -91,7 +91,7 @@ Begin Window StdFormswindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -112,7 +112,7 @@ Begin Window StdFormswindow
       TextSize        =   12
       Top             =   63
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   100
       BehaviorIndex   =   2
    End
@@ -122,7 +122,7 @@ Begin Window StdFormswindow
       ControlOrder    =   3
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -141,7 +141,7 @@ Begin Window StdFormswindow
       TextSize        =   12
       Top             =   62
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   42
       BehaviorIndex   =   3
    End
@@ -152,7 +152,7 @@ Begin Window StdFormswindow
       Caption         =   "OK"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -169,7 +169,7 @@ Begin Window StdFormswindow
       TextSize        =   12
       Top             =   106
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   4
    End
@@ -180,7 +180,7 @@ Begin Window StdFormswindow
       Caption         =   "Cancel"
       ControlOrder    =   5
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -197,7 +197,7 @@ Begin Window StdFormswindow
       TextSize        =   12
       Top             =   106
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   5
    End
@@ -262,12 +262,27 @@ End
 		  stdfiles = app.StdFilesDispo
 		  for i=0 to UBound(stdfiles)
 		    me.addRow(stdfiles(i))
+		    if stdfiles(i)+".std" = config.stdfile then
+		      me.listIndex = i
+		    end if
 		  next
 		  me.ListIndex = max(0,me.ListIndex)
 		  
 		  
 		  
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PopupMenu2
+	#tag Event
+		Sub Open()
+		  me.ListIndex = config.stdsize
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Change()
+		  config.stdsize = val(me.Text)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
