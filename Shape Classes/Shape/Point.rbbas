@@ -1741,7 +1741,9 @@ Inherits Shape
 		    Temp.SetAttribute("Id1",str(shape(ConstructedBy.data(1)).id))
 		    Temp.SetAttribute("NDivP",str(ConstructedBy.data(2)))
 		    Temp.SetAttribute("DivP",str(ConstructedBy.data(3)))
-		    Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
+		    if ubound(constructedby.data) > 3 then
+		      Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
+		    end if
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
@@ -3088,6 +3090,7 @@ Inherits Shape
 		  
 		End Function
 	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

@@ -215,7 +215,7 @@ Inherits SelectAndDragOperation
 		  
 		  if Config.Ajust  then
 		    M1 = Ajustement
-		    if M1 <> nil then
+		    if M1 <> nil and M1.v1 <> nil  then
 		      M = M1*M
 		    end if
 		  end if

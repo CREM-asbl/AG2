@@ -206,11 +206,12 @@ Inherits SelectOperation
 		    q = Pt.bpt
 		  end if
 		  M = new SimilarityMatrix(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt, Firstattractedpoint.bpt,q)
-		  figs.Bouger(M)
-		  RotationPoint=FirstAttractedPoint
-		  updateangles(M.angle)
-		  return M
-		  
+		  if M <> nil and M.v1 <> nil then
+		    figs.Bouger(M)
+		    RotationPoint=FirstAttractedPoint
+		    updateangles(M.angle)
+		    return M
+		  end if
 		  
 		  
 		  

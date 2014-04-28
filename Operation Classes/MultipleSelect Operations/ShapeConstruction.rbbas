@@ -438,21 +438,23 @@ Inherits MultipleSelectOperation
 		  
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
+		  
 		  ShapeConstruction (fa,fo)
 		  
-		  
-		  
-		  if fo = 1 then
-		    pt = point(currentshape)
-		    EL = XMLElement(EL1.Child(0))
-		    n = val(EL.GetAttribute("Id"))
-		    MExe.GetRealId(n, rid)
-		    sh = objects.GetShape(rid)
-		    num = val(EL1.GetAttribute("NumSide0"))
-		    loc = val(EL1.GetAttribute("Location"))
-		    pt.puton sh, loc
-		    pt.numside(0) = num
-		    pt.endconstruction
+		  if fa = 0 then
+		    
+		    if fo = 1 then
+		      pt = point(currentshape)
+		      EL = XMLElement(EL1.Child(0))
+		      n = val(EL.GetAttribute("Id"))
+		      MExe.GetRealId(n, rid)
+		      sh = objects.GetShape(rid)
+		      num = val(EL1.GetAttribute("NumSide0"))
+		      loc = val(EL1.GetAttribute("Location"))
+		      pt.puton sh, loc
+		      pt.numside(0) = num
+		      pt.endconstruction
+		    end if
 		  else
 		    EL =XMLElement(EL0.Child(0))
 		    for i = 0 to CurrentShape.ncpts-1
@@ -486,6 +488,7 @@ Inherits MultipleSelectOperation
 		  end if
 		End Sub
 	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

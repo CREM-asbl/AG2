@@ -3668,10 +3668,10 @@ Implements StringProvider
 		        s1.childs(j).updateshape
 		      end if
 		    next
-		    for j = 0 to ubound(MacInfo.RealInit)
-		      s2 = objects.Getshape(MacInfo.RealInit(j))
-		      's2.modified = true
-		    next
+		    'for j = 0 to ubound(MacInfo.RealInit)
+		    's2 = objects.Getshape(MacInfo.RealInit(j))
+		    ''s2.modified = true
+		    'next
 		    s1.updateshape
 		  next
 		  
@@ -4020,6 +4020,7 @@ Implements StringProvider
 		  
 		End Function
 	#tag EndMethod
+
 
 	#tag Note, Name = Formes
 		

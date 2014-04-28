@@ -39,7 +39,7 @@ Protected Class Macro
 		  dim i, fa, fo as integer
 		  dim drap as Boolean
 		  
-		  
+		  Macro
 		  Histo =  XMLElement(Doc.FirstChild)
 		  Caption =  Histo.GetAttribute("Name")
 		  List = Histo.XQL("Description")
@@ -119,8 +119,8 @@ Protected Class Macro
 		  for i = 0 to ubound(ObCategorie)
 		    EL = Doc.CreateElement("Obj"+Categorie)
 		    EL.SetAttribute("Id", str(ObCategorie(i)))
-		    'EL.SetAttribute("Fa",str(FaCategorie(i)))
-		    'EL.SetAttribute("Fo",str(FoCategorie(i)))
+		    EL.SetAttribute("Fa",str(FaCategorie(i)))
+		    EL.SetAttribute("Fo",str(FoCategorie(i)))
 		    Temp.AppendChild EL
 		  next
 		  
@@ -286,7 +286,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub divide(ifmac as infomac, byref nbp as nBPoint)
+		Sub divide(ifmac as infomac, byref nbp As nBPoint)
 		  dim num, num1, num2 as integer
 		  dim Trib as TriBpoint
 		  dim Bib as BiBPoint
@@ -542,26 +542,26 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetLocation(n as integer) As double
-		  dim m, num as integer
-		  dim ifm as infomac
-		  
-		  m = Obinit.indexof(n)
-		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n, num)
-		    return ifm.location
-		  end if
-		  
-		  m = ObInterm.indexof(n)
-		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n, num)
-		    return ifm.location
-		  end if
-		  
-		  //Si c'est un point qui n'est ni initial ni intermédiaire
-		  
-		  ifm = MacInf.GetSommet(numop-1,n,m)
-		  return ifm.location
+		Function oldGetLocation(n as integer) As double
+		  'dim m, num as integer
+		  'dim ifm as infomac
+		  '
+		  'm = Obinit.indexof(n)
+		  'if m <> -1 then        //Si c'est une forme initiale
+		  'ifm = MacInf.GetInfoMac(n, num)
+		  'return ifm.location
+		  'end if
+		  '
+		  'm = ObInterm.indexof(n)
+		  'if m <> -1 then        //Si c'est une forme intermédiaire
+		  'ifm = MacInf.GetInfoMac(n, num)
+		  'return ifm.location
+		  'end if
+		  '
+		  '//Si c'est un point qui n'est ni initial ni intermédiaire
+		  '
+		  'ifm = MacInf.GetSommet(numop-1,n,m)
+		  'return ifm.location
 		  
 		  
 		End Function
