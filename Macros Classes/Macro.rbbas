@@ -7,32 +7,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreerMenuItem()
-		  dim mitem as Menuitem
-		  dim k  as integer
-		  
-		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
-		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
-		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  
-		  mitem = new MenuItem
-		  mitem.Name = "MacrosChoose"
-		  mitem.Text = Caption
-		  mitem.checked = true
-		  k = app.themacros.count-1
-		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").append mitem
-		  mitem.index  = k
-		  wnd.EraseMenuBar
-		  wnd.CopyMenuBar
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Macro(Doc as XMLDocument)
 		  dim List as XMLNodeList
 		  dim Temp, EL1 As  XMLElement
@@ -864,6 +838,16 @@ Protected Class Macro
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub OpenDescripWindow()
+		  mw = new MacWindow
+		  mw.Title = GetName + " : " + Dico.Value("MacroDescription")
+		  mw.EditField1.Text = expli
+		  wnd.setfocus
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -949,6 +933,10 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		NumOp As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		mw As MacWindow
 	#tag EndProperty
 
 

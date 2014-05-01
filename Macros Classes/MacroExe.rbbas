@@ -6,10 +6,7 @@ Inherits MultipleSelectOperation
 		  Mac = app.TheMacros.element(n)
 		  MacroExe(Mac)
 		  
-		  mw = new MacWindow
-		  mw.Title = Mac.GetName + " : " + Dico.Value("MacroDescription")
-		  mw.EditField1.Text = Mac.expli
-		  wnd.setfocus
+		  mac.OpenDescripWindow
 		  fa = -1
 		  
 		  
@@ -368,7 +365,7 @@ Inherits MultipleSelectOperation
 		      end if
 		    next
 		  end if
-
+		  
 		  MacInfo.IfMacs.append ifmac
 		End Sub
 	#tag EndMethod

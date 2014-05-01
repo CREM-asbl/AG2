@@ -1085,7 +1085,7 @@ End
 
 #tag MenuHandler
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
-			'MacrosChoose.checked = not MacrosChoose.checked
+			MacrosChoose(index).checked = not MacrosChoose(index).checked
 			Return True
 			
 		End Function
@@ -1118,6 +1118,32 @@ End
 #tag MenuHandler
 		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
 			DefinirCisaillement.checked = not DefinirCisaillement.checked
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function MacrosClose2(index as Integer) As Boolean Handles MacrosClose2.Action
+			MacrosClose2(index).checked = not MacrosClose2(index).checked
+			Return True
+			
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function MacrosDescri2(index as Integer) As Boolean Handles MacrosDescri2.Action
+			MacrosDescri2(index).checked = not MacrosDescri2(index).checked
+			Return True
+			
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function MacrosErase2(index as Integer) As Boolean Handles MacrosErase2.Action
+			MacrosErase2(index).checked = not MacrosErase2(index).checked
 			Return True
 			
 		End Function
@@ -1291,7 +1317,7 @@ End
 #tag EndEvents
 #tag Events Canvas1
 	#tag Event
-		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
 		    Config.nlibvis(0) = not config.nlibvis(0)
 		    wnd.LibBoxRefresh
@@ -1308,7 +1334,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(Index As Integer, index as Integer, g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  if not Config.nlibvis(index) then
 		    me.Graphics.ForeColor = &c000000
 		    me.Graphics.DrawLine 0,0,me.width,me.height
@@ -1321,7 +1347,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(Index As Integer, index as Integer)
+		Sub Action(index as Integer)
 		  wnd.MouvBut(index).visible = not wnd.MouvBut(index).visible
 		  Config.MvBt(index) = wnd.MouvBut(Index).visible
 		  

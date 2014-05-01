@@ -277,7 +277,7 @@ End
 #tag Events PopupMenu2
 	#tag Event
 		Sub Open()
-		  me.ListIndex = config.stdsize
+		  me.ListIndex = config.stdsize-1
 		End Sub
 	#tag EndEvent
 	#tag Event

@@ -47,6 +47,9 @@
     <ToolsGrid Name="Grille" />
     <ToolsHisto Name="Lire un historique" />
     <MacrosMenu Name="Macros" />
+    <MacrosErase Name="Supprimer une macro"/>
+    <MacrosDescri Name="Afficher la description d'une macro" />
+    <MacrosClose Name="Fermer une macro" />
     <MacrosExecute Name="Exécuter une macro" />
     <MacrosCreate Name="Créer une  macro" />
     <MacrosSave Name="Sauvegarder la macro" />

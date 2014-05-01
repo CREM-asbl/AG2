@@ -366,7 +366,9 @@ Inherits Canvas
 		    OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
 		    OffscreenPicture.Transparent = 1
 		  end if
-		  bkcol = Config.Fillcolor.col
+		  if config <> nil then
+		    bkcol = Config.Fillcolor.col
+		  end if
 		  calculcoins
 		  
 		  
@@ -381,7 +383,7 @@ Inherits Canvas
 		  dim pt as point
 		  
 		  
-		  if Background = nil or CurrentContent.GetRepere = nil then
+		  if Background = nil or CurrentContent = nil or CurrentContent.GetRepere = nil then
 		    return
 		  end if
 		  
