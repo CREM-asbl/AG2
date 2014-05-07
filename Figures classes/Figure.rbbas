@@ -292,7 +292,6 @@ Implements StringProvider
 		  
 		  if M = nil or M.v1 = nil then
 		    QQupdateshapes
-		    EndQQupdateshapes
 		    return true                                             ////faut-il bloquer plus ?  (arc d'angle 0)...
 		  else
 		    updatesomm(M)

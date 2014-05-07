@@ -85,20 +85,6 @@ Protected Class MacConstructionInfo
 		      ifmac = CreateInfoMacShape(EL1)
 		    end if
 		    ifmac.MacInfo = self
-		    'EL2 = XMLElement(EL1.Child(0))
-		    'for j = 0 to  EL2.ChildCount-1  
-		    'n = ifmac.childs(j).MacId
-		    'ifm = GetInfoMac(n,num)
-		    'if ifm <> nil then
-		    'if  ifm.macId <> n and num <> -1 then
-		    'ifmac.childs(j) = ifm.childs(num)
-		    'else
-		    'ifmac.childs(j) = ifm
-		    'end if
-		    ''else
-		    ''ifmac.childs(j) = new InfoMac(XMLElement(EL2.Child(j)))
-		    'end if
-		    
 		    
 		    if ifmac.init  then
 		      s = currentcontent.TheObjects.GetShape(ifmac.RealId)

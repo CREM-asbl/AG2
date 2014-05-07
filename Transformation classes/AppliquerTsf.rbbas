@@ -384,10 +384,14 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  dim s2 as shape
+		  dim Temp as XMLElement
 		  
 		  s2 = copies.element(0)
 		  
-		  EL.AppendChild s2.XMLPutIdINContainer(Doc)
+		  
+		  Temp = s2.XMLPutIdINContainer(Doc)
+		  Temp.AppendChild s2.XMLPutChildsInContainer(Doc)
+		  EL.AppendChild Temp
 		  EL.appendchild  s2.XMLPutConstructionInfoInContainer(Doc)
 		  return EL
 		End Function
@@ -424,7 +428,7 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim BiB1, BiB2 as BiBPoint
 		  dim u1, u2, u3, u4, q as BasicPoint
-		  dim r1, r2 as double 
+		  dim r1, r2 as double
 		  
 		  select case tsf.type
 		  case 7, 71, 72
@@ -444,7 +448,7 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 

@@ -691,16 +691,29 @@ Implements StringProvider
 		Sub Swap()
 		  dim i, j as integer
 		  dim t as boolean
+		  dim s as shape
 		  
 		  Hidden = not Hidden
 		  
 		  for i = 0 to ubound(childs)
-		    t = true
+		    t =true
+		    
 		    for j = 0 to ubound(childs(i).parents)
-		      if childs(i).pointsur.getposition(childs(i).parents(j)) = -1 then
-		        t = t and childs(i).parents(j).hidden
+		      s = childs(i).parents(j)
+		      if s.getindexpoint(childs(i)) <> -1 then
+		        if not s.hidden or ubound(s.constructedshapes) <> -1 or ubound(s.macconstructedshapes) <> -1 then
+		          t = false
+		        end if
 		      end if
 		    next
+		    
+		    if  t then
+		      for j = 0 to childs(i).pointsur.count-1
+		        s = childs(i).pointsur.element(j)
+		        t = t and s.hidden
+		      next
+		    end if
+		    
 		    childs(i).hidden = t
 		  next
 		End Sub

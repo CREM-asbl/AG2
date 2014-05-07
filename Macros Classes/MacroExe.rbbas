@@ -79,10 +79,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  if mw <> nil then
-		    mw.close
-		    mw = nil
-		  end if
+		  
 		  
 		  if currentcontent.macrocreation then   'on utilise une macro à l'intérieur de la construction d'une autre
 		    ExecuteMacroExe(Histo)
@@ -107,7 +104,9 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    'finished = false
+		    if mw <> nil then
+		      mw.close
+		    end if
 		    MacInfo = new MacConstructionInfo(Mac)
 		    Mac.MacInf = MacInfo
 		    Redim MacId(-1)
@@ -251,19 +250,6 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		  end if
-		  'List = Temp.FirstChild.XQL("Initial_Forms")
-		  '
-		  'If list.Length > 0 then
-		  'Obj= XMLElement(List.Item(0))
-		  'if obj.childcount > 0 then
-		  'for i =0 to  Obj.Childcount-1
-		  'EL1 = XMLelement(Obj.Child(i))
-		  'n = val(EL1.GetAttribute("Id"))
-		  's = objects.Getshape(n)
-		  'next
-		  'end if
-		  'end if
-		  
 		  ReDeleteCreatedFigures (Temp)
 		  RecreateDeletedFigures(Temp)
 		  wnd.refresh
@@ -282,12 +268,13 @@ Inherits MultipleSelectOperation
 		  
 		  Nom = Temp.child(0).GetAttribute("Name")
 		  Mac = App.TheMacros.GetMacro(Nom)
-		  currentcontent.currentoperation = new macroexe(mac)
 		  if Mac = Nil then
 		    return
 		  end if
 		  
+		  currentcontent.currentoperation = new macroexe(mac)
 		  MacInfo = new MacConstructionInfo(Mac)
+		  Mac.MacInf = MacInfo
 		  List = Temp.FirstChild.XQL("Initial_Forms")
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
@@ -463,11 +450,9 @@ Inherits MultipleSelectOperation
 		      if ifm.MacId = m then
 		        pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		      else
-		        'ifm.childs(num) = ifmac.childs(j)
 		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
 		      if pt <> nil and pt <> newshape.points(j) then
-		        'newshape.points(j).moveto pt.bpt
 		        newshape.substitutepoint(pt,newshape.points(j))
 		      end if
 		    end if

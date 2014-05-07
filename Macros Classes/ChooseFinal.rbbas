@@ -361,18 +361,18 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function EtapeDeConstruction(s as shape) As integer
 		  dim i, j as integer
-		  dim EL, EL1 as XMLElement
+		  dim EL, EL1, EL2, EL3 as XMLElement
 		  
 		  for i =0 to currentcontent.Histo.childcount -1
 		    EL = XMLElement(currentcontent.Histo.Child(i))
-		    EL = XMLElement(EL.Child(0))
-		    if s.id = val(EL.GetAttribute("Id")) then
+		    EL1 = XMLElement(EL.Child(0))
+		    if s.id = val(EL1.GetAttribute("Id")) then
 		      return i
-		    elseif val(EL.GetAttribute(Dico.Value("Npts"))) > 0 then
-		      EL = XMLElement(EL.Child(0))
-		      for j = 0 to EL.ChildCount -1
-		        EL1=XMLElement(EL.Child(j))
-		        if s.id = val(EL1.GetAttribute("Id")) then
+		    elseif val(EL1.GetAttribute(Dico.Value("Npts"))) > 0 then
+		      EL2 = XMLElement(EL1.Child(0))
+		      for j = 0 to EL2.ChildCount -1
+		        EL3=XMLElement(EL2.Child(j))
+		        if s.id = val(EL3.GetAttribute("Id")) then
 		          return i
 		        end if
 		      next
@@ -413,7 +413,7 @@ Inherits MultipleSelectOperation
 		      IdentifyInit(p.pointsur.element(0))
 		      identifyinit(p.constructedby.shape)
 		    end select
-
+		    
 		  elseif p.macconstructedby <> nil then
 		    MacInfo = p.MacConstructedBy
 		    for i = 0 to ubound(MacInfo.RealInit)

@@ -598,7 +598,7 @@ Inherits Shape
 		  if   MacConstructedBy <>  nil  then
 		    liberte = 0
 		  end if
-		  if  forme <> 1 and (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
+		  if   (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
 		    liberte = 0
 		  end if
 		  
@@ -3078,15 +3078,15 @@ Inherits Shape
 		    return false
 		  end if
 		  
-		  if ubound (constructedshapes)> -1 then
+		  if ubound (constructedshapes)> -1  then
 		    return true
 		  end if
 		  
-		  'for i = 0 to ubound(parents)
-		  'if (parents(i).getindexpoint(self) <> -1) and parents(i).isaparaperp then
-		  'return true
-		  'end if
-		  'next
+		  for i = 0 to ubound(parents)
+		    if (parents(i).getindexpoint(self) <> -1) and ubound(parents(i).constructedshapes) > -1 then
+		      return true
+		    end if
+		  next
 		  
 		End Function
 	#tag EndMethod
