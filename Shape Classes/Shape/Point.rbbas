@@ -3091,6 +3091,24 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetBiBPoint() As BiBPoint
+		  dim s as shape
+		  dim n as integer
+		  
+		  
+		  if pointsur.count <> 1 then
+		    return  nil
+		  else
+		    s = pointsur.element(0)
+		    n = numside(0)
+		    return  s.getBiBside(n)
+		  end  if
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

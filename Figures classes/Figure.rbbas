@@ -291,8 +291,8 @@ Implements StringProvider
 		  
 		  
 		  if M = nil or M.v1 = nil then
-		    QQupdateshapes
-		    return true                                             ////faut-il bloquer plus ?  (arc d'angle 0)...
+		    'QQupdateshapes
+		    return false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
 		    updatesomm(M)
 		    updatePtsSur(M)

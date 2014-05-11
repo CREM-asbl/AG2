@@ -220,12 +220,7 @@ Inherits MultipleSelectOperation
 		        return false
 		      end if
 		    case 10
-		      d = fp.DistanceTo(sp)
-		      bp2 = qp.bpt - tp.bpt
-		      bp2= bp2.normer
-		      bp2 = bp2*d
-		      qp2 = new point(objects,tp.bpt+bp2)
-		      currentshape = new Polyqcq(objects,fp,sp,qp2,tp)
+		      currentshape = new Polyqcq(objects,fp,sp,qp,tp)
 		      index.append -1
 		    case 11
 		      bp1 = tp.bpt+sp.bpt-fp.bpt

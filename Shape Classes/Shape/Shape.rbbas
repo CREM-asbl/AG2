@@ -3926,11 +3926,26 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
+		  dim Bib as BiBPoint
 		  
+		  BiB = new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
 		  
-		  return new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
+		  if self isa circle then
+		    BiB.type = 1
+		  else
+		    BiB.type = 0
+		  end if
+		  if self isa droite then
+		    BiB.nextre = droite(self).nextre
+		  elseif self isa polygon then
+		    BiB.nextre = 2
+		  elseif self isa secteur then
+		    BiB.nextre = 1
+		  else
+		    BiB.nextre = 0
+		  end if
 		  
-		  
+		  return BiB
 		End Function
 	#tag EndMethod
 

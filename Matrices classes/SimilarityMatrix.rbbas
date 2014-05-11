@@ -76,10 +76,9 @@ Inherits AffinityMatrix
 		  // p1 et p2 sont des pointssur, ep, np correspondent au point modifié
 		  dim Bip1,  Bip2, Bip3 as BiBPoint
 		  dim M as Matrix
-		  dim q, q1, q2, bp1, bp2, bp3,a, b As BasicPoint
+		  dim q, q1,  bp1, bp2, bp3,a, b As BasicPoint
 		  dim s1, s2 as shape
-		  dim r, r1 as double
-		  dim nextre1, nextre2, n As Integer
+		  dim r1, r2 as double
 		  dim t as boolean
 		  
 		  
@@ -87,14 +86,11 @@ Inherits AffinityMatrix
 		    t = true
 		    q = nil
 		    
-		    s1 = p1.pointsur.element(0)
 		    s2 = p2.pointsur.element(0)
 		    bp1= p1.bpt
 		    bp2 = p2.bpt
-		    bip1 = new BiBPoint(p1)
-		    bip2 = new Bibpoint(p2)
-		    nextre1 = bip1.nextre
-		    nextre2 = bip2.nextre
+		    bip1 = p1.GetBiBPoint
+		    bip2 = p2.GetBiBpoint
 		    
 		    M = new similarityMatrix(bp1,ep,bp1,np)
 		    
@@ -107,10 +103,10 @@ Inherits AffinityMatrix
 		        
 		        Bip3 = new BiBpoint (M*Bip1.first, M*Bip1.second)
 		        
-		        if s1 isa circle then
+		        if Bip1.type = 1 then
 		          q = Bip3.ComputeCircleFirstIntersect(s2,p2)
 		        else
-		          q = Bip3.ComputeDroiteFirstIntersect(s2,p2)
+		          q = Bip3.BiBInterdroites(Bip2, bip1.nextre, bip2.nextre,r1,r2)  'n1ComputeDroiteFirstIntersect(s2,p2)
 		        end if
 		        
 		        if  q <> nil   then
@@ -118,27 +114,17 @@ Inherits AffinityMatrix
 		          
 		          if M.v1 <> nil then
 		            
-		            q1 = M*bp1
-		            if s1 isa droite and nextre1 = 2 then
-		              t = q1.between(bip1.first, bip1.second)
-		            elseif s1 isa droite and nextre1 = 1 then
-		              t = q1.audela(bip1.first, bip1.second)
-		            end if
+		            'q1 = M*bp1
 		            
 		            if t then
 		              v1 = M.v1
 		              v2 = M.v2
 		              v3 = M.v3
 		            end if
-		            
 		          end if
-		          
 		        end if
-		        
 		      end if
-		      
 		    end if
-		    
 		  end if
 		End Sub
 	#tag EndMethod
