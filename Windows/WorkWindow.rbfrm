@@ -1313,6 +1313,7 @@ End
 			Doc = new XmlDocument(f)
 			mac =new Macro(Doc)
 			app.themacros.addmac mac
+			wnd.updatesousmenusmacros
 			end if
 			return true
 			

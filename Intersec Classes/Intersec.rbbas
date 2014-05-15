@@ -522,7 +522,7 @@ Implements StringProvider
 		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		    // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
 		    // peut être en défaut si A// B et B//C et que A inter C est calculé // prévoir la transitivité
-		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k) and val(h,k) and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2) then
+		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k)  and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2) then
 		      i1 = h
 		      j1 = k
 		    end if
@@ -532,11 +532,11 @@ Implements StringProvider
 		  end if
 		  
 		  ids(i1,j1) = pt.id
-		  if not val(i1,j1) then
-		    pt.invalider
-		  else
-		    validerpoint(pt,i1,j1)
-		  end if
+		  'if not val(i1,j1) then
+		  'pt.invalider
+		  'else
+		  validerpoint(pt,i1,j1)
+		  'end if
 		  
 		End Sub
 	#tag EndMethod

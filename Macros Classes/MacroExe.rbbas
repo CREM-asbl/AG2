@@ -107,6 +107,7 @@ Inherits MultipleSelectOperation
 		    if mw <> nil then
 		      mw.close
 		    end if
+		    CurrentContent.TheMacros.AddMac(Mac)
 		    MacInfo = new MacConstructionInfo(Mac)
 		    Mac.MacInf = MacInfo
 		    Redim MacId(-1)

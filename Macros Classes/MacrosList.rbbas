@@ -28,7 +28,8 @@ Protected Class MacrosList
 		    end if
 		  next
 		  macs.append m
-		  wnd.updatesousmenusmacros
+		  
+		  
 		  
 		  
 		End Sub

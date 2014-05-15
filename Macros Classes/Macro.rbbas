@@ -147,6 +147,7 @@ Protected Class Macro
 		      tos.write Doc.tostring
 		      tos.close
 		      app.theMacros.addmac self
+		      wnd.updatesousmenusmacros
 		    end if
 		  end if
 		  if  file = nil or tos = nil then
