@@ -172,17 +172,17 @@ Protected Class Label
 		  elseif shape isa Secteur and loc <> -1 then
 		    fp = shape.points(0).bpt
 		    sp = shape.points(loc).bpt
-		  elseif shape isa Freecircle and loc <> -1 then
-		    position = shape.points(1).bpt
-		  elseif shape isa arc and loc <> -1 then
-		    TriB = new TribPoint(arc(shape).getgravitycenter,arc(shape).startp, arc(shape).endp)
-		    position = Trib.Subdiv(arc(shape).ori,2,1)
 		  end if
 		  
 		  if shape isa repere or fixe then
 		    Position = new BasicPoint(0,0)
 		  elseif (shape isa polygon or Shape isa bande or shape isa secteur) and loc <> -1 then
 		    Position = (fp+sp) /2
+		  elseif shape isa Freecircle and loc <> -1 then
+		    position = shape.points(1).bpt
+		  elseif shape isa arc and loc <> -1 then
+		    TriB = new TribPoint(arc(shape).getgravitycenter,arc(shape).startp, arc(shape).endp)
+		    position = Trib.Subdiv(arc(shape).ori,2,1)
 		  elseif loc = -1 then
 		    Position = Shape.GetGravitycenter
 		  end if

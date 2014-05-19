@@ -447,7 +447,7 @@ Implements StringProvider
 		    if NbUnModif = 0 then
 		      p1 = Point(somm.element(listsommsur(0)))
 		      p2 = Point(somm.element(listsommsur(1)))
-		      return new AffinityMatrix(p1,p2,ep,eq,np,nq)
+		      return AutoAffUpDate2Bis(p1.pointsur.element(0), p2.pointsur.element(0), p, q, p1, p2)
 		    end if
 		  end select
 		  
@@ -2453,15 +2453,15 @@ Implements StringProvider
 		Function autospeupdate1() As Matrix
 		  dim p, q, p1, p2 as point
 		  dim s as shape
+		  dim n, n1, n2 as integer
 		  dim ep, np as BasicPoint
-		  dim n, m as integer
 		  
 		  n = ListPtsModifs(0)
 		  p = Point(somm.element(n))
 		  getoldnewpos(p, ep, np)
 		  
-		  
 		  choixpointsfixes
+		  
 		  if  NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
@@ -2471,7 +2471,6 @@ Implements StringProvider
 		  select case NbSommSur(n)
 		  case 0
 		    q = point(somm.element(fx1))  // q est le point fixe
-		    
 		    Select case  NbUnModif
 		    case 0, 1
 		      return s.modifier1fixe(q,p)
@@ -2481,10 +2480,26 @@ Implements StringProvider
 		  case 1
 		    
 		  case 2
-		    if NbUnmodif = 0 then
-		      p1 = Point(Somm.element(ListSommSur(0)))
-		      p2 = Point(Somm.element(ListSommSur(1)))
-		      return new similarityMatrix(p1,p2,ep,np)
+		    n = s.Points.indexof(p)
+		    p1 = Point(Somm.element(ListSommSur(0)))
+		    p2 = Point(Somm.element(ListSommSur(1)))
+		    n1 = s.Points.indexof(p1)
+		    n2 = s.Points.indexof(p2)
+		    if n <> -1 and NbUnModif = 0 then
+		      if s isa quadri then
+		        if abs(n1-n2) = 2 then
+		          return new similaritymatrix(p1, p2, ep, np)
+		        elseif n1= (n+2) mod 4 then
+		          return s.Modifier1fixe(p1,p)
+		        else
+		          return s.Modifier1fixe(p2,p)
+		        end if
+		      else
+		        return s.Modifier1fixe(p1,p)
+		      end if
+		      
+		    else
+		      return nil
 		    end if
 		  end select
 		  
@@ -2619,6 +2634,9 @@ Implements StringProvider
 		  case 2
 		    t =replacerpoint (point(somm.element(Listsommsur(0))))
 		    t = replacerpoint (point(somm.element(Listsommsur(1))))
+		    if shapes.element(0)  isa rect and abs(listsommsur(0)-listsommsur(1)) = 2  then
+		      return autoaffupdate
+		    end if
 		  case 3,4
 		    p = supfig.pointmobile
 		    k = somm.getposition(p)
@@ -3589,6 +3607,59 @@ Implements StringProvider
 		    subs.element(i).fx1=-1
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AutoAffUpDate2Bis(s1 as shape, s2 as shape, p as point, q As point, p1 as point, p2 as point) As Matrix
+		  dim pmob, pq as point
+		  dim BiB1, BiB2 as BiBPoint
+		  dim ep, np, bp, eq, nq as BasicPoint
+		  dim r1, r2 as double
+		  dim n1,n2 as integer
+		  
+		  pmob = supfig.pointmobile
+		  if s1 isa droite then
+		    n1 = droite(s1).nextre
+		  else 
+		    n1 = 0
+		  end if
+		  if s2 isa droite then
+		    n1 = droite(s2).nextre
+		  else
+		    n1 = 0
+		  end if
+		  
+		  if pmob <> p and pmob <> q then  'pmob est p ou q
+		    return nil
+		  elseif pmob <> p then 
+		    pq = p
+		    p = q
+		    q = pq
+		  end if                                        'le point mobile est tjrs p le point d'inter est tjrs q
+		  getoldnewpos(p,ep,np)
+		  getoldnewpos(q,eq,nq)
+		  
+		  BiB1 = p1.GetBiBPoint
+		  BiB2 = p2.GetBiBPoint
+		  bp = BiB2.first - Bib2.second
+		  BiB2 = new BiBPoint(np, np+bp)
+		  bp = BiB1.BiBInterdroites(BiB2,n1,n2,r1,r2)
+		  
+		  if bp <> nil then
+		    return new affinitymatrix(eq,p1.bpt,ep,nq,bp,np)
+		  else
+		    return new matrix(1)
+		  end if
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

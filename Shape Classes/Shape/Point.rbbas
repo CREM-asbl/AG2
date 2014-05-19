@@ -262,12 +262,14 @@ Inherits Shape
 		  dim i as Integer
 		  
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
-		  bpt = d
-		  if labs.count = 1 and not labs.element(0).fixe  then
-		    labs.element(0).SetPosition
-		  end if
-		  if tracept then
-		    Trace.append d
+		  if d <> nil then
+		    bpt = d
+		    if labs.count = 1 and not labs.element(0).fixe  then
+		      labs.element(0).SetPosition
+		    end if
+		    if tracept then
+		      Trace.append d
+		    end if
 		  end if
 		  
 		End Sub

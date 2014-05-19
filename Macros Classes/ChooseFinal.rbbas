@@ -13,12 +13,6 @@ Inherits MultipleSelectOperation
 		  NumberOfItemsToSelect = 1
 		  CurrentItemToSet = 1
 		  Mac = currentcontent.mac
-		  'for i = 0 to objects.count -1
-		  's = objects.element(i)
-		  's.init = false
-		  's.interm=false
-		  's.final = false
-		  'next
 		  
 		  
 		End Sub
