@@ -295,8 +295,8 @@ Protected Class WindContent
 		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
 		      Theobjects.XMLLoadObjects(FigsDeleted)
 		    end if
-		  elseif currentoperation isa macroexe and macroexe(currentoperation).mw <> nil  then
-		    macroexe(currentoperation).mw.close
+		  elseif currentoperation isa macroexe and macroexe(currentoperation).mac.mw <> nil  then
+		    macroexe(currentoperation).mac.mw.close
 		  end if
 		  drapabort = false
 		  currentoperation = nil

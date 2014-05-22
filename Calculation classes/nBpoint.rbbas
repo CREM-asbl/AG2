@@ -234,11 +234,7 @@ Protected Class nBpoint
 		  
 		  select case n
 		  case 0                           'On appelle la méthode lors du positionnement de l'origine du segment
-		    if fo < 4 then
-		      tab(1) = tab(0)
-		    else
-		      tab(1) = tab(0)+w
-		    end if
+		    tab(1) = tab(0)+w
 		  case 1                           'Positionnement de l'extrémité du segment
 		    'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
 		    'Quand on travaille à la souris, c'est le clic qui indique la position finale

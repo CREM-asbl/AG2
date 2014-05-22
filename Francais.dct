@@ -173,6 +173,7 @@
     <NrForm Name="Numéro_Forme" />
     <Repere Name="Repère" />
     <Point Name="Point" />
+    <PointOn Name="Point sur Objet"/>
     <Inter Name=" d'intersection" />
     <Bigon Name="Bigone" />
     <Segment Name="Segment" />

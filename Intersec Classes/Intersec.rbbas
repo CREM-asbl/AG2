@@ -186,6 +186,8 @@ Implements StringProvider
 		  if val(h,k) then
 		    validerpoint(pt,h,k)
 		    reset(h,k) = true
+		  else
+		    pt.invalider
 		  end if
 		  
 		  
@@ -215,7 +217,7 @@ Implements StringProvider
 		        if bp <> nil then
 		          bptinters(i,j) = bp
 		        end if
-		        if k = 0 and r1 < 999 then
+		        if k = 0 or r1 > 998 then
 		          val(i,j) = false
 		        end if
 		      else
@@ -536,11 +538,8 @@ Implements StringProvider
 		    ids(h,k)=0
 		    ids(i1,j1) = pt.id
 		  end if
-		  'if not val(i1,j1) then
-		  'pt.invalider
-		  'else
 		  validerpoint(pt,i1,j1)
-		  'end if
+		  
 		  
 		End Sub
 	#tag EndMethod

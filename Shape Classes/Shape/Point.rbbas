@@ -597,12 +597,12 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  if   MacConstructedBy <>  nil  then
-		    liberte = 0
-		  end if
-		  if   (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
-		    liberte = 0
-		  end if
+		  'if   MacConstructedBy <>  nil  and ubound(macconstructedshapes) = -1 then
+		  'liberte = 0
+		  'end if
+		  'if   (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
+		  'liberte = 0
+		  'end if
 		  
 		  
 		  for i = 0 to ubound(parents)
@@ -3073,7 +3073,7 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Constructing() As Boolean
+		Function oldConstructing() As Boolean
 		  dim i as integer   'Utilisé uniquement dans la détermination des points "sur" qui sont initiaux d'une macro
 		  
 		  if forme <> 1 then

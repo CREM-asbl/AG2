@@ -104,10 +104,6 @@ Inherits SelectAndDragOperation
 		  iobj = 0
 		  
 		  drapchoix = false
-		  if currenthighlightedshape <> nil then
-		    currenthighlightedshape.unhighlight
-		    currenthighlightedshape = nil
-		  end if
 		  visible = objects.findpoint(p)
 		  nobj = visible.count
 		  
@@ -710,6 +706,7 @@ Inherits SelectAndDragOperation
 		  super.endoperation
 		  
 		  pointmobile = nil
+		  currentshape = nil
 		End Sub
 	#tag EndMethod
 

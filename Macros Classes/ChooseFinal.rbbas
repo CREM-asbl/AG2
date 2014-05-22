@@ -212,6 +212,7 @@ Inherits MultipleSelectOperation
 		  super.endoperation
 		  
 		  mw = new  MacWindow
+		  mw.mac = mac
 		  mw.ShowModal
 		  currentcontent.currentoperation = nil
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
@@ -438,11 +439,11 @@ Inherits MultipleSelectOperation
 		    if t then
 		      Addinit(p)
 		    else
-		      if p.constructing  then   'forme=1 and  (ubound(p.constructedshapes) > -1)  then       '(ubound(p.parents) =0) then 'or
-		        AddInit(p)
-		      else
-		        AddInterm(p)
-		      end if
+		      'if p.constructing  then   'forme=1 and  (ubound(p.constructedshapes) > -1)  then       '(ubound(p.parents) =0) then 'or
+		      'AddInit(p)
+		      'else
+		      AddInterm(p)
+		      'end if
 		      for i = 0 to ubound(p.parents)
 		        IdentifyInit(p.parents(i))
 		      next

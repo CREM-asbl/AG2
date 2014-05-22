@@ -735,6 +735,8 @@ Protected Class Macro
 		    s.coord = ifmac.coord
 		    if s isa point  then
 		      if s.forme = 1 then
+		        redim point(s).location(0)
+		        redim point(s).numside(0)
 		        point(s).location(0) = ifmac.location
 		        point(s).numside(0) = ifmac.numside0
 		        ifmac.RealSide = ifmac.numside0
@@ -796,7 +798,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub PointSur(ifmac as infomac, byref nbp As nBPoint)
-		  dim  MacId, side, num as integer
+		  dim   side, num as integer
 		  dim ifm1 as infomac
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
@@ -804,7 +806,7 @@ Protected Class Macro
 		  
 		  redim nbp.tab(0)
 		  
-		  MacId = ifmac.MacId
+		  
 		  ifm1 = MacInf.GetInfoMac(ifmac.MacId,num)
 		  
 		  if ifm1.fa <> 5 then 'cas des segments, droites, côtés de polygones,...
@@ -842,8 +844,9 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub OpenDescripWindow()
 		  mw = new MacWindow
-		  mw.Title = GetName + " : " + Dico.Value("MacroDescription")
-		  mw.EditField1.Text = expli
+		  mw.mac = self
+		  mw.Title = GetName + " : " + Dico.Value("MacroDescription") +" " + caption
+		  mw.EF.Text = expli
 		  wnd.setfocus
 		  
 		End Sub

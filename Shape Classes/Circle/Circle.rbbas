@@ -50,7 +50,9 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub computeradius()
-		  radius = coord.distance01
+		  if ubound(points) > 0 then
+		    radius = coord.distance01
+		  end if
 		End Sub
 	#tag EndMethod
 

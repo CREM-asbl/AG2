@@ -104,8 +104,8 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    if mw <> nil then
-		      mw.close
+		    if mac.mw <> nil then
+		      mac.mw.close
 		    end if
 		    CurrentContent.TheMacros.AddMac(Mac)
 		    MacInfo = new MacConstructionInfo(Mac)
@@ -154,26 +154,29 @@ Inherits MultipleSelectOperation
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		  newshape.autos
+		  
 		  newshape.initconstruction
+		  if ifmac.oper = 19 or ifmac.oper = 46 then
+		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
+		    point(newshape).puton s, ifmac.location
+		    point(newshape).ifmac = ifmac
+		  end if
+		  if ifmac.oper = 1 and (ifmac.fo> 3)  then
+		    newshape.points(1).hide
+		    newshape.ncpts = 1
+		  end if
 		  newshape.ori = ifmac.ori
+		  if newshape isa arc then
+		    arc(newshape).drapori = true
+		  end if
+		  
 		  newshape.MacConstructedBy = MacInfo
 		  for i = 0 to ubound(MacInfo.Realinit)
 		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
 		    s.addMacConstructedshape newshape
 		  next
-		  if ifmac.oper = 19 then
-		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
-		    point(newshape).puton s, ifmac.location
-		    point(newshape).ifmac = ifmac
-		  end if
+		  
 		  currentcontent.addshape newshape
-		  if ifmac.fa = 1 and (ifmac.fo=4 or ifmac.fo = 5)  then
-		    newshape.points(1).hide
-		    newshape.ncpts = 1
-		  end if
-		  if newshape isa arc then
-		    arc(newshape).drapori = true
-		  end if
 		  MacInfo.RealFinal.append newshape.id
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
@@ -724,10 +727,6 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		Histo As XMLElement
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		mw As MacWindow
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
