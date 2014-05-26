@@ -71,7 +71,7 @@ Inherits SelectAndDragOperation
 		  super.Paint(g)
 		  
 		  if  currentshape isa repere then
-		    oldcol = g.forecolor 
+		    oldcol = g.forecolor
 		    g.forecolor = Config.highlightcolor.col
 		    for i = 0 to currentshape.labs.count-1
 		      bp = currentshape.labs.element(i).position  + currentshape.labs.element(i).correction

@@ -114,13 +114,7 @@ Protected Class InfoMac
 		    next
 		  end if
 		  
-		  List = Temp.XQL("Childs")
-		  if List.length > 0 then
-		    EL1 = XMLElement(List.Item(0))
-		    for i = 0 to EL1.Childcount-1
-		      childs.append new InfoMac(XMLElement(EL1.Child(i)))
-		    next
-		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -403,6 +397,7 @@ Protected Class InfoMac
 	#tag Property, Flags = &h0
 		MacInfo As MacConstructionInfo
 	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

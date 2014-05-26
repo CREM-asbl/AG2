@@ -313,6 +313,12 @@ Begin Menu MenuMenus
             Index = -2147483648
             AutoEnable = True
          End
+         Begin MenuItem UntitledSeparator0
+            SpecialMenu = 0
+            Text = "-"
+            Index = -2147483648
+            AutoEnable = True
+         End
          Begin MenuItem DefinirHomothetie
             SpecialMenu = 0
             Text = "Homothétie"
@@ -322,6 +328,12 @@ Begin Menu MenuMenus
          Begin MenuItem DefinirSimilitude
             SpecialMenu = 0
             Text = "Similitude"
+            Index = -2147483648
+            AutoEnable = True
+         End
+         Begin MenuItem UntitledSeparator1
+            SpecialMenu = 0
+            Text = "-"
             Index = -2147483648
             AutoEnable = True
          End
@@ -376,33 +388,53 @@ Begin Menu MenuMenus
       AutoEnable = True
       Begin MenuItem MacrosLoad
          SpecialMenu = 0
-         Text = ""
+         Text = "Charger"
          Index = -2147483648
          AutoEnable = True
       End
       Begin MenuItem MacrosCreate
          SpecialMenu = 0
-         Text = ""
+         Text = "Creer"
          Index = -2147483648
          AutoEnable = True
       End
       Begin MenuItem MacrosFinaux
          SpecialMenu = 0
-         Text = ""
+         Text = "Choix final"
          Index = -2147483648
          AutoEnable = True
       End
       Begin MenuItem MacrosSave
          SpecialMenu = 0
-         Text = ""
+         Text = "Sauvegarder"
          Index = -2147483648
          AutoEnable = True
       End
       Begin MenuItem MacrosQuit
          SpecialMenu = 0
-         Text = ""
+         Text = "Abandonner"
          Index = -2147483648
          AutoEnable = True
+      End
+      Begin MenuItem MacSeparator
+         SpecialMenu = 0
+         Text = "-"
+         Index = -2147483648
+         Style = 4
+         AutoEnable = True
+      End
+      Begin MenuItem MacrosDescri
+         SpecialMenu = 0
+         Text = "Afficher la description d'une macro"
+         Index = 0
+         AutoEnable = True
+         SubMenu = True
+         Begin MenuItem MacrosDescri2
+            SpecialMenu = 0
+            Text = "Sans_titre"
+            Index = 0
+            AutoEnable = True
+         End
       End
       Begin MenuItem MacrosExecute
          SpecialMenu = 0
@@ -415,6 +447,33 @@ Begin Menu MenuMenus
             Text = "Sans_titre"
             Index = 0
             Style = 4
+            AutoEnable = True
+         End
+      End
+      Begin MenuItem MacrosClose
+         SpecialMenu = 0
+         Text = "Fermer une macro"
+         Index = 0
+         AutoEnable = True
+         SubMenu = True
+         Begin MenuItem MacrosClose2
+            SpecialMenu = 0
+            Text = "Sans_titre"
+            Index = 0
+            AutoEnable = True
+         End
+      End
+      Begin MenuItem MacrosErase
+         SpecialMenu = 0
+         Text = "Supprimer une macro"
+         Index = 0
+         MenuModifier = True
+         AutoEnable = True
+         SubMenu = True
+         Begin MenuItem MacrosErase2
+            SpecialMenu = 0
+            Text = "Sans_titre"
+            Index = 0
             AutoEnable = True
          End
       End

@@ -107,15 +107,16 @@ Implements StringProvider
 		    next
 		  next
 		  
-		  
-		  for i = 0 to nlig
-		    for j = 0 to ncol
-		      p = currentcontent.TheObjects.getshape(ids(i,j))
-		      if p isa point then
-		        replacerphase2(point(p))
-		      end if
+		  if nlig >0 or ncol > 0 then   'Phase où on change éventuellement un pt inter de côté
+		    for i = 0 to nlig
+		      for j = 0 to ncol
+		        p = currentcontent.TheObjects.getshape(ids(i,j))
+		        if p isa point then
+		          replacerphase2(point(p))
+		        end if
+		      next
 		    next
-		  next
+		  end if
 		  
 		  
 		  
@@ -185,6 +186,8 @@ Implements StringProvider
 		  if val(h,k) then
 		    validerpoint(pt,h,k)
 		    reset(h,k) = true
+		  else
+		    pt.invalider
 		  end if
 		  
 		  
@@ -214,7 +217,7 @@ Implements StringProvider
 		        if bp <> nil then
 		          bptinters(i,j) = bp
 		        end if
-		        if k = 0 then
+		        if k = 0 or r1 > 998 then
 		          val(i,j) = false
 		        end if
 		      else
@@ -493,7 +496,7 @@ Implements StringProvider
 		  if bezet(i,j) = false then
 		    pt.moveto bptinters(i,j)
 		    bezet(i,j) = true
-		    if val(i,j) and  not sh1.invalid and not sh2.invalid then
+		    if val(i,j) and bptinters(i,j) <> nil and  not sh1.invalid and not sh2.invalid then
 		      setlocation(pt,i,j)
 		      pt.modified = true
 		      pt.updateshape
@@ -522,7 +525,7 @@ Implements StringProvider
 		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		    // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
 		    // peut être en défaut si A// B et B//C et que A inter C est calculé // prévoir la transitivité
-		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k) and val(h,k) and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2) then
+		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k)  and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2) then
 		      i1 = h
 		      j1 = k
 		    end if
@@ -531,12 +534,12 @@ Implements StringProvider
 		    j1 = k
 		  end if
 		  
-		  ids(i1,j1) = pt.id
-		  if not val(i1,j1) then
-		    pt.invalider
-		  else
-		    validerpoint(pt,i1,j1)
+		  if i1 <> h or j1 <> k then
+		    ids(h,k)=0
+		    ids(i1,j1) = pt.id
 		  end if
+		  validerpoint(pt,i1,j1)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -549,7 +552,7 @@ Implements StringProvider
 		  r1  = 10000
 		  for i = 0 to nlig
 		    for j = 0 to ncol
-		      if val(i,j) and (not bezet(i,j))  then
+		      if val(i,j) and (not bezet(i,j))  and (bptinters(i,j)<> nil) then
 		        s = p.distance(bptinters(i,j))
 		        if abs(s) < r1 then
 		          r1 = s

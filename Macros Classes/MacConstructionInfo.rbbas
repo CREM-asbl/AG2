@@ -54,11 +54,11 @@ Protected Class MacConstructionInfo
 
 	#tag Method, Flags = &h0
 		Sub MacConstructionInfo(m as Macro, Temp as XMLElement)
-		  dim List as XmlNodeList
 		  dim EL , EL1, EL2 as XMLElement
-		  dim nrf, nri, nrs as integer
-		  dim i, j, n, num as integer
+		  dim nrf, nri, nrs, fa as integer
+		  dim i, j, n, num, nch, mid as integer
 		  dim ifm, ifmac as InfoMac
+		  dim s as shape
 		  
 		  MacConstructionInfo(m)
 		  nrf = val(Temp.GetAttribute("NRF"))
@@ -75,32 +75,32 @@ Protected Class MacConstructionInfo
 		    next
 		  end if
 		  
-		  List = Temp.XQL("IfMacs")
-		  if List.Length > 0 then
-		    EL = XMLElement(List.Item(0))
-		    for i = 0 to EL.ChildCount-1
-		      EL1 = XMLElement(EL.Child(i))
-		      ifmac = new InfoMac(EL1)
-		      List = EL1.XQL("Childs")
-		      if List.Length > 0 then
-		        EL2= XMLElement(List.Item(0))
-		        for j = 0 to ifmac.npts-1
-		          n = ifmac.childs(j).MacId
-		          ifm = GetInfoMac(n,num)
-		          if ifm <> nil then
-		            if  ifm.macId <> n and num <> -1 then
-		              ifmac.childs(j) = ifm.childs(num)
-		            else
-		              ifmac.childs(j) = ifm
-		            end if
-		          else
-		            ifmac.childs(j) = new InfoMac(XMLElement(EL2.Child(j)))
-		          end if
-		        next
+		  EL = XMLElement(Temp.firstChild)
+		  for i = 0 to EL.ChildCount -1
+		    EL1 = XMLElement(EL.Child(i))
+		    fa = val(EL1.GetAttribute(Dico.Value("NrFam")))
+		    if fa = 0 then
+		      ifmac = CreateInfoMacPoint(EL1)
+		    else
+		      ifmac = CreateInfoMacShape(EL1)
+		    end if
+		    ifmac.MacInfo = self
+		    
+		    if ifmac.init  then
+		      s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		      s.ifmac = ifmac
+		      if ifmac.npts < s.npts then
+		        ifmac.seg = true
+		        ifmac.RealSide = GetRealSide(n)
 		      end if
-		      ifmacs.append ifmac
-		    next
-		  end if
+		      for j = 0 to ifmac.npts-1
+		        ifmac.childs(j).RealId =s.points((j+ifmac.RealSide) mod s.npts).id
+		      next
+		      ifmac.ori = s.ori
+		    end if
+		    ifmacs.append ifmac
+		  next
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -230,6 +230,48 @@ Protected Class MacConstructionInfo
 		  next
 		  EL.Appendchild EL1
 		  return EL
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CreateInfoMacPoint(EL1 as XMLElement) As infomac
+		  dim mid, num as integer
+		  dim ifm, ifmac as infomac
+		  
+		  mid = val(EL1.GetAttribute("MId"))
+		  ifm = GetInfoMac(mid,num)
+		  if ifm <> nil then
+		    if  ifm.macId <> mid and num <> -1 then
+		      ifmac = ifm.childs(num)
+		    else
+		      ifmac = ifm
+		    end if
+		  else
+		    ifmac = new InfoMac(EL1)
+		  end if
+		  
+		  return ifmac
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CreateInfoMacShape(EL1 as XMLElement) As infomac
+		  dim List as XMLNodeList
+		  dim EL2 as XMLElement
+		  dim i as integer
+		  dim ifmac as infomac
+		  
+		  ifmac = new InfoMac(EL1)
+		  
+		  List = EL1.XQL("Childs")
+		  if List.length > 0 then
+		    EL2 = XMLElement(List.Item(0))
+		    for i = 0 to EL2.ChildCount-1
+		      ifmac.childs.append CreateInfoMacPoint(XMLElement(EL2.Child(i)))
+		    next
+		  end if
+		  
+		  return ifmac
 		End Function
 	#tag EndMethod
 

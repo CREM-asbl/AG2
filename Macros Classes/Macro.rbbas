@@ -7,39 +7,13 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreerMenuItem()
-		  dim mitem as Menuitem
-		  dim k  as integer
-		  
-		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
-		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
-		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  
-		  mitem = new MenuItem
-		  mitem.Name = "MacrosChoose"
-		  mitem.Text = Caption
-		  mitem.checked = true
-		  k = app.themacros.count-1
-		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").append mitem
-		  mitem.index  = k
-		  wnd.EraseMenuBar
-		  wnd.CopyMenuBar
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Macro(Doc as XMLDocument)
 		  dim List as XMLNodeList
 		  dim Temp, EL1 As  XMLElement
 		  dim i, fa, fo as integer
 		  dim drap as Boolean
 		  
-		  
+		  Macro
 		  Histo =  XMLElement(Doc.FirstChild)
 		  Caption =  Histo.GetAttribute("Name")
 		  List = Histo.XQL("Description")
@@ -119,8 +93,8 @@ Protected Class Macro
 		  for i = 0 to ubound(ObCategorie)
 		    EL = Doc.CreateElement("Obj"+Categorie)
 		    EL.SetAttribute("Id", str(ObCategorie(i)))
-		    'EL.SetAttribute("Fa",str(FaCategorie(i)))
-		    'EL.SetAttribute("Fo",str(FoCategorie(i)))
+		    EL.SetAttribute("Fa",str(FaCategorie(i)))
+		    EL.SetAttribute("Fo",str(FoCategorie(i)))
 		    Temp.AppendChild EL
 		  next
 		  
@@ -173,6 +147,7 @@ Protected Class Macro
 		      tos.write Doc.tostring
 		      tos.close
 		      app.theMacros.addmac self
+		      wnd.updatesousmenusmacros
 		    end if
 		  end if
 		  if  file = nil or tos = nil then
@@ -286,7 +261,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub divide(ifmac as infomac, byref nbp as nBPoint)
+		Sub divide(ifmac as infomac, byref nbp As nBPoint)
 		  dim num, num1, num2 as integer
 		  dim Trib as TriBpoint
 		  dim Bib as BiBPoint
@@ -360,14 +335,13 @@ Protected Class Macro
 		    BiB1 = new BiBPoint(nbp.tab(0),nbp.tab(0)+w)
 		    ifm2 = ifmac.childs(1)
 		    if ifm2.ptsur <> 1 then
-		      nbp.tab(1) =  ifmac.childs(1).coord.tab(0)  'GetCoordChild(ifmac.childs(1))
-		      nbp.tab(1) = nbp.tab(1).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
+		      nbp.tab(1) =  ifm2.coord.tab(0).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
 		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
 		      BiB2 = new BiBPoint(ifm3.coord.tab(ifm2.numside0), ifm3.coord.tab((ifm2.numside0+1)mod ifm3.coord.taille))
 		      n1 = 0
 		      if ifm3.fa <> 5 then
-		        if ifm2.fo < 3 then
+		        if ifm3.fo < 3 then
 		          n2 = 2
 		        else
 		          n2 = 0
@@ -543,26 +517,26 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetLocation(n as integer) As double
-		  dim m, num as integer
-		  dim ifm as infomac
-		  
-		  m = Obinit.indexof(n)
-		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n, num)
-		    return ifm.location
-		  end if
-		  
-		  m = ObInterm.indexof(n)
-		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n, num)
-		    return ifm.location
-		  end if
-		  
-		  //Si c'est un point qui n'est ni initial ni intermédiaire
-		  
-		  ifm = MacInf.GetSommet(numop-1,n,m)
-		  return ifm.location
+		Function oldGetLocation(n as integer) As double
+		  'dim m, num as integer
+		  'dim ifm as infomac
+		  '
+		  'm = Obinit.indexof(n)
+		  'if m <> -1 then        //Si c'est une forme initiale
+		  'ifm = MacInf.GetInfoMac(n, num)
+		  'return ifm.location
+		  'end if
+		  '
+		  'm = ObInterm.indexof(n)
+		  'if m <> -1 then        //Si c'est une forme intermédiaire
+		  'ifm = MacInf.GetInfoMac(n, num)
+		  'return ifm.location
+		  'end if
+		  '
+		  '//Si c'est un point qui n'est ni initial ni intermédiaire
+		  '
+		  'ifm = MacInf.GetSommet(numop-1,n,m)
+		  'return ifm.location
 		  
 		  
 		End Function
@@ -761,6 +735,8 @@ Protected Class Macro
 		    s.coord = ifmac.coord
 		    if s isa point  then
 		      if s.forme = 1 then
+		        redim point(s).location(0)
+		        redim point(s).numside(0)
 		        point(s).location(0) = ifmac.location
 		        point(s).numside(0) = ifmac.numside0
 		        ifmac.RealSide = ifmac.numside0
@@ -822,7 +798,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub PointSur(ifmac as infomac, byref nbp As nBPoint)
-		  dim  MacId, side, num as integer
+		  dim   side, num as integer
 		  dim ifm1 as infomac
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
@@ -830,7 +806,7 @@ Protected Class Macro
 		  
 		  redim nbp.tab(0)
 		  
-		  MacId = ifmac.MacId
+		  
 		  ifm1 = MacInf.GetInfoMac(ifmac.MacId,num)
 		  
 		  if ifm1.fa <> 5 then 'cas des segments, droites, côtés de polygones,...
@@ -862,6 +838,17 @@ Protected Class Macro
 		  if M <> nil and M.v1 <> nil then
 		    nbp.append M.fixpt
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub OpenDescripWindow()
+		  mw = new MacWindow
+		  mw.mac = self
+		  mw.Title = GetName + " : " + Dico.Value("MacroDescription") +" " + caption
+		  mw.EF.Text = expli
+		  wnd.setfocus
+		  
 		End Sub
 	#tag EndMethod
 
@@ -950,6 +937,10 @@ Protected Class Macro
 
 	#tag Property, Flags = &h0
 		NumOp As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		mw As MacWindow
 	#tag EndProperty
 
 

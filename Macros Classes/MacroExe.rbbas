@@ -6,10 +6,7 @@ Inherits MultipleSelectOperation
 		  Mac = app.TheMacros.element(n)
 		  MacroExe(Mac)
 		  
-		  mw = new MacWindow
-		  mw.Title = Mac.GetName + " : " + Dico.Value("MacroDescription")
-		  mw.EditField1.Text = Mac.expli
-		  wnd.setfocus
+		  mac.OpenDescripWindow
 		  fa = -1
 		  
 		  
@@ -82,10 +79,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  if mw <> nil then
-		    mw.close
-		    mw = nil
-		  end if
+		  
 		  
 		  if currentcontent.macrocreation then   'on utilise une macro à l'intérieur de la construction d'une autre
 		    ExecuteMacroExe(Histo)
@@ -110,7 +104,10 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    'finished = false
+		    if mac.mw <> nil then
+		      mac.mw.close
+		    end if
+		    CurrentContent.TheMacros.AddMac(Mac)
 		    MacInfo = new MacConstructionInfo(Mac)
 		    Mac.MacInf = MacInfo
 		    Redim MacId(-1)
@@ -157,26 +154,29 @@ Inherits MultipleSelectOperation
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
 		  newshape.autos
+		  
 		  newshape.initconstruction
+		  if ifmac.oper = 19 or ifmac.oper = 46 then
+		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
+		    point(newshape).puton s, ifmac.location
+		    point(newshape).ifmac = ifmac
+		  end if
+		  if ifmac.oper = 1 and (ifmac.fo> 3)  then
+		    newshape.points(1).hide
+		    newshape.ncpts = 1
+		  end if
 		  newshape.ori = ifmac.ori
+		  if newshape isa arc then
+		    arc(newshape).drapori = true
+		  end if
+		  
 		  newshape.MacConstructedBy = MacInfo
 		  for i = 0 to ubound(MacInfo.Realinit)
 		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
 		    s.addMacConstructedshape newshape
 		  next
-		  if ifmac.oper = 19 then
-		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
-		    point(newshape).puton s, ifmac.location
-		    point(newshape).ifmac = ifmac
-		  end if
+		  
 		  currentcontent.addshape newshape
-		  if ifmac.fa = 1 and (ifmac.fo=4 or ifmac.fo = 5)  then
-		    newshape.points(1).hide
-		    newshape.ncpts = 1
-		  end if
-		  if newshape isa arc then
-		    arc(newshape).drapori = true
-		  end if
 		  MacInfo.RealFinal.append newshape.id
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
@@ -254,19 +254,6 @@ Inherits MultipleSelectOperation
 		      next
 		    end if
 		  end if
-		  'List = Temp.FirstChild.XQL("Initial_Forms")
-		  '
-		  'If list.Length > 0 then
-		  'Obj= XMLElement(List.Item(0))
-		  'if obj.childcount > 0 then
-		  'for i =0 to  Obj.Childcount-1
-		  'EL1 = XMLelement(Obj.Child(i))
-		  'n = val(EL1.GetAttribute("Id"))
-		  's = objects.Getshape(n)
-		  'next
-		  'end if
-		  'end if
-		  
 		  ReDeleteCreatedFigures (Temp)
 		  RecreateDeletedFigures(Temp)
 		  wnd.refresh
@@ -285,12 +272,13 @@ Inherits MultipleSelectOperation
 		  
 		  Nom = Temp.child(0).GetAttribute("Name")
 		  Mac = App.TheMacros.GetMacro(Nom)
-		  currentcontent.currentoperation = new macroexe(mac)
 		  if Mac = Nil then
 		    return
 		  end if
 		  
+		  currentcontent.currentoperation = new macroexe(mac)
 		  MacInfo = new MacConstructionInfo(Mac)
+		  Mac.MacInf = MacInfo
 		  List = Temp.FirstChild.XQL("Initial_Forms")
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
@@ -368,7 +356,7 @@ Inherits MultipleSelectOperation
 		      end if
 		    next
 		  end if
-
+		  
 		  MacInfo.IfMacs.append ifmac
 		End Sub
 	#tag EndMethod
@@ -466,11 +454,9 @@ Inherits MultipleSelectOperation
 		      if ifm.MacId = m then
 		        pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		      else
-		        'ifm.childs(num) = ifmac.childs(j)
 		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
 		      if pt <> nil and pt <> newshape.points(j) then
-		        'newshape.points(j).moveto pt.bpt
 		        newshape.substitutepoint(pt,newshape.points(j))
 		      end if
 		    end if
@@ -644,7 +630,7 @@ Inherits MultipleSelectOperation
 		        EL02 = XMLElement(EL01.Child(i))
 		        MacId.append val(EL02.GetAttribute("Id"))
 		        Real.Append createdshape.points(i).id   ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
-		      next    
+		      next
 		    end if                                                         ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
 		  else                                                            'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId 'MacId'
 		    'son id dans Real et ' éventuellement le n° de côté dans RealSide. Ces données deviennent les MacId
@@ -741,10 +727,6 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		Histo As XMLElement
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		mw As MacWindow
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

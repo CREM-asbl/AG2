@@ -25,17 +25,17 @@ Begin Window MacWindow
    Title           =   "Sans_titre"
    Visible         =   "True"
    Width           =   420
-   Begin EditField EditField1
+   Begin EditField EF
       AcceptTabs      =   ""
       Alignment       =   0
       AutoDeactivate  =   "True"
       BackColor       =   16777215
-      Bold            =   ""
+      Bold            =   "True"
       Border          =   "True"
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   143
       HelpTag         =   ""
@@ -60,11 +60,11 @@ Begin Window MacWindow
       Text            =   ""
       TextColor       =   0
       TextFont        =   "System"
-      TextSize        =   0
-      Top             =   0
+      TextSize        =   14
+      Top             =   -7
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   420
       BehaviorIndex   =   0
    End
@@ -75,7 +75,7 @@ Begin Window MacWindow
       Caption         =   "Cancel"
       ControlOrder    =   1
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -92,7 +92,7 @@ Begin Window MacWindow
       TextSize        =   0
       Top             =   148
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   1
    End
@@ -103,7 +103,7 @@ Begin Window MacWindow
       Caption         =   "Close"
       ControlOrder    =   2
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
@@ -120,7 +120,7 @@ Begin Window MacWindow
       TextSize        =   0
       Top             =   148
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   80
       BehaviorIndex   =   2
    End
@@ -136,10 +136,35 @@ End
 		    PushButton3.Caption = Dico.Value("FileClose")
 		    PushButton2.visible = true
 		    PushButton3.Visible= true
-		    EditField1.text = ""
+		    EF.text = ""
 		  else
 		    PushButton2.visible = false
 		    PushButton3.Visible=false
+		  end if
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Paint(g As Graphics)
+		  dim i, n as integer
+		  dim s as shape
+		  
+		  if currentcontent.macrocreation then
+		    
+		    EF.Text = "Objets initiaux :" + chr(10)
+		    
+		    for i = 0 to ubound(mac.ObInit)
+		      n = mac.obInit(i)
+		      s = currentcontent.TheObjects.getshape(n)
+		      EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
+		    next
+		    EF.Text=EF.Text+chr(13)
+		    EF.Text =  EF.Text+ "Objets finaux :" + chr(10)
+		    for i = 0 to ubound(mac.ObFinal)
+		      n = mac.obFinal(i)
+		      s = currentcontent.TheObjects.getshape(n)
+		      EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
+		    next
 		  end if
 		End Sub
 	#tag EndEvent
@@ -148,7 +173,7 @@ End
 	#tag Method, Flags = &h0
 		Sub Save()
 		  if result = 1 then
-		    currentcontent.Mac.expli = EditField1.text
+		    currentcontent.Mac.expli = EF.text
 		  end if
 		  close
 		End Sub
@@ -161,6 +186,10 @@ End
 
 	#tag Property, Flags = &h0
 		drap As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		mac As macro
 	#tag EndProperty
 
 

@@ -38,8 +38,8 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  if wnd.Nomfam = "" then
-		    wnd.nomFam = "Untitled"
+		  if Nom = "" then
+		    nom = "Untitled"
 		  end if
 		  
 		  Doc = new XmlDocument
@@ -47,15 +47,16 @@ Inherits SelectOperation
 		  FStd = Doc.CreateElement("FormesStandard")
 		  Doc.Appendchild (FStd)
 		  Temp = Doc.CreateElement("Famille")
-		  Temp.setAttribute("Nom",wnd.NomFam)
+		  Temp.setAttribute("Nom",Nom)
 		  FStd.AppendChild Temp
-		  if wnd.coul <> nil then
-		    Temp.AppendChild wnd.coul.XMLPutInContainer(Doc,"Couleur")
+		  if coul <> nil then
+		    Temp.AppendChild coul.XMLPutInContainer(Doc,"Couleur")
 		  end if
 		  
 		  for i = 0 to tempshape.count-1
 		    s = tempshape.element(i)
 		    EL = Doc.CreateElement("Forme")
+		    EL.AppendChild s.FillColor.XMLPutInContainer(Doc,"Couleur")
 		    EL.SetAttribute("Nom", "Forme "+str(i+1))
 		    alpha = 0
 		    for j = 0 to s.npts-2
@@ -123,6 +124,15 @@ Inherits SelectOperation
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		coul As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Nom As string
+	#tag EndProperty
 
 
 	#tag ViewBehavior

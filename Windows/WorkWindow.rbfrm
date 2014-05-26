@@ -1258,7 +1258,6 @@ End
 			
 			closefw
 			newcontent(true)
-			'currentcontent.macrocreation = true
 			MenuMacros
 			wnd.refreshtitle
 			currentcontent.mac = new macro
@@ -1314,6 +1313,7 @@ End
 			Doc = new XmlDocument(f)
 			mac =new Macro(Doc)
 			app.themacros.addmac mac
+			wnd.updatesousmenusmacros
 			end if
 			return true
 			
@@ -1877,7 +1877,7 @@ End
 			refreshtitle
 			end if
 			return true
-			Return True
+			
 			
 		End Function
 #tag EndMenuHandler
@@ -1889,6 +1889,57 @@ End
 			CurrentContent.CurrentOperation = new TransfoConstruction(11)
 			refreshtitle
 			end if
+			return true
+			
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function MacrosClose2(index as Integer) As Boolean Handles MacrosClose2.Action
+			
+			app.themacros.RemoveMac app.themacros.element(index)
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function MacrosDescri2(index as Integer) As Boolean Handles MacrosDescri2.Action
+			dim Mac as Macro
+			
+			Mac = app.themacros.element(index)
+			Mac.OpenDescripWindow
+			Return True
+			
+		End Function
+#tag EndMenuHandler
+
+#tag MenuHandler
+		Function MacrosErase2(index as Integer) As Boolean Handles MacrosErase2.Action
+			Dim f As FolderItem
+			dim dlg as OpenDialog
+			dim mac as macro
+			dim cf as Confirmation
+			
+			closefw
+			currentcontent.currentoperation = nil
+			refreshtitle
+			
+			mac= app.themacros.element(index)
+			f = app.MacFolder.Child(mac.caption+".xmag")
+			
+			if f <> nil then
+			cf = new Confirmation("Voulez-vous vraiment supprimer cette macro ?")
+			cf.showmodal
+			
+			if cf.result = 1 then
+			app.themacros.RemoveMac app.themacros.element(index)
+			f.delete
+			end if
+			cf.close
+			end if
+			
 			return true
 			
 			
@@ -2394,9 +2445,11 @@ End
 		  PushButton1.visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  if MenuBar.Child("MacrosMenu").Child("MacrosExecute") <> nil then
-		    MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = true
-		  end if
+		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute") <> nil then
+		  'MenuBar.Child("MacrosMenu").Child("MacrosErase").visible = true
+		  'MenuBar.Child("MacrosMenu").Child("MacrosClose").visible = true
+		  'MenuBar.Child("MacrosMenu").Child("MacrosDescri").visible = true
+		  'end if
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
@@ -2484,25 +2537,26 @@ End
 
 	#tag Method, Flags = &h0
 		Function CopyMenuItem(mitem as menuitem) As menuitem
-		  dim item, jtem, ktem as menuitem
-		  dim i,j,k, nitem as integer
-		  dim Bol as Boolean
+		  dim item as menuitem
+		  dim i, nitem as integer
+		  
 		  
 		  item = new MenuItem
 		  item.Name = mitem.Name
 		  item.CommandKey = mitem.CommandKey
 		  item.index = mitem.index
+		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2")   then '
+		    item.Text = Dico.Value(item.Name)
+		  else
+		    item.Text = mitem.Text
+		  end if
 		  item.icon = mitem.icon
+		  
 		  
 		  if item.name = "PrefsFreeForms" then
 		    return nil
 		  end if
 		  
-		  if item.Name = "MacrosChoose" and app.TheMacros.count >0  then
-		    item.Text = app.TheMacros.element(item.index).caption
-		  else
-		    item.Text = Dico.Value(item.Name)
-		  end if
 		  nitem = mitem.count
 		  
 		  if nitem = 0 then
@@ -2658,15 +2712,14 @@ End
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
-		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = true
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = true
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = true
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = true
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = true
 		  EraseMenuBar
 		  CopyMenuBar
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
-		  'MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
-		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute")<> nil then
-		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
-		  'end if
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
 		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
@@ -2686,6 +2739,74 @@ End
 		  next
 		  PushButton1.visible=false
 		  stdbox.visible = false
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CloseSousMenusMacros()
+		  dim mitem as menuitem
+		  
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosExecute")
+		  CloseSousMenu(mitem)
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosClose")
+		  CloseSousMenu(mitem)
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosDescri")
+		  CloseSousMenu(mitem)
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosErase")
+		  CloseSousMenu(mitem)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CloseSousMenu(mitem as menuitem)
+		  dim i as integer
+		  
+		  for i =  mitem.count-1 downto 0
+		    mitem.remove i
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateSousMenusMacros()
+		  dim mitem as MenuItem
+		  
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosExecute")
+		  CreateSousMenu(mitem, "MacrosChoose")
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosClose")
+		  CreateSousMenu(mitem, "MacrosClose2")
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosDescri")
+		  CreateSousMenu(mitem, "MacrosDescri2")
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosErase")
+		  CreateSousMenu(mitem,"MacrosErase2")
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateSousMenu(muitem as menuitem, nom as string)
+		  dim i as integer
+		  dim mitem as MenuItem
+		  
+		  for i = 0 to app.themacros.count-1
+		    mitem = new MenuItem
+		    mitem.Name = nom
+		    mitem.index  = i
+		    mitem.checked = true
+		    muitem.append mitem
+		    mitem.Text = app.TheMacros.element(i).caption
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateSousMenusMacros()
+		  CloseSousMenusMacros
+		  CreateSousMenusMacros
+		  EraseMenuBar
+		  CopyMenuBar
 		End Sub
 	#tag EndMethod
 
@@ -2834,14 +2955,6 @@ End
 
 	#tag Property, Flags = &h0
 		nlib As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		nomfam As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		coul As couleur
 	#tag EndProperty
 
 

@@ -434,6 +434,7 @@ Protected Class Configuration
 		  'if right(stdfile,4) <>".std" then
 		  'stdfile = stdfile+".std"
 		  'end if
+		  
 		  fi = getfolderitem(stdfile)
 		  if not fi.exists then
 		    fi = app.StdFolder.Child(stdfile)
@@ -643,8 +644,8 @@ Protected Class Configuration
 		  mmenubar.Child("ToolsMenu").Child("ToolsAVPlan").checked = El.XQL("AVPlan").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsLabel").checked = El.XQL("Label").length > 0
 		  
-		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").checked = false 'El.XQL("Macros").length > 0
-		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").checked = false 'El.XQL("Macros").length > 0
+		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").checked = El.XQL("Macros").length > 0
+		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").checked = El.XQL("Macros").length > 0
 		  
 		  mmenubar.Child("OperaMenu").Child("OperaDivide").checked = El.XQL("Divide").length > 0
 		  mmenubar.Child("OperaMenu").Child("OperaCut").checked = El.XQL("Cut").length > 0

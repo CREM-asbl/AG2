@@ -7,8 +7,7 @@ Inherits Circle
 		  Circle(ol,3,p)
 		  npts = 3
 		  liberte = 5
-		  nsk = new ArcSkull(wnd.Mycanvas1.transform(p))
-		  
+		  createskull(p)
 		  
 		  
 		  
@@ -87,9 +86,7 @@ Inherits Circle
 		  arcangle = s.arcangle
 		  endangle = s.endangle
 		  startangle = s.startangle
-		  CreateExtreAndCtrlPoints
-		  nsk = new ArcSkull(wnd.mycanvas1.transform(Points(0).bpt))
-		  radius = s.radius
+		  createskull(p)
 		  drapori = s.drapori
 		  liberte = 5
 		  
@@ -129,10 +126,9 @@ Inherits Circle
 		  ncpts = 3
 		  liberte = 5
 		  drapori = true
-		  updateangles
-		  radius =  points(1).bpt.distance(points(0).bpt)
-		  CreateExtreAndCtrlPoints
-		  nsk = new Arcskull(wnd.Mycanvas1.transform(points(0).bpt))
+		  createskull(points(0).bpt)
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -809,9 +805,13 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
-		  computeradius
-		  updateangles
-		  CreateExtreAndCtrlPoints
+		  
+		  nsk = new ArcSkull(p)
+		  if ubound(points)> 0 then
+		    computeradius
+		    updateangles
+		    CreateExtreAndCtrlPoints
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -878,27 +878,6 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

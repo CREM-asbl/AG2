@@ -4,12 +4,18 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function aire() As double
 		  dim r as double
+		  dim tsf as transformation
 		  
-		  r = getradius
-		  if r = -1 then
-		    return -10000
+		  if constructedby <> nil and constructedby.oper = 6 then
+		    tsf = transformation(constructedby.data(0))
+		    return constructedby.shape.aire * tsf.M.det
 		  else
-		    return PI*Pow(r,2)*ori
+		    r = getradius
+		    if r = -1 then
+		      return -10000
+		    else
+		      return PI*Pow(r,2)*ori
+		    end if
 		  end if
 		End Function
 	#tag EndMethod
@@ -44,7 +50,9 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub computeradius()
-		  radius = coord.distance01
+		  if ubound(points) > 0 then
+		    radius = coord.distance01
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -603,27 +611,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

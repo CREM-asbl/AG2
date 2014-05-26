@@ -38,7 +38,7 @@ Inherits Polyqcq
 		  next
 		  redim curved(npts-1)
 		  redim prol(npts-1)
-		  redim curved(npts-1)
+		  
 		  std = true
 		  autos
 		End Sub
@@ -110,12 +110,13 @@ Inherits Polyqcq
 		  redim colcotes(npts-1)
 		  redim prol(npts-1)
 		  Fixecouleurtrait(Config.bordercolor,Config.Border)
-		  Fixecouleurfond(Config.Stdcolor(fam-10),100)
+		  Fixecouleurfond(Myspecs.Coul,100)
 		  If MySpecs.NonPointed = 1 then
 		    nonpointed = true
 		  end if
 		  std = true
 		  autos
+		  
 		End Sub
 	#tag EndMethod
 
@@ -245,27 +246,6 @@ Inherits Polyqcq
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

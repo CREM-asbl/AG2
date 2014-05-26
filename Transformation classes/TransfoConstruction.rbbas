@@ -11,7 +11,7 @@ Inherits MultipleSelectOperation
 		    NumberOfItemsToSelect =2
 		  case 2 to 6
 		    NumberOfItemsToSelect=1
-		  case 7,8,9,10
+		  case 7,8,9,10,11
 		    NumberOfItemsToSelect=4
 		  end select
 		  
@@ -162,7 +162,6 @@ Inherits MultipleSelectOperation
 		Function setitem(s as shape) As Boolean
 		  dim d, d2 as double
 		  dim bp1, bp2 as BasicPoint
-		  dim sh(-1) as shape
 		  dim i, i0 as integer
 		  dim qp2 as point
 		  
@@ -215,25 +214,26 @@ Inherits MultipleSelectOperation
 		      index.append-1
 		    case 9
 		      if fp <> sp then
-		        currentshape = new Polyqcq(objects,fp,sp,tp,qp)
+		        currentshape = new Polyqcq(objects,fp,sp,qp, tp)
 		        index.append -1
 		      else
 		        return false
 		      end if
 		    case 10
-		      d = fp.DistanceTo(sp)
-		      bp2 = qp.bpt - tp.bpt
-		      bp2= bp2.normer
-		      bp2 = bp2*d
-		      qp2 = new point(objects,tp.bpt+bp2)
-		      currentshape = new Polyqcq(objects,fp,sp,qp2,tp)
+		      currentshape = new Polyqcq(objects,fp,sp,qp,tp)
+		      index.append -1
+		    case 11
+		      bp1 = tp.bpt+sp.bpt-fp.bpt
+		      bp2 = qp.bpt.projection(tp.bpt, bp1)
+		      qp2 = new point(objects, bp2 )
+		      currentshape = new Trap(objects, fp,sp, qp2, tp)
 		      index.append -1
 		    end select
 		    return true
 		  end select
 		  return false
 		  
-		  // Types: 1 Translation 2 Rotation 3 Demi-tour,4 Quart G, 5 Quart D, 6 Symétrie 7 Homothétie 8 Similitude 9 Etirement 10 Déplacement
+		  // Types: 1 Translation 2 Rotation 3 Demi-tour,4 Quart G, 5 Quart D, 6 Symétrie 7 Homothétie 8 Similitude 9 Etirement 10 Déplacement 11 Cisaillement
 		End Function
 	#tag EndMethod
 
@@ -251,7 +251,7 @@ Inherits MultipleSelectOperation
 		    return choix1(p)
 		  case 2
 		    return choix2(p)
-		  case 3            // pour les homothéties, similitudes, étirements, isométries
+		  case 3            // pour les homothéties, similitudes, étirements, isométries, cisaillements
 		    visible= Objects.findPoint(p)
 		    return point(visible.element(iobj))
 		  case 4
@@ -406,14 +406,14 @@ Inherits MultipleSelectOperation
 		        index.append -1
 		      end if
 		      
-		    case  8, 9, 10 //  Similitude, Etirement
-		      if not s isa point and( (not s isa Polygon) or (s.npts <> 4) )  then
+		    case  8, 9, 10 //  Similitude, Etirement, Déplacement
+		      if not s isa point and  not( (s isa Polygon) and (s.npts = 4) )  then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
 		        index.append -1
 		      end if
 		    case 11 //Cisaillement
-		      if not s isa Trap and not s isa parallelogram and not s isa rect then
+		      if not s isa point and not s isa Trap and not s isa parallelogram and not s isa rect then
 		        visremove(s)
 		      else
 		        index.append -1
@@ -447,7 +447,7 @@ Inherits MultipleSelectOperation
 		    CurrentShape = s
 		  case 6
 		    currentshape = s
-		  case 7 to 10
+		  case 7 to 11
 		    if s isa point then
 		      fp = point(s)
 		    else
@@ -488,7 +488,7 @@ Inherits MultipleSelectOperation
 		  select case type
 		  case 1
 		    return s
-		  case 7 to 10
+		  case 7 to 11
 		    return s
 		  end select
 		  

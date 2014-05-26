@@ -276,11 +276,6 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  dim sh as shape
 		  
-		  if currentcontent.macrocreation then
-		    super.endoperation
-		    return
-		  end if
-		  
 		  if copyptsur then
 		    if (startpoint.distance(endpoint) < Epsilon)  or (currentattractingshape = nil) then
 		      abort
@@ -309,7 +304,6 @@ Inherits SelectAndDragOperation
 		    M = new translationmatrix(vect)
 		    EndOper1(M)
 		  end if
-		  
 		  LierGroupes
 		  
 		  super.Endoperation

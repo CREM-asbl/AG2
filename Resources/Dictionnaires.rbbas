@@ -349,7 +349,7 @@ Protected Module Dictionnaires
 		    select case st
 		    case "arc"
 		      return "cet arc"
-		    case "droite", "bande"
+		    case "droite", "bande", "ellipse", "hyperbole", "parabole"
 		      return "cette " + st
 		    else
 		      return "ce " + st
@@ -539,7 +539,14 @@ Protected Module Dictionnaires
 		Function identifier(fa as integer, fo as integer) As string
 		  select case fa
 		  case 0
-		    return point
+		    select case fo
+		    case 0
+		      return point
+		    case 1
+		      return pointon
+		    case 2
+		      return interpoint
+		    end select
 		  case 1
 		    select case fo
 		    case 0, 1, 2
@@ -960,6 +967,18 @@ Protected Module Dictionnaires
 	#tag Method, Flags = &h0
 		Function only4() As string
 		  return dico.value("only4")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function pointon() As string
+		  return Dico.Value("pointon")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function interpoint() As string
+		  return point+" "+inter
 		End Function
 	#tag EndMethod
 

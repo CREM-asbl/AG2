@@ -660,19 +660,19 @@ Inherits Bipoint
 		  if constructedby<> nil and constructedby.oper = 1 and constructedby.shape = sh then
 		    if sh isa droite then
 		      return true
-		    elseif sh isa polygon or sh isa bande or sh isa secteur then
-		      return  constructedby.data(0) = n
-		    end if
-		  else
-		    d = sh.getside(n)
-		    u = vecteurdirecteur.normer
-		    v = d.vecteurdirecteur.normer
-		    if u = nil or v = nil then
-		      return true
-		    else
-		      return abs(u.vect(v) ) < epsilon
+		    elseif (sh isa polygon or sh isa bande or sh isa secteur) and constructedby.data(0) = n  then
+		      return  true
 		    end if
 		  end if
+		  d = sh.getside(n)
+		  u = vecteurdirecteur.normer
+		  v = d.vecteurdirecteur.normer
+		  if u = nil or v = nil then
+		    return true
+		  else
+		    return abs(u.vect(v) ) < epsilon
+		  end if
+		  
 		  
 		  
 		End Function

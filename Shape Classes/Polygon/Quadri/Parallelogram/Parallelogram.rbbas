@@ -49,7 +49,11 @@ Inherits Quadri
 		  
 		  if abs (n-n1) = 2 then
 		    pp(1) = p1
-		    pp(2) = points((n1+1) mod 4)
+		    if points((n1+1)mod 4).isptsur then
+		      pp(2) = points((n1+1) mod 4)
+		    else
+		      pp(2) = points((n1-1) mod 4)
+		    end if
 		    return ModifierTriIso1fixe(pp(),0,1)
 		  else
 		    pp(1) = points((n+2) mod 4)
@@ -190,27 +194,6 @@ Inherits Quadri
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

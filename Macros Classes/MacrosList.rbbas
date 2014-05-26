@@ -28,7 +28,8 @@ Protected Class MacrosList
 		    end if
 		  next
 		  macs.append m
-		  m.creermenuitem
+		  
+		  
 		  
 		  
 		End Sub
@@ -39,6 +40,8 @@ Protected Class MacrosList
 		  if macs.indexof(m) <> -1 then
 		    macs.remove macs.indexof(m)
 		  end if
+		  wnd.updateSousMenusMacros
+		  
 		End Sub
 	#tag EndMethod
 

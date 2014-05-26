@@ -156,7 +156,7 @@ Inherits MultipleSelectOperation
 		  
 		  setconstructioninfos
 		  
-		  if  Config.Trace  and (( tsf.type <> 7) and ( tsf.type <> 71) and ( tsf.type <> 72) or (HomothetyMatrix(tsf.M).rapport > 0))  then
+		  if  Config.Trace  and TrajValide then
 		    draptraj = true
 		    for i = 0 to copies.count-1
 		      for j = 0 to ubound(copies.element(i).points)
@@ -384,10 +384,14 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  dim s2 as shape
+		  dim Temp as XMLElement
 		  
 		  s2 = copies.element(0)
 		  
-		  EL.AppendChild s2.XMLPutIdINContainer(Doc)
+		  
+		  Temp = s2.XMLPutIdINContainer(Doc)
+		  Temp.AppendChild s2.XMLPutChildsInContainer(Doc)
+		  EL.AppendChild Temp
 		  EL.appendchild  s2.XMLPutConstructionInfoInContainer(Doc)
 		  return EL
 		End Function
@@ -417,6 +421,35 @@ Inherits MultipleSelectOperation
 		  tsf.appliquer(s1,copies.element(0))
 		  tsf.setconstructioninfos1(s1,copies.element(0))
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TrajValide() As Boolean
+		  dim s as shape
+		  dim BiB1, BiB2 as BiBPoint
+		  dim u1, u2, u3, u4, q as BasicPoint
+		  dim r1, r2 as double
+		  
+		  select case tsf.type
+		  case 7, 71, 72
+		    if homothetyMatrix(tsf.M).rapport <= 0 then
+		      return false
+		    end if
+		  case 9
+		    s = tsf.supp
+		    Bib1 = tsf.supp.getBibside(0)
+		    Bib2 = tsf.supp.getBiBSide(2)
+		    q = Bib2.BibInterdroites(bib1,2,2,r1,r2)
+		    if q <> nil  then
+		      return false
+		    end if
+		  end select
+		  return true
+		  
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

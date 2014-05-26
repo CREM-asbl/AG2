@@ -6,7 +6,7 @@ Inherits Circle
 		  Circle(ol,2,p)
 		  Npts=2
 		  Ori=1
-		  nsk = new CircleSkull(wnd.Mycanvas1.transform(p))
+		  createskull(p)
 		End Sub
 	#tag EndMethod
 
@@ -29,9 +29,7 @@ Inherits Circle
 		  Shape(ol,El)
 		  ncpts=2
 		  Angle=Val(El.GetAttribute("Angle"))
-		  CreateExtreAndCtrlPoints
-		  nsk = new CircleSkull(wnd.Mycanvas1.transform(Points(0).bpt))
-		  updateskull
+		  createskull(Points(0).bpt)
 		  
 		  
 		End Sub
@@ -52,10 +50,10 @@ Inherits Circle
 		  
 		  Npts=2
 		  Ori=1
-		  nsk = new CircleSkull(p.bpt)
+		  createskull(p.bpt)
 		  nsk.updatefillcolor(Config.Fillcolor.col,0)
 		  endconstruction
-		  Updateskull
+		  
 		End Sub
 	#tag EndMethod
 
@@ -102,7 +100,11 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function GetType() As string
-		  return Dico.value("FreeCircle")
+		  if constructedby <> nil and constructedby.oper = 6 and ((transformation(constructedby.data(0)).type = 9) or (transformation(constructedby.data(0)).type = 11 )) then
+		    return Dico.value("Ellipse")
+		  else
+		    return Dico.value("FreeCircle")
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -125,7 +127,7 @@ Inherits Circle
 		  Shape(ol,s)
 		  ncpts=2
 		  CreateExtreAndCtrlPoints
-		  nsk = new CircleSkull(wnd.Mycanvas1.transform(p))
+		  createskull(p)
 		  nsk.updatesize(1)
 		  
 		End Sub
@@ -196,9 +198,13 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
-		  computeradius
-		  CreateExtreAndCtrlPoints
-		  updateskull
+		  
+		  nsk = new CircleSkull(p)
+		  if ubound(points) > 0 then
+		    computeradius
+		    CreateExtreAndCtrlPoints
+		    updateskull
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -266,27 +272,6 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="final"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="init"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="interm"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -26,11 +26,11 @@ Inherits nBpoint
 		  v = Second-first
 		  v = v.normer
 		  v = v*cot                                            // L'orientation de v est celle de self (de first vers second)
-		  if abs(cot) < epsilon then
+		  if abs(ray-dist) < epsilon then
 		    p.append q
 		    p.append q
 		    return 1
-		  elseif ray> dist - epsilon then
+		  elseif ray> dist + epsilon then
 		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
 		    p.append q+v
 		    return 2
@@ -113,48 +113,6 @@ Inherits nBpoint
 		  
 		  return n
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub BiBpoint(p as point)
-		  dim s as shape //Construit le bibpoint sur lequel se trouve un point donné
-		  dim n as integer
-		  
-		  if p.pointsur.count <> 1 then
-		    Tab = nil
-		  else
-		    s = p.pointsur.element(0)
-		    if s isa droite then
-		      'Tab = Droite(s).coord.Tab
-		      BibPoint(droite(s).firstp,droite(s).secondp)
-		      nextre = droite(s).nextre
-		      type = 0
-		    elseif s isa polygon then
-		      n = p.numside(0)
-		      BibPoint(s.Points(n).bpt, s.Points((n+1) mod s.npts).bpt)
-		      nextre = 2
-		      type = 0
-		    elseif s isa bande then
-		      n = p.numside(0)
-		      if n = 0 then
-		        BibPoint(s.points(0).bpt, s.points(1).bpt)
-		      else
-		        BibPoint(s.points(2).bpt, Bande(s).Point3)
-		      end if
-		      nextre = 0
-		      type = 0
-		    elseif s isa secteur then
-		      n = p.numside(0)
-		      BibPoint(s.Points(0).bpt, s.Points(n).bpt)
-		      nextre = 1
-		      type = 0
-		    elseif s isa Circle then
-		      BibPoint(s.points(0).bpt, s.points(1).bpt)
-		      type = 1
-		    end if
-		  end if
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -477,7 +435,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function BibInterdroites(D as BiBPoint, n1 as integer, n2 as integer, Byref r1 as double, byref r2 as double) As BasicPoint
+		Function BibInterdroites(D as BiBPoint, n1 as integer, n2 as integer, Byref r1 as double, byref r2 as double) As basicPoint
 		  dim p, q, u, v as BasicPoint
 		  
 		  p = D.VecteurDirecteur

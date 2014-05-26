@@ -262,12 +262,14 @@ Inherits Shape
 		  dim i as Integer
 		  
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
-		  bpt = d
-		  if labs.count = 1 and not labs.element(0).fixe  then
-		    labs.element(0).SetPosition
-		  end if
-		  if tracept then
-		    Trace.append d
+		  if d <> nil then
+		    bpt = d
+		    if labs.count = 1 and not labs.element(0).fixe  then
+		      labs.element(0).SetPosition
+		    end if
+		    if tracept then
+		      Trace.append d
+		    end if
 		  end if
 		  
 		End Sub
@@ -595,12 +597,12 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  if   MacConstructedBy <>  nil  then
-		    liberte = 0
-		  end if
-		  if  forme <> 1 and (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
-		    liberte = 0
-		  end if
+		  'if   MacConstructedBy <>  nil  and ubound(macconstructedshapes) = -1 then
+		  'liberte = 0
+		  'end if
+		  'if   (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
+		  'liberte = 0
+		  'end if
 		  
 		  
 		  for i = 0 to ubound(parents)
@@ -1741,7 +1743,9 @@ Inherits Shape
 		    Temp.SetAttribute("Id1",str(shape(ConstructedBy.data(1)).id))
 		    Temp.SetAttribute("NDivP",str(ConstructedBy.data(2)))
 		    Temp.SetAttribute("DivP",str(ConstructedBy.data(3)))
-		    Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
+		    if ubound(constructedby.data) > 3 then
+		      Temp.SetAttribute("Side",str(ConstructedBy.data(4)))
+		    end if
 		  case 6, 7
 		    tsf = Transformation(ConstructedBy.data(0))
 		    Temp.SetAttribute("SuppTsf", str(tsf.supp.id))
@@ -3069,25 +3073,44 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Constructing() As Boolean
+		Function oldConstructing() As Boolean
 		  dim i as integer   'Utilisé uniquement dans la détermination des points "sur" qui sont initiaux d'une macro
 		  
 		  if forme <> 1 then
 		    return false
 		  end if
 		  
-		  if ubound (constructedshapes)> -1 then
+		  if ubound (constructedshapes)> -1  then
 		    return true
 		  end if
 		  
-		  'for i = 0 to ubound(parents)
-		  'if (parents(i).getindexpoint(self) <> -1) and parents(i).isaparaperp then
-		  'return true
-		  'end if
-		  'next
+		  for i = 0 to ubound(parents)
+		    if (parents(i).getindexpoint(self) <> -1) and ubound(parents(i).constructedshapes) > -1 then
+		      return true
+		    end if
+		  next
 		  
 		End Function
 	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetBiBPoint() As BiBPoint
+		  dim s as shape
+		  dim n as integer
+		  
+		  
+		  if pointsur.count <> 1 then
+		    return  nil
+		  else
+		    s = pointsur.element(0)
+		    n = numside(0)
+		    return  s.getBiBside(n)
+		  end  if
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

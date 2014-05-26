@@ -691,16 +691,29 @@ Implements StringProvider
 		Sub Swap()
 		  dim i, j as integer
 		  dim t as boolean
+		  dim s as shape
 		  
 		  Hidden = not Hidden
 		  
 		  for i = 0 to ubound(childs)
-		    t = true
+		    t =true
+		    
 		    for j = 0 to ubound(childs(i).parents)
-		      if childs(i).pointsur.getposition(childs(i).parents(j)) = -1 then
-		        t = t and childs(i).parents(j).hidden
+		      s = childs(i).parents(j)
+		      if s.getindexpoint(childs(i)) <> -1 then
+		        if not s.hidden or ubound(s.constructedshapes) <> -1 or ubound(s.macconstructedshapes) <> -1 then
+		          t = false
+		        end if
 		      end if
 		    next
+		    
+		    if  t then
+		      for j = 0 to childs(i).pointsur.count-1
+		        s = childs(i).pointsur.element(j)
+		        t = t and s.hidden
+		      next
+		    end if
+		    
 		    childs(i).hidden = t
 		  next
 		End Sub
@@ -3668,10 +3681,10 @@ Implements StringProvider
 		        s1.childs(j).updateshape
 		      end if
 		    next
-		    for j = 0 to ubound(MacInfo.RealInit)
-		      s2 = objects.Getshape(MacInfo.RealInit(j))
-		      's2.modified = true
-		    next
+		    'for j = 0 to ubound(MacInfo.RealInit)
+		    's2 = objects.Getshape(MacInfo.RealInit(j))
+		    ''s2.modified = true
+		    'next
 		    s1.updateshape
 		  next
 		  
@@ -3725,6 +3738,8 @@ Implements StringProvider
 		      end if
 		    next
 		  end if
+		  
+		  
 		End Function
 	#tag EndMethod
 
@@ -3913,11 +3928,26 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
+		  dim Bib as BiBPoint
 		  
+		  BiB = new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
 		  
-		  return new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
+		  if self isa circle then
+		    BiB.type = 1
+		  else
+		    BiB.type = 0
+		  end if
+		  if self isa droite then
+		    BiB.nextre = droite(self).nextre
+		  elseif self isa polygon then
+		    BiB.nextre = 2
+		  elseif self isa secteur then
+		    BiB.nextre = 1
+		  else
+		    BiB.nextre = 0
+		  end if
 		  
-		  
+		  return BiB
 		End Function
 	#tag EndMethod
 
@@ -4020,6 +4050,7 @@ Implements StringProvider
 		  
 		End Function
 	#tag EndMethod
+
 
 	#tag Note, Name = Formes
 		
