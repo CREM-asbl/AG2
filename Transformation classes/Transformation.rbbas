@@ -217,7 +217,7 @@ Implements StringProvider
 		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  case 10 //Deplacement
 		    M = new IsometryMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
-		  case 11 //Cisaillement  
+		  case 11 //Cisaillement
 		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  end select
 		  
@@ -350,10 +350,16 @@ Implements StringProvider
 		      j = index
 		      tos.writeline ( "[ "+ supp.Points(i).etiq+ supp.Points(j).etiq+  "]  droite")
 		    end if
-		  case 7, 72, 8
+		  case 7, 72, 8, 9, 10, 11
 		    tos.writeline("[" + supp.points(0).etiq + " " + supp.points(1).etiq + " " + supp.points(2).etiq + " " + supp.points(3).etiq + "] polygone ")
-		    tos.writeline ( "[ "+supp.Points(0).etiq+ " 1 "+supp.Points(3).etiq+ "]  fleche" )
-		    tos.writeline ( "[ "+supp.Points(1).etiq+ " 1 "+supp.Points(2).etiq+ "]  fleche" )
+		    if type <> 9 and type <>11 then
+		      tos.writeline ( "[ "+supp.Points(0).etiq+ " 1 "+supp.Points(3).etiq+ "]  fleche" )
+		    else
+		      tos.writeline ( "[ "+supp.Points(3).etiq+ " 1 "+supp.Points(2).etiq+ "]  fleche" )
+		    end if
+		    if type <9 then
+		      tos.writeline ( "[ "+supp.Points(1).etiq+ " 1 "+supp.Points(2).etiq+ "]  fleche" )
+		    end if
 		  case 71,81
 		    supp.points(0).toeps(tos)
 		    tos.writeline ( "[ "+supp.Points(1).etiq+ " 1  "+supp.Points(2).etiq+ "]  fleche" )
@@ -635,7 +641,7 @@ Implements StringProvider
 		    case  71, 81
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
-		    case 7, 8, 72,10
+		    case 7, 8, 72
 		      a = can.transform(supp.points(0).bpt)
 		      b = can.transform(supp.points(3).bpt)
 		      T.updatetip(a,b,col)
@@ -652,6 +658,9 @@ Implements StringProvider
 		    case 9, 11
 		      a = can.transform(supp.points(3).bpt)
 		      b = can.transform(supp.points(2).bpt)
+		    case 10
+		      a = can.transform(supp.points(0).bpt)
+		      b = can.transform(supp.points(3).bpt)
 		    end select
 		    T.updatetip(a,b,col)
 		    g.DrawObject T, b.x, b.y

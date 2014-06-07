@@ -301,15 +301,15 @@ Begin Menu MenuMenus
             Index = -2147483648
             AutoEnable = True
          End
-         Begin MenuItem DefinirSymetrieaxiale
-            SpecialMenu = 0
-            Text = "Symetrie axiale"
-            Index = -2147483648
-            AutoEnable = True
-         End
          Begin MenuItem DefinirDeplacement
             SpecialMenu = 0
             Text = "Déplacement"
+            Index = -2147483648
+            AutoEnable = True
+         End
+         Begin MenuItem DefinirSymetrieaxiale
+            SpecialMenu = 0
+            Text = "Symetrie axiale"
             Index = -2147483648
             AutoEnable = True
          End

@@ -60,7 +60,7 @@ Protected Class ObjectsList
 		  
 		  for i=Ubound(currentcontent.Plans) downto 0
 		    S1=GetShape(currentcontent.Plans(i))
-		    if not s1.deleted then
+		    if not s1.deleted  then
 		      s1=s1.SelectShape(p)
 		      if s1 <> nil then
 		        if s1 isa bipoint and not (s1 isa droite or s1 isa supphom)  then

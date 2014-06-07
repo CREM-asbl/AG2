@@ -2817,7 +2817,11 @@ Implements StringProvider
 		  else
 		    app.abortread
 		  end if
+		  
 		  tsf.setconstructioninfos1(constructedby.shape,self)
+		  if (tsf.type = 9 or tsf.type = 11) and self isa freecircle then
+		    CreateExtreAndCtrlPoints
+		  end if
 		  auto = 0
 		End Sub
 	#tag EndMethod
@@ -4048,6 +4052,12 @@ Implements StringProvider
 		  
 		  return t
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function isaellipse() As boolean
+		  return false
 		End Function
 	#tag EndMethod
 

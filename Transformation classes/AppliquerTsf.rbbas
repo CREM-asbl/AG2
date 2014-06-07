@@ -191,6 +191,9 @@ Inherits MultipleSelectOperation
 		  case 1
 		    return GetTsf(p)
 		  case 2
+		    if s <> nil and  s.isaellipse then
+		      return nil
+		    end if
 		    for i = 0 to tsf.constructedshapes.count-1
 		      if tsf.constructedshapes.element(i).constructedby.shape = s  then
 		        return nil

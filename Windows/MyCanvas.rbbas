@@ -119,12 +119,14 @@ Inherits Canvas
 		Sub Open()
 		  Readdblclicktime
 		  resize
-		  zone = new ovalshape
-		  zone.width = 2*config.magneticdist
-		  zone.height= zone.width
-		  zone.bordercolor = noir
-		  zone.fill = 0
-		  zone.border = 100
+		  if config <> nil then
+		    zone = new ovalshape
+		    zone.width = 2*config.magneticdist
+		    zone.height= zone.width
+		    zone.bordercolor = noir
+		    zone.fill = 0
+		    zone.border = 100
+		  end if
 		  
 		End Sub
 	#tag EndEvent

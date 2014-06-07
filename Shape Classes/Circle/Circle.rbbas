@@ -173,9 +173,7 @@ Inherits Shape
 		  end if
 		  
 		  points(0).ToEps(tos)
-		  'if self isa FreeCircleB then
-		  'points(1).ToEPS(tos)
-		  'end if
+		  
 		  
 		End Sub
 	#tag EndMethod

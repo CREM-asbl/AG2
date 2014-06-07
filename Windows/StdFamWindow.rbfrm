@@ -84,7 +84,7 @@ Begin Window StdFamWindow
       Top             =   52
       Underline       =   ""
       Visible         =   True
-      Width           =   100
+      Width           =   121
       BehaviorIndex   =   1
    End
    Begin PushButton CancelButton
