@@ -140,10 +140,13 @@ Inherits SelectAndDragOperation
 		  dim i, j as integer
 		  s = super.getshape(p)
 		  
-		  if visible.count > 0 then
+		  if visible.count > 0  then
 		    nobj = visible.count
 		    for i =  nobj-1 downto 0
 		      s = Visible.element(i)
+		      if currentcontent.macrocreation then
+		        visible.removeshape(s)
+		      end if
 		      for j = 0 to s.fig.shapes.count-1
 		        if s.fig.shapes.element(j).std then
 		          visible.removeshape(s)

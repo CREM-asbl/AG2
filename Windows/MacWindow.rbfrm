@@ -8,20 +8,20 @@ Begin Window MacWindow
    Frame           =   3
    FullScreen      =   "False"
    HasBackColor    =   "False"
-   Height          =   184
-   ImplicitInstance=   "True"
-   LiveResize      =   "True"
+   Height          =   234
+   ImplicitInstance=   "False"
+   LiveResize      =   "False"
    MacProcID       =   0
    MaxHeight       =   32000
-   MaximizeButton  =   "True"
+   MaximizeButton  =   "False"
    MaxWidth        =   32000
    MenuBar         =   ""
    MenuBarVisible  =   "False"
    MinHeight       =   64
-   MinimizeButton  =   "True"
+   MinimizeButton  =   "False"
    MinWidth        =   64
    Placement       =   0
-   Resizeable      =   "True"
+   Resizeable      =   "False"
    Title           =   "Sans_titre"
    Visible         =   "True"
    Width           =   420
@@ -37,7 +37,7 @@ Begin Window MacWindow
       DataSource      =   ""
       Enabled         =   True
       Format          =   ""
-      Height          =   143
+      Height          =   200
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -51,7 +51,7 @@ Begin Window MacWindow
       Mask            =   ""
       Multiline       =   "True"
       Password        =   ""
-      ReadOnly        =   ""
+      ReadOnly        =   "True"
       Scope           =   0
       ScrollbarHorizontal=   ""
       ScrollbarVertical=   "True"
@@ -61,7 +61,7 @@ Begin Window MacWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   14
-      Top             =   -7
+      Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
       Visible         =   True
@@ -81,7 +81,7 @@ Begin Window MacWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   275
+      Left            =   260
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -90,7 +90,7 @@ Begin Window MacWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-      Top             =   148
+      Top             =   205
       Underline       =   ""
       Visible         =   True
       Width           =   80
@@ -109,7 +109,7 @@ Begin Window MacWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   60
+      Left            =   92
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -118,7 +118,7 @@ Begin Window MacWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-      Top             =   148
+      Top             =   205
       Underline       =   ""
       Visible         =   True
       Width           =   80
@@ -130,29 +130,19 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  if currentcontent.macrocreation then
-		    Title =  Dico.Value("MacroDescription")
-		    PushButton2.Caption = Dico.Value("Cancel")
-		    PushButton3.Caption = Dico.Value("FileClose")
-		    PushButton2.visible = true
-		    PushButton3.Visible= true
-		    EF.text = ""
-		  else
-		    PushButton2.visible = false
-		    PushButton3.Visible=false
-		  end if
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Paint(g As Graphics)
+		  
 		  dim i, n as integer
 		  dim s as shape
 		  
+		  PushButton3.Caption = Dico.Value("FileClose")
+		  PushButton3.Visible= true
 		  if currentcontent.macrocreation then
+		    Title =  Dico.Value("MacroDescription")
+		    PushButton2.Caption = Dico.Value("Cancel")
+		    PushButton2.visible = true
 		    
+		    EF.ReadOnly = false
 		    EF.Text = "Objets initiaux :" + chr(10)
-		    
 		    for i = 0 to ubound(mac.ObInit)
 		      n = mac.obInit(i)
 		      s = currentcontent.TheObjects.getshape(n)
@@ -165,7 +155,37 @@ End
 		      s = currentcontent.TheObjects.getshape(n)
 		      EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
 		    next
+		    EF.Text = EF.Text+ chr(10)+  "Commentaires"+chr(10)
+		  else
+		    EF.ReadOnly = true
+		    PushButton2.Visible=false
 		  end if
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Paint(g As Graphics)
+		  dim i, n as integer
+		  dim s as shape
+		  
+		  'if currentcontent.macrocreation then
+		  'EF.Text = "Objets initiaux :" + chr(10)
+		  'for i = 0 to ubound(mac.ObInit)
+		  'n = mac.obInit(i)
+		  's = currentcontent.TheObjects.getshape(n)
+		  'EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
+		  'next
+		  'EF.Text=EF.Text+chr(13)
+		  'EF.Text =  EF.Text+ "Objets finaux :" + chr(10)
+		  'for i = 0 to ubound(mac.ObFinal)
+		  'n = mac.obFinal(i)
+		  's = currentcontent.TheObjects.getshape(n)
+		  'EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
+		  'next
+		  'EF.Text = EF.Text+ "Commentaires"+chr(10)
+		  'end if
+		  
+		  EF.text = Mac.expli
 		End Sub
 	#tag EndEvent
 
@@ -173,9 +193,17 @@ End
 	#tag Method, Flags = &h0
 		Sub Save()
 		  if result = 1 then
-		    currentcontent.Mac.expli = EF.text
+		    Mac.expli = EF.text
 		  end if
 		  close
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MacWindow(mac as Macro)
+		  self.mac = mac
+		  Super.Window
+		  
 		End Sub
 	#tag EndMethod
 
@@ -195,6 +223,16 @@ End
 
 #tag EndWindowCode
 
+#tag Events EF
+	#tag Event
+		Sub TextChange()
+		  
+		  if currentcontent.macrocreation then
+		    Mac.expli = EF.text
+		  end if
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events PushButton2
 	#tag Event
 		Sub Action()

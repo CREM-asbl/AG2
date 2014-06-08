@@ -211,8 +211,7 @@ Inherits MultipleSelectOperation
 		  next
 		  super.endoperation
 		  
-		  mw = new  MacWindow
-		  mw.mac = mac
+		  mw = new  MacWindow(mac)
 		  mw.ShowModal
 		  currentcontent.currentoperation = nil
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
