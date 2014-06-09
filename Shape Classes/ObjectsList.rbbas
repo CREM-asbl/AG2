@@ -58,7 +58,7 @@ Protected Class ObjectsList
 		  
 		  Visible = new objectslist
 		  
-		  for i=Ubound(currentcontent.Plans) downto 0
+		  for i=Ubound(currentcontent.Plans) downto 1
 		    S1=GetShape(currentcontent.Plans(i))
 		    if not s1.deleted  then
 		      s1=s1.SelectShape(p)

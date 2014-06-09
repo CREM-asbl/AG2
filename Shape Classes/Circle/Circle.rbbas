@@ -123,7 +123,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As Integer
-		  if abs(p.distance(Points(0).bpt) - getradius)  < wnd.Mycanvas1.MagneticDist then
+		  if pinshape(p)  and (radius - p.distance(points(0).bpt)) <  wnd.Mycanvas1.MagneticDist then
 		    return 0
 		  else
 		    return -1
