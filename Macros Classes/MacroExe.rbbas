@@ -626,10 +626,11 @@ Inherits MultipleSelectOperation
 		    createdshape = objects.getshape(rid)
 		    EL01 = XMLElement(EL0.Child(0))
 		    if EL01 <> nil then
+		      Side = MacInfo.GetRealSide(n)
 		      for i = 0 to EL01.ChildCount-1
 		        EL02 = XMLElement(EL01.Child(i))
 		        MacId.append val(EL02.GetAttribute("Id"))
-		        Real.Append createdshape.points(i).id   ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
+		        Real.Append createdshape.points((i+Side) mod createdshape.npts).id   ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
 		      next
 		    end if                                                         ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
 		  else                                                            'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId 'MacId'

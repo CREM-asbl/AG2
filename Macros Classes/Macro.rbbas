@@ -843,8 +843,8 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub OpenDescripWindow()
-		  mw = new MacWindow
-		  mw.mac = self
+		  mw = new MacWindow(self)
+		  'mw.mac = self
 		  mw.Title = GetName + " : " + Dico.Value("MacroDescription") +" " + caption
 		  mw.EF.Text = expli
 		  wnd.setfocus

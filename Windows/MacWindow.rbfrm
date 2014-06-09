@@ -136,7 +136,7 @@ End
 		  
 		  PushButton3.Caption = Dico.Value("FileClose")
 		  PushButton3.Visible= true
-		  if currentcontent.macrocreation then
+		  if currentcontent.macrocreation and mac.expli ="" then
 		    Title =  Dico.Value("MacroDescription")
 		    PushButton2.Caption = Dico.Value("Cancel")
 		    PushButton2.visible = true
@@ -158,34 +158,9 @@ End
 		    EF.Text = EF.Text+ chr(10)+  "Commentaires"+chr(10)
 		  else
 		    EF.ReadOnly = true
+		    EF.text = Mac.expli
 		    PushButton2.Visible=false
 		  end if
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Paint(g As Graphics)
-		  dim i, n as integer
-		  dim s as shape
-		  
-		  'if currentcontent.macrocreation then
-		  'EF.Text = "Objets initiaux :" + chr(10)
-		  'for i = 0 to ubound(mac.ObInit)
-		  'n = mac.obInit(i)
-		  's = currentcontent.TheObjects.getshape(n)
-		  'EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
-		  'next
-		  'EF.Text=EF.Text+chr(13)
-		  'EF.Text =  EF.Text+ "Objets finaux :" + chr(10)
-		  'for i = 0 to ubound(mac.ObFinal)
-		  'n = mac.obFinal(i)
-		  's = currentcontent.TheObjects.getshape(n)
-		  'EF.Text = EF.Text+str(i+1)+") "+identifier(s.fam, s.forme)+ " "+ chr(10)
-		  'next
-		  'EF.Text = EF.Text+ "Commentaires"+chr(10)
-		  'end if
-		  
-		  EF.text = Mac.expli
 		End Sub
 	#tag EndEvent
 
