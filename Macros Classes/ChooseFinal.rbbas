@@ -12,7 +12,7 @@ Inherits MultipleSelectOperation
 		  finished = false
 		  NumberOfItemsToSelect = 1
 		  CurrentItemToSet = 1
-		  Mac = currentcontent.mac
+		  Mac = new Macro
 		  
 		  
 		End Sub
@@ -213,7 +213,7 @@ Inherits MultipleSelectOperation
 		  
 		  mw = new  MacWindow(mac)
 		  mw.ShowModal
-		  currentcontent.currentoperation = nil
+		  mac.SaveFileMacro
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
 		  wnd.EraseMenuBar
 		  wnd.CopyMenuBar

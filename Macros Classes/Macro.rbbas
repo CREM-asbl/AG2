@@ -166,13 +166,13 @@ Protected Class Macro
 		  dim i, ObId as integer
 		  dim EL, EL1 as XmlElement
 		  
-		  for i = currentcontent.mac.Histo.childcount -1 downto 0
+		  for i = Histo.childcount -1 downto 0
 		    EL = XMLElement(Histo.Child(i))
 		    EL1 = XMLElement(EL.firstChild)
 		    if EL1 <> nil then
 		      ObId = val(EL1.GetAttribute("Id"))
 		      if currentcontent.theobjects.getshape(ObId) = nil then
-		        currentcontent.mac.Histo.RemoveChild EL
+		        Histo.RemoveChild EL
 		      end if
 		    end if
 		  next

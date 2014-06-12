@@ -96,6 +96,9 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  fa = -1
 		  
+		  if mac.mw <> nil then
+		    mac.mw.close
+		  end if
 		  if currentcontent.macrocreation then
 		    CurrentContent.CurrentFileUpToDate=false
 		    wnd.refreshtitle
@@ -104,17 +107,15 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    if mac.mw <> nil then
-		      mac.mw.close
-		    end if
 		    CurrentContent.TheMacros.AddMac(Mac)
-		    MacInfo = new MacConstructionInfo(Mac)
-		    Mac.MacInf = MacInfo
-		    Redim MacId(-1)
-		    Redim Real(-1)
-		    Redim RealSide(-1)
-		    wnd.mycanvas1.mousecursor = ArrowCursor
 		  end if
+		  MacInfo = new MacConstructionInfo(Mac)
+		  Mac.MacInf = MacInfo
+		  Redim MacId(-1)
+		  Redim Real(-1)
+		  Redim RealSide(-1)
+		  wnd.mycanvas1.mousecursor = ArrowCursor
+		  
 		  
 		  
 		  
@@ -603,7 +604,7 @@ Inherits MultipleSelectOperation
 		  next
 		  
 		  endoperation
-		  currentcontent.currentoperation = nil
+		  'currentcontent.currentoperation = nil
 		  
 		End Sub
 	#tag EndMethod
@@ -630,7 +631,7 @@ Inherits MultipleSelectOperation
 		      for i = 0 to EL01.ChildCount-1
 		        EL02 = XMLElement(EL01.Child(i))
 		        MacId.append val(EL02.GetAttribute("Id"))
-		        Real.Append createdshape.points((i+Side) mod createdshape.npts).id   ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
+		        Real.Append createdshape.points(i).id   ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
 		      next
 		    end if                                                         ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
 		  else                                                            'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId 'MacId'
@@ -714,6 +715,12 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub GetRealId(n as integer, byref rid as integer)
 		  rid = Real(MacId.indexof(n))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub GetRealSide(n as integer, byref sid as integer)
+		  sid = RealSide(MacId.indexof(n))
 		End Sub
 	#tag EndMethod
 

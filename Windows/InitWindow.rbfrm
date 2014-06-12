@@ -26,12 +26,15 @@ Begin Window InitWindow
    Visible         =   "True"
    Width           =   772
    Begin PopupMenu PopupMenu1
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -48,28 +51,23 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   430
-=======
       Top             =   400
->>>>>>> origin/Macros
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   135
       BehaviorIndex   =   0
    End
    Begin PushButton PushButton1
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
-<<<<<<< HEAD
-      Enabled         =   True
-=======
       Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -84,17 +82,16 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   460
-=======
       Top             =   454
->>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
       BehaviorIndex   =   1
    End
    Begin EditField User
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AcceptTabs      =   "False"
       Alignment       =   1
       AutoDeactivate  =   "True"
@@ -104,7 +101,7 @@ Begin Window InitWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   30
       HelpTag         =   ""
@@ -130,11 +127,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   395
-=======
       Top             =   368
->>>>>>> origin/Macros
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -142,27 +135,22 @@ Begin Window InitWindow
       BehaviorIndex   =   2
    End
    Begin PushButton PushButton2
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "False"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
-<<<<<<< HEAD
-      Enabled         =   True
-=======
       Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-<<<<<<< HEAD
-      Left            =   571
-=======
       Left            =   572
->>>>>>> origin/Macros
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -171,38 +159,29 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   360
-=======
       Top             =   336
->>>>>>> origin/Macros
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   112
       BehaviorIndex   =   3
    End
    Begin PushButton PushButton3
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
-<<<<<<< HEAD
-      Enabled         =   True
-=======
       Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-<<<<<<< HEAD
-      Left            =   571
-=======
       Left            =   572
->>>>>>> origin/Macros
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -211,28 +190,23 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   395
-=======
       Top             =   368
->>>>>>> origin/Macros
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   4
    End
    Begin PushButton PushButton4
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   ""
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
-<<<<<<< HEAD
-      Enabled         =   True
-=======
       Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -247,27 +221,22 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   460
-=======
       Top             =   454
->>>>>>> origin/Macros
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   108
       BehaviorIndex   =   5
    End
    Begin PopupMenu ComboBox1
+      <               =   "<<<<<HEAD"
+      =               =   "====="
+      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   ""
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-<<<<<<< HEAD
-      Enabled         =   True
-=======
       Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -284,15 +253,9 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-<<<<<<< HEAD
-      Top             =   330
-      Underline       =   ""
-      Visible         =   True
-=======
       Top             =   428
       Underline       =   ""
       Visible         =   "True"
->>>>>>> origin/Macros
       Width           =   180
       BehaviorIndex   =   6
    End

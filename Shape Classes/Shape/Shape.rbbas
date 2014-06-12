@@ -3055,13 +3055,13 @@ Implements StringProvider
 		    constructedby = nil
 		  end if
 		  
-		  if macconstructedby <> nil then
-		    macinfo = macConstructedby
-		    for i = 0 to ubound(macinfo.realinit)
-		      s = currentcontent.theobjects.getshape(macinfo.realinit(i))
-		      s.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
-		    next
-		  end if
+		  'if macconstructedby <> nil then
+		  'macinfo = macConstructedby
+		  'for i = 0 to ubound(macinfo.realinit)
+		  's = currentcontent.theobjects.getshape(macinfo.realinit(i))
+		  's.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
+		  'next
+		  'end if
 		  
 		  
 		  if tsfi.count > 0 then

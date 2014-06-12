@@ -15,6 +15,7 @@ Inherits ShapeConstruction
 		Sub CreateShape()
 		  dim ol as Objectslist
 		  dim p as BasicPoint
+		  dim n as integer
 		  
 		  
 		  if famille <> 1 then
@@ -25,23 +26,23 @@ Inherits ShapeConstruction
 		  ol = CurrentContent.TheObjects
 		  select case forme
 		  case 1
-		    currentshape = new Droite(ol, p,2)  // segment parallele
+		    n = 2 'currentshape = new Droite(ol, p,2)  // segment parallele
 		    op = 1
 		  case 2
-		    currentshape = new Droite(ol, p,2)  //segment perpendiculaire
+		    n = 2 'currentshape = new Droite(ol, p,2)  //segment perpendiculaire
 		    op = 2
 		  case 4
-		    currentshape = new Droite(ol,p,0) // droite parallele
+		    n = 0 'currentshape = new Droite(ol,p,0) // droite parallele
 		    op = 1
 		  case 5
-		    currentshape = new Droite(ol,p,0) // droite perpendiculaire
+		    n = 0 'currentshape = new Droite(ol,p,0) // droite perpendiculaire
 		    op = 2
 		  end select
+		  currentshape = new Droite(ol,p,n)
 		  currentshape.fam = 1
 		  currentshape.forme = forme
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
-		  CurrentShape.IsInConstruction = true
 		  Currentshape.InitConstruction
 		  CurrentShape.IndexConstructedPoint = 0
 		  wnd.setcross
@@ -268,7 +269,8 @@ Inherits ShapeConstruction
 		  MExe.GetRealId(n, rid)
 		  Refe= objects.GetShape(rid)
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
-		  currentshape.constructedby.data.append val(EL1.GetAttribute("Index"))
+		  Mexe.GetRealSide(n,side)
+		  currentshape.constructedby.data.append side
 		  
 		  'Positionnement aisé du premier point
 		  EL =XMLElement(EL0.Child(0))

@@ -3620,7 +3620,7 @@ Implements StringProvider
 		  pmob = supfig.pointmobile
 		  if s1 isa droite then
 		    n1 = droite(s1).nextre
-		  else 
+		  else
 		    n1 = 0
 		  end if
 		  if s2 isa droite then
@@ -3631,7 +3631,7 @@ Implements StringProvider
 		  
 		  if pmob <> p and pmob <> q then  'pmob est p ou q
 		    return nil
-		  elseif pmob <> p then 
+		  elseif pmob <> p then
 		    pq = p
 		    p = q
 		    q = pq
