@@ -176,6 +176,7 @@ Protected Class InfoMac
 		    if fo = 4 or fo = 5 then 'droites paraperp
 		      ncpts=1
 		    end if
+		    ori = val(EL1.GetAttribute("Ori"))
 		  case 14 //centre
 		    forme0 = val(EL1.GetAttribute("Id"))
 		  case 19 //DupliquerPoint

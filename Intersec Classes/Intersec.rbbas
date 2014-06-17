@@ -583,11 +583,11 @@ Implements StringProvider
 		  OpId = 45
 		  EL2 = XMLElement(EL1.FirstChild)
 		  n =CDbl(EL2.GetAttribute("Id"))
-		  MExe.GetRealId(n, rid)
+		  rid = MExe.GetRealId(n)
 		  s1 = objects.Getshape(rid)
 		  EL2 = XMLElement(EL1.Child(1))
 		  n = CDbl(EL2.GetAttribute("Id"))
-		  MExe.GetRealId(n, rid)
+		  rid = MExe.GetRealId(n)
 		  s2 = objects.Getshape(rid)
 		  
 		  Intersec(s1,s2)

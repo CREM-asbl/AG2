@@ -161,7 +161,7 @@ Inherits SelectOperation
 		  
 		  GCConstruction
 		  n = val(EL1.GetAttribute("Id"))
-		  MExe.GetRealId(n, rid)
+		  rid = MExe.GetRealId(n)
 		  sh = objects.getshape(rid)
 		  currentshape = sh.GetGC
 		End Sub

@@ -339,15 +339,15 @@ Inherits MultipleSelectOperation
 		  
 		  Divide
 		  n = val(EL1.GetAttribute("Id"))
-		  Mexe.GetRealId( n, rid)
+		  rid = Mexe.GetRealId( n)
 		  shapetodivide = objects.getshape(rid)
 		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
 		  divp = val(EL1.GetAttribute("DivP"))
 		  Id0 = val(EL1.GetAttribute("Id0"))
-		  MExe.GetRealId(Id0, rid)
+		  rid = MExe.GetRealId(Id0)
 		  firstpoint = point(objects.getshape(rid))
 		  Id1 = val(EL1.GetAttribute("Id1"))
-		  MExe.GetRealId(Id1, rid)
+		  rid = MExe.GetRealId(Id1)
 		  secondpoint = point(objects.getshape(rid))
 		  DoOperation
 		  

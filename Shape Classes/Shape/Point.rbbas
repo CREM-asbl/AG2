@@ -79,7 +79,8 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
 		  
-		  return bpt.distance(p) <= abs(wnd.Mycanvas1.MagneticDist)
+		  
+		  return bpt.distance(p) <= wnd.Mycanvas1.MagneticDist
 		End Function
 	#tag EndMethod
 
@@ -446,14 +447,11 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PutOn(s as shape, r as double)
-		  dim circ as circle
 		  dim ar as Arc
 		  dim q as BasicPoint
-		  dim pol as Polygon
-		  dim Hyb as Lacet
 		  dim k , n as integer
-		  dim angle,alpha as double
 		  dim Bib as BibPoint
+		  dim angle as double
 		  
 		  if  not ispointon(s,k)  then
 		    PointSur.addshape s
@@ -463,12 +461,24 @@ Inherits Shape
 		    k = PointSur.Count-1
 		  end if
 		  
+		  if (numside(k) < 0 ) or (numside(k) > s.npts-1) then
+		    return
+		  end if
 		  location(k)=r
 		  
-		  if s isa Bipoint then
-		    Bib = BiBPoint(Bipoint(s).coord)
+		  if s isa Bipoint  then
+		    Bib = s.getBiBside(numside(k))
 		    q = BiB.BptOnBiBpt(r)
-		    'q = Bipoint(s).FirstP * (1-r) + BiPoint(s).SecondP*r
+		  elseif s isa polygon or s isa Bande or s isa Secteur then
+		    BiB = s.GetBibSide(numside(k))
+		    q = BiB.BptOnBiBpt(r)
+		  elseif S isa Arc then
+		    ar = Arc(S)
+		    r = r*ar.arcangle+ar.startangle
+		    q = new BasicPoint(cos(r),sin(r))
+		    q =  ar.GetGravityCenter + q * ar.GetRadius
+		  elseif S isa circle then
+		    q=s.coord.positionOnCircle(r,s.ori)
 		  elseif s isa Lacet then
 		    n = numside(k)
 		    if Lacet(s).curved(n) = 0 then
@@ -478,27 +488,6 @@ Inherits Shape
 		      q = new BasicPoint(cos(angle),sin(angle))
 		      q = Lacet(s).centre(n)+ q * Lacet(s).GetRadius(n)
 		    end if
-		  elseif s isa polygon then
-		    if (numside(k) > -1) and (numside(k) < s.npts) then
-		      q = (s.points(numside(k)).bpt)*(1-r) +(s.points((numside(k)+1) mod s.npts).bpt) *r
-		    else
-		      return
-		    end if
-		  elseif s isa Bande then
-		    if numside(k) = 0 then
-		      q = (s.points(2*numside(k)).bpt)*(1-r) +(s.points(2*numside(k)+1) .bpt) *r
-		    else
-		      q = (s.points(2*numside(k)).bpt)*(1-r) +(bande(s).point3) *r
-		    end if
-		  elseif s isa secteur then
-		    q = (s.points(0).bpt)*(1-r) +(s.points(numside(k)).bpt) *r
-		  elseif S isa Arc then
-		    ar = Arc(S)
-		    r = r*ar.arcangle+ar.startangle
-		    q = new BasicPoint(cos(r),sin(r))
-		    q =  ar.GetGravityCenter + q * ar.GetRadius
-		  elseif S isa circle then
-		    q=s.coord.positionOnCircle(r,s.ori)
 		  end if
 		  Moveto q
 		  
@@ -597,13 +586,9 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  'if   MacConstructedBy <>  nil  and ubound(macconstructedshapes) = -1 then
-		  'liberte = 0
-		  'end if
-		  'if   (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
-		  'liberte = 0
-		  'end if
-		  
+		  if ((MacConstructedBy <>  nil and forme <> 1)  or ((ubound(parents) > -1) and( parents(0).macconstructedby <> nil) and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
+		    liberte = 0
+		  end if
 		  
 		  for i = 0 to ubound(parents)
 		    if parents(i).std  then
@@ -2473,9 +2458,10 @@ Inherits Shape
 		  dim d as double
 		  
 		  delta = np-bpt
+		  d = delta.norme
+		   
 		  
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
-		    d = delta.norme
 		    if d > 0.05 then
 		      np = bpt+ (delta.normer)*0.05
 		    end if

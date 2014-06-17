@@ -384,6 +384,17 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetBib(i as integer) As BiBPoint
+		  
+		  if i > -1 and i < taille then
+		    return new BiBPoint (tab(i),tab((i+1) mod taille))
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint

@@ -232,7 +232,7 @@ Inherits SelectOperation
 		  
 		  FixPConstruction
 		  n = val(EL.GetAttribute("SuppTsf"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  supp = objects.GetShape(rid)
 		  num = val(EL.GetAttribute("Nr"))
 		  tsf = supp.tsfi.element(num)

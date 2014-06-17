@@ -62,7 +62,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  
+		  currentshape = nil
 		  if not (self isa readhisto) then
 		    if oldp <> nil and p.distance(oldp) > wnd.mycanvas1.magneticdist  then
 		      oldp = p

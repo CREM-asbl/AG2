@@ -348,8 +348,8 @@ Protected Module Dictionnaires
 		  if config.langue = "francais" then
 		    select case st
 		    case "arc"
-		      return "cet arc"
-		    case "droite", "bande", "ellipse", "hyperbole", "parabole"
+		      return "cet " + st
+		    case "droite", "bande", "ellipse", "hyperbole", "parabole", "demi-droite"
 		      return "cette " + st
 		    else
 		      return "ce " + st

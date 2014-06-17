@@ -410,13 +410,13 @@ Inherits MultipleSelectOperation
 		  AppliquerTsf
 		  
 		  n = val(EL1.GetAttribute("SuppTsf"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  supp = objects.Getshape(rid)
 		  num = val(EL1.GetAttribute("Nr"))
 		  tsf = supp.tsfi.element(num)
 		  
 		  n = val(EL1.GetAttribute("Id"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  s1 = objects.Getshape(rid)
 		  objects.unselectall
 		  objects.selectobject(s1)

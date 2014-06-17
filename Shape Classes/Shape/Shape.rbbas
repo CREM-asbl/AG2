@@ -1320,6 +1320,7 @@ Implements StringProvider
 		  select case Constructedby.oper
 		  case 1,2
 		    Temp.SetAttribute("Index", str(constructedby.data(0)))
+		    Temp.SetAttribute("Ori", str(constructedby.data(2)))
 		  case 3
 		    M = matrix(constructedby.data(0))
 		    M.XMLPutAttribute(Temp)
@@ -1557,7 +1558,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  if (constructedby <> nil and constructedby.oper = 6)   or std then
+		  if (constructedby <> nil and constructedby.oper = 6)   or std or (macconstructedby <> nil) then
 		    auto = 0
 		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle then
 		    auto = 1
@@ -2685,9 +2686,12 @@ Implements StringProvider
 		  m = val(Tmp.GetAttribute("Index"))
 		  constructedby.data.append m
 		  tsf = constructedby.shape.gettsf(0,m)
-		  if tsf <> nil then
-		    constructedby.data.append tsf
-		  end if
+		  'if tsf <> nil then
+		  constructedby.data.append tsf
+		  'end if
+		  m = val(Tmp.GetAttribute("Ori"))
+		  constructedby.data.append m  //15 juin 2014
+		  
 		  
 		End Sub
 	#tag EndMethod

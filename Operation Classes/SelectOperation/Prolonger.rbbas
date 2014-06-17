@@ -383,7 +383,7 @@ Inherits SelectOperation
 		  
 		  Prolonger
 		  n = val(EL1.GetAttribute("Id"))
-		  MExe.GetRealId(n, rid)
+		  rid = MExe.GetRealId(n)
 		  Bip = objects.GetShape(n)
 		  cot = val(EL1.GetAttribute("Index"))
 		  DoOperation

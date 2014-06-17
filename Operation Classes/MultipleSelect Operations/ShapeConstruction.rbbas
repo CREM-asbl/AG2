@@ -447,19 +447,20 @@ Inherits MultipleSelectOperation
 		      pt = point(currentshape)
 		      EL = XMLElement(EL1.Child(0))
 		      n = val(EL.GetAttribute("Id"))
-		      MExe.GetRealId(n, rid)
+		      rid = MExe.GetRealId(n)
 		      sh = objects.GetShape(rid)
-		      num = val(EL1.GetAttribute("NumSide0"))
-		      loc = val(EL1.GetAttribute("Location"))
-		      pt.puton sh, loc
-		      pt.numside(0) = num
+		      sh.setpoint(pt)
+		      pt.pointsur.addshape sh
+		      pt.numside.append val(EL1.GetAttribute("NumSide0"))
+		      pt.location.append val(EL1.GetAttribute("Location"))
+		      pt.puton sh, pt.location(0)
 		      pt.endconstruction
 		    end if
 		  else
 		    EL =XMLElement(EL0.Child(0))
 		    for i = 0 to CurrentShape.ncpts-1
 		      n = val(XMLElement(EL.Child(i)).GetAttribute("Id"))
-		      MExe.GetRealId(n, rid)
+		      rid = MExe.GetRealId(n)
 		      pt = point(objects.GetShape(rid))
 		      currentshape.substitutepoint(pt,currentshape.points(i))
 		    next

@@ -102,6 +102,10 @@ Inherits MultipleSelectOperation
 		  case 0
 		    s.fixecouleurtrait(red, 100)
 		    s.borderwidth = 2
+		    if s isa point then
+		      s.fixecouleurfond(red,100)
+		      s.sk.cc.scale=2
+		    end if
 		  case 1
 		    s.fixecouleurtrait(black,100)
 		  else
@@ -192,9 +196,7 @@ Inherits MultipleSelectOperation
 		  CurrentItemtoSet = NumberOfItemsToSelect +1
 		  mac.Histo = currentcontent.Histo
 		  mac.Elaguer
-		  mac.ObInit.sort
-		  mac.ObInterm.sort
-		  mac.ObFinal.sort
+		  mac.Trier
 		  
 		  for i =  currentcontent.TheObjects.count -1 downto 1
 		    s =  currentcontent.TheObjects.element(i)
@@ -298,10 +300,10 @@ Inherits MultipleSelectOperation
 		  dim t as Boolean  'Cas des formes non construites par une autre
 		  dim i, n as integer
 		  
-		  t = true
+		  t = false  ' true
 		  n = EtapeDeConstruction(s)
 		  for i =0 to s.ncpts-1
-		    t = t and (EtapeDeConstruction(s.points(i)) = n)
+		    t = t or (EtapeDeConstruction(s.points(i)) >= n)   't = t and (EtapeDeConstruction(s.points(i)) = n)
 		  next
 		  if t then
 		    AddInit(s)
