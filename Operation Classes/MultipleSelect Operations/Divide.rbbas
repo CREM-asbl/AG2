@@ -327,8 +327,9 @@ Inherits MultipleSelectOperation
 		    El.SetAttribute(Dico.Value("Type"), GetName)
 		    EL.SetAttribute("OpId", str(opId))
 		    EL1.AppendChild ToMac(i, OpList,EL)
+		    Currentcontent.TotalOperation  = CurrentContent.TotalOperation +1
 		  next
-		  
+		  Currentcontent.TotalOperation  = CurrentContent.TotalOperation - 1
 		  
 		End Sub
 	#tag EndMethod

@@ -52,7 +52,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub IdentifyInit(s as shape)
-		  'currentshape est l'objet sélectionné comme final
+		         'currentshape est l'objet sélectionné comme final
 		  
 		  if s = currentshape and Mac.ObFinal.indexof(s.id) = -1 then
 		    addfinal(currentshape)
@@ -96,9 +96,6 @@ Inherits MultipleSelectOperation
 		  t = dejaclasse(s)
 		  
 		  select case t
-		  case 2
-		    s.fixecouleurtrait(blue,100)
-		    s.borderwidth = 2
 		  case 0
 		    s.fixecouleurtrait(red, 100)
 		    s.borderwidth = 2
@@ -108,6 +105,9 @@ Inherits MultipleSelectOperation
 		    end if
 		  case 1
 		    s.fixecouleurtrait(black,100)
+		  case 2
+		    s.fixecouleurtrait(blue,100)
+		    s.borderwidth = 2
 		  else
 		    s.fixecouleurtrait(grey,100)
 		  end select
@@ -118,7 +118,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AddFinal(s as shape)
-		  if DejaClasse(s) <> 2 then 'and not s.init and not s.interm
+		  if DejaClasse(s) <> 2 then
 		    mac.ObFinal.append s.id
 		    mac.FaFinal.append s.fam
 		    mac.FoFinal.append s.forme
@@ -252,14 +252,21 @@ Inherits MultipleSelectOperation
 		Sub PointIdentifyInit(p as point)
 		  dim op as integer
 		  dim t as boolean
-		  dim i as integer
+		  dim i, n as integer
+		  
+		  n = EtapedeConstruction(p)
+		  
+		  for i = 0 to ubound(p.parents)
+		    if n >= EtapedeConstruction(p.parents(i)) then
+		      IdentifyInit(p.parents(i))
+		    end if
+		  next
+		  
 		  
 		  if p.constructedby = nil and p.macconstructedby = nil  then
 		    PointIdentifyInit1(p)
 		  else
 		    PointIdentifyInit2(p)
-		    'elseif NbreParentsNonFinal(p) <= 0 then
-		    'AddInit(p)
 		  end if
 		  
 		End Sub
@@ -344,12 +351,12 @@ Inherits MultipleSelectOperation
 		      IdentifyInit(tsf.supp)
 		    case 8  'Prolongements (A faire)
 		    end select
-		  elseif s.MacConstructedby <> nil then
-		    MacInfo = s.MacConstructedBy
-		    for i = 0 to ubound(MacInfo.RealInit)
-		      sh = objects.getshape(MacInfo.RealInit(i))
-		      identifyinit(sh)
-		    next
+		    'elseif s.MacConstructedby <> nil then
+		    'MacInfo = s.MacConstructedBy
+		    'for i = 0 to ubound(MacInfo.RealInit)
+		    'sh = objects.getshape(MacInfo.RealInit(i))
+		    'identifyinit(sh)
+		    'next
 		  end if
 		End Sub
 	#tag EndMethod
@@ -361,17 +368,19 @@ Inherits MultipleSelectOperation
 		  
 		  for i =0 to currentcontent.Histo.childcount -1
 		    EL = XMLElement(currentcontent.Histo.Child(i))
-		    EL1 = XMLElement(EL.Child(0))
-		    if s.id = val(EL1.GetAttribute("Id")) then
-		      return i
-		    elseif val(EL1.GetAttribute(Dico.Value("Npts"))) > 0 then
-		      EL2 = XMLElement(EL1.Child(0))
-		      for j = 0 to EL2.ChildCount -1
-		        EL3=XMLElement(EL2.Child(j))
-		        if s.id = val(EL3.GetAttribute("Id")) then
-		          return i
-		        end if
-		      next
+		    if Mac.CodesOper.indexof(val(EL.GetAttribute("OpId"))) <> -1 then
+		      EL1 = XMLElement(EL.Child(0))
+		      if s.id = val(EL1.GetAttribute("Id")) then
+		        return i
+		      elseif val(EL1.GetAttribute(Dico.Value("Npts"))) > 0 then
+		        EL2 = XMLElement(EL1.Child(0))
+		        for j = 0 to EL2.ChildCount -1
+		          EL3=XMLElement(EL2.Child(j))
+		          if s.id = val(EL3.GetAttribute("Id")) then
+		            return i
+		          end if
+		        next
+		      end if
 		    end if
 		  next
 		  
@@ -385,37 +394,32 @@ Inherits MultipleSelectOperation
 		  dim op as integer  'cas des points construits
 		  dim macinfo as MacConstructionInfo
 		  dim sh as shape
-		  dim i as integer
+		  dim i, n as integer
 		  
 		  AddInterm(p)
 		  
 		  if p.constructedby <> nil then
+		    IdentifyInit(p.constructedby.shape)
 		    op = p.constructedby.oper
 		    select case op
-		    case 0, 3, 5,  7
-		      IdentifyInit(p.constructedby.shape)
 		    case 4
-		      IdentifyInit(p.constructedby.shape)
 		      IdentifyInit(p.constructedby.data(0))
 		      IdentifyInit(p.constructedby.data(1))
 		    case 6
-		      IdentifyInit(p.constructedby.shape)
 		      IdentifyInit(transformation(p.constructedby.Data(0)).supp)
-		    case 7
-		      IdentifyInit(p.constructedby.shape)
+		      AddTsfInterm(transformation(p.constructedby.Data(0)))
 		    case 9
 		      //A compléter
 		    case 10
 		      IdentifyInit(p.pointsur.element(0))
-		      identifyinit(p.constructedby.shape)
 		    end select
 		    
-		  elseif p.macconstructedby <> nil then
-		    MacInfo = p.MacConstructedBy
-		    for i = 0 to ubound(MacInfo.RealInit)
-		      sh = objects.getshape(MacInfo.RealInit(i))
-		      identifyinit(sh)
-		    next
+		    'elseif p.macconstructedby <> nil then
+		    'MacInfo = p.MacConstructedBy
+		    'for i = 0 to ubound(MacInfo.RealInit)
+		    'sh = objects.getshape(MacInfo.RealInit(i))
+		    'identifyinit(sh)
+		    'next
 		  end if
 		End Sub
 	#tag EndMethod
@@ -427,29 +431,17 @@ Inherits MultipleSelectOperation
 		  dim i, n as integer
 		  
 		  
-		  if p.pointsur.count = 2 then
-		    AddInterm(p)
-		    IdentifyInit(p.pointsur.element(0))
-		    IdentifyInit(p.pointsur.element(1))
+		  n = EtapeDeConstruction(p)
+		  t = true
+		  for i = 0 to ubound(p.parents)
+		    t = t and ( n  < EtapedeConstruction(p.parents(i)) )
+		  next
+		  if t then
+		    Addinit(p)
 		  else
-		    n = EtapeDeConstruction(p)
-		    t = true
-		    for i = 0 to ubound(p.parents)
-		      t = t and ( n  < EtapedeConstruction(p.parents(i)) )
-		    next
-		    if t then
-		      Addinit(p)
-		    else
-		      'if p.constructing  then   'forme=1 and  (ubound(p.constructedshapes) > -1)  then       '(ubound(p.parents) =0) then 'or
-		      'AddInit(p)
-		      'else
-		      AddInterm(p)
-		      'end if
-		      for i = 0 to ubound(p.parents)
-		        IdentifyInit(p.parents(i))
-		      next
-		    end if
+		    AddInterm(p)
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 

@@ -13,7 +13,6 @@ Inherits Timer
 		  
 		  if pas = 0 then
 		    oper.figs.updateoldM
-		    'can.ClearOffScreen
 		    restart
 		  end if
 		  
@@ -29,7 +28,6 @@ Inherits Timer
 		  self.oper = oper
 		  can = wnd.Mycanvas1
 		  niter = 60
-		  pas = niter
 		  Mode=2
 		  period=100
 		  enabled = true
@@ -42,7 +40,6 @@ Inherits Timer
 		  elseif s isa arc then                                                                     //Introduit après le 19/08/2012
 		    niter = 60
 		    oper.startpoint = oper.pointmobile.bpt
-		    'oper.endpoint = arc(s).points(2).bpt
 		    q = oper.startpoint - s.Points(0).bpt
 		    M = new RotationMatrix(s.points(0).bpt, (arc(s).endangle -q.anglepolaire)/niter)
 		    BPInter = M*(oper.startpoint) - oper.startpoint
@@ -65,8 +62,8 @@ Inherits Timer
 		  
 		  dim v as BasicPoint
 		  
-		  
-		  
+		  pas = 60
+		  niter = 60
 		  if s isa droite then
 		    oper.StartPoint = droite(s).firstp
 		    oper.EndPoint = droite(s).secondp

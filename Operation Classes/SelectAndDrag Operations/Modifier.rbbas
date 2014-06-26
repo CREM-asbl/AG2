@@ -746,7 +746,7 @@ Inherits SelectAndDragOperation
 		  figs.enablemodifyall
 		  animation = true
 		  
-		  if s isa droite then
+		  if s isa droite and droite(s).nextre = 0 then
 		    dep = droite(s).extre2 - droite(s).extre1
 		  else
 		    dep = s.points(1).bpt-s.points(0).bpt

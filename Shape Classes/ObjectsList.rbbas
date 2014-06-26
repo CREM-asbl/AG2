@@ -266,6 +266,7 @@ Protected Class ObjectsList
 
 	#tag Method, Flags = &h0
 		Function NewId() As Integer
+		  
 		  prevId = prevId + 1
 		  return prevId
 		  

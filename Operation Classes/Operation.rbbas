@@ -617,6 +617,8 @@ Protected Class Operation
 	#tag EndNote
 
 	#tag Note, Name = Numeros des operations
+		: Costruction d'un centre de gravité:
+		28: Prolonger
 		
 		Variable: OpId (Id d'opération)
 		Chaque classe d'opérations a un code.

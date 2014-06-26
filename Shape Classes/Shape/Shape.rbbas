@@ -3276,7 +3276,7 @@ Implements StringProvider
 		      tobereconstructed = true
 		    end if
 		    
-		    if tobereconstructed then
+		    if tobereconstructed  then
 		      constructshape
 		      'if check then
 		      'tobereconstructed = false

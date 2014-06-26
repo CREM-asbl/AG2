@@ -189,7 +189,6 @@ Protected Class Macro
 		  MacInf = MacInfo
 		  
 		  for i = 0 to ubound(MacInf.ifmacs)             'Histo.Childcount-1  // i: numéro de l'opération
-		    NumOp = i
 		    ifmac = MacInfo.ifmacs(i)
 		    if codesoper.indexof(ifmac.oper) <> -1 then //est-ce une opération de construction d'un objet?
 		      ComputeObject(ifmac)
@@ -516,48 +515,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSide(n as integer) As integer
-		  dim i, j, k, m, num as integer
-		  dim s as shape
-		  dim ifm as infomac
-		  dim EL, EL0, EL1 as XMLElement
-		  
-		  m = Obinit.indexof(n)
-		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n,num)
-		    k = ifm.realid
-		    s= currentcontent.theobjects.getshape(k)
-		    if s isa point and point(s).pointsur.count = 1 then
-		      return point(s).numside(0)
-		    end if
-		  end if
-		  
-		  m = ObInterm.indexof(n)
-		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n,num)
-		    return ifm.Realside
-		  end if
-		  
-		  //Si c'est un point qui n'est ni initial ni intermédiaire
-		  
-		  
-		  for i = numop -1 downto 0
-		    EL = XMLElement(Histo.Child(i))
-		    EL0 = XMLElement(EL.Child(0))
-		    if EL0.Childcount > 0 then
-		      EL1 = XMLElement(EL0.FirstChild)
-		      for j = 0 to EL1.Childcount-1
-		        if n = val(EL1.Child(j).GetAttribute("Id")) then
-		          ifm = Macinf.IfMacs(i)
-		          return ifm.Realside
-		        end if
-		      next
-		    end if
-		  next
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ToXML(Docu as XMLDocument, EL as XMLElement)
 		  EL.AppendChild ToMac(Docu,0)
 		  EL.AppendChild ToMac(Docu,1)
@@ -577,7 +534,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Transformer(ifmac as InfoMac, byref nbp as nBPoint)
+		Sub Transformer(ifmac as infomac, byref nbp As nBPoint)
 		  dim  i, n, num as integer
 		  dim nbp1 as nBPoint
 		  dim M as Matrix
@@ -589,9 +546,12 @@ Protected Class Macro
 		    ifm1=ifm1.childs(num)
 		  end if
 		  ifm2 = MacInf.GetInfoMac(ifmac.forme1, num)  //lecture source
+		  if ifm2.MacId <> ifmac.forme1 then
+		    ifm2 = ifm2.childs(num)
+		  end if
 		  nbp1 = ifm2.coord
 		  n = nbp1.taille
-		  redim nbp.tab(n)
+		  redim nbp.tab(n-1)
 		  M = ifm1.M
 		  if M <> nil and M.v1 <> nil  then
 		    for i = 0 to n-1
@@ -784,7 +744,7 @@ Protected Class Macro
 		        BiB = new BiBPoint(ifm1.coord.tab(2),ifm1.coord.tab(2)+ifm1.coord.tab(1)-ifm1.coord.tab(0))
 		      end if
 		    else
-		      BiB = ifm1.coord.GetBiB(side) 
+		      BiB = ifm1.coord.GetBiB(side)
 		    end if
 		    nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
 		  else
@@ -917,10 +877,6 @@ Protected Class Macro
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NumOp As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		mw As MacWindow
 	#tag EndProperty
 
@@ -964,12 +920,6 @@ Protected Class Macro
 			Group="Behavior"
 			Type="String"
 			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NumOp"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Expli"

@@ -129,7 +129,7 @@ Implements StringProvider
 		  
 		  
 		  init
-		  
+		  drappara = false
 		  if not sh1 isa circle then
 		    if not sh2 isa circle then
 		      computeinterlines
@@ -207,6 +207,7 @@ Implements StringProvider
 		  dim d1, d2 as droite
 		  dim r1,r2 as double
 		  
+		  
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
 		    for j = 0 to ncol
@@ -219,6 +220,9 @@ Implements StringProvider
 		        end if
 		        if k = 0 or r1 > 998 then
 		          val(i,j) = false
+		        end if
+		        if r1 > 998 then
+		          drappara = true
 		        end if
 		      else
 		        val(i,j) = false
@@ -513,7 +517,9 @@ Implements StringProvider
 		  dim   i1, j1, h, k as integer
 		  dim d as double
 		  dim s as shape
+		  dim changed as Boolean
 		  
+		  changed = false
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
 		  
@@ -525,16 +531,18 @@ Implements StringProvider
 		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		    // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
 		    // peut être en défaut si A// B et B//C et que A inter C est calculé // prévoir la transitivité
-		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k)  and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2) then
+		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k)  and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2)  or drappara then
 		      i1 = h
 		      j1 = k
+		    else
+		      changed = true
 		    end if
 		  elseif not (sh1 isa circle) or not (sh2 isa circle) then
 		    i1 = h
 		    j1 = k
 		  end if
 		  
-		  if i1 <> h or j1 <> k then
+		  if changed then
 		    ids(h,k)=0
 		    ids(i1,j1) = pt.id
 		  end if
@@ -667,6 +675,10 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		reset(-1,-1) As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		drappara As Boolean
 	#tag EndProperty
 
 

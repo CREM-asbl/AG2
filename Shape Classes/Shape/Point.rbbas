@@ -586,7 +586,7 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  if ((MacConstructedBy <>  nil and forme <> 1)  or ((ubound(parents) > -1) and( parents(0).macconstructedby <> nil) and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
+		  if (forme <> 1) and ((MacConstructedBy <>  nil )  or ((ubound(parents) > -1) and( parents(0).macconstructedby <> nil) and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
 		    liberte = 0
 		  end if
 		  
@@ -2459,10 +2459,10 @@ Inherits Shape
 		  
 		  delta = np-bpt
 		  d = delta.norme
-		   
+		  
 		  
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
-		    if d > 0.05 then
+		    if d > 0.05 and dret = nil then
 		      np = bpt+ (delta.normer)*0.05
 		    end if
 		  end if

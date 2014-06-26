@@ -51,13 +51,15 @@ Inherits Bipoint
 		  dim s as shape
 		  
 		  
-		  if constructedby <> nil then
+		  if constructedby <> nil and (constructedby.oper < 3) then
 		    updatecoord
-		    index = constructedby.data(0)
-		    s = constructedby.shape
-		    coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
-		    repositionnerpoints
-		    computeextre
+		    if ubound(constructedby.data) >  -1 then
+		      index = constructedby.data(0)
+		      s = constructedby.shape
+		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
+		      repositionnerpoints
+		      computeextre
+		    end if
 		    if  nextre = 0 then
 		      points(1).hide
 		    end if

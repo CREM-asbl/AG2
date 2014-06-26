@@ -2127,15 +2127,11 @@ End
 		  dim n as integer
 		  op =CurrentContent.CurrentOperation
 		  closefw
-		  if  op isa MultipleSelectOperation then 
-		    
-		    if ( MultipleSelectOperation(op).currentitemtoset >1) then
-		      if op isa AppliquerTsf then
-		        AppliquerTsf(op).tsf.highlighted = false
-		      end if
-		      CurrentContent.abortconstruction
+		  if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >1) then
+		    if op isa AppliquerTsf then
+		      AppliquerTsf(op).tsf.highlighted = false
 		    end if
-		    
+		    CurrentContent.abortconstruction
 		  else
 		    CurrentContent.UndoLastOperation
 		  end if

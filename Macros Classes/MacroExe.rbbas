@@ -350,7 +350,7 @@ Inherits MultipleSelectOperation
 		      newshape.points(i).ifmac = ifmac.childs(i)
 		      if ifmac.childs(i).fo = 1 and (Mac.ObInterm.indexof(ifmac.childs(i).forme0) =-1) then
 		        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifmac.childs(i).forme0))
-		        newshape.points(i).numside(0) = ifmac.childs(i).numside0
+		        newshape.points(i).numside.append  ifmac.childs(i).numside0
 		        newshape.points(i).puton s, ifmac.childs(i).location
 		        newshape.points(i).placerptsursurfigure
 		      else
@@ -366,30 +366,20 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateIfMacTsf(EL as XMLElement, oper as integer)
-		  dim  EL0 as XMLElement
+		  
 		  dim ifmac as InfoMac
-		  dim fa, fo as integer
 		  dim s as shape
 		  dim tsf as transformation
 		  
-		  EL0 = XMLElement(EL.Child(0))
-		  
-		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))  //concerne le support Les supp des tsf seront toujours des polygones, ou des points, donc construits par une opération antérieure
-		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  ifmac = new InfoMac(fa, fo)
-		  ifmac.oper = oper
-		  ifmac.forme0 = val(EL0.GetAttribute("Id"))   //MacId du support de la tsf
-		  ifmac.type = val(EL.GetAttribute("TsfType"))
-		  ifmac.ori = val(EL.GetAttribute("TsfOri"))
-		  ifmac.RealSide = val(EL.GetAttribute("TsfSide"))
-		  ifmac.RealId =  MacInfo.GetRealId(ifmac.forme0)
-		  MacInfo.IfMacs.append ifmac
+		  ifmac = new InfoMac(MacInfo, EL, oper)
 		  
 		  if Mac.ObFinal.indexof(ifmac.forme0) <> -1 then
 		    s = objects.getshape(ifmac.RealId)
 		    tsf = CreateTsf(s, ifmac.type,ifmac.Realside, ifmac.ori)
 		    ifmac.num = s.tsfi.GetPosition(tsf)
 		  end if
+		  
+		  MacInfo.IfMacs.append ifmac
 		  
 		  
 		End Sub
