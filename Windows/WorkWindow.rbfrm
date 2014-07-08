@@ -683,8 +683,8 @@ End
 		  case 113 'q
 		    app.quiet = not app.quiet
 		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
-		    'MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
-		    's = u(0)
+		    MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
+		    s = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info

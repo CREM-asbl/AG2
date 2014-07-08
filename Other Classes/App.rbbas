@@ -133,6 +133,8 @@ Inherits Application
 		    if UBound (wnd.wcontent) = -1 then
 		      wnd.NewContent(false)
 		    end if
+		    'Log = GetFolderItem("Bug.fag")
+		    'OpenDocument Log
 		  end if
 		  return true
 		End Function

@@ -256,6 +256,7 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
 		  dim M as Matrix
+		  dim s as shape
 		  
 		  NbUnModif = 0
 		  select case auto
@@ -2456,6 +2457,7 @@ Implements StringProvider
 		  dim n, n1, n2 as integer
 		  dim ep, np as BasicPoint
 		  
+		  
 		  n = ListPtsModifs(0)
 		  p = Point(somm.element(n))
 		  getoldnewpos(p, ep, np)
@@ -2486,17 +2488,16 @@ Implements StringProvider
 		    n1 = s.Points.indexof(p1)
 		    n2 = s.Points.indexof(p2)
 		    if n <> -1 and NbUnModif = 0 then
-		      if s isa quadri then
-		        if abs(n1-n2) = 2 then
-		          return new similaritymatrix(p1, p2, ep, np)
-		        elseif n1= (n+2) mod 4 then
-		          return s.Modifier1fixe(p1,p)
-		        else
-		          return s.Modifier1fixe(p2,p)
-		        end if
-		      else
-		        return s.Modifier1fixe(p1,p)
-		      end if
+		      'if s isa quadri then                             '  Modifications introduites le 19 mai 2014 puis supprimées le 8 juillet 2014  Surveiller!!
+		      'if abs(n1-n2) = 2 then
+		      return new similaritymatrix(p1, p2, ep, np)
+		      'elseif n1= (n+2) mod 4 then
+		      'return s.Modifier1fixe(p1,p)
+		      'else
+		      'return  s.Modifier1fixe(p2,p)
+		      'else
+		      'return s.Modifier1fixe(p1,p)
+		      'end if
 		      
 		    else
 		      return nil
@@ -2597,6 +2598,7 @@ Implements StringProvider
 		    else
 		      t = replacerpoint (point(somm.element(Listsommsur(0))))
 		      t = replacerpoint (point(somm.element(Listsommsur(1))))
+		      't = replacerpoint (point(somm.element(Listsommsur(2))))
 		    end if
 		  end select
 		  

@@ -177,6 +177,7 @@ Inherits Bipoint
 		  case 2
 		    forme = 0
 		  end select
+		  endconstruction
 		  createskull(fp.bpt)
 		  computeextre
 		  Updateskull

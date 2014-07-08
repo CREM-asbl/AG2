@@ -288,7 +288,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SimilarityMatrix() As Matrix
+		Function SimilarityMatrix() As SimilarityMatrix
 		  return new SimilarityMatrix(tab(0),tab(1),tab(3), tab(2))
 		End Function
 	#tag EndMethod
@@ -392,6 +392,12 @@ Protected Class nBpoint
 		  else
 		    return nil
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HomothetyMatrix() As HomothetyMatrix
+		  return new HomothetyMatrix(tab(0),tab(1),tab(3), tab(2))
 		End Function
 	#tag EndMethod
 

@@ -196,29 +196,27 @@ Implements StringProvider
 		    elseif supp isa polygon or supp isa secteur then
 		      nbp = supp.GetBiBSide(index)
 		      M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
-		    elseif supp isa secteur then
-		      M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
+		      'elseif supp isa secteur then
+		      'M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
 		    end if
-		  case 7, 72
-		    M = supp.coord.SimilarityMatrix    'new HomothetyMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		  case 7, 72 // Homothéties
+		    M = supp.coord.HomothetyMatrix   
 		  case 71
 		    u = supp.points(0).bpt
 		    v = supp.points(1).bpt
 		    w = supp.points(2).bpt
 		    k = w.location(u,v)
 		    M = new HomothetyMatrix(u, k)
-		  case 8
-		    M = supp.coord.SimilarityMatrix                  '(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		  case 8 //Similitudes
+		    M = supp.coord.SimilarityMatrix                
 		  case 81
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(0).bpt, supp.points(2).bpt)
 		  case 82
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(1).bpt, supp.points(2).bpt)
-		  case 9  //Etirements
+		  case 9, 11  //Etirements - Cisaillements
 		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  case 10 //Deplacement
 		    M = new IsometryMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
-		  case 11 //Cisaillement
-		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  end select
 		  
 		  if M = nil then

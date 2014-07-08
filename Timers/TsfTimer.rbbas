@@ -101,7 +101,7 @@ Inherits Timer
 		  case 5
 		    M1 = new rotationmatrix(point(tsf.supp).bpt, -PIDEMI/niter)
 		  case 7,71,72
-		    Mat = HomothetyMatrix(tsf.M)
+		    Mat = SimilarityMatrix(tsf.M)
 		    M1 = new HomothetyMatrix(Mat.centre,  (Mat.rapport)^(1/niter))
 		  case 8, 81, 82
 		    Mat = SimilarityMatrix(tsf.M)

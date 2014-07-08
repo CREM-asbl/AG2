@@ -53,15 +53,14 @@ Inherits MultipleSelectOperation
 		        display =  choose + asegmentoraline + orahalfline
 		      case 7
 		        display = choose + atrapezoid + orfourpoints
-		      case 8
+		      case 8,9,10,11
 		        display = choose + aquad +  orfourpoints
-		      case 9
 		      end select
 		    case 2
 		      select case type
 		      case 1
 		        display = choose + theotherendpoint
-		      case 7to 9
+		      case 7to 11
 		        display = choose + anotherpoint
 		      end select
 		    case 3, 4
@@ -197,7 +196,6 @@ Inherits MultipleSelectOperation
 		        type = 72
 		        index.append -1
 		      end if
-		      
 		    case 8
 		      if fp = tp  and qp <> sp then
 		        type = 81
@@ -220,8 +218,10 @@ Inherits MultipleSelectOperation
 		        return false
 		      end if
 		    case 10
-		      currentshape = new Polyqcq(objects,fp,sp,qp,tp)
-		      index.append -1
+		      if fp <> sp   and  qp <> tp then
+		        currentshape = new Polyqcq(objects,fp,sp,qp,tp)
+		        index.append -1
+		      end if
 		    case 11
 		      bp1 = tp.bpt+sp.bpt-fp.bpt
 		      bp2 = qp.bpt.projection(tp.bpt, bp1)
@@ -262,7 +262,7 @@ Inherits MultipleSelectOperation
 		        return nil
 		      elseif sp = tp and q= sp then
 		        return nil
-		      elseif fp = q or sp = q or  tp = q  then
+		      elseif fp = q or (sp = q)  or  (tp = q) then
 		        return nil
 		      end if
 		    end if
@@ -472,12 +472,12 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  visible = Objects.FindPoint(p)
-		  for i = visible.count-1 downto 0
-		    s = visible.element(i)
-		    if type = 1 and  not choixvalide(point(s)) then
-		      visible.removeshape(s)
-		    end if
-		  next
+		  'for i = visible.count-1 downto 0
+		  's = visible.element(i)
+		  'if type = 1 and  not choixvalide(point(s)) then
+		  'visible.removeshape(s)
+		  'end if
+		  'next
 		  
 		  s = visible.element(iobj)
 		  
@@ -487,7 +487,8 @@ Inherits MultipleSelectOperation
 		  
 		  select case type
 		  case 1
-		    return s
+		    index.append 0
+		    return point(s)
 		  case 7 to 11
 		    return s
 		  end select
@@ -501,12 +502,24 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function setsecond(s as shape) As Boolean
 		  sp = Point(s)
-		  if sp <> fp then
+		  select case type
+		  case 1
+		    if fp <> sp then
+		      currentshape = new droite(objects, fp,sp, 2)
+		      currentshape.endconstruction
+		      droite(currentshape).createskull(fp.bpt)
+		      droite(currentshape).updateskull
+		      objects.optimize
+		    end if
 		    return true
 		  else
-		    sp = nil
-		    return false
-		  end if
+		    if sp <> fp then
+		      return true
+		    else
+		      sp = nil
+		      return false
+		    end if
+		  end select
 		End Function
 	#tag EndMethod
 
@@ -532,7 +545,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Choixvalide(p as point) As Boolean
+		Function oldChoixvalide(p as point) As Boolean
 		  dim  i, j, h, k as integer
 		  dim curshape as shape
 		  //On ne passe ici que pour le choix du deuxième point d'une translation

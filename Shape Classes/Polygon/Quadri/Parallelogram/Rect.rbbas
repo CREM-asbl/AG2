@@ -100,6 +100,8 @@ Inherits Parallelogram
 		  dim M as Matrix
 		  dim ff as figure
 		  dim d as double
+		  dim s as shape
+		  dim dr as droite
 		  
 		  n = getindexpoint(p)
 		  n1 = getindexpoint(p1)
@@ -108,12 +110,11 @@ Inherits Parallelogram
 		  ff.getoldnewpos(p,ep,np)
 		  d = amplitude(ep1, np, np1)
 		  M = new rotationmatrix(np,d)
-		  
+		  p.moveto ep
 		  if abs(n-n1) = 2 then
 		    n2 = (n+1) mod 4
 		    n3 = (n1+1) mod 4
 		  else
-		    'n3  = (n+2) mod 4
 		    select case n1
 		    case (n+1) mod 4
 		      n2 = (n+3) mod 4
@@ -125,20 +126,24 @@ Inherits Parallelogram
 		  p3 = points(n3)
 		  ff.getoldnewpos(p2,ep2,np2)
 		  ff.getoldnewpos(p3,ep3,np3)
-		  if p2.pointsur.count = 1 and p2.pointsur.element(0) isa droite then
-		    np2 = p1.bpt.projection(droite(p2.pointsur.element(0)).firstp, droite( p2.pointsur.element(0)).secondp)
-		    return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
-		  elseif p3.pointsur.count = 1 and p3.pointsur.element(0) isa droite then
-		    np3 = p1.bpt.projection(droite(p3.pointsur.element(0)).firstp, droite(p3.pointsur.element(0)).secondp)
-		    return new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
+		  if p2.pointsur.count = 1 and not p2.pointsur.element(0) isa circle  then
+		    s =  p2.pointsur.element(0) 
+		    dr = s.getside(p2.numside(0))
+		    np2 = p1.bpt.projection(dr.firstp, dr.secondp)
+		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		  elseif p3.pointsur.count = 1 and not p3.pointsur.element(0) isa circle then
+		    s =  p3.pointsur.element(0)
+		    dr = s.getside(p3.numside(0))
+		    np3 = p1.bpt.projection(dr.firstp, dr.secondp)
+		    M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
 		  else
 		    np2 = M*ep2
 		    if abs(n-n1) = 2 then
 		      np2 = np.projection(np1,np2)
 		    end if
-		    return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
 		  end if
-		  
+		  return M
 		  
 		End Function
 	#tag EndMethod
