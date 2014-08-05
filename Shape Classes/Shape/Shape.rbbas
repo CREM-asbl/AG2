@@ -2043,6 +2043,8 @@ Implements StringProvider
 		      XMLReadConstructionInfoImgPt(Tmp)
 		    case 7
 		      XMLReadConstructionInfoPtFix(Tmp)
+		    case 8
+		      XMLReadConstructionInfoProl(Tmp)
 		    case 9
 		      XMLReadConstructionInfoMerge(Tmp)
 		    case 10
@@ -4063,6 +4065,12 @@ Implements StringProvider
 		Function isaellipse() As boolean
 		  return false
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLReadConstructionInfoProl(Tmp as XMLElement)
+		  constructedby.data.append val(Tmp.GetAttribute("Index"))
+		End Sub
 	#tag EndMethod
 
 

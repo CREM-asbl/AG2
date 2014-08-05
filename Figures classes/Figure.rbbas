@@ -3115,7 +3115,7 @@ Implements StringProvider
 		  // Liste des "sommets sur"  modifiables
 		  for i = 0 to Somm.count-1
 		    p = Point(somm.element(i))
-		    if (p.pointsur.count = 1  ) and P.liberte = 1 and not p.unmodifiable  then
+		    if (p.forme = 1  ) and P.liberte = 1 and not p.unmodifiable  then
 		      n = n+1
 		      ListSommSur.append i
 		    end if

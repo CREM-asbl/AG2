@@ -288,10 +288,7 @@ Protected Class WindContent
 		    if s.isinconstruction and (s.indexconstructedpoint = 0) then
 		      s.points(0).delete
 		    end if
-		    if currentcontent.TheObjects.getposition(s) <> -1 then
-		      s.delete
-		    end if
-		    
+		    s.delete
 		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
 		      Theobjects.XMLLoadObjects(FigsDeleted)
 		    end if

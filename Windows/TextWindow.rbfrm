@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -134,12 +134,11 @@ End
 		    for i = 0 to Figs.count-1
 		      f = Figs.element(i)
 		      messages(f)
-		      EF.Text = EF.Text + chr(10)+chr(13)
 		      if f.subs.count > 0 then
 		        for j=0 to f.subs.count -1
+		          EF.Text = EF.Text +chr(10)+chr(13)
 		          ff = f.subs.element(j)
 		          messages(ff,j)
-		          EF.Text = EF.Text +  chr(10)+chr(13)
 		        next
 		      end if
 		      EF.Text = EF.Text + "---------------------------------------------"+ chr(10) + chr(13)
@@ -241,10 +240,9 @@ End
 		    m = m + "Orientation " + str(s.ori)+chr(13)
 		  end if
 		  m = m+chr(10)
-		  if s.constructedby <> nil or s.conditionedby <> nil or ubound(s.constructedshapes) > -1 then
+		  if s.constructedby <> nil or s.conditionedby <> nil  then 
 		    m = m + messlinks(s)
 		  end if
-		  m = m +chr(10)
 		  if not s isa point then
 		    m = m + "Sommets"+chr(13)
 		    for i = 0 to ubound(s.points)
@@ -357,7 +355,7 @@ End
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "
 		    s = f.shapes.element(i)
-		    EF.Text = EF.Text+ messages(s)+chr(10)
+		    EF.Text = EF.Text+ messages(s)+chr(10)+chr(13)
 		  next
 		  
 		  
@@ -448,9 +446,7 @@ End
 		  if s.constructedby <> nil then
 		    m = m  + messconstructedby(s) +chr(10)
 		  end if
-		  if ubound(s.constructedshapes) <> -1 then
-		    m =m + messconstructedshapes(s) + chr(10)
-		  end if
+		  
 		  if s.conditionedby <> nil then
 		    m = m + messconditionedby(s) + chr(10)
 		  end if

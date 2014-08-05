@@ -23,11 +23,11 @@ Inherits SelectOperation
 		  
 		  Temp=Doc.CreateElement(GetName)
 		  Temp.appendChild Bip.XMLPutInContainer(Doc)
-		  if Bip isa Polygon then
-		    EL = Dr.XMLPutIncontainer(Doc)
-		    EL.SetAttribute("Ibip", str(ibip))
-		    Temp.Appendchild EL
-		  end if
+		  'if Bip isa Polygon then
+		  EL = Dr.XMLPutIncontainer(Doc)
+		  EL.SetAttribute("Ibip", str(ibip))
+		  Temp.Appendchild EL
+		  'end if
 		  return Temp
 		  
 		  
@@ -41,15 +41,13 @@ Inherits SelectOperation
 		  sh = currenthighlightedshape
 		  display = ""
 		  if visible  = nil or sh = nil then
-		    if currentcontent.macrocreation then
-		      display = choose + asideofpoly
-		    else
-		      display = choose + asegment
-		    end if
+		    display = choose + asegment + ou + asideofpoly
 		  else
 		    super.paint(g)
-		    sh.highlightsegment(g, cot)
-		    if currentcontent.macrocreation then
+		    if sh isa polygon then
+		      sh.highlightsegment(g, cot)
+		      'end if
+		      'if currentcontent.macrocreation then
 		      display = thissideofpoly + "?"
 		    else
 		      display = thissegment + "?"
@@ -79,22 +77,22 @@ Inherits SelectOperation
 		  EL2 = XMLElement(EL1.child(0))
 		  Bip = objects.getshape(val(EL2.GetAttribute("Id")))
 		  
-		  if Bip isa droite then
-		    Droite(Bip).nextre = 2
-		    Bip.forme = Bip.forme - 3
-		    Dr = Droite(Bip)
-		  else
-		    EL2 = XMLElement(EL1.child(1))
-		    Dr = droite(objects.getshape(val(EL2.GetAttribute("Id"))))
+		  'if Bip isa droite then
+		  'Droite(Bip).nextre = 2
+		  'Bip.forme = Bip.forme - 3
+		  'Dr = Droite(Bip)
+		  
+		  EL2 = XMLElement(EL1.child(1))
+		  Dr = droite(objects.getshape(val(EL2.GetAttribute("Id"))))
+		  if Bip isa Polygon then
 		    ibip = val(EL2.GetAttribute("Ibip"))
 		    polygon(Bip).prol(ibip) = false
-		    
 		  end if
 		  replacerperp
 		  
-		  if not (bip isa droite) then
-		    dr.delete
-		  end if
+		  'if not (bip isa droite) then
+		  dr.delete
+		  'end if
 		  RedeleteCreatedFigures(temp)
 		  RecreateDeletedFigures(temp)
 		  
@@ -119,28 +117,30 @@ Inherits SelectOperation
 		  EL1 = XMLElement(Temp.child(0))
 		  EL2 = XMLElement(EL1.child(0))
 		  Bip = objects.getshape(val(EL2.GetAttribute("Id")))
-		  if Bip isa droite then
-		    Dr = droite(bip)
-		    Droite(Bip).nextre = 0
-		    Bip.forme = Bip.forme + 3
-		    ibip = 0
-		    jbip = 1
-		  else
-		    EL2 = XMLElement(EL1.child(1))
-		    Dr = Droite(Objects.XMLLoadObject(EL2))
-		    ibip = val(EL2.GetAttribute("Ibip"))
-		    jbip = (ibip+1) mod Bip.npts
+		  'if Bip isa droite then
+		  'Dr = droite(bip)
+		  'Droite(Bip).nextre = 0
+		  'Bip.forme = Bip.forme + 3
+		  'ibip = 0
+		  'jbip = 1
+		  'else
+		  EL2 = XMLElement(EL1.child(1))
+		  Dr = Droite(Objects.XMLLoadObject(EL2))
+		  ibip = val(EL2.GetAttribute("Ibip"))
+		  jbip = (ibip+1) mod Bip.npts
+		  if Bip isa Polygon then
 		    Polygon(Bip).prol(ibip) = true
-		    
-		    for i =  ubound(Bip.childs) downto Bip.npts
-		      p = Bip.Childs(i)
-		      if p.numside(0) = ibip then
-		        p.removepointsur Bip
-		        p.puton Dr
-		      end if
-		    next
-		    
 		  end if
+		  
+		  for i =  ubound(Bip.childs) downto Bip.npts
+		    p = Bip.Childs(i)
+		    if p.numside(0) = ibip then
+		      p.removepointsur Bip
+		      p.puton Dr
+		    end if
+		  next
+		  
+		  
 		  
 		  RedeleteDeletedFigures(temp)
 		  RecreateCreatedFigures(temp)
@@ -160,29 +160,34 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i, j as integer
 		  
+		  Bip = currenthighlightedshape
 		  if not currentcontent.macrocreation then
-		    Bip = currenthighlightedshape
+		    CurrentContent.TheFigs.Removefigure Bip.fig
 		  end if
-		  CurrentContent.TheFigs.Removefigure Bip.fig
 		  GetSide
 		  
-		  if Bip isa droite then
-		    Dr = Droite(Bip)
-		    Droite(Bip).nextre = 0
-		    Dr.forme = Bip.forme + 3
-		    Dr.fig = nil
-		  elseif Bip isa polygon then
-		    Dr = new Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
+		  'if Bip isa droite then
+		  'Dr = Droite(Bip)
+		  'Droite(Bip).nextre = 0
+		  'if Bip.forme < 3 then
+		  'Dr.forme = Bip.forme + 3
+		  'elseif Bip.forme = 6 then
+		  'Dr.Forme = 3
+		  'end if
+		  'Dr.fig = nil
+		  
+		  Dr = new Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
+		  if Bip isa polygon then
 		    Polygon(Bip).prol(ibip) = true
 		  end if
 		  
 		  deplacerperp
 		  Dr.endconstruction
 		  
-		  if Bip isa polygon then
-		    Dr.setconstructedby Bip, 8
-		    Dr.Constructedby.data.append ibip
-		  end if
+		  'if Bip isa polygon then
+		  Dr.setconstructedby Bip, 8
+		  Dr.Constructedby.data.append ibip
+		  'end if
 		  
 		  for i = 2 to ubound(Dr.childs)
 		    Dr.childs(i).fig = Dr.fig
@@ -210,17 +215,18 @@ Inherits SelectOperation
 		  dim r1, r2 as double
 		  dim w as BasicPoint
 		  dim p as point
+		  
 		  objects.unselectall
 		  
-		  if Bip isa polygon then
-		    for i =  ubound(Bip.childs) downto Bip.npts
-		      p = Bip.Childs(i)
-		      if p.numside(0) = ibip then
-		        p.removepointsur Bip
-		        p.puton Dr
-		      end if
-		    next
-		  end if
+		  'if Bip isa polygon then
+		  for i =  ubound(Bip.childs) downto Bip.npts
+		    p = Bip.Childs(i)
+		    if p.numside(0) = ibip then
+		      p.removepointsur Bip
+		      p.puton Dr
+		    end if
+		  next
+		  'end if
 		  
 		  for i = 2 to ubound(Dr.childs)
 		    p = Dr.childs(i)
@@ -252,24 +258,25 @@ Inherits SelectOperation
 		  
 		  
 		  
-		  if not (Bip isa droite) then
-		    for j = ubound(Dr.childs) downto  Dr.npts
-		      p = Dr.Childs(j)
-		      p.removepointsur Dr
-		      p.puton bip
-		      p.numside(0) = ibip
-		      if Bip.pointonside(p.bpt) = -1 then
-		        p.invalider
-		      end if
-		    next
-		  else
-		    for j = Dr.npts to ubound(Dr.childs)
-		      p = Dr.Childs(j)
-		      if p.location(0) < 0 or p.location(0)> 1 then
-		        p.invalider
-		      end if
-		    next
-		  end if
+		  'if not (Bip isa droite) then
+		  for j = ubound(Dr.childs) downto  Dr.npts
+		    p = Dr.Childs(j)
+		    p.removepointsur Dr
+		    p.puton bip
+		    p.numside(0) = ibip
+		    if Bip.pointonside(p.bpt) = -1 then
+		      p.invalider
+		    end if
+		    if p.location(0) < 0 or p.location(0)> 1 then
+		      p.invalider
+		    end if
+		  next
+		  'else
+		  'for j = Dr.npts to ubound(Dr.childs)
+		  'p = Dr.Childs(j)
+		  '
+		  'next
+		  'end if
 		  
 		  
 		  
@@ -283,14 +290,14 @@ Inherits SelectOperation
 		  dim op as integer
 		  dim s as shape
 		  
-		  if Bip isa polygon then
-		    for i =  ubound(Bip.constructedshapes) downto 0
-		      if Bip.constructedshapes(i).isaparaperp  and Bip.constructedshapes(i).constructedby.data(0) = ibip then
-		        s = Bip.ConstructedShapes(i)
-		        droite(s).modifiertsf(Bip, Dr, 0)
-		      end if
-		    next
-		  end if
+		  'if Bip isa polygon then
+		  for i =  ubound(Bip.constructedshapes) downto 0
+		    if Bip.constructedshapes(i).isaparaperp  and Bip.constructedshapes(i).constructedby.data(0) = ibip then
+		      s = Bip.ConstructedShapes(i)
+		      droite(s).modifiertsf(Bip, Dr, 0)
+		    end if
+		  next
+		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -328,7 +335,7 @@ Inherits SelectOperation
 		    if not s.ValidSegment(p,ibip) or ( s isa polygon and polygon(s).prol(ibip) ) then  //le côté a déjà été prolongé
 		      visible.removeshape(s)
 		    end if
-		    if s isa droite and currentcontent.macrocreation then
+		    if s isa droite and droite(s).nextre = 0 then
 		      visible.removeshape s
 		    end if
 		  next
@@ -363,10 +370,6 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLelement
 		  dim Temp as XMLElement
-		  
-		  if not Bip isa Polygon then
-		    return nil
-		  end if
 		  
 		  Temp =  Dr.XMLPutIdInContainer(Doc)
 		  Temp.AppendChild DR.XMLPutChildsInContainer(Doc)

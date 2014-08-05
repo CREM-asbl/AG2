@@ -702,12 +702,12 @@ Inherits Bipoint
 		    M = new  AffiProjectionMatrix(Bib1, Bib2)
 		    if M <> nil and M.v1 <> nil then
 		      nq = M*np
-		      if sh isa polygon then
-		        n =sh.pointonside(nq)
-		        if n <> q.numside(0) then
-		          points(0).moveto ep
-		          return new Matrix(1)
-		        end if
+		      q.moveto nq
+		      if q.ProjectionOnAttractingDroite(dr2) = nil then
+		        q.invalider
+		      else
+		        q.moveto eq
+		        q.valider
 		      end if
 		    else
 		      nq = nil
@@ -721,11 +721,7 @@ Inherits Bipoint
 		  if q.modified and nq <> nil then
 		    q.moveto nq
 		  end if
-		  if nq <> nil then
-		    return new similaritymatrix (ep, eq, np, nq)
-		  else
-		    return nil
-		  end if
+		  return new similaritymatrix (ep, eq, np, nq)
 		  
 		End Function
 	#tag EndMethod

@@ -372,14 +372,23 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
-		  
+		  dim p as point
 		  dim magneticD as BasicPoint
 		  dim magnetism as integer
 		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then
-		      curShape.Identify1(Point(CurrentAttractingShape))
+		      p = Point(CurrentAttractingshape)
+		      if currentshape isa arc and currentshape.indexconstructedpoint = 2 and ubound(p.parents) > -1 then
+		        if ubound(p.parents) = 0 then
+		          curshape.puton p.parents(0)
+		        else
+		          curshape.invalid = true
+		        end if
+		      else
+		        curShape.Identify1(p)
+		      end if
 		    elseif  currentattractingshape.fam < 10 and currentshape.fam < 10  then
 		      if NextCurrentAttractingShape <> nil then
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig
