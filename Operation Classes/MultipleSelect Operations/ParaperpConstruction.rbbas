@@ -277,11 +277,14 @@ Inherits ShapeConstruction
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ParaperpConstruction (fa,fo)
 		  n = val(EL1.GetAttribute("Id"))
+		  ori = val(EL1.GetAttribute("Ori"))
 		  rid = MExe.GetRealId(n)
 		  Refe= objects.GetShape(rid)
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
 		  side = Mexe.GetRealSide(n)
 		  currentshape.constructedby.data.append side
+		  currentshape.constructedby.data.append nil
+		  currentshape.constructedby.data.append ori
 		  
 		  'Positionnement aisé du premier point
 		  EL =XMLElement(EL0.Child(0))

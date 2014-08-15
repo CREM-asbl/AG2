@@ -646,15 +646,17 @@ End
 		    end if
 		  case 1 'ctrl-shft a
 		    currentcontent.drapaff = not currentcontent.drapaff
+		    currentcontent.drapeucli = false
 		  case 2 'ctrl-shft b
 		    drapbug = not drapbug
 		  case 5 'ctrl-shft e
 		    currentcontent.drapeucli = not currentcontent.drapeucli
+		    currentcontent.drapaff = false
 		  case  20 ' ctrl-shft t
 		    wnd.mycanvas1.sctxt = nil
 		    tw = new TextWindow
 		    tw.visible = true
-		  case 21 'ctrl-shft u0002716707
+		  case 21 'ctrl-shft u
 		    tw = new textwindow
 		    tw.source1 = true  //historique
 		    tw.visible = true
@@ -2341,7 +2343,7 @@ End
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
 		  MenuBar.Child("Fenetres").append mitem
 		  MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
-		  'MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
+		  MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
 		  
 		End Sub
 	#tag EndMethod
@@ -2583,11 +2585,17 @@ End
 		Sub StdBoxRefresh()
 		  dim i as integer
 		  
-		  StdBox.Visible = Config.ShowStdTools and not draphisto
-		  for i = 0 to 2
-		    StdOutil(i).visible =true
-		  next
-		  StdBox.visible = true
+		  if  Config.ShowStdTools and not draphisto then
+		    for i = 0 to config.nstdfam-1
+		      if ico(i) = nil then
+		        setico(i,0)
+		      end if
+		      StdOutil(i).visible =true
+		    next
+		    StdBox.visible = true
+		  else
+		    StdBox.visible = false
+		  end if
 		  
 		  
 		  

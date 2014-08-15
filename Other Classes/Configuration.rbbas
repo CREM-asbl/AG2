@@ -311,13 +311,6 @@ Protected Class Configuration
 		    if List.Length > 0 then
 		      Temp = XMLElement(List.Item(0))
 		      StdFile = Temp.GetAttribute("Name")
-		      'List = EL.XQL("TailleFormesStandard")
-		      'if List.length > 0 then
-		      'Temp = XMLElement(List.Item(0))
-		      'StdSize=Val(Temp.GetAttribute("Value"))
-		      'else
-		      'StdSize = 1
-		      'end if
 		      ChargerStdForms
 		    else
 		      ShowStdTools = false
@@ -501,67 +494,58 @@ Protected Class Configuration
 		  dim i, j,k,n as integer
 		  dim List as XMLNodeList
 		  dim Temp as XmlElement
+		  dim Names(-1) as string
+		  
 		  
 		  Libfamilies(0,0) = "Point"
 		  nlibf(0)=0
 		  
-		  Libfamilies(1,0) = "Segment"
-		  Libfamilies(1,1) = "SegParall"
-		  Libfamilies(1,2) = "SegPerp"
-		  Libfamilies(1,3)= "Droite"
-		  Libfamilies(1,4)= "DroiteParall"
-		  Libfamilies(1,5)= "DroitePerp"
-		  Libfamilies(1,6)= "DemiDroite"
-		  Libfamilies(1,7) = "Bande"
-		  Libfamilies(1,8) = "Secteur"
+		  Names = Array("Segment", "SegParall", "SegPerp", "Droite", "DroiteParall", "DroitePerp", "DemiDroite", "Bande", "Secteur")
 		  nlibf(1)=8
+		  for j = 0 to nlibf(1)
+		    Libfamilies(1,j)=Names(j)
+		  next
 		  
-		  Libfamilies(2,0) = "Triang"
-		  Libfamilies(2,1) = "TriangIso"
-		  Libfamilies(2,2) = "TriangEqui"
-		  Libfamilies(2,3) = "TriangRect"
-		  Libfamilies(2,4) = "TriangRectIso"
+		  Names = Array("Triang", "TriangIso", "TriangEqui", "TriangRect", "TriangRectIso")
 		  nlibf(2)=4
+		  for j = 0 to nlibf(2)
+		    Libfamilies(2,j)=Names(j)
+		  next
 		  
-		  Libfamilies(3,0) = "Quadri"
-		  Libfamilies(3,1) = "Trap"
-		  Libfamilies(3,2) = "TrapRect"
-		  Libfamilies(3,3) = "TrapIso"
-		  Libfamilies(3,4) = "Parallelogram"
-		  Libfamilies(3,5) = "Rect"
-		  Libfamilies(3,6) = "Losange"
-		  Libfamilies(3,7) = "Carre"
+		  Names = Array("Quadri","Trap","TrapRect","TrapIso","Parallelogram","Rect","Losange","Carre")
 		  nlibf(3)=7
+		  for j = 0 to nlibf(3)
+		    Libfamilies(3,j)=Names(j)
+		  next
 		  
-		  Libfamilies(4,0) = "TriangEqui"
-		  Libfamilies(4,1) = "Carre"
-		  Libfamilies(4,2) = "PentaReg"
-		  Libfamilies(4,3) = "HexaReg"
-		  Libfamilies(4,4) = "HeptaReg"
-		  Libfamilies(4,5) = "OctoReg"
-		  Libfamilies(4,6) = "EnneaReg"
-		  Libfamilies(4,7) = "DecaReg"
-		  Libfamilies(4,8) = "UndecaReg"
-		  Libfamilies(4,9) = "DodecaReg"
+		  Names = Array("TriangEqui","Carre","PentaReg","HexaReg","HeptaReg","OctoReg","EnneaReg","DecaReg","UndecaReg","DodecaReg")
 		  nlibf(4)=9
+		  for j = 0 to nlibf(4)
+		    Libfamilies(4,j)=Names(j)
+		  next
 		  
-		  LibFamilies(5,0) = "FreeCircle"
-		  Libfamilies(5,1) = "Arc"
+		  Names = Array("FreeCircle", "Arc")
 		  nlibf(5)=1
+		  for j = 0 to nlibf(5)
+		    Libfamilies(5,j)=Names(j)
+		  next
 		  
-		  Libfamilies(6,0) = "Triang"
-		  Libfamilies(6,1) = "Quadri"
-		  Libfamilies(6,2) = "Penta"
-		  Libfamilies(6,3) = "Hexa"
-		  Libfamilies(6,4) = "Hepta"
-		  Libfamilies(6,5) = "Octo"
-		  Libfamilies(6,6) = "Ennea"
-		  Libfamilies(6,7) = "Deca"
-		  Libfamilies(6,8) = "Undeca"
-		  Libfamilies(6,9) = "Dodeca"
+		  Names = Array("Triang","Quadri","Penta","Hexa","Hepta","Octo","Ennea","Deca","Undeca","Dodeca")
 		  nlibf(6)=9
+		  for j = 0 to nlibf(6)
+		    Libfamilies(6,j)=Names(j)
+		  next
+		  
+		  for i = 0 to 6
+		    for j = 0 to nlibf(i)
+		      Libvisible(i,j) = false
+		    next 
+		    nlibvis(i) = false
+		  next
 		  
 		  if ShowTools then
+		    LibVisible(0,0) = true
+		    nlibvis(0) = true
 		    for i = 1 to 6
 		      List=EL.XQL("Fam"+str(i))
 		      n =list.length
@@ -572,13 +556,7 @@ Protected Class Configuration
 		          Libvisible(i,k) = true
 		        next
 		      end if
-		    next
-		    for i = 0 to 6
-		      nlibvis(i) = true
-		    next
-		  else
-		    for i = 0 to 6
-		      nlibvis(i) = false
+		      UpdateNlibVis(i)
 		    next
 		  end if
 		  

@@ -382,7 +382,7 @@ Inherits MultipleSelectOperation
 		      p = Point(CurrentAttractingshape)
 		      if currentshape isa arc and currentshape.indexconstructedpoint = 2 and ubound(p.parents) > -1 then
 		        if ubound(p.parents) = 0 then
-		          curshape.puton p.parents(0)
+		          curshape.Identify1(p)     'puton p.parents(0) 7 août 2014
 		        else
 		          curshape.invalid = true
 		        end if

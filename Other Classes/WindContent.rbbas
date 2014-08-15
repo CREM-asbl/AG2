@@ -616,6 +616,10 @@ Protected Class WindContent
 		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = polygpointes
 		  end if
 		  
+		Exception err
+		  
+		  err.message = err.message+EndOfLine+str(n)
+		  Raise err
 		End Sub
 	#tag EndMethod
 
@@ -667,10 +671,11 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub MoveBack(n as integer)
 		  
-		  
-		  plans.remove  plans.indexof(n)
-		  plans.insert 1,n
-		  UpdatePlans
+		  if plans.indexof(n) <> -1 then
+		    plans.remove  plans.indexof(n)
+		    plans.insert 1,n
+		    UpdatePlans
+		  end if
 		  
 		  
 		End Sub
@@ -681,10 +686,9 @@ Protected Class WindContent
 		  
 		  if plans.indexof(n) <> -1 then
 		    plans.remove  plans.indexof(n)
+		    plans.append n
+		    UpdatePlans
 		  end if
-		  plans.append n
-		  UpdatePlans
-		  
 		  
 		End Sub
 	#tag EndMethod

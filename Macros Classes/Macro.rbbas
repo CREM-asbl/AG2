@@ -199,12 +199,12 @@ Protected Class Macro
 		    if not (currentcontent.currentoperation isa macroexe) and not (ifmac.oper = 17) then
 		      if Validation(ifmac) then
 		        for j = 0 to ubound(ObFinal)
-		          s = currentcontent.TheObjects.getshape(MacInf.RealFinal(j))
+		          s = currentcontent.TheObjects.getshape(MacInfo.RealFinal(j))
 		          s.Valider
 		        next
 		      else
 		        for j = 0 to ubound(ObFinal)
-		          s = currentcontent.TheObjects.getshape(MacInf.RealFinal(j))
+		          s = currentcontent.TheObjects.getshape(MacInfo.RealFinal(j))
 		          s.invalider
 		        next
 		      end if

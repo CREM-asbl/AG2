@@ -190,8 +190,10 @@ Inherits Canvas
 		      base.append( New MenuItem(Dico.value("ToolsColorFill")))
 		    end if
 		    
-		    base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
-		    base.append(New MenuItem(Dico.Value("ToolsARPlan")))
+		    if (not sctxt isa point) or (ubound(point(sctxt).parents) = -1) then
+		      base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
+		      base.append(New MenuItem(Dico.Value("ToolsARPlan")))
+		    end if
 		    
 		    if sctxt.borderwidth = 1 then
 		      base.append( New MenuItem(Dico.Value("Epais")))

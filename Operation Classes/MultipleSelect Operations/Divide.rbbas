@@ -159,11 +159,11 @@ Inherits MultipleSelectOperation
 		      elseif s  isa Circle then
 		        Firstpoint = s.Points(1)
 		        secondpoint = firstpoint
-		      elseif s isa cube then
+		      elseif s isa cube and side <> -1 then
 		        d = cube(s).getside(side)
 		        firstpoint = d.points(0)
 		        secondpoint= d.points(1)
-		      elseif s isa polygon then
+		      elseif s isa polygon and side <> -1 then
 		        firstpoint = s.points(side)
 		        secondpoint = s.points((side +1) mod s.npts)
 		      end if

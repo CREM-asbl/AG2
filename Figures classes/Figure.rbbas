@@ -292,8 +292,8 @@ Implements StringProvider
 		  
 		  
 		  if M = nil or M.v1 = nil then
-		    'QQupdateshapes
-		    return false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
+		    QQupdateshapes
+		    return true  'false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
 		    updatesomm(M)
 		    updatePtsSur(M)
@@ -478,6 +478,7 @@ Implements StringProvider
 		  dim p, p1,p2 as point
 		  dim bp1, ep, np,ep1, np1 as BasicPoint
 		  dim n as integer
+		  dim M as Matrix
 		  
 		  n = ListPtsModifs(0)
 		  p = Point(somm.element(n))
@@ -492,7 +493,7 @@ Implements StringProvider
 		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
 		  case 0
 		    bp1 = Point(Somm.element(fx1)).bpt
-		    return new SimilarityMatrix (bp1, ep,bp1, np)
+		    M = new SimilarityMatrix (bp1, ep,bp1, np)
 		  case 1
 		    p1 = Point(Somm.element(ListSommSur(0)))
 		    getoldnewpos(p1,ep1,np1)
@@ -501,17 +502,20 @@ Implements StringProvider
 		        return AutosimUpdate
 		      end if
 		    else
-		      return new SimilarityMatrix(ep,ep1,np,ep1)
+		      M= new SimilarityMatrix(ep,ep1,np,ep1)
 		    end if
 		  case 2
 		    p1 = Point(Somm.element(ListSommSur(0)))
 		    p2 = Point(Somm.element(ListSommSur(1)))
 		    if p1.pointsur.count = 1 and p2.pointsur.count = 1 then
-		      return new similarityMatrix(p1,p2,ep,np)
+		      M = new similarityMatrix(p1,p2,ep,np)
+		      if M = nil or M.v1 = nil then
+		        M = new Matrix(1)
+		      end if
 		    end if
 		  end select
 		  
-		  return new Matrix(1)
+		  return M
 		  
 		  
 		  
@@ -942,18 +946,19 @@ Implements StringProvider
 		  pointmobile = p
 		  t = true
 		  
-		  if currentcontent.drapaff then
-		    return Modifaffine(p)
-		  elseif currentcontent.drapeucli then
-		    return Modifeucli(p)
-		  else
-		    listersubfigs(p)
-		    for i = 0 to ubound(index)
-		      sf = subs.element(index(i))
+		  listersubfigs(p)
+		  for i = 0 to ubound(index)
+		    sf = subs.element(index(i))
+		    if currentcontent.drapaff then
+		      t = sf.Modifaffine(p)
+		    elseif currentcontent.drapeucli then
+		      t = sf.Modifeucli(p)
+		    else
 		      t = sf.subfigupdate and t
-		    next
-		    return t
-		  end if
+		    end if
+		  next
+		  return t
+		  
 		End Function
 	#tag EndMethod
 
@@ -2008,13 +2013,9 @@ Implements StringProvider
 		  dim ep,np,ep1,ep2,np1,np2 as BasicPoint
 		  dim i, k, n, h as integer
 		  dim t as boolean
+		  dim M as Matrix
 		  
 		  Choixpointsfixes
-		  'if NbUnModif > 0 then
-		  'return new Matrix(1)
-		  'end if
-		  
-		  
 		  p = supfig.pointmobile
 		  getoldnewpos(p,ep,np)
 		  k = somm.getposition(p)
@@ -2030,7 +2031,7 @@ Implements StringProvider
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
 		      getoldnewpos(p,ep,np)
-		      return new similarityMatrix(p1,p2,ep,np)
+		      M = new similarityMatrix(p1,p2,ep,np)
 		    elseif Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 1
 		        if i <> k then
@@ -2054,23 +2055,22 @@ Implements StringProvider
 		      end if
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
-		      return new similarityMatrix(p1,p2,ep,np)
+		      M = new similarityMatrix(p1,p2,ep,np)
 		    else
 		      p1 = point(somm.element(listsommsur(0)))
 		      p2 = point(somm.element(listsommsur(1)))
 		      getoldnewpos(p1,ep1,np1)
 		      getoldnewpos(p2,ep2,np2)
-		      return new SimilarityMatrix(ep1,ep2,np1,np2)
+		      M = new SimilarityMatrix(ep1,ep2,np1,np2)
 		    end if
 		  else
-		    return new Matrix(1)
+		    M = new Matrix(1)
 		  end select
 		  
-		  'if NbPtsModif > 2 then
-		  'return autosimupdate2
-		  'else
-		  'return autosimupdate
-		  'end if
+		  if M = nil or M.v1 = nil then
+		    M = new Matrix(1)
+		  end if
+		  return M
 		  
 		  
 		  
