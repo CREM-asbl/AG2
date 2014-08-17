@@ -60,7 +60,7 @@ Inherits MultipleSelectOperation
 		  dim i,j as integer
 		  
 		  super.endoperation
-		  CurrentItemToSet=2
+		  CurrentItemToSet=1
 		  for i = 0 to copies.count-1
 		    for j = 0 to ubound(copies.element(i).points)
 		      copies.element(i).points(j).tracept =  false

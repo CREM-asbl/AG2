@@ -46,7 +46,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectShape(p as BasicPoint) As Shape
+		Function SelectShape(p as Basicpoint) As Shape
 		  dim i as Integer
 		  dim S as Shape
 		  

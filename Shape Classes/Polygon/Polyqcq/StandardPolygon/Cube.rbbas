@@ -428,6 +428,23 @@ Inherits StandardPolygon
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function pInShape(p as BasicPoint) As Boolean
+		  dim Bord as nBPoint
+		  dim i as integer
+		  
+		  
+		  
+		  Bord = new nBPoint
+		  for i = 0 to 5
+		    Bord.append points(i).bpt
+		  next
+		  
+		  return  Bord.pInShape(p)
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -461,6 +478,10 @@ Inherits StandardPolygon
 
 	#tag Property, Flags = &h0
 		tr As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np As Integer
 	#tag EndProperty
 
 

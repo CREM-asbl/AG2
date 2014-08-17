@@ -6,35 +6,13 @@ Inherits Shape
 		  dim i,j, n as Integer
 		  dim q, r as BasicPoint
 		  dim c as Boolean
-		  dim Bord as nBPoint
 		  
-		  
-		  if self isa cube then
-		    Bord = new nBPoint
-		    for i = 0 to 5
-		      Bord.append points(i).bpt
-		    next
-		    return Bord.pInShape(p)
-		  elseif npts = 2 then
+		  if npts = 2 then
 		    return p.between(points(0).bpt, points(1).bpt) and p.distance(points(0).bpt, points(1).bpt)  < wnd.mycanvas1.magneticdist
 		  else
-		    'return coord.pInShape(p)
-		    'end if
-		    
-		    
-		    j = npts-1
-		    c=false
-		    
-		    for  i = 0  to npts-1
-		      q = Points(i).bpt
-		      r = Points(j).bpt
-		      if ( ((q.y<=p.y) and (p.y <r.y)) or ((r.y <= p.y) and (p.y < q.y)) ) and (p.x < (r.x - q.x) * (p.y - q.y) / (r.y - q.y) + q.x) then
-		        c =not c
-		      end if
-		      j=i
-		    next
-		    return c
+		    return coord.pInShape(p)
 		  end if
+		  
 		  
 		End Function
 	#tag EndMethod

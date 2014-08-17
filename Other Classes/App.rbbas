@@ -129,12 +129,11 @@ Inherits Application
 		      wnd.draphisto = false
 		      wnd.Refresh
 		    end if
-		    wnd.deleteContent
-		    if UBound (wnd.wcontent) = -1 then
-		      wnd.NewContent(false)
-		    end if
-		    'Log = GetFolderItem("Bug.fag")
-		    'OpenDocument Log
+		    'wnd.deleteContent
+		    'if UBound (wnd.wcontent) = -1 then
+		    'wnd.NewContent(false)
+		    'end if
+		    currentcontent.bugfound = false   'GN 17-08-2014
 		  end if
 		  return true
 		End Function
@@ -170,6 +169,7 @@ Inherits Application
 		  end if
 		  
 		  FileName = FileName+s
+		  
 		End Sub
 	#tag EndEvent
 

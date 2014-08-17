@@ -56,19 +56,20 @@ Inherits SelectOperation
 		Sub Paint(g as graphics)
 		  dim i as integer
 		  
+		  display = ""
 		  super.paint(g)
 		  
 		  
-		  if CurrentHighlightedShape <> nil then
+		  if CurrentHighlightedShape <> nil  then
 		    display = this(currenthighlightedshape.gettype) + " ?"
 		  elseif objects.count > 1 then
 		    display = choose+aform+asupprimer
 		  end if
 		  Help g, display
-		  
 		  for i = 0 to ubound(todelete)
 		    todelete(i).paint(g)
 		  next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -113,9 +114,6 @@ Inherits SelectOperation
 		    for i =  visible.count-1 downto 0
 		      s = Visible.element(i)
 		      if s isa point  and not point(s).isolated   then
-		        for j = 0 to ubound(point(s).parents)
-		          visible.addshape point(s).parents(j)
-		        next
 		        visible.removeshape s
 		        nobj = visible.count
 		      end if
@@ -138,8 +136,10 @@ Inherits SelectOperation
 		Sub MouseMove(P as BasicPoint)
 		  redim todelete(-1)
 		  dim s as shape
+		  dim dr as droite
 		  
 		  objects.unhighlightall
+		  
 		  s = Getshape(p)
 		  if s <> nil then
 		    highlight(s)

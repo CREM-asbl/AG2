@@ -9,9 +9,11 @@ Protected Class TransfosList
 
 	#tag Method, Flags = &h0
 		Function GetPosition(tsf as Transformation) As Integer
-		  
 		  dim i as Integer
 		  
+		  if tsf = nil then
+		    return -1
+		  end if
 		  
 		  for i=0 to UBound(Transfos)
 		    if  tsf.Equal(Transfos(i)) then

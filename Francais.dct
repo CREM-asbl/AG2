@@ -47,7 +47,7 @@
     <ToolsGrid Name="Grille" />
     <ToolsHisto Name="Lire un historique" />
     <MacrosMenu Name="Macros" />
-    <MacrosErase Name="Supprimer une macro"/>
+    <MacrosErase Name="Supprimer une macro" />
     <MacrosDescri Name="Afficher la description d'une macro" />
     <MacrosClose Name="Fermer une macro" />
     <MacrosExecute Name="Exécuter une macro" />
@@ -173,7 +173,7 @@
     <NrForm Name="Numéro_Forme" />
     <Repere Name="Repère" />
     <Point Name="Point" />
-    <PointOn Name="Point sur Objet"/>
+    <PointOn Name="Point sur Objet" />
     <Inter Name=" d'intersection" />
     <Bigon Name="Bigone" />
     <Segment Name="Segment" />
@@ -270,8 +270,8 @@
   </Couleurs>
   <Messages>
     <bugsent Name="Bug envoyé, merci!" />
-    <bugfound Name="Cette figure a provoqué une erreur. La fenêtre va être fermée." />
-    <bugcontinue Name="Vous pouvez continuer à utiliser les autres fenêtres" />
+    <bugfound Name="Cette figure a provoqué une erreur. " />
+    <bugcontinue Name="Vous pouvez essayer de continuer à travailler mais sauvegardez régulièrement votre travail." />
     <bugsorry Name="Nous nous excusons de ce désagrément" />
     <bugsignal Name="Voulez-vous nous signaler l'erreur ?" />
     <MessBugsent1 Name="Envoi du fichier log" />
