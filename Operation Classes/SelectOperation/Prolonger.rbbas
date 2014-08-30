@@ -166,16 +166,6 @@ Inherits SelectOperation
 		  end if
 		  GetSide
 		  
-		  'if Bip isa droite then
-		  'Dr = Droite(Bip)
-		  'Droite(Bip).nextre = 0
-		  'if Bip.forme < 3 then
-		  'Dr.forme = Bip.forme + 3
-		  'elseif Bip.forme = 6 then
-		  'Dr.Forme = 3
-		  'end if
-		  'Dr.fig = nil
-		  
 		  Dr = new Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
 		  if Bip isa polygon then
 		    Polygon(Bip).prol(ibip) = true
@@ -184,10 +174,8 @@ Inherits SelectOperation
 		  deplacerperp
 		  Dr.endconstruction
 		  
-		  'if Bip isa polygon then
 		  Dr.setconstructedby Bip, 8
 		  Dr.Constructedby.data.append ibip
-		  'end if
 		  
 		  for i = 2 to ubound(Dr.childs)
 		    Dr.childs(i).fig = Dr.fig
@@ -199,7 +187,6 @@ Inherits SelectOperation
 		    next
 		  next
 		  
-		  modifiertsf
 		  
 		  
 		  
@@ -281,23 +268,6 @@ Inherits SelectOperation
 		  
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Modifiertsf()
-		  dim i as integer
-		  dim op as integer
-		  dim s as shape
-		  
-		  'if Bip isa polygon then
-		  for i =  ubound(Bip.constructedshapes) downto 0
-		    if Bip.constructedshapes(i).isaparaperp  and Bip.constructedshapes(i).constructedby.data(0) = ibip then
-		      s = Bip.ConstructedShapes(i)
-		      droite(s).modifiertsf(Bip, Dr, 0)
-		    end if
-		  next
-		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -387,8 +357,8 @@ Inherits SelectOperation
 		  Prolonger
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
-		  Bip = objects.GetShape(n)
-		  cot = val(EL1.GetAttribute("Index"))
+		  Bip = objects.GetShape(rid)
+		  cot = MExe.GetRealSide(n)
 		  DoOperation
 		End Sub
 	#tag EndMethod

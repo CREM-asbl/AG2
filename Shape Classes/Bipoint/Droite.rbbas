@@ -346,35 +346,6 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub modifiertsf(s1 as shape, s2 as shape, ind as integer)
-		  //Une droite paraperp à s1 devient paraperp à s2
-		  
-		  dim tsf as transformation
-		  dim op as integer
-		  
-		  tsf = Transformation(constructedby.data(1))
-		  op = constructedby.oper
-		  
-		  s1.fig.constructedfigs.removefigure fig
-		  s1.removeconstructedshape self
-		  tsf.removefigconstructioninfos(self)
-		  setconstructedby(s2, op)
-		  fig.removeconstructedby(s1.fig,tsf)
-		  constructedby.data.append  ind
-		  constructedby.data.append tsf
-		  fig.SetConstructedBy(s2.fig, tsf)
-		  tsf.supp = s2
-		  tsf.updatefigconstructioninfos(self)
-		  
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function prppupdate1() As Matrix
 		  
 		  dim sf as figure
@@ -718,6 +689,7 @@ Inherits Bipoint
 		      nq  = Bib1.ComputeFirstIntersect(0,sh,q)
 		    end if
 		  end if
+		  q.modified = true
 		  if q.modified and nq <> nil then
 		    q.moveto nq
 		  end if

@@ -658,7 +658,6 @@ Inherits MultipleSelectOperation
 		    case 37 //FixPConstruction
 		      curop = new FixPConstruction(self, EL1)
 		      createdshape = FixPConstruction(curop).tsf.FixPt
-		      'computefix(ifmac,nbp)
 		    case 45  //Point d'intersection
 		      curop = new Intersec(self, EL1)
 		      createdshape = curop.currentshape
@@ -680,7 +679,7 @@ Inherits MultipleSelectOperation
 		      curop.endoperation
 		    end if
 		  end if
-		  wnd.mycanvas1.refreshbackground
+		  
 		End Sub
 	#tag EndMethod
 

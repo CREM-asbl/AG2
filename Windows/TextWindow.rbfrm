@@ -240,7 +240,7 @@ End
 		    m = m + "Orientation " + str(s.ori)+chr(13)
 		  end if
 		  m = m+chr(10)
-		  if s.constructedby <> nil or s.conditionedby <> nil  then 
+		  if s.constructedby <> nil or s.conditionedby <> nil  then
 		    m = m + messlinks(s)
 		  end if
 		  if not s isa point then
@@ -321,7 +321,11 @@ End
 		  
 		  
 		  m = Type(p)
-		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "+chr(10)
+		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "
+		  if p.invalid then
+		    m = m + "invalid"
+		  end if
+		  m = m +chr(10)
 		  if P.PointSur <> Nil then
 		    for i = 0 to P.Pointsur.count-1
 		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", " + chr(10)
@@ -337,6 +341,7 @@ End
 	#tag Method, Flags = &h0
 		Function mess(f as figure, i as integer) As string
 		  dim m as string
+		  
 		  m = "Sous-Figure nr "+ str(i)
 		  return messauto(f,m)
 		  

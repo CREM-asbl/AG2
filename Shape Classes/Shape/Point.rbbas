@@ -97,7 +97,7 @@ Inherits Shape
 		  dim s1,s2 as Shape
 		  dim p3 as Basicpoint
 		  
-		  if not PossibleAttractionWith(s) then
+		  if not PossibleAttractionWith(s) or s.hidden then
 		    return 0
 		  end if
 		  
@@ -854,7 +854,7 @@ Inherits Shape
 		  dim inter as intersec
 		  dim t as Boolean
 		  
-		  if validating then
+		  if validating or not invalid then
 		    return
 		  end if
 		  

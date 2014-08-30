@@ -769,16 +769,15 @@ Inherits SelectAndDragOperation
 		  dim Magnetism As Integer
 		  dim f1, f2 as figure
 		  dim i, j as integer
+		  dim pt as BasicPoint
 		  
 		  Magnetism= Magnetisme(pointmobile,MagneticD)
 		  
-		  if cancelattraction(pointmobile) then
+		  if cancelattraction(pointmobile)    then
 		    magnetism = 0
 		  else
 		    currentattractedshape = pointmobile
 		  end if
-		  
-		  
 		  return magnetism
 		  
 		  

@@ -250,20 +250,32 @@ Inherits StandardPolygon
 		    tos.writeline s+ " polygone"
 		  end if
 		  
-		  if forme = 0 then
+		  select case forme
+		  case 0, 2
 		    s = "[  "+ Points(6).etiq + " " + Points(1).etiq + " ]"
 		    tos.writeline s+ " segment"
 		    s = "[  "+ Points(6).etiq + " " + Points(3).etiq + " ]"
 		    tos.writeline s+ " segment"
 		    s = "[  "+ Points(6).etiq + " " + Points(5).etiq + " ]"
 		    tos.writeline s+ " segment"
-		  else
+		  case 1
 		    s = "[  "+ Points(6).etiq + " " + Points(0).etiq + " ]"
 		    tos.writeline s+ " segment"
 		    s = "[  "+ Points(6).etiq + " " + Points(2).etiq + " ]"
 		    tos.writeline s+ " segment"
 		    s = "[  "+ Points(6).etiq + " " + Points(4).etiq + " ]"
 		    tos.writeline s+ " segment"
+		  end select
+		  
+		  if forme = 2  then
+		    tos.writeline "traittirete"
+		    s = "[  "+ Points(7).etiq + " " + Points(0).etiq + " ]"
+		    tos.writeline s+ " segment"
+		    s = "[  "+ Points(7).etiq + " " + Points(2).etiq + " ]"
+		    tos.writeline s+ " segment"
+		    s = "[  "+ Points(7).etiq + " " + Points(4).etiq + " ]"
+		    tos.writeline s+ " segment"
+		    tos.writeline "traitplein"
 		  end if
 		  
 		  if not nonpointed then
@@ -784,6 +796,12 @@ Inherits StandardPolygon
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tr"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="np"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

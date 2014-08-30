@@ -313,7 +313,12 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function Aire() As double
-		  return coord.aire
+		  dim a as double
+		  a =  coord.aire
+		  if std then
+		    a = abs(a)
+		  end if
+		  return a
 		End Function
 	#tag EndMethod
 
