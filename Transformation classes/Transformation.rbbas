@@ -122,13 +122,12 @@ Implements StringProvider
 		    end if
 		    if s2 isa Lacet then
 		      Lacet(s2).MoveExtreCtrl(M)
-		      s2.endmove
 		    end if
 		  else
 		    Point(s2).moveto M*Point(s1).bpt
 		    s2.Modified = true
 		  end if
-		  
+		  s2.endmove
 		  
 		  
 		End Sub
@@ -200,7 +199,7 @@ Implements StringProvider
 		      'M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
 		    end if
 		  case 7, 72 // Homothéties
-		    M = supp.coord.HomothetyMatrix   
+		    M = supp.coord.HomothetyMatrix
 		  case 71
 		    u = supp.points(0).bpt
 		    v = supp.points(1).bpt
@@ -208,7 +207,7 @@ Implements StringProvider
 		    k = w.location(u,v)
 		    M = new HomothetyMatrix(u, k)
 		  case 8 //Similitudes
-		    M = supp.coord.SimilarityMatrix                
+		    M = supp.coord.SimilarityMatrix
 		  case 81
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(0).bpt, supp.points(2).bpt)
 		  case 82

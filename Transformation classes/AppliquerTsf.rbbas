@@ -60,7 +60,7 @@ Inherits MultipleSelectOperation
 		  dim i,j as integer
 		  
 		  super.endoperation
-		  CurrentItemToSet=1
+		  CurrentItemToSet=2
 		  for i = 0 to copies.count-1
 		    for j = 0 to ubound(copies.element(i).points)
 		      copies.element(i).points(j).tracept =  false
@@ -194,7 +194,7 @@ Inherits MultipleSelectOperation
 		  case 1
 		    return GetTsf(p)
 		  case 2
-		    for i = 0 to visible.count-1
+		    for i =  visible.count-1 downto 0
 		      s = visible.element(i)
 		      if s <> nil and  s.isaellipse then
 		        visible.removeshape s

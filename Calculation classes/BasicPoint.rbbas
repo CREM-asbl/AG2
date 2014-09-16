@@ -419,6 +419,13 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Set(p as basicpoint)
+		  x = p.x
+		  y = p.y
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

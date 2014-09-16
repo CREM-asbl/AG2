@@ -64,7 +64,7 @@ Inherits MultipleSelectOperation
 		        display = choose + anotherpoint
 		      end select
 		    case 3, 4
-		      display = choose + apoint
+		      display = choose + anotherpoint
 		    end select
 		  else
 		    select case currentitemtoset
@@ -83,6 +83,8 @@ Inherits MultipleSelectOperation
 		      else
 		        display = this(currenthighlightedshape.gettype)+" ?"
 		      end if
+		    case 4
+		      
 		    else
 		      display = thispoint+" ?"
 		    end select
@@ -164,6 +166,7 @@ Inherits MultipleSelectOperation
 		  dim i, i0 as integer
 		  dim qp2 as point
 		  
+		  
 		  if s = nil then
 		    return false
 		  end if
@@ -187,12 +190,10 @@ Inherits MultipleSelectOperation
 		        type = 71
 		        index.append 0
 		      else
-		        qp.moveto qp.bpt.projection(tp.bpt, tp.bpt+sp.bpt-fp.bpt)
-		        bp1 = sp.bpt - fp.bpt - qp.bpt+tp.bpt
-		        if bp1*bp1 < epsilon then
-		          return false
-		        end if
-		        currentshape = new Trap(objects, fp, sp, qp, tp)
+		        bp1 = tp.bpt+sp.bpt-fp.bpt
+		        bp2 = qp.bpt.projection(tp.bpt, bp1)
+		        qp2 = new point(objects, bp2 )
+		        currentshape = new Trap(objects, fp,sp, qp2, tp)
 		        type = 72
 		        index.append -1
 		      end if
@@ -211,12 +212,9 @@ Inherits MultipleSelectOperation
 		      end if
 		      index.append-1
 		    case 9
-		      if fp <> sp then
-		        currentshape = new Polyqcq(objects,fp,sp,qp, tp)
-		        index.append -1
-		      else
-		        return false
-		      end if
+		      currentshape = new Polyqcq(objects,fp,sp,qp, tp)
+		      index.append -1
+		      
 		    case 10
 		      if fp <> sp   and  qp <> tp then
 		        currentshape = new Polyqcq(objects,fp,sp,qp,tp)
@@ -240,6 +238,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h1
 		Protected Function GetShape(p as basicPoint) As shape
 		  dim q as point
+		  dim nbp as nbpoint
 		  
 		  currentshape = super.getshape(p)  //on liste les objets visibles et on ramène le premier
 		  if currentshape = nil then
@@ -257,7 +256,9 @@ Inherits MultipleSelectOperation
 		  case 4
 		    visible = Objects.findpoint(p)
 		    q = point( visible.element(iobj))
-		    if q <> nil then
+		    if q = nil then
+		      return nil
+		    else
 		      if fp = tp  and q = sp then
 		        return nil
 		      elseif sp = tp and q= sp then
@@ -265,8 +266,19 @@ Inherits MultipleSelectOperation
 		      elseif fp = q or (sp = q)  or  (tp = q) then
 		        return nil
 		      end if
+		      if type = 9 then
+		        nbp = new nbpoint(fp)
+		        nbp.append sp.bpt
+		        nbp.append q.bpt
+		        nbp.append tp.bpt
+		        if nbp.pseudotrap then
+		          return nil
+		        end if
+		        return q
+		      else
+		        return q
+		      end if
 		    end if
-		    return q
 		  end select
 		  
 		  
@@ -400,14 +412,20 @@ Inherits MultipleSelectOperation
 		      
 		    case 7 // Homothétie
 		      
-		      if not s isa point and( (not s isa Polygon) or ( s.npts <> 4) or (type = 7 and not s isa Trap))  then
+		      if not s isa point and (( s.npts <> 4) or (not s isa Trap))  then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
 		        index.append -1
 		      end if
 		      
-		    case  8, 9, 10 //  Similitude, Etirement, Déplacement
+		    case  8, 10 //  Similitude,  Déplacement
 		      if not s isa point and  not( (s isa Polygon) and (s.npts = 4) )  then
+		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
+		      else
+		        index.append -1
+		      end if
+		    case 9 //Etirement
+		      if (not s isa point and( s isa quadri or  (s.npts <> 4) )) or (s.npts = 4 and s.coord.pseudoTrap)     then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
 		        index.append -1
@@ -545,61 +563,6 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function oldChoixvalide(p as point) As Boolean
-		  dim  i, j, h, k as integer
-		  dim curshape as shape
-		  //On ne passe ici que pour le choix du deuxième point d'une translation
-		  
-		  if p = nil then
-		    return false
-		  end if
-		  
-		  if fp.onsameshape(p,curshape) and  (curshape isa droite or curshape isa polygon) then
-		    h = curshape.GetIndexPoint(fp)
-		    k = curshape.GetIndexPoint(p)
-		    if h=-1 or k=-1 then
-		      return false
-		    end if
-		    if abs(k-h) = 1 or abs(k-h) = curshape.npts-1  then
-		      currentshape = curshape
-		      if curshape isa polygon then
-		        if  h = curshape.npts-1 and k = 0  then
-		          index.Append h
-		        elseif k = curshape.npts-1 and h = 0 then
-		          ori = - 1
-		          index.Append k
-		        elseif h > k  then
-		          ori = -1
-		          index.Append k
-		        else
-		          ori = 1
-		          index.Append h
-		        end if
-		      else
-		        // pour les segments
-		        if h > k  then
-		          ori = -1
-		        end if
-		        if curshape.tsfi.count > 0  then
-		          for j = 0 to curshape.tsfi.count-1
-		            if curshape.tsfi.element(j).ori = ori then
-		              return false
-		            end if
-		          next
-		        end if
-		        index.Append 0
-		      end if
-		      return true
-		    end if
-		  end if
-		  return false
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ExclureDoublons(s as shape, p as Basicpoint)
 		  dim j as integer
 		  
@@ -692,7 +655,8 @@ Inherits MultipleSelectOperation
 		7, 71, 72: Homothétie
 		8, 81, 82: Similitude
 		9: Etirement
-		10: Isométrie
+		10: Déplacement
+		11: Cisaillement
 		
 		Si le code est >= 7, il est possible que le support soit un quadrilatère
 		Si le code est 1 ou 6, le support peut être un polygone, il doit alors être accompagné d'un numéro de côté (propriété index de la tsf)

@@ -1302,7 +1302,7 @@ End
 		  dim lanw As LanguageWindow
 		  
 		  lanw = new LanguageWindow(self)
-		  'lanw.ShowModal
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -1311,7 +1311,8 @@ End
 	#tag Event
 		Sub Action()
 		  dw = new DictWindow
-		  dw.showmodal
+		  close
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

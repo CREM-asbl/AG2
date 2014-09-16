@@ -26,15 +26,12 @@ Begin Window InitWindow
    Visible         =   "True"
    Width           =   772
    Begin PopupMenu PopupMenu1
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -53,21 +50,18 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   400
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   135
       BehaviorIndex   =   0
    End
    Begin PushButton PushButton1
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -89,9 +83,6 @@ Begin Window InitWindow
       BehaviorIndex   =   1
    End
    Begin EditField User
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AcceptTabs      =   "False"
       Alignment       =   1
       AutoDeactivate  =   "True"
@@ -101,7 +92,7 @@ Begin Window InitWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   30
       HelpTag         =   ""
@@ -135,16 +126,13 @@ Begin Window InitWindow
       BehaviorIndex   =   2
    End
    Begin PushButton PushButton2
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "False"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -161,21 +149,18 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   336
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   112
       BehaviorIndex   =   3
    End
    Begin PushButton PushButton3
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   "False"
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -192,21 +177,18 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   368
       Underline       =   "False"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   69
       BehaviorIndex   =   4
    End
    Begin PushButton PushButton4
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   "True"
       Cancel          =   ""
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -223,20 +205,17 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   454
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   108
       BehaviorIndex   =   5
    End
    Begin PopupMenu ComboBox1
-      <               =   "<<<<<HEAD"
-      =               =   "====="
-      >               =   ">>>>>origin/Macros"
       AutoDeactivate  =   "True"
       Bold            =   ""
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -255,7 +234,7 @@ Begin Window InitWindow
       TextSize        =   0
       Top             =   428
       Underline       =   ""
-      Visible         =   "True"
+      Visible         =   True
       Width           =   180
       BehaviorIndex   =   6
    End
@@ -419,21 +398,29 @@ End
 #tag Events ComboBox1
 	#tag Event
 		Sub Open()
-		  dim i,n as integer
-		  dim nom,lg as string
-		  n=-1
+		  dim i as integer
+		  dim dicos(-1) as string
 		  
-		  for i=1 to app.AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".dct" then
-		      n = n+1
-		      lg = Left(nom,len(nom)-4)
-		      me.addRow(lg)
-		      if lg = config.Langue then
-		        me.ListIndex = n
-		      end if
+		  dicos = app.DicoDispo
+		  for i=0 to UBound(dicos)
+		    me.addRow(dicos(i))
+		    if dicos(i) = config.Langue then
+		      me.ListIndex = i
 		    end if
 		  next
+		  
+		  me.ListIndex = max(0,me.ListIndex)
+		  'for i=1 to app.AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".dct" then
+		  'n = n+1
+		  'lg = Left(nom,len(nom)-4)
+		  'me.addRow(lg)
+		  'if lg = config.Langue then
+		  'me.ListIndex = n
+		  'end if
+		  'end if
+		  'next
 		End Sub
 	#tag EndEvent
 	#tag Event

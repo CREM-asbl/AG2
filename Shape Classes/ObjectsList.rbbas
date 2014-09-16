@@ -62,13 +62,13 @@ Protected Class ObjectsList
 		    S1=GetShape(currentcontent.Plans(i))
 		    if not s1.deleted  then
 		      s1=s1.SelectShape(p)
-		      if s1 <> nil then
+		      if s1 <> nil and not s1.invalid and not s1.deleted then
 		        if s1 isa bipoint and not (s1 isa droite or s1 isa supphom)  then
 		          s1 = findpoint(p).element(0)
 		        end if
-		        if  s1 <> nil and not s1.invalid and not s1.deleted then
-		          Visible.addshape S1
-		        end if
+		        'if  s1 <> nil  then
+		        Visible.addshape S1
+		        'end if
 		      end if
 		    end if
 		  next

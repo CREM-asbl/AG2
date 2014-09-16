@@ -539,7 +539,7 @@ Protected Class Configuration
 		  for i = 0 to 6
 		    for j = 0 to nlibf(i)
 		      Libvisible(i,j) = false
-		    next 
+		    next
 		    nlibvis(i) = false
 		  next
 		  

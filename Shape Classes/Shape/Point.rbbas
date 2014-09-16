@@ -1024,7 +1024,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Point(p as Basicpoint)
-		  bpt = p
+		  bpt =  p
 		  
 		End Sub
 	#tag EndMethod

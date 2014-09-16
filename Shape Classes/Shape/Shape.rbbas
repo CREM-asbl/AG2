@@ -1635,13 +1635,9 @@ Implements StringProvider
 		  dim i As  Integer      // Utilisé pour les  mouvements
 		  
 		  if M <> nil and M.v1 <> nil then
-		    'UpdateMatrixDuplicatedshapes(M)
-		    
-		    for i = 0 to npts-1 'Ubound(Childs)
+		    for i = 0 to npts-1
 		      Childs(i).Transform(M)
-		      'childs(i).updatematrixduplicatedshapes(M)
 		    next
-		    
 		    EndMove
 		  end if
 		  

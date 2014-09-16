@@ -54,7 +54,7 @@ Inherits Canvas
 		          currenthighlightedshape.highlight
 		        end if
 		      end if
-		      if currenthighlightedshape <> nil then
+		      if currenthighlightedshape <> nil and not currentcontent.macrocreation then
 		        AfficherChoixContext
 		        ctxt = true    'Branche le "MouseWheel "
 		      else
@@ -139,7 +139,7 @@ Inherits Canvas
 		  
 		  ctxt = false
 		  
-		  if currentcontent.currentoperation isa readhisto then
+		  if currentcontent.currentoperation isa readhisto   then
 		    return false
 		  end if
 		  
@@ -161,11 +161,15 @@ Inherits Canvas
 		  currentcontent.currentoperation = nil
 		  wnd.refreshtitle
 		  
+		  if currentcontent.macrocreation then
+		    sctxt = nil
+		    return false
+		  end if
 		  
 		  sctxt = CurrentHighLightedshape
 		  currenthighlightedshape = nil
 		  
-		  if sctxt = nil then
+		  if sctxt = nil  then
 		    return false
 		  end if
 		  

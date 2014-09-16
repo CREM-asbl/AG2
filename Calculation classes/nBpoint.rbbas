@@ -397,6 +397,27 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function PseudoTrap() As Boolean
+		  dim u, v as basicPoint
+		  
+		  if Taille <> 4 then
+		    return false
+		  end if
+		  u = tab(1) - tab(0)
+		  v = tab(2) - tab(3)
+		  
+		  u = u.normer
+		  v = v.normer
+		  if u = nil or v = nil then
+		    return true
+		  else
+		    return abs(u.vect(v) ) < epsilon
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint

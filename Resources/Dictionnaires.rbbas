@@ -972,7 +972,7 @@ Protected Module Dictionnaires
 
 	#tag Method, Flags = &h0
 		Function pointon() As string
-		  return Dico.Value("pointon")
+		  return Dico.Value("PointOn")
 		End Function
 	#tag EndMethod
 
