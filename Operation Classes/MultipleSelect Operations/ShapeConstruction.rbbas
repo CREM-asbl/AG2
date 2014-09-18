@@ -379,16 +379,7 @@ Inherits MultipleSelectOperation
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then
-		      p = Point(CurrentAttractingshape)
-		      if currentshape isa arc and currentshape.indexconstructedpoint = 2 and ubound(p.parents) > -1 then
-		        if ubound(p.parents) = 0 then
-		          curshape.Identify1(p)     'puton p.parents(0) 7 août 2014
-		        else
-		          curshape.invalid = true
-		        end if
-		      else
-		        curShape.Identify1(p)
-		      end if
+		      curShape.Identify1(Point(CurrentAttractingshape))
 		    elseif  currentattractingshape.fam < 10 and currentshape.fam < 10  then
 		      if NextCurrentAttractingShape <> nil then
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig

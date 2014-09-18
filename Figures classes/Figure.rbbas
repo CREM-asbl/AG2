@@ -1684,6 +1684,9 @@ Implements StringProvider
 		    return
 		  end if
 		  
+		  
+		  
+		  
 		  Phase0choixpointsfixes
 		  Phase1choixpointsfixes
 		  Phase2choixpointsfixes
@@ -2178,7 +2181,7 @@ Implements StringProvider
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =point(somm.element(i))               'Un point qui a déjà bougé ne peut plus être pris comme point fixe
+		    p =point(somm.element(i))             
 		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
@@ -2264,6 +2267,9 @@ Implements StringProvider
 		  dim dist(-1) as double
 		  dim p as point
 		  dim ep, np as basicpoint
+		  
+		  
+		  
 		  //classement par rapport à la distance au point mobile ou à défaut au premier point modifié
 		  
 		  if somm.getposition(supfig.pointmobile) <> -1 then
@@ -2281,11 +2287,19 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  dist.sortwith(ptfx)
+		  if auto = 3 and shapes.element(0) isa arc then
+		    for i = 0 to  ubound(ptfx) 
+		      ptfx0.append ptfx(i)
+		    next
+		  else
+		    dist.sortwith(ptfx)
+		    for i =   ubound(ptfx) downto 0
+		      ptfx0.append ptfx(i)
+		    next
+		  end if
 		  
-		  for i = ubound(ptfx) downto 0
-		    ptfx0.append ptfx(i)
-		  next
+		  
+		  
 		End Sub
 	#tag EndMethod
 

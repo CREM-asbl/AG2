@@ -161,11 +161,7 @@ Inherits Circle
 		  
 		  n = getindexpoint(p)
 		  n1 = getindexpoint(p1)
-		  for i = 0 to 2
-		    if i <> n and i <> n1 then
-		      n2 = i
-		    end if
-		  next
+		  n2 = TroisiemeIndex(n,n1)
 		  p2 = Points(n2)
 		  
 		  ff = getsousfigure(fig)
@@ -241,8 +237,7 @@ Inherits Circle
 		    M = new rotationmatrix (nq0, arcangle)
 		    nq2 = M*nq1
 		  case 2
-		    nq2 = nq2.projection(nq0,getradius)
-		    points(2).moveto nq2
+		    nq1 = nq1.projection(nq0,nq0.distance(nq2))
 		  end select
 		  return new Affinitymatrix(eq0,eq1,eq2,nq0,nq1,nq2)
 		  
@@ -260,11 +255,7 @@ Inherits Circle
 		  
 		  n = getindexpoint(p)
 		  n1 = getindexpoint(p1)
-		  for i = 0 to 2
-		    if i <> n and i <> n1 then
-		      n2 = i
-		    end if
-		  next
+		  n2=TroisiemeIndex(n,n1)
 		  p2 = Points(n2)
 		  
 		  
@@ -302,12 +293,7 @@ Inherits Circle
 		    sh2 = p2.pointsur.element(0)
 		  end if
 		  
-		  for i = 0 to 2
-		    if i <> n1 and i <> n2 then
-		      n = i
-		    end if
-		  next
-		  
+		  n = TroisiemeIndex(n1,n2)
 		  p = points(n)
 		  
 		  ff = getsousfigure(fig)
@@ -348,8 +334,13 @@ Inherits Circle
 		  if p.modified then
 		    p.moveto ep
 		  end if
-		  return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
-		  
+		  if np <> nil then
+		    p.valider
+		    return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		  else
+		    p.invalider
+		    return new Matrix(1)
+		  end if
 		  
 		  
 		  
@@ -391,7 +382,7 @@ Inherits Circle
 		    np2 = np2.projection(np0, getradius)
 		  end if
 		  
-		  if p2.modified then
+		  if p2.modified and np2 <> nil then
 		    p2.moveto np2
 		  end if
 		  
@@ -404,7 +395,7 @@ Inherits Circle
 		    end if
 		    return M
 		  else
-		    return nil
+		    return new Matrix(1)
 		  end if
 		  
 		  
@@ -431,11 +422,7 @@ Inherits Circle
 		    sh2 = p2.pointsur.element(0)
 		  end if
 		  
-		  for i = 0 to 2
-		    if i <> n1 and i <> n2 then
-		      n = i
-		    end if
-		  next
+		  n=TroisiemeIndex(n1,n2)
 		  p = points(n)                                 //p est le point non modifié
 		  
 		  ff = getsousfigure(fig)
@@ -467,7 +454,13 @@ Inherits Circle
 		  if p.modified then
 		    p.moveto ep
 		  end if
-		  return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		  if np <> nil then
+		    p.valider
+		    return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		  else
+		    p.invalider
+		    return new Matrix(1)
+		  end if
 		  
 		  
 		End Function
@@ -499,26 +492,41 @@ Inherits Circle
 		    Bib = new BiBPoint(v, u+v)
 		    np = Bib.computefirstintersect(0,p.pointsur.element(0),p)
 		    if np <> nil then
+		      p.valider
 		      p.moveto np
 		      p.modified = true
 		      return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
 		    else
+		      p.invalider
 		      return new matrix(1)
 		    end if
 		  else
-		    if p1.pointsur.count = 0 and p2.pointsur.count = 0 then
-		      return new SimilarityMatrix(ep1,ep2,np1,np2)
-		    elseif p1.pointsur.count = 0 then
-		      Bib = new bibpoint(p.bpt, np2)
-		      p2.moveto Bib.ReporterLongueur(p.bpt,np1)
-		      p2.modified = true
-		      return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
+		    if p1.pointsur.count = 0 then
+		      select case p2.forme
+		      case 0
+		        return new SimilarityMatrix(ep1,ep2,np1,np2)
+		      case 1
+		        Bib = new bibpoint(p.bpt, np1)
+		        u =  BiB.ComputeFirstIntersect(1,p2.pointsur.element(0),p2)
+		        if u <> nil then
+		          p2.valider
+		          p2.moveto u
+		          p2.modified = true
+		          return new AffinityMatrix(ep1, ep2, ep, np1, p2.bpt, np)
+		        else
+		          p2.invalider
+		          return new Matrix(1)
+		        end if
+		      case 2
+		        np1 = np1.projection(p.bpt, np2.distance(p.bpt))
+		        p1.modified = true
+		        return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
+		      end select
 		    else
 		      Bib = new BibPoint(p.bpt,np1)
 		      p1.moveto Bib.ReporterLongueur(p.bpt,np2)
 		      p1.modified = true
 		      return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
-		      
 		    end if
 		  end if
 		  
@@ -651,6 +659,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
+		  updatecoord
 		  updateangles
 		  computeradius
 		  super.updateshape
@@ -825,6 +834,19 @@ Inherits Circle
 		  'CreateExtreAndCtrlPoints
 		  'end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function TroisiemeIndex(n1 as integer, n2 as integer) As integer
+		  dim i, n as integer
+		  
+		  for i = 0 to 2
+		    if i <> n1 and i <> n2 then
+		      n = i
+		    end if
+		  next
+		  return n
+		End Function
 	#tag EndMethod
 
 

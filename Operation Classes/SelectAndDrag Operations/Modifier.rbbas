@@ -318,8 +318,13 @@ Inherits SelectAndDragOperation
 		  
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
-		    if (sh isa arc) and (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and (not (p.pointsur.element(0) isa arc and (p.pointsur.element(0).getindex(sh.points(0)) = 0) ))  then
-		      return false
+		    if (sh isa arc) then
+		      if (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and (not (p.pointsur.element(0) isa arc and (p.pointsur.element(0).getindex(sh.points(0)) = 0) ))  then
+		        return false
+		      end if
+		      if sh.GetIndexPoint(p)=1 and sh.points(2).forme=2 then
+		        return false
+		      end if
 		    end if
 		    for j = 0 to ubound(p.parents)
 		      if i<> j and  (sh.constructedby <> nil and (sh.constructedby.oper = 3 or sh.constructedby.oper = 5) and sh.constructedby.shape = p.parents(j)) then

@@ -123,6 +123,10 @@ Inherits nBpoint
 		  
 		  n = BiBDroiteInterCercle(D, p(), bq, v)
 		  
+		  if n = 0 then
+		    return 0
+		  end if
+		  
 		  for i = n-1 downto 0
 		    if p(i).audela(first,second) then
 		      m = m+1
@@ -235,6 +239,10 @@ Inherits nBpoint
 		    case 2
 		      n = Bib.BiBSegmentInterCercle(self,q(), bq, v)
 		    end select
+		    if n = 0 then
+		      q(0) = nil
+		      q(1) = nil
+		    end if
 		  end if
 		  
 		  if S isa Circle then
@@ -276,8 +284,10 @@ Inherits nBpoint
 		    q(0)=q(1)
 		  end if
 		  
-		  if ubound(q) > -1 then
+		  if n>0 and ubound(q) > -1 then
 		    return q(0)
+		  else
+		    return nil
 		  end if
 		  
 		  
