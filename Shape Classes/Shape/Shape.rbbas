@@ -826,9 +826,10 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function Paste(ol as objectslist, p as BasicPoint, s as shape) As shape
-		  // Paste est utilisé pour les Copier-coller, duplicate, image par translation en vue de créer des figures-images. Celles-ci devront être insérées dans la liste des objets
-		  //du currentcontent. Cela se fait lors du passage par endconstruction, qui ne doit être réalisé qu'une fois !
-		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).  Donc à ne pas insérer dans les routines de création des copies.
+		  // Paste est utilisé pour les Copier-coller, duplicate, image par translation en vue de créer des figures-images. Celles-ci devront être insérées dans la liste 
+		  //des objets du currentcontent. Cela se fait lors du passage par endconstruction, qui ne doit être réalisé qu'une fois !
+		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).  
+		  //Donc à ne pas insérer dans les routines de création des copies.
 		End Function
 	#tag EndMethod
 
@@ -1131,6 +1132,7 @@ Implements StringProvider
 		  forme = s.forme
 		  auto = s.auto
 		  labs = new Lablist
+		  InitConstruction
 		  if s isa cube then
 		    n = 11
 		  elseif s isa polygon then
@@ -1138,11 +1140,9 @@ Implements StringProvider
 		  else
 		    n = -1
 		  end if
-		  redim colcotes(n)
 		  for i = 0 to n
 		    colcotes(i) = s.colcotes(i)
 		  next
-		  
 		  border = s.border
 		  borderwidth = s.borderwidth
 		  bordercolor = s.bordercolor
@@ -1150,7 +1150,7 @@ Implements StringProvider
 		  std = s.std
 		  ori = s.ori
 		  hidden = s.hidden
-		  InitConstruction
+		  
 		  for i = 0 to npts-1
 		    points(i).borderwidth = s.points(i).borderwidth
 		    Points(i).moveto (s.Points(i).bpt)

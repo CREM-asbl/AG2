@@ -544,11 +544,7 @@ Inherits Circle
 		  
 		  return  new Arc(Obl,self,p)
 		  
-		  'for j = 3 to Ubound(childs)
-		  'a = childs(j)
-		  'b = Point(a.Paste(Obl,p,s))
-		  'next
-		  'return s
+		  
 		End Function
 	#tag EndMethod
 

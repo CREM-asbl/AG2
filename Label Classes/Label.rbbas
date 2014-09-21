@@ -450,8 +450,12 @@ Protected Class Label
 		  
 		  s1 = str(k)
 		  m = instr(s1,".")
-		  if m = 0 then
-		    return s1
+		  if m = 0  then
+		    if b then
+		      return "-"+ s1
+		    else
+		      return s1
+		    end if
 		  elseif m = 1 then
 		    s2= str(0)
 		  else
