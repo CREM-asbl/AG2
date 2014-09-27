@@ -32,7 +32,7 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim s as shape
 		  dim i,j, n as integer
-		  dim GC as Point
+		  'dim GC as Point
 		  dim t as boolean
 		  
 		  n = tempshape.count-1
@@ -54,9 +54,9 @@ Inherits SelectOperation
 		          s.Points(0).show
 		        else
 		          CurrentContent.Thefigs.RemoveFigure s.fig
-		          GC = new Point(objects, s.getgravitycenter)
-		          GC.setconstructedby(s,0)
-		          GC.endconstruction
+		          currentshape = new Point(objects, s.getgravitycenter)
+		          currentshape.setconstructedby(s,0)
+		          currentshape.endconstruction
 		        end if
 		      end if
 		    end if

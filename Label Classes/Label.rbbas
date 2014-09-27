@@ -450,19 +450,16 @@ Protected Class Label
 		  
 		  s1 = str(k)
 		  m = instr(s1,".")
-		  if m = 0  then
-		    if b then
-		      return "-"+ s1
-		    else
-		      return s1
-		    end if
-		  elseif m = 1 then
+		  select case m
+		  case 0
+		    s2 = s1
+		  case  1 
 		    s2= str(0)
 		  else
 		    s2 = s1.left(m-1)
 		    s3 = s1. right(len(s1)-m)
 		    s3=s3.left(p)
-		  end if
+		  end select
 		  if b then
 		    s2 = "-"+s2
 		  end if

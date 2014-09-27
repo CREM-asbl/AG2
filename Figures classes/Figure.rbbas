@@ -2181,7 +2181,7 @@ Implements StringProvider
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =point(somm.element(i))             
+		    p =point(somm.element(i))
 		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
@@ -2288,7 +2288,7 @@ Implements StringProvider
 		  next
 		  
 		  if auto = 3 and shapes.element(0) isa arc then
-		    for i = 0 to  ubound(ptfx) 
+		    for i = 0 to  ubound(ptfx)
 		      ptfx0.append ptfx(i)
 		    next
 		  else
@@ -3578,17 +3578,20 @@ Implements StringProvider
 		  
 		  if shapes.element(0) isa arc then
 		    arc(shapes.element(0)).Updateangles
-		    'arc(shapes.element(0)).UpdatePtsConsted
-		  end if 'else
+		  end if 
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.element(i))
-		    if somm.getposition(p)=-1 then
-		      p.transform(M)
+		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 then
+		      p.repositioncstedpoint
+		    else
+		      if somm.getposition(p)=-1 then
+		        p.transform(M)
+		      end if
 		    end if
-		    ptsconsted.element(i).modified = true
-		    ptsconsted.element(i).updateshape
+		    p.modified = true
+		    p.updateshape
 		  next
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 

@@ -826,9 +826,9 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function Paste(ol as objectslist, p as BasicPoint, s as shape) As shape
-		  // Paste est utilisé pour les Copier-coller, duplicate, image par translation en vue de créer des figures-images. Celles-ci devront être insérées dans la liste 
+		  // Paste est utilisé pour les Copier-coller, duplicate, image par translation en vue de créer des figures-images. Celles-ci devront être insérées dans la liste
 		  //des objets du currentcontent. Cela se fait lors du passage par endconstruction, qui ne doit être réalisé qu'une fois !
-		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).  
+		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).
 		  //Donc à ne pas insérer dans les routines de création des copies.
 		End Function
 	#tag EndMethod
@@ -3057,13 +3057,13 @@ Implements StringProvider
 		    constructedby = nil
 		  end if
 		  
-		  'if macconstructedby <> nil then
-		  'macinfo = macConstructedby
-		  'for i = 0 to ubound(macinfo.realinit)
-		  's = currentcontent.theobjects.getshape(macinfo.realinit(i))
-		  's.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
-		  'next
-		  'end if
+		  if macconstructedby <> nil then
+		    macinfo = macConstructedby
+		    for i = 0 to ubound(macinfo.realinit)
+		      s = currentcontent.theobjects.getshape(macinfo.realinit(i))
+		      s.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
+		    next
+		  end if
 		  
 		  
 		  if tsfi.count > 0 then
