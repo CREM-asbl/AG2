@@ -148,387 +148,24 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier10fixe(p as point, p1 as point) As Matrix
-		  // Routine qui modifie l'arc  dans le cas où tous les points sont libres. Si possible, on laisse fixe le point p
-		  // Trois cas possibles selon le point modifié
-		  
-		  dim  p2 As  point
-		  dim ep, np, ep1, np1, ep2, np2, u, v As Basicpoint
-		  dim M as Matrix
-		  dim ff as figure
-		  dim i, n1, n2, n as integer
-		  dim alpha as double
-		  
-		  n = getindexpoint(p)
-		  n1 = getindexpoint(p1)
-		  n2 = TroisiemeIndex(n,n1)
-		  p2 = Points(n2)
-		  
-		  ff = getsousfigure(fig)
-		  ff.getoldnewpos(p,ep,np)
-		  ff.getoldnewpos(p1,ep1,np1)
-		  ff.getoldnewpos(p2,ep2,np2)
-		  
-		  
-		  
-		  select case n
-		  case 0 // p est le centre
-		    select case n1
-		    case 1
-		      M = new rotationmatrix (np, arcangle)
-		    case 2
-		      alpha = amplitude(np1,np,np2)
-		      M = new rotationmatrix (np, alpha)
-		    end select
-		    np2 = M*np1
-		  case 1
-		    select case n1
-		    case 0
-		      M = new rotationmatrix (np1, arcangle)
-		      np2 = M*np
-		    case 2
-		      u = np-np1
-		      u = u.vecnorperp
-		      v = (np+np1)/2
-		      np2 = np2.projection(v, v+u)
-		    end select
-		  case 2
-		    select case n1
-		    case 0
-		      M = new rotationmatrix (np1, -arcangle)
-		      np2 = M*np
-		    case 1
-		      u = np-np1
-		      u = u.vecnorperp
-		      v = (np+np1)/2
-		      np2 = np2.projection(v, v+u)
-		    end select
-		  end select
-		  return new Affinitymatrix(ep,ep1,ep2,np,np1,np2)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier12fixe(p as point, p1 as point) As Matrix
-		  // Routine qui modifie l'arc  dans le cas où le point p est le candidat point fixe, mais ce n'est pas obligatoire, p1 a déjà été modifié et  p2 s'adapte
-		  // Six cas possibles
-		  
-		  dim  q0, q1, q2 As  point
-		  dim eq0, nq0, eq1, nq1, eq2, nq2 As Basicpoint
-		  dim M as Matrix
-		  dim ff as figure
-		  dim  n1, n as integer
-		  
-		  
-		  n = getindexpoint(p)
-		  n1 = getindexpoint(p1)
-		  
-		  q0 = points(0)
-		  q1 = points(1)
-		  q2 = points(2)
-		  
-		  ff = getsousfigure(fig)
-		  ff.getoldnewpos(q0,eq0,nq0)
-		  ff.getoldnewpos(q1,eq1,nq1)
-		  ff.getoldnewpos(q2,eq2,nq2)
-		  
-		  select case n1
-		  case 0 ,1
-		    M = new rotationmatrix (nq0, arcangle)
-		    nq2 = M*nq1
-		  case 2
-		    nq1 = nq1.projection(nq0,nq0.distance(nq2))
-		  end select
-		  return new Affinitymatrix(eq0,eq1,eq2,nq0,nq1,nq2)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier1fixe(p as point, p1 as point) As Matrix
-		  // Routine qui modifie l'arc  dans le cas où le point p est laissé fixe, p1 est le point qui a été modifié, (il peut encore l'être)   p2 doit s'adapter
-		  
-		  
-		  dim  p2 As  point
-		  dim M as Matrix
-		  dim i, n1, n2, n as integer
-		  
-		  n = getindexpoint(p)
-		  n1 = getindexpoint(p1)
-		  n2=TroisiemeIndex(n,n1)
-		  p2 = Points(n2)
-		  
-		  
-		  select case p.liberte
-		  case 0,1
-		    return Modifier10fixe(p,p1)  //p  restera fixe, p1 sera modifié, p2 s'adapte
-		  case 2
-		    return Modifier12fixe(p,p1)  // p est libre, p1 sera modifié, p et p2 s'adaptent éventuellement
-		  end select
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier2fixes(p1 as point, p2 as point) As Matrix
-		  // Routine qui modifie l'arc  dans le cas où le point p est seul à pouvoir être déplacé (pas arbitrairement)
-		  // Trois cas possibles selon l'index de p
-		  
-		  dim k, i, n, n1, n2 as integer
-		  dim ep, np, ep1, np1, ep2, np2, u, v as BasicPoint
-		  dim ff as figure
-		  dim Bib, Bib2 As  BiBPoint
-		  dim sh1, sh2 As shape
-		  dim p As point
-		  
-		  
-		  
-		  n1 = getindexpoint(p1)
-		  if p1.pointsur.count = 1 then
-		    sh1 = p1.pointsur.element(0)
-		  end if
-		  n2 = getindexpoint(p2)
-		  if p2.pointsur.count = 1 then
-		    sh2 = p2.pointsur.element(0)
-		  end if
-		  
-		  n = TroisiemeIndex(n1,n2)
-		  p = points(n)
-		  
-		  ff = getsousfigure(fig)
-		  
-		  ff.getoldnewpos(p,ep,np)
-		  ff.getoldnewpos(p1,ep1,np1)
-		  ff.getoldnewpos(p2,ep2,np2)
-		  
-		  select case n
-		  case 0
-		    u = np1-np2
-		    u = u.VecNorPerp
-		    v = (np1+np2)/2
-		    if p.pointsur.count = 0 then
-		      np = np.projection(v,v+u)
-		    else
-		      Bib = new BiBPoint(v, u+v)
-		      np = Bib.computefirstintersect(0,p.pointsur.element(0),p)
-		    end if
-		  case 1
-		    if p.pointsur.count = 0 then
-		      np = np.projection(points(0).bpt, np2.distance(np1))
-		    else
-		      u = points(2).bpt
-		      Bib = new BiBPoint(points(0).bpt, u)
-		      np = Bib.computefirstintersect(1,p.pointsur.element(0),p)
-		    end if
-		  case 2
-		    if p.pointsur.count = 0 then
-		      np = np.projection(points(0).bpt,np1.distance(np2))
-		    else
-		      u = points(1).bpt
-		      Bib = new BiBPoint(points(0).bpt,u)
-		      np = Bib.computefirstintersect(1,p.pointsur.element(0),p)
-		    end if
-		  end select
-		  
-		  if p.modified then
-		    p.moveto ep
-		  end if
-		  if np <> nil then
-		    p.valider
-		    return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
-		  else
-		    p.invalider
-		    return new Matrix(1)
-		  end if
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Modifier3() As Matrix
+		  dim n as integer
 		  
-		  dim  p0, p1, p2 As  point
-		  dim ep0, np0, ep1, np1, ep2, np2, u, v As Basicpoint
-		  dim ff as figure
-		  dim i, n1, n2, n as integer
-		  dim M as Matrix
-		  dim Bib as bibpoint
-		  dim sh as shape
-		  dim t as boolean
-		  
-		  p0 = Points(0)
-		  p1 =Points(1)
-		  p2 = points(2)
-		  
-		  ff = getsousfigure(fig)
-		  ff.getoldnewpos(p0,ep0,np0)
-		  ff.getoldnewpos(p1,ep1,np1)
-		  ff.getoldnewpos(p2,ep2,np2)
-		  
-		  
-		  if constructedby <> nil and (constructedby.oper = 6 or constructedby.oper = 3)  then
-		    return new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)
-		  end if
-		  
-		  if p2.pointsur.count = 1 then
-		    't = ff.replacerpoint(p2)
-		    sh = p2.pointsur.element(0)
-		    Bib = new BiBPoint(np0, np1)
-		    np2 = Bib.computefirstintersect(1,sh,p2)
-		  elseif  p2 = ff.supfig.pointmobile then
-		    np2 = np2.projection(np0, getradius)
-		  end if
-		  
-		  if p2.modified and np2 <> nil then
-		    p2.moveto np2
-		  end if
-		  
-		  
-		  if np2 <> nil then
-		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
-		      M = new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
-		    else
-		      M = new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles
-		    end if
-		    return M
-		  else
-		    return new Matrix(1)
-		  end if
-		  
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modify2(p1 as point, p2 as point) As Matrix
-		  dim k, i, n, n1, n2 as integer
-		  dim ep, np, ep1, np1, ep2, np2, u, v as BasicPoint
-		  dim ff as figure
-		  dim Bib, Bib2 As  BiBPoint
-		  dim sh1, sh2 As shape
-		  dim p As point
-		  
-		  n1 = getindexpoint(p1)
-		  if p1.pointsur.count = 1 then
-		    sh1 = p1.pointsur.element(0)
-		  end if
-		  n2 = getindexpoint(p2)
-		  if p2.pointsur.count = 1 then
-		    sh2 = p2.pointsur.element(0)
-		  end if
-		  
-		  n=TroisiemeIndex(n1,n2)
-		  p = points(n)                                 //p est le point non modifié
-		  
-		  ff = getsousfigure(fig)
-		  ff.getoldnewpos(p,ep,np)
-		  ff.getoldnewpos(p1,ep1,np1)
-		  ff.getoldnewpos(p2,ep2,np2)
+		  epnp
+		  n = ff.NbSommSur
 		  
 		  select case n
 		  case 0
-		    return Modify20(p1,p2)
+		    return Modifier30
 		  case 1
-		    if p.pointsur.count = 0 then
-		      np = np.projection(points(0).bpt, np2.distance(np1))
-		    else
-		      u = points(2).bpt
-		      Bib = new BiBPoint(points(0).bpt, u)
-		      np = Bib.computefirstintersect(1,p.pointsur.element(0),p)
-		    end if
+		    return Modifier31(ff.listsommsur(0))
 		  case 2
-		    if p.pointsur.count = 0 then
-		      np = np.projection(points(0).bpt,np1.distance(np2))
-		    else
-		      u = points(1).bpt
-		      Bib = new BiBPoint(points(0).bpt,u)
-		      np = Bib.computefirstintersect(1,p.pointsur.element(0),p)
-		    end if
+		    return modifier32(ff.listsommsur(0),ff.listsommsur(1))
+		  case 3
+		    return modifier33
 		  end select
 		  
-		  if p.modified then
-		    p.moveto ep
-		  end if
-		  if np <> nil then
-		    p.valider
-		    return new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
-		  else
-		    p.invalider
-		    return new Matrix(1)
-		  end if
 		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modify20(p1 as point, p2 as point) As Matrix
-		  // Le point non modifié est le point 0.
-		  // Il peut être sur ou non
-		  // S'il est sur, on essaye de le modifier.
-		  //Sinon, on essaye de remodifier un des deux autres points
-		  
-		  dim ep, np, ep1, np1, ep2, np2, u, v as BasicPoint
-		  dim ff as figure
-		  dim Bib As  BiBPoint
-		  dim p As point
-		  
-		  p = points(0)
-		  
-		  ff = getsousfigure(fig)
-		  ff.getoldnewpos(p,ep,np)
-		  ff.getoldnewpos(p1,ep1,np1)
-		  ff.getoldnewpos(p2,ep2,np2)
-		  
-		  if p.pointsur.count = 1 then
-		    u = np1-np2
-		    u = u.VecNorPerp
-		    v = (np1+np2)/2
-		    Bib = new BiBPoint(v, u+v)
-		    np = Bib.computefirstintersect(0,p.pointsur.element(0),p)
-		    if np <> nil then
-		      p.valider
-		      p.moveto np
-		      p.modified = true
-		      return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
-		    else
-		      p.invalider
-		      return new matrix(1)
-		    end if
-		  else
-		    if p1.pointsur.count = 0 then
-		      select case p2.forme
-		      case 0
-		        return new SimilarityMatrix(ep1,ep2,np1,np2)
-		      case 1
-		        Bib = new bibpoint(p.bpt, np1)
-		        u =  BiB.ComputeFirstIntersect(1,p2.pointsur.element(0),p2)
-		        if u <> nil then
-		          p2.valider
-		          p2.moveto u
-		          p2.modified = true
-		          return new AffinityMatrix(ep1, ep2, ep, np1, p2.bpt, np)
-		        else
-		          p2.invalider
-		          return new Matrix(1)
-		        end if
-		      case 2
-		        np1 = np1.projection(p.bpt, np2.distance(p.bpt))
-		        p1.modified = true
-		        return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
-		      end select
-		    else
-		      Bib = new BibPoint(p.bpt,np1)
-		      p1.moveto Bib.ReporterLongueur(p.bpt,np2)
-		      p1.modified = true
-		      return new AffinityMatrix(ep1, ep2, ep, np1, np2, np)
-		    end if
-		  end if
 		  
 		  
 		  
@@ -845,6 +482,251 @@ Inherits Circle
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Modifier1(n as integer) As Matrix
+		  dim  m as integer
+		  
+		  epnp
+		  
+		  m = ff.NbSommsur(n)
+		  
+		  
+		  select case m
+		  case 0
+		    return Modifier10(n)
+		  case 1
+		    return Modifier11(n)
+		  case 2
+		    return Modifier12(n)
+		  end select
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier10(n as integer) As Matrix
+		  'Le point n° n est le seul point modifié. Il y a 0 points "sur"
+		  dim  r as double
+		  
+		  
+		  
+		  
+		  
+		  select case n
+		  case 0, 1
+		    return new SimilarityMatrix(ep0,ep1,np0,np1)
+		  case 2
+		    r = getradius
+		    points(2).moveto np2.projection(np0,r)
+		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		  end select
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier11(n as integer) As Matrix
+		  'Le point n° n est le seul point modifié. Il y a 1 point "sur" différent n° n. Ce point n'a pas été modifié, plus précisément il a éte "replacé".
+		  'La méthode succède à Modifier2.
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier12(n as integer) As Matrix
+		  'Le point n° n est le seul point modifié. Il y a deux points "sur" différent n° n. Ces points ont éte "replacés".
+		  'La méthode succède à Modifier3.
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier2(n1 as integer, n2 as integer) As Matrix
+		  dim n0 as integer
+		  dim r as double
+		  
+		  epnp
+		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
+		  
+		  select case n0
+		  case 0   'On rétablit la figure en déplaçant le centre de l'arc points(0)
+		    if points(0).forme  <> 1 then
+		      return new SimilarityMatrix(ep1,ep2,np1,np2)
+		    else 'si points(0) est un point sur, et n'est pas modifié, c'est qu'il a été "replacé" ce cas provient de Modifier3
+		    end if
+		  case 1 'On rétablit la figure en déplaçant l'origine  de l'arc points(1)
+		    if points(1).forme <> 1 then
+		      return new SimilarityMatrix(ep0,ep2,np0,np2)
+		    else 'même remarque que ci-dessus
+		    end if
+		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
+		    if points(2).forme <> 1 then
+		      return new SimilarityMatrix(ep0,ep1,np0,np1)
+		    else 'même remarque que ci-dessus
+		    end if
+		  end select
+		  
+		  return new Matrix(1)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier31(n as integer) As Matrix
+		  // Trois sommets modifiés Un seul est un point "sur". C'est le sommet de n° n.
+		  dim k, i,  n1, n2 as integer
+		  dim ep, np, ep1, np1, ep2, np2, u, v as BasicPoint
+		  
+		  dim Bib, Bib2 As  BiBPoint
+		  dim sh As shape
+		  dim p,p1,p2 As point
+		  
+		  p = points(n)
+		  p1 = points((n+1) mod 3)
+		  p2 = points((n+2) mod 3)
+		  sh = p.pointsur.element(0)
+		  
+		  select case n
+		  case 0
+		    u = np1-np2
+		    u = u.VecNorPerp
+		    v = (np1+np2)/2
+		    Bib = new BiBPoint(v, u+v)
+		    np0 = Bib.computefirstintersect(0,sh,p)
+		    points(0).moveto np0
+		  case 1
+		    u = points(2).bpt
+		    Bib = new BiBPoint(np0, u)
+		    np1 = Bib.computefirstintersect(1,sh,p)
+		    points(1).moveto np1
+		  case 2
+		    u = points(1).bpt
+		    Bib = new BiBPoint(np0,u)
+		    np2 = Bib.computefirstintersect(1,sh,p)
+		    points(2).moveto np2
+		  end select
+		  
+		  
+		  
+		  if points(n).bpt <> nil then
+		    points(n).valider
+		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		  else
+		    points(n).invalider
+		    return new Matrix(1)
+		  end if
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier30() As Matrix
+		  //Trois sommets modifiés, aucun n'est un point "sur"
+		  
+		  if abs(np0.distance(np1) - np0.distance(np2)) < epsilon then
+		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
+		      return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
+		    else
+		      return  new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles à cause des points alignés
+		    end if
+		  else
+		    return new Matrix(1)
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier32(n as integer, m as integer) As Matrix
+		  // Trois sommets modifiés Deux sont "sur". Ce sont les sommets de n° n0 et n1.
+		  dim k as integer
+		  dim p, p0, p1, p2 as point
+		  dim shn, shm as shape
+		  dim Bib as BiBPoint
+		  
+		  
+		  shn = points(n).pointsur.element(0)
+		  shm = points(m).pointsur.element(0)
+		  k = TroisiemeIndex(n,m)  'Ce troisième sommet n'est pas "sur"
+		  
+		  select case k
+		  case 0                  'on conserve points(1) et on adapte points(2)
+		    Bib = new BiBPoint(np0,np1)
+		    if n = 1 then   'alors m = 2
+		      np2  = Bib.computefirstintersect(1,shm,points(2))
+		    else                  'n = 2, m = 1
+		      np2  = Bib.computefirstintersect(1,shn,points(2))
+		    end if
+		    points(2).moveto np2
+		  case 1
+		    Bib = new BiBPoint(np0,np1)
+		    if n = 0 then   'alors m = 2
+		      np2  = Bib.computefirstintersect(1,shm,points(2))
+		    else                  'n = 2, m = 0
+		      np2  = Bib.computefirstintersect(1,shn,points(2))
+		    end if
+		    points(2).moveto np2
+		  case 2
+		    Bib = new BiBPoint(np0,np2)
+		    if n = 1 then   'alors m = 0
+		      np1  = Bib.computefirstintersect(1,shn,points(1))
+		    else                  'n = 0, m = 1
+		      np1  = Bib.computefirstintersect(1,shm,points(1))
+		    end if
+		    points(1).moveto np1
+		  end select
+		  
+		  if k = 2 then
+		    p = points(1)
+		  else
+		    p = points(2)
+		  end if
+		  if p.bpt  <> nil then
+		    p.valider
+		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		  else
+		    p.invalider
+		    return new Matrix(1)
+		  end if
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub epnp()
+		  
+		  ff = getsousfigure(fig)
+		  ff.getoldnewpos(points(0),ep0,np0)
+		  ff.getoldnewpos(points(1),ep1,np1)
+		  ff.getoldnewpos(points(2),ep2,np2)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier33() As Matrix
+		  dim M as Matrix
+		  
+		  M = new SimilarityMatrix(points(1), points(2),ep0,np0)
+		  if M <> nil and M.v1 <> nil then
+		    np1 = M*ep1
+		    points(1).moveto np1
+		    np2 = M*ep2
+		    points(2).moveto np2
+		    
+		    if np1 <> nil and np2 <> nil then
+		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		    else
+		      return new Matrix(1)
+		    end if
+		  else
+		    return new Matrix(1)
+		  end if
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		startangle As double
@@ -852,6 +734,34 @@ Inherits Circle
 
 	#tag Property, Flags = &h0
 		endangle As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ep0 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ep1 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ep2 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np0 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np1 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np2 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ff As Figure
 	#tag EndProperty
 
 

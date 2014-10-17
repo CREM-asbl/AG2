@@ -1376,6 +1376,26 @@ Implements StringProvider
 		    next
 		  end if
 		  
+		  for i = 0 to shapes.count-1
+		    if shapes.element(i).duplicateorcut then
+		      EL1 = XMLElement(EL.Firstchild)
+		      EL2 = XMLElement(EL1.Child(i))
+		      M = new Matrix(EL2)
+		      shapes.element(i).constructedby.data(0) = M
+		      if not shapes.element(i) isa point then
+		        for j = 0 to shapes.element(i).npts-1
+		          shapes.element(i).childs(j).constructedby.data(0) = M
+		        next
+		      end if
+		    end if
+		    if shapes.element(i) isa circle or shapes.element(i) isa Lacet then
+		      shapes.element(i).CreateExtreAndCtrlPoints
+		    end if
+		    shapes.element(i).updatecoord
+		    shapes.element(i).updateskull
+		    shapes.element(i).updatelab
+		  next
+		  
 		  List = EL.XQL("PtsSur")
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
@@ -1399,24 +1419,7 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  for i = 0 to shapes.count-1
-		    if shapes.element(i).duplicateorcut then
-		      EL1 = XMLElement(EL.Firstchild)
-		      EL2 = XMLElement(EL1.Child(i))
-		      M = new Matrix(EL2)
-		      shapes.element(i).constructedby.data(0) = M
-		      if not shapes.element(i) isa point then
-		        for j = 0 to shapes.element(i).npts-1
-		          shapes.element(i).childs(j).constructedby.data(0) = M
-		        next
-		      end if
-		    end if
-		    if shapes.element(i) isa circle or shapes.element(i) isa Lacet then
-		      shapes.element(i).CreateExtreAndCtrlPoints
-		    end if
-		    shapes.element(i).updateskull
-		    shapes.element(i).updatelab
-		  next
+		  
 		  
 		  Restoretsf
 		End Sub
@@ -1430,7 +1433,7 @@ Implements StringProvider
 		  dim t as boolean
 		  dim d, d1 as double
 		  
-		  if shapes.element(0) = nil or  shapes.element(0) isa arc then
+		  if shapes.element(0) = nil then 'or  shapes.element(0) isa arc then
 		    return true
 		  end if
 		  
@@ -2473,16 +2476,19 @@ Implements StringProvider
 		  
 		  
 		  n = ListPtsModifs(0)
+		  s = shapes.element(0)
+		  
+		  if s isa arc then
+		    return arc(s).Modifier1(n)
+		  end if
+		  
 		  p = Point(somm.element(n))
 		  getoldnewpos(p, ep, np)
-		  
 		  choixpointsfixes
 		  
 		  if  NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  
-		  s = shapes.element(0)
 		  
 		  select case NbSommSur(n)
 		  case 0
@@ -2523,16 +2529,18 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
-		  dim p, q, pmob as point
+		  dim p, q as point
 		  dim n1, n2 as integer
 		  dim s as shape
 		  dim i as integer
 		  
-		  pmob = supfig.pointmobile
-		  s = shapes.element(0)
-		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
+		  s = shapes.element(0)
+		  if s isa arc then
+		    return arc(s).Modifier2(n1,n2)
+		  end if
+		  
 		  p = Point(somm.element(n1))
 		  q = Point(somm.element(n2))
 		  
@@ -3578,7 +3586,7 @@ Implements StringProvider
 		  
 		  if shapes.element(0) isa arc then
 		    arc(shapes.element(0)).Updateangles
-		  end if 
+		  end if
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.element(i))
 		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 then

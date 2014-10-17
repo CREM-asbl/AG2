@@ -453,7 +453,7 @@ Protected Class Label
 		  select case m
 		  case 0
 		    s2 = s1
-		  case  1 
+		  case  1
 		    s2= str(0)
 		  else
 		    s2 = s1.left(m-1)

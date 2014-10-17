@@ -210,13 +210,6 @@ Implements StringProvider
 		        cs.border = 100
 		      end if
 		    end if
-		    'if n = 0 then
-		    'sk.update(wnd.mycanvas1.transform(p))
-		    'else
-		    'for j = n to npts-1
-		    'Updateskull(j,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		    'next
-		    'end if
 		  end if
 		  
 		  
@@ -887,7 +880,12 @@ Implements StringProvider
 		    bp = Point(self).bpt
 		  end if
 		  
-		  if self isa point and other isa droite then
+		  if self isa point and other isa point then
+		    dist = bp.distance(point(other).bpt)
+		    if dist <= magdist then
+		      return true
+		    end if
+		  elseif self isa point and other isa droite then
 		    return Droite(other).PInshape(bp)
 		  elseif  self isa point and other isa bande then
 		    return not (Bande(other).PointOnSide(bp) = -1)

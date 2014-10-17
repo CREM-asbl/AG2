@@ -44,12 +44,12 @@ Protected Class WindContent
 		Sub CreateFigs()
 		  dim Temp as XMLElement
 		  
-		  'If not app.macrocreation then
+		  
 		  FigsCreated = OpList.CreateElement("Created_Figures")
 		  FigsDeleted = OpList.CreateElement("Deleted_Figures")
 		  FigsMoved = OpList.CreateElement("MovedFigures")
 		  FigsModified = OpList.CreateElement("ModifiedFigures")
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 

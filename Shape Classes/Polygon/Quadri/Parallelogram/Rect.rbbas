@@ -127,7 +127,7 @@ Inherits Parallelogram
 		  ff.getoldnewpos(p2,ep2,np2)
 		  ff.getoldnewpos(p3,ep3,np3)
 		  if p2.pointsur.count = 1 and not p2.pointsur.element(0) isa circle  then
-		    s =  p2.pointsur.element(0) 
+		    s =  p2.pointsur.element(0)
 		    dr = s.getside(p2.numside(0))
 		    np2 = p1.bpt.projection(dr.firstp, dr.secondp)
 		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)

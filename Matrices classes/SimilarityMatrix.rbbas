@@ -113,9 +113,6 @@ Inherits AffinityMatrix
 		          M = new SimilarityMatrix(ep, bp2, np,q)
 		          
 		          if M.v1 <> nil then
-		            
-		            'q1 = M*bp1
-		            
 		            if t then
 		              v1 = M.v1
 		              v2 = M.v2

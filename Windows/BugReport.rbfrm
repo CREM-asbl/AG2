@@ -28,7 +28,7 @@ Begin Window BugReport
    Begin ProgressBar TotalBar
       AutoDeactivate  =   "True"
       ControlOrder    =   0
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -41,9 +41,11 @@ Begin Window BugReport
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   133
       Value           =   0
-      Visible         =   True
+      Visible         =   "True"
       Width           =   268
       BehaviorIndex   =   0
    End
@@ -54,7 +56,7 @@ Begin Window BugReport
       Caption         =   "Cancel"
       ControlOrder    =   1
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -71,7 +73,7 @@ Begin Window BugReport
       TextSize        =   0
       Top             =   175
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   1
    End
@@ -81,7 +83,7 @@ Begin Window BugReport
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -102,7 +104,7 @@ Begin Window BugReport
       TextSize        =   0
       Top             =   42
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   100
       BehaviorIndex   =   2
    End
@@ -112,7 +114,7 @@ Begin Window BugReport
       ControlOrder    =   3
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -133,14 +135,14 @@ Begin Window BugReport
       TextSize        =   0
       Top             =   74
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   100
       BehaviorIndex   =   3
    End
    Begin ProgressBar FirstBar
       AutoDeactivate  =   "True"
       ControlOrder    =   4
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -153,16 +155,18 @@ Begin Window BugReport
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   42
       Value           =   0
-      Visible         =   True
+      Visible         =   "True"
       Width           =   152
       BehaviorIndex   =   4
    End
    Begin ProgressBar SecondBar
       AutoDeactivate  =   "True"
       ControlOrder    =   5
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -175,9 +179,11 @@ Begin Window BugReport
       Maximum         =   100
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   74
       Value           =   0
-      Visible         =   True
+      Visible         =   "True"
       Width           =   152
       BehaviorIndex   =   5
    End
@@ -187,7 +193,7 @@ Begin Window BugReport
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -208,7 +214,7 @@ Begin Window BugReport
       TextSize        =   0
       Top             =   106
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   118
       BehaviorIndex   =   6
    End
@@ -216,14 +222,18 @@ Begin Window BugReport
       Address         =   ""
       ControlOrder    =   7
       dataport        =   12345
+      Height          =   32
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   6
       Port            =   1000
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   6
       transfert       =   0
+      Width           =   32
       BehaviorIndex   =   7
    End
    Begin StaticText Etat
@@ -232,7 +242,7 @@ Begin Window BugReport
       ControlOrder    =   8
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -253,7 +263,7 @@ Begin Window BugReport
       TextSize        =   0
       Top             =   197
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   300
       BehaviorIndex   =   8
    End

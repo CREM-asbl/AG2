@@ -224,7 +224,7 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  pointmobile = point(currentshape)
-		  
+		  currenthighlightedshape = pointmobile
 		  InitFigs
 		  figs.createstate("InitState",pointmobile)
 		  if gGetSpecialkey = 4  then

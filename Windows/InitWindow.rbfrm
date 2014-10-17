@@ -31,7 +31,7 @@ Begin Window InitWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -50,7 +50,7 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   400
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   135
       BehaviorIndex   =   0
    End
@@ -61,7 +61,7 @@ Begin Window InitWindow
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -92,7 +92,7 @@ Begin Window InitWindow
       ControlOrder    =   2
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   30
       HelpTag         =   ""
@@ -132,7 +132,7 @@ Begin Window InitWindow
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -149,7 +149,7 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   336
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   112
       BehaviorIndex   =   3
    End
@@ -160,7 +160,7 @@ Begin Window InitWindow
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -177,7 +177,7 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   368
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   4
    End
@@ -188,7 +188,7 @@ Begin Window InitWindow
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -205,7 +205,7 @@ Begin Window InitWindow
       TextSize        =   12
       Top             =   454
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   108
       BehaviorIndex   =   5
    End
@@ -215,7 +215,7 @@ Begin Window InitWindow
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -234,7 +234,7 @@ Begin Window InitWindow
       TextSize        =   0
       Top             =   428
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   180
       BehaviorIndex   =   6
    End

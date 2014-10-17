@@ -152,7 +152,7 @@ Inherits MultipleSelectOperation
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
 		    ShowAttraction
-		    if currentattractingshape isa repere or  nextcurrentattractingshape = nil then
+		    if currentattractingshape isa repere or  currentattractingshape isa point or nextcurrentattractingshape = nil then
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
 		      TraitementIntersec()
@@ -375,6 +375,13 @@ Inherits MultipleSelectOperation
 		  dim p as point
 		  dim magneticD as BasicPoint
 		  dim magnetism as integer
+		  
+		  'if currentshape isa arc and  currentshape.indexconstructedpoint = 2 then
+		  'if currentattractingshape isa point and currentattractingshape.forme <> 1 and ubound(point(currentattractingshape).parents) > -1 then
+		  'currentattractingshape = point(currentattractingshape).parents(0)
+		  'nextcurrentattractingshape = nil
+		  'end if
+		  'end if
 		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig

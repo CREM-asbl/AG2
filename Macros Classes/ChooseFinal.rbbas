@@ -52,7 +52,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub IdentifyInit(s as shape)
-		         'currentshape est l'objet sélectionné comme final
+		  'currentshape est l'objet sélectionné comme final
 		  
 		  if s = currentshape and Mac.ObFinal.indexof(s.id) = -1 then
 		    addfinal(currentshape)

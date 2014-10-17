@@ -178,7 +178,7 @@ Inherits Shape
 		      end if
 		    next
 		  end if
-		  if d <> nil then
+		  if d <> nil and d.distance(bpt) < delta then
 		    attractingShape=s
 		    return 10
 		  end if
@@ -1601,6 +1601,9 @@ Inherits Shape
 		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
+		  for i = 0 to ubound(parents)
+		    parents(i).updatecoord
+		  next
 		  if ifmac <>nil and forme = 1 then
 		    ifmac.location = location(0)
 		  end if
@@ -2000,7 +2003,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function Magnetism3(s as point, Byref d as BasicPoint) As integer
-		  dim delta, dist as double  //Méthode appelée uniquement par Magnetism2
+		  dim delta, dist, t as double  //Méthode appelée uniquement par Magnetism2
 		  
 		  
 		  delta = wnd.Mycanvas1.MagneticDist

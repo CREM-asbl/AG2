@@ -294,7 +294,7 @@ Protected Class Operation
 		    end if
 		  end if
 		  
-		  if NextCurrentAttractingShape isa point then
+		  if CurrentAttractingShape isa point or NextCurrentAttractingShape isa point then
 		    NextCurrentAttractingShape = nil
 		  end if
 		  if NextCurrentAttractingShape<>nil   then
