@@ -29,6 +29,7 @@ Inherits nBpoint
 		  if abs(ray-dist) < epsilon then
 		    p.append q
 		    p.append q
+		    v = new BasicPoint(0,0)
 		    return 1
 		  elseif ray> dist + epsilon then
 		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
@@ -111,6 +112,24 @@ Inherits nBpoint
 		  
 		  n = BiBDroiteInterCercle(D,p(), bq, v)
 		  
+		  select case n
+		  case 0
+		    p(0) = nil
+		    p(1) = nil
+		  case 1
+		    p(1) = nil
+		    if not p(0).between(first,second) then
+		      p(0) = nil
+		      n = 0
+		    end if
+		  case 2
+		    for i = 1 downto 0
+		      if not p(i).between(first,second) then
+		        p(i) = nil
+		        n = n-1
+		      end if
+		    next
+		  end select
 		  return n
 		End Function
 	#tag EndMethod
@@ -230,6 +249,7 @@ Inherits nBpoint
 		  
 		  
 		  if S isa Droite then
+		    redim q(1)
 		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
 		    select case Droite(S).nextre
 		    case 0
@@ -239,10 +259,12 @@ Inherits nBpoint
 		    case 2
 		      n = Bib.BiBSegmentInterCercle(self,q(), bq, v)
 		    end select
-		    if n = 0 then
-		      q(0) = nil
-		      q(1) = nil
-		    end if
+		    for i = 1 downto 0
+		      if q(i) = nil then
+		        q.remove i
+		      end if
+		    next
+		    n = ubound(q)+1
 		  end if
 		  
 		  if S isa Circle then

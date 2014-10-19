@@ -519,7 +519,7 @@ Inherits Circle
 		  case 2
 		    r = getradius
 		    points(2).moveto np2.projection(np0,r)
-		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
 		  end select
 		  
 		  
@@ -553,11 +553,13 @@ Inherits Circle
 		  case 0   'On rétablit la figure en déplaçant le centre de l'arc points(0)
 		    if points(0).forme  <> 1 then
 		      return new SimilarityMatrix(ep1,ep2,np1,np2)
-		    else 'si points(0) est un point sur, et n'est pas modifié, c'est qu'il a été "replacé" ce cas provient de Modifier3
+		    else 'si points(0) est un point sur, ce cas relève de Modifier3
 		    end if
-		  case 1 'On rétablit la figure en déplaçant l'origine  de l'arc points(1)
+		  case 1 'On modifie l'amplitude de l'arc
 		    if points(1).forme <> 1 then
-		      return new SimilarityMatrix(ep0,ep2,np0,np2)
+		      r = getradius
+		      points(2).moveto np2.projection(np0,r)
+		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
 		    else 'même remarque que ci-dessus
 		    end if
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
@@ -575,15 +577,13 @@ Inherits Circle
 		Function Modifier31(n as integer) As Matrix
 		  // Trois sommets modifiés Un seul est un point "sur". C'est le sommet de n° n.
 		  dim k, i,  n1, n2 as integer
-		  dim ep, np, ep1, np1, ep2, np2, u, v as BasicPoint
+		  dim ep, np, u, v as BasicPoint
 		  
 		  dim Bib, Bib2 As  BiBPoint
 		  dim sh As shape
-		  dim p,p1,p2 As point
+		  dim p As point
 		  
 		  p = points(n)
-		  p1 = points((n+1) mod 3)
-		  p2 = points((n+2) mod 3)
 		  sh = p.pointsur.element(0)
 		  
 		  select case n
@@ -595,24 +595,25 @@ Inherits Circle
 		    np0 = Bib.computefirstintersect(0,sh,p)
 		    points(0).moveto np0
 		  case 1
-		    u = points(2).bpt
-		    Bib = new BiBPoint(np0, u)
+		    Bib = new BiBPoint(np0, np2)
 		    np1 = Bib.computefirstintersect(1,sh,p)
 		    points(1).moveto np1
 		  case 2
-		    u = points(1).bpt
-		    Bib = new BiBPoint(np0,u)
+		    Bib = new BiBPoint(np0,np1)
 		    np2 = Bib.computefirstintersect(1,sh,p)
-		    points(2).moveto np2
+		    if np2 <> nil and abs (np0.distance(np2) - np0.distance(np1)) < epsilon then
+		      points(2).moveto np2
+		      points(2).valider
+		    else
+		      points(2).invalider
+		    end if
 		  end select
 		  
 		  
 		  
-		  if points(n).bpt <> nil then
-		    points(n).valider
+		  if not points(n).invalid  then
 		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
 		  else
-		    points(n).invalider
 		    return new Matrix(1)
 		  end if
 		  
