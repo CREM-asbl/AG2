@@ -595,9 +595,14 @@ Inherits Circle
 		    np0 = Bib.computefirstintersect(0,sh,p)
 		    points(0).moveto np0
 		  case 1
-		    Bib = new BiBPoint(np0, np2)
-		    np1 = Bib.computefirstintersect(1,sh,p)
-		    points(1).moveto np1
+		    if ff.supfig.pointmobile = points(2) then
+		      np2 = np2.projection(np0,np0.distance(np1))
+		      points(2).moveto np2
+		    else
+		      Bib = new BiBPoint(np0, np2)
+		      np1 = Bib.computefirstintersect(1,sh,p)
+		      points(1).moveto np1
+		    end if
 		  case 2
 		    Bib = new BiBPoint(np0,np1)
 		    np2 = Bib.computefirstintersect(1,sh,p)
@@ -659,7 +664,10 @@ Inherits Circle
 		    else                  'n = 2, m = 1
 		      np2  = Bib.computefirstintersect(1,shn,points(2))
 		    end if
-		    points(2).moveto np2
+		    if np2 <> nil then
+		      points(2).bpt  = np2
+		    end if
+		    
 		  case 1
 		    Bib = new BiBPoint(np0,np1)
 		    if n = 0 then   'alors m = 2
@@ -667,7 +675,9 @@ Inherits Circle
 		    else                  'n = 2, m = 0
 		      np2  = Bib.computefirstintersect(1,shn,points(2))
 		    end if
-		    points(2).moveto np2
+		    if np2 <> nil then
+		      points(2).bpt = np2
+		    end if
 		  case 2
 		    Bib = new BiBPoint(np0,np2)
 		    if n = 1 then   'alors m = 0
@@ -675,7 +685,9 @@ Inherits Circle
 		    else                  'n = 0, m = 1
 		      np1  = Bib.computefirstintersect(1,shm,points(1))
 		    end if
-		    points(1).moveto np1
+		    if np1 <> nil then
+		      points(1).bpt = np1
+		    end if
 		  end select
 		  
 		  if k = 2 then
@@ -683,7 +695,7 @@ Inherits Circle
 		  else
 		    p = points(2)
 		  end if
-		  if p.bpt  <> nil then
+		  if np1 <> nil and np2 <> nil then
 		    p.valider
 		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
 		  else

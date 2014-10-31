@@ -36,8 +36,8 @@ Inherits nBpoint
 		    p.append q+v
 		    return 2
 		  elseif ray < dist - epsilon then
-		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
-		    p.append q+v
+		    p.append nil                             
+		    p.append nil
 		    return 0
 		  end if
 		  
@@ -80,7 +80,6 @@ Inherits nBpoint
 		  v = v*((r2*r2-r1*r1+dist*dist)/(2*dist))
 		  v = D.first+v
 		  w =  first - D.first
-		  'w = w.vecnorperp + v
 		  w = new BasicPoint(-w.y,w.x)
 		  w = v+w
 		  return new BiBPoint(v,w)
@@ -150,7 +149,7 @@ Inherits nBpoint
 		    if p(i).audela(first,second) then
 		      m = m+1
 		    else
-		      p.remove i
+		      p(i) = nil
 		    end if
 		  next
 		  
@@ -259,11 +258,6 @@ Inherits nBpoint
 		    case 2
 		      n = Bib.BiBSegmentInterCercle(self,q(), bq, v)
 		    end select
-		    for i = 1 downto 0
-		      if q(i) = nil then
-		        q.remove i
-		      end if
-		    next
 		    n = ubound(q)+1
 		  end if
 		  
@@ -302,10 +296,18 @@ Inherits nBpoint
 		    end if
 		  end if
 		  
-		  if n=2 and  q(0).Distance (P.bpt) >q(1).Distance (P.bpt)  then
-		    q(0)=q(1)
-		  end if
+		  for i = 1 downto 0
+		    if q(i) = nil then
+		      q.remove i
+		    end if
+		  next
+		  n = ubound(q)+1
 		  
+		  if n=2 then 
+		    if ( q(0).Distance (P.bpt) >q(1).Distance (P.bpt) + epsilon)  then
+		      q(0) = q(1)
+		    end if
+		  end if
 		  if n>0 and ubound(q) > -1 then
 		    return q(0)
 		  else

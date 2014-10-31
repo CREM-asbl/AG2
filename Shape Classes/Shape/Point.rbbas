@@ -1633,7 +1633,7 @@ Inherits Shape
 		  dim Bib as BiBPoint
 		  dim ar as arc
 		  
-		  if S = nil or not authorisedputon(s)  then
+		  if bpt = nil or S = nil or not authorisedputon(s)  then
 		    return
 		  end if
 		  

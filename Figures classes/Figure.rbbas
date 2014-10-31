@@ -2990,9 +2990,10 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  for i = 0 to shapes.count-1
-		    
-		    shapes.element(i).updateshape
-		    shapes.element(i).modified = true
+		    if not shapes.element(i).invalid then
+		      shapes.element(i).updateshape
+		      shapes.element(i).modified = true
+		    end if
 		  next
 		  
 		  
@@ -3584,7 +3585,7 @@ Implements StringProvider
 		  dim i as integer
 		  dim p as point
 		  
-		  if shapes.element(0) isa arc then
+		  if shapes.element(0) isa arc and not shapes.element(0).invalid then
 		    arc(shapes.element(0)).Updateangles
 		  end if
 		  for i = 0 to PtsConsted.count-1

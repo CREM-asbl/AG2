@@ -1235,6 +1235,10 @@ Implements StringProvider
 		  dim a as double
 		  dim tsf as transformation
 		  
+		  if invalid then
+		    return
+		  end if
+		  
 		  updatecoord
 		  computeori
 		  a = aire
@@ -3265,6 +3269,9 @@ Implements StringProvider
 		  dim s1, s2 As shape
 		  dim p as point
 		  
+		  if invalid then
+		    return
+		  end if
 		  
 		  if not self isa point then
 		    computediam
