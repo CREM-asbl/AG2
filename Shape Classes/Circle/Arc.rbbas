@@ -660,9 +660,9 @@ Inherits Circle
 		  case 0                  'on conserve points(1) et on adapte points(2)
 		    Bib = new BiBPoint(np0,np1)
 		    if n = 1 then   'alors m = 2
-		      np2  = Bib.computefirstintersect(1,shm,points(2))
+		      np2  =Arccomputefirstintersect(shm)
 		    else                  'n = 2, m = 1
-		      np2  = Bib.computefirstintersect(1,shn,points(2))
+		      np2  = Arccomputefirstintersect(shn)
 		    end if
 		    if np2 <> nil then
 		      points(2).bpt  = np2
@@ -671,9 +671,9 @@ Inherits Circle
 		  case 1
 		    Bib = new BiBPoint(np0,np1)
 		    if n = 0 then   'alors m = 2
-		      np2  = Bib.computefirstintersect(1,shm,points(2))
+		      np2  = Arccomputefirstintersect(shm)
 		    else                  'n = 2, m = 0
-		      np2  = Bib.computefirstintersect(1,shn,points(2))
+		      np2  = Arccomputefirstintersect(shn)
 		    end if
 		    if np2 <> nil then
 		      points(2).bpt = np2
@@ -737,6 +737,65 @@ Inherits Circle
 		  else
 		    return new Matrix(1)
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ArcComputeFirstIntersect(s as shape) As BasicPoint
+		  dim q() as BasicPoint
+		  dim Bib, BiB0 As  BiBPoint
+		  dim i,n, k as integer
+		  dim r as double
+		  dim bq, v as BasicPoint
+		  dim dr as droite
+		  dim p as point
+		  redim q(1)
+		  
+		  p = points(2)  ' ce point est "sur" s
+		  if p.forme <> 1 then
+		    return nil
+		  end if
+		  k = p.numside(0)
+		  BiB0 =  new BiBPoint(np0,np1)
+		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
+		    Bib =S.getBiBside(k)
+		    select case BiB.nextre
+		    case 0
+		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)
+		    case 1
+		      n = Bib.BiBDemiDroiteInterCercle(Bib0,q(), bq, v)
+		    case 2
+		      n = Bib.BiBSegmentInterCercle(Bib0,q(), bq, v)
+		    end select
+		    n = ubound(q)+1
+		  end if
+		  
+		  if S isa Circle then
+		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
+		    n = BiB0.BiBInterCercles(Bib,q(),bq,v)
+		    if n = 0 then
+		      q.append p.bpt
+		    end if
+		  end if
+		  
+		  for i = 1 downto 0
+		    if q(i) = nil then
+		      q.remove i
+		    end if
+		  next
+		  n = ubound(q)+1
+		  
+		  if n=2 then
+		    if amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1))    then
+		      q(0) = q(1)
+		    end if
+		  end if
+		  if n>0 and ubound(q) > -1 then
+		    return q(0)
+		  else
+		    return nil
+		  end if
+		  
 		End Function
 	#tag EndMethod
 

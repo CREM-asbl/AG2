@@ -36,7 +36,7 @@ Inherits nBpoint
 		    p.append q+v
 		    return 2
 		  elseif ray < dist - epsilon then
-		    p.append nil                             
+		    p.append nil
 		    p.append nil
 		    return 0
 		  end if
@@ -242,14 +242,17 @@ Inherits nBpoint
 		Function ComputeCircleFirstIntersect(S as Shape, P as Point) As Basicpoint
 		  dim q() as BasicPoint
 		  dim Bib As  BiBPoint
-		  dim i,n as integer
+		  dim i,n, k as integer
 		  dim r as double
 		  dim bq, v as BasicPoint
+		  dim dr as droite
+		  redim q(1)
 		  
-		  
-		  if S isa Droite then
-		    redim q(1)
-		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
+		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
+		    
+		    k = S.pointonside(P.bpt)
+		    Bib =S.getBiBside(k)
+		    
 		    select case Droite(S).nextre
 		    case 0
 		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
@@ -269,33 +272,6 @@ Inherits nBpoint
 		    end if
 		  end if
 		  
-		  if S isa Polygon then
-		    Bib = new BiBPoint(S.Points(P.Numside(0)).bpt,S.Points((P.Numside(0)+1) mod S.npts).bpt)
-		    n = Bib.BiBSegmentInterCercle(self,q(),bq,v)
-		  end if
-		  
-		  if S isa Bande then
-		    i = P.PointSur.GetPosition(S)
-		    i = P.Numside(i)
-		    if i = -1 then
-		      q.append nil
-		    else
-		      Bib = new BibPoint(S.Points(2*i).bpt,S.Points(2*i+1).bpt)
-		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
-		    end if
-		  end if
-		  
-		  if S isa Secteur then
-		    i = P.PointSur.GetPosition(S)
-		    i = P.Numside(i)
-		    if i = -1 then
-		      q.append nil
-		    else
-		      Bib = new BibPoint(S.Points(0).bpt,S.Points(i+1).bpt)
-		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
-		    end if
-		  end if
-		  
 		  for i = 1 downto 0
 		    if q(i) = nil then
 		      q.remove i
@@ -303,7 +279,7 @@ Inherits nBpoint
 		  next
 		  n = ubound(q)+1
 		  
-		  if n=2 then 
+		  if n=2 then
 		    if ( q(0).Distance (P.bpt) >q(1).Distance (P.bpt) + epsilon)  then
 		      q(0) = q(1)
 		    end if

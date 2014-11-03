@@ -1594,7 +1594,7 @@ Inherits Shape
 		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
 		  end if
 		  
-		  if  PointSur.count =1 and not modified then                    //Ces instructions sont probablement inutiles
+		  if  PointSur.count =1  then                   
 		    if not pointsur.element(0) isa arc then
 		      puton pointsur.element(0)
 		    else
@@ -1609,11 +1609,11 @@ Inherits Shape
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  'if modified then
+		  
 		  updateconstructedpoints
 		  updateMacConstructedShapes
 		  endmove
-		  'end if
+		  
 		  
 		  
 		  
