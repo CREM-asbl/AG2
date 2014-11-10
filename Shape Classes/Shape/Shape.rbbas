@@ -1562,7 +1562,7 @@ Implements StringProvider
 		Sub Autos()
 		  if (constructedby <> nil and constructedby.oper = 6)   or std or (macconstructedby <> nil) then
 		    auto = 0
-		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle then
+		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle      then
 		    auto = 1
 		  elseif (self isa polyqcq and npts = 3 and not self isa Lacet) or (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then
 		    auto = 2
@@ -3952,10 +3952,6 @@ Implements StringProvider
 		    BiB.nextre = droite(self).nextre
 		  elseif self isa polygon then
 		    BiB.nextre = 2
-		  elseif self isa secteur then
-		    BiB.nextre = 1
-		  else
-		    BiB.nextre = 0
 		  end if
 		  
 		  return BiB

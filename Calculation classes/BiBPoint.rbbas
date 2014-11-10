@@ -253,7 +253,7 @@ Inherits nBpoint
 		    k = S.pointonside(P.bpt)
 		    Bib =S.getBiBside(k)
 		    
-		    select case Droite(S).nextre
+		    select case Bib.nextre
 		    case 0
 		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
 		    case 1

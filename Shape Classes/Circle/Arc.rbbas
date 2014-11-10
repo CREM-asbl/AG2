@@ -459,8 +459,12 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  super.endconstruction
 		  
+		  if points(1).forme = 1 and points(2).forme = 1 and   (abs(abs(arcangle)-Pi) < epsilon )  then
+		    auto = 1
+		  end if
+		  
+		  super.endconstruction
 		  'if currentcontent.currentoperation isa macroexe then
 		  'computeradius
 		  'updateangles
@@ -500,7 +504,7 @@ Inherits Circle
 		    return Modifier12(n)
 		  end select
 		  
-		  
+		  //Les deux derniers cas ne peuvent normalement pas se présenter (il y aurait plus d'un point modifié)
 		End Function
 	#tag EndMethod
 
@@ -553,19 +557,16 @@ Inherits Circle
 		  case 0   'On rétablit la figure en déplaçant le centre de l'arc points(0)
 		    if points(0).forme  <> 1 then
 		      return new SimilarityMatrix(ep1,ep2,np1,np2)
-		    else 'si points(0) est un point sur, ce cas relève de Modifier3
 		    end if
 		  case 1 'On modifie l'amplitude de l'arc
 		    if points(1).forme <> 1 then
 		      r = getradius
 		      points(2).moveto np2.projection(np0,r)
 		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
-		    else 'même remarque que ci-dessus
 		    end if
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
 		    if points(2).forme <> 1 then
 		      return new SimilarityMatrix(ep0,ep1,np0,np1)
-		    else 'même remarque que ci-dessus
 		    end if
 		  end select
 		  
@@ -759,6 +760,12 @@ Inherits Circle
 		  BiB0 =  new BiBPoint(np0,np1)
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
 		    Bib =S.getBiBside(k)
+		    if s isa droite and droite(S).nextre = 0 then
+		      if p.location(0) < 0 then
+		        Bib= new BiBPoint(Bib.tab(0),BiB.tab(0)*2-BiB.tab(1))
+		      end if
+		      Bib.nextre = 1
+		    end if
 		    select case BiB.nextre
 		    case 0
 		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)

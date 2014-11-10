@@ -2020,6 +2020,16 @@ Implements StringProvider
 		  dim i, k, n, h as integer
 		  dim t as boolean
 		  dim M as Matrix
+		  dim s as shape
+		  
+		  s = shapes.element(0)
+		  if s isa arc then
+		    getoldnewpos(s.points(1),ep1,np1)
+		    getoldnewpos(s.points(0),ep,np)
+		    t = replacerpoint(s.points(2))
+		    return  new similaritymatrix (ep1,ep,np1,np)
+		  end if
+		  
 		  
 		  Choixpointsfixes
 		  p = supfig.pointmobile
@@ -2062,16 +2072,15 @@ Implements StringProvider
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
 		      M = new similarityMatrix(p1,p2,ep,np)
-		    else
-		      p1 = point(somm.element(listsommsur(0)))
-		      p2 = point(somm.element(listsommsur(1)))
-		      getoldnewpos(p1,ep1,np1)
-		      getoldnewpos(p2,ep2,np2)
-		      M = new SimilarityMatrix(ep1,ep2,np1,np2)
 		    end if
 		  else
-		    M = new Matrix(1)
+		    p1 = point(somm.element(listsommsur(0)))
+		    p2 = point(somm.element(listsommsur(1)))
+		    getoldnewpos(p1,ep1,np1)
+		    getoldnewpos(p2,ep2,np2)
+		    M = new SimilarityMatrix(ep1,ep2,np1,np2)
 		  end select
+		  
 		  
 		  if M = nil or M.v1 = nil then
 		    M = new Matrix(1)
