@@ -764,7 +764,7 @@ Inherits Circle
 		      if p.location(0) < 0 then
 		        Bib= new BiBPoint(Bib.tab(0),BiB.tab(0)*2-BiB.tab(1))
 		      end if
-		      Bib.nextre = 1
+		      'Bib.nextre = 1  'Instruction supprimée pour incompatibilité avec l'arc qui se déplace d'un secteur au sectur opposé par le sommet.
 		    end if
 		    select case BiB.nextre
 		    case 0
