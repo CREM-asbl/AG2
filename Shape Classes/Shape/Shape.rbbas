@@ -3033,7 +3033,7 @@ Implements StringProvider
 		    select case  constructedby.oper
 		    case 1, 2
 		      constructedby.shape.removeconstructedshape self
-		      if ubound(constructedby.data) = 1 and constructedby.data(1) <> nil then
+		      if ubound(constructedby.data) > 0 and constructedby.data(1) <> nil then
 		        tsf = transformation (constructedby.data(1))
 		        tsf.constructedshapes.removeshape self                        'en cas d'avortement tsf n'est pas encore définie
 		        tsf.supp.tsfi.removetsf tsf
