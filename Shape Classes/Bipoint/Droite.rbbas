@@ -687,10 +687,15 @@ Inherits Bipoint
 		    if w.norme > epsilon then
 		      Bib1 = new BibPoint(firstp, firstp+w)
 		      nq  = Bib1.ComputeFirstIntersect(0,sh,q)
+		      if (nq = nil) or (sh.pointonside(nq) = -1) then
+		        q.invalider
+		      else
+		        q.valider
+		      end if
 		    end if
 		  end if
 		  q.modified = true
-		  if q.modified and nq <> nil then
+		  if  nq <> nil then
 		    q.moveto nq
 		  end if
 		  return new similaritymatrix (ep, eq, np, nq)

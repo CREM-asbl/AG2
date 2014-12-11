@@ -132,6 +132,11 @@ Inherits Polyqcq
 		    if curved(i) = 1 then
 		      BiB2 = new BiBPoint(centre(i),Points(i).bpt)
 		      n = BiB1.BiBDemiDroiteInterCercle(BiB2, bp(), bq, v)
+		      for j = 1 downto 0
+		        if bp(j) = nil then
+		          bp.remove j
+		        end if
+		      next
 		      for j = n-1 downto 0
 		        if PointOnSide(bp(j)) = i then
 		          c = not c

@@ -1594,11 +1594,12 @@ Inherits Shape
 		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
 		  end if
 		  
-		  if  PointSur.count =1  then                   
-		    if not pointsur.element(0) isa arc then
+		  if  forme =1  then
+		    sh = pointsur.element(0)
+		    if not sh isa arc then
 		      puton pointsur.element(0)
 		    else
-		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
+		      putonarc (arc(sh))  //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
 		  for i = 0 to ubound(parents)

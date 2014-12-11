@@ -197,7 +197,6 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As integer
-		  dim n as integer
 		  
 		  if inside(p) then
 		    return  super.pointonside(p)
@@ -658,9 +657,8 @@ Inherits Circle
 		  k = TroisiemeIndex(n,m)  'Ce troisième sommet n'est pas "sur"
 		  
 		  select case k
-		  case 0                  'on conserve points(1) et on adapte points(2)
-		    Bib = new BiBPoint(np0,np1)
-		    if n = 1 then   'alors m = 2
+		  case 0, 1                 'on adapte points(2)
+		    if n = 1-k  then   'alors m = 2
 		      np2  =Arccomputefirstintersect(shm)
 		    else                  'n = 2, m = 1
 		      np2  = Arccomputefirstintersect(shn)
@@ -669,16 +667,6 @@ Inherits Circle
 		      points(2).bpt  = np2
 		    end if
 		    
-		  case 1
-		    Bib = new BiBPoint(np0,np1)
-		    if n = 0 then   'alors m = 2
-		      np2  = Arccomputefirstintersect(shm)
-		    else                  'n = 2, m = 0
-		      np2  = Arccomputefirstintersect(shn)
-		    end if
-		    if np2 <> nil then
-		      points(2).bpt = np2
-		    end if
 		  case 2
 		    Bib = new BiBPoint(np0,np2)
 		    if n = 1 then   'alors m = 0
@@ -760,12 +748,12 @@ Inherits Circle
 		  BiB0 =  new BiBPoint(np0,np1)
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
 		    Bib =S.getBiBside(k)
-		    if s isa droite and droite(S).nextre = 0 then
-		      if p.location(0) < 0 then
-		        Bib= new BiBPoint(Bib.tab(0),BiB.tab(0)*2-BiB.tab(1))
-		      end if
-		      'Bib.nextre = 1  'Instruction supprimée pour incompatibilité avec l'arc qui se déplace d'un secteur au sectur opposé par le sommet.
-		    end if
+		    'if s isa droite and droite(S).nextre = 0 then
+		    'if points(0) = fig.pointmobile and p.location(0) < 0 then
+		    'Bib= new BiBPoint(Bib.tab(0),BiB.tab(0)*2-BiB.tab(1))
+		    'end if
+		    ''Bib.nextre = 1  'Instruction supprimée pour incompatibilité avec l'arc qui se déplace d'un secteur au sectur opposé par le sommet.
+		    'end if
 		    select case BiB.nextre
 		    case 0
 		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)
@@ -793,8 +781,14 @@ Inherits Circle
 		  n = ubound(q)+1
 		  
 		  if n=2 then
-		    if amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1))    then
-		      q(0) = q(1)
+		    if points(1) = fig.pointmobile then
+		      if   (amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1)))    then
+		        q(0) = q(1)
+		      end if
+		    else
+		      if ep2.distance(q(0)) > ep2.distance(q(1)) then
+		        q(0)=q(1)
+		      end if
 		    end if
 		  end if
 		  if n>0 and ubound(q) > -1 then
