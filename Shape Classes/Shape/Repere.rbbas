@@ -3,7 +3,7 @@ Protected Class Repere
 Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Repere(ol as objectslist)
-		  Shape(ol,0)
+		  Shape(ol,0,0)
 		  labs = new Lablist
 		  
 		End Sub

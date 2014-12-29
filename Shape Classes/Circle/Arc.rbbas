@@ -11,6 +11,7 @@ Inherits Circle
 		  
 		  
 		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -36,8 +37,8 @@ Inherits Circle
 		    startangle = coord.startangle         'GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
 		    constructshape
-		    updateangles
-		    CreateExtreAndCtrlPoints
+		    'computearcangle
+		    'coord.CreateExtreAndCtrlPoints(arc.ori)
 		    updateskull
 		  end select
 		  
@@ -49,14 +50,15 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  
-		  if  abs(arcangle)  >  0.2 then
+		  startangle = coord.startangle    'GetAngle(Points(0).bpt, Points(1).bpt)
+		  endangle = coord.endangle     'GetAngle(Points(0).bpt, Points(2).bpt)
+		  // startangle et endangle  sont toujours entre 0 et 2 pi
+		  if  abs(endangle-startangle)  >  0.2 then
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
 		  if not drapori then
 		    ori = coord.orientation                         'points(0).bpt.orientation(points(1).bpt,points(2).bpt)
 		  end if
-		  
 		  arcangle = computeangle(points(2).bpt)
 		  
 		  'arcangle a toujours meme signe que l'orientation
@@ -237,18 +239,6 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Updateangles()
-		  dim q as basicpoint
-		  
-		  startangle = coord.startangle    'GetAngle(Points(0).bpt, Points(1).bpt)
-		  endangle = coord.endangle     'GetAngle(Points(0).bpt, Points(2).bpt)
-		  computearcangle
-		  
-		  // startangle et endangle  sont toujours entre 0 et 2 pi
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub updatecenter(p as point, np as basicpoint)
 		  dim v, mid as BasicPoint
 		  dim M as Matrix
@@ -259,7 +249,7 @@ Inherits Circle
 		  M = new OrthoProjectionMatrix(mid, mid+v)
 		  v = M*np
 		  p.moveto v
-		  updateangles
+		  computearcangle
 		  computeradius
 		  
 		  
@@ -292,7 +282,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
 		  updatecoord
-		  updateangles
+		  computearcangle
 		  computeradius
 		  super.updateshape
 		  
@@ -320,17 +310,18 @@ Inherits Circle
 		  dim p As BasicPoint
 		  
 		  p = points(0).bpt
-		  
 		  nsk.update(wnd.Mycanvas1.transform(p))
-		  for i = 1 to 2
-		    nsk.updatesommet(i,wnd.Mycanvas1.dtransform(points(i).bpt-p))
-		  next
-		  for i = 0 to 1
-		    nsk.updateextre(i,  wnd.mycanvas1.dtransform(extre(i)-p))
-		  next
-		  for i = 0 to 5
-		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(ctrl(i)-p))
-		  next
+		  if IndexConstructedPoint > 0 then
+		    for i = 1 to 2
+		      nsk.updatesommet(i,wnd.Mycanvas1.dtransform(points(i).bpt-p))
+		    next
+		    for i = 0 to 1
+		      nsk.updateextre(i,  wnd.mycanvas1.dtransform(coord.extre(i)-p))
+		    next
+		    for i = 0 to 5
+		      nsk.updatectrl(i, wnd.mycanvas1.dtransform(coord.ctrl(i)-p))
+		    next
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -338,14 +329,13 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  super.initconstruction
-		  CreateExtreAndCtrlPoints
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
-		  if abs(arcangle) < 0.01 and not self isa DSect then
+		  if abs(arcangle) < 0.01  then
 		    return
 		  end if
 		  
@@ -354,27 +344,6 @@ Inherits Circle
 		  if (not hidden ) and  (Ti <> nil) and (dret = nil) then
 		    PaintTipOnArc(g, bordercolor)
 		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CreateExtreAndCtrlPoints()
-		  dim Bib as BiBPoint
-		  dim alpha as double
-		  dim M as RotationMatrix
-		  dim i as integer
-		  
-		  alpha = arcangle/3
-		  M = new RotationMatrix(Points(0).bpt,alpha)
-		  extre(0) = M*StartP
-		  extre(1) = M*extre(0)
-		  BiB = new BiBPoint(StartP,extre(0))
-		  Bib.computeCtrlPoints(Points(0).bpt, ori,  ctrl)
-		  for i = 2 to 5
-		    ctrl(i) = M*ctrl(i-2)
-		  next
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -438,8 +407,8 @@ Inherits Circle
 		Sub ConstructShape()
 		  super.ConstructShape
 		  computeradius
-		  updateangles
-		  CreateExtreAndCtrlPoints
+		  computearcangle
+		  coord.CreateExtreAndCtrlPoints(ori)
 		  
 		End Sub
 	#tag EndMethod
@@ -450,8 +419,8 @@ Inherits Circle
 		  nsk = new ArcSkull(p)
 		  if ubound(points)> 0 then
 		    computeradius
-		    updateangles
-		    CreateExtreAndCtrlPoints
+		    computearcangle
+		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -748,12 +717,6 @@ Inherits Circle
 		  BiB0 =  new BiBPoint(np0,np1)
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
 		    Bib =S.getBiBside(k)
-		    'if s isa droite and droite(S).nextre = 0 then
-		    'if points(0) = fig.pointmobile and p.location(0) < 0 then
-		    'Bib= new BiBPoint(Bib.tab(0),BiB.tab(0)*2-BiB.tab(1))
-		    'end if
-		    ''Bib.nextre = 1  'Instruction supprimée pour incompatibilité avec l'arc qui se déplace d'un secteur au sectur opposé par le sommet.
-		    'end if
 		    select case BiB.nextre
 		    case 0
 		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)

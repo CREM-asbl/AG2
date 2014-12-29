@@ -486,7 +486,7 @@ Inherits Shape
 		    else
 		      angle = r*Lacet(s).GetArcAngle(n) +Lacet(s).GetStartAngle(n)
 		      q = new BasicPoint(cos(angle),sin(angle))
-		      q = Lacet(s).centre(n)+ q * Lacet(s).GetRadius(n)
+		      q = Lacet(s).centres(n)+ q * Lacet(s).GetRadius(n)
 		    end if
 		  end if
 		  Moveto q
@@ -759,7 +759,7 @@ Inherits Shape
 		  dim cx, cy as double
 		  
 		  if s isa Lacet and Lacet(s).curved(i) = 1 then
-		    return bpt.projection(Lacet(s).centre(i), Lacet(s).getradius(i))
+		    return bpt.projection(Lacet(s).centres(i), Lacet(s).getradius(i))
 		  else
 		    return ProjectionOnAttractingSegment(s.Points(i).bpt,s.Points((i+1) mod s.npts).bpt)
 		  end if

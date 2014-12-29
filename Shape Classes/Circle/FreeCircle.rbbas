@@ -39,7 +39,7 @@ Inherits Circle
 		Sub FreeCircle(ol as ObjectsList, p as Point, PtInCircle as Point)
 		  dim i as integer
 		  
-		  Shape(ol,2)
+		  Shape(ol,2,2)
 		  Points.append p
 		  Points.append  PtInCircle
 		  fam = 5
@@ -126,7 +126,7 @@ Inherits Circle
 		Sub FreeCircle(Ol as ObjectsList, s as Freecircle, p as BasicPoint)
 		  Shape(ol,s)
 		  ncpts=2
-		  CreateExtreAndCtrlPoints
+		  coord.CreateExtreAndCtrlPoints(ori)
 		  createskull(p)
 		  nsk.updatesize(1)
 		  
@@ -168,14 +168,14 @@ Inherits Circle
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  dim i as integer
 		  
-		  
 		  if n = 0 then
 		    for i = 0 to 1
 		      Points(i).MoveTo(p)
 		    next
 		  else
 		    Points(1).moveto p
-		    CreateExtreAndCtrlPoints
+		    updatecoord
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    updateskull
 		  end if
 		  
@@ -185,7 +185,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  super.InitConstruction
-		  CreateExtreAndCtrlPoints
+		  coord.CreateExtreAndCtrlPoints(ori)
 		End Sub
 	#tag EndMethod
 
@@ -202,7 +202,7 @@ Inherits Circle
 		  nsk = new CircleSkull(p)
 		  if ubound(points) > 0 then
 		    computeradius
-		    CreateExtreAndCtrlPoints
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    updateskull
 		  end if
 		End Sub

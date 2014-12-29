@@ -168,7 +168,7 @@ Implements StringProvider
 		      s = Lacet(shapes.element(i))
 		      for j = 0 to s.npts-1
 		        if s.curved(j) = 1 then
-		          oldcentres.append s.centre(j)
+		          oldcentres.append s.centres(j)
 		        end if
 		      next
 		    end if
@@ -1226,7 +1226,7 @@ Implements StringProvider
 		    if s isa Circle or s isa Lacet  then
 		      s.MoveExtreCtrl(M)
 		    end if
-		    if s isa arc  or s isa dsect or s isa cube then
+		    if s isa arc   or s isa cube then
 		      s.updateskull
 		    end if
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
@@ -1304,6 +1304,14 @@ Implements StringProvider
 		      M = Matrix(s.constructedby.data(0))
 		      M.XMLPutAttribute(EL2)
 		    end if
+		    if s isa Lacet then
+		      EL2.SetAttribute("Centres",str(1))
+		      for j = 0 to ubound(s.centres)
+		        if s.centres(j) <> nil then
+		          EL2.AppendChild(s.centres(j).XMLPutInContainer(CurrentContent.OpList))
+		        end if
+		      next
+		    end if
 		    EL1.appendchild EL2
 		  next
 		  EL0.appendchild EL1
@@ -1339,14 +1347,15 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub RestoreInit(EL as XMLElement)
-		  dim i,j, n0, n1 as integer
-		  dim EL1, EL2,  Coord as XMLElement
+		  dim i,j,k, n0, n1 as integer
+		  dim EL1, EL2, EL3, Coord as XMLElement
 		  dim List as XmlNodeList
 		  dim p as point
 		  dim tsf as transformation
 		  dim Inter as Intersec
 		  dim M as Matrix
 		  dim a as double
+		  dim s as shape
 		  
 		  List = EL.XQL("Somm")
 		  if List.length > 0 then
@@ -1367,7 +1376,7 @@ Implements StringProvider
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to PtsConsted.count-1
 		      Coord = XMLElement(EL1.child(i))
-		      point(PtsConsted.element(i)).moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
+		      point(PtsConsted.element(i)).moveto new BasicPoint(Coord)
 		      if val(Coord.GetAttribute("Invalid")) = 0 then
 		        point(PtsConsted.element(i)).valider
 		      else
@@ -1376,24 +1385,36 @@ Implements StringProvider
 		    next
 		  end if
 		  
+		  EL1 = XMLElement(EL.Firstchild)
 		  for i = 0 to shapes.count-1
-		    if shapes.element(i).duplicateorcut then
-		      EL1 = XMLElement(EL.Firstchild)
-		      EL2 = XMLElement(EL1.Child(i))
+		    EL2 = XMLElement(EL1.Child(i))
+		    s = shapes.element(i)
+		    s.updatecoord
+		    s.updateskull
+		    s.updatelab
+		    if s isa circle or s isa Lacet then
+		      k = 0
+		      for j = 0 to ubound(s.centres)
+		        if s.centres(j) <>nil then
+		          Coord = XmlElement(EL2.child(k))
+		          s.centres(j) = new BasicPoint(coord)
+		          k = k+1
+		        end if
+		      next
+		      s.coord.CreateExtreAndCtrlPoints(s.ori)
+		    end if
+		    if s.duplicateorcut then
 		      M = new Matrix(EL2)
-		      shapes.element(i).constructedby.data(0) = M
-		      if not shapes.element(i) isa point then
-		        for j = 0 to shapes.element(i).npts-1
-		          shapes.element(i).childs(j).constructedby.data(0) = M
+		      s.constructedby.data(0) = M
+		      if not s isa point then
+		        for j = 0 to s.npts-1
+		          s.childs(j).constructedby.data(0) = M
 		        next
 		      end if
 		    end if
-		    if shapes.element(i) isa circle or shapes.element(i) isa Lacet then
-		      shapes.element(i).CreateExtreAndCtrlPoints
-		    end if
-		    shapes.element(i).updatecoord
-		    shapes.element(i).updateskull
-		    shapes.element(i).updatelab
+		    
+		    
+		    
 		  next
 		  
 		  List = EL.XQL("PtsSur")
@@ -1915,7 +1936,7 @@ Implements StringProvider
 		      s = Lacet(shapes.element(i))
 		      for j = 0 to s.npts-1
 		        if s.curved(j) = 1 then
-		          s.centre(j) = oldcentres(i0)
+		          s.centres(j) = oldcentres(i0)
 		          i0 = i0+1
 		        end if
 		      next
@@ -1950,10 +1971,10 @@ Implements StringProvider
 		  for i = 0 to shapes.count-1
 		    shapes.element(i).updatecoord
 		    if shapes.element(i) isa arc then
-		      Arc(shapes.element(i)).updateangles
+		      Arc(shapes.element(i)).computearcangle
 		    end if
 		    if shapes.element(i) isa circle or shapes.element(i) isa lacet then
-		      shapes.element(i).CreateExtreAndCtrlPoints
+		      shapes.element(i).coord.CreateExtreAndCtrlPoints(shapes.element(i).ori)
 		    end if
 		    shapes.element(i).updateskull
 		  next
@@ -2145,7 +2166,7 @@ Implements StringProvider
 		  
 		  for i = 0 to shapes.count-1
 		    if shapes.element(i) isa Lacet then
-		      shapes.element(i).createextreandctrlpoints
+		      shapes.element(i).coord.createextreandctrlpoints(shapes.element(i).ori)
 		    end if
 		  next
 		  
@@ -2576,7 +2597,7 @@ Implements StringProvider
 		  dim ar as arc
 		  
 		  s = shapes.element(0)
-		  if s isa arc or s isa dsect then
+		  if s isa arc  then
 		    return arc(s).modifier3
 		  end if
 		  
@@ -3595,7 +3616,7 @@ Implements StringProvider
 		  dim p as point
 		  
 		  if shapes.element(0) isa arc and not shapes.element(0).invalid then
-		    arc(shapes.element(0)).Updateangles
+		    arc(shapes.element(0)).computearcangle
 		  end if
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.element(i))

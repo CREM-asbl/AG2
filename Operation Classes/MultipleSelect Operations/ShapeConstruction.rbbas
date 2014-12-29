@@ -98,8 +98,6 @@ Inherits MultipleSelectOperation
 		        currentshape = new FreeCircle(objects, p)
 		      case 1
 		        currentshape = new Arc(objects,p)
-		      case 2
-		        currentshape = new DSect(objects,p)
 		      end select
 		    case 6
 		      if forme = 0 then
@@ -107,8 +105,6 @@ Inherits MultipleSelectOperation
 		      else
 		        currentshape = new Polyqcq(objects, forme+3, p)
 		      end if
-		      'case 7
-		      'Lacets
 		    end select
 		  else
 		    fam = famille-10
@@ -473,7 +469,7 @@ Inherits MultipleSelectOperation
 		    next
 		    currentshape.constructshape
 		    currentshape.endconstruction
-		    currentshape.Createextreandctrlpoints
+		    currentshape.coord.Createextreandctrlpoints(currentshape.ori)
 		  end if
 		  
 		End Sub

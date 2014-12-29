@@ -19,7 +19,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Polygon(ol as objectslist, d as integer, p as basicpoint)
-		  shape(ol,d)
+		  shape(ol,d,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
 		  

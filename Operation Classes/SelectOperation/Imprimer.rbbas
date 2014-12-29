@@ -40,51 +40,54 @@ Inherits SelectOperation
 		  dim gprint as graphics
 		  dim Pict As Picture
 		  
-		  if app.prtsetup <> nil then
-		    sw = app.prtsetup.width/wnd.Mycanvas1.width
-		    sh = app.prtsetup.height/wnd.Mycanvas1.height
-		    sc = min(sw,sh)
-		    Pict = new Picture(wnd.Mycanvas1.width,wnd.Mycanvas1.height,Screen(0).Depth)
-		    
-		    gprint = OpenPrinterDialog(app.prtsetup)
-		    
-		    if gprint <> nil then
-		      if wnd.backcolor = noir then
-		        switch = true
-		        wnd.switchcolors
-		      end if
-		      wnd.Mycanvas1.mousecursor = system.Cursors.Wait
-		      for copies=1 to gprint.Copies
-		        for i=0 to tempshape.count-1
-		          o = tempshape.Element(i)
-		          if (not o.invalid  and not o.hidden and not o.deleted) or o isa repere then
-		            o.Paintall(Pict.Graphics)
-		          end if
-		        next
-		        
-		        if CurrentContent.thegrid <> nil then
-		          CurrentContent.thegrid.paint(Pict.Graphics)
-		        end if
-		        
-		        if CurrentContent.TheObjects.tracept then
-		          Pict.Graphics.DrawPicture wnd.Mycanvas1.OffscreenPicture, 0, 0
-		        end if
-		        
-		        d = new date
-		        gprint.DrawPicture Pict,0,0,wnd.Mycanvas1.width*sc, wnd.Mycanvas1.height*sc,0,0,wnd.Mycanvas1.width,wnd.Mycanvas1.height
-		        gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year) , 0,  -2
-		        gprint.drawrect 0,0,wnd.Mycanvas1.width*sc, (wnd.Mycanvas1.height-1)*sc
-		        if copies<gprint.Copies then
-		          gprint.NextPage
-		        end if
-		      next
-		      wnd.Mycanvas1.mousecursor = ArrowCursor
-		    end if
-		    if switch then
+		  if app.prtsetup = nil then
+		    return
+		  end if
+		  
+		  sw = app.prtsetup.width/wnd.Mycanvas1.width
+		  sh = app.prtsetup.height/wnd.Mycanvas1.height
+		  sc = min(sw,sh)
+		  Pict = new Picture(wnd.Mycanvas1.width,wnd.Mycanvas1.height,Screen(0).Depth)
+		  
+		  gprint = OpenPrinterDialog(app.prtsetup)
+		  
+		  if gprint <> nil then
+		    if wnd.backcolor = noir then
+		      switch = true
 		      wnd.switchcolors
 		    end if
-		    
+		    wnd.Mycanvas1.mousecursor = system.Cursors.Wait
+		    for copies=1 to gprint.Copies
+		      for i=0 to tempshape.count-1
+		        o = tempshape.Element(i)
+		        if (not o.invalid  and not o.hidden and not o.deleted) or o isa repere then
+		          o.print(Pict.Graphics)
+		        end if
+		      next
+		      
+		      if CurrentContent.thegrid <> nil then
+		        CurrentContent.thegrid.paint(Pict.Graphics)
+		      end if
+		      
+		      if CurrentContent.TheObjects.tracept then
+		        Pict.Graphics.DrawPicture wnd.Mycanvas1.OffscreenPicture, 0, 0
+		      end if
+		      
+		      d = new date
+		      gprint.DrawPicture Pict,0,0,wnd.Mycanvas1.width*sc, wnd.Mycanvas1.height*sc,0,0,wnd.Mycanvas1.width,wnd.Mycanvas1.height
+		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year) , 0,  -2
+		      gprint.drawrect 0,0,wnd.Mycanvas1.width*sc, (wnd.Mycanvas1.height-1)*sc
+		      if copies<gprint.Copies then
+		        gprint.NextPage
+		      end if
+		    next
+		    wnd.Mycanvas1.mousecursor = ArrowCursor
 		  end if
+		  if switch then
+		    wnd.switchcolors
+		  end if
+		  
+		  
 		  
 		  
 		  

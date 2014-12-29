@@ -62,11 +62,8 @@ Inherits FigureShape
 	#tag Method, Flags = &h0
 		Sub paint(s as shape, g as graphics)
 		  update(wnd.mycanvas1.transform(s.points(0).bpt))
-		  if not s isa DSect or  DSect(s).arcangle > 0 then
-		    paint(g)
-		  else
-		    paintside(g,0,borderwidth, config.bordercolor)
-		  end if
+		  paint(g)
+		  
 		  
 		End Sub
 	#tag EndMethod

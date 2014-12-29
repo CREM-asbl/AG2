@@ -37,13 +37,13 @@ Inherits Polyqcq
 		  
 		  if GetIndexPoint(Pt) = 0 or  s.pointonside(p) = -1 or (s isa polygon and not s isa lacet ) or (k= -1) then
 		    curved.append 0
-		    centre.append nil
+		    centres.append nil
 		  else
 		    curved.append 1
 		    if s isa circle then
-		      centre.append s.getgravitycenter
+		      centres.append s.getgravitycenter
 		    elseif s isa lacet then
-		      centre.append Lacet(s).GetCentre(k)
+		      centres.append Lacet(s).Getcentre(k)
 		    end if
 		    narcs = narcs+1
 		  end if
@@ -89,13 +89,13 @@ Inherits Polyqcq
 		  dim M as Matrix
 		  
 		  Shape(ol,s)
-		  redim centre(ubound(s.centre))
+		  redim centres(ubound(s.centres))
 		  redim ctrl(ubound(s.ctrl))
 		  redim extre(ubound(s.extre))
 		  redim curved(ubound(s.curved))
 		  narcs = s.narcs
-		  for i = 0 to ubound(s.centre)
-		    centre(i) = s.centre(i)
+		  for i = 0 to ubound(s.centres)
+		    centres(i) = s.centres(i)
 		  next
 		  for i = 0 to ubound(s.ctrl)
 		    ctrl(i) =  s.ctrl(i)
@@ -130,7 +130,7 @@ Inherits Polyqcq
 		  
 		  for i = 0 to npts-1
 		    if curved(i) = 1 then
-		      BiB2 = new BiBPoint(centre(i),Points(i).bpt)
+		      BiB2 = new BiBPoint(centres(i),Points(i).bpt)
 		      n = BiB1.BiBDemiDroiteInterCercle(BiB2, bp(), bq, v)
 		      for j = 1 downto 0
 		        if bp(j) = nil then
@@ -168,8 +168,8 @@ Inherits Polyqcq
 		    if curved(i) = 1 then
 		      EL1 = Doc.CreateElement("Centre")
 		      EL1.SetAttribute("Nr", str(i))
-		      EL1.SetAttribute("CoordX",str(Centre(i).x))
-		      EL1.SetAttribute("CoordY",str(Centre(i).y))
+		      EL1.SetAttribute("CoordX",str(centres(i).x))
+		      EL1.SetAttribute("CoordY",str(centres(i).y))
 		    end if
 		    EL.AppendChild EL1
 		  next
@@ -194,9 +194,9 @@ Inherits Polyqcq
 		      end if
 		    else
 		      BiB = new BiBpoint(Points(i).bpt,p)
-		      A = new Angle(Bib, centre(i), ori)
-		      cx = p.distance(centre(i))
-		      if abs(cx-centre(i).distance(points(i).bpt))<= delta  and abs(A.alpha) <= abs(GetArcAngle(i))  then
+		      A = new Angle(Bib, centres(i), ori)
+		      cx = p.distance(centres(i))
+		      if abs(cx-centres(i).distance(points(i).bpt))<= delta  and abs(A.alpha) <= abs(GetArcAngle(i))  then
 		        return i
 		      end if
 		    end if
@@ -216,8 +216,8 @@ Inherits Polyqcq
 		  q=GetGravitycenter
 		  
 		  Br = Super.GetBoundingRadius
-		  for i = 0 to ubound(ctrl)
-		    Br = max(Br,q.Distance(ctrl(i)))
+		  for i = 0 to ubound(coord.ctrl)
+		    Br = max(Br,q.Distance(coord.ctrl(i)))
 		  next
 		  return Br
 		End Function
@@ -239,18 +239,18 @@ Inherits Polyqcq
 		    if narcs = 0 then
 		      narcs = 1
 		      redim curved(2)
-		      redim centre(2)
+		      redim centres(2)
 		      curved(2) = 1
 		      EL1 = XMLElement(EL.firstchild)
-		      centre(2) = new BasicPoint(val(EL1.GetAttribute("CoordX")), val(EL1.GetAttribute("CoordY")))
+		      centres(2) = new BasicPoint(val(EL1.GetAttribute("CoordX")), val(EL1.GetAttribute("CoordY")))
 		    else
 		      redim curved(npts-1)
-		      redim centre(npts-1)
+		      redim centres(npts-1)
 		      for i=0 to EL1.ChildCount-1
 		        EL2 =  XMLElement(EL1.Child(i))
 		        k = val(EL2.GetAttribute("Nr"))
 		        curved(k)=1
-		        centre(k) = new BasicPoint(val(EL2.GetAttribute("CoordX")), val(EL2.GetAttribute("CoordY")))
+		        centres(k) = new BasicPoint(val(EL2.GetAttribute("CoordX")), val(EL2.GetAttribute("CoordY")))
 		      next
 		    end if
 		  end if
@@ -266,7 +266,8 @@ Inherits Polyqcq
 		  for i = 0 to Ubound(Childs)
 		    Childs(i). Move(M)
 		  next
-		  MoveExtreCtrl(M)
+		  coord.MoveExtreCtrl(M)
+		  MoveCentres(M)
 		  EndMove
 		  
 		  
@@ -317,7 +318,7 @@ Inherits Polyqcq
 		  dim Bib as BiBPoint
 		  
 		  Bib = new BiBPoint(points(n).bpt, q)
-		  Ag = new Angle(Bib, centre(n), ori)
+		  Ag = new Angle(Bib, centres(n), ori)
 		  return Ag.alpha
 		End Function
 	#tag EndMethod
@@ -336,23 +337,24 @@ Inherits Polyqcq
 		  for i = 0 to npts-1
 		    if curved(i) = 1 then
 		      Bib = new BiBPoint(Points(i).bpt, points((i+1) mod npts).bpt)
-		      A = new Angle(Bib, centre(i), ori)
+		      A = new Angle(Bib, centres(i), ori)
 		      alpha = A.alpha/3
 		      
-		      Mat = new RotationMatrix(centre(i),alpha)
+		      Mat = new RotationMatrix(centres(i),alpha)
 		      
 		      extre(n) = Mat*Points(i).bpt
 		      extre(n+1) = Mat*extre(n)
 		      BiB = new BiBPoint(Points(i).bpt,extre(n))
-		      
-		      Bib.computeCtrlPoints(centre(i), ori,  temp)
-		      ctrl(m) = temp(0)
-		      ctrl(m+1) = temp(1)
-		      for i = 2 to 5
-		        ctrl(m+i) = Mat*ctrl(m+i-2)
-		      next
-		      n = n+2
-		      m=m+6
+		      Bib.computeCtrlPoints(centres(i), ori,  temp)
+		      if temp(0) <> nil and temp(1) <> nil then
+		        ctrl(m) = temp(0)
+		        ctrl(m+1) = temp(1)
+		        for i = 2 to 5
+		          ctrl(m+i) = Mat*ctrl(m+i-2)
+		        next
+		        n = n+2
+		        m=m+6
+		      end if
 		    end if
 		  next
 		End Sub
@@ -384,7 +386,7 @@ Inherits Polyqcq
 
 	#tag Method, Flags = &h0
 		Function GetCentre(k as integer) As BasicPoint
-		  return Centre(k)
+		  return centres(k)
 		End Function
 	#tag EndMethod
 
@@ -461,13 +463,13 @@ Inherits Polyqcq
 		  
 		  if  s.pointonside(Q.bpt) = -1 or (not (s isa lacet)) or (s isa Lacet and ( (k = -1) or( Lacet(s).curved(k) = 0) ) ) then
 		    curved.append 0
-		    centre.append nil
+		    centres.append nil
 		  else
 		    curved.append 1
 		    if s isa circle then
-		      centre.append s.getgravitycenter
+		      centres.append s.getgravitycenter
 		    elseif s isa lacet then
-		      centre.append Lacet(s).GetCentre(k)
+		      centres.append Lacet(s).Getcentre(k)
 		    end if
 		    narcs = narcs+1
 		  end if
@@ -500,11 +502,11 @@ Inherits Polyqcq
 		    nsk.updatesommet(k,wnd.Mycanvas1.dtransform(points(i).bpt-p))
 		    if curved(i) = 1 then
 		      for j = 0 to 1
-		        nsk.updateextre(k+j,  wnd.mycanvas1.dtransform(extre(n+j)-p))
+		        nsk.updateextre(k+j,  wnd.mycanvas1.dtransform(coord.extre(n+j)-p))
 		      next
 		      n = n+2
 		      for j = 0 to 5
-		        LSkull(nsk).updatectrl(k+j\2 , j mod 2, wnd.mycanvas1.dtransform(ctrl(m+j)-p))
+		        LSkull(nsk).updatectrl(k+j\2 , j mod 2, wnd.mycanvas1.dtransform(coord.ctrl(m+j)-p))
 		      next
 		      m = m+6
 		      k=k+3
@@ -548,7 +550,7 @@ Inherits Polyqcq
 		    else
 		      r = getradius(i)
 		      alpha = getarcangle(i)
-		      c = centre(i)
+		      c = centres(i)
 		      p = Points(i).bpt
 		      p = p-c
 		      q = new BasicPoint(p.y,-p.x)
@@ -620,24 +622,6 @@ Inherits Polyqcq
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub MoveExtreCtrl(M as Matrix)
-		  dim i as integer
-		  
-		  for i = 0 to ubound(extre)
-		    extre(i) = M*extre(i)
-		  next
-		  for i = 0 to ubound(ctrl)
-		    ctrl(i) = M*ctrl(i)
-		  next
-		  for i = 0 to ubound(centre)
-		    if curved(i)=1 then
-		      centre(i)=M*centre(i)
-		    end if
-		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function NextArc(j as integer) As integer
 		  dim k as integer
 		  
@@ -687,7 +671,7 @@ Inherits Polyqcq
 		    return 0
 		  end if
 		  Bib = new BiBPoint(points(k).bpt, points((k+1) mod npts).bpt)
-		  Ag = new Angle(Bib, centre(k), ori)
+		  Ag = new Angle(Bib, centres(k), ori)
 		  return Ag.alpha
 		End Function
 	#tag EndMethod
@@ -702,9 +686,9 @@ Inherits Polyqcq
 		    return false
 		  end if
 		  BiB = new BiBpoint(Points(i).bpt,p)
-		  A = new Angle(Bib, centre(i), ori)
-		  cx = p.distance(centre(i))
-		  if cx <= centre(i).distance(points(i).bpt)  and A.alpha <= GetArcAngle(i)  then
+		  A = new Angle(Bib, centres(i), ori)
+		  cx = p.distance(centres(i))
+		  if cx <= centres(i).distance(points(i).bpt)  and A.alpha <= GetArcAngle(i)  then
 		    return true
 		  else
 		    return false
@@ -715,7 +699,7 @@ Inherits Polyqcq
 	#tag Method, Flags = &h0
 		Function GetRadius(k as integer) As double
 		  if curved(k) = 1 then
-		    return centre(k).distance(points(k).bpt)
+		    return centres(k).distance(points(k).bpt)
 		  end if
 		End Function
 	#tag EndMethod
@@ -724,7 +708,7 @@ Inherits Polyqcq
 		Function GetStartAngle(k as integer) As double
 		  dim q as BasicPoint
 		  
-		  q = Points(k).bpt - centre(k)
+		  q = Points(k).bpt - centres(k)
 		  return q.anglepolaire
 		End Function
 	#tag EndMethod
@@ -734,7 +718,7 @@ Inherits Polyqcq
 		  redim extre(2*narcs-1)
 		  redim ctrl(6*narcs-1)
 		  Createskull
-		  CreateExtreAndCtrlPoints
+		  coord.CreateExtreAndCtrlPoints(ori)
 		End Sub
 	#tag EndMethod
 
@@ -750,10 +734,10 @@ Inherits Polyqcq
 		  next
 		  
 		  for i = 0 to ubound(extre)
-		    g = g+ extre(i)
+		    g = g+ coord.extre(i)
 		  next
 		  
-		  g = g/(npts+ubound(extre)+1)
+		  g = g/(npts+ubound(coord.extre)+1)
 		  return g
 		  
 		End Function
@@ -794,7 +778,7 @@ Inherits Polyqcq
 		      p.putonsegment(a,b,p.location(n),n)
 		    else
 		      angle = computeangle(k,p.bpt)
-		      p.putonarc(a,b,centre(k),angle, GetArcAngle(k),GetStartAngle(k), n)
+		      p.putonarc(a,b,centres(k),angle, GetArcAngle(k),GetStartAngle(k), n)
 		    end if
 		  end if
 		  
@@ -831,14 +815,26 @@ Inherits Polyqcq
 		    a = m-e
 		    b = m+e
 		  else
-		    Trib = new TriBPoint(centre(i),a,b)
+		    Trib = new TriBPoint(centres(i),a,b)
 		    b = Trib.Subdiv(ori,2,1)
-		    e = b - centre(i)
+		    e = b - centres(i)
 		    e = e.vecnorperp
 		    e = e*0.1*ori
 		    a = b-e
 		  end if
 		  PaintTip(a, b, bordercolor, 0.5, g)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MoveCentres(M as Matrix)
+		  dim i as integer
+		  
+		  for i = 0 to ubound(centres)
+		    if curved(i)=1 then
+		      centres(i)=M*centres(i)
+		    end if
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -873,18 +869,6 @@ Inherits Polyqcq
 
 	#tag Property, Flags = &h0
 		narcs As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		centre(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ctrl(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		extre(-1) As BasicPoint
 	#tag EndProperty
 
 

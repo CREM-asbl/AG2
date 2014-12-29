@@ -335,7 +335,7 @@ Implements StringProvider
 		      return location(a,b)
 		    else
 		      Bib = new BiBPoint(d.points(k).bpt,self)
-		      Ag = new Angle(Bib, lacet(d).centre(k),d.ori)
+		      Ag = new Angle(Bib, lacet(d).centres(k),d.ori)
 		      return (Ag.alpha/Lacet(d).GetArcAngle(k))
 		    end if
 		  end if

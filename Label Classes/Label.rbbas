@@ -181,8 +181,7 @@ Protected Class Label
 		  elseif shape isa Freecircle and loc <> -1 then
 		    position = shape.points(1).bpt
 		  elseif shape isa arc and loc <> -1 then
-		    TriB = new TribPoint(arc(shape).getgravitycenter,arc(shape).startp, arc(shape).endp)
-		    position = Trib.Subdiv(arc(shape).ori,2,1)
+		    position = TriBPoint(shape.coord).Subdiv(arc(shape).ori,2,1)
 		  elseif loc = -1 then
 		    Position = Shape.GetGravitycenter
 		  end if

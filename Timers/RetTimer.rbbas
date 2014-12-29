@@ -111,10 +111,10 @@ Inherits TsfTimer
 		    end if
 		    if s isa Circle  then
 		      for j = 0 to 1
-		        Circle(s).extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
+		        Circle(s).coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
 		      next
 		      for j = 0 to 5
-		        Circle(s).ctrl(j) =  t.TriDPts(ntdbp+3+j).ProjPlan + fp
+		        Circle(s).coord.ctrl(j) =  t.TriDPts(ntdbp+3+j).ProjPlan + fp
 		      next
 		    end if
 		    if s isa Lacet then

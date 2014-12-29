@@ -120,7 +120,7 @@ Protected Class nBpoint
 		    case 4 'TriRectIso
 		      a = (tab(0)+tab(1))/2
 		      M = new RotationMatrix(a,ori*PIDEMI)
-		      append M*tab(1)
+		      tab(2) = M*tab(1)
 		    end select
 		  case 3 'Quadris
 		    select case fo
@@ -134,29 +134,29 @@ Protected Class nBpoint
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new OrthoProjectionMatrix(a,a+b)
-		      append M*tab(2)
+		      tab(3) = M*tab(2)
 		    case 3
 		      a = (tab(0)+tab(1))/2
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new SymmetryMatrix(a,a+b)
-		      append M*tab(2)
+		      tab(3) = M*tab(2)
 		    case 4
-		      append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 5
 		      a = tab(1)
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M =  new OrthoProjectionMatrix(a,a+b)
 		      tab(2) = M*tab(2)
-		      append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 6
 		      d = tab(0).distance(tab(1))
 		      b = tab(2)-tab(1)
 		      if tab(1).distance(tab(2)) > 0 then
 		        tab(2) = tab(1)+(b.normer)*d
 		      end if
-		      append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 7
 		      constructshape(4,1)
 		    end select
@@ -170,7 +170,7 @@ Protected Class nBpoint
 		      c = a + b*(ori*d/(2*tan(PI/n)))
 		      M = new RotationMatrix(c,2*ori*PI/n)
 		      for i = 2 to n-1
-		        append M*tab(i-1)
+		        tab(i) = M*tab(i-1)
 		      next
 		    end if
 		  case 5
@@ -418,9 +418,39 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub CreateExtreAndCtrlPoints(orien as integer)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MoveExtreCtrl(M as Matrix)
+		  dim i as integer
+		  
+		  for i = 0 to ubound(extre)
+		    extre(i) = M*extre(i)
+		  next
+		  for i = 0 to ubound(ctrl)
+		    ctrl(i) = M*ctrl(i)
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		extre() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ctrl() As BasicPoint
 	#tag EndProperty
 
 

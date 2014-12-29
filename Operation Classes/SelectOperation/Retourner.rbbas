@@ -240,14 +240,14 @@ Inherits SelectOperation
 		      end if
 		    next
 		    if s isa arc then
-		      arc(s).updateangles
+		      arc(s).computearcangle
 		    end if
 		    if s isa circle then
-		      circle(s).CreateExtreAndCtrlPoints
+		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		      circle(s).updateskull
 		    end if
 		    if s isa Lacet then
-		      Lacet(s).CreateExtreAndCtrlPoints
+		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
 		  next
 		  

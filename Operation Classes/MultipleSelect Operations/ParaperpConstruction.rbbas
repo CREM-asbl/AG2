@@ -307,7 +307,7 @@ Inherits ShapeConstruction
 		    pt = point(objects.GetShape(rid))
 		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
 		    'voir remarque correspondante dans  macro.paraperp
-		    BiB1 = new BiBPoint(currentshape.coord)
+		    BiB1 =  BiBPoint(currentshape.coord)
 		    if val(EL.GetAttribute("NrForm"))  <> 1 then
 		      pt.moveto pt.bpt.projection(BiB1)
 		      

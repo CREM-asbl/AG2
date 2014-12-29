@@ -192,7 +192,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ValidPointOnSide(Pt as Point) As Boolean
+		Function ValidPointOnSide(pt as point) As Boolean
 		  If( (Pt.IsChildOf(currentshape) or ((currentshape.PointOnside(Pt.bpt)<> -1) and (Pt.ConstructedBy <> nil) and _
 		    (Pt.constructedby.Shape = currentshape) and  (Pt.constructedby.oper = 4))) or Pt.duplicateorcut )and Pt.bpt <> currentshape.GetGravitycenter then
 		    return true

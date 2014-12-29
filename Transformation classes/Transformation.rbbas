@@ -80,8 +80,8 @@ Implements StringProvider
 		      s2 = Constructedshapes.element(i)
 		      s1 = s2.constructedby.shape
 		      Appliquer(s1,s2)
-		      if s1 isa circle  then
-		        AppliquerExtreCtrl(circle(s1),circle(s2))
+		      if s1 isa circle  or s1 isa lacet then
+		        AppliquerExtreCtrl(s1,s2)
 		        s2.updateskull
 		      end if
 		    next
@@ -692,7 +692,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AppliquerExtreCtrl(s1 as Circle, s2 as Circle)
+		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 		  
 		  for i = 0 to ubound(s2.extre)
@@ -701,6 +701,13 @@ Implements StringProvider
 		  for i = 0 to ubound(s2.ctrl)
 		    s2.ctrl(i) = M*s1.ctrl(i)
 		  next
+		  if s1 isa lacet then
+		    for i = 0 to ubound(s1.centres)
+		      if s1.centres(i) <> nil then
+		        s2.centres(i) = M*s1.centres(i)
+		      end if
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 

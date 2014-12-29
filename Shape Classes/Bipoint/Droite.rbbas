@@ -450,7 +450,7 @@ Inherits Bipoint
 		  
 		  if  ubound(p) = 1 then
 		    B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
-		    B2 = new BiBPoint(coord)
+		    B2 = BiBPoint(coord)
 		    k = B2.BiBDroiteInterCercle(B1,p(), bq, w)
 		  else
 		    k = 0

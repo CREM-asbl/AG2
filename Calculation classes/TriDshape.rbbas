@@ -14,10 +14,10 @@ Protected Class TriDshape
 		  
 		  if s isa circle then
 		    for i = 0 to 1
-		      TriDpts.append new TriDPoint(Circle(s).extre(i)-fp)
+		      TriDpts.append new TriDPoint(Circle(s).coord.extre(i)-fp)
 		    next
 		    for i = 0 to 5
-		      TriDPts.append new TriDPoint(Circle(s).Ctrl(i)-fp)
+		      TriDPts.append new TriDPoint(Circle(s).coord.Ctrl(i)-fp)
 		    next
 		  end if
 		  

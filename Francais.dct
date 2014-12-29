@@ -227,6 +227,7 @@
     <DodecaReg Name="Dodécagone_régulier" />
     <FreeCircle Name="Cercle" />
     <Arc Name="Arc" />
+     <DSect Name="Secteur de disque"/>
     <PolygStd Name="Polygone_Standard" />
     <Cube Name="Cube" />
     <CubeOrtho Name="Modèle 1" />
@@ -238,7 +239,8 @@
     <Triangles Name="Triangles" />
     <Quadris Name="Quadrilatères" />
     <Polregs Name="Polygones_réguliers" />
-    <Polyqcqs Name="Polygones_quelconques" />
+    <Polyqcqs Name="Polygones_quelconques"/>
+    <Lacets Name="Formes hybrides"/>
     <Compo Name="Forme_Hybride" />
     <Thickness Name="Epaisseur" />
   </Formes>

@@ -634,13 +634,6 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub BiBPoint(nBp as nBPoint)
-		  tab = nBP.tab
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Anglepolaire() As double
 		  dim bp as Basicpoint
 		  
@@ -664,6 +657,61 @@ Inherits nBpoint
 		    return q
 		  end if             'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à ce cercle
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub BiBPoint(s as shape)
+		  nBpoint(s)
+		  redim extre(1)
+		  redim ctrl(5)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateExtreAndCtrlPoints(orien As integer)
+		  dim M as RotationMatrix
+		  dim p, q as BasicPoint
+		  dim bp1, bp2 as BasicPoint
+		  dim BiB1, Bib2 as BiBPoint
+		  dim r1,r2 as double
+		  dim i as integer
+		  dim s2 as shape
+		  dim tsf as transformation
+		  
+		  redim extre(1)
+		  redim ctrl(5)
+		  
+		  'if constructedby <> nil and constructedby.oper = 6 then
+		  's2 = constructedby.shape
+		  'circle(s2).createextreandctrlpoints
+		  'tsf = transformation(constructedby.data(0))
+		  'tsf.AppliquerExtreCtrl(circle(s2),circle(self))
+		  'else
+		  M = new RotationMatrix(tab(0),2*Pi/3)
+		  
+		  extre(0) = M*tab(1)
+		  extre(1) = M*extre(0)
+		  
+		  bp1 = tab(1)-tab(0)
+		  bp1 = bp1.vecnorperp
+		  BiB1 = new BiBPoint(tab(1), tab(1)+bp1)
+		  bp2 = extre(0)-tab(0)
+		  bp2 = bp2.VecNorPerp
+		  BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
+		  q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
+		  
+		  if q <> nil then
+		    ctrl(0) = tab(1)*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
+		    ctrl(1) = extre(0)*5/9 +q*4/9
+		    for i = 2 to 5
+		      ctrl(i) = M*ctrl(i-2)
+		    next
+		  end if
+		  'end if
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 

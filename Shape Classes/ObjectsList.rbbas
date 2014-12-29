@@ -319,7 +319,7 @@ Protected Class ObjectsList
 		  
 		  fam = Val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  forme = Val(Temp.GetAttribute(Dico.Value("NrForm")))
-		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version.3.8) qui étaient incorrects
+		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version 2.3.8) qui étaient incorrects
 		  select case  fam
 		  case -1
 		    s = new Repere(self,temp)
@@ -1132,11 +1132,11 @@ Protected Class ObjectsList
 		      case 0
 		        currentshape = new Polyqcq(self,4)
 		      case 1
-		        currentshape = new Trap(self, 4)
+		        currentshape = new Trap(self, 4,4)
 		      case 2
-		        currentshape = new TrapRect(self, 3)
+		        currentshape = new TrapRect(self, 3,4)
 		      case 3
-		        currentshape = new TrapIso(self, 3)
+		        currentshape = new TrapIso(self, 3,4)
 		      case 4
 		        currentshape = new Parallelogram(self, 3,4)
 		      case 5

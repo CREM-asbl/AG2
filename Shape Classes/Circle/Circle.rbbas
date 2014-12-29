@@ -123,10 +123,14 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As Integer
-		  if pinshape(p)  and (radius - p.distance(points(0).bpt)) <  wnd.Mycanvas1.MagneticDist then
-		    return 0
+		  dim d as double
+		  
+		  d =  p.distance(points(0).bpt)
+		  
+		  if d <= GetRadius + epsilon and abs(radius -d)  <  wnd.Mycanvas1.MagneticDist then
+		    return  0
 		  else
-		    return -1
+		    return  -1
 		  end if
 		End Function
 	#tag EndMethod
@@ -187,7 +191,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Circle(ol as ObjectsList, d as integer, p As BasicPoint)
-		  Shape(ol,d)
+		  Shape(ol,d,d)
 		  Points.append new Point(ol, p)
 		  SetPoint(Points(0))
 		  angle = 0
@@ -200,51 +204,6 @@ Inherits Shape
 		Sub fixeepaisseurs()
 		  
 		  nsk.fixeepaisseurs(self)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CreateExtreAndCtrlPoints()
-		  dim M as RotationMatrix
-		  dim p, q as BasicPoint
-		  dim bp1, bp2 as BasicPoint
-		  dim BiB1, Bib2 as BiBPoint
-		  dim r1,r2 as double
-		  dim i as integer
-		  dim s2 as shape
-		  dim tsf as transformation
-		  
-		  if constructedby <> nil and constructedby.oper = 6 then
-		    s2 = constructedby.shape
-		    circle(s2).createextreandctrlpoints
-		    tsf = transformation(constructedby.data(0))
-		    tsf.AppliquerExtreCtrl(circle(s2),circle(self))
-		  else
-		    p = Points(0).bpt
-		    M = new RotationMatrix(p,2*Pi/3)
-		    
-		    extre(0) = M*StartP
-		    extre(1) = M*extre(0)
-		    
-		    bp1 = StartP-p
-		    bp1 = bp1.vecnorperp
-		    BiB1 = new BiBPoint(StartP, StartP+bp1)
-		    bp2 = extre(0)-p
-		    bp2 = bp2.VecNorPerp
-		    BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
-		    q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
-		    
-		    if q <> nil then
-		      ctrl(0) = Startp*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
-		      ctrl(1) = extre(0)*5/9 +q*4/9
-		      for i = 2 to 5
-		        ctrl(i) = M*ctrl(i-2)
-		      next
-		    end if
-		    
-		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -270,10 +229,10 @@ Inherits Shape
 		  nsk.update(wnd.Mycanvas1.transform(p))
 		  nsk.updatesommet(1,wnd.Mycanvas1.dtransform(points(1).bpt-p))
 		  for i = 0 to 1
-		    nsk.updateextre(i,  wnd.mycanvas1.dtransform(extre(i)-p))
+		    nsk.updateextre(i,  wnd.mycanvas1.dtransform(coord.extre(i)-p))
 		  next
 		  for i = 0 to 5
-		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(ctrl(i)-p))
+		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(coord.ctrl(i)-p))
 		  next
 		  
 		End Sub
@@ -284,10 +243,10 @@ Inherits Shape
 		  dim i as integer
 		  
 		  for i = 0 to 1
-		    extre(i) = M*extre(i)
+		    coord.extre(i) = M*coord.extre(i)
 		  next
 		  for i = 0 to 5
-		    ctrl(i) = M*ctrl(i)
+		    coord.ctrl(i) = M*coord.ctrl(i)
 		  next
 		End Sub
 	#tag EndMethod
@@ -356,14 +315,6 @@ Inherits Shape
 
 	#tag Property, Flags = &h0
 		arcangle As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		extre(1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ctrl(5) As BasicPoint
 	#tag EndProperty
 
 

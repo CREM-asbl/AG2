@@ -1,7 +1,7 @@
 #tag Window
 Begin Window WorkWindow
    BackColor       =   16777215
-   Backdrop        =   ""
+   Backdrop        =   769355775
    BalloonHelp     =   ""
    CloseButton     =   "True"
    Composite       =   "True"
@@ -42,7 +42,7 @@ Begin Window WorkWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   122
+      Left            =   126
       LockBottom      =   "True"
       LockLeft        =   "True"
       LockRight       =   "True"
@@ -232,7 +232,7 @@ Begin Window WorkWindow
             Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   7
+            Left            =   5
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -241,7 +241,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   144
+            Top             =   145
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -260,7 +260,7 @@ Begin Window WorkWindow
             Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   7
+            Left            =   5
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -269,7 +269,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   174
+            Top             =   173
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -456,13 +456,13 @@ Begin Window WorkWindow
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
-            Backdrop        =   8007679
-            ControlOrder    =   16
+            Backdrop        =   115009535
+            ControlOrder    =   19
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
-            Index           =   2
+            Index           =   4
             InitialParent   =   "LibBox"
             Left            =   8
             LockBottom      =   "False"
@@ -471,32 +471,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   433
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   1584048127
-            ControlOrder    =   17
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "LibBox"
-            Left            =   64
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            Top             =   381
+            Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -514,7 +489,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "LibBox"
-            Left            =   64
+            Left            =   65
             LockBottom      =   "False"
             LockLeft        =   "False"
             LockRight       =   "False"
@@ -522,31 +497,6 @@ Begin Window WorkWindow
             Scope           =   0
             TabPanelIndex   =   0
             Top             =   433
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   115009535
-            ControlOrder    =   19
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   4
-            InitialParent   =   "LibBox"
-            Left            =   8
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -581,6 +531,56 @@ Begin Window WorkWindow
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
+            Backdrop        =   1584048127
+            ControlOrder    =   17
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "LibBox"
+            Left            =   65
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   381
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
+            Backdrop        =   8007679
+            ControlOrder    =   16
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   2
+            InitialParent   =   "LibBox"
+            Left            =   8
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   433
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
             Backdrop        =   454606847
             ControlOrder    =   21
             Enabled         =   True
@@ -589,7 +589,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   5
             LockBottom      =   "False"
             LockLeft        =   "False"
             LockRight       =   "False"
@@ -2700,7 +2700,7 @@ End
 		  MoveBox.Visible = false
 		  
 		  for i=0 to 4
-		    MouvBut(i) .visible = Config.MvBt(i) and not draphisto
+		    MouvBut(i).visible = Config.MvBt(i) and not draphisto
 		    MoveBox.Visible = MoveBox.Visible or MouvBut(i) .visible
 		  next
 		  
@@ -3030,7 +3030,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if mousedispo then
 		    closefw
 		    select case index
@@ -3072,7 +3072,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3104,14 +3104,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3127,7 +3127,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -3143,7 +3143,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3155,7 +3155,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -3172,12 +3172,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
