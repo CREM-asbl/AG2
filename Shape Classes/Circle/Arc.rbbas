@@ -37,8 +37,8 @@ Inherits Circle
 		    startangle = coord.startangle         'GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
 		    constructshape
-		    'computearcangle
-		    'coord.CreateExtreAndCtrlPoints(arc.ori)
+		    updatecoord
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    updateskull
 		  end select
 		  
@@ -80,15 +80,14 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub Arc(Ol as ObjectsList, s as Arc, p as basicPoint)
-		  dim i as integer
-		  dim q as basicPoint
-		  dim M as matrix
-		  
-		  Circle(ol,s,p)
+		  shape(ol,s)
+		  ncpts = 2
 		  arcangle = s.arcangle
 		  endangle = s.endangle
 		  startangle = s.startangle
+		  IndexConstructedPoint = 2   '(clutch)
 		  createskull(p)
+		  nsk.updatesize(1)
 		  drapori = s.drapori
 		  liberte = 5
 		  
@@ -125,11 +124,13 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Arc(ol as ObjectsList, Temp as XMLElement)
 		  Shape(ol,Temp)
+		  IndexConstructedPoint = 2  '(clutch)
 		  ncpts = 3
 		  liberte = 5
 		  drapori = true
 		  createskull(points(0).bpt)
-		  
+		  nsk.updatesize(1)
+		  updateskull
 		  
 		  
 		End Sub
@@ -408,7 +409,7 @@ Inherits Circle
 		  super.ConstructShape
 		  computeradius
 		  computearcangle
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  
 		  
 		End Sub
 	#tag EndMethod

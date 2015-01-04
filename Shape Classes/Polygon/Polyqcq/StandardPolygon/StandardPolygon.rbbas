@@ -36,7 +36,7 @@ Inherits Polyqcq
 		  for i=0 to npts-1
 		    figskull(sk).getcote(i).order = 0
 		  next
-		  redim curved(npts-1)
+		  redim coord.curved(npts-1)
 		  redim prol(npts-1)
 		  
 		  std = true

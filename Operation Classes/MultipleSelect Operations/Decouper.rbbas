@@ -14,8 +14,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i as integer                          'Cut(0) et Cut(1) sont les deux pièces
-		  dim M as Translationmatrix
-		  dim Tr As BasicPoint
+		  
 		  
 		  currentshape.movetoback
 		  
@@ -31,7 +30,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim EL, EL1, EL2 as XMLElement
+		  dim EL, EL1 as XMLElement
 		  
 		  EL = XMLElement(Temp.child(0))
 		  EL1 = XMLElement(EL.Child(1))
@@ -216,7 +215,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub recopiercouleurs(s as shape)
 		  dim p1, p2, q1, q2 as point
-		  dim j0, j1, j2, i, cote as integer
+		  dim  i, cote as integer
 		  
 		  if not s.std then
 		    for i= 0 to s.npts-1
@@ -244,7 +243,6 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
 		  
-		  
 		  ReCreateCreatedFigures(Temp)
 		  wnd.refresh
 		End Sub
@@ -260,18 +258,17 @@ Inherits MultipleSelectOperation
 		  dim P, pt1, pt2 As Point
 		  dim k2 as double
 		  dim bp, Tr as basicPoint
+		  dim centres() as BasicPoint
+		  dim curved() as integer
 		  
 		  if (currentshape isa Circle)  or (currentshape isa Lacet) then
 		    s = new Lacet(Objects)   //initialisation de la pièce
 		  else
 		    s = new Polyqcq(Objects)
 		  end if
-		  s.npts = 0
-		  s.ncpts = 0
+		  
 		  s.std = currentshape.std
-		  'if not s.std then
 		  s.SetConstructedBy currentshape,5
-		  'end if
 		  
 		  if n = 0 then
 		    for i = 0 to ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
@@ -283,7 +280,10 @@ Inherits MultipleSelectOperation
 		    next
 		  end if
 		  
-		  
+		  for i = 0 to s.npts-2
+		    centres.append nil
+		    curved.append 0
+		  next
 		  
 		  if n = 0 then                           //pt1 et pt2 sont les deux points de découpe situés sur le bord de currentshape
 		    pt1= cutpts(ncutpt-1)      //partir de cutpts(ncutpt-1), revenir à cutpts(0)  entretemps on va adjoindre les sommets de s rencontrés
@@ -293,17 +293,33 @@ Inherits MultipleSelectOperation
 		    pt2 = cutpts(ncutpt-1)
 		  end if
 		  
-		  while Pt1<> Pt2
-		    pt1 = currentshape.NextBorderPoint(pt1, pt2)              //pt1 parcourt les sommets intermédiaires pt2 est le point final
-		    k = currentshape.GetIndexPoint(pt1)
-		    if pt1 <> pt2 then
-		      P = new Point(Objects,currentshape.Points(k).bpt)
-		      if not s.std then                                   //on ne relie pas les morceaux des formes standard à leur mère
-		        P.SetConstructedBy currentshape.Points(k),5    // donc on pourra supprimer la mère standard sans tuer les enfants
-		      else
-		        P.constructedby = new constructioninfo(currentshape.points(k),5)
+		  while Pt1<> Pt2                                     //pt1 parcourt les sommets intermédiaires pt2 est le point final
+		    if pt2 = currentshape.NextBorderPoint(pt1, pt2) then
+		      if currentshape isa polygon then
+		        centres.append nil
+		        curved.append 0
+		      elseif currentshape isa circle then
+		        centres.append currentshape.points(0).bpt
+		        curved.append 1
+		      elseif currentshape isa lacet then
+		        k = currentshape.GetIndexPoint(pt1)
+		        if k = -1 then
+		          k = lacet(currentshape).pointonside(pt1.bpt)
+		        end if
+		        centres.append currentshape.coord.centres(k)
+		        curved.append currentshape.coord.curved(k)
+		      end if
+		      pt1 = pt2
+		    else
+		      pt1 = currentshape.NextBorderPoint(pt1, pt2)
+		      k = currentshape.GetIndexPoint(pt1)
+		      P = new Point(Objects,pt1.bpt)
+		      if not s.std then                                                           //on ne relie pas les morceaux des formes standard à leur mère
+		        P.SetConstructedBy pt1,5                                     // donc on pourra supprimer la mère standard sans tuer les enfants
 		      end if
 		      s.InsertPoint(s.npts, P)
+		      centres.append currentshape.coord.centres(k)
+		      curved.append currentshape.coord.curved(k)
 		    end if
 		  wend
 		  
@@ -324,12 +340,19 @@ Inherits MultipleSelectOperation
 		  end if
 		  s.Ori = currentshape.Ori                //Les deux pièces sont orientées comme la forme mère
 		  s.fixecouleurfond(currentshape.fillcolor,currentshape.fill)
-		  s.forme = s.npts-3
-		  polygon(s).initconstruction
-		  recopiercouleurs (s)
-		  if s isa lacet then
-		    lacet(s).prepareskull
+		  s.forme = s.npts-2
+		  s.initconstruction
+		  if s isa Lacet then
+		    s.coord.centres = centres
+		    s.coord.curved = curved
+		    for i = 0 to ubound(curved)
+		      Lacet(s).narcs = Lacet(s).narcs+curved(i)
+		    next
+		    Lacet(s).prepareskull(s.points(0).bpt)
+		    Lacet(s).CreateExtreAndCtrlPoints
 		  end if
+		  s.updateskull
+		  recopiercouleurs (s)
 		  s.Move(M)
 		  s.endconstruction
 		  return s

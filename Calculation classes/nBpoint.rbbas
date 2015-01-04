@@ -40,6 +40,13 @@ Protected Class nBpoint
 		  else
 		    append point(s).bpt
 		  end if
+		  
+		  redim curved(taille-1)
+		  for i = 0 to taille-1
+		    curved(i) = 0
+		  next
+		  
+		  redim centres(taille-1)
 		End Sub
 	#tag EndMethod
 
@@ -422,7 +429,38 @@ Protected Class nBpoint
 		Sub CreateExtreAndCtrlPoints(orien as integer)
 		  
 		  
+		  dim Mat as RotationMatrix
+		  dim BiB as BiBPoint
+		  dim m, n ,i as integer
+		  dim temp(1) as BasicPoint
+		  dim A as Angle
+		  dim alpha as double
 		  
+		  n = 0
+		  m=0
+		  for i = 0 to taille-1
+		    if curved(i) = 1 then
+		      Bib = new BiBPoint(tab(i), tab((i+1) mod taille))
+		      A = new Angle(Bib,centres(i), orien)
+		      alpha = A.alpha/3
+		      
+		      Mat = new RotationMatrix(centres(i),alpha)
+		      
+		      extre(n) = Mat*tab(i)
+		      extre(n+1) = Mat*extre(n)
+		      BiB = new BiBPoint(tab(i),extre(n))
+		      Bib.computeCtrlPoints(centres(i), orien,  temp)
+		      if temp(0) <> nil and temp(1) <> nil then
+		        ctrl(m) = temp(0)
+		        ctrl(m+1) = temp(1)
+		        for i = 2 to 5
+		          ctrl(m+i) = Mat*ctrl(m+i-2)
+		        next
+		        n = n+2
+		        m=m+6
+		      end if
+		    end if
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -437,6 +475,11 @@ Protected Class nBpoint
 		    ctrl(i) = M*ctrl(i)
 		  next
 		  
+		  for i = 0 to ubound(centres) 
+		    if centres(i)<> nil then
+		      centres(i)=M*centres(i)
+		    end if
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -451,6 +494,14 @@ Protected Class nBpoint
 
 	#tag Property, Flags = &h0
 		ctrl() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		curved() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		centres() As BasicPoint
 	#tag EndProperty
 
 

@@ -22,11 +22,11 @@ Protected Class TriDshape
 		  end if
 		  
 		  if s isa Lacet then
-		    for j = 0 to ubound(lacet(s).extre)
-		      TriDpts.append new TriDpoint(Lacet(s).extre(j)-fp)
+		    for j = 0 to ubound(lacet(s).coord.extre)
+		      TriDpts.append new TriDpoint(Lacet(s).coord.extre(j)-fp)
 		    next
-		    for j = 0 to ubound(lacet(s).ctrl)
-		      TriDpts.append new TriDpoint(Lacet(s).ctrl(j)-fp)
+		    for j = 0 to ubound(lacet(s).coord.ctrl)
+		      TriDpts.append new TriDpoint(Lacet(s).coord.ctrl(j)-fp)
 		    next
 		  end if
 		End Sub

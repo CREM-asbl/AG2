@@ -126,7 +126,6 @@ Inherits Circle
 		Sub FreeCircle(Ol as ObjectsList, s as Freecircle, p as BasicPoint)
 		  Shape(ol,s)
 		  ncpts=2
-		  coord.CreateExtreAndCtrlPoints(ori)
 		  createskull(p)
 		  nsk.updatesize(1)
 		  

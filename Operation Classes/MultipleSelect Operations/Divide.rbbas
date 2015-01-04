@@ -200,7 +200,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  if s isa lacet then
-		    if lacet(s).curved(side) = 0 then
+		    if lacet(s).coord.curved(side) = 0 then
 		      Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
 		    else
 		      Trib = new TribPoint(lacet(s).getcentre(side),firstpoint.bpt,secondpoint.bpt)
@@ -213,7 +213,7 @@ Inherits MultipleSelectOperation
 		  
 		  for i= 1 to Numberofdivisions-1
 		    if s isa lacet then
-		      if lacet(s).curved(side) = 0 then
+		      if lacet(s).coord.curved(side) = 0 then
 		        p = Bib.subdiv(NumberofDivisions,i)
 		      else
 		        p = Trib.subdiv(s.ori, NumberofDivisions,i)

@@ -259,16 +259,16 @@ Inherits MultipleSelectOperation
 		    tsf.setconstructioninfos(tempshape.element(i),copies.element(i))
 		  next
 		  
-		  'Exception err
-		  'dim d As Debug
-		  'd = new Debug
-		  'd.setMethod("AppliquerTsf","setconstructioninfos")
-		  'd.setVariable("i",i)
-		  'd.setVariable("tempshape",tempshape)
-		  'd.setvariable("copies",copies)
-		  'err.message = err.message+d.getString
-		  '
-		  'Raise err
+		Exception err
+		  dim d As Debug
+		  d = new Debug
+		  d.setMethod("AppliquerTsf","setconstructioninfos")
+		  d.setVariable("i",i)
+		  d.setVariable("tempshape",tempshape)
+		  d.setvariable("copies",copies)
+		  err.message = err.message+d.getString
+		  
+		  Raise err
 		End Sub
 	#tag EndMethod
 

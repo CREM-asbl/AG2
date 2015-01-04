@@ -146,7 +146,7 @@ Inherits Shape
 		Sub Polygon(ol as ObjectsList, Temp as XMLElement)
 		  Shape(ol,Temp)
 		  redim prol(npts-1)
-		  redim curved(npts-1)
+		  redim coord.curved(npts-1)
 		  createskull(Points(0).bpt)
 		  Updateskull
 		End Sub
@@ -625,10 +625,10 @@ Inherits Shape
 		  delta = wnd.Mycanvas1.MagneticDist
 		  
 		  for i = 0  to npts-1
-		    if curved(i) = 0  then
+		    if coord.curved(i) = 0  then
 		      dr1 = getBiBside(i)
 		      for j = 0 to S.npts-1
-		        if s.curved(j) = 0 then
+		        if s.coord.curved(j) = 0 then
 		          dr2 = s.getBiBside(j)
 		          if dr1.sufficientlynear(dr2) then
 		            i0 = i
@@ -654,9 +654,9 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  Super.InitConstruction
-		  
 		  initcolcotes
-		  redim curved(npts-1)
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -711,10 +711,6 @@ Inherits Shape
 
 	#tag Property, Flags = &h0
 		prol() As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		curved(-1) As Integer
 	#tag EndProperty
 
 

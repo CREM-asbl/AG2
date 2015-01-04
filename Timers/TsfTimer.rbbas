@@ -17,13 +17,13 @@ Inherits Timer
 		      s=copies.element(i)
 		      s.Transform(M1)
 		      if s isa circle then
-		        circle(s).MoveExtreCtrl(M1)
+		        circle(s).coord.MoveExtreCtrl(M1)
 		      end if
 		      for j = 0 to ubound(s.childs)
 		        s.childs(j).modified = true
 		      next
 		      if s isa Lacet then
-		        Lacet(s).MoveExtreCtrl(M1)
+		        Lacet(s).coord.MoveExtreCtrl(M1)
 		      end if
 		    next
 		    can.RefreshBackground
@@ -55,14 +55,20 @@ Inherits Timer
 
 	#tag Method, Flags = &h0
 		Sub TsfTimer(copies as objectslist)
-		  
+		  dim i as integer
+		  dim s as shape
 		  
 		  can = wnd.Mycanvas1
 		  objects = CurrentContent.Theobjects
 		  
 		  self.copies = copies
 		  ncop = copies.count-1
-		  
+		  for i = 0 to ncop
+		    s = copies.element(i)
+		    if s isa circle then
+		      s.coord.createextreandctrlpoints(s.ori)
+		    end if
+		  next
 		  niter = 60
 		  pas = niter
 		  

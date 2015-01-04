@@ -121,7 +121,7 @@ Implements StringProvider
 		      s2.drapori = true
 		    end if
 		    if s2 isa Lacet then
-		      Lacet(s2).MoveExtreCtrl(M)
+		      Lacet(s2).coord.MoveExtreCtrl(M)
 		    end if
 		  else
 		    Point(s2).moveto M*Point(s1).bpt
@@ -695,16 +695,16 @@ Implements StringProvider
 		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 		  
-		  for i = 0 to ubound(s2.extre)
-		    s2.extre(i) = M*s1.extre(i)
+		  for i = 0 to ubound(s2.coord.extre)
+		    s2.coord.extre(i) = M*s1.coord.extre(i)
 		  next
-		  for i = 0 to ubound(s2.ctrl)
-		    s2.ctrl(i) = M*s1.ctrl(i)
+		  for i = 0 to ubound(s2.coord.ctrl)
+		    s2.coord.ctrl(i) = M*s1.coord.ctrl(i)
 		  next
 		  if s1 isa lacet then
-		    for i = 0 to ubound(s1.centres)
-		      if s1.centres(i) <> nil then
-		        s2.centres(i) = M*s1.centres(i)
+		    for i = 0 to ubound(s1.coord.centres)
+		      if s1.coord.centres(i) <> nil then
+		        s2.coord.centres(i) = M*s1.coord.centres(i)
 		      end if
 		    next
 		  end if

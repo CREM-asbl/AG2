@@ -122,6 +122,7 @@ Inherits nBpoint
 		  next
 		  
 		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -131,6 +132,7 @@ Inherits nBpoint
 		  ori = orientation
 		  redim extre(1)
 		  redim ctrl(5)
+		  
 		  
 		End Sub
 	#tag EndMethod

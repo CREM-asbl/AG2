@@ -96,8 +96,8 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub Polyqcq(ol as ObjectsList)
 		  Shape (ol)
-		  npts = 1
-		  ncpts = 1
+		  npts = 0
+		  ncpts = 0
 		  fam = 6
 		  
 		End Sub

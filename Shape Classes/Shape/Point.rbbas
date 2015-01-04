@@ -481,12 +481,12 @@ Inherits Shape
 		    q=s.coord.positionOnCircle(r,s.ori)
 		  elseif s isa Lacet then
 		    n = numside(k)
-		    if Lacet(s).curved(n) = 0 then
+		    if Lacet(s).coord.curved(n) = 0 then
 		      q = (s.Points(n).bpt)*(1-r) + (s.Points( (n+1) mod s.npts).bpt) *r
 		    else
 		      angle = r*Lacet(s).GetArcAngle(n) +Lacet(s).GetStartAngle(n)
 		      q = new BasicPoint(cos(angle),sin(angle))
-		      q = Lacet(s).centres(n)+ q * Lacet(s).GetRadius(n)
+		      q = Lacet(s).coord.centres(n)+ q * Lacet(s).GetRadius(n)
 		    end if
 		  end if
 		  Moveto q
@@ -758,8 +758,8 @@ Inherits Shape
 		  dim q as BasicPoint
 		  dim cx, cy as double
 		  
-		  if s isa Lacet and Lacet(s).curved(i) = 1 then
-		    return bpt.projection(Lacet(s).centres(i), Lacet(s).getradius(i))
+		  if s isa Lacet and Lacet(s).coord.curved(i) = 1 then
+		    return bpt.projection(Lacet(s).coord.centres(i), Lacet(s).getradius(i))
 		  else
 		    return ProjectionOnAttractingSegment(s.Points(i).bpt,s.Points((i+1) mod s.npts).bpt)
 		  end if
@@ -2466,8 +2466,8 @@ Inherits Shape
 		  
 		  
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
-		    if d > 0.05 and dret = nil then
-		      np = bpt+ (delta.normer)*0.05
+		    if d > 0.1 and dret = nil then
+		      np = bpt+ (delta.normer)*0.1
 		    end if
 		  end if
 		  M = new TranslationMatrix(np-bpt)

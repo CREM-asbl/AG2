@@ -167,8 +167,8 @@ Implements StringProvider
 		    if shapes.element(i) isa Lacet  then
 		      s = Lacet(shapes.element(i))
 		      for j = 0 to s.npts-1
-		        if s.curved(j) = 1 then
-		          oldcentres.append s.centres(j)
+		        if s.coord.curved(j) = 1 then
+		          oldcentres.append s.coord.centres(j)
 		        end if
 		      next
 		    end if
@@ -1224,7 +1224,7 @@ Implements StringProvider
 		    s= shapes.element(j)
 		    s.Mmove = M
 		    if s isa Circle or s isa Lacet  then
-		      s.MoveExtreCtrl(M)
+		      s.coord.MoveExtreCtrl(M)
 		    end if
 		    if s isa arc   or s isa cube then
 		      s.updateskull
@@ -1305,10 +1305,10 @@ Implements StringProvider
 		      M.XMLPutAttribute(EL2)
 		    end if
 		    if s isa Lacet then
-		      EL2.SetAttribute("Centres",str(1))
-		      for j = 0 to ubound(s.centres)
-		        if s.centres(j) <> nil then
-		          EL2.AppendChild(s.centres(j).XMLPutInContainer(CurrentContent.OpList))
+		      EL2.SetAttribute("coord.centres",str(1))
+		      for j = 0 to ubound(s.coord.centres)
+		        if s.coord.centres(j) <> nil then
+		          EL2.AppendChild(s.coord.centres(j).XMLPutInContainer(CurrentContent.OpList))
 		        end if
 		      next
 		    end if
@@ -1390,19 +1390,19 @@ Implements StringProvider
 		    EL2 = XMLElement(EL1.Child(i))
 		    s = shapes.element(i)
 		    s.updatecoord
-		    s.updateskull
-		    s.updatelab
 		    if s isa circle or s isa Lacet then
 		      k = 0
-		      for j = 0 to ubound(s.centres)
-		        if s.centres(j) <>nil then
+		      for j = 0 to ubound(s.coord.centres)
+		        if s.coord.centres(j) <>nil then
 		          Coord = XmlElement(EL2.child(k))
-		          s.centres(j) = new BasicPoint(coord)
+		          s.coord.centres(j) = new BasicPoint(coord)
 		          k = k+1
 		        end if
 		      next
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
+		    s.updateskull
+		    s.updatelab
 		    if s.duplicateorcut then
 		      M = new Matrix(EL2)
 		      s.constructedby.data(0) = M
@@ -1412,9 +1412,6 @@ Implements StringProvider
 		        next
 		      end if
 		    end if
-		    
-		    
-		    
 		  next
 		  
 		  List = EL.XQL("PtsSur")
@@ -1918,6 +1915,7 @@ Implements StringProvider
 		  dim i, j, i0 as integer
 		  dim p as point
 		  dim s as Lacet
+		  dim sh as shape
 		  
 		  
 		  for i = 0 to somm.count-1
@@ -1935,9 +1933,11 @@ Implements StringProvider
 		    if shapes.element(i) isa Lacet  then
 		      s = Lacet(shapes.element(i))
 		      for j = 0 to s.npts-1
-		        if s.curved(j) = 1 then
-		          s.centres(j) = oldcentres(i0)
+		        if s.coord.curved(j) = 1 then
+		          s.coord.centres(j) = oldcentres(i0)
 		          i0 = i0+1
+		        else
+		          s.coord.centres(j) = nil
 		        end if
 		      next
 		    end if
@@ -1968,15 +1968,19 @@ Implements StringProvider
 		  
 		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
 		  //Pas compris pourquoi...
-		  for i = 0 to shapes.count-1
-		    shapes.element(i).updatecoord
-		    if shapes.element(i) isa arc then
-		      Arc(shapes.element(i)).computearcangle
+		  for i = 0 to shapes.count-1 
+		    sh = shapes.element(i)
+		    sh.updatecoord
+		    if sh isa arc then
+		      Arc(sh).computearcangle
 		    end if
-		    if shapes.element(i) isa circle or shapes.element(i) isa lacet then
-		      shapes.element(i).coord.CreateExtreAndCtrlPoints(shapes.element(i).ori)
+		    if sh isa circle then
+		      sh.coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
-		    shapes.element(i).updateskull
+		      if sh isa lacet then
+		      Lacet(sh).CreateExtreAndCtrlPoints
+		    end if
+		    sh.updateskull
 		  next
 		  
 		  
@@ -2164,11 +2168,12 @@ Implements StringProvider
 		    p.modified = true // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
 		  next
 		  
-		  for i = 0 to shapes.count-1
-		    if shapes.element(i) isa Lacet then
-		      shapes.element(i).coord.createextreandctrlpoints(shapes.element(i).ori)
-		    end if
-		  next
+		  'for i = 0 to shapes.count-1
+		  'if shapes.element(i) isa Lacet then
+		  'Lacet(shapes.element(i)).createextreandctrlpoints
+		  'Lacet(shapes.element(i)).updateskull
+		  'end if
+		  'next
 		  
 		  EndQQupdateshapes
 		  

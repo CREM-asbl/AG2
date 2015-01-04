@@ -35,20 +35,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Circle(ol as objectslist, s as circle, q as Basicpoint)
-		  dim i as integer
-		  dim M as Matrix
-		  
-		  M = new TranslationMatrix(q)
-		  Shape(ol,s)
-		  ori = s.ori
-		  nsk = new Circleskull(wnd.mycanvas1.transform(Points(0).bpt))
-		  Move(M)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub computeradius()
 		  if ubound(points) > 0 then
 		    radius = coord.distance01
@@ -235,19 +221,6 @@ Inherits Shape
 		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(coord.ctrl(i)-p))
 		  next
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MoveExtreCtrl(M as Matrix)
-		  dim i as integer
-		  
-		  for i = 0 to 1
-		    coord.extre(i) = M*coord.extre(i)
-		  next
-		  for i = 0 to 5
-		    coord.ctrl(i) = M*coord.ctrl(i)
-		  next
 		End Sub
 	#tag EndMethod
 

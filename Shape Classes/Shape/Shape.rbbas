@@ -1182,6 +1182,7 @@ Implements StringProvider
 		    Points(i).moveto (s.Points(i).bpt)
 		    points(i).hidden = s.points(i).hidden
 		  next
+		  updatecoord
 		  plan = -1
 		End Sub
 	#tag EndMethod
@@ -1306,30 +1307,35 @@ Implements StringProvider
 		    case 5
 		      M = Matrix(ConstructedBy.Data(0))
 		      for i = 0 to npts-1
-		        if Lacet(self).curved(i) = 1 then
+		        if Lacet(self).coord.curved(i) = 1 then
 		          if s1 isa circle then
-		            centres(i) = M*s1.points(0).bpt
+		            coord.centres(i) = M*s1.points(0).bpt
 		          else
 		            p = point(points(i).constructedby.shape)
 		            k = s1.getindexpoint(p)
 		            if k = -1 then
 		              k = Lacet(s1).PointOnCurvedSide(p.bpt)
 		            end if
-		            centres(i) = M*Lacet(s1).Getcentre(k)
+		            coord.centres(i) = M*Lacet(s1).Getcentre(k)
 		          end if
 		        end if
 		      next
 		    case 6
 		      M = Transformation(ConstructedBy.Data(0)).M
 		      for i = 0 to npts-1
-		        if s1.centres(i) <> nil then
-		          centres(i) = M*s1.centres(i)
+		        if s1.coord.centres(i) <> nil then
+		          coord.centres(i) = M*s1.coord.centres(i)
 		        end if
 		      next
 		    end select
 		  end if
 		  
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  if self isa Lacet then
+		    Lacet(self).CreateExtreAndCtrlPoints
+		    'Lacet(self).updateskull
+		  else
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  modified = true
 		  endmove
 		  updateMacConstructedShapes
@@ -1735,7 +1741,7 @@ Implements StringProvider
 		    Childs(i). Move(M)
 		  next
 		  if self isa circle or self isa Lacet then
-		    MoveExtreCtrl(M)
+		    coord.MoveExtreCtrl(M)
 		  end if
 		  Mmove = M
 		  EndMove
@@ -2807,8 +2813,10 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  
-		  if not self  isa Lacet then
+		  if self isa Lacet then
+		    Lacet(self).CreateExtreAndCtrlPoints
+		    Lacet(self).updateskull
+		  else
 		    List3 = Tmp.XQL("SourcePoints")
 		    if List3.length > 0 then
 		      EL3=XMLElement(List3.Item(0))
@@ -3776,14 +3784,6 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub MoveExtreCtrl(M as Matrix)
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetIndexPoint(p as BasicPoint) As integer
 		  dim i as integer
 		  
@@ -3977,7 +3977,10 @@ Implements StringProvider
 		    next
 		    coord.constructshape(fam,forme)
 		    repositionnerpoints
-		  end if
+		  end If
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -4427,18 +4430,6 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		ifmac As InfoMac
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		centres(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ctrl(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		extre(-1) As BasicPoint
 	#tag EndProperty
 
 

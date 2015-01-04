@@ -665,12 +665,13 @@ Inherits nBpoint
 		  redim extre(1)
 		  redim ctrl(5)
 		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CreateExtreAndCtrlPoints(orien As integer)
-		  dim M as RotationMatrix
+		  dim M as RotationMatrix     'Utilise uniquement pour des cercles
 		  dim p, q as BasicPoint
 		  dim bp1, bp2 as BasicPoint
 		  dim BiB1, Bib2 as BiBPoint
@@ -679,15 +680,6 @@ Inherits nBpoint
 		  dim s2 as shape
 		  dim tsf as transformation
 		  
-		  redim extre(1)
-		  redim ctrl(5)
-		  
-		  'if constructedby <> nil and constructedby.oper = 6 then
-		  's2 = constructedby.shape
-		  'circle(s2).createextreandctrlpoints
-		  'tsf = transformation(constructedby.data(0))
-		  'tsf.AppliquerExtreCtrl(circle(s2),circle(self))
-		  'else
 		  M = new RotationMatrix(tab(0),2*Pi/3)
 		  
 		  extre(0) = M*tab(1)

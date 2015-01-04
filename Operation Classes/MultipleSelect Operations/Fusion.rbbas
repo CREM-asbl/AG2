@@ -51,7 +51,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  if not Fus.std then
 		    Fus.autos
-		    redim fus.curved(fus.npts-1)
+		    redim fus.coord.curved(fus.npts-1)
 		  end if
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)

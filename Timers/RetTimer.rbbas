@@ -118,11 +118,11 @@ Inherits TsfTimer
 		      next
 		    end if
 		    if s isa Lacet then
-		      for j = 0 to ubound(lacet(s).extre)
-		        Lacet(s).extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
+		      for j = 0 to ubound(lacet(s).coord.extre)
+		        Lacet(s).coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
 		      next
-		      for j = 0 to ubound(lacet(s).ctrl)
-		        Lacet(s).ctrl(j) =  t.TriDPts(ntdbp+2*Lacet(s).narcs+1+j).ProjPlan + fp
+		      for j = 0 to ubound(lacet(s).coord.ctrl)
+		        Lacet(s).coord.ctrl(j) =  t.TriDPts(ntdbp+2*Lacet(s).narcs+1+j).ProjPlan + fp
 		      next
 		    end if
 		    s.updatecoord

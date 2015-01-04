@@ -658,7 +658,9 @@ Protected Class Macro
 		    
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
-		    s.coord = ifmac.coord
+		    for i = 0 to s.npts-1
+		      s.coord.tab(i) = ifmac.coord.tab(i)
+		    next
 		    if s isa point  then
 		      if s.forme = 1 then
 		        redim point(s).location(0)

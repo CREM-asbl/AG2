@@ -179,7 +179,7 @@ Inherits FigureShape
 		    lac = lacet(s)
 		  end if
 		  
-		  if lac.curved(i) = 0 then
+		  if lac.coord.curved(i) = 0 then
 		    lac.nsk.cs(currentcurve).bordercolor = col
 		    lac.nsk.cs(currentcurve).border = c
 		    currentcurve = currentcurve+1
@@ -204,7 +204,7 @@ Inherits FigureShape
 		    lac = lacet(s)
 		  end if
 		  
-		  if lac.curved(i) = 0 then
+		  if lac.coord.curved(i) = 0 then
 		    lac.nsk.cs(currentcurve).borderwidth = c
 		    currentcurve = currentcurve+1
 		  else
