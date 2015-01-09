@@ -469,7 +469,7 @@ Inherits SelectOperation
 		  dim lab as label
 		  dim i as integer
 		  
-		  if s.labs.count = 0  or s.hidden  then
+		  if s.labs.count = 0  or (s.hidden  and not s isa repere) then
 		    return
 		  end if
 		  
@@ -477,24 +477,25 @@ Inherits SelectOperation
 		  
 		  for i = 0 to s.labs.count -1
 		    lab = s.labs.element(i)
-		    
 		    bp = lab.correction
-		    bp = wnd.myCanvas1.idtransform(bp)
 		    bp = bp + lab.position
 		    ajustminmax(bp.x,bp.y)
 		    
 		    lab.pssize
-		    
 		    bp1 = new BasicPoint(lab.psw, -lab.psh)
 		    bp1 = wnd.myCanvas1.idtransform(bp1)
 		    bp1= bp1*(50/28.35)
-		    bp1 = bp1+bp
+		    bp1 = bp1 +bp
+		    
 		    ajustminmax(bp1.x,bp1.y)
+		    bp = lab.correction
 		    
 		    bp1 = new BasicPoint(lab.psw, -lab.psp)
 		    bp1 = wnd.myCanvas1.idtransform(bp1)
-		    bp1=bp1*(50/28.35)
-		    bp1.y = -bp1.y
+		    bp1= bp1*(50/28.35)
+		    bp1.y = - bp1.y
+		    bp1 = bp1 +bp
+		    
 		    ajustminmax(bp1.x,bp1.y)
 		  next
 		  
