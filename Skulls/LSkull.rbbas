@@ -20,16 +20,19 @@ Inherits NSkull
 		    cv = new curveshape
 		    cv.Order = 0
 		    cs.append cv
+		    append cv
 		  case 1
 		    for i = 0 to 2
 		      cv = new curveshape
 		      cv.Order = 2
 		      cs.append cv
+		      append cv
 		    next
 		  case 2
 		    cv = new curveshape
 		    cv.Order = 2
 		    cs.append cv
+		    append cv
 		  end select
 		  
 		End Sub
@@ -91,9 +94,10 @@ Inherits NSkull
 		Sub paint(g as graphics)
 		  dim i as integer
 		  
+		  g.drawobject self,ref.x, ref.y
 		  
-		  for i = 0 to ubound(cs)
-		    g.drawobject cs(i), ref.x, ref.y
+		  for i = 0 to count-1
+		    g.drawobject item(i), ref.x, ref.y
 		  next
 		End Sub
 	#tag EndMethod

@@ -571,8 +571,8 @@ Inherits SelectOperation
 		  
 		  if s isa point then
 		    co = s.sk.cc.bordercolor
-		  elseif s isa circle then
-		    co =circle(s).nsk.fillcolor
+		  elseif s isa circle or s isa lacet then
+		    co =s.nsk.fillcolor
 		  else
 		    co = s.sk.cc.fillcolor
 		  end if

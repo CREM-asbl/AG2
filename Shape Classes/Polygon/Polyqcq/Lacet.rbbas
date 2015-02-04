@@ -243,39 +243,41 @@ Inherits Polyqcq
 
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as textoutputStream)
-		  'dim Source as Shape
-		  'dim M as Matrix
-		  'dim i as integer
-		  'dim s as string
-		  'dim r as double
-		  '
-		  'Source = ConstructedBy.shape
-		  '
-		  'if source isa circle and not hidden then
-		  '
-		  'r = support.distance(points(0).bpt)
-		  '
-		  's = "[ "
-		  'for i = 0 to npts-2
-		  's = s+ " " + Points(i).etiq+ " "
-		  'next
-		  's = s + " [ [ " + points(npts-1).etiq + " [ "  + str(support.x) + " " + str(support.y) + " ] " + points(0). etiq + " ] " + str(ori*r) + " ] arcsecteur "
-		  '
-		  's = s+"]"
-		  '
-		  'if fill > 49 then
-		  'tos.writeline  s + " lacetrempli "
-		  'else
-		  'tos.writeline s + "lacet"
-		  'end if
-		  '
-		  's = "[ "
-		  'for i = 0 to npts-1
-		  's = s+ " " + Points(i).etiq+ " "
-		  'next
-		  's = s + " ] "
-		  'tos.writeline s + " suitepoints "
-		  'end if
+		  dim Source as Shape
+		  dim M as Matrix
+		  dim i as integer
+		  dim s as string
+		  dim r as double
+		  dim support as BasicPoint
+		  
+		  Source = ConstructedBy.shape
+		  
+		  if source isa circle and not hidden then
+		    
+		    support = coord.centres(2)
+		    r = support.distance(points(0).bpt)
+		    
+		    s = "[ "
+		    for i = 0 to npts-2
+		      s = s+ " " + Points(i).etiq+ " "
+		    next
+		    s = s + " [ [ " + points(npts-1).etiq + " [ "  + str(support.x) + " " + str(support.y) + " ] " + points(0). etiq + " ] " + str(ori*r) + " ] arcsecteur "
+		    
+		    s = s+"]"
+		    
+		    if fill > 49 then
+		      tos.writeline  s + " lacetrempli "
+		    else
+		      tos.writeline s + "lacet"
+		    end if
+		    
+		    s = "[ "
+		    for i = 0 to npts-1
+		      s = s+ " " + Points(i).etiq+ " "
+		    next
+		    s = s + " ] "
+		    tos.writeline s + " suitepoints "
+		  end if
 		End Sub
 	#tag EndMethod
 

@@ -139,26 +139,29 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as TextOutputStream)
 		  dim i as integer
+		  dim s as string
+		  
+		  s = "[  " + points(0).etiq + " " + "[ " +points(0).etiq +  points(1).etiq +" ] distance ]  "
 		  
 		  if fill > 49 and not tsp then
 		    if ti <> nil then
 		      if ori = 1 then
-		        tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] disqueorientepos")
+		        tos.writeline ( s +"disqueorientepos")
 		      else
-		        tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] disqueorienteneg")
+		        tos.writeline ( s +"disqueorienteneg")
 		      end if
 		    else
-		      tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] disque")
+		      tos.writeline (s +"disque")
 		    end if
 		  else
 		    if ti <> nil  then
 		      if ori = 1 then
-		        tos.writeline ( "[  " + points(0).etiq +  " " + str(radius)+ " ] cercleorientepos")
+		        tos.writeline ( s +"cercleorientepos")
 		      else
-		        tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] cercleorienteneg")
+		        tos.writeline ( s+"cercleorienteneg")
 		      end if
 		    else
-		      tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] cercle")
+		      tos.writeline ( s+"cercle")
 		    end if
 		  end if
 		  
