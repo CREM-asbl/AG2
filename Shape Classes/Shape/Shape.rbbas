@@ -3676,9 +3676,13 @@ Implements StringProvider
 		    return
 		  end if
 		  
-		  for i = 0 to npts-1
-		    coord.tab(i) = points(i).bpt
-		  next
+		  if self isa point then
+		    coord.tab(0) = point(self).bpt
+		  else
+		    for i = 0 to npts-1
+		      coord.tab(i) = points(i).bpt
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 
