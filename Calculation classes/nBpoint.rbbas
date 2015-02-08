@@ -141,7 +141,7 @@ Protected Class nBpoint
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new OrthoProjectionMatrix(a,a+b)
-		      tab.append = M*tab(2)
+		      tab.append  M*tab(2)
 		    case 3
 		      a = (tab(0)+tab(1))/2
 		      b = tab(1)-tab(0)
@@ -156,14 +156,14 @@ Protected Class nBpoint
 		      b = b.vecnorperp
 		      M =  new OrthoProjectionMatrix(a,a+b)
 		      tab(2) = M*tab(2)
-		      tab.append = tab(0)-tab(1)+tab(2)
+		      tab.append  tab(0)-tab(1)+tab(2)
 		    case 6
 		      d = tab(0).distance(tab(1))
 		      b = tab(2)-tab(1)
 		      if tab(1).distance(tab(2)) > 0 then
 		        tab(2) = tab(1)+(b.normer)*d
 		      end if
-		      tab.append = tab(0)-tab(1)+tab(2)
+		      tab.append  tab(0)-tab(1)+tab(2)
 		    case 7
 		      constructshape(4,1)
 		    end select
