@@ -44,7 +44,7 @@ Inherits MultipleSelectOperation
 		      
 		    end if
 		  end if
-		  
+		  Fus.coord= new nBPoint(Fus)
 		  if Fus1.std or Fus2.std then
 		    Fus.std = true
 		    Fus.fam = 11

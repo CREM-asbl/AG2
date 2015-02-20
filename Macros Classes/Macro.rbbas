@@ -448,7 +448,7 @@ Protected Class Macro
 		      nbp.tab(0) = ifm1.coord.tab(num)
 		    end if
 		  else
-		    redim nbp.tab(ifmac.ncpts-1)
+		    redim nbp.tab(ifmac.npts-1)
 		    for i = 0 to ifmac.ncpts-1
 		      ifm1 = ifmac.childs(i)
 		      ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)

@@ -98,11 +98,11 @@ Protected Class nBpoint
 		  dim i, n, ori as integer
 		  dim M as matrix
 		  
-		  for i = 0 to taille-1
-		    if tab(i) = nil then
-		      return
-		    end if
-		  next
+		  'for i = 0 to taille-1
+		  'if tab(i) = nil then
+		  'return
+		  'end if
+		  'next
 		  
 		  ori = 1
 		  
@@ -127,7 +127,7 @@ Protected Class nBpoint
 		    case 4 'TriRectIso
 		      a = (tab(0)+tab(1))/2
 		      M = new RotationMatrix(a,ori*PIDEMI)
-		      tab.append M*tab(1)
+		      tab(2) = M*tab(1)
 		    end select
 		  case 3 'Quadris
 		    select case fo
@@ -141,29 +141,29 @@ Protected Class nBpoint
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new OrthoProjectionMatrix(a,a+b)
-		      tab.append  M*tab(2)
+		      tab(3) = M*tab(2)
 		    case 3
 		      a = (tab(0)+tab(1))/2
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new SymmetryMatrix(a,a+b)
-		      tab.append M*tab(2)
+		      tab(3) = M*tab(2)
 		    case 4
-		      tab.append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 5
 		      a = tab(1)
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M =  new OrthoProjectionMatrix(a,a+b)
 		      tab(2) = M*tab(2)
-		      tab.append  tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 6
 		      d = tab(0).distance(tab(1))
 		      b = tab(2)-tab(1)
 		      if tab(1).distance(tab(2)) > 0 then
 		        tab(2) = tab(1)+(b.normer)*d
 		      end if
-		      tab.append  tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 7
 		      constructshape(4,1)
 		    end select
@@ -177,7 +177,7 @@ Protected Class nBpoint
 		      c = a + b*(ori*d/(2*tan(PI/n)))
 		      M = new RotationMatrix(c,2*ori*PI/n)
 		      for i = 2 to n-1
-		        tab.append M*tab(i-1)
+		        tab(i) = M*tab(i-1)
 		      next
 		    end if
 		  case 5
