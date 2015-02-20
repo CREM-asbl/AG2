@@ -567,11 +567,9 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Function test(p as Point) As Boolean
 		  dim t as boolean
-		  dim i, j as integer
+		  'dim i, j as integer
 		  dim s as point
-		  dim q1, ep as BasicPoint
-		  dim M as TranslationMatrix
-		  dim sh as shape
+		  dim q1 as BasicPoint
 		  
 		  testfinished = false
 		  wnd.Mycanvas1.Mousecursor = system.cursors.wait

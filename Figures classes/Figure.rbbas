@@ -886,8 +886,8 @@ Implements StringProvider
 		      select case n
 		      case 0, 1, 2, 4, 6
 		        f1.auto = n
-		      case 3, 5
-		        f1.auto = 1
+		        'case 3, 5
+		        'f1.auto = 1
 		      end select
 		      return
 		    end if
@@ -1968,7 +1968,7 @@ Implements StringProvider
 		  
 		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
 		  //Pas compris pourquoi...
-		  for i = 0 to shapes.count-1 
+		  for i = 0 to shapes.count-1
 		    sh = shapes.element(i)
 		    sh.updatecoord
 		    if sh isa arc then
@@ -1977,7 +1977,7 @@ Implements StringProvider
 		    if sh isa circle then
 		      sh.coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
-		      if sh isa lacet then
+		    if sh isa lacet then
 		      Lacet(sh).CreateExtreAndCtrlPoints
 		    end if
 		    sh.updateskull
@@ -3051,7 +3051,7 @@ Implements StringProvider
 		  'return false
 		  'end if
 		  
-		  if (f1.supfig <> f2.supfig) or (f1.auto <> f2.auto) then
+		  if (f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3) then
 		    return false
 		  end if
 		  

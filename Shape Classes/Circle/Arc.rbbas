@@ -429,9 +429,9 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
 		  
-		  if points(1).forme = 1 and points(2).forme = 1 and   (abs(abs(arcangle)-Pi) < epsilon )  then
-		    auto = 1
-		  end if
+		  'if points(1).forme = 1 and points(2).forme = 1 and   (abs(abs(arcangle)-Pi) < epsilon )  then
+		  'auto = 1
+		  'end if
 		  
 		  super.endconstruction
 		  'if currentcontent.currentoperation isa macroexe then
