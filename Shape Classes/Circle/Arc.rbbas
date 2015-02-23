@@ -601,6 +601,11 @@ Inherits Circle
 		Function Modifier30() As Matrix
 		  //Trois sommets modifiés, aucun n'est un point "sur"
 		  
+		  if fig.pointmobile = points(2) then
+		    constructshape
+		  end if
+		  epnp
+		  
 		  if abs(np0.distance(np1) - np0.distance(np2)) < epsilon then
 		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
 		      return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
