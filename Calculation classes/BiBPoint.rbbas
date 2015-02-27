@@ -518,7 +518,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Second() As basicPoint
+		Function Second() As BasicPoint
 		  return Tab(1)
 		End Function
 	#tag EndMethod

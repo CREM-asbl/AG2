@@ -54,18 +54,6 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function orientation() As integer
-		  dim u, v as BasicPoint
-		  
-		  
-		  u = tab(1)-tab(0)
-		  v = tab(2)-tab(0)
-		  return sign(u.vect(v))
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function PositionOnArc(a as double, orien as integer) As BasicPoint
 		  dim p, q as BasicPoint
 		  dim r, b as double

@@ -53,11 +53,12 @@ Inherits Circle
 		  startangle = coord.startangle    'GetAngle(Points(0).bpt, Points(1).bpt)
 		  endangle = coord.endangle     'GetAngle(Points(0).bpt, Points(2).bpt)
 		  // startangle et endangle  sont toujours entre 0 et 2 pi
-		  if  abs(endangle-startangle)  >  0.2 then
-		    drapori = true  //on ne peut plus changer l'orientation
-		  end if
+		  
 		  if not drapori then
 		    ori = coord.orientation                         'points(0).bpt.orientation(points(1).bpt,points(2).bpt)
+		  end if
+		  if  abs(endangle-startangle)  >  0.4 and ori <> 0 then
+		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
 		  arcangle = computeangle(points(2).bpt)
 		  
@@ -86,9 +87,10 @@ Inherits Circle
 		  endangle = s.endangle
 		  startangle = s.startangle
 		  IndexConstructedPoint = 2   '(clutch)
+		  drapori = s.drapori
+		  ori =s.ori
 		  createskull(p)
 		  nsk.updatesize(1)
-		  drapori = s.drapori
 		  liberte = 5
 		  
 		  
@@ -178,9 +180,6 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As shape
-		  dim s as shape
-		  dim j as integer
-		  dim a, b as point
 		  
 		  return  new Arc(Obl,self,p)
 		  
@@ -428,11 +427,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  
-		  'if points(1).forme = 1 and points(2).forme = 1 and   (abs(abs(arcangle)-Pi) < epsilon )  then
-		  'auto = 1
-		  'end if
-		  
+		  drapori = true
 		  super.endconstruction
 		  'if currentcontent.currentoperation isa macroexe then
 		  'computeradius

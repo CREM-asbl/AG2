@@ -204,7 +204,9 @@ Implements StringProvider
 		      points(i).isinconstruction = true
 		    next
 		  end
-		  
+		  if currentcontent.PolygFleches and not self isa Lacet then
+		    Ti = new Tip
+		  end if
 		  
 		  isinconstruction = true
 		  
@@ -676,12 +678,7 @@ Implements StringProvider
 		  for i = 0 to npts-1
 		    points(i).isinconstruction = false
 		  next
-		  if self isa arc or self isa secteur then
-		    drapori = true
-		  end if
-		  if currentcontent.PolygFleches and not self isa Lacet then
-		    Ti = new Tip
-		  end if
+		  
 		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
 		    nonpointed = not currentcontent.PolygPointes
 		  elseif constructedby <> nil and constructedby.shape.nonpointed = true then
@@ -824,6 +821,7 @@ Implements StringProvider
 		  objects = ol
 		  labs = new lablist
 		  tsfi = new transfoslist
+		  drapori = false
 		  Autos
 		  Fixecouleurtrait(Config.bordercolor,Config.Border)
 		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
@@ -1173,6 +1171,7 @@ Implements StringProvider
 		  borderwidth = s.borderwidth
 		  bordercolor = s.bordercolor
 		  Fixecouleurfond s.Getfillcolor, s.Fill
+		  Ti = s.Ti
 		  std = s.std
 		  ori = s.ori
 		  hidden = s.hidden
@@ -3959,10 +3958,9 @@ Implements StringProvider
 		    for j = 0 to npts-1
 		      if coord.tab(j) = nil then
 		        return
+		      else
+		        points(j).moveto coord.tab(j)   //On repositionne les sommets
 		      end if
-		    next
-		    for j = 0 to ubound(points)
-		      points(j).moveto coord.tab(j)   //On repositionne les sommets
 		    next
 		  end if
 		End Sub

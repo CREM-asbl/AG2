@@ -339,8 +339,8 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
-		  dim can as mycanvas
-		  dim a, b, e, m as basicPoint
+		  'dim can as mycanvas
+		  'dim a, b, e, m as basicPoint
 		  
 		  super.paint(g)
 		  
@@ -349,12 +349,12 @@ Inherits Shape
 		      PaintTipOnSide g, i
 		    next
 		    if constructedby <> nil and constructedby.oper = 9 and constructedby.data(4) = 1 then
-		      a = Points(0).bpt
-		      b = Points(1).bpt
-		      e = b-a
-		      e = e*0.05
-		      a = a-e
-		      b = b-e
+		      'a = Points(0).bpt
+		      'b = Points(1).bpt
+		      'e = b-a
+		      'e = e*0.05
+		      'a = a-e
+		      'b = b-e
 		      PaintTipOnSide g, 0
 		    end if
 		  end if

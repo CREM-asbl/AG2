@@ -268,21 +268,16 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as Graphics)
-		  dim a,b,e as BasicPoint
-		  dim can as mycanvas
+		  dim e, m as BasicPoint
+		  
 		  
 		  ComputeExtre
 		  UpDateSkull
 		  super.Paint(g)
-		  
-		  if Ti <> nil and not hidden  then
-		    can = wnd.mycanvas1
-		    e = (secondp-firstp)*0.1
-		    a = can.transform(getgravitycenter-e)
-		    b = can.transform(getgravitycenter+e)
-		    Ti.updatetip(a,b,bordercolor)
-		    Ti.scale = 0.5
-		    g.DrawObject Ti, b.x, b.y
+		  e = (coord.tab(1)-coord.tab(0))*0.1
+		  m =(coord.tab(0)+coord.tab(1))/2
+		  if  e.norme>0 and Ti <> nil and not hidden  then
+		    PaintTip(m-e,m+e,Bordercolor,0.5,g)
 		  end if
 		End Sub
 	#tag EndMethod

@@ -817,10 +817,10 @@ Implements StringProvider
 		  
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
-		      if subs.element(i).precede(subs.element(j)) then
+		      if (subs.element(i).auto <> 4) and subs.element(i).precede(subs.element(j)) then
 		        mat.col(i,j) = 1
 		      end if
-		      if subs.element(j).precede(subs.element(i)) then
+		      if (subs.element(i).auto <> 4) and subs.element(j).precede(subs.element(i)) then
 		        mat.col(j,i) = 1
 		      end if
 		    next

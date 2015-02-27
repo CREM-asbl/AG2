@@ -364,13 +364,13 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  if   abs(arcangle)  >  0.2 then
+		  
+		  if not drapori then
+		    ori = coord.orientation 
+		  end if
+		  if   abs(arcangle)  >  0.2 and ori <> 0 then
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
-		  if not drapori then
-		    ori = points(0).bpt.orientation(points(1).bpt,points(2).bpt)
-		  end if
-		  
 		  arcangle = computeangle(points(2).bpt)
 		  
 		  'arcangle a toujours meme signe que l'orientation
@@ -469,6 +469,13 @@ Inherits Shape
 		  return BiB
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EndConstruction()
+		  drapori = true
+		  super.endconstruction
+		End Sub
 	#tag EndMethod
 
 

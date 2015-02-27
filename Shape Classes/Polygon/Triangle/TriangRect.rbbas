@@ -70,15 +70,10 @@ Inherits Triangle
 		      Points(1).moveto np1
 		    end if
 		  case 0,2
-		    'select case n
-		    'case 2-n1
 		    M = new SimilarityMatrix(ep,ep1,np,np1)
-		    np2 = M*ep2
-		    'case 1
-		    'd = amplitude(ep1, np, np1)
-		    'M = new rotationmatrix(np,d)
-		    'np2 = M*ep2
-		    'end select
+		    if M <> nil and M.v1 <> nil then
+		      np2 = M*ep2
+		    end if
 		  end select
 		  
 		  return new Affinitymatrix(ep,ep1,ep2,np,np1,np2)

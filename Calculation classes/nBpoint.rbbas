@@ -98,12 +98,6 @@ Protected Class nBpoint
 		  dim i, n, ori as integer
 		  dim M as matrix
 		  
-		  'for i = 0 to taille-1
-		  'if tab(i) = nil then
-		  'return
-		  'end if
-		  'next
-		  
 		  ori = 1
 		  
 		  select case fa
