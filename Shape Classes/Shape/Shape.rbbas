@@ -679,10 +679,10 @@ Implements StringProvider
 		    points(i).isinconstruction = false
 		  next
 		  
-		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
+		  if constructedby <> nil then
+		    nonpointed = constructedby.shape.nonpointed
+		  elseif not self isa cube then
 		    nonpointed = not currentcontent.PolygPointes
-		  elseif constructedby <> nil and constructedby.shape.nonpointed = true then
-		    nonpointed = true
 		  end if
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
 		    Currentcontent.addShape self
@@ -1466,12 +1466,14 @@ Implements StringProvider
 		    end if
 		    t = t and not(points(i).invalid) and not (points(i).deleted)
 		  next
-		  for i = 0 to ncpts-1
-		    t2 = t2 and points(i).modified
-		  next
 		  if not t then
 		    return
 		  end if
+		  for i = 0 to ncpts-1
+		    t2 = t2 and points(i).modified
+		  next
+		  constructshape
+		  
 		  
 		  if self isa circle or self isa lacet then
 		    coord.CreateExtreAndCtrlPoints(ori)
@@ -1496,6 +1498,7 @@ Implements StringProvider
 		  
 		  for i = 0 to tsfi.count-1
 		    if tsfi.element(i).type <> 0 then
+		      tsfi.element(i).computematrix
 		      tsfi.element(i).ModifyImages
 		      for j = 0 to tsfi.element(i).constructedshapes.count -1
 		        tsfi.element(i).constructedshapes.element(j).valider

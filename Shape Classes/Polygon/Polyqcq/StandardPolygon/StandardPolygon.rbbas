@@ -8,7 +8,9 @@ Inherits Polyqcq
 		  Form = Shape.XMLPutInContainer(Doc)
 		  Form.SetAttribute("StdFile",  file)
 		  Form.SetAttribute("Taille", str(stdsize))
-		  Form.SetAttribute("Angle",str(Angles(0)))
+		  if fam < 14 then
+		    Form.SetAttribute("Angle",str(Angles(0)))
+		  end if
 		  Form.SetAttribute("Ori",str(Ori))
 		  
 		  return form

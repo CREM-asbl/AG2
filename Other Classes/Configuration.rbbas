@@ -424,9 +424,6 @@ Protected Class Configuration
 		  if not ShowStdTools then
 		    return
 		  end if
-		  'if right(stdfile,4) <>".std" then
-		  'stdfile = stdfile+".std"
-		  'end if
 		  
 		  fi = getfolderitem(stdfile)
 		  if not fi.exists then
