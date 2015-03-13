@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -187,20 +187,24 @@ End
 		  dim m as string
 		  dim tsf as transformation
 		  
-		  m = "Construit par : "  +  Type(s.constructedby.shape)
-		  select case s.constructedby.oper
-		  case 0
-		    m = m + ",  Centre"
-		  case 3
-		    m = m + ",  Duplication"
-		  case 4
-		    m = m+ ", Point de division"
-		  case 6
-		    tsf =  Transformation(s.constructedby.data(0))
-		    m = m + " , " + tsf.GetType + " " + "Support " +  Type(Tsf.Supp)
-		  end select
-		  m = m + chr(13)
-		  return m
+		  if s.constructedby.oper <> 9 then
+		    m = "Construit par : "  +  Type(s.constructedby.shape)
+		    select case s.constructedby.oper
+		    case 0
+		      m = m + ",  Centre"
+		    case 3
+		      m = m + ",  Duplication"
+		    case 4
+		      m = m+ ", Point de division"
+		    case 6
+		      tsf =  Transformation(s.constructedby.data(0))
+		      m = m + " , " + tsf.GetType + " " + "Support " +  Type(Tsf.Supp)
+		    end select
+		    m = m + chr(13)
+		    return m
+		  elseif s isa polygon then
+		    m = "Construit par fusion "  +  Type(shape(s.constructedby.data(0))) + " et " + Type(shape(s.constructedby.data(2)))
+		  end if
 		End Function
 	#tag EndMethod
 

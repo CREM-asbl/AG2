@@ -11,19 +11,18 @@ Inherits MultipleSelectOperation
 		  else
 		    if fus1.std or fus2.std or dir = -1 then
 		      if fus1.std or fus2. std then
-		        Fus = new StandardPolygon(CurrentContent.TheObjects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
+		        Fus = new StandardPolygon(Objects, Fus1.Points((start1+1) mod Fus1.npts).bpt)
 		      else
-		        Fus = new Polyqcq(CurrentContent.TheObjects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
+		        Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
 		      end if
 		      for i = 2 to Fus1.npts-1
 		        Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
 		      next
-		      Fus.AddPoint Fus2.Points(start2).bpt
-		      for  i = 1 to Fus2.npts-2
-		        Fus.AddPoint Fus2.Points((start2+Fus2.npts-i) mod fus2.npts).bpt
+		      for  i = 1 to Fus2.npts-1
+		        Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
 		      next
 		    else
-		      Fus = new Polyqcq(CurrentContent.TheObjects,Fus1.Points(start1).bpt)
+		      Fus = new Polyqcq(Objects,Fus1.Points(start1).bpt)
 		      for i = 1 to Fus1.npts-1
 		        Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
 		      next
@@ -44,11 +43,11 @@ Inherits MultipleSelectOperation
 		  if not Fus.std then
 		    Fus.autos
 		    redim fus.coord.curved(fus.npts-1)
-		    Fus.forme = Fus.npts-3
 		  end if
+		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
 		  Fus.Fill = (Fus1.fill+Fus2.fill)/2
-		  Fus.InitConstruction
+		  Fus.InitColCotes
 		  
 		  Tr = Fus1.points((start1+1)mod Fus1.npts).bpt - Fus1.points(start1).bpt
 		  Tr = Tr.VecNorPerp

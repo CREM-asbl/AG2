@@ -214,7 +214,7 @@ Inherits SelectOperation
 		  
 		  for i =  visible.count-1 downto 0
 		    s = Visible.element(i)
-		    if  not (s isa point)  or (point(s).hasstdparent) then
+		    if  not (s isa point)  or (point(s).hasstdparent) or (s.constructedby <> nil and s.constructedby.oper = 9)  then
 		      Visible.removeShape(s)
 		      nobj = visible.count
 		    end if
