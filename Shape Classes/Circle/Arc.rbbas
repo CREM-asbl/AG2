@@ -582,7 +582,7 @@ Inherits Circle
 		  
 		  
 		  if not points(n).invalid  then
-		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		    return AffiOrSimili 'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
 		  else
 		    return new Matrix(1)
 		  end if
@@ -602,11 +602,7 @@ Inherits Circle
 		  epnp
 		  
 		  if abs(np0.distance(np1) - np0.distance(np2)) < epsilon then
-		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
-		      return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
-		    else
-		      return  new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles à cause des points alignés
-		    end if
+		    return AffiOrSimili
 		  else
 		    return new Matrix(1)
 		  end if
@@ -656,7 +652,7 @@ Inherits Circle
 		  end if
 		  if np1 <> nil and np2 <> nil then
 		    p.valider
-		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		    return  AffiOrSimili  'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
 		  else
 		    p.invalider
 		    return new Matrix(1)
@@ -689,7 +685,7 @@ Inherits Circle
 		    points(2).moveto np2
 		    
 		    if np1 <> nil and np2 <> nil then
-		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		      return  AffiOrSimili 'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
 		    else
 		      return new Matrix(1)
 		    end if
@@ -761,6 +757,16 @@ Inherits Circle
 		    return nil
 		  end if
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AffiOrSimili() As Matrix
+		  if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
+		    return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
+		  else
+		    return  new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles à cause des points alignés
+		  end if
 		End Function
 	#tag EndMethod
 
