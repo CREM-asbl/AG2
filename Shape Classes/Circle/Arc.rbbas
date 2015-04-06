@@ -477,10 +477,6 @@ Inherits Circle
 		  'Le point n° n est le seul point modifié. Il y a 0 points "sur"
 		  dim  r as double
 		  
-		  
-		  
-		  
-		  
 		  select case n
 		  case 0, 1
 		    return new SimilarityMatrix(ep0,ep1,np0,np1)
@@ -513,6 +509,7 @@ Inherits Circle
 		Function Modifier2(n1 as integer, n2 as integer) As Matrix
 		  dim n0 as integer
 		  dim r as double
+		  dim M as Matrix
 		  
 		  epnp
 		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
@@ -530,7 +527,10 @@ Inherits Circle
 		    end if
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
 		    if points(2).forme <> 1 then
-		      return new SimilarityMatrix(ep0,ep1,np0,np1)
+		      M = new RotationMatrix(Points(0).bpt, arcangle)
+		      points(2).moveto M*Points(1).bpt
+		      return AffiOrSimili
+		      'return new SimilarityMatrix(ep0,ep1,np0,np1)
 		    end if
 		  end select
 		  
@@ -598,6 +598,7 @@ Inherits Circle
 		  
 		  if fig.pointmobile = points(2) then
 		    constructshape
+		    'points(2).modified = false
 		  end if
 		  epnp
 		  
@@ -762,8 +763,17 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function AffiOrSimili() As Matrix
-		  if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
-		    return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
+		  if  (ep2.alignes(ep1,ep0)) or (np2.alignes(np0,np1)) then
+		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
+		      return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
+		    elseif abs(amplitude(ep1,ep0,ep2)) < 0.2*epsilon or abs(amplitude(np1,np0,np2)) < 0.2*epsilon or abs(amplitude(ep1,ep0,ep2) -2*PI) <0.2* epsilon or abs(amplitude(np1,np0,np2) - 2*PI) < 0.2*epsilon then
+		      np2 = np1
+		      ep2 = ep1
+		      points(2).moveto np2
+		      points(2).modified = true
+		      computearcangle
+		      return new similaritymatrix(ep1,ep0,np1,np0)  // cas des secteurs nuls
+		    end if
 		  else
 		    return  new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles à cause des points alignés
 		  end if

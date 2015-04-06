@@ -243,6 +243,9 @@ End
 		  if s isa triangle or s isa arc then
 		    m = m + "Orientation " + str(s.ori)+chr(13)
 		  end if
+		  if s isa arc then
+		    m = m+"Angle: " + str((Arc(s).arcangle)*180/PI)+"°"
+		  end if
 		  m = m+chr(10)
 		  if s.constructedby <> nil or s.conditionedby <> nil  then
 		    m = m + messlinks(s)

@@ -6,6 +6,7 @@ Inherits SelectAndDragOperation
 		  SelectAndDragOperation()
 		  OpId = 33
 		  finished = true
+		  loc = -1
 		  
 		  
 		  
@@ -345,8 +346,6 @@ Inherits SelectAndDragOperation
 		    end if
 		  elseif s isa polygon or s isa Bande or s isa secteur or s isa Freecircle  then
 		    loc = s.PointOnSide(p)
-		  else
-		    loc = -1 //on a choisi un intérieur : on ne devra pas chipoter pour afficher l'objet en déterminant un n0 de côté
 		  end if
 		  return s
 		End Function

@@ -2460,11 +2460,11 @@ Inherits Shape
 		  dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
+		  dim i, n as integer
+		  
 		  
 		  delta = np-bpt
 		  d = delta.norme
-		  
-		  
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
 		    if d > 0.1 and dret = nil then
 		      np = bpt+ (delta.normer)*0.1

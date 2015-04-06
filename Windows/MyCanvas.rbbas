@@ -183,6 +183,7 @@ Inherits Canvas
 		  tit = sctxt.identifiant
 		  base.append (New MenuItem(tit))
 		  base.append( New MenuItem(MenuItem.TextSeparator))
+		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
 		  if icot = -1 then
@@ -264,16 +265,22 @@ Inherits Canvas
 		  case tit
 		    txt = new TextWindow
 		    txt.visible = true
+		  case Dico.value("ToolsLabel")
+		    currentoper = new AddLabel()
+		    currentoper.currentshape = sctxt
+		    currentcontent.currentoperation = currentoper
+		    currentoper.MouseDown(MouseUser)
+		    currentoper.MouseUp(MouseUser)
 		  case Dico.Value("Epais"), Dico.Value("Mince")
 		    currentcontent.currentoperation = new Epaisseur(3-sctxt.Borderwidth)
-		    curoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(true,new couleur(col))
-		      curoper = colorchange(currentcontent.currentoperation)
+		      currentoper = colorchange(currentcontent.currentoperation)
 		      if sctxt isa polygon then
-		        colorchange(curoper).icot = icot
+		        colorchange(currentoper).icot = icot
 		      end if
 		      EndOperMenuContext
 		    end if
@@ -284,55 +291,55 @@ Inherits Canvas
 		      coul = negcolor
 		    end if
 		    currentcontent.currentoperation = new ColorChange(false,coul)
-		    curoper = colorchange(currentcontent.currentoperation)
+		    currentoper = colorchange(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("ToolsColorFill")
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(false,new couleur(col))
-		      curoper = colorchange(currentcontent.currentoperation)
+		      currentoper = colorchange(currentcontent.currentoperation)
 		      EndOperMenuContext
 		    end if
 		  case Dico.Value("ToolsAVPlan")
 		    CurrentContent.CurrentOperation=new ChangePosition(1)
-		    curoper = ChangePosition(CurrentContent.Currentoperation)
+		    currentoper = ChangePosition(CurrentContent.Currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("ToolsARPlan")
 		    CurrentContent.CurrentOperation=new ChangePosition(0)
-		    curoper = ChangePosition(CurrentContent.Currentoperation)
+		    currentoper = ChangePosition(CurrentContent.Currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Rigidifier"), Dico.Value("Derigidifier")
 		    currentcontent.currentoperation = new Rigidifier
-		    curoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Pointer"), Dico.Value("DePointer")
 		    currentcontent.currentoperation = new Pointer
-		    curoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Tracer"), Dico.Value("DeTracer")
 		    currentcontent.currentoperation = new Tracer
-		    curoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Flecher"), Dico.Value("DeFlecher")
 		    currentcontent.currentoperation = new Flecher
-		    curoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Condition"), Dico.Value("DeCondition")
 		    currentcontent.currentoperation = new Conditionner(sctxt)
-		    curoper = SelectOperation(currentcontent.currentoperation)
-		    curoper.currenthighlightedshape = sctxt
-		    curoper.selection
+		    currentoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper.currenthighlightedshape = sctxt
+		    currentoper.selection
 		  case Dico.Value("Limiter")
 		    point(sctxt).surseg = true
 		  case Dico.Value("Animer")
 		    currentcontent.currentoperation = new Modifier
-		    curoper = Modifier(currentcontent.currentoperation)
+		    currentoper = Modifier(currentcontent.currentoperation)
 		    ClearOffscreen
-		    Modifier(curoper).Animer(point(sctxt))
+		    Modifier(currentoper).Animer(point(sctxt))
 		  end select
 		  
 		  ctxt = false
 		  sctxt = nil
-		  if not curoper isa Conditionner and not curoper isa modifier then
+		  if not currentoper isa Conditionner and not currentoper isa modifier then
 		    currentcontent.currentoperation = nil
 		  end if
 		  wnd.refreshtitle
@@ -640,9 +647,9 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub EndOperMenuContext()
-		  curoper.currenthighlightedshape = sctxt
-		  curoper.selection
-		  curoper.immediatedooperation
+		  currentoper.currenthighlightedshape = sctxt
+		  currentoper.selection
+		  currentoper.immediatedooperation
 		End Sub
 	#tag EndMethod
 
@@ -856,7 +863,7 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		curoper As SelectOperation
+		currentoper As SelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

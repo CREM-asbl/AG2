@@ -37,6 +37,10 @@ Protected Class Label
 		  q = wnd.mycanvas1.transform(q)
 		  SetParam(g)
 		  
+		  if shape.highlighted then
+		    g.forecolor =config.highlightcolor.col
+		  end if
+		  
 		  if text = "%"  then
 		    g.DrawString(str(shape.id),q.x, q.y)
 		    ResetParam(g)
@@ -437,7 +441,7 @@ Protected Class Label
 		  
 		  p = currentcontent.ndec
 		  
-		  b = d < 0
+		  b = (d < 0)
 		  
 		  if b then
 		    d = abs(d)

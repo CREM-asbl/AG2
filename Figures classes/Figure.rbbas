@@ -1451,7 +1451,7 @@ Implements StringProvider
 		  dim t as boolean
 		  dim d, d1 as double
 		  
-		  if shapes.element(0) = nil then 'or  shapes.element(0) isa arc then
+		  if shapes.element(0) = nil or  shapes.element(0) isa arc then
 		    return true
 		  end if
 		  
