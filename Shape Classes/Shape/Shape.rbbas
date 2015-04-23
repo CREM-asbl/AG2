@@ -1451,10 +1451,15 @@ Implements StringProvider
 		  dim inter as intersec
 		  dim s1, s2 as shape
 		  
-		  
 		  if  (conditionedby<>nil and conditionedby.invalid)  or (constructedby <> nil and (constructedby.shape.invalid or (constructedby.oper = 6 and (transformation(constructedby.data(0)).supp.invalid)) )) then
 		    return
 		  end if
+		  
+		  if validating or not invalid then 
+		    return
+		  end if
+		  
+		  validating = true
 		  
 		  t = true
 		  t2 = true
@@ -1467,12 +1472,15 @@ Implements StringProvider
 		    t = t and not(points(i).invalid) and not (points(i).deleted)
 		  next
 		  if not t then
+		    validating = false
 		    return
 		  end if
 		  for i = 0 to ncpts-1
 		    t2 = t2 and points(i).modified
 		  next
-		  constructshape
+		  if t2 then
+		    constructshape
+		  end if
 		  
 		  
 		  if self isa circle or self isa lacet then
@@ -1505,6 +1513,8 @@ Implements StringProvider
 		      next
 		    end if
 		  next
+		  
+		  validating = false
 		  
 		  
 		  
@@ -2362,6 +2372,12 @@ Implements StringProvider
 		    return true
 		  end if
 		  
+		  for i = 0 to ubound(childs)
+		    if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
+		      return true
+		    end if
+		  next
+		  
 		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
 		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
 		  'return true
@@ -2729,17 +2745,18 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoParaperp(Tmp as XMLelement)
-		  dim m as integer
+		  dim m,o as integer
 		  dim tsf as transformation
 		  
 		  m = val(Tmp.GetAttribute("Index"))
+		  o = val(Tmp.GetAttribute("Ori"))
 		  constructedby.data.append m
 		  tsf = constructedby.shape.gettsf(0,m)
-		  'if tsf <> nil then
+		  if tsf = nil then
+		    tsf = new Transformation(constructedby.shape,0,m,o)
+		  end if
 		  constructedby.data.append tsf
-		  'end if
-		  m = val(Tmp.GetAttribute("Ori"))
-		  constructedby.data.append m  //15 juin 2014
+		  constructedby.data.append o  //15 juin 2014
 		  
 		  
 		End Sub
@@ -4151,6 +4168,12 @@ Implements StringProvider
 		  for i = 0 to labs.count-1
 		    Labs.element(i).paint(g)
 		  next
+		  
+		  for i = 0 to ubound(childs)
+		    childs(i).print(g)
+		  next
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -4435,6 +4458,10 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		ifmac As InfoMac
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Validating As Boolean
 	#tag EndProperty
 
 

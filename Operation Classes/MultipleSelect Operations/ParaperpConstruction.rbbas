@@ -243,7 +243,7 @@ Inherits ShapeConstruction
 		  dim u, v as BasicPoint
 		  
 		  currentshape.setconstructedby(Refe,op)
-		  currentshape.constructedby.data.append index(iobj)
+		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0
 		  tsf = refe.gettsf(0,index(iobj))
 		  if tsf = nil then
 		    tsf = new Transformation(Refe,0,index(iobj), 0)
@@ -263,6 +263,12 @@ Inherits ShapeConstruction
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
 		  
+		  'Infos de construction d'une paraperp:
+		  //constructedby.shape: droite source
+		  //constructedby.oper: 1 (dr //)  ou 2 (dr. perp)
+		  //data(0): nr de côté ou 0
+		  //data(1): tsf
+		  //data(2): ori de l'image par rapport à la source
 		End Sub
 	#tag EndMethod
 

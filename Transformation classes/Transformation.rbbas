@@ -242,10 +242,10 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub Transformation(s as shape, n as integer, i as integer, ori as integer)
 		  Transformation
-		  supp = s
-		  type = n
-		  index = i
-		  self.ori = ori
+		  supp = s                       'support de la tsf
+		  type = n                        'type de transformation (translation, rotation etc) ATTENTION: type = 0 pour les paraperp
+		  index = i                        'numéro éventuel du côté
+		  self.ori = ori                  'orientation du support
 		  if type <> 0 then
 		    computematrix
 		    oldM = M
@@ -255,7 +255,7 @@ Implements StringProvider
 		    T = new Tip
 		  end if
 		  
-		  setfpsp(s)
+		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddTsf(self)
 		End Sub
 	#tag EndMethod
@@ -408,7 +408,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub updateconstructioninfos(s as shape)
-		  
+		  'fixer les infos relatives aux constructions opérées par la tsf
 		  constructedshapes.AddShape s
 		  updatefigconstructioninfos(s)
 		  
@@ -530,7 +530,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub setconstructioninfos1(s1 as shape, s2 as shape)
-		  dim j as integer
+		  dim j as integer  'fixer les infos de construction de l'image
 		  
 		  s2.setconstructedby s1,6
 		  s2.constructedby.data.append self
@@ -549,8 +549,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub setconstructioninfos2(s1 as shape, s2 as shape)
-		  
-		  if s2.fig = nil or s1.fig = nil then
+		  if s2.fig = nil or s1.fig = nil then  'fixer les infos de construcion de la figure de l'image
 		    return
 		  end if
 		  

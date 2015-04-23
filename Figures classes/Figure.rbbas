@@ -937,7 +937,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function update1(p as point) As Boolean
+		Function update1(p As point) As Boolean
 		  dim t  as boolean
 		  dim i as integer
 		  dim sf as figure
@@ -1478,7 +1478,6 @@ Implements StringProvider
 		      end if
 		    end if
 		  next
-		  
 		  return t
 		End Function
 	#tag EndMethod

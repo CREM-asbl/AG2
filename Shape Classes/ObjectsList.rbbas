@@ -876,12 +876,12 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetFigConstructionInfos(Obj as XMLelement)
+		Sub SetFigConstructionInfos(Obj as XMLElement)
 		  dim i, fam as integer
 		  dim Temp as XMLElement
 		  dim s as shape
 		  
-		  for i=0 to Obj.ChildCount-1
+		  for i=1 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
 		    if fam > -1 then

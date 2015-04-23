@@ -848,47 +848,16 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Valider()
-		  dim i, j, k as integer
-		  dim  s, s1, s2 as shape
-		  dim pt as point
-		  dim inter as intersec
-		  dim t as Boolean
 		  
 		  if validating or not invalid then
 		    return
 		  end if
-		  
 		  if (conditionedby <> nil and conditionedby.invalid)   or (constructedby <> nil and (constructedby.shape <> nil) and constructedby.shape.invalid) then
 		    return
 		  end if
-		  
 		  invalid = false
 		  validating = true
-		  
-		  for i = 0 to conditioned.count-1
-		    if (not conditioned.element(i) isa point) or ( point(conditioned.element(i)).pointsur.count < 2 )   then
-		      conditioned.element(i).valider
-		    else
-		      pt =point(conditioned.element(i))
-		      pt.updateinter
-		    end if
-		  next
-		  
-		  for i = 0 to UBound (parents)
-		    if parents(i).invalid  and (parents(i).conditionedby=nil or not point(parents(i).conditionedby).invalid)  then
-		      parents(i).Valider
-		    end if
-		  next
-		  for i = 0  to Ubound(ConstructedShapes)
-		    ConstructedShapes(i).Valider
-		  next
-		  
-		  for i = 0 to tsfi.count-1
-		    tsfi.element(i).ModifyImages
-		    for j = 0 to tsfi.element(i).constructedshapes.count -1
-		      tsfi.element(i).constructedshapes.element(j).valider
-		    next
-		  next
+		  ValiderCondiEtConstruc
 		  validating = false
 		End Sub
 	#tag EndMethod
@@ -2909,6 +2878,9 @@ Inherits Shape
 		    inter = CurrentContent.TheIntersecs.Find(s1,s2)
 		    if inter <> nil then
 		      inter.update        //Le point est éventuellement re-validé
+		      if not invalid then
+		        ValiderCondiEtConstruc
+		      end if
 		    end if
 		  end if
 		End Sub
@@ -3101,6 +3073,68 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub valider(tovalid() as shape)
+		  dim i as integer
+		  dim s as shape
+		  
+		  if ubound(tovalid)=-1 then
+		    return
+		  end if
+		  
+		  s = tovalid(0)
+		  
+		  tovalid.remove 0
+		  if not (s.constructedby<>nil and tovalid.indexof(s.constructedby.shape)<> -1) then
+		    s.valider
+		  else
+		    tovalid.append s
+		  end if
+		  valider(tovalid)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ValiderCondiEtConstruc()
+		  dim i, j as integer
+		  dim s, tovalid(-1) as shape
+		  
+		  if conditioned.count > 1 then
+		    redim tovalid(conditioned.count-1)
+		    for i = 0 to conditioned.count-1
+		      tovalid(i)=conditioned.element(i)
+		    next
+		    valider(tovalid())
+		  elseif conditioned.count = 1 then
+		    s = conditioned.element(0)
+		    if (not s isa point) or ( point(s).pointsur.count < 2 )   then
+		      s.valider
+		    else
+		      point(s).updateinter
+		    end if
+		  end if
+		  
+		  for i = 0 to UBound (parents)
+		    if parents(i).invalid and not parents(i).validating and (parents(i).conditionedby=nil or not point(parents(i).conditionedby).invalid)  then
+		      parents(i).Valider
+		    end if
+		  next
+		  for i = 0  to Ubound(ConstructedShapes)
+		    ConstructedShapes(i).Valider
+		  next
+		  
+		  for i = 0 to tsfi.count-1
+		    tsfi.element(i).ModifyImages
+		    for j = 0 to tsfi.element(i).constructedshapes.count -1
+		      tsfi.element(i).constructedshapes.element(j).valider
+		    next
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -3178,10 +3212,6 @@ Inherits Shape
 
 	#tag Property, Flags = &h0
 		Trace(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		validating As Boolean
 	#tag EndProperty
 
 

@@ -194,7 +194,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   571
+      Left            =   572
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -395,6 +395,7 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
+		  Continuer
 		  Quit
 		  
 		End Sub

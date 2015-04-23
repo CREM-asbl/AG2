@@ -752,7 +752,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as basicpoint)
 		  dim i as integer
-		  dim s as point 
+		  dim s as point
 		  dim a as arc
 		  dim M as Matrix
 		  

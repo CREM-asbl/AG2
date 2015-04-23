@@ -225,7 +225,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer)
+		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer, ori as integer)
 		  dim  w as BasicPoint
 		  dim M as Matrix
 		  
@@ -237,7 +237,11 @@ Protected Class nBpoint
 		  
 		  select case n
 		  case 0                           'On appelle la méthode lors du positionnement de l'origine du segment
-		    tab(1) = tab(0)+w
+		    if ori <> 0 then
+		      tab(1) = tab(0)+w*ori
+		    else
+		      tab(1) = tab(0) +w
+		    end if
 		  case 1                           'Positionnement de l'extrémité du segment
 		    'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
 		    'Quand on travaille à la souris, c'est le clic qui indique la position finale
@@ -245,8 +249,10 @@ Protected Class nBpoint
 		    if fo = 1 or fo = 2 then
 		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
 		      tab(1)=M*tab(1)
+		    elseif ori <> 0 then
+		      tab(1) = tab(0) +w*ori
 		    else
-		      tab(1) = tab(0) +w
+		      tab(1)=tab(0)
 		    end if
 		  end select
 		  

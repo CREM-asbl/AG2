@@ -47,7 +47,7 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim i, index as integer
+		  dim i, index, ori as integer
 		  dim s as shape
 		  
 		  
@@ -55,8 +55,11 @@ Inherits Bipoint
 		    updatecoord
 		    if ubound(constructedby.data) >  -1 then
 		      index = constructedby.data(0)
+		      if ubound(constructedby.data) = 2 then
+		        ori = constructedby.data(2)
+		      end if
 		      s = constructedby.shape
-		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
+		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint, ori)
 		      repositionnerpoints
 		      computeextre
 		    end if

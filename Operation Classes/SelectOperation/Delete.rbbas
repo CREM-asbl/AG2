@@ -99,7 +99,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
-		  return tempshape.XMLPutIdInContainer(Doc)
+		  return tempshape.XMLPutInContainer(Doc)
 		End Function
 	#tag EndMethod
 
