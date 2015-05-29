@@ -605,14 +605,12 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function subdiv(ndiv as integer, i as integer) As BasicPoint
-		  dim n as double
 		  
 		  if first.distance(second) < epsilon then
 		    return first
 		  end if
 		  
-		  n = ndiv
-		  return first + (second-first)*(i/n)
+		  return first + (second-first)*(i/ndiv)
 		End Function
 	#tag EndMethod
 

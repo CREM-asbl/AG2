@@ -192,16 +192,14 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(pc as BasicPoint)
 		  
-		  
-		  if  currentshape = nil  or pc.distance(EndPoint) < epsilon  then
+		  if  pointmobile = nil  or pc.distance(EndPoint) < epsilon  then
 		    return
 		  end if
-		  if pointmobile <> nil then
-		    pointmobile.highlight
-		    Endpoint = pc
-		    figs.enablemodifyall
-		    UpdateFigs(pc)
-		  end if
+		  pointmobile.highlight
+		  Endpoint = pc
+		  figs.enablemodifyall
+		  UpdateFigs(pc)
+		  
 		  
 		  
 		  
@@ -558,6 +556,7 @@ Inherits SelectAndDragOperation
 		    testfinished = true
 		    wnd.mycanvas1.refreshbackground
 		    pointmobile = nil
+		    currentshape = nil
 		    return t
 		  end if
 		  
@@ -670,7 +669,7 @@ Inherits SelectAndDragOperation
 		  figs.fx1cancel
 		  super.endoperation
 		  pointmobile = nil
-		  currentshape = nil
+		  'currentshape = nil
 		  endpoint = nil
 		End Sub
 	#tag EndMethod

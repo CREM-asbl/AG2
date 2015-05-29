@@ -426,6 +426,25 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ProjectionAffine(Bib as BiBPoint, s as shape, k as integer, p as BasicPoint) As BasicPoint
+		  //Objectif: projection sur une forme s parallèlement à un bipoint Bib
+		  
+		  dim u, v as BasicPoint
+		  
+		  if not s isa droite and not s isa circle then
+		    return p
+		  end if
+		  
+		  u = self
+		  v = u+ Bib.second - Bib.first
+		  Bib = new BiBPoint(u,v)
+		  return BiB.ComputeDroiteFirstIntersect(S, k, p)
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

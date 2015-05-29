@@ -597,25 +597,6 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldShape(ol as objectslist, ncp as integer)
-		  if id=0 then
-		    id = ol.newId
-		  end if
-		  objects = ol
-		  labs = new LabList
-		  tsfi = new transfoslist
-		  Autos
-		  Ncpts = ncp
-		  IdGroupe = -1
-		  Fixecouleurtrait(Config.bordercolor,Config.Border)
-		  FixeCouleurFond(Config.Fillcolor,0)
-		  Borderwidth = Config.Thickness
-		  std = false
-		  plan = -1
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SubstitutePoint(P as Point, Q as Point)
 		  dim k, index as integer
 		  
@@ -1152,6 +1133,7 @@ Implements StringProvider
 		  
 		  Shape(ol)
 		  Npts=s.Npts
+		  Ncpts = s.Ncpts
 		  fam =s.fam
 		  forme = s.forme
 		  auto = s.auto
@@ -1331,7 +1313,6 @@ Implements StringProvider
 		  
 		  if self isa Lacet then
 		    Lacet(self).CreateExtreAndCtrlPoints
-		    'Lacet(self).updateskull
 		  else
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
@@ -1455,7 +1436,7 @@ Implements StringProvider
 		    return
 		  end if
 		  
-		  if validating or not invalid then 
+		  if validating or not invalid then
 		    return
 		  end if
 		  
@@ -1475,12 +1456,12 @@ Implements StringProvider
 		    validating = false
 		    return
 		  end if
-		  for i = 0 to ncpts-1
-		    t2 = t2 and points(i).modified
-		  next
-		  if t2 then
-		    constructshape
-		  end if
+		  'for i = 0 to ncpts-1
+		  't2 = t2 and points(i).modified
+		  'next
+		  'if t2 then
+		  'constructshape
+		  'end if
 		  
 		  
 		  if self isa circle or self isa lacet then
@@ -2368,15 +2349,15 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  if macconstructedshapes.indexof(s2) <> - 1 then
-		    return true
-		  end if
-		  
-		  for i = 0 to ubound(childs)
-		    if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
-		      return true
-		    end if
-		  next
+		  'if macconstructedshapes.indexof(s2) <> - 1 then
+		  'return true
+		  'end if
+		  '
+		  'for i = 0 to ubound(childs)
+		  'if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
+		  'return true
+		  'end if
+		  'next
 		  
 		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
 		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
@@ -3336,33 +3317,32 @@ Implements StringProvider
 		  dim i as integer
 		  dim s1, s2 As shape
 		  dim p as point
+		  dim diam as double
 		  
-		  if invalid then
+		  if invalid  then
 		    return
-		  end if
-		  
-		  if not self isa point then
-		    computediam
-		    if diam < 10*epsilon then
-		      tobereconstructed = true
+		  else
+		    if not self isa point and auto = 1 then
+		      diam = computediam
+		      if diam < 5*epsilon  then
+		        for i = ncpts to npts-1
+		          points(i).moveto points(0).bpt
+		        next
+		        updatecoord
+		      elseif  diam < 10*epsilon then
+		        constructshape
+		      end if
 		    end if
-		    
-		    if tobereconstructed  then
-		      constructshape
-		      'if check then
-		      'tobereconstructed = false
-		      'end if
+		    if ubound(childs) >= npts then
+		      for i = npts to ubound(childs)
+		        childs(i).updateshape(M)
+		      next
 		    end if
-		  end if
-		  
-		  if ubound(childs) >= npts then
-		    for i = npts to ubound(childs)
-		      childs(i).updateshape(M)
-		    next
+		    updateshape
 		  end if
 		  
 		  
-		  updateshape
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3785,19 +3765,22 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub computediam()
+		Function computediam() As double
 		  dim i , j as integer
+		  dim diam as double
 		  
 		  diam = 0
 		  
-		  for i = 0 to npts-2
-		    for j = i+1 to npts-1
+		  for i = 0 to ncpts-2
+		    for j = i+1 to ncpts-1
 		      diam= max(diam, points(i).bpt.distance(points(j).bpt))
 		    next
 		  next
 		  
+		  return diam
 		  
-		End Sub
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -4177,6 +4160,17 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub reconstruct()
+		  
+		  'if  computediam > 10*epsilon then
+		  constructshape
+		  valider
+		  tobereconstructed = false
+		  'end if
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Formes
 		
@@ -4445,10 +4439,6 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		diam As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		nsk As nskull
 	#tag EndProperty
 
@@ -4692,13 +4682,13 @@ Implements StringProvider
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="diam"
+			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="NotPossibleCut"
+			Name="Validating"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

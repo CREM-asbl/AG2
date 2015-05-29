@@ -56,9 +56,9 @@ Inherits Application
 		      tos.WriteLine "Opération active : "+curoper.GetName
 		      if not curoper isa ReadHisto then
 		        if curoper.CurrentShape <> nil then
-		          tos.WriteLine "appliquée à  la forme : "+ str(CurrentContent.CurrentOperation.CurrentShape.id)
+		          tos.WriteLine "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id)
 		        else
-		          tos.WriteLine "appliquée à la forme : nil "
+		          tos.WriteLine "Curoper.CurrentShape = nil"
 		        end if
 		      end if
 		    else
@@ -67,8 +67,6 @@ Inherits Application
 		    
 		    tos.WriteLine ""
 		    tos.WriteLine "**** Debug message ****"
-		    tos.WriteLine""
-		    
 		    if error isa OutOfMemoryException then
 		      tos.WriteLine "OutOfMemoryException"
 		    elseif error isa FunctionNotFoundException then
@@ -86,8 +84,6 @@ Inherits Application
 		    else
 		      tos.WriteLine "Autre erreur"
 		    end if
-		    
-		    tos.WriteLine ""
 		    tos.Write error.message
 		    tos.WriteLine ""
 		    tos.WriteLine "**** fin Debug message ****"

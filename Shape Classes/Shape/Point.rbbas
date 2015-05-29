@@ -586,7 +586,7 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  if (forme <> 1) and ((MacConstructedBy <>  nil )  or ((ubound(parents) > -1) and( parents(0).macconstructedby <> nil) and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
+		  if (forme <> 1) and (  (MacConstructedBy <>  nil )  or ( (ubound(parents) > -1) and (parents(0).macconstructedby <> nil)  and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
 		    liberte = 0
 		  end if
 		  
@@ -866,6 +866,10 @@ Inherits Shape
 		Sub Invalider()
 		  dim i,j,k as integer
 		  dim s as shape
+		  
+		  if self = fig.pointmobile then
+		    return
+		  end if
 		  
 		  if not invalid  then
 		    invalid = true
@@ -1467,7 +1471,7 @@ Inherits Shape
 		    select case s.constructedby.Oper
 		    case 3, 5
 		      M1 = Matrix(s.constructedby.data(0))
-		      s.Moveto M1*(self.bpt)
+		      s.Moveto M1*bpt
 		    case 6
 		      tsf = Transformation(s.constructedby.data(0))
 		      M1 = tsf.M
@@ -2436,17 +2440,17 @@ Inherits Shape
 		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
 		    if d > 0.1 and dret = nil then
-		      np = bpt+ (delta.normer)*0.1
+		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
 		  M = new TranslationMatrix(np-bpt)
-		  Moveto M*bpt
+		  Moveto np   'M*bpt
 		  if pointsur.count = 1 then
 		    puton pointsur.element(0)
 		  end if
 		  modified = true
 		  updateshape
-		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
+		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
 		End Sub
 	#tag EndMethod
 
@@ -3035,27 +3039,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function oldConstructing() As Boolean
-		  dim i as integer   'Utilisé uniquement dans la détermination des points "sur" qui sont initiaux d'une macro
-		  
-		  if forme <> 1 then
-		    return false
-		  end if
-		  
-		  if ubound (constructedshapes)> -1  then
-		    return true
-		  end if
-		  
-		  for i = 0 to ubound(parents)
-		    if (parents(i).getindexpoint(self) <> -1) and ubound(parents(i).constructedshapes) > -1 then
-		      return true
-		    end if
-		  next
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetBiBPoint() As BiBPoint
 		  dim s as shape
 		  dim n as integer
@@ -3217,6 +3200,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -3228,13 +3218,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -3513,12 +3496,6 @@ Inherits Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Surseg"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="validating"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

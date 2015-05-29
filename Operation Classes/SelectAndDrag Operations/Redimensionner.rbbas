@@ -109,7 +109,7 @@ Inherits SelectAndDragOperation
 		  
 		  C = CurrentShape.getgravitycenter
 		  
-		  if  (c<>NewPoint) and (c <> endpoint)  then
+		  if  (c<>NewPoint) and (c <> endpoint)  and (c <> nil) then
 		    k= NewPoint.Distance(c)/EndPoint.Distance(c)
 		    M = new HomothetyMatrix(c,k)
 		    figs.Bouger(M)
@@ -320,7 +320,7 @@ Inherits SelectAndDragOperation
 		  if currentshape = nil then
 		    wnd.mycanvas1.mousecursor = arrowcursor
 		    oldvisible.tspfalse
-		  else
+		  elseif c <> nil then
 		    ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
 		    if abs(ratio) > epsilon then
 		      M = new HomothetyMatrix(c,ratio)

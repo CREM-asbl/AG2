@@ -130,7 +130,6 @@ End
 		  else
 		    
 		    EF.text = ""
-		    
 		    for i = 0 to Figs.count-1
 		      f = Figs.element(i)
 		      messages(f)
@@ -141,7 +140,7 @@ End
 		          messages(ff,j)
 		        next
 		      end if
-		      EF.Text = EF.Text + "---------------------------------------------"+ chr(10) + chr(13)
+		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)
 		    next
 		  end if
 		  
@@ -241,7 +240,7 @@ End
 		  
 		  m = mess(s) + " Plan " + str(s.plan)+ " Fig. "+ str(s.fig.idfig) + " "
 		  if s isa triangle or s isa arc then
-		    m = m + "Orientation " + str(s.ori)+chr(13)
+		    m = m + "Orientation " + str(s.ori)+chr(10)
 		  end if
 		  if s isa arc then
 		    m = m+"Angle: " + str((Arc(s).arcangle)*180/PI)+"°"
@@ -255,14 +254,16 @@ End
 		    for i = 0 to ubound(s.points)
 		      m = m + mess(s.points(i))
 		    next
+		    m = m+chr(10)
 		    if ubound(s.childs) > s.npts-1 then
 		      m = m + "Points Sur"+chr(13)
 		      for i = s.npts to ubound(s.childs)
 		        m = m + mess(s.childs(i))
 		      next
+		      m = m+chr(10)
 		    end if
 		    if ubound(s.constructedshapes)> -1 then
-		      m = m + "Formes Construites"+chr(13)
+		      m = m + "Formes Construites"+chr(10)
 		      for i = 0 to ubound(s.constructedshapes)
 		        if s.ConstructedShapes(i) isa point then
 		          m = m+ mess(point(s.constructedshapes(i)))
@@ -332,14 +333,13 @@ End
 		  if p.invalid then
 		    m = m + "invalid"
 		  end if
-		  m = m +chr(10)
 		  if P.PointSur <> Nil then
 		    for i = 0 to P.Pointsur.count-1
-		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", " + chr(10)
+		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", " 
 		    next i
 		  end if
 		  if p.constructedby <> nil or p.conditionedby<> nil or ubound(p.constructedshapes)>-1 then
-		    m = m+ messlinks(p) +chr(10)
+		    m = m+ messlinks(p) 
 		  end if
 		  return m
 		End Function
@@ -367,7 +367,7 @@ End
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "
 		    s = f.shapes.element(i)
-		    EF.Text = EF.Text+ messages(s)+chr(10)+chr(13)
+		    EF.Text = EF.Text+ messages(s)
 		  next
 		  
 		  

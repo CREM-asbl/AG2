@@ -188,8 +188,7 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub Restore()
 		  dim i as integer
-		  dim ori as double
-		  dim a as double
+		  
 		  
 		  if ubound(oldbpts) > -1 then
 		    Restorebpt
@@ -293,17 +292,13 @@ Implements StringProvider
 		  
 		  if M = nil or M.v1 = nil then
 		    QQupdateshapes
-		    return true  'false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
+		    return true                                      ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
 		    updatesomm(M)
 		    updatePtsSur(M)
 		    updatePtsConsted(M)
 		    updateshapes(M)
-		    if not wnd.drapbug then
-		      return checksimaff(M)
-		    else
-		      return true
-		    end if
+		    return checksimaff(M)
 		  end if
 		  
 		Exception err
@@ -474,7 +469,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function autosimupdate1() As Matrix
+		Function Autosimupdate1() As Matrix
 		  dim p, p1,p2 as point
 		  dim bp1, ep, np,ep1, np1 as BasicPoint
 		  dim n as integer
@@ -942,6 +937,9 @@ Implements StringProvider
 		  dim i as integer
 		  dim sf as figure
 		  
+		  if p = nil then
+		    return false
+		  end if
 		  
 		  pointmobile = p
 		  t = true
@@ -988,7 +986,6 @@ Implements StringProvider
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
 		    p.Transform(M)
-		    
 		    p.updateshape
 		    if  p.pointsur.count = 0 then
 		      p.modified = true                //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
@@ -1361,12 +1358,13 @@ Implements StringProvider
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to Somm.count-1
+		      p = point(somm.element(i))
 		      Coord = XMLElement(EL1.child(i))
-		      point(somm.element(i)).moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
+		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
 		      if val(Coord.GetAttribute("Invalid")) = 0 then
-		        point(somm.element(i)).valider
+		        p.valider
 		      else
-		        point(somm.element(i)).invalider
+		        p.invalider
 		      end if
 		    next
 		  end if
@@ -1375,12 +1373,13 @@ Implements StringProvider
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to PtsConsted.count-1
+		      p = point(PtsConsted.element(i))
 		      Coord = XMLElement(EL1.child(i))
-		      point(PtsConsted.element(i)).moveto new BasicPoint(Coord)
+		      p.moveto new BasicPoint(Coord)
 		      if val(Coord.GetAttribute("Invalid")) = 0 then
-		        point(PtsConsted.element(i)).valider
+		        p.valider
 		      else
-		        point(PtsConsted.element(i)).invalider
+		        p.invalider
 		      end if
 		    next
 		  end if
@@ -1421,6 +1420,21 @@ Implements StringProvider
 		      Coord = XMLElement(EL1.child(i))
 		      p = point(PtsSur.element(i))
 		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
+		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		        p.valider
+		      else
+		        p.invalider
+		      end if
+		    next
+		  end if
+		  
+		  Restoretsf
+		  
+		  List = EL.XQL("PtsSur")
+		  if List.length > 0 then
+		    EL1 = XMLElement(List.Item(0))
+		    for i = 0 to EL1.Childcount-1
+		      p = point(PtsSur.element(i))
 		      if p.pointsur.count = 1 then
 		        p.puton(p.pointsur.element(0))
 		      elseif p.pointsur.count = 2 then
@@ -1429,17 +1443,10 @@ Implements StringProvider
 		        inter= CurrentContent.Theintersecs.find(p.pointsur.element(0),p.pointsur.element(1))
 		        inter.update(p,(p.pointsur.element(0),n0, p.pointsur.element(1)), n1)
 		      end if
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
-		        point(PtsSur.element(i)).valider
-		      else
-		        point(PtsSur.element(i)).invalider
-		      end if
 		    next
 		  end if
 		  
 		  
-		  
-		  Restoretsf
 		End Sub
 	#tag EndMethod
 
@@ -1455,9 +1462,9 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  if (shapes.element(0).tobereconstructed = true) or (shapes.element(0).macconstructedby <> nil) then
-		    return true
-		  end if
+		  'if  (shapes.element(0).macconstructedby <> nil) then
+		  'return true
+		  'end if
 		  
 		  'for i = 0 to shapes.count-1
 		  'if not shapes.element(i).check then
@@ -1957,13 +1964,23 @@ Implements StringProvider
 		  for i = 0 to PtsSur.count-1
 		    p = point(PtsSur.element(i))
 		    p.moveto oldptssur(i)
-		    p.puton p.pointsur.element(0)
+		    for j = 0 to p.pointsur.count-1
+		      p.puton p.pointsur.element(j)
+		    next
 		    if  invalidptssur.indexof(i) <> -1 then
 		      p.invalider
 		    else
 		      p.valider
 		    end if
 		  next
+		  
+		  'for i = 0 to PtsSur.count-1
+		  'p = point(PtsSur.element(i))
+		  'p.moveto oldptssur(i)
+		  'for j = 0 to p.pointsur.count-1
+		  'p.puton p.pointsur.element(j)
+		  'next
+		  'next
 		  
 		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
 		  //Pas compris pourquoi...
@@ -2580,10 +2597,10 @@ Implements StringProvider
 		  
 		  if NbSommSur(n1,n2) = 1 then
 		    if  (replacerpoint(p) or replacerpoint(q))  then
-		      return autospeupdate
+		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
 		    else
 		      return s.Modifier1fixe(p,q)
-		    end if                                             //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
+		    end if
 		  else
 		    return s.Modify2(p,q)
 		  end if
@@ -2616,6 +2633,10 @@ Implements StringProvider
 		  p = Point(somm.element(n1))
 		  q = Point(somm.element(n2))
 		  r =Point(somm.element(n3))
+		  
+		  if s isa rect then
+		    return rect(s).modifier3(p,q,r)
+		  end if
 		  
 		  n = NbSommSur
 		  
@@ -3021,13 +3042,17 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Updateshapes()
-		  dim i as integer
+		  dim i, j as integer
+		  dim diam as double
+		  dim s as shape
 		  
 		  for i = 0 to shapes.count-1
-		    if not shapes.element(i).invalid then
-		      shapes.element(i).updateshape
-		      shapes.element(i).modified = true
+		    s = shapes.element(i)
+		    if not s.invalid then
+		      s.updateshape
+		      s.modified = true
 		    end if
+		    
 		  next
 		  
 		  
@@ -3108,7 +3133,6 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function Autosimupdate2() As Matrix
 		  dim p, q as point
-		  dim ep, eq, np, nq as basicPoint
 		  dim n1, n2 as integer
 		  
 		  n1 = ListPtsModifs(0)
@@ -3207,7 +3231,7 @@ Implements StringProvider
 		Function DefaultMatrix() As Matrix
 		  dim ep, eq, er, np, nq, nr as BasicPoint
 		  dim p, q, r as point
-		  dim n1, n2, n3 as integer
+		  dim   n1, n2, n3 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)
@@ -3315,7 +3339,7 @@ Implements StringProvider
 		  
 		  for i = 0 to Somm.count-1
 		    for j = 0 to f.Somm.count-1
-		      if Somm.Element(i) = f.Somm.element(j) then
+		      if somm.element(i).forme = 0 and (Somm.Element(i) = f.Somm.element(j)) then
 		        n = n+1
 		      end if
 		    next
@@ -3377,13 +3401,8 @@ Implements StringProvider
 		  end if
 		  updatesomm(M)
 		  updateshapes(M)
-		  if not wnd.drapbug then
-		    return checksimaff(M)
-		  else
-		    return true
-		  end if
+		  return checksimaff(M)
 		  
-		  return false
 		  
 		End Function
 	#tag EndMethod
@@ -3398,13 +3417,9 @@ Implements StringProvider
 		  else
 		    updatesomm(M)
 		    updateshapes(M)
-		    if not wnd.drapbug then
-		      return checksimaff(M)
-		    else
-		      return true
-		    end if
+		    return checksimaff(M)
 		  end if
-		  return false
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -3484,6 +3499,10 @@ Implements StringProvider
 		        end if
 		      end if
 		    next
+		  end if
+		  
+		  if ubound(dispo) = -1 then
+		    return -1
 		  end if
 		  
 		  return choixsubfig2bis(dispo)
@@ -3920,6 +3939,10 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		Modified As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		tobereconstructed(-1) As Integer
 	#tag EndProperty
 
 

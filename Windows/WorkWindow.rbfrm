@@ -42,7 +42,7 @@ Begin Window WorkWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   126
+      Left            =   127
       LockBottom      =   "True"
       LockLeft        =   "True"
       LockRight       =   "True"
@@ -110,172 +110,6 @@ Begin Window WorkWindow
          Width           =   120
          BehaviorIndex   =   2
       End
-      Begin PushButton MouvBut
-         AutoDeactivate  =   "True"
-         Bold            =   "True"
-         Cancel          =   ""
-         Caption         =   "Modifier"
-         ControlOrder    =   3
-         Default         =   ""
-         Enabled         =   True
-         Height          =   30
-         HelpTag         =   ""
-         Index           =   0
-         InitialParent   =   "Tools"
-         Italic          =   ""
-         Left            =   1
-         LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
-         Scope           =   0
-         TabPanelIndex   =   0
-         TextFont        =   "System"
-         TextSize        =   0
-         Top             =   31
-         Underline       =   ""
-         Visible         =   True
-         Width           =   120
-         BehaviorIndex   =   3
-      End
-      Begin GroupBox MoveBox
-         AutoDeactivate  =   "True"
-         Bold            =   "True"
-         Caption         =   "Mouvements"
-         ControlOrder    =   4
-         Enabled         =   True
-         Height          =   152
-         HelpTag         =   ""
-         Index           =   -2147483648
-         InitialParent   =   "Tools"
-         Italic          =   ""
-         Left            =   5
-         LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
-         Scope           =   0
-         TabPanelIndex   =   0
-         TextFont        =   "System"
-         TextSize        =   0
-         Top             =   61
-         Underline       =   ""
-         Visible         =   True
-         Width           =   112
-         BehaviorIndex   =   4
-         Begin PushButton MouvBut
-            AutoDeactivate  =   "True"
-            Bold            =   "True"
-            Cancel          =   ""
-            Caption         =   "Glisser"
-            ControlOrder    =   5
-            Default         =   ""
-            Enabled         =   True
-            Height          =   30
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "MoveBox"
-            Italic          =   ""
-            Left            =   7
-            LockBottom      =   ""
-            LockLeft        =   ""
-            LockRight       =   ""
-            LockTop         =   ""
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   84
-            Underline       =   ""
-            Visible         =   True
-            Width           =   108
-            BehaviorIndex   =   3
-         End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   "True"
-            Bold            =   "True"
-            Cancel          =   ""
-            Caption         =   "Tourner"
-            ControlOrder    =   6
-            Default         =   ""
-            Enabled         =   True
-            Height          =   30
-            HelpTag         =   ""
-            Index           =   2
-            InitialParent   =   "MoveBox"
-            Italic          =   ""
-            Left            =   7
-            LockBottom      =   ""
-            LockLeft        =   ""
-            LockRight       =   ""
-            LockTop         =   ""
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   114
-            Underline       =   ""
-            Visible         =   True
-            Width           =   108
-            BehaviorIndex   =   3
-         End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   "True"
-            Bold            =   "True"
-            Cancel          =   ""
-            Caption         =   "Retourner"
-            ControlOrder    =   7
-            Default         =   ""
-            Enabled         =   True
-            Height          =   30
-            HelpTag         =   ""
-            Index           =   3
-            InitialParent   =   "MoveBox"
-            Italic          =   ""
-            Left            =   5
-            LockBottom      =   ""
-            LockLeft        =   ""
-            LockRight       =   ""
-            LockTop         =   ""
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   145
-            Underline       =   ""
-            Visible         =   True
-            Width           =   108
-            BehaviorIndex   =   3
-         End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   "True"
-            Bold            =   "True"
-            Cancel          =   ""
-            Caption         =   "Zoomer"
-            ControlOrder    =   8
-            Default         =   ""
-            Enabled         =   True
-            Height          =   30
-            HelpTag         =   ""
-            Index           =   4
-            InitialParent   =   "MoveBox"
-            Italic          =   ""
-            Left            =   5
-            LockBottom      =   ""
-            LockLeft        =   ""
-            LockRight       =   ""
-            LockTop         =   ""
-            Scope           =   0
-            TabPanelIndex   =   0
-            TextFont        =   "System"
-            TextSize        =   0
-            Top             =   173
-            Underline       =   ""
-            Visible         =   True
-            Width           =   108
-            BehaviorIndex   =   3
-         End
-      End
       Begin GroupBox StdBox
          AutoDeactivate  =   "True"
          Bold            =   "True"
@@ -300,7 +134,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   5
+         BehaviorIndex   =   3
          Begin Canvas StdOutil
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
@@ -324,7 +158,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   4
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
@@ -349,7 +183,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   4
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
@@ -374,7 +208,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   4
          End
          Begin Canvas StdOutil
             AcceptFocus     =   ""
@@ -399,7 +233,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   4
          End
       End
       Begin GroupBox LibBox
@@ -426,7 +260,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   7
+         BehaviorIndex   =   5
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
@@ -450,7 +284,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -475,7 +309,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -500,7 +334,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -525,7 +359,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -550,7 +384,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -575,7 +409,7 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
          End
          Begin Canvas LibOutils
             AcceptFocus     =   "True"
@@ -600,7 +434,173 @@ Begin Window WorkWindow
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   8
+            BehaviorIndex   =   6
+         End
+      End
+      Begin PushButton MouvBut
+         AutoDeactivate  =   "True"
+         Bold            =   "True"
+         Cancel          =   ""
+         Caption         =   "Modifier"
+         ControlOrder    =   3
+         Default         =   ""
+         Enabled         =   True
+         Height          =   30
+         HelpTag         =   ""
+         Index           =   0
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   0
+         LockBottom      =   ""
+         LockLeft        =   ""
+         LockRight       =   ""
+         LockTop         =   ""
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   31
+         Underline       =   ""
+         Visible         =   True
+         Width           =   120
+         BehaviorIndex   =   7
+      End
+      Begin GroupBox MoveBox
+         AutoDeactivate  =   "True"
+         Bold            =   "True"
+         Caption         =   "Mouvements"
+         ControlOrder    =   4
+         Enabled         =   True
+         Height          =   152
+         HelpTag         =   ""
+         Index           =   -2147483648
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   0
+         LockBottom      =   ""
+         LockLeft        =   ""
+         LockRight       =   ""
+         LockTop         =   ""
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   59
+         Underline       =   ""
+         Visible         =   True
+         Width           =   112
+         BehaviorIndex   =   8
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Glisser"
+            ControlOrder    =   5
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   2
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   82
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Tourner"
+            ControlOrder    =   6
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   2
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   2
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   112
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Zoomer"
+            ControlOrder    =   8
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   4
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   2
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   171
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Retourner"
+            ControlOrder    =   7
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   3
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   2
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   143
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
          End
       End
    End
@@ -648,8 +648,6 @@ End
 		  case 1 'ctrl-shft a
 		    currentcontent.drapaff = not currentcontent.drapaff
 		    currentcontent.drapeucli = false
-		  case 2 'ctrl-shft b
-		    drapbug = not drapbug
 		  case 5 'ctrl-shft e
 		    currentcontent.drapeucli = not currentcontent.drapeucli
 		    currentcontent.drapaff = false
@@ -1153,7 +1151,7 @@ End
 			wnd.draphisto = true
 			wnd.DisableToolBar
 			elseif CurrentContent.Macrocreation then
-			MenuMacros
+			MenuMacros(true)
 			end if
 			MenuBar.Child("Fenetres").Item(index).checked = true
 			wnd.mycanvas1.sctxt = nil
@@ -1261,7 +1259,7 @@ End
 			
 			closefw
 			newcontent(true)
-			MenuMacros
+			MenuMacros(true)
 			wnd.refreshtitle
 			currentcontent.mac = nil
 			return true
@@ -2054,8 +2052,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub closefw()
-		  
-		  if fw <> nil then
+		  if fw = nil then
+		    return
+		  else
 		    selectedtool = -1
 		    if fw.kit = 0 then
 		      stdoutil(fw.fam).refresh
@@ -2063,9 +2062,8 @@ End
 		      liboutils(fw.fam).refresh
 		    end if
 		    fw.close
-		    
 		  end if
-		  fw = nil
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2355,11 +2353,12 @@ End
 		      val = Conf.result      ''Yes
 		      conf.close
 		    end if
-		    if val<>-1 then            '-1: annuler
-		      if val = 1 then
-		        CurrentContent.Save
-		      end if
-		    end if
+		    select case val
+		    case -1             '-1: annuler
+		      return
+		    case  1
+		      CurrentContent.Save
+		    end select
 		  end if
 		  
 		  n = GetNumWindow
@@ -2430,26 +2429,17 @@ End
 
 	#tag Method, Flags = &h0
 		Sub CloseMacro()
-		  dim i as integer
-		  
 		  closefw
 		  deletecontent
-		  MenuBar.Child("FileMenu").Child("FileNew").visible = true
-		  MenuBar.Child("FileMenu").Child("FileOpen").visible=true
-		  MenuBar.Child("FileMenu").Child("FileSave").visible = true
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible = true
-		  MenuMenus.Child("OperaMenu").Child("OperaClone").checked=true
-		  MenuMenus.Child("OperaMenu").Child("OperaCut").checked=true
-		  MenuMenus.Child("OperaMenu").Child("OperaMerge").checked=true
-		  MenuMenus.Child("OperaMenu").Child("OperaIdentify").checked=true
-		  PushButton1.visible = true
+		  MenuMacros(false)
+		  
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
-		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
-		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  EraseMenuBar
-		  CopyMenuBar
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
+		  'EraseMenuBar
+		  'CopyMenuBar
 		End Sub
 	#tag EndMethod
 
@@ -2707,45 +2697,37 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub MenuMacros()
+		Sub MenuMacros(t as Boolean)
 		  dim i as integer
 		  
-		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
-		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
-		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = false
+		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = not t
 		  EraseMenuBar
 		  CopyMenuBar
-		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
-		  'MenuBar.Child("MacrosMenu").Child("MacrosErase").visible = false
-		  'MenuBar.Child("MacrosMenu").Child("MacrosDescri").visible = false
-		  'MenuBar.Child("MacrosMenu").Child("MacrosClose").visible= false
-		  'MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
-		  'MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
-		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
-		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
-		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
-		  MenuBar.Child("FileMenu").Child("FileSave").visible =false
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
-		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =false
-		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =false
-		  MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =false
+		  MenuBar.Child("FileMenu").Child("FileOpen").visible=not t
+		  MenuBar.Child("FileMenu").Child("FileSave").visible =not t
+		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =not t
+		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =not t
+		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =not t
+		  MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =not t
 		  for i =0 to MenuBar.Child("ToolsMenu").count-1
-		    MenuBar.Child("ToolsMenu").Item(i).visible = false
+		    MenuBar.Child("ToolsMenu").Item(i).visible = not t
 		  next
-		  MenuBar.Child("ToolsMenu").visible = false
+		  MenuBar.Child("ToolsMenu").visible = not t
 		  for i =0 to MenuBar.Child("EditMenu").count-1
-		    MenuBar.Child("EditMenu").Item(i).visible = false
+		    MenuBar.Child("EditMenu").Item(i).visible = not t
 		  next
-		  MenuBar.Child("EditMenu").visible = false
+		  MenuBar.Child("EditMenu").visible = not t
 		  for i = 0 to 3
-		    MouvBut(i).visible =false
+		    MouvBut(i).visible =not t
 		  next
-		  PushButton1.visible=false
-		  stdbox.visible = false
+		  PushButton1.visible=not t
+		  stdbox.visible = not t
 		End Sub
 	#tag EndMethod
 
@@ -2950,10 +2932,6 @@ End
 
 	#tag Property, Flags = &h0
 		numfig As Integer = 0
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		drapbug As boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

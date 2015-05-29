@@ -109,8 +109,8 @@ Inherits Parallelogram
 		  ff.getoldnewpos(p1,ep1,np1)
 		  ff.getoldnewpos(p,ep,np)
 		  d = amplitude(ep1, np, np1)
-		  M = new rotationmatrix(np,d)
 		  p.moveto ep
+		  M = new RotationMatrix(np,d)
 		  if abs(n-n1) = 2 then
 		    n2 = (n+1) mod 4
 		    n3 = (n1+1) mod 4
@@ -121,6 +121,7 @@ Inherits Parallelogram
 		    case (n+3) mod 4
 		      n2 = (n+1) mod 4
 		    end select
+		    n3 = (n+2) mod 4
 		  end if
 		  p2 = points(n2)
 		  p3 = points(n3)
@@ -196,6 +197,63 @@ Inherits Parallelogram
 		  
 		  
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier3(p as point, q as point, r as point) As Matrix
+		  dim  ps, p2, p3 As point
+		  dim eps,ep2,ep3,nps,np2,np3, u, v as BasicPoint
+		  dim i, k, n, n1, n2, n3 as integer
+		  dim t as boolean
+		  dim ff as figure
+		  dim Bib as BiBpoint
+		  
+		  ff= GetSousFigure(fig)
+		  n =ff. NbSommSur
+		  
+		  select case n
+		  case 0
+		    return Modifier2fixes(r)
+		  case 1
+		    ps =point(ff.somm.element(ff.ListSommSur(0)))
+		    n1 = getindexpoint(ps)
+		    n2 = (n1+2) mod 4
+		    n3 = (n1+3) mod 4
+		    p2 = points(n2)
+		    p3 = points(n3)
+		    ff.getoldnewpos(ps,eps,nps)
+		    ff.getoldnewpos(p2,ep2,np2)
+		    ff.getoldnewpos(p3,ep3,np3)
+		    u = np3-np2
+		    v = u.vecnorperp
+		    Bib = new BiBPoint(np3, np3+v)
+		    nps = np3.ProjectionAffine(BiB,ps.pointsur.element(0), ps.numside(0), nps) 
+		    ps.moveto nps
+		    return new affinitymatrix(eps,ep2,ep3,nps,np2,np3)
+		  case 2
+		    for i = 0 to 1
+		      if point(ff.somm.element(ff.ListSommSur(i))) <> ff.supfig.pointmobile then
+		        t =ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(i))))
+		      end if
+		    next
+		  case 3
+		    p = ff.supfig.pointmobile
+		    k = ff.somm.getposition(p)
+		    if ff.Listsommsur.indexof(k) <> -1 then
+		      for i = 0 to 2
+		        if i <> k then
+		          t =ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(i))))
+		        end if
+		      next
+		    else
+		      t = ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(0))))
+		      t = ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(1))))
+		      't = replacerpoint (point(ff.somm.element(Listsommsur(2))))
+		    end if
+		  end select
+		  return ff.autospeupdate
 		  
 		End Function
 	#tag EndMethod

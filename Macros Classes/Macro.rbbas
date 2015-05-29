@@ -188,7 +188,7 @@ Protected Class Macro
 		  
 		  MacInf = MacInfo
 		  
-		  for i = 0 to ubound(MacInf.ifmacs)             'Histo.Childcount-1  // i: numéro de l'opération
+		  for i = 0 to ubound(MacInf.ifmacs)    'Histo.Childcount-1  // i: numéro de l'opération                                                  
 		    ifmac = MacInfo.ifmacs(i)
 		    if codesoper.indexof(ifmac.oper) <> -1 then //est-ce une opération de construction d'un objet?
 		      ComputeObject(ifmac)
