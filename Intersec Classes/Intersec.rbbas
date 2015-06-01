@@ -385,11 +385,11 @@ Implements StringProvider
 		Sub update(p as point, s1 as shape, n1 as integer, s2 as shape, n2 as integer)
 		  dim n as integer
 		  
-		  if sh1 = s2 then
-		    n = n1
-		    n1 = n2
-		    n2 = n
-		  end if
+		  'if sh1 = s2 then
+		  'n = n1
+		  'n1 = n2
+		  'n2 = n
+		  'end if
 		  
 		  //Utilisé par figure.restoreinit
 		  computeinter

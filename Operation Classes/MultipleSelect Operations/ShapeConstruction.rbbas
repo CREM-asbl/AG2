@@ -372,13 +372,6 @@ Inherits MultipleSelectOperation
 		  dim magneticD as BasicPoint
 		  dim magnetism as integer
 		  
-		  'if currentshape isa arc and  currentshape.indexconstructedpoint = 2 then
-		  'if currentattractingshape isa point and currentattractingshape.forme <> 1 and ubound(point(currentattractingshape).parents) > -1 then
-		  'currentattractingshape = point(currentattractingshape).parents(0)
-		  'nextcurrentattractingshape = nil
-		  'end if
-		  'end if
-		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then

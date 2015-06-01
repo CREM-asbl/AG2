@@ -135,7 +135,7 @@ End
 		      messages(f)
 		      if f.subs.count > 0 then
 		        for j=0 to f.subs.count -1
-		          EF.Text = EF.Text +chr(10)+chr(13)
+		          EF.Text =  EF.Text +chr(10)+chr(13)
 		          ff = f.subs.element(j)
 		          messages(ff,j)
 		        next
@@ -252,7 +252,7 @@ End
 		  if not s isa point then
 		    m = m + "Sommets"+chr(13)
 		    for i = 0 to ubound(s.points)
-		      m = m + mess(s.points(i))
+		      m = m + mess(s.points(i))+chr(10)
 		    next
 		    m = m+chr(10)
 		    if ubound(s.childs) > s.npts-1 then
@@ -293,14 +293,18 @@ End
 		  for i = 0 to f.somm.count -1
 		    EF.Text = EF.Text + mess(f.somm.element(i))+",  "
 		  next
-		  EF.Text = EF.Text+ chr(10)+"Points Sur : "
-		  for i = 0 to f.PtsSur.count -1
-		    EF.Text = EF.Text+ mess(f.PtsSur.element(i))+", "
-		  next
-		  EF.Text = EF.Text+ chr(10)+"Points Construits : "
-		  for i = 0 to f.PtsConsted.count -1
-		    EF.Text = EF.Text+mess(f.PtsConsted.element(i))+",  "
-		  next
+		  if  f.PtsSur.count > 0 then
+		    EF.Text = EF.Text+ chr(10)+"Points Sur : "
+		    for i = 0 to f.PtsSur.count -1
+		      EF.Text = EF.Text+ mess(f.PtsSur.element(i))+", "
+		    next
+		  end if
+		  if f.PtsConsted.count > 0 then 
+		    EF.Text = EF.Text+ chr(10)+"Points Construits : "
+		    for i = 0 to f.PtsConsted.count -1
+		      EF.Text = EF.Text+mess(f.PtsConsted.element(i))+",  "
+		    next
+		  end if
 		  
 		  
 		  
@@ -335,11 +339,11 @@ End
 		  end if
 		  if P.PointSur <> Nil then
 		    for i = 0 to P.Pointsur.count-1
-		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", " 
+		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", "
 		    next i
 		  end if
 		  if p.constructedby <> nil or p.conditionedby<> nil or ubound(p.constructedshapes)>-1 then
-		    m = m+ messlinks(p) 
+		    m = m+ messlinks(p)
 		  end if
 		  return m
 		End Function
@@ -349,7 +353,7 @@ End
 		Function mess(f as figure, i as integer) As string
 		  dim m as string
 		  
-		  m = "Sous-Figure nr "+ str(i)
+		  m = chr(10)+ "Sous-Figure nr "+ str(i)
 		  return messauto(f,m)
 		  
 		  

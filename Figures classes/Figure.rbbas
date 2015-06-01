@@ -987,7 +987,7 @@ Implements StringProvider
 		    p = Point(somm.element(i))
 		    p.Transform(M)
 		    p.updateshape
-		    if  p.pointsur.count = 0 then
+		    if  p.forme = 0 then
 		      p.modified = true                //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		      p.unmodifiable = true
 		    end if
@@ -1964,23 +1964,15 @@ Implements StringProvider
 		  for i = 0 to PtsSur.count-1
 		    p = point(PtsSur.element(i))
 		    p.moveto oldptssur(i)
-		    for j = 0 to p.pointsur.count-1
-		      p.puton p.pointsur.element(j)
-		    next
+		    if p.forme = 1 then
+		      p.puton p.pointsur.element(0)
+		    end if
 		    if  invalidptssur.indexof(i) <> -1 then
 		      p.invalider
 		    else
 		      p.valider
 		    end if
 		  next
-		  
-		  'for i = 0 to PtsSur.count-1
-		  'p = point(PtsSur.element(i))
-		  'p.moveto oldptssur(i)
-		  'for j = 0 to p.pointsur.count-1
-		  'p.puton p.pointsur.element(j)
-		  'next
-		  'next
 		  
 		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
 		  //Pas compris pourquoi...

@@ -1267,14 +1267,14 @@ Implements StringProvider
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
 		      p = childs(i)
-		      if p.pointsur.count = 2 then
+		      if p.forme = 2  then
 		        s1 = p.pointsur.element(0)
 		        s2 = p.pointsur.element(1)
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
 		          inter = CurrentContent.TheIntersecs.find(s1,s2)
-		          inter.update
+		          inter.update(p,s1,p.numside(0),s2,p.numside(1))
 		        end if
 		        p.modified = true
 		        p.updateshape
