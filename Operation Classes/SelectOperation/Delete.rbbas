@@ -143,7 +143,7 @@ Inherits SelectOperation
 		  s = Getshape(p)
 		  if s <> nil then
 		    highlight(s)
-		    wnd.mycanvas1.refreshbackground
+		    'wnd.mycanvas1.refreshbackground
 		    currenthighlightedshape = s
 		  end if
 		  
@@ -153,7 +153,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub highlight(s as shape)
-		  dim i, j as integer
+		     dim i, j as integer
 		  dim p as point
 		  dim sh as shape
 		  dim t as boolean
@@ -238,31 +238,27 @@ Inherits SelectOperation
 		  dim pt as point
 		  
 		  redim todelete(-1)
-		  
-		  if visible <> nil and visible.count <> 0 then
-		    nobj = visible.count
-		    iobj = (iobj+1) mod nobj
-		    if CurrentHighlightedShape<>nil then
-		      CurrentHighlightedShape.UnHighLight
-		      if currenthighlightedshape isa point then
-		        pt = point(currenthighlightedshape)
-		        for i = 0 to ubound (pt.parents)
-		          pt.parents(i).unhighlight
-		        next
-		      end if
-		    end if
-		    
-		    CurrentHighlightedShape = visible.element(iobj)
-		    Highlight(CurrentHighlightedShape)
-		    if currenthighlightedshape isa point then
-		      pt = point(currenthighlightedshape)
-		      for i = 0 to ubound (pt.parents)
-		        highlight(pt.parents(i))
-		      next
-		    end if
-		    
-		    Wnd.mycanvas1.refreshbackground
+		  objects.unhighlightall
+		  currenthighlightedshape = nil
+		  if visible = nil or visible.count = 0 then
+		    return
 		  end if
+		                            
+		  nobj = visible.count
+		  iobj = (iobj+1) mod nobj
+		  
+		  
+		  CurrentHighlightedShape = visible.element(iobj)
+		  Highlight(CurrentHighlightedShape)
+		  if currenthighlightedshape isa point then
+		    pt = point(currenthighlightedshape)
+		    for i = 0 to ubound (pt.parents)
+		      highlight(pt.parents(i))
+		    next
+		  end if
+		  
+		  Wnd.mycanvas1.refreshbackground
+		  
 		End Sub
 	#tag EndMethod
 

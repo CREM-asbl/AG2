@@ -97,7 +97,7 @@ Inherits Shape
 		  dim s1,s2 as Shape
 		  dim p3 as Basicpoint
 		  
-		  if not PossibleAttractionWith(s) or s.hidden then
+		  if not PossibleAttractionWith(s)  then
 		    return 0
 		  end if
 		  

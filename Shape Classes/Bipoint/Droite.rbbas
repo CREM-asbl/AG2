@@ -77,7 +77,7 @@ Inherits Bipoint
 		  dim i as integer
 		  dim secP as Point
 		  
-		  Shape(ol,0,2)
+		  Shape(ol,2,2)
 		  
 		  secP = new Point(ol)
 		  secP.MoveTo sp
@@ -163,7 +163,7 @@ Inherits Bipoint
 		  //Constructeur utilisé uniquement par prolonger
 		  dim i as integer
 		  
-		  Shape(ol,0,2)
+		  Shape(ol,2,2)
 		  points.append fp
 		  points.append sp
 		  
@@ -820,6 +820,13 @@ Inherits Bipoint
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -831,13 +838,6 @@ Inherits Bipoint
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -3,7 +3,7 @@ Protected Class Supphom
 Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Supphom(ol as objectslist, fp as point, sp as point, qp as point)
-		  Shape(ol,0,3)
+		  Shape(ol,3,3)
 		  fam = 1
 		  forme = -2
 		  Points.Append fp
@@ -134,6 +134,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -145,13 +152,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

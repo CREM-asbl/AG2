@@ -670,16 +670,9 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  
-		  'if liberte = 0 and f.liberte <> 0 and not f.precede(self) then
-		  'for i = 0 to Somm.count-1
-		  'for j = 0 to f.Somm.count-1
-		  'if Somm.Element(i) = f.Somm.element(j) then
-		  'return true
-		  'end if
-		  'next
-		  'next
-		  'end if
+		  if f.auto = 1 and  NbTrueSommCommuns(f) >= 2 then
+		    return true
+		  end if
 		  
 		  Return false
 		  
@@ -706,7 +699,7 @@ Implements StringProvider
 		  
 		  nc = Mat.nc
 		  
-		  redim MP(nc)
+		  redim MP(nc-1)
 		  for i = 0 to nc-1
 		    MP(i) = new MatrixnD(nc)
 		  next
@@ -718,10 +711,10 @@ Implements StringProvider
 		  
 		  // MP(k) contient les connexions en k+1 étapes
 		  
-		  redim Sommes(nc,nc)
+		  redim Sommes(nc-1,nc-1)
 		  
 		  
-		  for k = 0 to nc-2
+		  for k = 0 to nc-1
 		    for j = 0 to nc-1
 		      Sommes(k,j)=MP(k).SommCol(j)
 		    next
@@ -812,16 +805,23 @@ Implements StringProvider
 		  
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
-		      if (subs.element(i).auto <> 4) and subs.element(i).precede(subs.element(j)) then
-		        mat.col(i,j) = 1
-		      end if
-		      if (subs.element(i).auto <> 4) and subs.element(j).precede(subs.element(i)) then
-		        mat.col(j,i) = 1
+		      if subs.element(i).auto <> 4 and subs.element(j).auto <> 4 then
+		        if  subs.element(i).precede(subs.element(j)) then
+		          mat.col(i,j) = 1
+		        end if
+		        if subs.element(j).precede(subs.element(i)) then
+		          mat.col(j,i) = 1
+		        end if
 		      end if
 		    next
 		  next
 		  
-		  
+		  'if (subs.element(i).auto <> 4) and subs.element(i).precede(subs.element(j)) then
+		  'mat.col(i,j) = 1
+		  'end if
+		  'if (subs.element(i).auto <> 4) and subs.element(j).precede(subs.element(i)) then
+		  'mat.col(j,i) = 1
+		  'end if
 		  
 		End Sub
 	#tag EndMethod
@@ -3331,7 +3331,7 @@ Implements StringProvider
 		  
 		  for i = 0 to Somm.count-1
 		    for j = 0 to f.Somm.count-1
-		      if somm.element(i).forme = 0 and (Somm.Element(i) = f.Somm.element(j)) then
+		      if somm.element(i).forme < 2 and (Somm.Element(i) = f.Somm.element(j)) then
 		        n = n+1
 		      end if
 		    next

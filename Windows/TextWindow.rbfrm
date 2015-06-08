@@ -276,7 +276,7 @@ End
 		    m = m + mess(point(s))
 		  end if
 		  
-		  return m +chr(10)
+		  return m
 		End Function
 	#tag EndMethod
 
@@ -291,7 +291,7 @@ End
 		  next
 		  EF.Text = EF.Text+chr(10)+"Sommets : "
 		  for i = 0 to f.somm.count -1
-		    EF.Text = EF.Text + mess(f.somm.element(i))+",  "
+		    EF.Text = EF.Text + mess(f.somm.element(i))
 		  next
 		  if  f.PtsSur.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Sur : "
@@ -299,12 +299,13 @@ End
 		      EF.Text = EF.Text+ mess(f.PtsSur.element(i))+", "
 		    next
 		  end if
-		  if f.PtsConsted.count > 0 then 
+		  if f.PtsConsted.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Construits : "
 		    for i = 0 to f.PtsConsted.count -1
 		      EF.Text = EF.Text+mess(f.PtsConsted.element(i))+",  "
 		    next
 		  end if
+		  EF.Text = EF.Text + chr(10)+chr(13)
 		  
 		  
 		  
@@ -353,8 +354,8 @@ End
 		Function mess(f as figure, i as integer) As string
 		  dim m as string
 		  
-		  m = chr(10)+ "Sous-Figure nr "+ str(i)
-		  return messauto(f,m)
+		  m = "Sous-Figure nr "+ str(i)
+		  return messauto(f,m) + chr(10)
 		  
 		  
 		  
