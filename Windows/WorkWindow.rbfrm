@@ -2406,7 +2406,7 @@ End
 		    CurrentContent.currentoperation = new ReadHisto(f)
 		  elseif f.Type = "SAVE" then
 		    CurrentContent.CurrentOperation = new Ouvrir(f)
-		  else  'if f.name <> "vss" then
+		  else
 		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
 		    if nc then
 		      deleteContent

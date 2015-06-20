@@ -867,7 +867,7 @@ Inherits Shape
 		  dim i,j,k as integer
 		  dim s as shape
 		  
-		  if self = fig.pointmobile then
+		  if currentcontent.currentoperation isa modifier and self = fig.pointmobile then
 		    return
 		  end if
 		  

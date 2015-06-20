@@ -226,7 +226,7 @@ Implements StringProvider
 		  dim ff as figure
 		  
 		  for i = 0 to k
-		    n = supfig.index(i)
+		    n = supfig.rang(i)
 		    ff = supfig.subs.element(n)
 		    
 		    if NbPtsCommuns(ff) > 0 then
@@ -670,7 +670,7 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  if f.auto = 1 and  NbTrueSommCommuns(f) >= 2 then
+		  if auto = 1 and  NbTrueSommCommuns(f) >= 2  then
 		    return true
 		  end if
 		  
@@ -716,8 +716,8 @@ Implements StringProvider
 		  
 		  for k = 0 to nc-1
 		    for j = 0 to nc-1
-		      Sommes(k,j)=MP(k).SommCol(j)
-		    next
+		      Sommes(k,j)=MP(k).SommCol(j)  //Sommes(k,j) est le nombre de connexions en k+1 étapes aboutissant en sub(j)
+		    next                                                        //Pour une subfig(j) à la racine du graphe, toutes les sommes(k,j) valent 0
 		  next
 		End Sub
 	#tag EndMethod
@@ -945,8 +945,8 @@ Implements StringProvider
 		  t = true
 		  
 		  listersubfigs(p)
-		  for i = 0 to ubound(index)
-		    sf = subs.element(index(i))
+		  for i = 0 to ubound(rang)
+		    sf = subs.element(rang(i))
 		    if currentcontent.drapaff then
 		      t = sf.Modifaffine(p)
 		    elseif currentcontent.drapeucli then
@@ -1466,11 +1466,13 @@ Implements StringProvider
 		  'return true
 		  'end if
 		  
-		  'for i = 0 to shapes.count-1
-		  'if not shapes.element(i).check then
-		  'return false
-		  'end if
-		  'next
+		  for i = 0 to shapes.count-1
+		    d = shapes.element(i).computediam
+		    if  d < 20*epsilon then
+		      shapes.element(i).constructshape
+		      return true
+		    end if
+		  next
 		  
 		  t = true
 		  for i = 0 to somm.count-1
@@ -1493,7 +1495,7 @@ Implements StringProvider
 		Function replacerpoint(p as point) As Boolean
 		  dim i as integer
 		  
-		  if p.pointsur.count = 1 and p.modified and  not p.unmodifiable and p <> supfig.pointmobile then
+		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pointmobile then
 		    unmodify p
 		    return true
 		  else
@@ -2071,8 +2073,12 @@ Implements StringProvider
 		  n = NbSommSur
 		  
 		  select case n
-		  case 0,1
+		  case 0
 		    return DefaultMatrix
+		  case 1
+		    p1 = point(somm.element(Listsommsur(0)))
+		    t = replacerpoint(p1)
+		    return autosimupdate
 		  case 2
 		    p1 = point(somm.element(Listsommsur(0)))
 		    p2 = point(somm.element(Listsommsur(1)))
@@ -2208,7 +2214,7 @@ Implements StringProvider
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.element(i))
-		    if p.pointsur.count = 2 and p.pointsur.element(0).modified and p.pointsur.element(1).modified then
+		    if p.forme = 2 and p.pointsur.element(0).modified and p.pointsur.element(1).modified then
 		      p.unmodifiable = true
 		    end if
 		    if ubound(p.parents) >=1 then
@@ -2587,7 +2593,10 @@ Implements StringProvider
 		  p = Point(somm.element(n1))
 		  q = Point(somm.element(n2))
 		  
-		  if NbSommSur(n1,n2) = 1 then
+		  select case  NbSommSur(n1,n2)
+		  case 0
+		    return s.Modifier1fixe(p,q)
+		  case 1
 		    if  (replacerpoint(p) or replacerpoint(q))  then
 		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
 		    else
@@ -2595,7 +2604,7 @@ Implements StringProvider
 		    end if
 		  else
 		    return s.Modify2(p,q)
-		  end if
+		  end select
 		  
 		End Function
 	#tag EndMethod
@@ -3124,8 +3133,12 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function Autosimupdate2() As Matrix
-		  dim p, q as point
-		  dim n1, n2 as integer
+		  dim p, q,  pmob, p3 as point
+		  dim n1, n2, npmob as integer
+		  dim M as Matrix
+		  dim k as double
+		  dim s as shape
+		  dim ep, eq, np, nq As BasicPoint
 		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
@@ -3141,12 +3154,29 @@ Implements StringProvider
 		    else
 		      return new Matrix(1)
 		    end if
-		  case 1                                       //ce cas apparait
-		    'if  replacerpoint(p) or replacerpoint(q) then
-		    'return   autosimupdate
-		    'else
-		    return DefaultMatrix
-		    'end if
+		  case 1
+		    M = DefaultMatrix
+		    pmob = supfig.pointmobile
+		    npmob=  Somm.GetPosition(pmob)
+		    if npmob= -1 then
+		      return M
+		    end if
+		    p3 = Point(Somm.element(ListSommSur(Ubound(ListSommSur))))
+		    s = p3.pointsur.element(0)
+		    if not s isa droite then
+		      return M
+		    end if
+		    getoldnewpos(p,ep,np)
+		    getoldnewpos(q,eq,nq)
+		    k = M.rapport
+		    if npmob = n2 then
+		      M = new SimilarityMatrix(ep,k,0)
+		    else
+		      M = new SimilarityMatrix(eq,k,0)
+		    end if
+		    q.moveto M*eq
+		    q.modified = true
+		    return M
 		  end select
 		  
 		  
@@ -3168,7 +3198,7 @@ Implements StringProvider
 		  for i = 0 to Somm.count-1
 		    if i <> n1 and i <> n2 then
 		      p = Point(somm.element(i))
-		      if p.pointsur.count = 1 and P.liberte = 1 and not p.modified  then
+		      if p.forme = 1 and P.liberte = 1 and not p.modified  then
 		        n = n+1
 		        ListSommSur.append i
 		      end if
@@ -3418,44 +3448,34 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub listersubfigs(p as point)
-		  dim i, j, k, n as integer
-		  redim index(-1)
+		  dim i, j, k, n, h0 as integer
+		  dim t as boolean
+		  redim rang(-1)
 		  
 		  n =Subs.count-1
 		  if n = 0 then
-		    index.append 0
+		    rang.append 0
 		    return
 		  end if
 		  
 		  
-		  while ubound(index) < n
-		    i = choixsubfig(p) //on choisit une sous fig qui n'est précédée d'aucune autre
-		    if  i <> -1  then
-		      index.append i
-		      for k = 0 to n-1
-		        for j = 0 to n
-		          if Sommes(k,j) > 0 and index.indexof(j) = -1 and OKToInsert(j) then
-		            index.append j
-		          end if
-		        next
-		      next
-		    end if
-		  wend
+		  choixsubfig(p, h0)    //on choisit une sous fig de départ Toutes les sous-fig qui la précèdent doivent ...
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function OKToInsert(j as integer) As Boolean
-		  dim i, n as integer
+		  dim i as integer
 		  dim t as Boolean
 		  
-		  n = Mat.nc-1 //Toutes les sous-fig qui précèdent sub(j) ont-elles été insérées?
+		  
 		  
 		  t = true
 		  
-		  for i = 0 to n
-		    if  Mat.Col(i,j) = 1 then  // y a-t-il au moins une sous-figure qui précède subs(j) et a déjà été insérée?
-		      t = (t and index.indexof(i) <> -1)
+		  for i = 0 to Mat.nc-1                              //Toutes les sous-fig qui précèdent sub(j) ont-elles été insérées?
+		    if  Mat.Col(i,j) = 1 then
+		      t = (t and rang.indexof(i) <> -1)
 		    end if
 		  next
 		  
@@ -3464,55 +3484,110 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ChoixSubfig(p as point) As integer
-		  dim h, i,j,n, imax as integer
+		Sub ChoixSubfig(p as point, byref h0 As integer)
+		  dim h, i,j,n,m, m0, i0 as integer
 		  dim dispo(-1) as integer
 		  dim sf as figure
+		  dim t as Boolean
 		  
 		  
 		  n = subs.count -1
 		  
-		  //1ere étape: Y a-t-il des sous-figures non encore modifiées qui contiennent le point mobile et ne sont précédées d'aucune autre sous-figure ?
+		  //1ere étape: Insérer toutes les sous-figures contenant le point mobile plus celles qui les précèdent
+		  m0 = -2
+		  m = -1
 		  
-		  for i = 0 to n
-		    if  index.indexof(i) = -1 then
-		      sf = subs.element(i)
-		      if (sf.somm.getposition(p) <> -1 or sf.ptssur.getposition(p) <> -1) and (sommes(0,i) = 0) then
-		        dispo.append i
-		      end if
-		    end if
-		  next
-		  
-		  if ubound(dispo) = -1 then  //   2eme étape  Si on n'a trouvé aucune sous-figure contenant le point mobile, on recommence
+		  Do Until  m = m0 or m = n
+		    m0 = m
+		    h0 = 0
+		    i0 = -1
 		    for i = 0 to n
-		      if  index.indexof(i) = -1 then
-		        if  (sommes(0,i) = 0) then
-		          dispo.append i
+		      sf = subs.element(i)
+		      if  GetRang(i) = -1 and  ((sf.somm.getposition(p) <> -1 ) or (sf.ptssur.getposition(p) <> -1)) then
+		        h = 0
+		        while h < n and sommes(h,i) <> 0
+		          h=h+1
+		        wend
+		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i)
+		          h0 = h          'sub(i) est à la racine du graphe si h = 0
+		          i0 = i
 		        end if
 		      end if
 		    next
+		    if i0 <> -1 then
+		      if h0 <> 0 then
+		        InsertPreceding(i0)
+		      end if
+		      rang.append i0
+		    end if
+		    m = ubound (rang)
+		  Loop
+		  
+		  
+		  
+		  if m = n then
+		    return
 		  end if
 		  
-		  if ubound(dispo) = -1 then
-		    return -1
+		  
+		  //2eme etape: insérer  les sous-figures ne contenant pas le point mobile et précédées par au moins une autre  sous-figure
+		  m0 = -2
+		  
+		  Do Until  m = m0 or m = n
+		    m0 = m
+		    h0 = 0
+		    i0 = -1
+		    for i = 0 to n
+		      sf = subs.element(i)
+		      if  GetRang(i) = -1  then
+		        h = 0
+		        while h < n and sommes(h,i) <> 0
+		          h=h+1
+		        wend
+		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i)
+		          h0 = h          'sub(i) est à la racine du graphe si h = 0
+		          i0 = i
+		        end if
+		      end if
+		    next
+		    if i0 <> -1 then
+		      if h0 <> 0 then
+		        InsertPreceding(i0)
+		      end if
+		      rang.append i0
+		    end if
+		    m = ubound (rang)
+		  Loop
+		  
+		  if m = n then
+		    return
 		  end if
 		  
-		  return choixsubfig2bis(dispo)
 		  
 		  
-		End Function
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ChoixSubfig2(dispo() as integer) As integer
+		Sub ChoixSubfig2()
 		  'dim h, k, i, n as integer
 		  'dim ma, imax, nvois as integer
+		  'dim dispo() as integer
+		  '
+		  '' 2eme étape: Insérer les sous-figures ne contenant pas le point mobile
 		  '
 		  'n = subs.count-1
+		  'redim dispo(-1)
 		  '
-		  'if ubound(dispo) = 0 then
-		  'return dispo(0)
-		  'elseif ubound(dispo) > -1 then
+		  'for i = 0 to n
+		  'if index.indexof(i) = -1 then
+		  'dispo.append i
+		  'end if
+		  'next
+		  '
+		  'while ubound(index) < n
 		  'ma = 0
 		  'imax = -1
 		  'for i = 0 to ubound(dispo)
@@ -3538,12 +3613,11 @@ Implements StringProvider
 		  'end if
 		  'next
 		  'end if
-		  'return imax
-		  'else
-		  'return -1
-		  'end if
+		  'InsertPreceding(imax)
+		  'index.append imax
+		  'wend
 		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3555,72 +3629,67 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ChoixSubFig2bis(dispo() as integer) As integer
-		  dim h, k, i, iret as integer
-		  dim n as integer
-		  dim ff, ff1 as figure
-		  dim p as point
-		  dim  libe() as integer
-		  dim s as shape
-		  dim t as boolean
-		  
-		  n = subs.count-1
-		  
-		  if ubound(dispo) = 0 then
-		    return dispo(0)
-		  elseif ubound(dispo) > -1 then
-		    redim libe(ubound(dispo))
-		    
-		    for i = 0 to ubound(dispo)
-		      ff = subs.element(dispo(i))
-		      s = ff.shapes.element(0)
-		      n = 0
-		      for h = 0 to ff.somm.count
-		        p = point(ff.somm.element(h))
-		        t = false
-		        for k = 0 to n
-		          t = t or ( (k<> i) and ( index.indexof(k) <> -1) and (subs.element(k).somm.getposition(p) <> -1))
-		        next
-		        if t then
-		          n = n+1
-		        end if
-		      next
-		      select case ff.auto
-		      case 0
-		        libe(i) = 0
-		      case 1
-		        libe(i) = 4 - 2*n
-		      case 2
-		        libe(i) = 6 - 2*n
-		      case 3
-		        libe(i) = 5 - 2*n
-		      case 4
-		        libe(i) = 2*s.npts - 2*n
-		      case 5
-		        if s isa traprect  or s isa trapiso then
-		          libe(i) = 6-2*n
-		        else
-		          libe(i) = 7-2*n
-		        end if
-		      case 6
-		        libe(i) = 3 -2*n
-		      end select
-		      if libe(i) < 0 then
-		        libe(i) = 0
-		      end if
-		    next
-		    
-		    for i = 0 to ubound(dispo)
-		      if libe(i) > n then
-		        n = libe(i)
-		        iret = dispo(i)
-		      end  if
-		    next
-		    return iret
-		    
-		  else
-		    return -1
-		  end if
+		Function ChoixSubFig2bis() As integer
+		  'dim h, k, i, iret as integer
+		  'dim n, m as integer
+		  'dim ff, ff1 as figure
+		  'dim p as point
+		  'dim  libe() as integer
+		  'dim s as shape
+		  'dim t as boolean
+		  'dim dispo() as integer
+		  'n = subs.count-1
+		  '
+		  'redim libe(ubound(dispo))
+		  '
+		  'for i = 0 to ubound(dispo)
+		  'ff = subs.element(dispo(i))
+		  's = ff.shapes.element(0)
+		  'm = 0
+		  'for h = 0 to ff.somm.count-1
+		  'p = point(ff.somm.element(h))
+		  't = false
+		  'for k = 0 to n       //a-t-on déjà inséré uns subfig différente de sub(i) contenant le point p
+		  't = t or ( (k<> i) and ( index.indexof(k) <> -1) and (subs.element(k).somm.getposition(p) <> -1))
+		  'next
+		  'if t then
+		  'm = m+1  // n est le nombre de subfig différentes de sub(i) déjà insérées contenant le point p
+		  'end if
+		  'next
+		  '
+		  'select case ff.auto  //On calcule le nombre de degrés de liberté dont on dispose dans le cas du choix de sub(i)
+		  'case 0
+		  'libe(i) = 0
+		  'case 1
+		  'libe(i) = 4 - 2*m
+		  'case 2
+		  'libe(i) = 6 - 2*m
+		  'case 3
+		  'libe(i) = 5 - 2*m
+		  'case 4
+		  'libe(i) = 2*s.npts - 2*m
+		  'case 5
+		  'if s isa traprect  or s isa trapiso then
+		  'libe(i) = 6-2*m
+		  'else
+		  'libe(i) = 7-2*m
+		  'end if
+		  'case 6
+		  'libe(i) = 3 -2*m
+		  'end select
+		  'if libe(i) < 0 then
+		  'libe(i) = 0
+		  'end if
+		  'next
+		  '
+		  'for i = 0 to ubound(dispo)  //Faut-il choisir la subfig qui a conservé le plus de degrés de libertés ou le moins?
+		  'if libe(i) > n then
+		  'n = libe(i)
+		  'iret = dispo(i)
+		  'end  if
+		  'next
+		  'return iret
+		  '
 		  
 		End Function
 	#tag EndMethod
@@ -3735,6 +3804,47 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub InsertPreceding(i as integer)
+		  //i est un numéro de sous-figure,
+		  // la méthode doit insérer dans l'index toutes les sous-figures qui précèdent subfig(i), en respectant les relations de précédence
+		  // on insérera d'abord celles pour lesquelles MP(1).Col(j,i) >0 et MP(2).Col(j,i) = MP(3).Col(j,i)= ... = 0
+		  //Puis celles pour lesquelles MP(2).Col(j,i) > 0  etc... On procède par récursivité
+		  
+		  dim j, h, n, s as integer
+		  
+		  n = Mat.nc-1
+		  
+		  for h = 0 to n
+		    if rang.indexof(h)=-1 and Mat.Col(h,i) = 1 then
+		      s = 0
+		      for j = 1 to n
+		        s = s + MP(j).Col(h,i)
+		      next
+		      if s = 0 then
+		        InsertPreceding(h)
+		      end if
+		      rang.append h
+		    end if
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRang(n as integer) As integer
+		  dim i as integer
+		  
+		  for i=0 to ubound(Rang)
+		    if Rang(i) = n then
+		      return i
+		    end if
+		  next
+		  return -1
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -3779,7 +3889,7 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		index(-1) As Integer
+		Rang(-1) As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

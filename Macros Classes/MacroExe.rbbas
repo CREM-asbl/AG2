@@ -107,7 +107,6 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    CurrentContent.TheMacros.AddMac(Mac)
 		  end if
 		  MacInfo = new MacConstructionInfo(Mac)
 		  Mac.MacInf = MacInfo
@@ -222,6 +221,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MacroExe(Macr as Macro)
+		  
 		  MultipleSelectOperation
 		  Mac = Macr
 		  OpId = 43

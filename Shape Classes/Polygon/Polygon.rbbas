@@ -508,7 +508,9 @@ Inherits Shape
 		      v = v.vecnorperp
 		      if p(2).pointsur.count = 0 then
 		        M = new OrthoProjectionMatrix(u,u+v)
-		        np2 = M*np2
+		        if M <> nil and M.v1 <> nil then
+		          np2 = M*np2
+		        end if
 		      else
 		        s = p(2).pointsur.element(0)
 		        q1 = new point(u)
@@ -716,6 +718,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -727,13 +736,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

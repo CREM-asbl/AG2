@@ -3322,17 +3322,6 @@ Implements StringProvider
 		  if invalid  then
 		    return
 		  else
-		    if not self isa point and auto = 1 then
-		      diam = computediam
-		      if diam < 5*epsilon  then
-		        for i = ncpts to npts-1
-		          points(i).moveto points(0).bpt
-		        next
-		        updatecoord
-		      elseif  diam < 10*epsilon then
-		        constructshape
-		      end if
-		    end if
 		    if ubound(childs) >= npts then
 		      for i = npts to ubound(childs)
 		        childs(i).updateshape(M)

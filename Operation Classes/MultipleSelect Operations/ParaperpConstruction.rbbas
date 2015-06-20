@@ -287,7 +287,8 @@ Inherits ShapeConstruction
 		  rid = MExe.GetRealId(n)
 		  Refe= objects.GetShape(rid)
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
-		  side = Mexe.GetRealSide(n)
+		  num = val(EL1.GetAttribute("Index"))
+		  side = Mexe.GetRealSide(num)
 		  currentshape.constructedby.data.append side
 		  currentshape.constructedby.data.append nil
 		  currentshape.constructedby.data.append ori
