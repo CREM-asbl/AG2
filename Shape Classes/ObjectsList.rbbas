@@ -9,7 +9,7 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count() As integer
+		Function count() As Integer
 		  return Ubound(objects)+1
 		End Function
 	#tag EndMethod
@@ -1117,7 +1117,7 @@ Protected Class ObjectsList
 		    case 2
 		      select case fo
 		      case 0
-		        currentshape = new Polyqcq(self,3)
+		        currentshape = new Triangle(self)
 		      case 1
 		        currentshape = new TriangIso(self,3,3)
 		      case 2

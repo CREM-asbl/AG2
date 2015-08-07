@@ -524,10 +524,6 @@ Inherits MultipleSelectOperation
 		  case 1
 		    if fp <> sp then
 		      currentshape = new droite(objects, fp,sp, 2)
-		      currentshape.endconstruction
-		      droite(currentshape).createskull(fp.bpt)
-		      droite(currentshape).updateskull
-		      objects.optimize
 		    end if
 		    return true
 		  else

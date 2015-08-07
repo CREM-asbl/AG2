@@ -884,7 +884,7 @@ Implements StringProvider
 		    bp = Point(self).bpt
 		  end if
 		  
-		  if self isa point and other isa point then
+		  if self isa point and other isa point and point(other).bpt <> nil then
 		    dist = bp.distance(point(other).bpt)
 		    if dist <= magdist then
 		      return true
@@ -1274,7 +1274,7 @@ Implements StringProvider
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
 		          inter = CurrentContent.TheIntersecs.find(s1,s2)
-		          inter.update(p,s1,p.numside(0),s2,p.numside(1))
+		          inter.update(p)
 		        end if
 		        p.modified = true
 		        p.updateshape
@@ -1503,7 +1503,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AllPtValid() As boolean
+		Function AllPtValid() As Boolean
 		  dim  i As integer
 		  
 		  for i=0 to Ubound(Points)
@@ -2248,7 +2248,7 @@ Implements StringProvider
 		      if not haspointon(s2,p) then
 		        return true
 		      end if
-		    case 3, 5, 6, 9
+		    case 3, 5, 6, 8, 9
 		      return true
 		    end select
 		  elseif constructedby <> nil and constructedby.oper = 6 then
@@ -2298,7 +2298,7 @@ Implements StringProvider
 		  end if
 		  
 		  
-		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
+		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) then 'and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
 		    t =  (constructedby = nil or constructedby.shape <> s2)   ''si un sommet de s2 est pointsur self (sans que self soit construit par s2)
 		    for k = 0 to npts-1
 		      t = t or ( (points(k).constructedby = nil) or (points(k).constructedby.shape isa point and s2.getindex(point(points(k).constructedby.shape)) <> -1) )
@@ -2307,7 +2307,6 @@ Implements StringProvider
 		      return true
 		    end if
 		  end if
-		  
 		  
 		  if s2 isa polygon then
 		    for i = 0 to s2.npts-1

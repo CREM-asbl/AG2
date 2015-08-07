@@ -1,7 +1,7 @@
 #tag FileTypeSet
 	#tag FileType
 		CodeName=SAVE
-		Extension=fag;xml
+		Extension=fag
 		Flags=&h1
 		MacCreator=CREM
 		MacType=FAG
@@ -42,6 +42,15 @@
 		MacCreator=CREM
 		MacType=STD
 		Name=STD
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=Image
+		Extension=jpg;jpeg
+		Flags=&h0
+		MacCreator=CREM
+		MacType=JPEG
+		Name=jpegType
 	#tag EndFileType
 
 #tag EndFileTypeSet

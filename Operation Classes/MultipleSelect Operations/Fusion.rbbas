@@ -5,40 +5,47 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  dim i,n as integer
 		  dim Tr as BasicPoint
+		  dim alpha, beta as double
+		  dim BiB as BiBPoint
 		  
 		  if (Fus1 isa Lacet) or (Fus2 isa Lacet) then
 		    
-		  else
-		    if fus1.std or fus2.std or dir = -1 then
-		      if fus1.std or fus2. std then
-		        Fus = new StandardPolygon(Objects, Fus1.Points((start1+1) mod Fus1.npts).bpt)
-		      else
-		        Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
-		      end if
-		      for i = 2 to Fus1.npts-1
-		        Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
-		      next
-		      for  i = 1 to Fus2.npts-1
-		        Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
-		      next
+		  elseif  dir = -1  then
+		    if Fus1.std or Fus2.std then
+		      Fus = new StandardPolygon(Objects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
 		    else
-		      Fus = new Polyqcq(Objects,Fus1.Points(start1).bpt)
-		      for i = 1 to Fus1.npts-1
-		        Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
-		      next
-		      for i = 0 to Fus2.npts-1
-		        Fus.AddPoint Fus2.Points((start2+i) mod Fus2.npts).bpt
-		      next
-		      Fus.Points(0).Identify1(Fus.Points(Fus1.npts))
-		      Fus.Points(1).Identify1(Fus.Points(Fus1.npts+1))
+		      Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
 		    end if
-		    Fus.NotPossibleCut = true
+		    for i = 2 to Fus1.npts-1
+		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
+		    next
+		    for  i = 1 to Fus2.npts-1
+		      Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
+		    next
+		  elseif dir = 1 then
+		    Fus = new Polyqcq(Objects,Fus1.Points(start1).bpt)
+		    for i = 1 to Fus1.npts-1
+		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
+		    next
+		    for i = 0 to Fus2.npts-1
+		      Fus.AddPoint Fus2.Points((start2+i) mod Fus2.npts).bpt
+		    next
+		    Fus.Points(0).Identify1(Fus.Points(Fus1.npts))
+		    Fus.Points(1).Identify1(Fus.Points(Fus1.npts+1))
 		  end if
 		  
 		  Fus.coord= new nBPoint(Fus)
 		  if Fus1.std or Fus2.std then
 		    Fus.std = true
 		    Fus.fam = 14
+		    alpha = 0
+		    for i = 0 to Fus.npts-2
+		      Bib = Fus.GetBiBside(i)
+		      StandardPolygon(Fus).Distances.append BiB.longueur
+		      beta = BiB.anglepolaire*180/PI
+		      StandardPolygon(Fus).Angles.Append beta-alpha
+		      alpha = beta
+		    next
 		  end if
 		  if not Fus.std then
 		    Fus.autos
@@ -226,6 +233,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub SetConstructionInfo(dir as integer)
 		  dim i as integer
+		  
 		  
 		  Fus.SetConstructedby nil, 9
 		  Fus.constructedby.data.append Fus1

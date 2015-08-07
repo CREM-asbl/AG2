@@ -36,7 +36,7 @@ Inherits Polyqcq
 		    next
 		  end if
 		  p = coord.tab(1) - coord.tab(0) 'Points(1).bpt-Points(0).bpt
-		  Angles(0)= p.anglepolaire 
+		  Angles(0)= p.anglepolaire
 		  sk = new Figskull(points(0).bpt,npts)
 		  for i=0 to npts-1
 		    figskull(sk).getcote(i).order = 0
@@ -90,7 +90,6 @@ Inherits Polyqcq
 
 	#tag Method, Flags = &h0
 		Sub StandardPolygon(ol as ObjectsList, fam as integer, form as integer, p as BasicPoint)
-		  dim sc as double
 		  dim i as integer
 		  
 		  Polygon(ol,1,p)
@@ -137,27 +136,20 @@ Inherits Polyqcq
 		Sub ConstructShape()
 		  dim q as BasicPoint
 		  dim i as integer
-		  dim cs as curveshape
 		  dim sc as double
 		  dim cap as double
 		  
 		  sc = wnd.mycanvas1.scaling
-		  //for i = 1 to npts-1
-		  //cs = figskull(sk).getcote(i-1)
-		  //q = new basicpoint(cs.X2,cs.Y2)
-		  //q = q*sc*stdsize
-		  //Points(i).moveto(Points(0).bpt + wnd.mycanvas1.idtransform(q))
-		  //next
-		  
+		  coord.tab(0) = points(0).bpt
 		  cap = angles(0)
 		  for i = 1 to npts-1
 		    q = new BasicPoint(cos(cap),sin(cap))
-		    points(i).moveto (points(i-1).bpt + q*distances(i-1)*stdsize)
+		    coord.tab(i) = coord.tab(i-1) + q*distances(i-1)*stdsize
 		    if i < npts-1 then
 		      cap = cap + ori*angles(i)
 		    end if
 		  next
-		  
+		  repositionnerpoints
 		  UpdateSkull
 		  
 		End Sub
@@ -169,6 +161,30 @@ Inherits Polyqcq
 		  
 		  q = points(1).bpt-points(0).bpt
 		  angles(0) = q.anglepolaire
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InverserOri()
+		  dim n, m as integer
+		  dim bp as BasicPoint
+		  dim p as point
+		  
+		  n = 1
+		  m = npts-1
+		  
+		  while n < m
+		    p = points(n)
+		    points(n) = points(m)
+		    points(m) = p
+		    p = childs(n)
+		    childs(n) = childs(m)
+		    childs(m)=p
+		    n = n+1
+		    m = m-1
+		  wend
+		  ori = -ori
+		  
 		End Sub
 	#tag EndMethod
 

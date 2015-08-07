@@ -254,14 +254,17 @@ Inherits MultipleSelectOperation
 		  dim t as boolean
 		  dim i, n as integer
 		  
+		  if dejaclasse(p) <> -1 then
+		    return
+		  end if
+		  
 		  n = EtapedeConstruction(p)
 		  
 		  for i = 0 to ubound(p.parents)
-		    if n >= EtapedeConstruction(p.parents(i)) then
-		      IdentifyInit(p.parents(i))
-		    end if
+		    'if n >= EtapedeConstruction(p.parents(i)) or p.forme = 1 then
+		    IdentifyInit(p.parents(i))
+		    'end if
 		  next
-		  
 		  
 		  if p.constructedby = nil and p.macconstructedby = nil  then
 		    PointIdentifyInit1(p)
@@ -307,21 +310,22 @@ Inherits MultipleSelectOperation
 		  dim t as Boolean  'Cas des formes non construites par une autre
 		  dim i, n as integer
 		  
-		  t = false  ' true
+		  t =  true  'false
 		  n = EtapeDeConstruction(s)
 		  for i =0 to s.ncpts-1
-		    t = t or (EtapeDeConstruction(s.points(i)) >= n)   't = t and (EtapeDeConstruction(s.points(i)) = n)
+		    t = t and (EtapeDeConstruction(s.points(i)) = n)   't = t and (EtapeDeConstruction(s.points(i)) >= n)
 		  next
-		  if t then
+		  if t and  DejaClasse(s) <> 2 then
 		    AddInit(s)
+		    return
 		  else
 		    AddInterm(s)
 		    for i = 0 to s.ncpts-1
-		      if EtapeDeConstruction(s.points(i)) < n then
-		        PointIdentifyInit(s.points(i))
-		      else
-		        AddInit(s.Points(i))
-		      end if
+		      'if EtapeDeConstruction(s.points(i)) <= n then
+		      PointIdentifyInit(s.points(i))
+		      'else
+		      'AddInit(s.Points(i))
+		      'end if
 		    next
 		  end if
 		  return
@@ -335,7 +339,7 @@ Inherits MultipleSelectOperation
 		  dim sh as shape
 		  dim i as integer
 		  
-		  AddInterm(s)          // s est une forme construite
+		  AddInterm(s)          // s est une forme construite Aucun sommet ne pourrait être initial, sauf dans le cas des paraperp et des prolongements
 		  if s.constructedby <> nil then
 		    IdentifyInit(s.constructedby.shape)
 		    select case s.constructedby.oper
@@ -349,14 +353,17 @@ Inherits MultipleSelectOperation
 		      tsf = transformation(s.constructedby.Data(0))
 		      AddTsfInterm(tsf)
 		      IdentifyInit(tsf.supp)
-		    case 8  'Prolongements (A faire)
+		    case 8  'Prolongements
+		      for i = 0 to 1
+		        PointIdentifyInit(s.points(i))
+		      next
 		    end select
-		    'elseif s.MacConstructedby <> nil then
-		    'MacInfo = s.MacConstructedBy
-		    'for i = 0 to ubound(MacInfo.RealInit)
-		    'sh = objects.getshape(MacInfo.RealInit(i))
-		    'identifyinit(sh)
-		    'next
+		  elseif s.MacConstructedby <> nil then
+		    MacInfo = s.MacConstructedBy
+		    for i = 0 to ubound(MacInfo.RealInit)
+		      sh = objects.getshape(MacInfo.RealInit(i))
+		      identifyinit(sh)
+		    next
 		  end if
 		End Sub
 	#tag EndMethod
@@ -395,6 +402,7 @@ Inherits MultipleSelectOperation
 		  dim macinfo as MacConstructionInfo
 		  dim sh as shape
 		  dim i, n as integer
+		  dim tsf as transformation
 		  
 		  AddInterm(p)
 		  
@@ -408,18 +416,20 @@ Inherits MultipleSelectOperation
 		    case 6
 		      IdentifyInit(transformation(p.constructedby.Data(0)).supp)
 		      AddTsfInterm(transformation(p.constructedby.Data(0)))
-		    case 9
-		      //A compléter
+		    case 7
+		      tsf = transformation(p.constructedby.Data(0))
+		      AddTsfInterm(tsf)
 		    case 10
 		      IdentifyInit(p.pointsur.element(0))
+		      IdentifyInit(p.constructedby.shape)
 		    end select
 		    
-		    'elseif p.macconstructedby <> nil then
-		    'MacInfo = p.MacConstructedBy
-		    'for i = 0 to ubound(MacInfo.RealInit)
-		    'sh = objects.getshape(MacInfo.RealInit(i))
-		    'identifyinit(sh)
-		    'next
+		  elseif p.macconstructedby <> nil then
+		    MacInfo = p.MacConstructedBy
+		    for i = 0 to ubound(MacInfo.RealInit)
+		      sh = objects.getshape(MacInfo.RealInit(i))
+		      identifyinit(sh)
+		    next
 		  end if
 		End Sub
 	#tag EndMethod
@@ -432,16 +442,22 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  n = EtapeDeConstruction(p)
+		  
 		  t = true
-		  for i = 0 to ubound(p.parents)
+		  for i = 0 to ubound(p.parents)            //Un point "sur" ne pourrait pas avoir été construit avant tous ses parents
 		    t = t and ( n  < EtapedeConstruction(p.parents(i)) )
 		  next
-		  if t then
+		  
+		  if t or ubound(p.parents)=0 then
 		    Addinit(p)
 		  else
 		    AddInterm(p)
 		  end if
 		  
+		  
+		  'if p.forme = 1 and (dejaclasse(p.parents(i)) = 0) and (p.parents(i).getindexpointon(p) <> -1)  then
+		  'AddInit(p)
+		  'end if
 		End Sub
 	#tag EndMethod
 

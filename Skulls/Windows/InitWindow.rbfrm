@@ -1,131 +1,44 @@
 #tag Window
-Begin Window GridWindow
+Begin Window InitWindow
    BackColor       =   16777215
-   Backdrop        =   0
+   Backdrop        =   1356826623
    BalloonHelp     =   ""
    CloseButton     =   "False"
-   Composite       =   "False"
-   Frame           =   1
+   Composite       =   "True"
+   Frame           =   4
    FullScreen      =   "False"
    HasBackColor    =   "False"
-   Height          =   100
+   Height          =   584
    ImplicitInstance=   "True"
    LiveResize      =   "False"
    MacProcID       =   0
    MaxHeight       =   32000
-   MaximizeButton  =   "False"
+   MaximizeButton  =   "True"
    MaxWidth        =   32000
    MenuBar         =   0
    MenuBarVisible  =   "True"
    MinHeight       =   64
-   MinimizeButton  =   "False"
+   MinimizeButton  =   "True"
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   "False"
    Title           =   ""
    Visible         =   "True"
-   Width           =   394
-   Begin StaticText StaticText1
+   Width           =   772
+   Begin PopupMenu PopupMenu1
       AutoDeactivate  =   "True"
-      Bold            =   "False"
+      Bold            =   "True"
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   "False"
-      Left            =   8
-      LockBottom      =   "False"
-      LockLeft        =   "False"
-      LockRight       =   "False"
-      LockTop         =   "False"
-      Multiline       =   "False"
-      Scope           =   0
-      TabPanelIndex   =   0
-      Text            =   "Grille:"
-      TextAlign       =   0
-      TextColor       =   0
-      TextFont        =   "System"
-      TextSize        =   12
-      Top             =   14
-      Underline       =   "False"
-      Visible         =   True
-      Width           =   46
-      BehaviorIndex   =   0
-   End
-   Begin PushButton OkButton
-      AutoDeactivate  =   "True"
-      Bold            =   "False"
-      Cancel          =   "False"
-      Caption         =   "OK"
-      ControlOrder    =   1
-      Default         =   "True"
-      Enabled         =   True
       Height          =   28
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   "False"
-      Left            =   301
-      LockBottom      =   "False"
-      LockLeft        =   "False"
-      LockRight       =   "False"
-      LockTop         =   "False"
-      Scope           =   0
-      TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   12
-      Top             =   65
-      Underline       =   "False"
-      Visible         =   True
-      Width           =   69
-      BehaviorIndex   =   1
-   End
-   Begin PushButton CancelButton
-      AutoDeactivate  =   "True"
-      Bold            =   "False"
-      Cancel          =   "False"
-      Caption         =   "Annuler"
-      ControlOrder    =   2
-      Default         =   "False"
-      Enabled         =   True
-      Height          =   28
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   "False"
-      Left            =   209
-      LockBottom      =   "False"
-      LockLeft        =   "False"
-      LockRight       =   "False"
-      LockTop         =   "False"
-      Scope           =   0
-      TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   12
-      Top             =   65
-      Underline       =   "False"
-      Visible         =   True
-      Width           =   69
-      BehaviorIndex   =   2
-   End
-   Begin PopupMenu PopupMenu1
-      AutoDeactivate  =   "True"
-      Bold            =   "False"
-      ControlOrder    =   3
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   "False"
-      Left            =   73
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   "False"
       LockLeft        =   "False"
@@ -133,119 +46,183 @@ Begin Window GridWindow
       LockTop         =   "False"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "Arial"
+      TextFont        =   "System"
       TextSize        =   12
-      Top             =   13
+      Top             =   400
       Underline       =   "False"
       Visible         =   True
-      Width           =   102
+      Width           =   135
+      BehaviorIndex   =   0
+   End
+   Begin PushButton PushButton1
+      AutoDeactivate  =   "True"
+      Bold            =   "True"
+      Cancel          =   "False"
+      Caption         =   "Ok"
+      ControlOrder    =   1
+      Default         =   "False"
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   "False"
+      Left            =   681
+      LockBottom      =   "False"
+      LockLeft        =   "False"
+      LockRight       =   "False"
+      LockTop         =   "False"
+      Scope           =   0
+      TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   12
+      Top             =   454
+      Underline       =   "False"
+      Visible         =   "False"
+      Width           =   71
+      BehaviorIndex   =   1
+   End
+   Begin EditField User
+      AcceptTabs      =   "False"
+      Alignment       =   1
+      AutoDeactivate  =   "True"
+      BackColor       =   16777215
+      Bold            =   "True"
+      Border          =   "True"
+      ControlOrder    =   2
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Format          =   ""
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   "False"
+      Left            =   644
+      LimitText       =   0
+      LockBottom      =   "False"
+      LockLeft        =   "False"
+      LockRight       =   "False"
+      LockTop         =   "False"
+      Mask            =   ""
+      Multiline       =   "False"
+      Password        =   "False"
+      ReadOnly        =   "False"
+      Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "False"
+      Styled          =   "False"
+      TabPanelIndex   =   0
+      Text            =   ""
+      TextColor       =   0
+      TextFont        =   "System"
+      TextSize        =   12
+      Top             =   368
+      Underline       =   "False"
+      UseFocusRing    =   "True"
+      Visible         =   "False"
+      Width           =   108
+      BehaviorIndex   =   2
+   End
+   Begin PushButton PushButton2
+      AutoDeactivate  =   "False"
+      Bold            =   "True"
+      Cancel          =   "False"
+      Caption         =   "Enseignant(e)"
+      ControlOrder    =   3
+      Default         =   "False"
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   "False"
+      Left            =   572
+      LockBottom      =   "False"
+      LockLeft        =   "False"
+      LockRight       =   "False"
+      LockTop         =   "False"
+      Scope           =   0
+      TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   12
+      Top             =   336
+      Underline       =   "False"
+      Visible         =   True
+      Width           =   112
       BehaviorIndex   =   3
    End
-   Begin StaticText StaticText2
+   Begin PushButton PushButton3
       AutoDeactivate  =   "True"
-      Bold            =   "False"
+      Bold            =   "True"
+      Cancel          =   "False"
+      Caption         =   "Elève"
       ControlOrder    =   4
-      DataField       =   ""
-      DataSource      =   ""
+      Default         =   "False"
       Enabled         =   True
-      Height          =   20
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-      Left            =   187
+      Left            =   572
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
       LockTop         =   "False"
-      Multiline       =   "False"
       Scope           =   0
       TabPanelIndex   =   0
-      Text            =   "Taille des points"
-      TextAlign       =   0
-      TextColor       =   0
-      TextFont        =   "Arial"
+      TextFont        =   "System"
       TextSize        =   12
-      Top             =   13
+      Top             =   368
       Underline       =   "False"
       Visible         =   True
-      Width           =   100
+      Width           =   69
       BehaviorIndex   =   4
    End
-   Begin PopupMenu PopupMenu2
+   Begin PushButton PushButton4
       AutoDeactivate  =   "True"
-      Bold            =   "False"
+      Bold            =   "True"
+      Cancel          =   ""
+      Caption         =   "Annuler"
       ControlOrder    =   5
-      DataField       =   ""
-      DataSource      =   ""
+      Default         =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      InitialValue    =   "2\r\n3\r\n4\r\n"
-      Italic          =   "False"
-      Left            =   290
-      ListIndex       =   1
-      LockBottom      =   "False"
-      LockLeft        =   "False"
-      LockRight       =   "False"
-      LockTop         =   "False"
+      Italic          =   ""
+      Left            =   572
+      LockBottom      =   ""
+      LockLeft        =   ""
+      LockRight       =   ""
+      LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "Arial"
+      TextFont        =   "System"
       TextSize        =   12
-      Top             =   12
-      Underline       =   "False"
+      Top             =   454
+      Underline       =   ""
       Visible         =   True
-      Width           =   80
+      Width           =   108
       BehaviorIndex   =   5
    End
-   Begin StaticText StaticText3
+   Begin PopupMenu ComboBox1
       AutoDeactivate  =   "True"
       Bold            =   ""
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   ""
-      Left            =   9
-      LockBottom      =   ""
-      LockLeft        =   ""
-      LockRight       =   ""
-      LockTop         =   ""
-      Multiline       =   ""
-      Scope           =   0
-      TabPanelIndex   =   0
-      Text            =   "Écart"
-      TextAlign       =   0
-      TextColor       =   0
-      TextFont        =   "System"
-      TextSize        =   0
-      Top             =   65
-      Underline       =   ""
-      Visible         =   True
-      Width           =   35
-      BehaviorIndex   =   6
-   End
-   Begin PopupMenu PopupMenu3
-      AutoDeactivate  =   "True"
-      Bold            =   ""
-      ControlOrder    =   7
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
+      Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   ""
-      Left            =   72
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   ""
       LockLeft        =   ""
@@ -255,42 +232,31 @@ Begin Window GridWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-      Top             =   65
+      Top             =   428
       Underline       =   ""
       Visible         =   True
-      Width           =   103
-      BehaviorIndex   =   7
+      Width           =   180
+      BehaviorIndex   =   6
    End
 End
 #tag EndWindow
 
 #tag WindowCode
-	#tag Event
-		Sub Open()
-		  StaticText1.Text = Dico.Value("ToolsGrid")
-		  StaticText2.Text = Dico.Value("PtSize")
-		  PopupMenu1.AddRow Dico.Value("Blank")
-		  PopupMenu1.AddRow Dico.Value("Squares")
-		  PopupMenu1.AddRow Dico.Value("Triangles")
-		  StaticText3.Text = Dico.Value("Step")
-		  Popupmenu3.addrow "1"
-		  PopupMenu3.AddRow "1/2"
-		  PopupMenu3.AddRow "1/3"
-		  PopupMenu3.AddRow "2"
-		  PopupMenu3.AddRow "3"
-		  
-		  if CurrentContent.thegrid = nil then
-		    popupmenu1.listindex = 0
-		  elseif CurrentContent.thegrid isa squaregrid then
-		    popupmenu1.listindex = 1
-		  elseif CurrentContent.thegrid isa hexgrid then
-		    popupmenu1.listindex = 2
-		  end if
-		  
-		  popupmenu2.listindex = 0
-		  popupmenu3.listindex = 0
+	#tag Method, Flags = &h0
+		Sub Refresh()
+		  PushButton2.Caption = Dico.Value("Enseignant")
+		  PushButton3.Caption = Dico.value("Pupil")
+		  PushButton4.caption = Dico.value("Cancel")
 		End Sub
-	#tag EndEvent
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Continuer()
+		  Config.Menu = PopupMenu1.Text
+		  Config.ChargerConfig
+		  Close
+		End Sub
+	#tag EndMethod
 
 
 	#tag Note, Name = Licence
@@ -322,38 +288,151 @@ End
 
 #tag EndWindowCode
 
-#tag Events StaticText1
+#tag Events PopupMenu1
 	#tag Event
 		Sub Open()
-		  me.Text = Dico.value("ToolsGrid")
+		  dim i as integer
+		  dim menus(-1) as string
+		  
+		  menus = app.MenusDispo
+		  for i=0 to UBound(menus)
+		    me.addRow(menus(i))
+		    if menus(i) = config.Menu then
+		      me.ListIndex = i
+		    end if
+		  next
+		  me.ListIndex = max(0,me.ListIndex)
+		  
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events OkButton
+#tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Result=1
-		  Hide
+		  Continuer
+		  
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events CancelButton
+#tag Events User
+	#tag Event
+		Function KeyDown(Key As String) As Boolean
+		  if Key = chr(13) then
+		    if me.text <> "" then
+		      Continuer
+		    end if
+		  end if
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub GotFocus()
+		  Config.pwok = false
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub TextChange()
+		  Config.username = me.text
+		  if me.text <> "" then
+		    pushbutton1.visible = true
+		    pushbutton1.default = true
+		  else
+		    pushbutton1.visible = false
+		    pushbutton1.default = false
+		  end if
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton2
 	#tag Event
 		Sub Action()
-		  result=-1
-		  Hide
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Open()
-		  me.caption = Dico.Value("Cancel")
+		  dim pw as PasswordWindow
+		  
+		  Config.pwok = false
+		  
+		  if Config.Password <> "1" then
+		    pw=new PasswordWindow
+		    pw.ShowModal
+		    select case pw.Result
+		    case 1
+		      if hash(pw.editField1.Text)<>Config.Password then
+		        msgBox Dico.value("MsgPWFalse")
+		      else
+		        Config.pwok = true
+		      end if
+		    end select
+		    pw.close
+		  else
+		    Config.pwok = true
+		  end if
+		  
+		  if Config.pwok = true then
+		    pushbutton1.visible = true
+		    user.visible = false
+		    pushbutton3.visible = false
+		    'todo : Remplacer par méthode setUser dans Configuration
+		    Config.user = "prof"
+		    Config.username = Dico.Value("Enseignant")
+		    ////////
+		    pushbutton1.setfocus
+		    pushbutton1.default=true
+		  end if
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events StaticText2
+#tag Events PushButton3
+	#tag Event
+		Sub Action()
+		  user.visible = true
+		  user.setfocus
+		  Config.user = "pup"
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton4
+	#tag Event
+		Sub Action()
+		  Continuer
+		  Quit
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ComboBox1
 	#tag Event
 		Sub Open()
-		  me.Text = Dico.value("SizePoint")
+		  dim i as integer
+		  dim dicos(-1) as string
+		  
+		  dicos = app.DicoDispo
+		  for i=0 to UBound(dicos)
+		    me.addRow(dicos(i))
+		    if dicos(i) = config.Langue then
+		      me.ListIndex = i
+		    end if
+		  next
+		  
+		  me.ListIndex = max(0,me.ListIndex)
+		  'for i=1 to app.AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".dct" then
+		  'n = n+1
+		  'lg = Left(nom,len(nom)-4)
+		  'me.addRow(lg)
+		  'if lg = config.Langue then
+		  'me.ListIndex = n
+		  'end if
+		  'end if
+		  'next
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Change()
+		  Config.SetLangue(ComboBox1.Text)
+		  refresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents

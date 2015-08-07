@@ -1563,9 +1563,13 @@ Inherits Shape
 		  dim sh  as shape
 		  dim i as integer
 		  
-		  if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
-		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
+		  if bpt = nil then
+		    return
 		  end if
+		  
+		  'if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
+		  'return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
+		  'end if
 		  
 		  if  forme =1  then
 		    sh = pointsur.element(0)

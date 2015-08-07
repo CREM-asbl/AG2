@@ -91,7 +91,7 @@ Inherits Parallelogram
 
 	#tag Method, Flags = &h0
 		Function Modifier1fixe(p as point, p1 as point) As Matrix
-		  // Routine qui modifie le rectangle  dans le cas où le point p est laissé fixe, p1 est déplacé arbitrairement et  p2 s'adapte
+		  // Routine qui modifie le rectangle  dans le cas où on ne touche plus à p, p1 est déplacé arbitrairement et  p2 s'adapte
 		  // Deux cas possibles
 		  
 		  dim n, n1, n2, n3 as integer
@@ -108,9 +108,6 @@ Inherits Parallelogram
 		  ff = getsousfigure(fig)
 		  ff.getoldnewpos(p1,ep1,np1)
 		  ff.getoldnewpos(p,ep,np)
-		  d = amplitude(ep1, np, np1)
-		  p.moveto ep
-		  M = new RotationMatrix(np,d)
 		  if abs(n-n1) = 2 then
 		    n2 = (n+1) mod 4
 		    n3 = (n1+1) mod 4
@@ -130,14 +127,20 @@ Inherits Parallelogram
 		  if p2.pointsur.count = 1 and not p2.pointsur.element(0) isa circle  then
 		    s =  p2.pointsur.element(0)
 		    dr = s.getside(p2.numside(0))
-		    np2 = p1.bpt.projection(dr.firstp, dr.secondp)
+		    np2 = p.bpt.projection(dr.firstp, dr.secondp)
 		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		    'p3.moveto np2+np1-np
+		    'p3.modified = true
 		  elseif p3.pointsur.count = 1 and not p3.pointsur.element(0) isa circle then
 		    s =  p3.pointsur.element(0)
 		    dr = s.getside(p3.numside(0))
 		    np3 = p1.bpt.projection(dr.firstp, dr.secondp)
 		    M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
+		    'p2.moveto np3+np-np1
+		    'p3.modified = true
 		  else
+		    d = amplitude(ep1, np, np1)
+		    M = new RotationMatrix(np,d)
 		    np2 = M*ep2
 		    if abs(n-n1) = 2 then
 		      np2 = np.projection(np1,np2)
@@ -155,8 +158,8 @@ Inherits Parallelogram
 		  // Deux cas selon la position des points fixes
 		  
 		  dim k, n, n1, n2 as integer
-		  dim p1, p2 as point
-		  dim ep, np, np1, np2, u, v as BasicPoint
+		  dim p1, p2, p0 as point
+		  dim ep, np, np1, np2,np0, u, v as BasicPoint
 		  dim ff as figure
 		  dim Bib1, Bib2 As  BiBPoint
 		  dim d as double
@@ -167,28 +170,30 @@ Inherits Parallelogram
 		  ff = getsousfigure(fig)
 		  ff.getoldnewpos(p,ep,np)
 		  
-		  p1 = point(ff.somm.element(ff.fx1))
-		  p2 = point(ff.somm.element(ff.fx2))
-		  n1 = getindexpoint(p1)
-		  n2 = getindexpoint(p2)
-		  np1 = p1.bpt
-		  np2 = p2.bpt
-		  
-		  //1er cas p1 et p2 sont adjacents
-		  
-		  if n2 = (n1+1) mod 4 or n2 = (n1+3) mod 4 then
-		    u = np1-np2
-		    u = u.vecnorperp
-		    select case n
-		    case (n1+2)  mod 4
-		      np = np.projection(np2, np2+u)
-		    case (n2+2) mod 4
-		      np = np.projection(np1, np1+u)
-		    end select
-		  else
+		  if not points((n+2) mod 4).modified then
+		    p1 = points((n+1) mod 4)
+		    p2 = points((n+3) mod 4)
+		    np1 = p1.bpt
+		    np2 = p2.bpt
 		    u = (np1+np2)/2
 		    d = np1.distance(np2)/2
 		    np = np.projection(u,d)
+		  else
+		    p2 = points((n+2) mod 4)
+		    
+		    if points((n+1) mod 4).modified then
+		      p1 = points((n+1) mod 4)
+		      p0 = points((n+3) mod 4)
+		    else
+		      p1 = points((n+3) mod 4)
+		      p0 = points((n+1) mod 4)
+		    end if      // p,  p1 et p2 sont modifiés, p est adjacent à p1 et p2 est adjacent à p1
+		    np1 = p1.bpt
+		    np2 = p2.bpt
+		    np0 = p0.bpt
+		    u = np1-np2
+		    u = u.vecnorperp
+		    np = np0.projection(np1, np1+u)
 		  end if
 		  
 		  p.moveto np
@@ -203,9 +208,9 @@ Inherits Parallelogram
 
 	#tag Method, Flags = &h0
 		Function Modifier3(p as point, q as point, r as point) As Matrix
-		  dim  ps, p2, p3 As point
-		  dim eps,ep2,ep3,nps,np2,np3, u, v as BasicPoint
-		  dim i, k, n, n1, n2, n3 as integer
+		  dim  p1, p2, p3 As point
+		  dim ep1,ep2,ep3,np1,np2,np3, u, v as BasicPoint
+		  dim i, k, n, n1, n2, n3, n4 as integer
 		  dim t as boolean
 		  dim ff as figure
 		  dim Bib as BiBpoint
@@ -215,23 +220,40 @@ Inherits Parallelogram
 		  
 		  select case n
 		  case 0
-		    return Modifier2fixes(r)
-		  case 1
-		    ps =point(ff.somm.element(ff.ListSommSur(0)))
-		    n1 = getindexpoint(ps)
-		    n2 = (n1+2) mod 4
-		    n3 = (n1+3) mod 4
-		    p2 = points(n2)
-		    p3 = points(n3)
-		    ff.getoldnewpos(ps,eps,nps)
-		    ff.getoldnewpos(p2,ep2,np2)
-		    ff.getoldnewpos(p3,ep3,np3)
-		    u = np3-np2
-		    v = u.vecnorperp
-		    Bib = new BiBPoint(np3, np3+v)
-		    nps = np3.ProjectionAffine(BiB,ps.pointsur.element(0), ps.numside(0), nps) 
-		    ps.moveto nps
-		    return new affinitymatrix(eps,ep2,ep3,nps,np2,np3)
+		    if getindexpoint(fig.pointmobile) <> -1 then
+		      return Modifier2fixes(fig.pointmobile)
+		    elseif  ubound(p.parents) = 0 then
+		      return Modifier2fixes(p)
+		    elseif ubound(q.parents) = 0 then
+		      return Modifier2fixes(q)
+		    else
+		      return Modifier2fixes(r)
+		    end if
+		    
+		  case 1          'c'est r qui doit être adapté
+		    n1 = getindexpoint(p)
+		    n2 = getindexpoint(q)
+		    n3 = getindexpoint(r)
+		    ff.getoldnewpos(p,ep1,np1)
+		    ff.getoldnewpos(q,ep2,np2)
+		    ff.getoldnewpos(r,ep3,np3)
+		    if abs(n1-n2) = 1 or abs(n1-n2) = 3 then
+		      u = np2-np1
+		      v = u.vecnorperp
+		      Bib = new BiBPoint(np1, np1+v)
+		      if abs(n3-n1) = 1 or abs(n3-n1)=3 then
+		        np3 = np1.ProjectionAffine(BiB,r.pointsur.element(0), r.numside(0), np3)
+		      else
+		        np3 = np2.ProjectionAffine(BiB,r.pointsur.element(0), r.numside(0), np3)
+		      end if
+		      r.moveto np3
+		      r.modified = true
+		      n4 = quatriemepoint(n1,n2,n3)
+		      return new affinitymatrix(ep1,ep2,ep3,np1,np2,np3)
+		      'points(n4).moveto points((n4+1) mod 4).bpt + points((n4+3) mod 4).bpt -points((n4+2) mod 4).bpt
+		      'points(n4).modified = true
+		    else
+		    end if
 		  case 2
 		    for i = 0 to 1
 		      if point(ff.somm.element(ff.ListSommSur(i))) <> ff.supfig.pointmobile then
@@ -250,7 +272,6 @@ Inherits Parallelogram
 		    else
 		      t = ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(0))))
 		      t = ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(1))))
-		      't = replacerpoint (point(ff.somm.element(Listsommsur(2))))
 		    end if
 		  end select
 		  return ff.autospeupdate
@@ -283,6 +304,13 @@ Inherits Parallelogram
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -294,13 +322,6 @@ Inherits Parallelogram
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -46,7 +46,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As integer
 		  dim d as double
-		  dim i as integer
+		  
 		  d= wnd.Mycanvas1.MagneticDist
 		  
 		  if p.distance(points(1).bpt,points(2).bpt) < d and p.between(points(1).bpt,points(2).bpt) then

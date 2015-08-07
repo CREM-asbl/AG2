@@ -203,6 +203,13 @@ Inherits SelectOperation
 		    DoOper
 		  end if
 		  
+		  for i = 0 to tempshape.count-1
+		    if tempshape.element(i) isa standardpolygon then
+		      standardpolygon(tempshape.element(i)).inverserori
+		      tempshape.element(i).updatecoord
+		    end if
+		  next
+		  
 		  
 		  
 		End Sub
@@ -232,6 +239,8 @@ Inherits SelectOperation
 		    end if
 		    if s isa standardpolygon then
 		      standardpolygon(s).updateangle
+		      standardpolygon(s).inverserori
+		      s.updatecoord
 		    end if
 		    
 		    for j = 0 to ubound(s.constructedshapes)

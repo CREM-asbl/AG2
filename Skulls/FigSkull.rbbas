@@ -19,7 +19,7 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Sub FigSkull(Curspecs as StdPolygonSpecifications)
-		  dim s, p(-1), q as BasicPoint
+		  dim s, p(-1), q as BasicPoint  //Utilisé uniquement pour les icones de la boite à outils
 		  dim i, n as integer
 		  dim cap as double
 		  

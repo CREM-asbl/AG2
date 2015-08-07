@@ -15,7 +15,7 @@ Inherits Application
 
 	#tag Event
 		Function UnhandledException(error As RuntimeException) As Boolean
-		  dim st(-1),Op as String
+		  dim st(-1), cre, Op as String
 		  dim bugw as BugFindW
 		  dim i as integer
 		  dim curoper as Operation
@@ -95,6 +95,11 @@ Inherits Application
 		      tos.WriteLine st(i)
 		    next
 		    
+		    Log = DocumentsFolder.Parent
+		    if Log <> nil then
+		      cre = Log.Name
+		    end if
+		    tos.writeline "Createur :" + cre
 		    tos.WriteLine NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress
 		    tos.Close
 		  end if

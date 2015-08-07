@@ -615,6 +615,7 @@ Implements StringProvider
 		  dim p as point
 		  dim t as boolean
 		  dim op as modifier
+		  dim list as objectslist
 		  
 		  'if   currentcontent.currentoperation isa modifier then
 		  'op = modifier(currentcontent.currentoperation)
@@ -662,16 +663,20 @@ Implements StringProvider
 		    next
 		  next
 		  
-		  if auto = 1 and  f.auto = 4 and NbTrueSommCommuns(f) >= 2 then
-		    return true
-		  end if
-		  
 		  if (auto = 2 or auto = 3 or auto = 5) and  f.auto = 4 and NbTrueSommCommuns(f) >= 3 then
 		    return true
 		  end if
 		  
-		  if auto = 1 and  NbTrueSommCommuns(f) >= 2  then
+		  if auto = 1 and f.auto <> 3 and NbTrueSommCommuns(f) >= 2  then
 		    return true
+		  end if
+		  
+		  if auto = 3 and f.auto = 1 and NbTrueSommCommuns(f) >= 2  then
+		    return not HasPointOnConstructedshape (f)
+		  end if
+		  
+		  if auto = 1 and f.auto=3  and NbTrueSommCommuns(f) >= 2  then
+		    return f.HasPointOnConstructedShape(self)
 		  end if
 		  
 		  Return false
@@ -905,7 +910,12 @@ Implements StringProvider
 		      f1.auto = 1
 		    end if
 		  else
-		    f1.auto = 1
+		    for j = 0 to ubound(aut)
+		      t  = t and ((aut(j) =1 ) or (aut(j) = 6))
+		    next
+		    if t then
+		      f1.auto = 6
+		    end if
 		  end if
 		  
 		  
@@ -1441,7 +1451,7 @@ Implements StringProvider
 		        n0 = val(Coord.GetAttribute("Side0"))
 		        n1 = val(Coord.GetAttribute("Side1"))
 		        inter= CurrentContent.Theintersecs.find(p.pointsur.element(0),p.pointsur.element(1))
-		        inter.update(p,(p.pointsur.element(0),n0, p.pointsur.element(1)), n1)
+		        inter.update(p)
 		      end if
 		    next
 		  end if
@@ -1713,9 +1723,6 @@ Implements StringProvider
 		    return
 		  end if
 		  
-		  
-		  
-		  
 		  Phase0choixpointsfixes
 		  Phase1choixpointsfixes
 		  Phase2choixpointsfixes
@@ -1725,7 +1732,7 @@ Implements StringProvider
 		    if ubound(PointsFixes) > 0 then
 		      fx2 = PointsFixes(1)
 		    else
-		      fx2 = fx1
+		      fx2 = -1
 		    end if
 		  end if
 		  
@@ -2077,8 +2084,9 @@ Implements StringProvider
 		    return DefaultMatrix
 		  case 1
 		    p1 = point(somm.element(Listsommsur(0)))
-		    t = replacerpoint(p1)
-		    return autosimupdate
+		    if replacerpoint(p1) then
+		      return autosimupdate
+		    end if
 		  case 2
 		    p1 = point(somm.element(Listsommsur(0)))
 		    p2 = point(somm.element(Listsommsur(1)))
@@ -2549,6 +2557,14 @@ Implements StringProvider
 		      return s.modifier2fixes(p)
 		    end select
 		  case 1
+		    q = point(somm.element(fx1))
+		    if s isa rect then
+		      if q.forme = 0 then
+		        return s.modifier1fixe(q,p)
+		      elseif fx2 <> -1 then
+		        return s.modifier1fixe(point(somm.element(fx2)),p)
+		      end if
+		    end if
 		    
 		  case 2
 		    n = s.Points.indexof(p)
@@ -2578,7 +2594,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
-		  dim p, q as point
+		  dim p, q, r as point
 		  dim n1, n2 as integer
 		  dim s as shape
 		  dim i as integer
@@ -2595,12 +2611,21 @@ Implements StringProvider
 		  
 		  select case  NbSommSur(n1,n2)
 		  case 0
-		    return s.Modifier1fixe(p,q)
+		    if p = supfig.pointmobile then
+		      return s.modifier1fixe(q,p)
+		    else
+		      return s.Modifier1fixe(p,q)
+		    end if
 		  case 1
 		    if  (replacerpoint(p) or replacerpoint(q))  then
 		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
 		    else
-		      return s.Modifier1fixe(p,q)
+		      r = point(somm.element(listsommsur(0)))
+		      if s isa rect then
+		        return rect(s).modifier3(p,q,r)
+		      else
+		        return nil
+		      end if
 		    end if
 		  else
 		    return s.Modify2(p,q)
@@ -2635,8 +2660,8 @@ Implements StringProvider
 		  q = Point(somm.element(n2))
 		  r =Point(somm.element(n3))
 		  
-		  if s isa rect then
-		    return rect(s).modifier3(p,q,r)
+		  if s isa quadri then
+		    return quadri(s).modifier3(p,q,r)
 		  end if
 		  
 		  n = NbSommSur
@@ -3515,7 +3540,7 @@ Implements StringProvider
 		      end if
 		    next
 		    if i0 <> -1 then
-		      if h0 <> 0 then
+		      if h0 <> 0  then
 		        InsertPreceding(i0)
 		      end if
 		      rang.append i0
@@ -3812,19 +3837,25 @@ Implements StringProvider
 		  //Puis celles pour lesquelles MP(2).Col(j,i) > 0  etc... On procède par récursivité
 		  
 		  dim j, h, n, s as integer
+		  dim f1, f2  as figure
 		  
 		  n = Mat.nc-1
+		  f1 = subs.element(i)
 		  
 		  for h = 0 to n
+		    f2 = subs.element(h)
+		    
 		    if rang.indexof(h)=-1 and Mat.Col(h,i) = 1 then
-		      s = 0
-		      for j = 1 to n
-		        s = s + MP(j).Col(h,i)
-		      next
-		      if s = 0 then
-		        InsertPreceding(h)
+		      if not( (f1.auto=2 ) and (f2.auto=1) and f1.NbTrueSommCommuns(f2) >=2) then
+		        s = 0
+		        for j = 1 to n
+		          s = s + MP(j).Col(h,i)
+		        next
+		        if s = 0 then
+		          InsertPreceding(h)
+		        end if
+		        rang.append h
 		      end if
-		      rang.append h
 		    end if
 		  next
 		  
@@ -3842,6 +3873,23 @@ Implements StringProvider
 		    end if
 		  next
 		  return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasPointOnConstructedShape(f as figure) As Boolean
+		  dim t as Boolean
+		  dim i as integer
+		  dim p as point
+		  
+		  t = false
+		  for i = 0 to somm.count-1
+		    p = point(somm.element(i))
+		    if p.forme = 1 and p.pointsur.element(0).constructedby <> nil and  f.shapes.getposition(p.pointsur.element(0).constructedby.shape ) <> -1 then
+		      t = true
+		    end if
+		  next
+		  return t
 		End Function
 	#tag EndMethod
 

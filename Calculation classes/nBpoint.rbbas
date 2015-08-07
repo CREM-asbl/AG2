@@ -162,6 +162,9 @@ Protected Class nBpoint
 		      constructshape(4,1)
 		    end select
 		  case 4 'Polreg
+		    if tab(0) = nil or tab(1) = nil then
+		      return
+		    end if
 		    n = fo+3
 		    a = (tab(0)+tab(1))/2
 		    b = tab(1)-tab(0)

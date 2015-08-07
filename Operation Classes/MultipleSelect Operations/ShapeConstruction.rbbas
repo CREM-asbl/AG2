@@ -416,7 +416,7 @@ Inherits MultipleSelectOperation
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.child(i))
 		    EL1 = XMLElement(EL.Child(0))
-		    if (val(EL.GetAttribute("OpId")) = 45 or val(EL.GetAttribute("OpId")) = 46) and val(EL1.GetAttribute("Id")) = p.id then
+		    if (val(EL.GetAttribute("OpId")) = 45 or val(EL.GetAttribute("OpId")) = 46 or val(EL.GetAttribute("OpId")) = 19 )and val(EL1.GetAttribute("Id")) = p.id then
 		      return false
 		    end if
 		  next
