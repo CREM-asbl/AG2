@@ -533,7 +533,11 @@ Implements StringProvider
 		    ids(h,k)=0
 		    ids(i1,j1) = pt.id
 		  end if
-		  validerpoint(pt,i1,j1)
+		  if val(i1,j1) then
+		    validerpoint(pt,i1,j1)
+		  else 
+		    pt.invalider
+		  end if
 		  
 		  
 		End Sub
