@@ -129,10 +129,11 @@ Inherits Application
 		      wnd.draphisto = false
 		      wnd.Refresh
 		    end if
-		    wnd.deleteContent
-		    if UBound (wnd.wcontent) = -1 then
-		      wnd.NewContent(false)
-		    end if
+		    'wnd.deleteContent
+		    'if UBound (wnd.wcontent) = -1 then
+		    'wnd.NewContent(false)
+		    'end if
+		    currentcontent.bugfound = false   'GN 17-08-2014
 		  end if
 		  return true
 		End Function
@@ -168,6 +169,7 @@ Inherits Application
 		  end if
 		  
 		  FileName = FileName+s
+		  
 		End Sub
 	#tag EndEvent
 
@@ -303,6 +305,10 @@ Inherits Application
 		  if not StdFolder.Exists then
 		    StdFolder.CreateAsFolder
 		  end if
+		  DctFolder = DocFolder.Child("Dictionaries")
+		  if not DctFolder.Exists then
+		    DctFolder.CreateAsFolder
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -364,6 +370,29 @@ Inherits Application
 		  next
 		  
 		  return stdfiles
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function DicoDispo() As string()
+		  dim dicos(-1), nom as String
+		  dim i as integer
+		  
+		  for i=1 to AppFolder.count
+		    nom = app.AppFolder.trueItem(i).Name
+		    if right(nom,4)=".dct" then
+		      dicos.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  for i=1 to DctFolder.count
+		    nom = app.DctFolder.trueItem(i).Name
+		    if right(nom,4)=".dct" then
+		      dicos.append(Left(nom,len(nom)-4))
+		    end if
+		  next
+		  
+		  return dicos
 		End Function
 	#tag EndMethod
 
@@ -464,6 +493,10 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		stdfolder As folderitem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		DctFolder As FolderItem
 	#tag EndProperty
 
 

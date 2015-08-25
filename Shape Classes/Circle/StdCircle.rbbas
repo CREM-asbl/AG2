@@ -37,10 +37,9 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  dim i as integer
 		  
-		  Points(1).Moveto Points(0).bpt + new BasicPoint(radius,0)
-		  CreateExtreAndCtrlPoints
+		  
+		  coord.CreateExtreAndCtrlPoints(1)
 		  Points(0).Hide
 		  Points(1).hide
 		  
@@ -114,6 +113,8 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  points(0).moveto p
+		  Points(1).Moveto Points(0).bpt + new BasicPoint(radius,0)
+		  updatecoord
 		  
 		End Sub
 	#tag EndMethod

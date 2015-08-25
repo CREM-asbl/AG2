@@ -48,11 +48,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   430
-=======
       Top             =   400
->>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   True
       Width           =   135
@@ -65,11 +61,7 @@ Begin Window InitWindow
       Caption         =   "Ok"
       ControlOrder    =   1
       Default         =   "False"
-<<<<<<< HEAD
       Enabled         =   True
-=======
-      Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
@@ -84,11 +76,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   460
-=======
       Top             =   454
->>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   "False"
       Width           =   71
@@ -130,11 +118,7 @@ Begin Window InitWindow
       TextColor       =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   395
-=======
       Top             =   368
->>>>>>> origin/Macros
       Underline       =   "False"
       UseFocusRing    =   "True"
       Visible         =   "False"
@@ -148,21 +132,13 @@ Begin Window InitWindow
       Caption         =   "Enseignant(e)"
       ControlOrder    =   3
       Default         =   "False"
-<<<<<<< HEAD
       Enabled         =   True
-=======
-      Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-<<<<<<< HEAD
-      Left            =   571
-=======
       Left            =   572
->>>>>>> origin/Macros
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -171,11 +147,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   360
-=======
       Top             =   336
->>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   True
       Width           =   112
@@ -188,21 +160,13 @@ Begin Window InitWindow
       Caption         =   "Elève"
       ControlOrder    =   4
       Default         =   "False"
-<<<<<<< HEAD
       Enabled         =   True
-=======
-      Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   "False"
-<<<<<<< HEAD
-      Left            =   571
-=======
       Left            =   572
->>>>>>> origin/Macros
       LockBottom      =   "False"
       LockLeft        =   "False"
       LockRight       =   "False"
@@ -211,11 +175,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   395
-=======
       Top             =   368
->>>>>>> origin/Macros
       Underline       =   "False"
       Visible         =   True
       Width           =   69
@@ -228,17 +188,13 @@ Begin Window InitWindow
       Caption         =   "Annuler"
       ControlOrder    =   5
       Default         =   ""
-<<<<<<< HEAD
       Enabled         =   True
-=======
-      Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   571
+      Left            =   572
       LockBottom      =   ""
       LockLeft        =   ""
       LockRight       =   ""
@@ -247,11 +203,7 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   12
-<<<<<<< HEAD
-      Top             =   460
-=======
       Top             =   454
->>>>>>> origin/Macros
       Underline       =   ""
       Visible         =   True
       Width           =   108
@@ -263,11 +215,7 @@ Begin Window InitWindow
       ControlOrder    =   6
       DataField       =   ""
       DataSource      =   ""
-<<<<<<< HEAD
       Enabled         =   True
-=======
-      Enabled         =   "True"
->>>>>>> origin/Macros
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -284,15 +232,9 @@ Begin Window InitWindow
       TabPanelIndex   =   0
       TextFont        =   "System"
       TextSize        =   0
-<<<<<<< HEAD
-      Top             =   330
-      Underline       =   ""
-      Visible         =   True
-=======
       Top             =   428
       Underline       =   ""
-      Visible         =   "True"
->>>>>>> origin/Macros
+      Visible         =   True
       Width           =   180
       BehaviorIndex   =   6
    End
@@ -305,6 +247,14 @@ End
 		  PushButton2.Caption = Dico.Value("Enseignant")
 		  PushButton3.Caption = Dico.value("Pupil")
 		  PushButton4.caption = Dico.value("Cancel")
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Continuer()
+		  Config.Menu = PopupMenu1.Text
+		  Config.ChargerConfig
+		  Close
 		End Sub
 	#tag EndMethod
 
@@ -360,10 +310,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Config.Menu = PopupMenu1.Text
-		  Config.ChargerConfig
-		  Close
-		  
+		  Continuer
 		  
 		  
 		End Sub
@@ -374,7 +321,7 @@ End
 		Function KeyDown(Key As String) As Boolean
 		  if Key = chr(13) then
 		    if me.text <> "" then
-		      close
+		      Continuer
 		    end if
 		  end if
 		End Function
@@ -448,6 +395,7 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
+		  Continuer
 		  Quit
 		  
 		End Sub
@@ -456,21 +404,29 @@ End
 #tag Events ComboBox1
 	#tag Event
 		Sub Open()
-		  dim i,n as integer
-		  dim nom,lg as string
-		  n=-1
+		  dim i as integer
+		  dim dicos(-1) as string
 		  
-		  for i=1 to app.AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".dct" then
-		      n = n+1
-		      lg = Left(nom,len(nom)-4)
-		      me.addRow(lg)
-		      if lg = config.Langue then
-		        me.ListIndex = n
-		      end if
+		  dicos = app.DicoDispo
+		  for i=0 to UBound(dicos)
+		    me.addRow(dicos(i))
+		    if dicos(i) = config.Langue then
+		      me.ListIndex = i
 		    end if
 		  next
+		  
+		  me.ListIndex = max(0,me.ListIndex)
+		  'for i=1 to app.AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".dct" then
+		  'n = n+1
+		  'lg = Left(nom,len(nom)-4)
+		  'me.addRow(lg)
+		  'if lg = config.Langue then
+		  'me.ListIndex = n
+		  'end if
+		  'end if
+		  'next
 		End Sub
 	#tag EndEvent
 	#tag Event

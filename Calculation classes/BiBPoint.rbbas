@@ -29,14 +29,15 @@ Inherits nBpoint
 		  if abs(ray-dist) < epsilon then
 		    p.append q
 		    p.append q
+		    v = new BasicPoint(0,0)
 		    return 1
 		  elseif ray> dist + epsilon then
 		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
 		    p.append q+v
 		    return 2
 		  elseif ray < dist - epsilon then
-		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
-		    p.append q+v
+		    p.append nil
+		    p.append nil
 		    return 0
 		  end if
 		  
@@ -79,7 +80,6 @@ Inherits nBpoint
 		  v = v*((r2*r2-r1*r1+dist*dist)/(2*dist))
 		  v = D.first+v
 		  w =  first - D.first
-		  'w = w.vecnorperp + v
 		  w = new BasicPoint(-w.y,w.x)
 		  w = v+w
 		  return new BiBPoint(v,w)
@@ -111,6 +111,24 @@ Inherits nBpoint
 		  
 		  n = BiBDroiteInterCercle(D,p(), bq, v)
 		  
+		  select case n
+		  case 0
+		    p(0) = nil
+		    p(1) = nil
+		  case 1
+		    p(1) = nil
+		    if not p(0).between(first,second) then
+		      p(0) = nil
+		      n = 0
+		    end if
+		  case 2
+		    for i = 1 downto 0
+		      if not p(i).between(first,second) then
+		        p(i) = nil
+		        n = n-1
+		      end if
+		    next
+		  end select
 		  return n
 		End Function
 	#tag EndMethod
@@ -123,11 +141,15 @@ Inherits nBpoint
 		  
 		  n = BiBDroiteInterCercle(D, p(), bq, v)
 		  
+		  if n = 0 then
+		    return 0
+		  end if
+		  
 		  for i = n-1 downto 0
 		    if p(i).audela(first,second) then
 		      m = m+1
 		    else
-		      p.remove i
+		      p(i) = nil
 		    end if
 		  next
 		  
@@ -220,14 +242,18 @@ Inherits nBpoint
 		Function ComputeCircleFirstIntersect(S as Shape, P as Point) As Basicpoint
 		  dim q() as BasicPoint
 		  dim Bib As  BiBPoint
-		  dim i,n as integer
+		  dim i,n, k as integer
 		  dim r as double
 		  dim bq, v as BasicPoint
+		  dim dr as droite
+		  redim q(1)
 		  
-		  
-		  if S isa Droite then
-		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
-		    select case Droite(S).nextre
+		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
+		    
+		    k = S.pointonside(P.bpt)
+		    Bib =S.getBiBside(k)
+		    
+		    select case Bib.nextre
 		    case 0
 		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
 		    case 1
@@ -235,6 +261,7 @@ Inherits nBpoint
 		    case 2
 		      n = Bib.BiBSegmentInterCercle(self,q(), bq, v)
 		    end select
+		    n = ubound(q)+1
 		  end if
 		  
 		  if S isa Circle then
@@ -245,39 +272,22 @@ Inherits nBpoint
 		    end if
 		  end if
 		  
-		  if S isa Polygon then
-		    Bib = new BiBPoint(S.Points(P.Numside(0)).bpt,S.Points((P.Numside(0)+1) mod S.npts).bpt)
-		    n = Bib.BiBSegmentInterCercle(self,q(),bq,v)
-		  end if
+		  for i = 1 downto 0
+		    if q(i) = nil then
+		      q.remove i
+		    end if
+		  next
+		  n = ubound(q)+1
 		  
-		  if S isa Bande then
-		    i = P.PointSur.GetPosition(S)
-		    i = P.Numside(i)
-		    if i = -1 then
-		      q.append nil
-		    else
-		      Bib = new BibPoint(S.Points(2*i).bpt,S.Points(2*i+1).bpt)
-		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
+		  if n=2 then
+		    if ( q(0).Distance (P.bpt) >q(1).Distance (P.bpt) + epsilon)  then
+		      q(0) = q(1)
 		    end if
 		  end if
-		  
-		  if S isa Secteur then
-		    i = P.PointSur.GetPosition(S)
-		    i = P.Numside(i)
-		    if i = -1 then
-		      q.append nil
-		    else
-		      Bib = new BibPoint(S.Points(0).bpt,S.Points(i+1).bpt)
-		      n = Bib.BiBDroiteInterCercle(self,q(), bq, v)
-		    end if
-		  end if
-		  
-		  if n=2 and  q(0).Distance (P.bpt) >q(1).Distance (P.bpt)  then
-		    q(0)=q(1)
-		  end if
-		  
-		  if ubound(q) > -1 then
+		  if n>0 and ubound(q) > -1 then
 		    return q(0)
+		  else
+		    return nil
 		  end if
 		  
 		  
@@ -508,7 +518,7 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Second() As basicPoint
+		Function Second() As BasicPoint
 		  return Tab(1)
 		End Function
 	#tag EndMethod
@@ -624,13 +634,6 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub BiBPoint(nBp as nBPoint)
-		  tab = nBP.tab
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Anglepolaire() As double
 		  dim bp as Basicpoint
 		  
@@ -654,6 +657,53 @@ Inherits nBpoint
 		    return q
 		  end if             'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à ce cercle
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub BiBPoint(s as shape)
+		  nBpoint(s)
+		  redim extre(1)
+		  redim ctrl(5)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateExtreAndCtrlPoints(orien As integer)
+		  dim M as RotationMatrix     'Utilise uniquement pour des cercles
+		  dim p, q as BasicPoint
+		  dim bp1, bp2 as BasicPoint
+		  dim BiB1, Bib2 as BiBPoint
+		  dim r1,r2 as double
+		  dim i as integer
+		  dim s2 as shape
+		  dim tsf as transformation
+		  
+		  M = new RotationMatrix(tab(0),2*Pi/3)
+		  
+		  extre(0) = M*tab(1)
+		  extre(1) = M*extre(0)
+		  
+		  bp1 = tab(1)-tab(0)
+		  bp1 = bp1.vecnorperp
+		  BiB1 = new BiBPoint(tab(1), tab(1)+bp1)
+		  bp2 = extre(0)-tab(0)
+		  bp2 = bp2.VecNorPerp
+		  BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
+		  q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
+		  
+		  if q <> nil then
+		    ctrl(0) = tab(1)*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
+		    ctrl(1) = extre(0)*5/9 +q*4/9
+		    for i = 2 to 5
+		      ctrl(i) = M*ctrl(i-2)
+		    next
+		  end if
+		  'end if
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 

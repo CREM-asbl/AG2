@@ -1,7 +1,7 @@
 #tag Window
 Begin Window WorkWindow
    BackColor       =   16777215
-   Backdrop        =   ""
+   Backdrop        =   769355775
    BalloonHelp     =   ""
    CloseButton     =   "True"
    Composite       =   "True"
@@ -42,7 +42,7 @@ Begin Window WorkWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   122
+      Left            =   126
       LockBottom      =   "True"
       LockLeft        =   "True"
       LockRight       =   "True"
@@ -232,7 +232,7 @@ Begin Window WorkWindow
             Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   7
+            Left            =   5
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -241,7 +241,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   144
+            Top             =   145
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -260,7 +260,7 @@ Begin Window WorkWindow
             Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   7
+            Left            =   5
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -269,7 +269,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TextFont        =   "System"
             TextSize        =   0
-            Top             =   174
+            Top             =   173
             Underline       =   ""
             Visible         =   True
             Width           =   108
@@ -456,13 +456,13 @@ Begin Window WorkWindow
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
-            Backdrop        =   8007679
-            ControlOrder    =   16
+            Backdrop        =   115009535
+            ControlOrder    =   19
             Enabled         =   True
             EraseBackground =   "True"
             Height          =   50
             HelpTag         =   ""
-            Index           =   2
+            Index           =   4
             InitialParent   =   "LibBox"
             Left            =   8
             LockBottom      =   "False"
@@ -471,32 +471,7 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
-            Top             =   433
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   1584048127
-            ControlOrder    =   17
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "LibBox"
-            Left            =   64
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            Top             =   381
+            Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -514,7 +489,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "LibBox"
-            Left            =   64
+            Left            =   65
             LockBottom      =   "False"
             LockLeft        =   "False"
             LockRight       =   "False"
@@ -522,31 +497,6 @@ Begin Window WorkWindow
             Scope           =   0
             TabPanelIndex   =   0
             Top             =   433
-            UseFocusRing    =   "True"
-            Visible         =   True
-            Width           =   50
-            BehaviorIndex   =   8
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   "True"
-            AcceptTabs      =   "False"
-            AutoDeactivate  =   "True"
-            Backdrop        =   115009535
-            ControlOrder    =   19
-            Enabled         =   True
-            EraseBackground =   "True"
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   4
-            InitialParent   =   "LibBox"
-            Left            =   8
-            LockBottom      =   "False"
-            LockLeft        =   "False"
-            LockRight       =   "False"
-            LockTop         =   "False"
-            Scope           =   0
-            TabPanelIndex   =   0
-            Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
@@ -581,6 +531,56 @@ Begin Window WorkWindow
             AcceptFocus     =   "True"
             AcceptTabs      =   "False"
             AutoDeactivate  =   "True"
+            Backdrop        =   1584048127
+            ControlOrder    =   17
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "LibBox"
+            Left            =   65
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   381
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
+            Backdrop        =   8007679
+            ControlOrder    =   16
+            Enabled         =   True
+            EraseBackground =   "True"
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   2
+            InitialParent   =   "LibBox"
+            Left            =   8
+            LockBottom      =   "False"
+            LockLeft        =   "False"
+            LockRight       =   "False"
+            LockTop         =   "False"
+            Scope           =   0
+            TabPanelIndex   =   0
+            Top             =   433
+            UseFocusRing    =   "True"
+            Visible         =   True
+            Width           =   50
+            BehaviorIndex   =   8
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   "True"
+            AcceptTabs      =   "False"
+            AutoDeactivate  =   "True"
             Backdrop        =   454606847
             ControlOrder    =   21
             Enabled         =   True
@@ -589,7 +589,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   5
             LockBottom      =   "False"
             LockLeft        =   "False"
             LockRight       =   "False"
@@ -634,6 +634,7 @@ End
 		  if CurrentContent.bugfound then
 		    return false
 		  end if
+		  s = asc(key)
 		  
 		  select case asc(Key)
 		  case 59    ' ;
@@ -646,15 +647,17 @@ End
 		    end if
 		  case 1 'ctrl-shft a
 		    currentcontent.drapaff = not currentcontent.drapaff
+		    currentcontent.drapeucli = false
 		  case 2 'ctrl-shft b
 		    drapbug = not drapbug
 		  case 5 'ctrl-shft e
 		    currentcontent.drapeucli = not currentcontent.drapeucli
+		    currentcontent.drapaff = false
 		  case  20 ' ctrl-shft t
 		    wnd.mycanvas1.sctxt = nil
 		    tw = new TextWindow
 		    tw.visible = true
-		  case 21 'ctrl-shft u0002716707
+		  case 21 'ctrl-shft u
 		    tw = new textwindow
 		    tw.source1 = true  //historique
 		    tw.visible = true
@@ -683,8 +686,8 @@ End
 		  case 113 'q
 		    app.quiet = not app.quiet
 		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
-		    'MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
-		    's = u(0)
+		    MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
+		    s = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info
@@ -1260,7 +1263,7 @@ End
 			newcontent(true)
 			MenuMacros
 			wnd.refreshtitle
-			currentcontent.mac = new macro
+			currentcontent.mac = nil
 			return true
 			
 			
@@ -1287,8 +1290,8 @@ End
 			op = currentcontent.currentoperation
 			if op isa choosefinal then
 			choosefinal(op).endoperation
-			currentcontent.mac.SaveFileMacro
 			end if
+			currentcontent.currentoperation = nil
 			CloseMacro
 			return true
 		End Function
@@ -1930,7 +1933,7 @@ End
 			f = app.MacFolder.Child(mac.caption+".xmag")
 			
 			if f <> nil then
-			cf = new Confirmation("Voulez-vous vraiment supprimer cette macro ?")
+			cf = new Confirmation("Voulez-vous vraiment supprimer cette macro du disque dur?")
 			cf.showmodal
 			
 			if cf.result = 1 then
@@ -2115,18 +2118,14 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub choisirformesstandard()
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Annuler()
 		  dim op as operation
 		  op =CurrentContent.CurrentOperation
 		  closefw
-		  if ( op isa MultipleSelectOperation and MultipleSelectOperation(op).currentitemtoset > 1) then
+		  if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >1) then
+		    if op isa AppliquerTsf then
+		      AppliquerTsf(op).tsf.highlighted = false
+		    end if
 		    CurrentContent.abortconstruction
 		  else
 		    CurrentContent.UndoLastOperation
@@ -2337,7 +2336,7 @@ End
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
 		  MenuBar.Child("Fenetres").append mitem
 		  MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
-		  'MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
+		  MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
 		  
 		End Sub
 	#tag EndMethod
@@ -2442,14 +2441,10 @@ End
 		  MenuMenus.Child("OperaMenu").Child("OperaClone").checked=true
 		  MenuMenus.Child("OperaMenu").Child("OperaCut").checked=true
 		  MenuMenus.Child("OperaMenu").Child("OperaMerge").checked=true
+		  MenuMenus.Child("OperaMenu").Child("OperaIdentify").checked=true
 		  PushButton1.visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  'if MenuBar.Child("MacrosMenu").Child("MacrosExecute") <> nil then
-		  'MenuBar.Child("MacrosMenu").Child("MacrosErase").visible = true
-		  'MenuBar.Child("MacrosMenu").Child("MacrosClose").visible = true
-		  'MenuBar.Child("MacrosMenu").Child("MacrosDescri").visible = true
-		  'end if
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
@@ -2583,11 +2578,17 @@ End
 		Sub StdBoxRefresh()
 		  dim i as integer
 		  
-		  StdBox.Visible = Config.ShowStdTools and not draphisto
-		  for i = 0 to 2
-		    StdOutil(i).visible =true
-		  next
-		  StdBox.visible = true
+		  if  Config.ShowStdTools and not draphisto then
+		    for i = 0 to config.nstdfam-1
+		      if ico(i) = nil then
+		        setico(i,0)
+		      end if
+		      StdOutil(i).visible =true
+		    next
+		    StdBox.visible = true
+		  else
+		    StdBox.visible = false
+		  end if
 		  
 		  
 		  
@@ -2698,7 +2699,7 @@ End
 		  MoveBox.Visible = false
 		  
 		  for i=0 to 4
-		    MouvBut(i) .visible = Config.MvBt(i) and not draphisto
+		    MouvBut(i).visible = Config.MvBt(i) and not draphisto
 		    MoveBox.Visible = MoveBox.Visible or MouvBut(i) .visible
 		  next
 		  
@@ -2712,13 +2713,18 @@ End
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = true
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = true
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = false
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = false
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = false
+		  'MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = false
 		  EraseMenuBar
 		  CopyMenuBar
-		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosExecute").visible = false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosErase").visible = false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosDescri").visible = false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosClose").visible= false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = false
+		  'MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = false
 		  MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = false
 		  MenuBar.Child("FileMenu").Child("FileNew").visible = false
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=false
@@ -2726,6 +2732,7 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =false
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =false
+		  MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =false
 		  for i =0 to MenuBar.Child("ToolsMenu").count-1
 		    MenuBar.Child("ToolsMenu").Item(i).visible = false
 		  next
@@ -2955,6 +2962,10 @@ End
 
 	#tag Property, Flags = &h0
 		nlib As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Sans_titre As Integer
 	#tag EndProperty
 
 

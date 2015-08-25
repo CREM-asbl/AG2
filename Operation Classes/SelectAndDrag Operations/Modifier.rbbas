@@ -95,8 +95,9 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Function GetShape(p as basicpoint) As Shape
 		  dim i as integer
-		  dim S As Shape
+		  dim S As point
 		  dim t as boolean
+		  
 		  dim tableau() as integer
 		  redim tableau(-1)
 		  
@@ -114,7 +115,8 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  for i = visible.count-1 downto 0
-		    s = Visible.element(i)
+		    s = point(Visible.element(i))
+		    
 		    if not choixvalid(s) then
 		      visible.removeshape(s)
 		    end if
@@ -126,7 +128,7 @@ Inherits SelectAndDragOperation
 		    return nil
 		  end if
 		  
-		  s = visible.element(iobj)
+		  s = point(visible.element(iobj))
 		  
 		  if s <> nil then
 		    for i = 0 to ubound(point(s).parents)
@@ -198,7 +200,7 @@ Inherits SelectAndDragOperation
 		    pointmobile.highlight
 		    Endpoint = pc
 		    figs.enablemodifyall
-		    UpdateFigs(EndPoint)
+		    UpdateFigs(pc)
 		  end if
 		  
 		  
@@ -206,42 +208,6 @@ Inherits SelectAndDragOperation
 		  
 		  
 		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MouseDown(p as basicpoint)
-		  dim i as integer
-		  
-		  CurrentContent.TheObjects.tracept = false
-		  wnd.mycanvas1.ClearOffscreen
-		  super.MouseDown(p)
-		  
-		  if currentshape = nil or not testfinished  then
-		    return
-		  end if
-		  
-		  pointmobile = point(currentshape)
-		  
-		  InitFigs
-		  figs.createstate("InitState",pointmobile)
-		  if gGetSpecialkey = 4  then
-		    if (pointmobile.pointsur.count =1) and (ubound(currentshape.constructedshapes) = -1) and (currentshape.constructedby = nil )  then
-		      pointmobile.removepointsur pointmobile.pointsur.element(0)
-		    elseif pointmobile.pointsur.count = 0 and pointmobile.multassomm > 1  then
-		      remplini = new Point(Objects,pointmobile.bpt)
-		      for i =  ubound(pointmobile.parents) -1 downto 0
-		        pointmobile.parents(i).substitutepoint(remplini,pointmobile)
-		      next
-		      pointmobile.Mobility
-		      remplini.Mobility
-		      CurrentContent.TheFigs.RemoveFigure pointmobile.fig
-		      pointmobile.fig.restructurer
-		    end if
-		    initfigs
-		  end if
 		  
 		  
 		End Sub
@@ -318,8 +284,13 @@ Inherits SelectAndDragOperation
 		  
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
-		    if (sh isa arc) and (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and (not (p.pointsur.element(0) isa arc and (p.pointsur.element(0).getindex(sh.points(0)) = 0) ))  then
-		      return false
+		    if (sh isa arc) then
+		      if (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and  not (p.pointsur.element(0) isa circle and (p.pointsur.element(0).getindex(sh.points(0)) = 0) )  then
+		        return false
+		      end if
+		      'if sh.GetIndexPoint(p)=1 and sh.points(2).forme=2 then
+		      'return false
+		      'end if
 		    end if
 		    for j = 0 to ubound(p.parents)
 		      if i<> j and  (sh.constructedby <> nil and (sh.constructedby.oper = 3 or sh.constructedby.oper = 5) and sh.constructedby.shape = p.parents(j)) then
@@ -562,11 +533,9 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Function test(p as Point) As Boolean
 		  dim t as boolean
-		  dim i, j as integer
+		  'dim i, j as integer
 		  dim s as point
-		  dim q1, ep as BasicPoint
-		  dim M as TranslationMatrix
-		  dim sh as shape
+		  dim q1 as BasicPoint
 		  
 		  testfinished = false
 		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
@@ -683,7 +652,6 @@ Inherits SelectAndDragOperation
 		    return
 		  end if
 		  
-		  np = pointmobile.bpt
 		  
 		  MagneticD = new BasicPoint(0,0)
 		  Magnetism= testmagnetisme(magneticD)
@@ -691,22 +659,19 @@ Inherits SelectAndDragOperation
 		  if magnetism > 0 then
 		    pointmobile.drapmagn  = testfinal (magneticd)
 		    if pointmobile.drapmagn   then
-		      np = magneticd
-		      updatefigs(np)
+		      updatefigs(magneticd)
 		    end if
 		  end if
 		  
-		  endpoint = np
 		  pointmobile.drapmagn = false
 		  
 		  figs.createstate("FinalState",pointmobile)
 		  figs.updateoldM
 		  figs.fx1cancel
-		  
 		  super.endoperation
-		  
 		  pointmobile = nil
 		  currentshape = nil
+		  endpoint = nil
 		End Sub
 	#tag EndMethod
 
@@ -746,7 +711,7 @@ Inherits SelectAndDragOperation
 		  figs.enablemodifyall
 		  animation = true
 		  
-		  if s isa droite then
+		  if s isa droite and droite(s).nextre = 0 then
 		    dep = droite(s).extre2 - droite(s).extre1
 		  else
 		    dep = s.points(1).bpt-s.points(0).bpt
@@ -769,20 +734,68 @@ Inherits SelectAndDragOperation
 		  dim Magnetism As Integer
 		  dim f1, f2 as figure
 		  dim i, j as integer
+		  dim pt as BasicPoint
 		  
 		  Magnetism= Magnetisme(pointmobile,MagneticD)
 		  
-		  if cancelattraction(pointmobile) then
+		  if cancelattraction(pointmobile)    then
 		    magnetism = 0
 		  else
 		    currentattractedshape = pointmobile
 		  end if
-		  
-		  
 		  return magnetism
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MouseDown(p as basicpoint)
+		  dim i as integer
+		  dim s as point
+		  dim a as arc
+		  dim M as Matrix
+		  
+		  CurrentContent.TheObjects.tracept = false
+		  wnd.mycanvas1.ClearOffscreen
+		  super.MouseDown(p)
+		  
+		  if currentshape = nil or not testfinished  then
+		    return
+		  end if
+		  
+		  pointmobile = point(currentshape)
+		  currenthighlightedshape = pointmobile
+		  InitFigs
+		  figs.createstate("InitState",pointmobile)
+		  if gGetSpecialkey = 4  then
+		    if (pointmobile.pointsur.count =1) and (ubound(currentshape.constructedshapes) = -1) and (currentshape.constructedby = nil )  then
+		      pointmobile.removepointsur pointmobile.pointsur.element(0)
+		    elseif pointmobile.pointsur.count = 0 and pointmobile.multassomm > 1  then
+		      remplini = new Point(Objects,pointmobile.bpt)
+		      for i =  ubound(pointmobile.parents) -1 downto 0
+		        pointmobile.parents(i).substitutepoint(remplini,pointmobile)
+		      next
+		      pointmobile.Mobility
+		      remplini.Mobility
+		      CurrentContent.TheFigs.RemoveFigure pointmobile.fig
+		      pointmobile.fig.restructurer
+		    end if
+		    initfigs
+		  end if
+		  s = pointmobile
+		  for i = 0 to ubound(s.parents)
+		    if s.parents(i) isa arc  then
+		      a = arc(s.parents(i))
+		      if a.getindex(s) = 2 and a.arcangle < PI/180 and s.modified = false then
+		        M = new rotationmatrix(a.coord.tab(0),PI/90)
+		        s.moveto M*s.bpt
+		      end if
+		    end if
+		  next
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 

@@ -244,6 +244,12 @@ Inherits SelectOperation
 			Type="string"
 			InheritedFrom="Operation"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Nom"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

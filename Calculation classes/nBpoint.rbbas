@@ -40,6 +40,13 @@ Protected Class nBpoint
 		  else
 		    append point(s).bpt
 		  end if
+		  
+		  redim curved(taille-1)
+		  for i = 0 to taille-1
+		    curved(i) = 0
+		  next
+		  
+		  redim centres(taille-1)
 		End Sub
 	#tag EndMethod
 
@@ -91,12 +98,6 @@ Protected Class nBpoint
 		  dim i, n, ori as integer
 		  dim M as matrix
 		  
-		  for i = 0 to taille-1
-		    if tab(i) = nil then
-		      return
-		    end if
-		  next
-		  
 		  ori = 1
 		  
 		  select case fa
@@ -120,7 +121,7 @@ Protected Class nBpoint
 		    case 4 'TriRectIso
 		      a = (tab(0)+tab(1))/2
 		      M = new RotationMatrix(a,ori*PIDEMI)
-		      append M*tab(1)
+		      tab(2) = M*tab(1)
 		    end select
 		  case 3 'Quadris
 		    select case fo
@@ -134,29 +135,29 @@ Protected Class nBpoint
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new OrthoProjectionMatrix(a,a+b)
-		      append M*tab(2)
+		      tab(3) = M*tab(2)
 		    case 3
 		      a = (tab(0)+tab(1))/2
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M = new SymmetryMatrix(a,a+b)
-		      append M*tab(2)
+		      tab(3) = M*tab(2)
 		    case 4
-		      append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 5
 		      a = tab(1)
 		      b = tab(1)-tab(0)
 		      b = b.vecnorperp
 		      M =  new OrthoProjectionMatrix(a,a+b)
 		      tab(2) = M*tab(2)
-		      append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 6
 		      d = tab(0).distance(tab(1))
 		      b = tab(2)-tab(1)
 		      if tab(1).distance(tab(2)) > 0 then
 		        tab(2) = tab(1)+(b.normer)*d
 		      end if
-		      append tab(0)-tab(1)+tab(2)
+		      tab(3) = tab(0)-tab(1)+tab(2)
 		    case 7
 		      constructshape(4,1)
 		    end select
@@ -170,12 +171,18 @@ Protected Class nBpoint
 		      c = a + b*(ori*d/(2*tan(PI/n)))
 		      M = new RotationMatrix(c,2*ori*PI/n)
 		      for i = 2 to n-1
-		        append M*tab(i-1)
+		        tab(i) = M*tab(i-1)
 		      next
 		    end if
 		  case 5
 		    select case  fo
 		    case 1
+		      d = tab(0).distance(tab(1))
+		      tab(2) = tab(2).projection(tab(0),d)
+		    end select
+		  case 7
+		    select case  fo
+		    case 0
 		      d = tab(0).distance(tab(1))
 		      tab(2) = tab(2).projection(tab(0),d)
 		    end select
@@ -196,33 +203,29 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
-		  dim i, n as integer
+		  dim i  as integer
 		  dim c as Boolean
 		  dim q,r as basicPoint
-		  Dim Bib1, Bib2 as BiBpoint
-		  Dim r1,r2 as double
 		  
-		  q = new Basicpoint(1,0)
-		  q = p+q
-		  Bib1 = new BiBpoint(p, q)
-		  n = Taille
+		  
 		  c = false
-		  
-		  for i = 0 to n-1
-		    Bib2 = new BibPoint(Tab(i), Tab((i+1) mod n))
-		    r = BiB1.BiBInterDroites(BiB2,1,2,r1,r2)
-		    if r <> nil then
-		      c = not c
+		  for  i = 0  to Taille -1
+		    q = Tab(i)
+		    r =  Tab((i+1) mod Taille)
+		    if ( ((q.y<=p.y) and (p.y <r.y)) or ((r.y <= p.y) and (p.y < q.y)) ) and (p.x < (r.x - q.x) * (p.y - q.y) / (r.y - q.y) + q.x) then
+		      c =not c
 		    end if
 		  next
 		  return c
+		  
+		  
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer)
+		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer, ori as integer)
 		  dim  w as BasicPoint
 		  dim M as Matrix
 		  
@@ -234,7 +237,11 @@ Protected Class nBpoint
 		  
 		  select case n
 		  case 0                           'On appelle la méthode lors du positionnement de l'origine du segment
-		    tab(1) = tab(0)+w
+		    if ori <> 0 then
+		      tab(1) = tab(0)+w*ori
+		    else
+		      tab(1) = tab(0) +w
+		    end if
 		  case 1                           'Positionnement de l'extrémité du segment
 		    'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
 		    'Quand on travaille à la souris, c'est le clic qui indique la position finale
@@ -242,8 +249,10 @@ Protected Class nBpoint
 		    if fo = 1 or fo = 2 then
 		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
 		      tab(1)=M*tab(1)
+		    elseif ori <> 0 then
+		      tab(1) = tab(0) +w*ori
 		    else
-		      tab(1) = tab(0) +w
+		      tab(1)=tab(0)
 		    end if
 		  end select
 		  
@@ -288,7 +297,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SimilarityMatrix() As Matrix
+		Function SimilarityMatrix() As SimilarityMatrix
 		  return new SimilarityMatrix(tab(0),tab(1),tab(3), tab(2))
 		End Function
 	#tag EndMethod
@@ -384,9 +393,121 @@ Protected Class nBpoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetBib(i as integer) As BiBPoint
+		  
+		  if i > -1 and i < taille then
+		    return new BiBPoint (tab(i),tab((i+1) mod taille))
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HomothetyMatrix() As HomothetyMatrix
+		  return new HomothetyMatrix(tab(0),tab(1),tab(3), tab(2))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PseudoTrap() As Boolean
+		  dim u, v as basicPoint
+		  
+		  if Taille <> 4 then
+		    return false
+		  end if
+		  u = tab(1) - tab(0)
+		  v = tab(2) - tab(3)
+		  
+		  u = u.normer
+		  v = v.normer
+		  if u = nil or v = nil then
+		    return true
+		  else
+		    return abs(u.vect(v) ) < epsilon
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateExtreAndCtrlPoints(orien as integer)
+		  
+		  
+		  dim Mat as RotationMatrix
+		  dim BiB as BiBPoint
+		  dim m, n ,i as integer
+		  dim temp(1) as BasicPoint
+		  dim A as Angle
+		  dim alpha as double
+		  
+		  n = 0
+		  m=0
+		  for i = 0 to taille-1
+		    if curved(i) = 1 then
+		      Bib = new BiBPoint(tab(i), tab((i+1) mod taille))
+		      A = new Angle(Bib,centres(i), orien)
+		      alpha = A.alpha/3
+		      
+		      Mat = new RotationMatrix(centres(i),alpha)
+		      
+		      extre(n) = Mat*tab(i)
+		      extre(n+1) = Mat*extre(n)
+		      BiB = new BiBPoint(tab(i),extre(n))
+		      Bib.computeCtrlPoints(centres(i), orien,  temp)
+		      if temp(0) <> nil and temp(1) <> nil then
+		        ctrl(m) = temp(0)
+		        ctrl(m+1) = temp(1)
+		        for i = 2 to 5
+		          ctrl(m+i) = Mat*ctrl(m+i-2)
+		        next
+		        n = n+2
+		        m=m+6
+		      end if
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MoveExtreCtrl(M as Matrix)
+		  dim i as integer
+		  
+		  for i = 0 to ubound(extre)
+		    extre(i) = M*extre(i)
+		  next
+		  for i = 0 to ubound(ctrl)
+		    ctrl(i) = M*ctrl(i)
+		  next
+		  
+		  for i = 0 to ubound(centres)
+		    if centres(i)<> nil then
+		      centres(i)=M*centres(i)
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		extre() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ctrl() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		curved() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		centres() As BasicPoint
 	#tag EndProperty
 
 

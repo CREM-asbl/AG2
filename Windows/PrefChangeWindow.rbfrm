@@ -155,6 +155,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub update()
+		  
 		  Config.ChargerConfig
 		  wnd.refresh
 		End Sub
@@ -201,7 +202,7 @@ End
 	#tag Event
 		Sub Change()
 		  Config.Menu = PopupMenu1.text
-		  update
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -228,6 +229,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Action()
+		  update
 		  close
 		End Sub
 	#tag EndEvent

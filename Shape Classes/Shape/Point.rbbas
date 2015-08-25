@@ -79,7 +79,8 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
 		  
-		  return bpt.distance(p) <= abs(wnd.Mycanvas1.MagneticDist)
+		  
+		  return bpt.distance(p) <= wnd.Mycanvas1.MagneticDist
 		End Function
 	#tag EndMethod
 
@@ -96,7 +97,7 @@ Inherits Shape
 		  dim s1,s2 as Shape
 		  dim p3 as Basicpoint
 		  
-		  if not PossibleAttractionWith(s) then
+		  if not PossibleAttractionWith(s) or s.hidden then
 		    return 0
 		  end if
 		  
@@ -177,7 +178,7 @@ Inherits Shape
 		      end if
 		    next
 		  end if
-		  if d <> nil then
+		  if d <> nil and d.distance(bpt) < delta then
 		    attractingShape=s
 		    return 10
 		  end if
@@ -446,14 +447,11 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PutOn(s as shape, r as double)
-		  dim circ as circle
 		  dim ar as Arc
 		  dim q as BasicPoint
-		  dim pol as Polygon
-		  dim Hyb as Lacet
 		  dim k , n as integer
-		  dim angle,alpha as double
 		  dim Bib as BibPoint
+		  dim angle as double
 		  
 		  if  not ispointon(s,k)  then
 		    PointSur.addshape s
@@ -463,35 +461,17 @@ Inherits Shape
 		    k = PointSur.Count-1
 		  end if
 		  
+		  if (numside(k) < 0 ) or (numside(k) > s.npts-1) then
+		    return
+		  end if
 		  location(k)=r
 		  
-		  if s isa Bipoint then
-		    Bib = BiBPoint(Bipoint(s).coord)
+		  if s isa Bipoint  then
+		    Bib = s.getBiBside(numside(k))
 		    q = BiB.BptOnBiBpt(r)
-		    'q = Bipoint(s).FirstP * (1-r) + BiPoint(s).SecondP*r
-		  elseif s isa Lacet then
-		    n = numside(k)
-		    if Lacet(s).curved(n) = 0 then
-		      q = (s.Points(n).bpt)*(1-r) + (s.Points( (n+1) mod s.npts).bpt) *r
-		    else
-		      angle = r*Lacet(s).GetArcAngle(n) +Lacet(s).GetStartAngle(n)
-		      q = new BasicPoint(cos(angle),sin(angle))
-		      q = Lacet(s).centre(n)+ q * Lacet(s).GetRadius(n)
-		    end if
-		  elseif s isa polygon then
-		    if (numside(k) > -1) and (numside(k) < s.npts) then
-		      q = (s.points(numside(k)).bpt)*(1-r) +(s.points((numside(k)+1) mod s.npts).bpt) *r
-		    else
-		      return
-		    end if
-		  elseif s isa Bande then
-		    if numside(k) = 0 then
-		      q = (s.points(2*numside(k)).bpt)*(1-r) +(s.points(2*numside(k)+1) .bpt) *r
-		    else
-		      q = (s.points(2*numside(k)).bpt)*(1-r) +(bande(s).point3) *r
-		    end if
-		  elseif s isa secteur then
-		    q = (s.points(0).bpt)*(1-r) +(s.points(numside(k)).bpt) *r
+		  elseif s isa polygon or s isa Bande or s isa Secteur then
+		    BiB = s.GetBibSide(numside(k))
+		    q = BiB.BptOnBiBpt(r)
 		  elseif S isa Arc then
 		    ar = Arc(S)
 		    r = r*ar.arcangle+ar.startangle
@@ -499,6 +479,15 @@ Inherits Shape
 		    q =  ar.GetGravityCenter + q * ar.GetRadius
 		  elseif S isa circle then
 		    q=s.coord.positionOnCircle(r,s.ori)
+		  elseif s isa Lacet then
+		    n = numside(k)
+		    if Lacet(s).coord.curved(n) = 0 then
+		      q = (s.Points(n).bpt)*(1-r) + (s.Points( (n+1) mod s.npts).bpt) *r
+		    else
+		      angle = r*Lacet(s).GetArcAngle(n) +Lacet(s).GetStartAngle(n)
+		      q = new BasicPoint(cos(angle),sin(angle))
+		      q = Lacet(s).coord.centres(n)+ q * Lacet(s).GetRadius(n)
+		    end if
 		  end if
 		  Moveto q
 		  
@@ -597,13 +586,9 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  'if   MacConstructedBy <>  nil  and ubound(macconstructedshapes) = -1 then
-		  'liberte = 0
-		  'end if
-		  'if   (ubound(parents) > -1) and   (parents(0).macconstructedby <> nil) and (ubound(parents(0).macconstructedshapes) = -1) and (ubound(macconstructedshapes) = -1)  then
-		  'liberte = 0
-		  'end if
-		  
+		  if (forme <> 1) and ((MacConstructedBy <>  nil )  or ((ubound(parents) > -1) and( parents(0).macconstructedby <> nil) and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
+		    liberte = 0
+		  end if
 		  
 		  for i = 0 to ubound(parents)
 		    if parents(i).std  then
@@ -773,8 +758,8 @@ Inherits Shape
 		  dim q as BasicPoint
 		  dim cx, cy as double
 		  
-		  if s isa Lacet and Lacet(s).curved(i) = 1 then
-		    return bpt.projection(Lacet(s).centre(i), Lacet(s).getradius(i))
+		  if s isa Lacet and Lacet(s).coord.curved(i) = 1 then
+		    return bpt.projection(Lacet(s).coord.centres(i), Lacet(s).getradius(i))
 		  else
 		    return ProjectionOnAttractingSegment(s.Points(i).bpt,s.Points((i+1) mod s.npts).bpt)
 		  end if
@@ -863,47 +848,16 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Valider()
-		  dim i, j, k as integer
-		  dim  s, s1, s2 as shape
-		  dim pt as point
-		  dim inter as intersec
-		  dim t as Boolean
 		  
-		  if validating then
+		  if validating or not invalid then
 		    return
 		  end if
-		  
 		  if (conditionedby <> nil and conditionedby.invalid)   or (constructedby <> nil and (constructedby.shape <> nil) and constructedby.shape.invalid) then
 		    return
 		  end if
-		  
 		  invalid = false
 		  validating = true
-		  
-		  for i = 0 to conditioned.count-1
-		    if (not conditioned.element(i) isa point) or ( point(conditioned.element(i)).pointsur.count < 2 )   then
-		      conditioned.element(i).valider
-		    else
-		      pt =point(conditioned.element(i))
-		      pt.updateinter
-		    end if
-		  next
-		  
-		  for i = 0 to UBound (parents)
-		    if parents(i).invalid  and (parents(i).conditionedby=nil or not point(parents(i).conditionedby).invalid)  then
-		      parents(i).Valider
-		    end if
-		  next
-		  for i = 0  to Ubound(ConstructedShapes)
-		    ConstructedShapes(i).Valider
-		  next
-		  
-		  for i = 0 to tsfi.count-1
-		    tsfi.element(i).ModifyImages
-		    for j = 0 to tsfi.element(i).constructedshapes.count -1
-		      tsfi.element(i).constructedshapes.element(j).valider
-		    next
-		  next
+		  ValiderCondiEtConstruc
 		  validating = false
 		End Sub
 	#tag EndMethod
@@ -1039,7 +993,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Point(p as Basicpoint)
-		  bpt = p
+		  bpt =  p
 		  
 		End Sub
 	#tag EndMethod
@@ -1609,23 +1563,27 @@ Inherits Shape
 		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
 		  end if
 		  
-		  if  PointSur.count =1 and not modified then                    //Ces instructions sont probablement inutiles
-		    if not pointsur.element(0) isa arc then
+		  if  forme =1  then
+		    sh = pointsur.element(0)
+		    if not sh isa arc then
 		      puton pointsur.element(0)
 		    else
-		      puton pointsur.element(0), location(0)  //Voir remarque dans Figure.updatePtssur
+		      putonarc (arc(sh))  //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
+		  for i = 0 to ubound(parents)
+		    parents(i).updatecoord
+		  next
 		  if ifmac <>nil and forme = 1 then
 		    ifmac.location = location(0)
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  'if modified then
+		  
 		  updateconstructedpoints
 		  updateMacConstructedShapes
 		  endmove
-		  'end if
+		  
 		  
 		  
 		  
@@ -1645,7 +1603,7 @@ Inherits Shape
 		  dim Bib as BiBPoint
 		  dim ar as arc
 		  
-		  if S = nil or not authorisedputon(s)  then
+		  if bpt = nil or S = nil or not authorisedputon(s)  then
 		    return
 		  end if
 		  
@@ -2015,7 +1973,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function Magnetism3(s as point, Byref d as BasicPoint) As integer
-		  dim delta, dist as double  //Méthode appelée uniquement par Magnetism2
+		  dim delta, dist, t as double  //Méthode appelée uniquement par Magnetism2
 		  
 		  
 		  delta = wnd.Mycanvas1.MagneticDist
@@ -2471,13 +2429,14 @@ Inherits Shape
 		  dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
+		  dim i, n as integer
+		  
 		  
 		  delta = np-bpt
-		  
+		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
-		    d = delta.norme
-		    if d > 0.05 then
-		      np = bpt+ (delta.normer)*0.05
+		    if d > 0.1 and dret = nil then
+		      np = bpt+ (delta.normer)*0.1
 		    end if
 		  end if
 		  M = new TranslationMatrix(np-bpt)
@@ -2919,6 +2878,9 @@ Inherits Shape
 		    inter = CurrentContent.TheIntersecs.Find(s1,s2)
 		    if inter <> nil then
 		      inter.update        //Le point est éventuellement re-validé
+		      if not invalid then
+		        ValiderCondiEtConstruc
+		      end if
 		    end if
 		  end if
 		End Sub
@@ -3111,6 +3073,68 @@ Inherits Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub valider(tovalid() as shape)
+		  dim i as integer
+		  dim s as shape
+		  
+		  if ubound(tovalid)=-1 then
+		    return
+		  end if
+		  
+		  s = tovalid(0)
+		  
+		  tovalid.remove 0
+		  if not (s.constructedby<>nil and tovalid.indexof(s.constructedby.shape)<> -1) then
+		    s.valider
+		  else
+		    tovalid.append s
+		  end if
+		  valider(tovalid)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ValiderCondiEtConstruc()
+		  dim i, j as integer
+		  dim s, tovalid(-1) as shape
+		  
+		  if conditioned.count > 1 then
+		    redim tovalid(conditioned.count-1)
+		    for i = 0 to conditioned.count-1
+		      tovalid(i)=conditioned.element(i)
+		    next
+		    valider(tovalid())
+		  elseif conditioned.count = 1 then
+		    s = conditioned.element(0)
+		    if (not s isa point) or ( point(s).pointsur.count < 2 )   then
+		      s.valider
+		    else
+		      point(s).updateinter
+		    end if
+		  end if
+		  
+		  for i = 0 to UBound (parents)
+		    if parents(i).invalid and not parents(i).validating and (parents(i).conditionedby=nil or not point(parents(i).conditionedby).invalid)  then
+		      parents(i).Valider
+		    end if
+		  next
+		  for i = 0  to Ubound(ConstructedShapes)
+		    ConstructedShapes(i).Valider
+		  next
+		  
+		  for i = 0 to tsfi.count-1
+		    tsfi.element(i).ModifyImages
+		    for j = 0 to tsfi.element(i).constructedshapes.count -1
+		      tsfi.element(i).constructedshapes.element(j).valider
+		    next
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -3188,10 +3212,6 @@ Inherits Shape
 
 	#tag Property, Flags = &h0
 		Trace(-1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		validating As Boolean
 	#tag EndProperty
 
 

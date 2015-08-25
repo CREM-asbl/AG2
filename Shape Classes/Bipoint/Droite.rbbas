@@ -47,17 +47,22 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim i, index as integer
+		  dim i, index, ori as integer
 		  dim s as shape
 		  
 		  
-		  if constructedby <> nil then
+		  if constructedby <> nil and (constructedby.oper < 3) then
 		    updatecoord
-		    index = constructedby.data(0)
-		    s = constructedby.shape
-		    coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint)
-		    repositionnerpoints
-		    computeextre
+		    if ubound(constructedby.data) >  -1 then
+		      index = constructedby.data(0)
+		      if ubound(constructedby.data) = 2 then
+		        ori = constructedby.data(2)
+		      end if
+		      s = constructedby.shape
+		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint, ori)
+		      repositionnerpoints
+		      computeextre
+		    end if
 		    if  nextre = 0 then
 		      points(1).hide
 		    end if
@@ -175,6 +180,7 @@ Inherits Bipoint
 		  case 2
 		    forme = 0
 		  end select
+		  endconstruction
 		  createskull(fp.bpt)
 		  computeextre
 		  Updateskull
@@ -265,21 +271,16 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as Graphics)
-		  dim a,b,e as BasicPoint
-		  dim can as mycanvas
+		  dim e, m as BasicPoint
+		  
 		  
 		  ComputeExtre
 		  UpDateSkull
 		  super.Paint(g)
-		  
-		  if Ti <> nil and not hidden  then
-		    can = wnd.mycanvas1
-		    e = (secondp-firstp)*0.1
-		    a = can.transform(getgravitycenter-e)
-		    b = can.transform(getgravitycenter+e)
-		    Ti.updatetip(a,b,bordercolor)
-		    Ti.scale = 0.5
-		    g.DrawObject Ti, b.x, b.y
+		  e = (coord.tab(1)-coord.tab(0))*0.1
+		  m =(coord.tab(0)+coord.tab(1))/2
+		  if  e.norme>0 and Ti <> nil and not hidden  then
+		    PaintTip(m-e,m+e,Bordercolor,0.5,g)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -340,35 +341,6 @@ Inherits Bipoint
 		  'return 1
 		  'end if  ?
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub modifiertsf(s1 as shape, s2 as shape, ind as integer)
-		  //Une droite paraperp à s1 devient paraperp à s2
-		  
-		  dim tsf as transformation
-		  dim op as integer
-		  
-		  tsf = Transformation(constructedby.data(1))
-		  op = constructedby.oper
-		  
-		  s1.fig.constructedfigs.removefigure fig
-		  s1.removeconstructedshape self
-		  tsf.removefigconstructioninfos(self)
-		  setconstructedby(s2, op)
-		  fig.removeconstructedby(s1.fig,tsf)
-		  constructedby.data.append  ind
-		  constructedby.data.append tsf
-		  fig.SetConstructedBy(s2.fig, tsf)
-		  tsf.supp = s2
-		  tsf.updatefigconstructioninfos(self)
-		  
-		  
-		  
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -476,7 +448,7 @@ Inherits Bipoint
 		  
 		  if  ubound(p) = 1 then
 		    B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
-		    B2 = new BiBPoint(coord)
+		    B2 = BiBPoint(coord)
 		    k = B2.BiBDroiteInterCercle(B1,p(), bq, w)
 		  else
 		    k = 0
@@ -699,12 +671,12 @@ Inherits Bipoint
 		    M = new  AffiProjectionMatrix(Bib1, Bib2)
 		    if M <> nil and M.v1 <> nil then
 		      nq = M*np
-		      if sh isa polygon then
-		        n =sh.pointonside(nq)
-		        if n <> q.numside(0) then
-		          points(0).moveto ep
-		          return new Matrix(1)
-		        end if
+		      q.moveto nq
+		      if q.ProjectionOnAttractingDroite(dr2) = nil then
+		        q.invalider
+		      else
+		        q.moveto eq
+		        q.valider
 		      end if
 		    else
 		      nq = nil
@@ -713,16 +685,18 @@ Inherits Bipoint
 		    if w.norme > epsilon then
 		      Bib1 = new BibPoint(firstp, firstp+w)
 		      nq  = Bib1.ComputeFirstIntersect(0,sh,q)
+		      if (nq = nil) or (sh.pointonside(nq) = -1) then
+		        q.invalider
+		      else
+		        q.valider
+		      end if
 		    end if
 		  end if
-		  if q.modified and nq <> nil then
+		  q.modified = true
+		  if  nq <> nil then
 		    q.moveto nq
 		  end if
-		  if nq <> nil then
-		    return new similaritymatrix (ep, eq, np, nq)
-		  else
-		    return nil
-		  end if
+		  return new similaritymatrix (ep, eq, np, nq)
 		  
 		End Function
 	#tag EndMethod

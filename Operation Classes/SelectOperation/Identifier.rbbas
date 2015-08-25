@@ -214,7 +214,7 @@ Inherits SelectOperation
 		  
 		  for i =  visible.count-1 downto 0
 		    s = Visible.element(i)
-		    if  not (s isa point)  or (point(s).hasstdparent) then
+		    if  not (s isa point)  or (point(s).hasstdparent) or (s.constructedby <> nil and s.constructedby.oper = 9)  then
 		      Visible.removeShape(s)
 		      nobj = visible.count
 		    end if
@@ -311,34 +311,36 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToMac(Doc as XMLDocument) As XMLElement
-		  Dim Myself, EL, EL1 as XmlElement
-		  dim i as integer
-		  
-		  Myself=  remplacement.XMLPutIdINContainer(Doc)
-		  if remplace <> nil then
-		    EL = Remplace.XMLPutIdInContainer(Doc)
-		    EL.SetAttribute("Ident", "Point")
-		    EL1 = Doc.CreateElement("Parents")
-		    EL1.SetAttribute("Nb", str(ubound(shapes)))
-		    for i = 0 to ubound(shapes)
-		      EL1.setattribute("Id"+str(i), str(shapes(i)))
-		    next
-		    EL.appendchild EL1
-		    if ubound(csted) > -1 then
-		      EL1 = Doc.CreateElement("Csted")
-		      EL1.SetAttribute("Nb",str(ubound(csted)))
-		      for i = 0 to ubound(csted)
-		        EL1.setattribute("Id"+str(i), str(csted(i)))
-		      next
-		      EL.appendchild EL1
-		    end if
-		  elseif support <> nil then
-		    EL = Support.XMLPutIdInContainer(Doc)
-		    EL.SetAttribute("Ident", "Shape")
-		  end if
-		  Myself.appendchild EL
-		  return Myself
+		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
+		  'Dim Temp,  EL1 as XmlElement
+		  'dim i as integer
+		  '
+		  'if nobj = 2 then 'remplacement et remplace sont deux points
+		  'EL.SetAttribute("Ident", "Point")
+		  'EL.AppendChild remplacement.XMLPutIdInContainer(Doc)
+		  'EL1 = Doc.CreateElement("Remplace")
+		  'EL1.appendchild Remplace.XMLPutIdInContainer(Doc)
+		  'EL1.SetAttribute("NbShapes", str(ubound(shapes)))
+		  'for i = 0 to ubound(shapes)
+		  'EL1.setattribute("IdSh"+str(i), str(shapes(i)))
+		  'next
+		  'if ubound(csted) > -1 then
+		  'EL1.SetAttribute("NbCsted",str(ubound(csted)))
+		  'for i = 0 to ubound(csted)
+		  'EL1.setattribute("IdCst"+str(i), str(csted(i)))
+		  'next
+		  'end if
+		  'EL.appendchild EL1
+		  'end if
+		  ''elseif support <> nil then
+		  ''EL = Support.XMLPutIdInContainer(Doc)
+		  ''EL.SetAttribute("Ident", "Shape")
+		  ''end if
+		  ''end if
+		  ''EL.appendchild EL1
+		  ''
+		  ''Myself.appendchild EL
+		  'return EL
 		  
 		End Function
 	#tag EndMethod

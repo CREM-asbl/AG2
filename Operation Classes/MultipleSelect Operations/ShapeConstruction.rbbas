@@ -98,8 +98,6 @@ Inherits MultipleSelectOperation
 		        currentshape = new FreeCircle(objects, p)
 		      case 1
 		        currentshape = new Arc(objects,p)
-		      case 2
-		        currentshape = new DSect(objects,p)
 		      end select
 		    case 6
 		      if forme = 0 then
@@ -107,8 +105,6 @@ Inherits MultipleSelectOperation
 		      else
 		        currentshape = new Polyqcq(objects, forme+3, p)
 		      end if
-		      'case 7
-		      'Lacets
 		    end select
 		  else
 		    fam = famille-10
@@ -152,7 +148,7 @@ Inherits MultipleSelectOperation
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
 		    end if
 		    ShowAttraction
-		    if currentattractingshape isa repere or  nextcurrentattractingshape = nil then
+		    if currentattractingshape isa repere or  currentattractingshape isa point or nextcurrentattractingshape = nil then
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
 		      TraitementIntersec()
@@ -372,14 +368,21 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
-		  
+		  dim p as point
 		  dim magneticD as BasicPoint
 		  dim magnetism as integer
+		  
+		  'if currentshape isa arc and  currentshape.indexconstructedpoint = 2 then
+		  'if currentattractingshape isa point and currentattractingshape.forme <> 1 and ubound(point(currentattractingshape).parents) > -1 then
+		  'currentattractingshape = point(currentattractingshape).parents(0)
+		  'nextcurrentattractingshape = nil
+		  'end if
+		  'end if
 		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point  then
-		      curShape.Identify1(Point(CurrentAttractingShape))
+		      curShape.Identify1(Point(CurrentAttractingshape))
 		    elseif  currentattractingshape.fam < 10 and currentshape.fam < 10  then
 		      if NextCurrentAttractingShape <> nil then
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig
@@ -447,25 +450,26 @@ Inherits MultipleSelectOperation
 		      pt = point(currentshape)
 		      EL = XMLElement(EL1.Child(0))
 		      n = val(EL.GetAttribute("Id"))
-		      MExe.GetRealId(n, rid)
+		      rid = MExe.GetRealId(n)
 		      sh = objects.GetShape(rid)
-		      num = val(EL1.GetAttribute("NumSide0"))
-		      loc = val(EL1.GetAttribute("Location"))
-		      pt.puton sh, loc
-		      pt.numside(0) = num
+		      sh.setpoint(pt)
+		      pt.pointsur.addshape sh
+		      pt.numside.append val(EL1.GetAttribute("NumSide0"))
+		      pt.location.append val(EL1.GetAttribute("Location"))
+		      pt.puton sh, pt.location(0)
 		      pt.endconstruction
 		    end if
 		  else
 		    EL =XMLElement(EL0.Child(0))
 		    for i = 0 to CurrentShape.ncpts-1
 		      n = val(XMLElement(EL.Child(i)).GetAttribute("Id"))
-		      MExe.GetRealId(n, rid)
+		      rid = MExe.GetRealId(n)
 		      pt = point(objects.GetShape(rid))
 		      currentshape.substitutepoint(pt,currentshape.points(i))
 		    next
 		    currentshape.constructshape
 		    currentshape.endconstruction
-		    currentshape.Createextreandctrlpoints
+		    currentshape.coord.Createextreandctrlpoints(currentshape.ori)
 		  end if
 		  
 		End Sub

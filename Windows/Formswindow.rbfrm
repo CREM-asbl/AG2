@@ -418,6 +418,8 @@ End
 		      title = Dico.value("Arcs")
 		    case 6
 		      title = Dico.value("Polyqcqs")
+		    case 7
+		      title = Dico.Value("Lacets")
 		    end select
 		  end select
 		  

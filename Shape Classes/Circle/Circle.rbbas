@@ -35,20 +35,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Circle(ol as objectslist, s as circle, q as Basicpoint)
-		  dim i as integer
-		  dim M as Matrix
-		  
-		  M = new TranslationMatrix(q)
-		  Shape(ol,s)
-		  ori = s.ori
-		  nsk = new Circleskull(wnd.mycanvas1.transform(Points(0).bpt))
-		  Move(M)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub computeradius()
 		  if ubound(points) > 0 then
 		    radius = coord.distance01
@@ -123,10 +109,14 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As Integer
-		  if abs(p.distance(Points(0).bpt) - getradius)  < wnd.Mycanvas1.MagneticDist then
-		    return 0
+		  dim d as double
+		  
+		  d =  p.distance(points(0).bpt)
+		  
+		  if d <= GetRadius + epsilon and abs(radius -d)  <  wnd.Mycanvas1.MagneticDist then
+		    return  0
 		  else
-		    return -1
+		    return  -1
 		  end if
 		End Function
 	#tag EndMethod
@@ -149,33 +139,34 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as TextOutputStream)
 		  dim i as integer
+		  dim s as string
+		  
+		  s = "[  " + points(0).etiq + " " + "[ " +points(0).etiq +  points(1).etiq +" ] distance ]  "
 		  
 		  if fill > 49 and not tsp then
 		    if ti <> nil then
 		      if ori = 1 then
-		        tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] disqueorientepos")
+		        tos.writeline ( s +"disqueorientepos")
 		      else
-		        tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] disqueorienteneg")
+		        tos.writeline ( s +"disqueorienteneg")
 		      end if
 		    else
-		      tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] disque")
+		      tos.writeline (s +"disque")
 		    end if
 		  else
 		    if ti <> nil  then
 		      if ori = 1 then
-		        tos.writeline ( "[  " + points(0).etiq +  " " + str(radius)+ " ] cercleorientepos")
+		        tos.writeline ( s +"cercleorientepos")
 		      else
-		        tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] cercleorienteneg")
+		        tos.writeline ( s+"cercleorienteneg")
 		      end if
 		    else
-		      tos.writeline ( "[  " + points(0).etiq + " " + str(radius)+ " ] cercle")
+		      tos.writeline ( s+"cercle")
 		    end if
 		  end if
 		  
 		  points(0).ToEps(tos)
-		  'if self isa FreeCircleB then
-		  'points(1).ToEPS(tos)
-		  'end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -189,7 +180,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Circle(ol as ObjectsList, d as integer, p As BasicPoint)
-		  Shape(ol,d)
+		  Shape(ol,d,d)
 		  Points.append new Point(ol, p)
 		  SetPoint(Points(0))
 		  angle = 0
@@ -202,51 +193,6 @@ Inherits Shape
 		Sub fixeepaisseurs()
 		  
 		  nsk.fixeepaisseurs(self)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CreateExtreAndCtrlPoints()
-		  dim M as RotationMatrix
-		  dim p, q as BasicPoint
-		  dim bp1, bp2 as BasicPoint
-		  dim BiB1, Bib2 as BiBPoint
-		  dim r1,r2 as double
-		  dim i as integer
-		  dim s2 as shape
-		  dim tsf as transformation
-		  
-		  if constructedby <> nil and constructedby.oper = 6 then
-		    s2 = constructedby.shape
-		    circle(s2).createextreandctrlpoints
-		    tsf = transformation(constructedby.data(0))
-		    tsf.AppliquerExtreCtrl(circle(s2),circle(self))
-		  else
-		    p = Points(0).bpt
-		    M = new RotationMatrix(p,2*Pi/3)
-		    
-		    extre(0) = M*StartP
-		    extre(1) = M*extre(0)
-		    
-		    bp1 = StartP-p
-		    bp1 = bp1.vecnorperp
-		    BiB1 = new BiBPoint(StartP, StartP+bp1)
-		    bp2 = extre(0)-p
-		    bp2 = bp2.VecNorPerp
-		    BiB2 = new BiBPoint(extre(0), extre(0)+bp2)
-		    q = BiB1.BiBInterDroites(BiB2,0,0,r1,r2)
-		    
-		    if q <> nil then
-		      ctrl(0) = Startp*5/9+q*4/9        'Pour un cercle, a=2PI/3, k = 4/9
-		      ctrl(1) = extre(0)*5/9 +q*4/9
-		      for i = 2 to 5
-		        ctrl(i) = M*ctrl(i-2)
-		      next
-		    end if
-		    
-		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -272,25 +218,12 @@ Inherits Shape
 		  nsk.update(wnd.Mycanvas1.transform(p))
 		  nsk.updatesommet(1,wnd.Mycanvas1.dtransform(points(1).bpt-p))
 		  for i = 0 to 1
-		    nsk.updateextre(i,  wnd.mycanvas1.dtransform(extre(i)-p))
+		    nsk.updateextre(i,  wnd.mycanvas1.dtransform(coord.extre(i)-p))
 		  next
 		  for i = 0 to 5
-		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(ctrl(i)-p))
+		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(coord.ctrl(i)-p))
 		  next
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MoveExtreCtrl(M as Matrix)
-		  dim i as integer
-		  
-		  for i = 0 to 1
-		    extre(i) = M*extre(i)
-		  next
-		  for i = 0 to 5
-		    ctrl(i) = M*ctrl(i)
-		  next
 		End Sub
 	#tag EndMethod
 
@@ -358,14 +291,6 @@ Inherits Shape
 
 	#tag Property, Flags = &h0
 		arcangle As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		extre(1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ctrl(5) As BasicPoint
 	#tag EndProperty
 
 

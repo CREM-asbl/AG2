@@ -348,8 +348,8 @@ Protected Module Dictionnaires
 		  if config.langue = "francais" then
 		    select case st
 		    case "arc"
-		      return "cet arc"
-		    case "droite", "bande", "ellipse", "hyperbole", "parabole"
+		      return "cet " + st
+		    case "droite", "bande", "ellipse", "hyperbole", "parabole", "demi-droite"
 		      return "cette " + st
 		    else
 		      return "ce " + st
@@ -972,7 +972,7 @@ Protected Module Dictionnaires
 
 	#tag Method, Flags = &h0
 		Function pointon() As string
-		  return Dico.Value("pointon")
+		  return Dico.Value("PointOn")
 		End Function
 	#tag EndMethod
 

@@ -37,6 +37,10 @@ Protected Class Label
 		  q = wnd.mycanvas1.transform(q)
 		  SetParam(g)
 		  
+		  if shape.highlighted then
+		    g.forecolor =config.highlightcolor.col
+		  end if
+		  
 		  if text = "%"  then
 		    g.DrawString(str(shape.id),q.x, q.y)
 		    ResetParam(g)
@@ -181,8 +185,7 @@ Protected Class Label
 		  elseif shape isa Freecircle and loc <> -1 then
 		    position = shape.points(1).bpt
 		  elseif shape isa arc and loc <> -1 then
-		    TriB = new TribPoint(arc(shape).getgravitycenter,arc(shape).startp, arc(shape).endp)
-		    position = Trib.Subdiv(arc(shape).ori,2,1)
+		    position = TriBPoint(shape.coord).Subdiv(arc(shape).ori,2,1)
 		  elseif loc = -1 then
 		    Position = Shape.GetGravitycenter
 		  end if
@@ -438,7 +441,7 @@ Protected Class Label
 		  
 		  p = currentcontent.ndec
 		  
-		  b = d < 0
+		  b = (d < 0)
 		  
 		  if b then
 		    d = abs(d)
@@ -450,15 +453,16 @@ Protected Class Label
 		  
 		  s1 = str(k)
 		  m = instr(s1,".")
-		  if m = 0 then
-		    return s1
-		  elseif m = 1 then
+		  select case m
+		  case 0
+		    s2 = s1
+		  case  1
 		    s2= str(0)
 		  else
 		    s2 = s1.left(m-1)
 		    s3 = s1. right(len(s1)-m)
 		    s3=s3.left(p)
-		  end if
+		  end select
 		  if b then
 		    s2 = "-"+s2
 		  end if

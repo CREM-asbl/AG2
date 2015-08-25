@@ -95,7 +95,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub Languagewindow(w as ConfigWindow)
+		Sub Languagewindow(w as Window)
 		  // Calling the overridden superclass constructor.
 		  Parent  = w
 		  Super.Window
@@ -127,7 +127,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		Parent As ConfigWindow
+		Parent As Window
 	#tag EndProperty
 
 
@@ -136,19 +136,14 @@ End
 #tag Events LanguagePopup
 	#tag Event
 		Sub Open()
-		  dim i,n as integer
-		  dim nom,lg as string
-		  n=-1
+		  dim i as integer
+		  dim dicos(-1) as string
 		  
-		  for i=1 to app.AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".dct" then
-		      n = n+1
-		      lg = Left(nom,len(nom)-4)
-		      me.addRow(lg)
-		      if lg = config.Langue then
-		        me.ListIndex = n
-		      end if
+		  dicos = app.DicoDispo
+		  for i=0 to UBound(dicos)
+		    me.addRow(dicos(i))
+		    if dicos(i) = config.Langue then
+		      me.ListIndex = i
 		    end if
 		  next
 		  
@@ -156,17 +151,28 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Change()
-		  Config.SetLangue(LanguagePopup.Text)
-		  refresh
-		  Parent.refresh
-		  wnd.updatemenu
-		  
+		  if parent isa configwindow then
+		    Config.SetLangue(LanguagePopup.Text)
+		    refresh
+		    Parent.refresh
+		    wnd.updatemenu
+		  elseif parent isa dictwindow then
+		    dictwindow(parent).lang = Languagepopup.text
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events OKButton
 	#tag Event
 		Sub Action()
+		  if parent isa configwindow then
+		    Config.SetLangue(LanguagePopup.Text)
+		    refresh
+		    Parent.refresh
+		    wnd.updatemenu
+		  elseif parent isa dictwindow then
+		    DictWindow(Parent).Lang = LanguagePopup.Text
+		  end if
 		  self.close
 		End Sub
 	#tag EndEvent

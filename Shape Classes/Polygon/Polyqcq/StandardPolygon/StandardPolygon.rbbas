@@ -8,7 +8,9 @@ Inherits Polyqcq
 		  Form = Shape.XMLPutInContainer(Doc)
 		  Form.SetAttribute("StdFile",  file)
 		  Form.SetAttribute("Taille", str(stdsize))
-		  Form.SetAttribute("Angle",str(Angles(0)))
+		  if fam < 14 then
+		    Form.SetAttribute("Angle",str(Angles(0)))
+		  end if
 		  Form.SetAttribute("Ori",str(Ori))
 		  
 		  return form
@@ -23,22 +25,24 @@ Inherits Polyqcq
 		  Shape(ol, EL)
 		  stdsize=Val(EL.GetAttribute("Taille"))
 		  Ori = val(EL.GetAttribute("Ori"))
-		  i = val(EL.GetAttribute("NonPointed"))
-		  file = Config.stdfile
-		  Myspecs = wnd.GetStdSpecs(fam-10,Forme)
-		  for i=0 to npts-2
-		    Angles.Append Myspecs.Angles(i)
-		    Distances.Append Myspecs.Distances(i)
-		  next
-		  p = Points(1).bpt-Points(0).bpt
-		  Angles(0)= p.anglepolaire 'Val(El.GetAttribute("Angle"))
+		  nonpointed = (val(EL.GetAttribute("NonPointed")) = 1)
+		  redim Angles(npts-2)
+		  if fam < 14 then
+		    file = Config.stdfile
+		    Myspecs = wnd.GetStdSpecs(fam-10,Forme)
+		    for i=0 to npts-2
+		      Angles(i) =  Myspecs.Angles(i)
+		      Distances.Append Myspecs.Distances(i)
+		    next
+		  end if
+		  p = coord.tab(1) - coord.tab(0) 'Points(1).bpt-Points(0).bpt
+		  Angles(0)= p.anglepolaire 
 		  sk = new Figskull(points(0).bpt,npts)
 		  for i=0 to npts-1
 		    figskull(sk).getcote(i).order = 0
 		  next
-		  redim curved(npts-1)
+		  redim coord.curved(npts-1)
 		  redim prol(npts-1)
-		  
 		  std = true
 		  autos
 		End Sub

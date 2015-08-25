@@ -14,19 +14,19 @@ Protected Class TriDshape
 		  
 		  if s isa circle then
 		    for i = 0 to 1
-		      TriDpts.append new TriDPoint(Circle(s).extre(i)-fp)
+		      TriDpts.append new TriDPoint(Circle(s).coord.extre(i)-fp)
 		    next
 		    for i = 0 to 5
-		      TriDPts.append new TriDPoint(Circle(s).Ctrl(i)-fp)
+		      TriDPts.append new TriDPoint(Circle(s).coord.Ctrl(i)-fp)
 		    next
 		  end if
 		  
 		  if s isa Lacet then
-		    for j = 0 to ubound(lacet(s).extre)
-		      TriDpts.append new TriDpoint(Lacet(s).extre(j)-fp)
+		    for j = 0 to ubound(lacet(s).coord.extre)
+		      TriDpts.append new TriDpoint(Lacet(s).coord.extre(j)-fp)
 		    next
-		    for j = 0 to ubound(lacet(s).ctrl)
-		      TriDpts.append new TriDpoint(Lacet(s).ctrl(j)-fp)
+		    for j = 0 to ubound(lacet(s).coord.ctrl)
+		      TriDpts.append new TriDpoint(Lacet(s).coord.ctrl(j)-fp)
 		    next
 		  end if
 		End Sub

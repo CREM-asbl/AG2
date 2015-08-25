@@ -13,8 +13,24 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Shape(ol As ObjectsList, ncp as Integer, np as integer)
-		  Shape(ol,ncp)
+		  if id=0 then
+		    id = ol.newId
+		  end if
+		  objects = ol
+		  labs = new LabList
+		  tsfi = new transfoslist
+		  Autos
+		  Ncpts = ncp
+		  IdGroupe = -1
+		  Fixecouleurtrait(Config.bordercolor,Config.Border)
+		  FixeCouleurFond(Config.Fillcolor,0)
+		  Borderwidth = Config.Thickness
+		  std = false
+		  plan = -1
 		  Npts = np
+		  
+		  
+		  
 		  
 		  
 		End Sub
@@ -46,7 +62,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectShape(p as BasicPoint) As Shape
+		Function SelectShape(p as Basicpoint) As Shape
 		  dim i as Integer
 		  dim S as Shape
 		  
@@ -187,10 +203,21 @@ Implements StringProvider
 		      SetPoint(Points(i))
 		      points(i).isinconstruction = true
 		    next
+		  end
+		  if currentcontent.PolygFleches and not self isa Lacet then
+		    Ti = new Tip
 		  end if
 		  
-		  updatecoord
 		  isinconstruction = true
+		  
+		  select case npts
+		  case 2
+		    coord = new BiBPoint(self)
+		  case 3
+		    coord = new TriBPoint(self)
+		  else
+		    coord = new nBPoint(self)
+		  end select
 		End Sub
 	#tag EndMethod
 
@@ -210,13 +237,6 @@ Implements StringProvider
 		        cs.border = 100
 		      end if
 		    end if
-		    'if n = 0 then
-		    'sk.update(wnd.mycanvas1.transform(p))
-		    'else
-		    'for j = n to npts-1
-		    'Updateskull(j,wnd.mycanvas1.dtransform(p-Points(0).bpt))
-		    'next
-		    'end if
 		  end if
 		  
 		  
@@ -577,7 +597,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Shape(ol as objectslist, ncp as integer)
+		Sub oldShape(ol as objectslist, ncp as integer)
 		  if id=0 then
 		    id = ol.newId
 		  end if
@@ -658,16 +678,11 @@ Implements StringProvider
 		  for i = 0 to npts-1
 		    points(i).isinconstruction = false
 		  next
-		  if self isa arc or self isa secteur then
-		    drapori = true
-		  end if
-		  if currentcontent.PolygFleches and not self isa Lacet then
-		    Ti = new Tip
-		  end if
-		  if not self isa cube and not currentcontent.currentoperation isa duplicate and not currentcontent.currentoperation isa appliquertsf then
+		  
+		  if constructedby <> nil then
+		    nonpointed = constructedby.shape.nonpointed
+		  elseif not self isa cube then
 		    nonpointed = not currentcontent.PolygPointes
-		  elseif constructedby <> nil and constructedby.shape.nonpointed = true then
-		    nonpointed = true
 		  end if
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
 		    Currentcontent.addShape self
@@ -806,6 +821,7 @@ Implements StringProvider
 		  objects = ol
 		  labs = new lablist
 		  tsfi = new transfoslist
+		  drapori = false
 		  Autos
 		  Fixecouleurtrait(Config.bordercolor,Config.Border)
 		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
@@ -826,9 +842,10 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function Paste(ol as objectslist, p as BasicPoint, s as shape) As shape
-		  // Paste est utilisé pour les Copier-coller, duplicate, image par translation en vue de créer des figures-images. Celles-ci devront être insérées dans la liste des objets
-		  //du currentcontent. Cela se fait lors du passage par endconstruction, qui ne doit être réalisé qu'une fois !
-		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).  Donc à ne pas insérer dans les routines de création des copies.
+		  // Paste est utilisé pour les Copier-coller, duplicate, image par translation en vue de créer des figures-images. Celles-ci devront être insérées dans la liste
+		  //des objets du currentcontent. Cela se fait lors du passage par endconstruction, qui ne doit être réalisé qu'une fois !
+		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).
+		  //Donc à ne pas insérer dans les routines de création des copies.
 		End Function
 	#tag EndMethod
 
@@ -886,7 +903,12 @@ Implements StringProvider
 		    bp = Point(self).bpt
 		  end if
 		  
-		  if self isa point and other isa droite then
+		  if self isa point and other isa point then
+		    dist = bp.distance(point(other).bpt)
+		    if dist <= magdist then
+		      return true
+		    end if
+		  elseif self isa point and other isa droite then
 		    return Droite(other).PInshape(bp)
 		  elseif  self isa point and other isa bande then
 		    return not (Bande(other).PointOnSide(bp) = -1)
@@ -1077,7 +1099,7 @@ Implements StringProvider
 		  dim M1, M2 as matrix
 		  dim op as operation
 		  
-		  op = currentcontent.currentoperation
+		  
 		  if  duplicateorcut  then
 		    M1 = Matrix(constructedby.data(0))
 		    M1 = M*M1
@@ -1089,7 +1111,10 @@ Implements StringProvider
 		      constructedby.data(j) = M1
 		    next
 		  end if
-		  
+		  op = currentcontent.currentoperation
+		  if op = nil then
+		    return
+		  end if
 		  if  ubound(constructedshapes) > -1 then
 		    M2 = M.inv
 		    for j = 0 to ubound(constructedshapes)
@@ -1131,6 +1156,7 @@ Implements StringProvider
 		  forme = s.forme
 		  auto = s.auto
 		  labs = new Lablist
+		  InitConstruction
 		  if s isa cube then
 		    n = 11
 		  elseif s isa polygon then
@@ -1138,24 +1164,24 @@ Implements StringProvider
 		  else
 		    n = -1
 		  end if
-		  redim colcotes(n)
 		  for i = 0 to n
 		    colcotes(i) = s.colcotes(i)
 		  next
-		  
 		  border = s.border
 		  borderwidth = s.borderwidth
 		  bordercolor = s.bordercolor
 		  Fixecouleurfond s.Getfillcolor, s.Fill
+		  Ti = s.Ti
 		  std = s.std
 		  ori = s.ori
 		  hidden = s.hidden
-		  InitConstruction
+		  
 		  for i = 0 to npts-1
 		    points(i).borderwidth = s.points(i).borderwidth
 		    Points(i).moveto (s.Points(i).bpt)
 		    points(i).hidden = s.points(i).hidden
 		  next
+		  updatecoord
 		  plan = -1
 		End Sub
 	#tag EndMethod
@@ -1237,6 +1263,10 @@ Implements StringProvider
 		  dim a as double
 		  dim tsf as transformation
 		  
+		  if invalid then
+		    return
+		  end if
+		  
 		  updatecoord
 		  computeori
 		  a = aire
@@ -1270,26 +1300,41 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  if self isa Lacet and constructedby <> nil and constructedby.oper = 5 then
+		  if self isa Lacet and constructedby <> nil  then
 		    s1 = constructedby.shape
-		    M = Matrix(ConstructedBy.Data(0))
-		    for i = 0 to npts-1
-		      if Lacet(self).curved(i) = 1 then
-		        if s1 isa circle then
-		          Lacet(self).centre(i) = M*s1.points(0).bpt
-		        else
-		          p = point(points(i).constructedby.shape)
-		          k = s1.getindexpoint(p)
-		          if k = -1 then
-		            k = Lacet(s1).PointOnCurvedSide(p.bpt)
+		    select case constructedby.oper
+		    case 5
+		      M = Matrix(ConstructedBy.Data(0))
+		      for i = 0 to npts-1
+		        if Lacet(self).coord.curved(i) = 1 then
+		          if s1 isa circle then
+		            coord.centres(i) = M*s1.points(0).bpt
+		          else
+		            p = point(points(i).constructedby.shape)
+		            k = s1.getindexpoint(p)
+		            if k = -1 then
+		              k = Lacet(s1).PointOnCurvedSide(p.bpt)
+		            end if
+		            coord.centres(i) = M*Lacet(s1).Getcentre(k)
 		          end if
-		          Lacet(self).centre(i) = M*Lacet(s1).GetCentre(k)
 		        end if
-		      end if
-		    next
+		      next
+		    case 6
+		      M = Transformation(ConstructedBy.Data(0)).M
+		      for i = 0 to npts-1
+		        if s1.coord.centres(i) <> nil then
+		          coord.centres(i) = M*s1.coord.centres(i)
+		        end if
+		      next
+		    end select
 		  end if
 		  
-		  CreateExtreAndCtrlPoints
+		  if self isa Lacet then
+		    Lacet(self).CreateExtreAndCtrlPoints
+		    'Lacet(self).updateskull
+		  else
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  modified = true
 		  endmove
 		  updateMacConstructedShapes
@@ -1320,6 +1365,7 @@ Implements StringProvider
 		  select case Constructedby.oper
 		  case 1,2
 		    Temp.SetAttribute("Index", str(constructedby.data(0)))
+		    Temp.SetAttribute("Ori", str(constructedby.data(2)))
 		  case 3
 		    M = matrix(constructedby.data(0))
 		    M.XMLPutAttribute(Temp)
@@ -1405,10 +1451,15 @@ Implements StringProvider
 		  dim inter as intersec
 		  dim s1, s2 as shape
 		  
-		  
 		  if  (conditionedby<>nil and conditionedby.invalid)  or (constructedby <> nil and (constructedby.shape.invalid or (constructedby.oper = 6 and (transformation(constructedby.data(0)).supp.invalid)) )) then
 		    return
 		  end if
+		  
+		  if validating or not invalid then 
+		    return
+		  end if
+		  
+		  validating = true
 		  
 		  t = true
 		  t2 = true
@@ -1420,13 +1471,21 @@ Implements StringProvider
 		    end if
 		    t = t and not(points(i).invalid) and not (points(i).deleted)
 		  next
+		  if not t then
+		    validating = false
+		    return
+		  end if
 		  for i = 0 to ncpts-1
 		    t2 = t2 and points(i).modified
 		  next
-		  if not t then
-		    return
+		  if t2 then
+		    constructshape
 		  end if
 		  
+		  
+		  if self isa circle or self isa lacet then
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  invalid = false
 		  
 		  for i = npts to ubound(childs)
@@ -1447,12 +1506,15 @@ Implements StringProvider
 		  
 		  for i = 0 to tsfi.count-1
 		    if tsfi.element(i).type <> 0 then
+		      tsfi.element(i).computematrix
 		      tsfi.element(i).ModifyImages
 		      for j = 0 to tsfi.element(i).constructedshapes.count -1
 		        tsfi.element(i).constructedshapes.element(j).valider
 		      next
 		    end if
 		  next
+		  
+		  validating = false
 		  
 		  
 		  
@@ -1557,9 +1619,9 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  if (constructedby <> nil and constructedby.oper = 6)   or std then
+		  if (constructedby <> nil and constructedby.oper = 6)   or std or (macconstructedby <> nil) then
 		    auto = 0
-		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle then
+		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp)  or self isa Freecircle      then
 		    auto = 1
 		  elseif (self isa polyqcq and npts = 3 and not self isa Lacet) or (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then
 		    auto = 2
@@ -1634,13 +1696,9 @@ Implements StringProvider
 		  dim i As  Integer      // Utilisé pour les  mouvements
 		  
 		  if M <> nil and M.v1 <> nil then
-		    'UpdateMatrixDuplicatedshapes(M)
-		    
-		    for i = 0 to npts-1 'Ubound(Childs)
+		    for i = 0 to npts-1
 		      Childs(i).Transform(M)
-		      'childs(i).updatematrixduplicatedshapes(M)
 		    next
-		    
 		    EndMove
 		  end if
 		  
@@ -1695,7 +1753,7 @@ Implements StringProvider
 		    Childs(i). Move(M)
 		  next
 		  if self isa circle or self isa Lacet then
-		    MoveExtreCtrl(M)
+		    coord.MoveExtreCtrl(M)
 		  end if
 		  Mmove = M
 		  EndMove
@@ -2042,6 +2100,8 @@ Implements StringProvider
 		      XMLReadConstructionInfoImgPt(Tmp)
 		    case 7
 		      XMLReadConstructionInfoPtFix(Tmp)
+		    case 8
+		      XMLReadConstructionInfoProl(Tmp)
 		    case 9
 		      XMLReadConstructionInfoMerge(Tmp)
 		    case 10
@@ -2311,6 +2371,12 @@ Implements StringProvider
 		  if macconstructedshapes.indexof(s2) <> - 1 then
 		    return true
 		  end if
+		  
+		  for i = 0 to ubound(childs)
+		    if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
+		      return true
+		    end if
+		  next
 		  
 		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
 		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
@@ -2679,15 +2745,19 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoParaperp(Tmp as XMLelement)
-		  dim m as integer
+		  dim m,o as integer
 		  dim tsf as transformation
 		  
 		  m = val(Tmp.GetAttribute("Index"))
+		  o = val(Tmp.GetAttribute("Ori"))
 		  constructedby.data.append m
 		  tsf = constructedby.shape.gettsf(0,m)
-		  if tsf <> nil then
-		    constructedby.data.append tsf
+		  if tsf = nil then
+		    tsf = new Transformation(constructedby.shape,0,m,o)
 		  end if
+		  constructedby.data.append tsf
+		  constructedby.data.append o  //15 juin 2014
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -2762,8 +2832,10 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  
-		  if not self  isa Lacet then
+		  if self isa Lacet then
+		    Lacet(self).CreateExtreAndCtrlPoints
+		    Lacet(self).updateskull
+		  else
 		    List3 = Tmp.XQL("SourcePoints")
 		    if List3.length > 0 then
 		      EL3=XMLElement(List3.Item(0))
@@ -2817,7 +2889,11 @@ Implements StringProvider
 		  else
 		    app.abortread
 		  end if
+		  
 		  tsf.setconstructioninfos1(constructedby.shape,self)
+		  if (tsf.type = 9 or tsf.type = 11) and self isa freecircle then
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  auto = 0
 		End Sub
 	#tag EndMethod
@@ -3025,7 +3101,7 @@ Implements StringProvider
 		    select case  constructedby.oper
 		    case 1, 2
 		      constructedby.shape.removeconstructedshape self
-		      if ubound(constructedby.data) = 1 and constructedby.data(1) <> nil then
+		      if ubound(constructedby.data) > 0 and constructedby.data(1) <> nil then
 		        tsf = transformation (constructedby.data(1))
 		        tsf.constructedshapes.removeshape self                        'en cas d'avortement tsf n'est pas encore définie
 		        tsf.supp.tsfi.removetsf tsf
@@ -3261,6 +3337,9 @@ Implements StringProvider
 		  dim s1, s2 As shape
 		  dim p as point
 		  
+		  if invalid then
+		    return
+		  end if
 		  
 		  if not self isa point then
 		    computediam
@@ -3268,7 +3347,7 @@ Implements StringProvider
 		      tobereconstructed = true
 		    end if
 		    
-		    if tobereconstructed then
+		    if tobereconstructed  then
 		      constructshape
 		      'if check then
 		      'tobereconstructed = false
@@ -3378,7 +3457,13 @@ Implements StringProvider
 		    
 		    for i = 0 to FigSkull(sk).Nbcotes
 		      cs = figskull(sk).getcote(i)
-		      if hidden and highlighted then
+		      if not hidden and currentcontent.currentoperation isa imprimer then
+		        if self isa polygon  then
+		          cs.bordercolor = colcotes(i).col
+		        else
+		          cs.bordercolor = self.bordercolor.col
+		        end if
+		      elseif hidden and highlighted then
 		        cs.bordercolor = Config.highlightcolor.col
 		        cs.border = 100
 		        cs.fill = 0
@@ -3428,13 +3513,11 @@ Implements StringProvider
 		      sk.updatebordercolor(BorderColor.col,100)
 		    elseif highlighted and selected then
 		      sk.updatebordercolor(Config.highlightcolor.col,100)
-		      'sk.updatefillcolor(grey.col,100)
 		    elseif highlighted  then
 		      sk.updatefillcolor(fillColor.col,fill)
 		      sk.updatebordercolor(Config.highlightcolor.col,100)
 		    elseif selected and fillcolor.equal(white) then
 		      sk.updatebordercolor(BorderColor.col, 100)
-		      'sk.updatefillcolor(grey.col,100)
 		    elseif isinconstruction then
 		      sk.updatefillcolor(Config.Weightlesscolor.col,0)
 		      sk.updatebordercolor(Config.Weightlesscolor.col,100)
@@ -3598,17 +3681,27 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub updatecoord()
 		  //updatecoord doit appara^tre dans endmove (à l'issue des mouvements) et updateshape (à l'issue des modifications)
+		  dim i  as integer
 		  
-		  select case npts
-		  case 2
-		    coord = new BiBPoint(self)
-		  case 3
-		    coord = new TriBPoint(self)
+		  if coord = nil then
+		    select case npts
+		    case 2
+		      coord = new BiBPoint(self)
+		    case 3
+		      coord = new TriBPoint(self)
+		    else
+		      coord = new nBPoint(self)
+		    end select
+		    return
+		  end if
+		  
+		  if self isa point then
+		    coord.tab(0) = point(self).bpt
 		  else
-		    coord = new nBPoint(self)
-		  end select
-		  
-		  
+		    for i = 0 to npts-1
+		      coord.tab(i) = points(i).bpt
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -3709,20 +3802,6 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub computearcangle()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MoveExtreCtrl(M as Matrix)
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CreateExtreAndCtrlPoints()
 		  
 		End Sub
 	#tag EndMethod
@@ -3899,10 +3978,9 @@ Implements StringProvider
 		    for j = 0 to npts-1
 		      if coord.tab(j) = nil then
 		        return
+		      else
+		        points(j).moveto coord.tab(j)   //On repositionne les sommets
 		      end if
-		    next
-		    for j = 0 to ubound(points)
-		      points(j).moveto coord.tab(j)   //On repositionne les sommets
 		    next
 		  end if
 		End Sub
@@ -3916,13 +3994,15 @@ Implements StringProvider
 		  d = Points(0).bpt.distance(Points(1).bpt)
 		  
 		  if d > 0 then
-		    coord = newcoord(self)
 		    for i = 0 to ncpts-1
-		      coord.append Points(i).bpt
+		      coord.tab(i) = Points(i).bpt
 		    next
 		    coord.constructshape(fam,forme)
 		    repositionnerpoints
-		  end if
+		  end If
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3941,10 +4021,6 @@ Implements StringProvider
 		    BiB.nextre = droite(self).nextre
 		  elseif self isa polygon then
 		    BiB.nextre = 2
-		  elseif self isa secteur then
-		    BiB.nextre = 1
-		  else
-		    BiB.nextre = 0
 		  end if
 		  
 		  return BiB
@@ -4018,14 +4094,18 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function NewCoord(s as shape) As nBPoint
-		  select case s.npts
-		  case 2
-		    return new BiBPoint
-		  case 3
-		    return new TriBPoint
-		  else
-		    return new nBPoint
-		  end select
+		  'select case s.npts
+		  'case 2
+		  'return new BiBPoint
+		  'case 3
+		  'return new TriBPoint
+		  'else
+		  'return new nBPoint
+		  'end select
+		  
+		  
+		  
+		  
 		End Function
 	#tag EndMethod
 
@@ -4049,6 +4129,52 @@ Implements StringProvider
 		  return t
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function isaellipse() As boolean
+		  return false
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLReadConstructionInfoProl(Tmp as XMLElement)
+		  constructedby.data.append val(Tmp.GetAttribute("Index"))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub print(g as Graphics)
+		  dim i as integer
+		  dim cs as CurveShape
+		  
+		  if sk <> nil then
+		    sk.updatefillcolor(fillcolor.col,fill)
+		    if self isa polygon and not self isa lacet then
+		      for i = 0 to FigSkull(sk).Nbcotes
+		        cs = figskull(sk).getcote(i)
+		        cs.bordercolor = colcotes(i).col
+		      next
+		    else
+		      sk.updatebordercolor(bordercolor.col,border)
+		    end if
+		    sk.paint(g)
+		  elseif nsk <> nil then
+		    nsk.updatefillcolor(fillcolor.col,fill)
+		    nsk.updatebordercolor(bordercolor.col,border)
+		    nsk.paint(g)
+		  end if
+		  
+		  for i = 0 to labs.count-1
+		    Labs.element(i).paint(g)
+		  next
+		  
+		  for i = 0 to ubound(childs)
+		    childs(i).print(g)
+		  next
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 
@@ -4332,6 +4458,10 @@ Implements StringProvider
 
 	#tag Property, Flags = &h0
 		ifmac As InfoMac
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Validating As Boolean
 	#tag EndProperty
 
 

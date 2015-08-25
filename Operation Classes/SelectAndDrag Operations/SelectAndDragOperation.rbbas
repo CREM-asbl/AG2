@@ -206,6 +206,9 @@ Inherits SelectOperation
 		    q = Pt.bpt
 		  end if
 		  M = new SimilarityMatrix(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt, Firstattractedpoint.bpt,q)
+		  if Pol.std then
+		    M = new RotationMatrix(FirstAttractedPoint.bpt, M.angle)
+		  end if
 		  if M <> nil and M.v1 <> nil then
 		    figs.Bouger(M)
 		    RotationPoint=FirstAttractedPoint

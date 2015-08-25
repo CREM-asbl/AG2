@@ -331,11 +331,11 @@ Implements StringProvider
 		  elseif d isa lacet then
 		    a = d.points(k).bpt
 		    b = d.points((k+1) mod d.npts).bpt
-		    if lacet(d).curved(k)=0 then
+		    if lacet(d).coord.curved(k)=0 then
 		      return location(a,b)
 		    else
 		      Bib = new BiBPoint(d.points(k).bpt,self)
-		      Ag = new Angle(Bib, lacet(d).centre(k),d.ori)
+		      Ag = new Angle(Bib, lacet(d).coord.centres(k),d.ori)
 		      return (Ag.alpha/Lacet(d).GetArcAngle(k))
 		    end if
 		  end if
@@ -416,6 +416,13 @@ Implements StringProvider
 		Sub BasicPoint(EL as XMLElement)
 		  x = val(EL.GetAttribute("X"))
 		  y = val(EL.GetAttribute("Y"))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Set(p as basicpoint)
+		  x = p.x
+		  y = p.y
 		End Sub
 	#tag EndMethod
 

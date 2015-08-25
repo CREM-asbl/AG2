@@ -15,17 +15,19 @@ Inherits Dictionary
 		Sub load(lang as string)
 		  dim C as XMLDocument
 		  dim fi as FolderItem
-		  dim EL, EL1 as XMLElement
-		  dim EL2 as XMLElement
+		  dim EL, EL1, EL2 as XMLElement
 		  dim Key as variant
-		  dim  Txt as string
-		  dim i,j as integer
-		  dim List as XMLNodeList
+		  dim  Txt, Name as string
+		  dim i, j as integer
 		  
-		  fi=GetFolderItem(Lang+".dct")
-		  
-		  if not  fi.exists  then
-		    MsgBox  Dico.Value("FileMenu") +" "+Lang+".dct " +Dico.Value("Introuvable")
+		  Name = lang+".dct"
+		  fi = getfolderitem(Name)
+		  if not fi.exists then
+		    fi = app.DctFolder.Child(Name)
+		  end if
+		  if not fi.exists then
+		    MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
+		    return
 		  else
 		    C=new XMLDocument(fi)
 		    EL = C.DocumentElement

@@ -235,6 +235,12 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Rapport() As double
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

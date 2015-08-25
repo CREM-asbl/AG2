@@ -15,13 +15,25 @@ Inherits NSkull
 		  dim m as integer
 		  dim i as integer
 		  
-		  for i = 0 to n
+		  select case n
+		  case 0
 		    cv = new curveshape
+		    cv.Order = 0
 		    cs.append cv
-		    cv.Order = n                   // n = 0 ou 2
-		    m = ubound(cs)
-		    append cs(m)
-		  next
+		    append cv
+		  case 1
+		    for i = 0 to 2
+		      cv = new curveshape
+		      cv.Order = 2
+		      cs.append cv
+		      append cv
+		    next
+		  case 2
+		    cv = new curveshape
+		    cv.Order = 2
+		    cs.append cv
+		    append cv
+		  end select
 		  
 		End Sub
 	#tag EndMethod
@@ -81,10 +93,11 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
-		  g.drawobject self, ref.x, ref.y
 		  
-		  for i = 0 to ubound(cs)
-		    g.drawobject cs(i), ref.x, ref.y
+		  g.drawobject self,ref.x, ref.y
+		  
+		  for i = 0 to count-1
+		    g.drawobject item(i), ref.x, ref.y
 		  next
 		End Sub
 	#tag EndMethod

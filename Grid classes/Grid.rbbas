@@ -48,8 +48,8 @@ Protected Class Grid
 		  g.PenHeight=1
 		  g.PenWidth=1
 		  g.foreColor=mag
-		  
 		  print(g,1)
+		  g.forecolor = noir
 		End Sub
 	#tag EndMethod
 

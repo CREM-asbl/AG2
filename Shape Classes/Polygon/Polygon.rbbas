@@ -6,42 +6,20 @@ Inherits Shape
 		  dim i,j, n as Integer
 		  dim q, r as BasicPoint
 		  dim c as Boolean
-		  dim Bord as nBPoint
 		  
-		  
-		  if self isa cube then
-		    Bord = new nBPoint
-		    for i = 0 to 5
-		      Bord.append points(i).bpt
-		    next
-		    return Bord.pInShape(p)
-		  elseif npts = 2 then
+		  if npts = 2 then
 		    return p.between(points(0).bpt, points(1).bpt) and p.distance(points(0).bpt, points(1).bpt)  < wnd.mycanvas1.magneticdist
 		  else
-		    'return coord.pInShape(p)
-		    'end if
-		    
-		    
-		    j = npts-1
-		    c=false
-		    
-		    for  i = 0  to npts-1
-		      q = Points(i).bpt
-		      r = Points(j).bpt
-		      if ( ((q.y<=p.y) and (p.y <r.y)) or ((r.y <= p.y) and (p.y < q.y)) ) and (p.x < (r.x - q.x) * (p.y - q.y) / (r.y - q.y) + q.x) then
-		        c =not c
-		      end if
-		      j=i
-		    next
-		    return c
+		    return coord.pInShape(p)
 		  end if
+		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Polygon(ol as objectslist, d as integer, p as basicpoint)
-		  shape(ol,d)
+		  shape(ol,d,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
 		  
@@ -168,7 +146,7 @@ Inherits Shape
 		Sub Polygon(ol as ObjectsList, Temp as XMLElement)
 		  Shape(ol,Temp)
 		  redim prol(npts-1)
-		  redim curved(npts-1)
+		  redim coord.curved(npts-1)
 		  createskull(Points(0).bpt)
 		  Updateskull
 		End Sub
@@ -254,11 +232,11 @@ Inherits Shape
 		  npts = npts+1
 		  
 		  
-		  if fp<> tp and sp <> tp  then
-		    Points.Append tp
-		    setpoint(tp)
-		    npts = npts+1
-		  end if
+		  'if fp<> tp and sp <> tp  then
+		  Points.Append tp
+		  setpoint(tp)
+		  npts = npts+1
+		  'end if
 		  
 		  initcolcotes
 		  redim  prol(npts-1)
@@ -335,7 +313,12 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function Aire() As double
-		  return coord.aire
+		  dim a as double
+		  a =  coord.aire
+		  if std then
+		    a = abs(a)
+		  end if
+		  return a
 		End Function
 	#tag EndMethod
 
@@ -356,8 +339,8 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
-		  dim can as mycanvas
-		  dim a, b, e, m as basicPoint
+		  'dim can as mycanvas
+		  'dim a, b, e, m as basicPoint
 		  
 		  super.paint(g)
 		  
@@ -366,12 +349,12 @@ Inherits Shape
 		      PaintTipOnSide g, i
 		    next
 		    if constructedby <> nil and constructedby.oper = 9 and constructedby.data(4) = 1 then
-		      a = Points(0).bpt
-		      b = Points(1).bpt
-		      e = b-a
-		      e = e*0.05
-		      a = a-e
-		      b = b-e
+		      'a = Points(0).bpt
+		      'b = Points(1).bpt
+		      'e = b-a
+		      'e = e*0.05
+		      'a = a-e
+		      'b = b-e
 		      PaintTipOnSide g, 0
 		    end if
 		  end if
@@ -642,10 +625,10 @@ Inherits Shape
 		  delta = wnd.Mycanvas1.MagneticDist
 		  
 		  for i = 0  to npts-1
-		    if curved(i) = 0  then
+		    if coord.curved(i) = 0  then
 		      dr1 = getBiBside(i)
 		      for j = 0 to S.npts-1
-		        if s.curved(j) = 0 then
+		        if s.coord.curved(j) = 0 then
 		          dr2 = s.getBiBside(j)
 		          if dr1.sufficientlynear(dr2) then
 		            i0 = i
@@ -671,9 +654,9 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  Super.InitConstruction
-		  
 		  initcolcotes
-		  redim curved(npts-1)
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -728,10 +711,6 @@ Inherits Shape
 
 	#tag Property, Flags = &h0
 		prol() As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		curved(-1) As Integer
 	#tag EndProperty
 
 

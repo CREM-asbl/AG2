@@ -39,7 +39,7 @@ Inherits Circle
 		Sub FreeCircle(ol as ObjectsList, p as Point, PtInCircle as Point)
 		  dim i as integer
 		  
-		  Shape(ol,2)
+		  Shape(ol,2,2)
 		  Points.append p
 		  Points.append  PtInCircle
 		  fam = 5
@@ -126,7 +126,6 @@ Inherits Circle
 		Sub FreeCircle(Ol as ObjectsList, s as Freecircle, p as BasicPoint)
 		  Shape(ol,s)
 		  ncpts=2
-		  CreateExtreAndCtrlPoints
 		  createskull(p)
 		  nsk.updatesize(1)
 		  
@@ -168,14 +167,14 @@ Inherits Circle
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  dim i as integer
 		  
-		  
 		  if n = 0 then
 		    for i = 0 to 1
 		      Points(i).MoveTo(p)
 		    next
 		  else
 		    Points(1).moveto p
-		    CreateExtreAndCtrlPoints
+		    updatecoord
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    updateskull
 		  end if
 		  
@@ -185,7 +184,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  super.InitConstruction
-		  CreateExtreAndCtrlPoints
+		  coord.CreateExtreAndCtrlPoints(ori)
 		End Sub
 	#tag EndMethod
 
@@ -202,10 +201,43 @@ Inherits Circle
 		  nsk = new CircleSkull(p)
 		  if ubound(points) > 0 then
 		    computeradius
-		    CreateExtreAndCtrlPoints
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    updateskull
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ToEPS(tos as TextOutputStream)
+		  dim tsf as transformation
+		  dim M as Matrix
+		  dim s as Circle
+		  dim p2, u as BasicPoint
+		  dim r as double
+		  
+		  
+		  if not isaellipse then
+		    super.ToEps(tos)
+		  else
+		    s = circle(constructedby.shape)
+		    r = s.getradius
+		    u = s.coord.tab(1) - s.coord.tab(0)
+		    u = u.vecnorperp
+		    p2 = s.coord.tab(0) + u*r
+		    M = transformation(constructedby.data(0)).M
+		    p2 = M*p2
+		    
+		    tos.writeline( "[  " + points(0).etiq + " "  + points(1).etiq + " [ " +  str(p2.x) + " " + str(p2.y) +"]  ] ellipse")
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function isaellipse() As Boolean
+		  return  (GetType = Dico.value("Ellipse"))
+		End Function
 	#tag EndMethod
 
 

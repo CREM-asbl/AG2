@@ -76,7 +76,7 @@ Inherits MultipleSelectOperation
 		  select case CurrentItemtoSet
 		  case 1
 		    ntsf = ListTsf.count
-		    if ntsf > 0 and not ListTsf.element(itsf).M.equal(MId)  then
+		    if ntsf > 0 then 'and not ListTsf.element(itsf).M.equal(MId)  then
 		      tsf = ListTsf.element(itsf)
 		      CurrentContent.TheTransfos.HideAll
 		      tsf.Hidden = false
@@ -185,16 +185,25 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim i,j, n as integer
 		  
+		  CurrentHighlightedShape = nil
 		  s  = super.GetShape(p)
-		  
+		  if s = nil then
+		    return nil
+		  end if
 		  select case CurrentItemToSet
 		  case 1
 		    return GetTsf(p)
 		  case 2
-		    for i = 0 to tsf.constructedshapes.count-1
-		      if tsf.constructedshapes.element(i).constructedby.shape = s  then
-		        return nil
+		    for i =  visible.count-1 downto 0
+		      s = visible.element(i)
+		      if s <> nil and  s.isaellipse then
+		        visible.removeshape s
 		      end if
+		      for j = 0 to tsf.constructedshapes.count-1
+		        if tsf.constructedshapes.element(j).constructedby.shape = s  then
+		          visible.removeshape s
+		        end if
+		      next
 		    next
 		    s = visible.element(iobj)
 		    CurrentHighlightedShape = s
@@ -202,7 +211,7 @@ Inherits MultipleSelectOperation
 		  end select
 		  
 		  
-		  return nil
+		  
 		  
 		  
 		End Function
@@ -250,16 +259,16 @@ Inherits MultipleSelectOperation
 		    tsf.setconstructioninfos(tempshape.element(i),copies.element(i))
 		  next
 		  
-		  'Exception err
-		  'dim d As Debug
-		  'd = new Debug
-		  'd.setMethod("AppliquerTsf","setconstructioninfos")
-		  'd.setVariable("i",i)
-		  'd.setVariable("tempshape",tempshape)
-		  'd.setvariable("copies",copies)
-		  'err.message = err.message+d.getString
-		  '
-		  'Raise err
+		Exception err
+		  dim d As Debug
+		  d = new Debug
+		  d.setMethod("AppliquerTsf","setconstructioninfos")
+		  d.setVariable("i",i)
+		  d.setVariable("tempshape",tempshape)
+		  d.setvariable("copies",copies)
+		  err.message = err.message+d.getString
+		  
+		  Raise err
 		End Sub
 	#tag EndMethod
 
@@ -351,7 +360,6 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  
 		  select case currentitemtoset
 		  case 1
 		    MouseMoveTsf(p)
@@ -407,13 +415,13 @@ Inherits MultipleSelectOperation
 		  AppliquerTsf
 		  
 		  n = val(EL1.GetAttribute("SuppTsf"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  supp = objects.Getshape(rid)
 		  num = val(EL1.GetAttribute("Nr"))
 		  tsf = supp.tsfi.element(num)
 		  
 		  n = val(EL1.GetAttribute("Id"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  s1 = objects.Getshape(rid)
 		  objects.unselectall
 		  objects.selectobject(s1)
@@ -432,10 +440,10 @@ Inherits MultipleSelectOperation
 		  
 		  select case tsf.type
 		  case 7, 71, 72
-		    if homothetyMatrix(tsf.M).rapport <= 0 then
+		    if tsf.M.rapport <= 0 then
 		      return false
 		    end if
-		  case 9
+		  case 9  'Etirement de rapport négatif
 		    s = tsf.supp
 		    Bib1 = tsf.supp.getBibside(0)
 		    Bib2 = tsf.supp.getBiBSide(2)

@@ -15,6 +15,7 @@ Inherits ShapeConstruction
 		Sub CreateShape()
 		  dim ol as Objectslist
 		  dim p as BasicPoint
+		  dim n as integer
 		  
 		  
 		  if famille <> 1 then
@@ -25,23 +26,23 @@ Inherits ShapeConstruction
 		  ol = CurrentContent.TheObjects
 		  select case forme
 		  case 1
-		    currentshape = new Droite(ol, p,2)  // segment parallele
+		    n = 2 'currentshape = new Droite(ol, p,2)  // segment parallele
 		    op = 1
 		  case 2
-		    currentshape = new Droite(ol, p,2)  //segment perpendiculaire
+		    n = 2 'currentshape = new Droite(ol, p,2)  //segment perpendiculaire
 		    op = 2
 		  case 4
-		    currentshape = new Droite(ol,p,0) // droite parallele
+		    n = 0 'currentshape = new Droite(ol,p,0) // droite parallele
 		    op = 1
 		  case 5
-		    currentshape = new Droite(ol,p,0) // droite perpendiculaire
+		    n = 0 'currentshape = new Droite(ol,p,0) // droite perpendiculaire
 		    op = 2
 		  end select
+		  currentshape = new Droite(ol,p,n)
 		  currentshape.fam = 1
 		  currentshape.forme = forme
 		  currentshape.auto = 6
 		  currentshape.liberte = 3
-		  CurrentShape.IsInConstruction = true
 		  Currentshape.InitConstruction
 		  CurrentShape.IndexConstructedPoint = 0
 		  wnd.setcross
@@ -176,6 +177,7 @@ Inherits ShapeConstruction
 		    end if
 		    currentshape.setconstructedby(Refe,op)
 		    currentshape.constructedby.data.append index(iobj)
+		    BiB1=Refe.coord.GetBiB(index(iobj))
 		  case 2
 		    curshape = currentshape.points(0)
 		    AdjustMagnetism(curshape)
@@ -207,6 +209,7 @@ Inherits ShapeConstruction
 		    curshape.mobility
 		    ReinitAttraction
 		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
+		    
 		  end select
 		  
 		  return true
@@ -237,9 +240,10 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim tsf as transformation
+		  dim u, v as BasicPoint
 		  
 		  currentshape.setconstructedby(Refe,op)
-		  currentshape.constructedby.data.append index(iobj)
+		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0
 		  tsf = refe.gettsf(0,index(iobj))
 		  if tsf = nil then
 		    tsf = new Transformation(Refe,0,index(iobj), 0)
@@ -247,9 +251,24 @@ Inherits ShapeConstruction
 		  currentshape.constructedby.data.append tsf
 		  tsf.constructedshapes.addshape currentshape
 		  refe.tsfi.addtsf tsf
+		  BiB2 = droite(currentshape).coord.GetBiB(0)
+		  u = BiB1.second-BiB1.first
+		  v = BiB2.second-BiB2.first
+		  if op = 1 then
+		    ori = sign(u*v)
+		  else
+		    ori = sign(u.vect(v))
+		  end if
+		  currentshape.constructedby.data.append ori  // ajouté le 15 juin 2014 (jour de la Trinité) pour les macros
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
 		  
+		  'Infos de construction d'une paraperp:
+		  //constructedby.shape: droite source
+		  //constructedby.oper: 1 (dr //)  ou 2 (dr. perp)
+		  //data(0): nr de côté ou 0
+		  //data(1): tsf
+		  //data(2): ori de l'image par rapport à la source
 		End Sub
 	#tag EndMethod
 
@@ -259,21 +278,24 @@ Inherits ShapeConstruction
 		  dim pt as point
 		  dim EL as XMLElement
 		  dim sh as shape
-		  dim BiB1 as BiBPoint
 		  
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ParaperpConstruction (fa,fo)
 		  n = val(EL1.GetAttribute("Id"))
-		  MExe.GetRealId(n, rid)
+		  ori = val(EL1.GetAttribute("Ori"))
+		  rid = MExe.GetRealId(n)
 		  Refe= objects.GetShape(rid)
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
-		  currentshape.constructedby.data.append val(EL1.GetAttribute("Index"))
+		  side = Mexe.GetRealSide(n)
+		  currentshape.constructedby.data.append side
+		  currentshape.constructedby.data.append nil
+		  currentshape.constructedby.data.append ori
 		  
 		  'Positionnement aisé du premier point
 		  EL =XMLElement(EL0.Child(0))
 		  n = val(XMLElement(EL.Child(0)).GetAttribute("Id"))
-		  MExe.GetRealId(n, rid)
+		  rid = MExe.GetRealId(n)
 		  pt = point(objects.GetShape(rid))
 		  currentshape.substitutepoint(pt,currentshape.points(0))
 		  
@@ -287,11 +309,11 @@ Inherits ShapeConstruction
 		  if fo <3 then
 		    EL = XMLElement(EL.Child(1))
 		    n = val(EL.GetAttribute("Id"))
-		    MExe.GetRealId(n, rid)
+		    rid = MExe.GetRealId(n)
 		    pt = point(objects.GetShape(rid))
 		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
 		    'voir remarque correspondante dans  macro.paraperp
-		    BiB1 = new BiBPoint(currentshape.coord)
+		    BiB1 =  BiBPoint(currentshape.coord)
 		    if val(EL.GetAttribute("NrForm"))  <> 1 then
 		      pt.moveto pt.bpt.projection(BiB1)
 		      
@@ -301,7 +323,7 @@ Inherits ShapeConstruction
 		      pt.surseg = (val(EL.GetAttribute("Surseg")) = 1)
 		      EL = XMLElement(EL.Child(0))
 		      n = val(EL.GetAttribute("Id")) 'macId du support de pt
-		      MExe.GetRealId(n, rid)
+		      rid = MExe.GetRealId(n)
 		      sh = objects.Getshape(rid)
 		      num = val(EL.GetAttribute("NrCote"))
 		      pt.moveto BiB1.ComputeDroiteFirstIntersect(sh,num,pt.bpt)
@@ -347,6 +369,18 @@ Inherits ShapeConstruction
 
 	#tag Property, Flags = &h0
 		constructed As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		BiB1 As BiBPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		BiB2 As BiBPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ori As Integer
 	#tag EndProperty
 
 
@@ -491,6 +525,12 @@ Inherits ShapeConstruction
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ori"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

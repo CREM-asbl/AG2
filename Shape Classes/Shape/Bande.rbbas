@@ -289,13 +289,15 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
+		  dim BiB as BiBPoint
 		  
 		  if i = 0 then
-		    return new BiBPoint(coord.tab(0), coord.tab(1))
+		    BiB = new BiBPoint(coord.tab(0), coord.tab(1))
 		  else
-		    return new BiBPoint(coord.tab(2),Point3)
+		    BiB = new BiBPoint(coord.tab(2),Point3)
 		  end if
-		  
+		  BiB.nextre = 0
+		  return Bib
 		  
 		End Function
 	#tag EndMethod

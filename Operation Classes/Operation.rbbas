@@ -62,7 +62,9 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  
+		  if not self isa decouper then
+		    currentshape = nil
+		  end if
 		  if not (self isa readhisto) then
 		    if oldp <> nil and p.distance(oldp) > wnd.mycanvas1.magneticdist  then
 		      oldp = p
@@ -102,7 +104,7 @@ Protected Class Operation
 		  'todo : à placer dans canvas ?
 		  if Config.ShowHelp then
 		    g.forecolor = Config.bordercolor.col
-		    g.DrawString  lowercase(s1+info) ,Mcanx,Mcany
+		    g.DrawString  lowercase(s1+info) ,Mcanx+8,Mcany+3
 		  end if
 		End Sub
 	#tag EndMethod
@@ -292,7 +294,7 @@ Protected Class Operation
 		    end if
 		  end if
 		  
-		  if NextCurrentAttractingShape isa point then
+		  if CurrentAttractingShape isa point or NextCurrentAttractingShape isa point then
 		    NextCurrentAttractingShape = nil
 		  end if
 		  if NextCurrentAttractingShape<>nil   then
@@ -617,6 +619,8 @@ Protected Class Operation
 	#tag EndNote
 
 	#tag Note, Name = Numeros des operations
+		: Costruction d'un centre de gravité:
+		28: Prolonger
 		
 		Variable: OpId (Id d'opération)
 		Chaque classe d'opérations a un code.

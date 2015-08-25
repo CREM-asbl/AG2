@@ -80,8 +80,8 @@ Implements StringProvider
 		      s2 = Constructedshapes.element(i)
 		      s1 = s2.constructedby.shape
 		      Appliquer(s1,s2)
-		      if s1 isa circle  then
-		        AppliquerExtreCtrl(circle(s1),circle(s2))
+		      if s1 isa circle  or s1 isa lacet then
+		        AppliquerExtreCtrl(s1,s2)
 		        s2.updateskull
 		      end if
 		    next
@@ -121,14 +121,13 @@ Implements StringProvider
 		      s2.drapori = true
 		    end if
 		    if s2 isa Lacet then
-		      Lacet(s2).MoveExtreCtrl(M)
-		      s2.endmove
+		      Lacet(s2).coord.MoveExtreCtrl(M)
 		    end if
 		  else
 		    Point(s2).moveto M*Point(s1).bpt
 		    s2.Modified = true
 		  end if
-		  
+		  s2.endmove
 		  
 		  
 		End Sub
@@ -196,29 +195,27 @@ Implements StringProvider
 		    elseif supp isa polygon or supp isa secteur then
 		      nbp = supp.GetBiBSide(index)
 		      M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
-		    elseif supp isa secteur then
-		      M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
+		      'elseif supp isa secteur then
+		      'M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
 		    end if
-		  case 7, 72
-		    M = supp.coord.SimilarityMatrix    'new HomothetyMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		  case 7, 72 // Homothéties
+		    M = supp.coord.HomothetyMatrix
 		  case 71
 		    u = supp.points(0).bpt
 		    v = supp.points(1).bpt
 		    w = supp.points(2).bpt
 		    k = w.location(u,v)
 		    M = new HomothetyMatrix(u, k)
-		  case 8
-		    M = supp.coord.SimilarityMatrix                  '(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
+		  case 8 //Similitudes
+		    M = supp.coord.SimilarityMatrix
 		  case 81
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(0).bpt, supp.points(2).bpt)
 		  case 82
 		    M = new SimilarityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(1).bpt, supp.points(2).bpt)
-		  case 9  //Etirements
+		  case 9, 11  //Etirements - Cisaillements
 		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  case 10 //Deplacement
 		    M = new IsometryMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(2).bpt)
-		  case 11 //Cisaillement  
-		    M = new AffinityMatrix(supp.points(0).bpt,supp.points(1).bpt,supp.points(3).bpt, supp.points(0).bpt,supp.points(1).bpt,supp.points(2).bpt)
 		  end select
 		  
 		  if M = nil then
@@ -245,10 +242,10 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub Transformation(s as shape, n as integer, i as integer, ori as integer)
 		  Transformation
-		  supp = s
-		  type = n
-		  index = i
-		  self.ori = ori
+		  supp = s                       'support de la tsf
+		  type = n                        'type de transformation (translation, rotation etc) ATTENTION: type = 0 pour les paraperp
+		  index = i                        'numéro éventuel du côté
+		  self.ori = ori                  'orientation du support
 		  if type <> 0 then
 		    computematrix
 		    oldM = M
@@ -258,7 +255,7 @@ Implements StringProvider
 		    T = new Tip
 		  end if
 		  
-		  setfpsp(s)
+		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddTsf(self)
 		End Sub
 	#tag EndMethod
@@ -350,10 +347,16 @@ Implements StringProvider
 		      j = index
 		      tos.writeline ( "[ "+ supp.Points(i).etiq+ supp.Points(j).etiq+  "]  droite")
 		    end if
-		  case 7, 72, 8
+		  case 7, 72, 8, 9, 10, 11
 		    tos.writeline("[" + supp.points(0).etiq + " " + supp.points(1).etiq + " " + supp.points(2).etiq + " " + supp.points(3).etiq + "] polygone ")
-		    tos.writeline ( "[ "+supp.Points(0).etiq+ " 1 "+supp.Points(3).etiq+ "]  fleche" )
-		    tos.writeline ( "[ "+supp.Points(1).etiq+ " 1 "+supp.Points(2).etiq+ "]  fleche" )
+		    if type <> 9 and type <>11 then
+		      tos.writeline ( "[ "+supp.Points(0).etiq+ " 1 "+supp.Points(3).etiq+ "]  fleche" )
+		    else
+		      tos.writeline ( "[ "+supp.Points(3).etiq+ " 1 "+supp.Points(2).etiq+ "]  fleche" )
+		    end if
+		    if type <9 then
+		      tos.writeline ( "[ "+supp.Points(1).etiq+ " 1 "+supp.Points(2).etiq+ "]  fleche" )
+		    end if
 		  case 71,81
 		    supp.points(0).toeps(tos)
 		    tos.writeline ( "[ "+supp.Points(1).etiq+ " 1  "+supp.Points(2).etiq+ "]  fleche" )
@@ -405,7 +408,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub updateconstructioninfos(s as shape)
-		  
+		  'fixer les infos relatives aux constructions opérées par la tsf
 		  constructedshapes.AddShape s
 		  updatefigconstructioninfos(s)
 		  
@@ -527,7 +530,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub setconstructioninfos1(s1 as shape, s2 as shape)
-		  dim j as integer
+		  dim j as integer  'fixer les infos de construction de l'image
 		  
 		  s2.setconstructedby s1,6
 		  s2.constructedby.data.append self
@@ -546,8 +549,7 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub setconstructioninfos2(s1 as shape, s2 as shape)
-		  
-		  if s2.fig = nil or s1.fig = nil then
+		  if s2.fig = nil or s1.fig = nil then  'fixer les infos de construcion de la figure de l'image
 		    return
 		  end if
 		  
@@ -635,7 +637,7 @@ Implements StringProvider
 		    case  71, 81
 		      a = can.transform(supp.points(1).bpt)
 		      b = can.transform(supp.points(2).bpt)
-		    case 7, 8, 72,10
+		    case 7, 8, 72
 		      a = can.transform(supp.points(0).bpt)
 		      b = can.transform(supp.points(3).bpt)
 		      T.updatetip(a,b,col)
@@ -652,6 +654,9 @@ Implements StringProvider
 		    case 9, 11
 		      a = can.transform(supp.points(3).bpt)
 		      b = can.transform(supp.points(2).bpt)
+		    case 10
+		      a = can.transform(supp.points(0).bpt)
+		      b = can.transform(supp.points(3).bpt)
 		    end select
 		    T.updatetip(a,b,col)
 		    g.DrawObject T, b.x, b.y
@@ -686,15 +691,22 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AppliquerExtreCtrl(s1 as Circle, s2 as Circle)
+		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 		  
-		  for i = 0 to ubound(s2.extre)
-		    s2.extre(i) = M*s1.extre(i)
+		  for i = 0 to ubound(s2.coord.extre)
+		    s2.coord.extre(i) = M*s1.coord.extre(i)
 		  next
-		  for i = 0 to ubound(s2.ctrl)
-		    s2.ctrl(i) = M*s1.ctrl(i)
+		  for i = 0 to ubound(s2.coord.ctrl)
+		    s2.coord.ctrl(i) = M*s1.coord.ctrl(i)
 		  next
+		  if s1 isa lacet then
+		    for i = 0 to ubound(s1.coord.centres)
+		      if s1.coord.centres(i) <> nil then
+		        s2.coord.centres(i) = M*s1.coord.centres(i)
+		      end if
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 

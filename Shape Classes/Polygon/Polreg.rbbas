@@ -5,18 +5,14 @@ Inherits Polygon
 		Sub Polreg(ol as objectslist, d as integer, p As BasicPoint)
 		  dim i as integer
 		  
-		  Polygon(ol,2,p)
-		  Npts = d
+		  shape(ol, 2,d)
+		  
+		  Points.append new Point(ol, p)
+		  setPoint(Points(0))
 		  redim prol(npts-1)
 		  Initcolcotes
 		  liberte = 4
-		  
 		  createskull(p)
-		  for i=0 to npts-1
-		    figskull(sk).getcote(i).order = 0
-		    figskull(sk).getcote(i).border = 0
-		  next
-		  
 		  ori = 1
 		End Sub
 	#tag EndMethod
@@ -114,8 +110,8 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub Polreg(ol as objectslist, n as integer)
 		  
-		  Shape(ol,2)
-		  Npts = n
+		  Shape(ol,2,n)
+		  
 		  redim prol(npts-1)
 		  Initcolcotes
 		End Sub

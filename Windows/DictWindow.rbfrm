@@ -5,7 +5,7 @@ Begin Window DictWindow
    BalloonHelp     =   ""
    CloseButton     =   "True"
    Composite       =   "True"
-   Frame           =   1
+   Frame           =   3
    FullScreen      =   "False"
    HasBackColor    =   "True"
    Height          =   607
@@ -109,71 +109,32 @@ End
 		  Listbox1.heading(0) = Dico.value("Code")
 		  ndict = 0
 		  
+		  ChargerLangRef(config.langue)
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndEvent
 
 
 #tag MenuHandler
 		Function ChargerDict() As Boolean Handles ChargerDict.Action
-			dim Doc as XMLDocument
-			dim EL, EL1 as XMLNode
-			dim EL2 as XMLElement
-			dim Key as variant
-			dim  Txt as string
-			dim i,j,k as integer
 			
-			Dim DctType as New FileType
-			DctType.Name = "dictionnaire"
-			DctType.MacType = "DCT"
-			DctType.Extensions = "dct"
+			dim lanw As LanguageWindow
+			dim n as integer
 			
-			dim f as folderitem
-			Dim dlg as OpenDialog
+			lanw = new LanguageWindow(self)
+			lanw.showmodal
 			
-			
-			dlg=New OpenDialog
-			dlg.InitialDirectory=app.appfolder
-			dlg.Title= ""
-			dlg.Filter=DctType
-			f=dlg.ShowModal()
-			
-			If f = Nil then
-			return true
-			end if
-			ListBox1.ColumnCount = ListBox1.ColumnCount + 1
+			if language.indexof(lang)= -1 then  //on ne recharge pas un dictionnaire déjà chargé
+			'Dict.Append new Dictionnaire
 			ndict = ndict+1
-			Dict.Append new Dictionnaire
-			
-			Doc=new XMLDocument(f)
-			EL = Doc.DocumentElement
-			Language.Append  EL.Name
+			Language.append Lang
+			ListBox1.ColumnCount = ListBox1.ColumnCount + 1
 			Listbox1.heading(ndict) = Language(ndict-1)
-			
-			j=0
-			EL1 = EL.FirstChild
-			for i = 0 to  EL.ChildCount -1
-			if ndict = 1 then
-			listbox1.addfolder(EL1.name)
-			ListBox1.cellalignment(j,0)=ListBox.AlignCenter
+			ChargerLang(Lang)
 			end if
-			j = j+1
-			EL2 = XMLElement(EL1.FirstChild)
-			for k = 0 to EL1.Childcount -1
-			Key = EL2.Name
-			Txt = EL2.GetAttribute("Name")
-			if txt = "---" then
-			txt = ""
-			end if
-			if ndict = 1 then
-			listbox1.addrow Key
-			end if
-			listbox1.cell(j,ndict) = Txt
-			j = j+1
-			EL2= XMLElement(EL2.NextSibling)
-			next
-			EL1 = XMLElement(EL1.NextSibling)
-			next
-			refresh
 			return false
 		End Function
 #tag EndMenuHandler
@@ -201,35 +162,23 @@ End
 #tag EndMenuHandler
 
 #tag MenuHandler
-		Function LignesInserer() As Boolean Handles LignesInserer.Action
-			dim r as integer
-			
-			r = GetSelect
-			if r <> -1 then
-			ListBox1.Insertrow  (r+1, " ")
-			ListBox1.Editcell(r+1,0)
-			end if
-		End Function
-#tag EndMenuHandler
-
-#tag MenuHandler
-		Function LignesSupprimer() As Boolean Handles LignesSupprimer.Action
-			dim r as integer
-			
-			r = GetSelect
-			if r <> -1 then
-			ListBox1.RemoveRow  (r)
-			end if
-		End Function
-#tag EndMenuHandler
-
-#tag MenuHandler
 		Function SauverDict() As Boolean Handles SauverDict.Action
 			dim Doc as new XMLDocument
 			dim Langue, EL, EL1 as XMLnode
 			dim fi as folderitem
 			dim tos as TextOutputStream
 			dim i, n as integer
+			dim msg as MessageDialog
+			dim but as MessageDialogButton
+			
+			msg = new MessageDialog
+			msg.Message = Dico.Value("ClickInTheColumnToSave")
+			msg.AlternateActionButton.visible = true
+			msg.AlternateActionButton.Caption = Dico.Value("Cancel")
+			but = msg.ShowModal
+			if but <> msg.ActionButton then
+			return false
+			end if
 			
 			Dim DctType as New FileType
 			DctType.Name = "dictionnaire"
@@ -261,7 +210,11 @@ End
 			end if
 			next
 			
-			dlg.InitialDirectory=app.appfolder
+			if Language(colonne-1) = "Francais" or Language(colonne-1) = "English" then
+			dlg.InitialDirectory = app.appfolder
+			else
+			dlg.InitialDirectory=app.Dctfolder
+			end if
 			dlg.promptText=""
 			dlg.SuggestedFileName=Language(colonne-1)+".dct"
 			dlg.Title= ""
@@ -272,8 +225,6 @@ End
 			tos=fi.CreateTextFile
 			tos.write(Doc.ToString)
 			tos.close
-			n = InStr(fi.Name,".")
-			Dico.load(Left(fi.name,n-1))
 			return true
 			Else
 			return false
@@ -284,7 +235,7 @@ End
 
 
 	#tag Method, Flags = &h1
-		Protected Function GetSelect() As integer
+		Protected Function oldGetSelect() As integer
 		  dim i, n as integer
 		  
 		  if ListBox1.selcount = 1 then
@@ -324,6 +275,137 @@ End
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ChargerLangRef(lang as string)
+		  dim Doc as XMLDocument
+		  dim EL, EL1 as XMLNode
+		  dim EL2 as XMLElement
+		  dim Key as variant
+		  dim  Txt as string
+		  dim i,j,k as integer
+		  dim f as folderitem
+		  
+		  f = GetFolderItem(Lang+".dct")
+		  ListBox1.ColumnCount = ListBox1.ColumnCount + 1
+		  ndict = ndict+1
+		  'Dict.Append new Dictionnaire
+		  Doc=new XMLDocument(f)
+		  EL = Doc.DocumentElement
+		  Language.Append  EL.Name
+		  Listbox1.heading(ndict) = Language(ndict-1)
+		  
+		  j=0
+		  EL1 = EL.FirstChild
+		  for i = 0 to  EL.ChildCount -1
+		    if ndict = 1 then
+		      listbox1.addfolder(EL1.name)
+		      ListBox1.cellalignment(j,0)=ListBox.AlignCenter
+		    end if
+		    j = j+1
+		    EL2 = XMLElement(EL1.FirstChild)
+		    for k = 0 to EL1.Childcount -1
+		      Key = EL2.Name
+		      Txt = EL2.GetAttribute("Name")
+		      if txt = "---" then
+		        txt = ""
+		      end if
+		      if ndict = 1 then
+		        listbox1.addrow Key
+		      end if
+		      listbox1.cell(j,ndict) = Txt
+		      j = j+1
+		      EL2= XMLElement(EL2.NextSibling)
+		    next
+		    EL1 = XMLElement(EL1.NextSibling)
+		  next
+		  refresh
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerLang(lang as string)
+		  dim Doc as XMLDocument
+		  dim List as XmlNodeList
+		  dim EL, EL1 as XMLNode
+		  dim EL2 as XMLElement
+		  dim Key as variant
+		  dim  Txt as string
+		  dim i,j,k as integer
+		  dim f as folderitem
+		  
+		  f = TrouverDico(lang)
+		  
+		  if not f.exists then
+		    MsgBox Dico.Value("FileMenu") + " " + lang + ".dct" + " " + Dico.Value("Introuvable")
+		    return
+		  end if
+		  
+		  Doc=new XMLDocument(f)
+		  EL = Doc.DocumentElement
+		  j = 0
+		  for i = 0 to  EL.ChildCount -1
+		    j = j+1
+		    EL1 = EL.Child(i)
+		    while j < Listbox1.ListCount and  listbox1.cell(j,1) <> "" and listbox1.cell(j,1) <> " "
+		      Key = listbox1.cell(j,0)
+		      List = EL1.XQL(Key)
+		      if List.length > 0 then
+		        EL2 = XMLElement(List.Item(0))
+		        Txt = EL2.GetAttribute("Name")
+		        if txt = "---" then
+		          txt = ""
+		        end if
+		        listbox1.cell(j,ndict) = Txt
+		      end if
+		      j = j+1
+		    wend
+		    
+		  next
+		  'j=0
+		  'EL1 = EL.FirstChild
+		  '
+		  ''if ndict = 1 then
+		  ''listbox1.addfolder(EL1.name)
+		  ''ListBox1.cellalignment(j,0)=ListBox.AlignCenter
+		  ''end if
+		  'j = j+1
+		  'EL2 = XMLElement(EL1.FirstChild)
+		  'for k = 0 to EL1.Childcount -1
+		  'Key = EL2.Name
+		  'Txt = EL2.GetAttribute("Name")
+		  'if txt = "---" then
+		  'txt = ""
+		  'end if
+		  'if ndict = 1 then
+		  'listbox1.addrow Key
+		  'end if
+		  'listbox1.cell(j,ndict) = Txt
+		  'j = j+1
+		  'EL2= XMLElement(EL2.NextSibling)
+		  'next
+		  'EL1 = XMLElement(EL1.NextSibling)
+		  'next
+		  refresh
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TrouverDico(lang as string) As folderitem
+		  dim Name as string
+		  dim f as folderitem
+		  
+		  Name = lang+".dct"
+		  f = getfolderitem(Name)
+		  if not f.exists then
+		    f = app.DctFolder.Child(Name)
+		  end if
+		  return f
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -347,8 +429,8 @@ End
 	#tag EndNote
 
 
-	#tag Property, Flags = &h1
-		Protected Language() As string
+	#tag Property, Flags = &h0
+		Language() As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -359,8 +441,8 @@ End
 		Protected Colonne As integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected Dict(-1) As Dictionnaire
+	#tag Property, Flags = &h0
+		lang As string
 	#tag EndProperty
 
 

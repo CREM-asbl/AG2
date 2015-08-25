@@ -364,13 +364,13 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  if   abs(arcangle)  >  0.2 then
+		  
+		  if not drapori then
+		    ori = coord.orientation 
+		  end if
+		  if   abs(arcangle)  >  0.2 and ori <> 0 then
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
-		  if not drapori then
-		    ori = points(0).bpt.orientation(points(1).bpt,points(2).bpt)
-		  end if
-		  
 		  arcangle = computeangle(points(2).bpt)
 		  
 		  'arcangle a toujours meme signe que l'orientation
@@ -455,6 +455,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  dim j as integer
+		  dim Bib as BiBPoint
 		  
 		  if i =0 then
 		    j = 1
@@ -463,10 +464,18 @@ Inherits Shape
 		    j = 2
 		  end if
 		  
-		  return new BiBPoint(coord.tab(i), coord.tab(j) )
-		  
+		  BiB = new BiBPoint(coord.tab(i), coord.tab(j) )
+		  BiB.nextre = 1
+		  return BiB
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EndConstruction()
+		  drapori = true
+		  super.endconstruction
+		End Sub
 	#tag EndMethod
 
 

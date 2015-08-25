@@ -159,11 +159,11 @@ Inherits MultipleSelectOperation
 		      elseif s  isa Circle then
 		        Firstpoint = s.Points(1)
 		        secondpoint = firstpoint
-		      elseif s isa cube then
+		      elseif s isa cube and side <> -1 then
 		        d = cube(s).getside(side)
 		        firstpoint = d.points(0)
 		        secondpoint= d.points(1)
-		      elseif s isa polygon then
+		      elseif s isa polygon and side <> -1 then
 		        firstpoint = s.points(side)
 		        secondpoint = s.points((side +1) mod s.npts)
 		      end if
@@ -200,7 +200,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  if s isa lacet then
-		    if lacet(s).curved(side) = 0 then
+		    if lacet(s).coord.curved(side) = 0 then
 		      Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
 		    else
 		      Trib = new TribPoint(lacet(s).getcentre(side),firstpoint.bpt,secondpoint.bpt)
@@ -213,7 +213,7 @@ Inherits MultipleSelectOperation
 		  
 		  for i= 1 to Numberofdivisions-1
 		    if s isa lacet then
-		      if lacet(s).curved(side) = 0 then
+		      if lacet(s).coord.curved(side) = 0 then
 		        p = Bib.subdiv(NumberofDivisions,i)
 		      else
 		        p = Trib.subdiv(s.ori, NumberofDivisions,i)
@@ -327,8 +327,9 @@ Inherits MultipleSelectOperation
 		    El.SetAttribute(Dico.Value("Type"), GetName)
 		    EL.SetAttribute("OpId", str(opId))
 		    EL1.AppendChild ToMac(i, OpList,EL)
+		    Currentcontent.TotalOperation  = CurrentContent.TotalOperation +1
 		  next
-		  
+		  Currentcontent.TotalOperation  = CurrentContent.TotalOperation - 1
 		  
 		End Sub
 	#tag EndMethod
@@ -339,15 +340,15 @@ Inherits MultipleSelectOperation
 		  
 		  Divide
 		  n = val(EL1.GetAttribute("Id"))
-		  Mexe.GetRealId( n, rid)
+		  rid = Mexe.GetRealId( n)
 		  shapetodivide = objects.getshape(rid)
 		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
 		  divp = val(EL1.GetAttribute("DivP"))
 		  Id0 = val(EL1.GetAttribute("Id0"))
-		  MExe.GetRealId(Id0, rid)
+		  rid = MExe.GetRealId(Id0)
 		  firstpoint = point(objects.getshape(rid))
 		  Id1 = val(EL1.GetAttribute("Id1"))
-		  MExe.GetRealId(Id1, rid)
+		  rid = MExe.GetRealId(Id1)
 		  secondpoint = point(objects.getshape(rid))
 		  DoOperation
 		  

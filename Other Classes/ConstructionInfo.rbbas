@@ -30,7 +30,7 @@ Protected Class ConstructionInfo
 		
 		Data
 		0: aucun
-		1: 1: index de côté de forme; 2: transformation (mat = MId) (type = 0)
+		1: 1: index de côté de forme; 2: transformation (mat = MId) (type = 0) 3. Ori (ajouté pour les macros) 
 		2: idem précédent
 		3: Matrice de transformation
 		4: 1: firstpoint, 2: secondpoint (les deux points limitant l'intervalle à diviser) 3: dénominateur de la division (n), 4: numéro du point de division  (de 1 à n-1)

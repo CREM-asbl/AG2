@@ -6,6 +6,7 @@ Inherits SelectAndDragOperation
 		  SelectAndDragOperation()
 		  OpId = 33
 		  finished = true
+		  loc = -1
 		  
 		  
 		  
@@ -68,6 +69,10 @@ Inherits SelectAndDragOperation
 		  dim oldcol as color
 		  dim i as integer
 		  
+		  if currentshape = nil then
+		    return
+		  end if
+		  
 		  super.Paint(g)
 		  
 		  if  currentshape isa repere then
@@ -80,8 +85,11 @@ Inherits SelectAndDragOperation
 		    next
 		    g.forecolor = oldcol
 		    display =   click + pour + putatitle
+		    Lab1 = Currentshape.Labs.GetLab(wnd.Mycanvas1.MouseUser)
+		    
 		  elseif currentshape <> nil then
 		    display =   click+ pour + putalabel
+		    Lab1 =  Currentshape.Labs.GetLab(loc)
 		  end if
 		  
 		  if Lw = nil and  currenthighlightedshape <> nil then
@@ -103,22 +111,15 @@ Inherits SelectAndDragOperation
 		    else
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)
-		      if currentshape isa FreeCircle and loc <> -1 then
-		        display = display +" "+  onthecircle
-		      elseif currentshape isa FreeCircle and loc = -1 then
-		        display = display +" "+  onthedisk
-		      elseif currentshape isa Arc  then
-		        display = display +" "+  onthearc
-		      elseif not currentshape isa repere then
-		        display = display + sur + this(lowercase(currenthighlightedshape.GetType))
+		      if not currentshape isa repere then
+		        if currentshape isa FreeCircle and not currentshape.isaellipse  and loc = -1 then
+		          display = display +" "+ onthedisk
+		        else
+		          display = display + sur + this(lowercase(currenthighlightedshape.GetType))
+		        end if
 		      end if
 		    end if
 		    
-		    if currentshape isa repere then
-		      Lab1 = Currentshape.Labs.GetLab(wnd.Mycanvas1.MouseUser)
-		    else
-		      Lab1 =  Currentshape.Labs.GetLab(loc)
-		    end if
 		    if lab1 <> nil then
 		      oldcol = Lab1.col
 		      Lab1.col = Config.highlightcolor.col
@@ -153,7 +154,7 @@ Inherits SelectAndDragOperation
 		    currenthighlightedshape.dounselect
 		  end if
 		  Currentshape = GetShape(p)                            //retourne par priorité les points, ensuite les formes
-		  if loc = -1 then
+		  if loc = -1 or currentshape isa circle then
 		    currenthighlightedshape = currentshape   'on n'a pas choisi un cote de polygone, ni de bande, ni de secteur
 		  end if
 		  
@@ -328,10 +329,6 @@ Inherits SelectAndDragOperation
 		  
 		  s = Operation.GetShape(p)
 		  
-		  'if s <> nil  then
-		  'loc = s.PointOnSide(p)
-		  'end if
-		  
 		  if s = nil  then
 		    return wnd.mycanvas1.getrepere
 		  end if
@@ -349,8 +346,6 @@ Inherits SelectAndDragOperation
 		    end if
 		  elseif s isa polygon or s isa Bande or s isa secteur or s isa Freecircle  then
 		    loc = s.PointOnSide(p)
-		  else
-		    loc = -1 //on a choisi un intérieur : on ne devra pas chipoter pour afficher l'objet en déterminant un n0 de côté
 		  end if
 		  return s
 		End Function

@@ -58,17 +58,17 @@ Protected Class ObjectsList
 		  
 		  Visible = new objectslist
 		  
-		  for i=Ubound(currentcontent.Plans) downto 0
+		  for i=Ubound(currentcontent.Plans) downto 1
 		    S1=GetShape(currentcontent.Plans(i))
-		    if not s1.deleted then
+		    if not s1.deleted  then
 		      s1=s1.SelectShape(p)
-		      if s1 <> nil then
+		      if s1 <> nil and not s1.invalid and not s1.deleted then
 		        if s1 isa bipoint and not (s1 isa droite or s1 isa supphom)  then
 		          s1 = findpoint(p).element(0)
 		        end if
-		        if  s1 <> nil and not s1.invalid and not s1.deleted then
-		          Visible.addshape S1
-		        end if
+		        'if  s1 <> nil  then
+		        Visible.addshape S1
+		        'end if
 		      end if
 		    end if
 		  next
@@ -266,6 +266,7 @@ Protected Class ObjectsList
 
 	#tag Method, Flags = &h0
 		Function NewId() As Integer
+		  
 		  prevId = prevId + 1
 		  return prevId
 		  
@@ -318,7 +319,7 @@ Protected Class ObjectsList
 		  
 		  fam = Val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  forme = Val(Temp.GetAttribute(Dico.Value("NrForm")))
-		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version.3.8) qui étaient incorrects
+		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version 2.3.8) qui étaient incorrects
 		  select case  fam
 		  case -1
 		    s = new Repere(self,temp)
@@ -875,12 +876,12 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetFigConstructionInfos(Obj as XMLelement)
+		Sub SetFigConstructionInfos(Obj as XMLElement)
 		  dim i, fam as integer
 		  dim Temp as XMLElement
 		  dim s as shape
 		  
-		  for i=0 to Obj.ChildCount-1
+		  for i=1 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
 		    if fam > -1 then
@@ -1131,11 +1132,11 @@ Protected Class ObjectsList
 		      case 0
 		        currentshape = new Polyqcq(self,4)
 		      case 1
-		        currentshape = new Trap(self, 4)
+		        currentshape = new Trap(self, 4,4)
 		      case 2
-		        currentshape = new TrapRect(self, 3)
+		        currentshape = new TrapRect(self, 3,4)
 		      case 3
-		        currentshape = new TrapIso(self, 3)
+		        currentshape = new TrapIso(self, 3,4)
 		      case 4
 		        currentshape = new Parallelogram(self, 3,4)
 		      case 5

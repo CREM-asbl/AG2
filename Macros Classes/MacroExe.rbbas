@@ -37,10 +37,10 @@ Inherits MultipleSelectOperation
 		Function SetItem(s as shape) As Boolean
 		  //Les deux infos doivent toujours être lues ensemble: l'id de l'objet choisi et le numéro de côté (0 s'il n'y en a qu'un)
 		  
-		  Mac.MacInf.RealInit.append s.id
-		  Mac.MacInf.RealInitSide.append side
-		  
-		  if currentcontent.macrocreation then
+		  if not currentcontent.macrocreation then
+		    Mac.MacInf.RealInit.append s.id
+		    Mac.MacInf.RealInitSide.append side
+		  else
 		    MacId.append Mac.ObInit(CurrentItemtoSet-1)
 		    Real.append s.id
 		    RealSide.append side
@@ -96,6 +96,9 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  fa = -1
 		  
+		  if mac.mw <> nil then
+		    mac.mw.close
+		  end if
 		  if currentcontent.macrocreation then
 		    CurrentContent.CurrentFileUpToDate=false
 		    wnd.refreshtitle
@@ -104,17 +107,15 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    if mac.mw <> nil then
-		      mac.mw.close
-		    end if
 		    CurrentContent.TheMacros.AddMac(Mac)
-		    MacInfo = new MacConstructionInfo(Mac)
-		    Mac.MacInf = MacInfo
-		    Redim MacId(-1)
-		    Redim Real(-1)
-		    Redim RealSide(-1)
-		    wnd.mycanvas1.mousecursor = ArrowCursor
 		  end if
+		  MacInfo = new MacConstructionInfo(Mac)
+		  Mac.MacInf = MacInfo
+		  Redim MacId(-1)
+		  Redim Real(-1)
+		  Redim RealSide(-1)
+		  wnd.mycanvas1.mousecursor = ArrowCursor
+		  
 		  
 		  
 		  
@@ -140,7 +141,7 @@ Inherits MultipleSelectOperation
 		  if sh = nil then
 		    return nil
 		  end if
-		  side = index(iobj)
+		  side = index(iobj)     '-1 si p n'est pas sur le bord de sh
 		  return sh
 		  
 		End Function
@@ -153,7 +154,7 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
-		  newshape.autos
+		  newshape.auto=0
 		  
 		  newshape.initconstruction
 		  if ifmac.oper = 19 or ifmac.oper = 46 then
@@ -346,14 +347,16 @@ Inherits MultipleSelectOperation
 		    newshape.endconstruction
 		    newshape.ifmac = ifmac
 		    for i = 0 to newshape.npts-1
-		      newshape.points(i).forme = ifmac.childs(i).fo
-		      if newshape.points(i).forme = 1 then
+		      newshape.points(i).ifmac = ifmac.childs(i)
+		      if ifmac.childs(i).fo = 1 and (Mac.ObInterm.indexof(ifmac.childs(i).forme0) =-1) then
 		        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifmac.childs(i).forme0))
+		        newshape.points(i).numside.append  ifmac.childs(i).numside0
 		        newshape.points(i).puton s, ifmac.childs(i).location
-		        newshape.points(i).numside(0) = ifmac.childs(i).numside0
 		        newshape.points(i).placerptsursurfigure
-		        newshape.points(i).ifmac = ifmac.childs(i)
+		      else
+		        ifmac.childs(i).fo = 0
 		      end if
+		      newshape.points(i).forme = ifmac.childs(i).fo
 		    next
 		  end if
 		  
@@ -363,30 +366,20 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateIfMacTsf(EL as XMLElement, oper as integer)
-		  dim  EL0 as XMLElement
+		  
 		  dim ifmac as InfoMac
-		  dim fa, fo as integer
 		  dim s as shape
 		  dim tsf as transformation
 		  
-		  EL0 = XMLElement(EL.Child(0))
+		  ifmac = new InfoMac(MacInfo, EL, oper)
 		  
-		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))  //concerne le support Les supp des tsf seront toujours des polygones, donc construits par une opération antérieure
-		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  ifmac = new InfoMac(fa, fo)
-		  ifmac.oper = oper
-		  ifmac.forme0 = val(EL0.GetAttribute("Id"))   //numéro pour la macro du support de la tsf
-		  ifmac.type = val(EL.GetAttribute("TsfType"))
-		  ifmac.ori = val(EL.GetAttribute("TsfOri"))
-		  ifmac.RealSide = val(EL.GetAttribute("TsfSide"))
-		  ifmac.RealId =  MacInfo.GetRealId(ifmac.forme0)
-		  MacInfo.IfMacs.append ifmac
-		  
-		  if ifmac.RealId <> -1 then
+		  if Mac.ObFinal.indexof(ifmac.forme0) <> -1 then
 		    s = objects.getshape(ifmac.RealId)
 		    tsf = CreateTsf(s, ifmac.type,ifmac.Realside, ifmac.ori)
 		    ifmac.num = s.tsfi.GetPosition(tsf)
 		  end if
+		  
+		  MacInfo.IfMacs.append ifmac
 		  
 		  
 		End Sub
@@ -603,7 +596,7 @@ Inherits MultipleSelectOperation
 		  next
 		  
 		  endoperation
-		  currentcontent.currentoperation = nil
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -620,20 +613,24 @@ Inherits MultipleSelectOperation
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
 		  n = val(EL0.GetAttribute("Id"))
-		  
 		  if Mac.ObInit.indexof(n)  <> -1 then
-		    GetRealId(n,rid)
+		    rid = GetRealId(n)
 		    createdshape = objects.getshape(rid)
 		    EL01 = XMLElement(EL0.Child(0))
 		    if EL01 <> nil then
+		      side = GetRealSide(n)
+		      if side = -1 then
+		        side = 0
+		      end if
 		      for i = 0 to EL01.ChildCount-1
 		        EL02 = XMLElement(EL01.Child(i))
 		        MacId.append val(EL02.GetAttribute("Id"))
-		        Real.Append createdshape.points(i).id   ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
-		      next
-		    end if                                                         ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
-		  else                                                            'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId 'MacId'
-		    'son id dans Real et ' éventuellement le n° de côté dans RealSide. Ces données deviennent les MacId
+		        Real.Append createdshape.points((i+side) mod createdshape.npts).id
+		        RealSide.append -1  ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
+		      next                                                                   ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
+		    end if
+		    'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId  dans 'MacId'
+		  else                                                                     'son id dans Real et ' éventuellement le n° de côté dans RealSide. Ces données deviennent les MacId
 		    'dans la macro principale en étant reprises dans le XMLElement créé par ToMac
 		    select case oper
 		    case 0 //Construction
@@ -661,7 +658,6 @@ Inherits MultipleSelectOperation
 		    case 37 //FixPConstruction
 		      curop = new FixPConstruction(self, EL1)
 		      createdshape = FixPConstruction(curop).tsf.FixPt
-		      'computefix(ifmac,nbp)
 		    case 45  //Point d'intersection
 		      curop = new Intersec(self, EL1)
 		      createdshape = curop.currentshape
@@ -669,9 +665,7 @@ Inherits MultipleSelectOperation
 		      curop = new ShapeConstruction (self, EL0, EL1)
 		      createdshape = curop.currentshape
 		    end select
-		    if Mac.ObFinal.indexof(n) <> -1 then
-		      createdshape.MacConstructedBy = MacInfo
-		    end if
+		    
 		    MacId.Append n
 		    Real.Append createdshape.id
 		    RealSide.Append 0
@@ -679,11 +673,13 @@ Inherits MultipleSelectOperation
 		      EL01 = XMLElement(EL0.Child(i))
 		      MacId.append val(EL01.GetAttribute("Id"))
 		      Real.Append createdshape.points(i).id
+		      RealSide.append -1
 		    next
 		    if curop <> nil then
 		      curop.endoperation
 		    end if
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -701,7 +697,7 @@ Inherits MultipleSelectOperation
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  
 		  n = val(EL0.GetAttribute("Id"))
-		  GetRealId(n,rid)                                 //Le support doit avoir été créé antérieurement
+		  rid = GetRealId(n)                                 //Le support doit avoir été créé antérieurement
 		  supp = objects.getshape(rid)
 		  type = val(EL.GetAttribute("TsfType"))
 		  side = val(EL.GetAttribute("TsfSide"))
@@ -711,9 +707,15 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub GetRealId(n as integer, byref rid as integer)
-		  rid = Real(MacId.indexof(n))
-		End Sub
+		Function GetRealId(n as integer) As integer
+		  return Real(MacId.indexof(n))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRealSide(n as integer) As integer
+		  return RealSide(MacId.indexof(n))
+		End Function
 	#tag EndMethod
 
 

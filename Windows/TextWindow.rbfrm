@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
+      Visible         =   True
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -134,12 +134,11 @@ End
 		    for i = 0 to Figs.count-1
 		      f = Figs.element(i)
 		      messages(f)
-		      EF.Text = EF.Text + chr(10)+chr(13)
 		      if f.subs.count > 0 then
 		        for j=0 to f.subs.count -1
+		          EF.Text = EF.Text +chr(10)+chr(13)
 		          ff = f.subs.element(j)
 		          messages(ff,j)
-		          EF.Text = EF.Text +  chr(10)+chr(13)
 		        next
 		      end if
 		      EF.Text = EF.Text + "---------------------------------------------"+ chr(10) + chr(13)
@@ -188,20 +187,24 @@ End
 		  dim m as string
 		  dim tsf as transformation
 		  
-		  m = "Construit par : "  +  Type(s.constructedby.shape)
-		  select case s.constructedby.oper
-		  case 0
-		    m = m + ",  Centre"
-		  case 3
-		    m = m + ",  Duplication"
-		  case 4
-		    m = m+ ", Point de division"
-		  case 6
-		    tsf =  Transformation(s.constructedby.data(0))
-		    m = m + " , " + tsf.GetType + " " + "Support " +  Type(Tsf.Supp)
-		  end select
-		  m = m + chr(13)
-		  return m
+		  if s.constructedby.oper <> 9 then
+		    m = "Construit par : "  +  Type(s.constructedby.shape)
+		    select case s.constructedby.oper
+		    case 0
+		      m = m + ",  Centre"
+		    case 3
+		      m = m + ",  Duplication"
+		    case 4
+		      m = m+ ", Point de division"
+		    case 6
+		      tsf =  Transformation(s.constructedby.data(0))
+		      m = m + " , " + tsf.GetType + " " + "Support " +  Type(Tsf.Supp)
+		    end select
+		    m = m + chr(13)
+		    return m
+		  elseif s isa polygon then
+		    m = "Construit par fusion "  +  Type(shape(s.constructedby.data(0))) + " et " + Type(shape(s.constructedby.data(2)))
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -240,11 +243,13 @@ End
 		  if s isa triangle or s isa arc then
 		    m = m + "Orientation " + str(s.ori)+chr(13)
 		  end if
+		  if s isa arc then
+		    m = m+"Angle: " + str((Arc(s).arcangle)*180/PI)+"°"
+		  end if
 		  m = m+chr(10)
-		  if s.constructedby <> nil or s.conditionedby <> nil or ubound(s.constructedshapes) > -1 then
+		  if s.constructedby <> nil or s.conditionedby <> nil  then
 		    m = m + messlinks(s)
 		  end if
-		  m = m +chr(10)
 		  if not s isa point then
 		    m = m + "Sommets"+chr(13)
 		    for i = 0 to ubound(s.points)
@@ -323,7 +328,11 @@ End
 		  
 		  
 		  m = Type(p)
-		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "+chr(10)
+		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "
+		  if p.invalid then
+		    m = m + "invalid"
+		  end if
+		  m = m +chr(10)
 		  if P.PointSur <> Nil then
 		    for i = 0 to P.Pointsur.count-1
 		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", " + chr(10)
@@ -339,6 +348,7 @@ End
 	#tag Method, Flags = &h0
 		Function mess(f as figure, i as integer) As string
 		  dim m as string
+		  
 		  m = "Sous-Figure nr "+ str(i)
 		  return messauto(f,m)
 		  
@@ -357,7 +367,7 @@ End
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "
 		    s = f.shapes.element(i)
-		    EF.Text = EF.Text+ messages(s)+chr(10)
+		    EF.Text = EF.Text+ messages(s)+chr(10)+chr(13)
 		  next
 		  
 		  
@@ -448,9 +458,7 @@ End
 		  if s.constructedby <> nil then
 		    m = m  + messconstructedby(s) +chr(10)
 		  end if
-		  if ubound(s.constructedshapes) <> -1 then
-		    m =m + messconstructedshapes(s) + chr(10)
-		  end if
+		  
 		  if s.conditionedby <> nil then
 		    m = m + messconditionedby(s) + chr(10)
 		  end if

@@ -56,11 +56,13 @@ Protected Class InfoMac
 		  else
 		    Temp.setattribute("Seg",str(0))
 		  end if
-		  EL = Doc.CreateElement("Childs")
-		  for i = 0 to ubound(childs)
-		    EL.appendChild(childs(i).XMLPutInContainer(Doc))
-		  next
-		  Temp.Appendchild EL
+		  if ubound(childs) > -1 then
+		    EL = Doc.CreateElement("Childs")
+		    for i = 0 to ubound(childs)
+		      EL.appendChild(childs(i).XMLPutInContainer(Doc))
+		    next
+		    Temp.Appendchild EL
+		  end if
 		  if coord <> nil and not currentcontent.macrocreation  then
 		    Temp.AppendChild coord.XMLPutInContainer(Doc)
 		  end if
@@ -176,6 +178,7 @@ Protected Class InfoMac
 		    if fo = 4 or fo = 5 then 'droites paraperp
 		      ncpts=1
 		    end if
+		    ori = val(EL1.GetAttribute("Ori"))
 		  case 14 //centre
 		    forme0 = val(EL1.GetAttribute("Id"))
 		  case 19 //DupliquerPoint
@@ -254,6 +257,24 @@ Protected Class InfoMac
 		  
 		  
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InfoMac(MacInfo as MacConstructionInfo, EL as XMLElement, oper As integer)
+		  dim EL0 as XMLElement
+		  
+		  
+		  EL0 = XMLElement(EL.Child(0))
+		  
+		  self.MacInfo = MacInfo
+		  self.oper=oper
+		  forme0 = val(EL0.GetAttribute("Id"))   //MacId du support de la tsf
+		  type = val(EL.GetAttribute("TsfType"))
+		  ori = val(EL.GetAttribute("TsfOri"))
+		  RealSide = val(EL.GetAttribute("TsfSide"))
+		  RealId =  MacInfo.GetRealId(forme0)
 		  
 		End Sub
 	#tag EndMethod

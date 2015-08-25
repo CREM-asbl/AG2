@@ -167,8 +167,8 @@ Implements StringProvider
 		    if shapes.element(i) isa Lacet  then
 		      s = Lacet(shapes.element(i))
 		      for j = 0 to s.npts-1
-		        if s.curved(j) = 1 then
-		          oldcentres.append s.centre(j)
+		        if s.coord.curved(j) = 1 then
+		          oldcentres.append s.coord.centres(j)
 		        end if
 		      next
 		    end if
@@ -256,6 +256,7 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
 		  dim M as Matrix
+		  dim s as shape
 		  
 		  NbUnModif = 0
 		  select case auto
@@ -291,8 +292,8 @@ Implements StringProvider
 		  
 		  
 		  if M = nil or M.v1 = nil then
-		    'QQupdateshapes
-		    return false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
+		    QQupdateshapes
+		    return true  'false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
 		    updatesomm(M)
 		    updatePtsSur(M)
@@ -477,6 +478,7 @@ Implements StringProvider
 		  dim p, p1,p2 as point
 		  dim bp1, ep, np,ep1, np1 as BasicPoint
 		  dim n as integer
+		  dim M as Matrix
 		  
 		  n = ListPtsModifs(0)
 		  p = Point(somm.element(n))
@@ -491,7 +493,7 @@ Implements StringProvider
 		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
 		  case 0
 		    bp1 = Point(Somm.element(fx1)).bpt
-		    return new SimilarityMatrix (bp1, ep,bp1, np)
+		    M = new SimilarityMatrix (bp1, ep,bp1, np)
 		  case 1
 		    p1 = Point(Somm.element(ListSommSur(0)))
 		    getoldnewpos(p1,ep1,np1)
@@ -500,17 +502,20 @@ Implements StringProvider
 		        return AutosimUpdate
 		      end if
 		    else
-		      return new SimilarityMatrix(ep,ep1,np,ep1)
+		      M= new SimilarityMatrix(ep,ep1,np,ep1)
 		    end if
 		  case 2
 		    p1 = Point(Somm.element(ListSommSur(0)))
 		    p2 = Point(Somm.element(ListSommSur(1)))
 		    if p1.pointsur.count = 1 and p2.pointsur.count = 1 then
-		      return new similarityMatrix(p1,p2,ep,np)
+		      M = new similarityMatrix(p1,p2,ep,np)
+		      if M = nil or M.v1 = nil then
+		        M = new Matrix(1)
+		      end if
 		    end if
 		  end select
 		  
-		  return new Matrix(1)
+		  return M
 		  
 		  
 		  
@@ -812,10 +817,10 @@ Implements StringProvider
 		  
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
-		      if subs.element(i).precede(subs.element(j)) then
+		      if (subs.element(i).auto <> 4) and subs.element(i).precede(subs.element(j)) then
 		        mat.col(i,j) = 1
 		      end if
-		      if subs.element(j).precede(subs.element(i)) then
+		      if (subs.element(i).auto <> 4) and subs.element(j).precede(subs.element(i)) then
 		        mat.col(j,i) = 1
 		      end if
 		    next
@@ -881,8 +886,8 @@ Implements StringProvider
 		      select case n
 		      case 0, 1, 2, 4, 6
 		        f1.auto = n
-		      case 3, 5
-		        f1.auto = 1
+		        'case 3, 5
+		        'f1.auto = 1
 		      end select
 		      return
 		    end if
@@ -932,7 +937,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function update1(p as point) As Boolean
+		Function update1(p As point) As Boolean
 		  dim t  as boolean
 		  dim i as integer
 		  dim sf as figure
@@ -941,18 +946,19 @@ Implements StringProvider
 		  pointmobile = p
 		  t = true
 		  
-		  if currentcontent.drapaff then
-		    return Modifaffine(p)
-		  elseif currentcontent.drapeucli then
-		    return Modifeucli(p)
-		  else
-		    listersubfigs(p)
-		    for i = 0 to ubound(index)
-		      sf = subs.element(index(i))
+		  listersubfigs(p)
+		  for i = 0 to ubound(index)
+		    sf = subs.element(index(i))
+		    if currentcontent.drapaff then
+		      t = sf.Modifaffine(p)
+		    elseif currentcontent.drapeucli then
+		      t = sf.Modifeucli(p)
+		    else
 		      t = sf.subfigupdate and t
-		    next
-		    return t
-		  end if
+		    end if
+		  next
+		  return t
+		  
 		End Function
 	#tag EndMethod
 
@@ -1218,9 +1224,9 @@ Implements StringProvider
 		    s= shapes.element(j)
 		    s.Mmove = M
 		    if s isa Circle or s isa Lacet  then
-		      s.MoveExtreCtrl(M)
+		      s.coord.MoveExtreCtrl(M)
 		    end if
-		    if s isa arc  or s isa dsect or s isa cube then
+		    if s isa arc   or s isa cube then
 		      s.updateskull
 		    end if
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
@@ -1298,6 +1304,14 @@ Implements StringProvider
 		      M = Matrix(s.constructedby.data(0))
 		      M.XMLPutAttribute(EL2)
 		    end if
+		    if s isa Lacet then
+		      EL2.SetAttribute("coord.centres",str(1))
+		      for j = 0 to ubound(s.coord.centres)
+		        if s.coord.centres(j) <> nil then
+		          EL2.AppendChild(s.coord.centres(j).XMLPutInContainer(CurrentContent.OpList))
+		        end if
+		      next
+		    end if
 		    EL1.appendchild EL2
 		  next
 		  EL0.appendchild EL1
@@ -1333,14 +1347,15 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub RestoreInit(EL as XMLElement)
-		  dim i,j, n0, n1 as integer
-		  dim EL1, EL2,  Coord as XMLElement
+		  dim i,j,k, n0, n1 as integer
+		  dim EL1, EL2, EL3, Coord as XMLElement
 		  dim List as XmlNodeList
 		  dim p as point
 		  dim tsf as transformation
 		  dim Inter as Intersec
 		  dim M as Matrix
 		  dim a as double
+		  dim s as shape
 		  
 		  List = EL.XQL("Somm")
 		  if List.length > 0 then
@@ -1361,7 +1376,7 @@ Implements StringProvider
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to PtsConsted.count-1
 		      Coord = XMLElement(EL1.child(i))
-		      point(PtsConsted.element(i)).moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
+		      point(PtsConsted.element(i)).moveto new BasicPoint(Coord)
 		      if val(Coord.GetAttribute("Invalid")) = 0 then
 		        point(PtsConsted.element(i)).valider
 		      else
@@ -1369,6 +1384,35 @@ Implements StringProvider
 		      end if
 		    next
 		  end if
+		  
+		  EL1 = XMLElement(EL.Firstchild)
+		  for i = 0 to shapes.count-1
+		    EL2 = XMLElement(EL1.Child(i))
+		    s = shapes.element(i)
+		    s.updatecoord
+		    if s isa circle or s isa Lacet then
+		      k = 0
+		      for j = 0 to ubound(s.coord.centres)
+		        if s.coord.centres(j) <>nil then
+		          Coord = XmlElement(EL2.child(k))
+		          s.coord.centres(j) = new BasicPoint(coord)
+		          k = k+1
+		        end if
+		      next
+		      s.coord.CreateExtreAndCtrlPoints(s.ori)
+		    end if
+		    s.updateskull
+		    s.updatelab
+		    if s.duplicateorcut then
+		      M = new Matrix(EL2)
+		      s.constructedby.data(0) = M
+		      if not s isa point then
+		        for j = 0 to s.npts-1
+		          s.childs(j).constructedby.data(0) = M
+		        next
+		      end if
+		    end if
+		  next
 		  
 		  List = EL.XQL("PtsSur")
 		  if List.length > 0 then
@@ -1393,24 +1437,7 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  for i = 0 to shapes.count-1
-		    if shapes.element(i).duplicateorcut then
-		      EL1 = XMLElement(EL.Firstchild)
-		      EL2 = XMLElement(EL1.Child(i))
-		      M = new Matrix(EL2)
-		      shapes.element(i).constructedby.data(0) = M
-		      if not shapes.element(i) isa point then
-		        for j = 0 to shapes.element(i).npts-1
-		          shapes.element(i).childs(j).constructedby.data(0) = M
-		        next
-		      end if
-		    end if
-		    if shapes.element(i) isa circle or shapes.element(i) isa Lacet then
-		      shapes.element(i).CreateExtreAndCtrlPoints
-		    end if
-		    shapes.element(i).updateskull
-		    shapes.element(i).updatelab
-		  next
+		  
 		  
 		  Restoretsf
 		End Sub
@@ -1451,7 +1478,6 @@ Implements StringProvider
 		      end if
 		    end if
 		  next
-		  
 		  return t
 		End Function
 	#tag EndMethod
@@ -1678,6 +1704,9 @@ Implements StringProvider
 		    return
 		  end if
 		  
+		  
+		  
+		  
 		  Phase0choixpointsfixes
 		  Phase1choixpointsfixes
 		  Phase2choixpointsfixes
@@ -1885,6 +1914,7 @@ Implements StringProvider
 		  dim i, j, i0 as integer
 		  dim p as point
 		  dim s as Lacet
+		  dim sh as shape
 		  
 		  
 		  for i = 0 to somm.count-1
@@ -1902,9 +1932,11 @@ Implements StringProvider
 		    if shapes.element(i) isa Lacet  then
 		      s = Lacet(shapes.element(i))
 		      for j = 0 to s.npts-1
-		        if s.curved(j) = 1 then
-		          s.centre(j) = oldcentres(i0)
+		        if s.coord.curved(j) = 1 then
+		          s.coord.centres(j) = oldcentres(i0)
 		          i0 = i0+1
+		        else
+		          s.coord.centres(j) = nil
 		        end if
 		      next
 		    end if
@@ -1936,14 +1968,18 @@ Implements StringProvider
 		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
 		  //Pas compris pourquoi...
 		  for i = 0 to shapes.count-1
-		    shapes.element(i).updatecoord
-		    if shapes.element(i) isa arc then
-		      Arc(shapes.element(i)).updateangles
+		    sh = shapes.element(i)
+		    sh.updatecoord
+		    if sh isa arc then
+		      Arc(sh).computearcangle
 		    end if
-		    if shapes.element(i) isa circle or shapes.element(i) isa lacet then
-		      shapes.element(i).CreateExtreAndCtrlPoints
+		    if sh isa circle then
+		      sh.coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
-		    shapes.element(i).updateskull
+		    if sh isa lacet then
+		      Lacet(sh).CreateExtreAndCtrlPoints
+		    end if
+		    sh.updateskull
 		  next
 		  
 		  
@@ -2007,13 +2043,19 @@ Implements StringProvider
 		  dim ep,np,ep1,ep2,np1,np2 as BasicPoint
 		  dim i, k, n, h as integer
 		  dim t as boolean
+		  dim M as Matrix
+		  dim s as shape
+		  
+		  s = shapes.element(0)
+		  if s isa arc then
+		    getoldnewpos(s.points(1),ep1,np1)
+		    getoldnewpos(s.points(0),ep,np)
+		    t = replacerpoint(s.points(2))
+		    return  new similaritymatrix (ep1,ep,np1,np)
+		  end if
+		  
 		  
 		  Choixpointsfixes
-		  'if NbUnModif > 0 then
-		  'return new Matrix(1)
-		  'end if
-		  
-		  
 		  p = supfig.pointmobile
 		  getoldnewpos(p,ep,np)
 		  k = somm.getposition(p)
@@ -2029,7 +2071,7 @@ Implements StringProvider
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
 		      getoldnewpos(p,ep,np)
-		      return new similarityMatrix(p1,p2,ep,np)
+		      M = new similarityMatrix(p1,p2,ep,np)
 		    elseif Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 1
 		        if i <> k then
@@ -2053,23 +2095,21 @@ Implements StringProvider
 		      end if
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
-		      return new similarityMatrix(p1,p2,ep,np)
-		    else
-		      p1 = point(somm.element(listsommsur(0)))
-		      p2 = point(somm.element(listsommsur(1)))
-		      getoldnewpos(p1,ep1,np1)
-		      getoldnewpos(p2,ep2,np2)
-		      return new SimilarityMatrix(ep1,ep2,np1,np2)
+		      M = new similarityMatrix(p1,p2,ep,np)
 		    end if
 		  else
-		    return new Matrix(1)
+		    p1 = point(somm.element(listsommsur(0)))
+		    p2 = point(somm.element(listsommsur(1)))
+		    getoldnewpos(p1,ep1,np1)
+		    getoldnewpos(p2,ep2,np2)
+		    M = new SimilarityMatrix(ep1,ep2,np1,np2)
 		  end select
 		  
-		  'if NbPtsModif > 2 then
-		  'return autosimupdate2
-		  'else
-		  'return autosimupdate
-		  'end if
+		  
+		  if M = nil or M.v1 = nil then
+		    M = new Matrix(1)
+		  end if
+		  return M
 		  
 		  
 		  
@@ -2127,11 +2167,12 @@ Implements StringProvider
 		    p.modified = true // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
 		  next
 		  
-		  for i = 0 to shapes.count-1
-		    if shapes.element(i) isa Lacet then
-		      shapes.element(i).createextreandctrlpoints
-		    end if
-		  next
+		  'for i = 0 to shapes.count-1
+		  'if shapes.element(i) isa Lacet then
+		  'Lacet(shapes.element(i)).createextreandctrlpoints
+		  'Lacet(shapes.element(i)).updateskull
+		  'end if
+		  'next
 		  
 		  EndQQupdateshapes
 		  
@@ -2177,7 +2218,7 @@ Implements StringProvider
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =point(somm.element(i))               'Un point qui a déjà bougé ne peut plus être pris comme point fixe
+		    p =point(somm.element(i))
 		    if  (p.liberte = 0 or p.unmodifiable) and (p <> supfig.pointmobile )  and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      if p.pointsur.count <> 2 then
@@ -2263,6 +2304,9 @@ Implements StringProvider
 		  dim dist(-1) as double
 		  dim p as point
 		  dim ep, np as basicpoint
+		  
+		  
+		  
 		  //classement par rapport à la distance au point mobile ou à défaut au premier point modifié
 		  
 		  if somm.getposition(supfig.pointmobile) <> -1 then
@@ -2280,11 +2324,19 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  dist.sortwith(ptfx)
+		  if auto = 3 and shapes.element(0) isa arc then
+		    for i = 0 to  ubound(ptfx)
+		      ptfx0.append ptfx(i)
+		    next
+		  else
+		    dist.sortwith(ptfx)
+		    for i =   ubound(ptfx) downto 0
+		      ptfx0.append ptfx(i)
+		    next
+		  end if
 		  
-		  for i = ubound(ptfx) downto 0
-		    ptfx0.append ptfx(i)
-		  next
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2456,17 +2508,21 @@ Implements StringProvider
 		  dim n, n1, n2 as integer
 		  dim ep, np as BasicPoint
 		  
+		  
 		  n = ListPtsModifs(0)
+		  s = shapes.element(0)
+		  
+		  if s isa arc then
+		    return arc(s).Modifier1(n)
+		  end if
+		  
 		  p = Point(somm.element(n))
 		  getoldnewpos(p, ep, np)
-		  
 		  choixpointsfixes
 		  
 		  if  NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  
-		  s = shapes.element(0)
 		  
 		  select case NbSommSur(n)
 		  case 0
@@ -2486,17 +2542,16 @@ Implements StringProvider
 		    n1 = s.Points.indexof(p1)
 		    n2 = s.Points.indexof(p2)
 		    if n <> -1 and NbUnModif = 0 then
-		      if s isa quadri then
-		        if abs(n1-n2) = 2 then
-		          return new similaritymatrix(p1, p2, ep, np)
-		        elseif n1= (n+2) mod 4 then
-		          return s.Modifier1fixe(p1,p)
-		        else
-		          return s.Modifier1fixe(p2,p)
-		        end if
-		      else
-		        return s.Modifier1fixe(p1,p)
-		      end if
+		      'if s isa quadri then                             '  Modifications introduites le 19 mai 2014 puis supprimées le 8 juillet 2014  Surveiller!!
+		      'if abs(n1-n2) = 2 then
+		      return new similaritymatrix(p1, p2, ep, np)
+		      'elseif n1= (n+2) mod 4 then
+		      'return s.Modifier1fixe(p1,p)
+		      'else
+		      'return  s.Modifier1fixe(p2,p)
+		      'else
+		      'return s.Modifier1fixe(p1,p)
+		      'end if
 		      
 		    else
 		      return nil
@@ -2508,16 +2563,18 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
-		  dim p, q, pmob as point
+		  dim p, q as point
 		  dim n1, n2 as integer
 		  dim s as shape
 		  dim i as integer
 		  
-		  pmob = supfig.pointmobile
-		  s = shapes.element(0)
-		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
+		  s = shapes.element(0)
+		  if s isa arc then
+		    return arc(s).Modifier2(n1,n2)
+		  end if
+		  
 		  p = Point(somm.element(n1))
 		  q = Point(somm.element(n2))
 		  
@@ -2544,7 +2601,7 @@ Implements StringProvider
 		  dim ar as arc
 		  
 		  s = shapes.element(0)
-		  if s isa arc or s isa dsect then
+		  if s isa arc  then
 		    return arc(s).modifier3
 		  end if
 		  
@@ -2597,6 +2654,7 @@ Implements StringProvider
 		    else
 		      t = replacerpoint (point(somm.element(Listsommsur(0))))
 		      t = replacerpoint (point(somm.element(Listsommsur(1))))
+		      't = replacerpoint (point(somm.element(Listsommsur(2))))
 		    end if
 		  end select
 		  
@@ -2966,9 +3024,10 @@ Implements StringProvider
 		  dim i as integer
 		  
 		  for i = 0 to shapes.count-1
-		    
-		    shapes.element(i).updateshape
-		    shapes.element(i).modified = true
+		    if not shapes.element(i).invalid then
+		      shapes.element(i).updateshape
+		      shapes.element(i).modified = true
+		    end if
 		  next
 		  
 		  
@@ -2991,7 +3050,7 @@ Implements StringProvider
 		  'return false
 		  'end if
 		  
-		  if (f1.supfig <> f2.supfig) or (f1.auto <> f2.auto) then
+		  if (f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3) then
 		    return false
 		  end if
 		  
@@ -3113,7 +3172,7 @@ Implements StringProvider
 		  // Liste des "sommets sur"  modifiables
 		  for i = 0 to Somm.count-1
 		    p = Point(somm.element(i))
-		    if (p.pointsur.count = 1  ) and P.liberte = 1 and not p.unmodifiable  then
+		    if (p.forme = 1  ) and P.liberte = 1 and not p.unmodifiable  then
 		      n = n+1
 		      ListSommSur.append i
 		    end if
@@ -3560,19 +3619,22 @@ Implements StringProvider
 		  dim i as integer
 		  dim p as point
 		  
-		  if shapes.element(0) isa arc then
-		    arc(shapes.element(0)).Updateangles
-		    'arc(shapes.element(0)).UpdatePtsConsted
-		  end if 'else
+		  if shapes.element(0) isa arc and not shapes.element(0).invalid then
+		    arc(shapes.element(0)).computearcangle
+		  end if
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.element(i))
-		    if somm.getposition(p)=-1 then
-		      p.transform(M)
+		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 then
+		      p.repositioncstedpoint
+		    else
+		      if somm.getposition(p)=-1 then
+		        p.transform(M)
+		      end if
 		    end if
-		    ptsconsted.element(i).modified = true
-		    ptsconsted.element(i).updateshape
+		    p.modified = true
+		    p.updateshape
 		  next
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3620,7 +3682,7 @@ Implements StringProvider
 		  pmob = supfig.pointmobile
 		  if s1 isa droite then
 		    n1 = droite(s1).nextre
-		  else 
+		  else
 		    n1 = 0
 		  end if
 		  if s2 isa droite then
@@ -3631,7 +3693,7 @@ Implements StringProvider
 		  
 		  if pmob <> p and pmob <> q then  'pmob est p ou q
 		    return nil
-		  elseif pmob <> p then 
+		  elseif pmob <> p then
 		    pq = p
 		    p = q
 		    q = pq

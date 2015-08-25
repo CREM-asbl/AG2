@@ -614,11 +614,11 @@ Inherits SelectAndDragOperation
 		  
 		  Duplicate
 		  n = val(XMLElement(EL1).GetAttribute("Id"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  pt = point(objects.GetShape(rid))
 		  
 		  n = val(XMLElement(EL0).GetAttribute("Forme0"))
-		  MExe.GetRealId(n,rid)
+		  rid = MExe.GetRealId(n)
 		  sh = objects.GetShape(rid)
 		  
 		  q = new point(objects, new basicpoint(0,0))

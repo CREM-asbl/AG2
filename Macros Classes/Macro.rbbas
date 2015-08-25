@@ -166,13 +166,13 @@ Protected Class Macro
 		  dim i, ObId as integer
 		  dim EL, EL1 as XmlElement
 		  
-		  for i = currentcontent.mac.Histo.childcount -1 downto 0
+		  for i = Histo.childcount -1 downto 0
 		    EL = XMLElement(Histo.Child(i))
 		    EL1 = XMLElement(EL.firstChild)
 		    if EL1 <> nil then
 		      ObId = val(EL1.GetAttribute("Id"))
 		      if currentcontent.theobjects.getshape(ObId) = nil then
-		        currentcontent.mac.Histo.RemoveChild EL
+		        Histo.RemoveChild EL
 		      end if
 		    end if
 		  next
@@ -189,7 +189,6 @@ Protected Class Macro
 		  MacInf = MacInfo
 		  
 		  for i = 0 to ubound(MacInf.ifmacs)             'Histo.Childcount-1  // i: numéro de l'opération
-		    NumOp = i
 		    ifmac = MacInfo.ifmacs(i)
 		    if codesoper.indexof(ifmac.oper) <> -1 then //est-ce une opération de construction d'un objet?
 		      ComputeObject(ifmac)
@@ -197,15 +196,15 @@ Protected Class Macro
 		      ComputeMatrix(ifmac)
 		    end if
 		    
-		    if not currentcontent.currentoperation isa macroexe then
+		    if not (currentcontent.currentoperation isa macroexe) and not (ifmac.oper = 17) then
 		      if Validation(ifmac) then
 		        for j = 0 to ubound(ObFinal)
-		          s = currentcontent.TheObjects.getshape(MacInf.RealFinal(j))
+		          s = currentcontent.TheObjects.getshape(MacInfo.RealFinal(j))
 		          s.Valider
 		        next
 		      else
 		        for j = 0 to ubound(ObFinal)
-		          s = currentcontent.TheObjects.getshape(MacInf.RealFinal(j))
+		          s = currentcontent.TheObjects.getshape(MacInfo.RealFinal(j))
 		          s.invalider
 		        next
 		      end if
@@ -313,8 +312,7 @@ Protected Class Macro
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
 		  side = Ifmac.Numside0
 		  //On calcule d'abord le vecteur directeur de la paraperp
-		  c = ifm1.coord
-		  BiB1 = new BiBPoint(c.tab(side), c.tab((side+1) mod c.taille))
+		  BiB1 = ifm1.coord.getBiB(side)  'new BiBPoint(c.tab(side), c.tab((side+1) mod c.taille))
 		  n = 1
 		  if ifmac.fo = 2 or ifmac.fo = 5 Then
 		    n = 2
@@ -338,7 +336,7 @@ Protected Class Macro
 		      nbp.tab(1) =  ifm2.coord.tab(0).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
 		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
-		      BiB2 = new BiBPoint(ifm3.coord.tab(ifm2.numside0), ifm3.coord.tab((ifm2.numside0+1)mod ifm3.coord.taille))
+		      BiB2 = ifm3.coord.GetBiB(ifm2.numside0)
 		      n1 = 0
 		      if ifm3.fa <> 5 then
 		        if ifm3.fo < 3 then
@@ -450,7 +448,7 @@ Protected Class Macro
 		      nbp.tab(0) = ifm1.coord.tab(num)
 		    end if
 		  else
-		    redim nbp.tab(ifmac.ncpts-1)
+		    redim nbp.tab(ifmac.npts-1)
 		    for i = 0 to ifmac.ncpts-1
 		      ifm1 = ifmac.childs(i)
 		      ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
@@ -517,74 +515,6 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function oldGetLocation(n as integer) As double
-		  'dim m, num as integer
-		  'dim ifm as infomac
-		  '
-		  'm = Obinit.indexof(n)
-		  'if m <> -1 then        //Si c'est une forme initiale
-		  'ifm = MacInf.GetInfoMac(n, num)
-		  'return ifm.location
-		  'end if
-		  '
-		  'm = ObInterm.indexof(n)
-		  'if m <> -1 then        //Si c'est une forme intermédiaire
-		  'ifm = MacInf.GetInfoMac(n, num)
-		  'return ifm.location
-		  'end if
-		  '
-		  '//Si c'est un point qui n'est ni initial ni intermédiaire
-		  '
-		  'ifm = MacInf.GetSommet(numop-1,n,m)
-		  'return ifm.location
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetSide(n as integer) As integer
-		  dim i, j, k, m, num as integer
-		  dim s as shape
-		  dim ifm as infomac
-		  dim EL, EL0, EL1 as XMLElement
-		  
-		  m = Obinit.indexof(n)
-		  if m <> -1 then        //Si c'est une forme initiale
-		    ifm = MacInf.GetInfoMac(n,num)
-		    k = ifm.realid
-		    s= currentcontent.theobjects.getshape(k)
-		    if s isa point and point(s).pointsur.count = 1 then
-		      return point(s).numside(0)
-		    end if
-		  end if
-		  
-		  m = ObInterm.indexof(n)
-		  if m <> -1 then        //Si c'est une forme intermédiaire
-		    ifm = MacInf.GetInfoMac(n,num)
-		    return ifm.Realside
-		  end if
-		  
-		  //Si c'est un point qui n'est ni initial ni intermédiaire
-		  
-		  
-		  for i = numop -1 downto 0
-		    EL = XMLElement(Histo.Child(i))
-		    EL0 = XMLElement(EL.Child(0))
-		    if EL0.Childcount > 0 then
-		      EL1 = XMLElement(EL0.FirstChild)
-		      for j = 0 to EL1.Childcount-1
-		        if n = val(EL1.Child(j).GetAttribute("Id")) then
-		          ifm = Macinf.IfMacs(i)
-		          return ifm.Realside
-		        end if
-		      next
-		    end if
-		  next
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ToXML(Docu as XMLDocument, EL as XMLElement)
 		  EL.AppendChild ToMac(Docu,0)
 		  EL.AppendChild ToMac(Docu,1)
@@ -604,7 +534,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Transformer(ifmac as InfoMac, byref nbp as nBPoint)
+		Sub Transformer(ifmac as infomac, byref nbp As nBPoint)
 		  dim  i, n, num as integer
 		  dim nbp1 as nBPoint
 		  dim M as Matrix
@@ -616,9 +546,12 @@ Protected Class Macro
 		    ifm1=ifm1.childs(num)
 		  end if
 		  ifm2 = MacInf.GetInfoMac(ifmac.forme1, num)  //lecture source
+		  if ifm2.MacId <> ifmac.forme1 then
+		    ifm2 = ifm2.childs(num)
+		  end if
 		  nbp1 = ifm2.coord
 		  n = nbp1.taille
-		  redim nbp.tab(n)
+		  redim nbp.tab(n-1)
 		  M = ifm1.M
 		  if M <> nil and M.v1 <> nil  then
 		    for i = 0 to n-1
@@ -637,7 +570,7 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ComputeMatrix(ifmac as InfoMac)
+		Sub ComputeMatrix(ifmac As infomac)
 		  dim  m as integer
 		  dim nbp, nbp1 as nBpoint
 		  dim bp as BasicPoint
@@ -654,19 +587,12 @@ Protected Class Macro
 		    ifm.M = nbp.TranslationMatrix
 		  case 2
 		    ifm.M = nbp.RotationMatrix
-		  case 3, 4, 5
-		    bp = nbp.tab(0)
-		    nbp1 = new nBPoint(bp)
-		    nbp1.append  bp+new BasicPoint(1,0)
-		    select case ifmac.type
-		    case 3
-		      nbp1.append  bp+new BasicPoint(-1,0)
-		    case 4
-		      nbp1.append  bp+new BasicPoint(0,1)
-		    case 5
-		      nbp1.append  bp+new BasicPoint(0,-1)
-		    end select
-		    ifm.M = nbp.RotationMatrix
+		  case 3
+		    ifm.M = new rotationmatrix(nbp.tab(0), PI)
+		  case 4
+		    ifm.M = new rotationmatrix(nbp.tab(0),PIDEMI)
+		  case 5
+		    ifm.M = new rotationmatrix(nbp.tab(0), -PIDEMI)
 		  case 6
 		    ifm.M = new SymmetryMatrix(nbp.tab(0),nbp.tab(1))
 		  case 7,8
@@ -678,7 +604,7 @@ Protected Class Macro
 		  end select
 		  
 		  'k = ObFinal.indexof(MacId)
-		  if ifm.init or ifm.final then      //Si le support est une forme finale ou initiale
+		  if  ifm.final then      //Si le support est une forme finale ou initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.tsfi.element(ifmac.num).setfpsp(s)
 		    s.tsfi.element(ifmac.num).M =  ifm.M
@@ -732,7 +658,9 @@ Protected Class Macro
 		    
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
-		    s.coord = ifmac.coord
+		    for i = 0 to s.npts-1
+		      s.coord.tab(i) = ifmac.coord.tab(i)
+		    next
 		    if s isa point  then
 		      if s.forme = 1 then
 		        redim point(s).location(0)
@@ -751,8 +679,6 @@ Protected Class Macro
 		      next
 		    end if
 		    s.repositionnerpoints
-		    
-		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -811,7 +737,17 @@ Protected Class Macro
 		  
 		  if ifm1.fa <> 5 then 'cas des segments, droites, côtés de polygones,...
 		    side = Ifmac.Numside0
-		    BiB = new BiBpoint( ifm1.coord.tab(side), ifm1.coord.tab((side+1) mod ifm1.coord.taille))
+		    if ifm1.fa = 1 and ifm1.fo = 8 then
+		      BiB = new BiBPoint(ifm1.coord.tab(0),ifm1.coord.tab(side+1))
+		    elseif ifm1.fa = 1 and ifm1.fo = 7 then
+		      if side = 0 then
+		        BiB = new BiBPoint(ifm1.coord.tab(0),ifm1.coord.tab(1))
+		      else
+		        BiB = new BiBPoint(ifm1.coord.tab(2),ifm1.coord.tab(2)+ifm1.coord.tab(1)-ifm1.coord.tab(0))
+		      end if
+		    else
+		      BiB = ifm1.coord.GetBiB(side)
+		    end if
 		    nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
 		  else
 		    select case  ifm1.fo
@@ -843,12 +779,19 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub OpenDescripWindow()
-		  mw = new MacWindow
-		  mw.mac = self
+		  mw = new MacWindow(self)
 		  mw.Title = GetName + " : " + Dico.Value("MacroDescription") +" " + caption
 		  mw.EF.Text = expli
 		  wnd.setfocus
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Trier()
+		  ObInit.sortwith(FaInit,FoInit)
+		  ObInterm.sortwith(FaInterm,FoInterm)
+		  ObFinal.sortwith(FaFinal,FoFinal)
 		End Sub
 	#tag EndMethod
 
@@ -936,10 +879,6 @@ Protected Class Macro
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NumOp As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		mw As MacWindow
 	#tag EndProperty
 
@@ -983,12 +922,6 @@ Protected Class Macro
 			Group="Behavior"
 			Type="String"
 			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NumOp"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Expli"

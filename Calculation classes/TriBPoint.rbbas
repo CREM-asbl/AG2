@@ -7,6 +7,8 @@ Inherits nBpoint
 		  Tab.append q
 		  Tab.append r
 		  ori = orientation
+		  redim extre(1)
+		  redim ctrl(5)
 		End Sub
 	#tag EndMethod
 
@@ -52,24 +54,6 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub TriBPoint(nBp as nBPoint)
-		  Tab = nBp.Tab
-		  ori = orientation
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function orientation() As integer
-		  dim u, v as BasicPoint
-		  
-		  u = tab(1)-tab(0)
-		  v = tab(2)-tab(0)
-		  return sign(u.vect(v))
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function PositionOnArc(a as double, orien as integer) As BasicPoint
 		  dim p, q as BasicPoint
 		  dim r, b as double
@@ -89,8 +73,6 @@ Inherits nBpoint
 		Function Computeangle(p as BasicPoint, orien as integer) As double
 		  dim e, a as double
 		  
-		  
-		  
 		  e = GetAngle(tab(0),p)
 		  a = e - startangle
 		  return Normalize(a,orien)
@@ -108,6 +90,39 @@ Inherits nBpoint
 		Function EndAngle() As double
 		  return getangle(tab(0),tab(2))
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreateExtreAndCtrlPoints(orien as integer)
+		  dim Bib as BiBPoint
+		  dim alpha as double
+		  dim M as RotationMatrix
+		  dim i as integer
+		  
+		  alpha = Normalize(endangle-startangle, orien)/3
+		  M = new RotationMatrix(tab(0),alpha)
+		  extre(0) = M*tab(1)
+		  extre(1) = M*extre(0)
+		  BiB = new BiBPoint(tab(1),extre(0))
+		  Bib.computeCtrlPoints(tab(0), orien,  ctrl)
+		  for i = 2 to 5
+		    ctrl(i) = M*ctrl(i-2)
+		  next
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub TriBPoint(s as shape)
+		  nBpoint(s)
+		  ori = orientation
+		  redim extre(1)
+		  redim ctrl(5)
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 

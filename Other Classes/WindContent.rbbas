@@ -44,12 +44,12 @@ Protected Class WindContent
 		Sub CreateFigs()
 		  dim Temp as XMLElement
 		  
-		  'If not app.macrocreation then
+		  
 		  FigsCreated = OpList.CreateElement("Created_Figures")
 		  FigsDeleted = OpList.CreateElement("Deleted_Figures")
 		  FigsMoved = OpList.CreateElement("MovedFigures")
 		  FigsModified = OpList.CreateElement("ModifiedFigures")
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -288,10 +288,7 @@ Protected Class WindContent
 		    if s.isinconstruction and (s.indexconstructedpoint = 0) then
 		      s.points(0).delete
 		    end if
-		    if currentcontent.TheObjects.getposition(s) <> -1 then
-		      s.delete
-		    end if
-		    
+		    s.delete
 		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
 		      Theobjects.XMLLoadObjects(FigsDeleted)
 		    end if
@@ -619,6 +616,10 @@ Protected Class WindContent
 		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = polygpointes
 		  end if
 		  
+		Exception err
+		  
+		  err.message = err.message+EndOfLine+str(n)
+		  Raise err
 		End Sub
 	#tag EndMethod
 
@@ -670,10 +671,11 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub MoveBack(n as integer)
 		  
-		  
-		  plans.remove  plans.indexof(n)
-		  plans.insert 1,n
-		  UpdatePlans
+		  if plans.indexof(n) <> -1 then
+		    plans.remove  plans.indexof(n)
+		    plans.insert 1,n
+		    UpdatePlans
+		  end if
 		  
 		  
 		End Sub
@@ -684,10 +686,9 @@ Protected Class WindContent
 		  
 		  if plans.indexof(n) <> -1 then
 		    plans.remove  plans.indexof(n)
+		    plans.append n
+		    UpdatePlans
 		  end if
-		  plans.append n
-		  UpdatePlans
-		  
 		  
 		End Sub
 	#tag EndMethod
