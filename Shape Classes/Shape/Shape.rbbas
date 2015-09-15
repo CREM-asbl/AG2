@@ -1245,9 +1245,9 @@ Implements StringProvider
 		  dim a as double
 		  dim tsf as transformation
 		  
-		  if invalid then
-		    return
-		  end if
+		  'if invalid then
+		  'return
+		  'end if
 		  
 		  updatecoord
 		  computeori
@@ -1273,7 +1273,7 @@ Implements StringProvider
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
-		          inter = CurrentContent.TheIntersecs.find(s1,s2)
+		          inter = p.GetInter  'CurrentContent.TheIntersecs.find(s1,s2)
 		          inter.update(p)
 		        end if
 		        p.modified = true
@@ -3133,8 +3133,8 @@ Implements StringProvider
 		  
 		  for i = npts-1 downto 0
 		    p = points(i)
-		    if p.pointsur.count = 2 and p.id > id then
-		      inter = CurrentContent.TheIntersecs.find(p.pointsur.element(0), p.pointsur.element(1))
+		    if p.forme = 2 and p.id > id then
+		      inter = p.GetInter  'CurrentContent.TheIntersecs.find(p.pointsur.element(0), p.pointsur.element(1))
 		      inter.removepoint p
 		    end if
 		    for j =  p.pointsur.count-1 downto 0
@@ -3318,16 +3318,16 @@ Implements StringProvider
 		  dim p as point
 		  dim diam as double
 		  
-		  if invalid  then
-		    return
-		  else
-		    if ubound(childs) >= npts then
-		      for i = npts to ubound(childs)
-		        childs(i).updateshape(M)
-		      next
-		    end if
-		    updateshape
+		  'if invalid  then
+		  'return
+		  'else
+		  if ubound(childs) >= npts then
+		    for i = npts to ubound(childs)
+		      childs(i).updateshape(M)
+		    next
 		  end if
+		  updateshape
+		  'end if
 		  
 		  
 		  

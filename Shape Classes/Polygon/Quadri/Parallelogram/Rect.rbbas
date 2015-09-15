@@ -153,7 +153,7 @@ Inherits Parallelogram
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier2fixes(p as point) As Matrix
+		Function Modifier2fixes(p as point, q as point) As Matrix
 		  // Routine qui modifie le rectangle  dans le cas où deux points sont fixes et le point n peut  être déplacé (pas arbitrairement)
 		  // Deux cas selon la position des points fixes
 		  
@@ -210,10 +210,11 @@ Inherits Parallelogram
 		Function Modifier3(p as point, q as point, r as point) As Matrix
 		  dim  p1, p2, p3 As point
 		  dim ep1,ep2,ep3,np1,np2,np3, u, v as BasicPoint
-		  dim i, k, n, n1, n2, n3, n4 as integer
+		  dim i, k, n, n1, n2, n3, n4, ns as integer
 		  dim t as boolean
 		  dim ff as figure
 		  dim Bib as BiBpoint
+		  dim ar as arc
 		  
 		  ff= GetSousFigure(fig)
 		  n =ff. NbSommSur
@@ -230,30 +231,48 @@ Inherits Parallelogram
 		      return Modifier2fixes(r)
 		    end if
 		    
-		  case 1          'c'est r qui doit être adapté
-		    n1 = getindexpoint(p)
-		    n2 = getindexpoint(q)
-		    n3 = getindexpoint(r)
-		    ff.getoldnewpos(p,ep1,np1)
-		    ff.getoldnewpos(q,ep2,np2)
-		    ff.getoldnewpos(r,ep3,np3)
-		    if abs(n1-n2) = 1 or abs(n1-n2) = 3 then
+		  case 1   
+		    p1 =point(ff.somm.element(ff.ListSommSur(0)))
+		    'if p1 <> ff.supfig.pointmobile and not (p1.isextremityofarc(n, ar) and (n = 2) and (ar.fig = ff.supfig)) then
+		    't =ff.replacerpoint(p1)
+		    'else  
+		    n1 = getindexpoint(p1)
+		    if n1 = getindexpoint(p) then
+		      p2 = q
+		      p3 = r
+		    elseif n1 = getindexpoint(q) then
+		      p2 = p
+		      p3 =r
+		    elseif n1 = getindexpoint(r) then
+		      p2 = p
+		      p3 = q
+		    end if
+		    n2 = getindexpoint(p2)
+		    n3 = getindexpoint(p3)
+		    ff.getoldnewpos(p1,ep1,np1)
+		    ff.getoldnewpos(p2,ep2,np2)
+		    ff.getoldnewpos(p3,ep3,np3)
+		    if abs(n2-n1) <> 2 then
 		      u = np2-np1
 		      v = u.vecnorperp
-		      Bib = new BiBPoint(np1, np1+v)
-		      if abs(n3-n1) = 1 or abs(n3-n1)=3 then
-		        np3 = np1.ProjectionAffine(BiB,r.pointsur.element(0), r.numside(0), np3)
-		      else
-		        np3 = np2.ProjectionAffine(BiB,r.pointsur.element(0), r.numside(0), np3)
+		      if abs(n1-n3) = 2 then
+		        Bib = new BiBPoint(np2, np2+v)
+		      else 
+		        BiB = new BiBPoint(np1,np1+v)
 		      end if
-		      r.moveto np3
-		      r.modified = true
-		      n4 = quatriemepoint(n1,n2,n3)
-		      return new affinitymatrix(ep1,ep2,ep3,np1,np2,np3)
-		      'points(n4).moveto points((n4+1) mod 4).bpt + points((n4+3) mod 4).bpt -points((n4+2) mod 4).bpt
-		      'points(n4).modified = true
+		      np3 = np3.Projection(BiB)
 		    else
+		      u = np3-np1
+		      v = u.vecnorperp
+		      if abs(n1-n2) = 2 then
+		        Bib = new BiBPoint(np3, np3+v)
+		      else
+		        BiB = new BiBPoint(np1,np1+v)
+		      end if
+		      np2 = np2.Projection(BiB)
 		    end if
+		    return new affinitymatrix(ep1,ep2,ep3,np1,np2,np3)
+		    'end if
 		  case 2
 		    for i = 0 to 1
 		      if point(ff.somm.element(ff.ListSommSur(i))) <> ff.supfig.pointmobile then

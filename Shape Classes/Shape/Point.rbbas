@@ -866,6 +866,8 @@ Inherits Shape
 		Sub Invalider()
 		  dim i,j,k as integer
 		  dim s as shape
+		  dim  s1, s2  as shape
+		  dim inter as intersec
 		  
 		  if currentcontent.currentoperation isa modifier and self = fig.pointmobile then
 		    return
@@ -874,28 +876,35 @@ Inherits Shape
 		  if not invalid  then
 		    invalid = true
 		    
-		    for i = 0 to conditioned.count -1
-		      conditioned.element(i).invalider
-		    next
-		    
-		    for i = 0 to ubound(parents)
-		      if parents(i).getindexpoint(self) <> -1 then
-		        parents(i).invalider
+		    if forme = 2 then
+		      's1 = pointsur.element(0)
+		      's2 = pointsur.element(1)
+		      inter = GetInter 'CurrentContent.TheIntersecs.Find(s1,s2)
+		      if inter <> nil then
+		        inter.bezet(numside(0), numside(1)) = false
 		      end if
-		    next
-		    
-		    for i = 0  to Ubound(ConstructedShapes)
-		      ConstructedShapes(i).Invalider
-		    next
-		    
-		    for i = 0 to tsfi.count-1
-		      for j = 0 to tsfi.element(i).constructedshapes.count -1
-		        s = tsfi.element(i).constructedshapes.element(j)
-		        s.invalider
+		      for i = 0 to conditioned.count -1
+		        conditioned.element(i).invalider
 		      next
-		    next
+		      
+		      for i = 0 to ubound(parents)
+		        if parents(i).getindexpoint(self) <> -1 then
+		          parents(i).invalider
+		        end if
+		      next
+		      
+		      for i = 0  to Ubound(ConstructedShapes)
+		        ConstructedShapes(i).Invalider
+		      next
+		      
+		      for i = 0 to tsfi.count-1
+		        for j = 0 to tsfi.element(i).constructedshapes.count -1
+		          s = tsfi.element(i).constructedshapes.element(j)
+		          s.invalider
+		        next
+		      next
+		    end if
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -1470,8 +1479,10 @@ Inherits Shape
 		    s = Point(ConstructedShapes(i))
 		    select case s.constructedby.Oper
 		    case 3, 5
-		      M1 = Matrix(s.constructedby.data(0))
-		      s.Moveto M1*bpt
+		      if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
+		        M1 = Matrix(s.constructedby.data(0))
+		        s.Moveto M1*bpt
+		      end if
 		    case 6
 		      tsf = Transformation(s.constructedby.data(0))
 		      M1 = tsf.M
@@ -1581,6 +1592,10 @@ Inherits Shape
 		  end if
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
+		    if parents(i) isa circle then
+		      BiBPoint(parents(i).coord).CreateExtreAndCtrlPoints(parents(i).ori)
+		      parents(i).updateskull
+		    end if
 		  next
 		  if ifmac <>nil and forme = 1 then
 		    ifmac.location = location(0)
@@ -2369,8 +2384,8 @@ Inherits Shape
 		  end if
 		  
 		  if pointsur.count > 0 then
-		    if pointsur.count = 2 then
-		      inter = CurrentContent.TheIntersecs.find(pointsur.element(0), pointsur.element(1))
+		    if forme = 2 then
+		      inter = GetInter 'CurrentContent.TheIntersecs.find(pointsur.element(0), pointsur.element(1))
 		      inter.removepoint self
 		    end if
 		    for j = pointsur.count-1 downto 0
@@ -2876,25 +2891,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateInter()
-		  dim s1, s2 as shape
-		  dim inter as intersec
-		  
-		  if pointsur.count = 2 then
-		    s1 = pointsur.element(0)
-		    s2 = pointsur.element(1)
-		    inter = CurrentContent.TheIntersecs.Find(s1,s2)
-		    if inter <> nil then
-		      inter.update        //Le point est éventuellement re-validé
-		      if not invalid then
-		        ValiderCondiEtConstruc
-		      end if
-		    end if
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function isonasupphom(byref s as shape) As integer
 		  dim i as integer
 		  
@@ -2976,7 +2972,7 @@ Inherits Shape
 		Function SimulInter(s1 as shape, s2 as shape) As BasicPoint
 		  dim inter as intersec
 		  
-		  inter = CurrentContent.TheIntersecs.find(s1, s2)
+		  inter = GetInter  'CurrentContent.TheIntersecs.find(s1, s2)
 		  
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
@@ -3000,7 +2996,7 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  inter = CurrentContent.TheIntersecs.find(s1, s2)
+		  inter = GetInter 'CurrentContent.TheIntersecs.find(s1, s2)
 		  
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
@@ -3120,6 +3116,39 @@ Inherits Shape
 		    next
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateInter()
+		  dim s1, s2 as shape
+		  dim inter as intersec
+		  
+		  if forme = 2 then
+		    's1 = pointsur.element(0)
+		    's2 = pointsur.element(1)
+		    inter = GetInter 'CurrentContent.TheIntersecs.Find(s1,s2)
+		    if inter <> nil then
+		      inter.update (self)      //Le point est éventuellement re-validé
+		      if not invalid then
+		        ValiderCondiEtConstruc
+		      end if
+		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInter() As intersec
+		  dim s1, s2 as shape
+		  
+		  if forme <> 2 then
+		    return nil
+		  end if
+		  
+		  s1 = pointsur.element(0)
+		  s2 = pointsur.element(1)
+		  return CurrentContent.TheIntersecs.Find(s1,s2)
+		End Function
 	#tag EndMethod
 
 

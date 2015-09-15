@@ -492,10 +492,10 @@ Implements StringProvider
 		    bezet(i,j) = true
 		    reset(i,j) = true
 		    pt.moveto bptinters(i,j)
-		    if val(i,j) and bptinters(i,j) <> nil and  not sh1.invalid and not sh2.invalid then
-		      setlocation(pt,i,j)
-		      pt.modified = true
-		      pt.updateshape
+		    setlocation(pt,i,j)
+		    pt.modified = true
+		    pt.updateshape
+		    if val(i,j) and (bptinters(i,j) <> nil) and ((pt.conditionedby = nil) or (not pt.conditionedby.invalid)) and  not sh1.invalid and not sh2.invalid then
 		      pt.valider
 		    end if
 		  end if
@@ -535,7 +535,7 @@ Implements StringProvider
 		  end if
 		  if val(i1,j1) then
 		    validerpoint(pt,i1,j1)
-		  else 
+		  else
 		    pt.invalider
 		  end if
 		  

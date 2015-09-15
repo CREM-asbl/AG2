@@ -236,8 +236,6 @@ Begin Window LabelWindow
       LockTop         =   ""
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   49
       TopLeftColor    =   0
       Visible         =   True
@@ -439,8 +437,6 @@ Begin Window LabelWindow
       LockTop         =   "False"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   81
       Visible         =   True
       Width           =   13
@@ -462,8 +458,6 @@ Begin Window LabelWindow
       LockTop         =   "False"
       Scope           =   0
       TabPanelIndex   =   0
-      TextFont        =   "System"
-      TextSize        =   0
       Top             =   80
       Visible         =   True
       Width           =   13
@@ -659,7 +653,11 @@ End
 		  CoordY.text = str(- corr.y)
 		  if drapnew then
 		    Delete.visible = false
-		    Polices.ListIndex = 2
+		    for i = 0 to Polices.ListCount-1
+		       if Polices.List(i) = "Times New Roman" then
+		        Polices.ListIndex = i
+		      end if
+		    next
 		  else
 		    for i = 0 to Polices.ListCount-1
 		      if Polices.List(i)  = Lab.Font then

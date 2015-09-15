@@ -1450,7 +1450,7 @@ Implements StringProvider
 		      elseif p.pointsur.count = 2 then
 		        n0 = val(Coord.GetAttribute("Side0"))
 		        n1 = val(Coord.GetAttribute("Side1"))
-		        inter= CurrentContent.Theintersecs.find(p.pointsur.element(0),p.pointsur.element(1))
+		        inter= p.GetInter 'CurrentContent.Theintersecs.find(p.pointsur.element(0),p.pointsur.element(1))
 		        inter.update(p)
 		      end if
 		    next
@@ -2595,9 +2595,11 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
 		  dim p, q, r as point
+		  dim ep, np, eq, nq, u, v as BasicPoint
 		  dim n1, n2 as integer
 		  dim s as shape
 		  dim i as integer
+		  dim BiB as BiBPoint
 		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
@@ -2620,12 +2622,7 @@ Implements StringProvider
 		    if  (replacerpoint(p) or replacerpoint(q))  then
 		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
 		    else
-		      r = point(somm.element(listsommsur(0)))
-		      if s isa rect then
-		        return rect(s).modifier3(p,q,r)
-		      else
-		        return nil
-		      end if
+		      return rect(s).modifier2fixes(p,q)
 		    end if
 		  else
 		    return s.Modify2(p,q)
@@ -2660,9 +2657,9 @@ Implements StringProvider
 		  q = Point(somm.element(n2))
 		  r =Point(somm.element(n3))
 		  
-		  if s isa quadri then
-		    return quadri(s).modifier3(p,q,r)
-		  end if
+		  'if s isa quadri then
+		  'return quadri(s).modifier3(p,q,r)
+		  'end if
 		  
 		  n = NbSommSur
 		  
@@ -2676,7 +2673,7 @@ Implements StringProvider
 		  case 1
 		    ps =point(somm.element(ListSommSur(0)))
 		    if ps <> supfig.pointmobile and not (ps.isextremityofarc(n, ar) and (n = 2) and (ar.fig = supfig)) then
-		      t = replacerpoint(point(somm.element(ListSommSur(0))))
+		      t = replacerpoint(ps)
 		    else
 		      getoldnewpos(p,ep,np)
 		      getoldnewpos(q,eq,nq)
@@ -3891,6 +3888,42 @@ Implements StringProvider
 		  next
 		  return t
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function containsmaccstedshapewithoutinitobjects() As Boolean
+		  dim s, sh as shape
+		  dim i,j as integer
+		  
+		  
+		  for i = 0 to shapes.count-1
+		    s = shapes.element(i)
+		    if s.macconstructedby <> nil then
+		      for  j = 0 to ubound(s.macconstructedby.realinit)
+		        sh = currentcontent.theobjects.getshape(s.MacConstructedby.realinit(j))
+		        if sh.fig <> self then
+		          return false
+		        end if
+		      next
+		    end if
+		  next
+		  return true
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatemacconstructedshapes()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count-1
+		    shapes.element(i).updatemacconstructedshapes
+		  next
+		  for i = 0 to somm.count-1
+		    somm.element(i).updatemacconstructedshapes
+		  next
+		End Sub
 	#tag EndMethod
 
 

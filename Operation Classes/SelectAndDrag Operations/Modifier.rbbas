@@ -346,10 +346,12 @@ Inherits SelectAndDragOperation
 		        IF (FF.shapes.getposition(currentcontent.SHUL) <>-1) or (ff.shapes.getposition(currentcontent.shUA) <> -1) then
 		          currentcontent.theobjects.updatelabels(1)
 		        end if
+		        ff.updatemacconstructedshapes
 		      end if
 		    next
 		  end if
 		  CurrentContent.optimize
+		  
 		  
 		  
 		  

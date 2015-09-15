@@ -770,6 +770,40 @@ Inherits Bipoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub EndConstruction()
+		  dim p0, p1 as point
+		  dim sh(-1) as shape
+		  dim i as integer
+		  dim n0, n1, m as integer
+		  dim t as boolean
+		  
+		  p0 = points(0)
+		  p1 = points(1)
+		  
+		  if p0.sameparent(p1,sh) then
+		    t = false
+		    i = 0
+		    while t = false and i <= ubound(sh)
+		      n0 = sh(i).getindexpoint(p0)
+		      n1 = sh(i).getindexpoint(p1)
+		      if sh(i) isa polygon and ( (n1 = (n0+1) mod sh(i).npts) or  (n0 = (n1+1) mod sh(i).npts))    then
+		        m = min(n0,n1)
+		        if m = 0 and (n0 <> 1) and (n1 <> 1) then
+		          m = sh(i).npts-1
+		        end if
+		        setconstructedby sh(i), 8
+		        Constructedby.data.append m
+		        t = true
+		      end if
+		      i = i+1
+		    wend
+		  end if
+		  
+		  super.endconstruction
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

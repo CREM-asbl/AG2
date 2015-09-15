@@ -183,11 +183,11 @@ Inherits SelectOperation
 		  
 		  currentshape = tempshape.element(0)
 		  if currentshape isa point then
-		    if UBound(point(currentshape).parents) > -1 then
+		    if UBound(point(currentshape).parents) = -1 or point(currentshape).parents(0).MacConstructedBy <> nil then
 		      currentshape = point(currentshape).parents(0)
-		    else
 		      return
 		    end if
+		    currentshape = point(currentshape).parents(0)
 		  end if
 		  if currentshape <> nil then
 		    currentshape.selectneighboor
