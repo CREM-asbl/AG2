@@ -17,9 +17,9 @@ Begin Window WorkWindow
    MaxWidth        =   32000
    MenuBar         =   -1173617590
    MenuBarVisible  =   "True"
-   MinHeight       =   500
+   MinHeight       =   595
    MinimizeButton  =   "True"
-   MinWidth        =   500
+   MinWidth        =   800
    Placement       =   0
    Resizeable      =   "True"
    Title           =   "Sans Titre"
@@ -123,9 +123,9 @@ Begin Window WorkWindow
          Italic          =   ""
          Left            =   5
          LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
+         LockLeft        =   "True"
+         LockRight       =   "True"
+         LockTop         =   "False"
          Scope           =   0
          TabPanelIndex   =   0
          TextFont        =   "System"
@@ -249,8 +249,8 @@ Begin Window WorkWindow
          Italic          =   ""
          Left            =   5
          LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
+         LockLeft        =   "True"
+         LockRight       =   "True"
          LockTop         =   ""
          Scope           =   0
          TabPanelIndex   =   0
@@ -476,11 +476,11 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   ""
-         Left            =   0
+         Left            =   5
          LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
+         LockLeft        =   "True"
+         LockRight       =   "True"
+         LockTop         =   "False"
          Scope           =   0
          TabPanelIndex   =   0
          TextFont        =   "System"
@@ -503,7 +503,7 @@ Begin Window WorkWindow
             Index           =   1
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   2
+            Left            =   7
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -531,7 +531,7 @@ Begin Window WorkWindow
             Index           =   2
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   2
+            Left            =   7
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -559,7 +559,7 @@ Begin Window WorkWindow
             Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   2
+            Left            =   7
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -587,7 +587,7 @@ Begin Window WorkWindow
             Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   ""
-            Left            =   2
+            Left            =   7
             LockBottom      =   ""
             LockLeft        =   ""
             LockRight       =   ""
@@ -2657,7 +2657,7 @@ End
 	#tag Method, Flags = &h0
 		Sub UpdateToolBar()
 		  dim espace as integer
-		  espace = min((me.Height-me.MinHeight)/3,50)
+		  espace = min((me.Height-me.MinHeight)/3,5)
 		  if(me.Height = me.MinHeight) then
 		    MoveBox.TextSize = 8
 		    StdBox.TextSize = 8
