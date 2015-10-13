@@ -180,6 +180,7 @@ Implements StringProvider
 		  
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
+		  bezet(h,k) = false
 		  
 		  if val(h,k) and not bezet(h,k) then
 		    validerpoint(pt,h,k)
@@ -260,7 +261,8 @@ Implements StringProvider
 		        val(i,1)= false
 		      else
 		        bptinters(i,0) = b
-		        val(i,1) = false
+		        bptinters(i,1) = b
+		        'val(i,1) = false
 		      end if
 		    case 2
 		      bptinters(i,0) = p(0)

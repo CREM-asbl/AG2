@@ -359,7 +359,7 @@ Inherits Shape
 		Sub ComputeArcAngle()
 		  
 		  if not drapori then
-		     computeori
+		    computeori
 		  end if
 		  if   abs(arcangle)  >  0.2 and ori <> 0 then
 		    drapori = true  //on ne peut plus changer l'orientation

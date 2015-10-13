@@ -18,6 +18,7 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub Triangle(ol as objectslist, temp as XMLElement)
 		  Polygon(ol,Temp)
+		  ncpts = 3
 		End Sub
 	#tag EndMethod
 

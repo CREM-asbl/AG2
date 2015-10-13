@@ -527,11 +527,11 @@ Implements StringProvider
 		        point(constructedshapes(i)).paintall(g)
 		      end if
 		    next
-		    if not hidden then
-		      for i = 0 to labs.count-1
-		        labs.element(i).paint(g)
-		      next
-		    end if
+		    'if not hidden then
+		    'for i = 0 to labs.count-1
+		    'labs.element(i).paint(g)
+		    'next
+		    'end if
 		  end if
 		  
 		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
@@ -768,17 +768,14 @@ Implements StringProvider
 		Sub UpDateSkull()
 		  dim i as integer
 		  
+		  if self isa circle or self isa Lacet then
+		    nsk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		  else
+		    sk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		  end if
 		  
-		  for i=0 to npts-1
-		    if i=0 then
-		      if self isa circle or self isa Lacet then
-		        nsk.update(wnd.myCanvas1.transform(Points(0).bpt))
-		      else
-		        sk.update(wnd.myCanvas1.transform(Points(0).bpt))
-		      end if
-		    else
-		      UpdateSkull(i,wnd.myCanvas1.dtransform(Points(i).bpt-Points(0).bpt))
-		    end
+		  for i=1 to npts-1
+		    UpdateSkull(i,wnd.myCanvas1.dtransform(Points(i).bpt-Points(0).bpt))
 		  next
 		  
 		  
@@ -1245,10 +1242,6 @@ Implements StringProvider
 		  dim a as double
 		  dim tsf as transformation
 		  
-		  'if invalid then
-		  'return
-		  'end if
-		  
 		  updatecoord
 		  computeori
 		  a = aire
@@ -1273,11 +1266,9 @@ Implements StringProvider
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
-		          inter = p.GetInter  'CurrentContent.TheIntersecs.find(s1,s2)
+		          inter = p.GetInter
 		          inter.update(p)
 		        end if
-		        p.modified = true
-		        p.updateshape
 		      end if
 		    next
 		  end if
@@ -1313,7 +1304,7 @@ Implements StringProvider
 		  
 		  if self isa Lacet then
 		    Lacet(self).CreateExtreAndCtrlPoints
-		  else
+		  elseif not self isa bipoint then
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  modified = true
@@ -1441,7 +1432,6 @@ Implements StringProvider
 		  end if
 		  
 		  validating = true
-		  
 		  t = true
 		  t2 = true
 		  for i = 0 to npts-1
@@ -1456,11 +1446,11 @@ Implements StringProvider
 		    validating = false
 		    return
 		  end if
+		  
 		  'for i = 0 to ncpts-1
 		  't2 = t2 and points(i).modified
 		  'next
 		  'if t2 then
-		  'constructshape
 		  'end if
 		  
 		  
@@ -1910,6 +1900,11 @@ Implements StringProvider
 		  List = EL.XQL("Childs")
 		  if List.length > 0 then
 		    XMLReadPoints XMLElement(List.Item(0))   // ne lit pas les points sur
+		  end if
+		  
+		  List = EL.Xql("InfosArcs")
+		  if List.length > 0 then
+		    XMLReadInfoArcs(EL)
 		  end if
 		  
 		  Labs = new LabList
@@ -3313,22 +3308,17 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub updateshape(M as Matrix)
-		  dim i as integer
+		  dim i as integer    //Ici on s'occupe des points autres que les sommets
 		  dim s1, s2 As shape
 		  dim p as point
 		  dim diam as double
 		  
-		  'if invalid  then
-		  'return
-		  'else
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
 		      childs(i).updateshape(M)
 		    next
 		  end if
 		  updateshape
-		  'end if
-		  
 		  
 		  
 		End Sub
@@ -3758,12 +3748,16 @@ Implements StringProvider
 		  dim diam as double
 		  
 		  diam = 0
+		  'if ncpts<3 then
+		  'diam =999
+		  'else
 		  
 		  for i = 0 to ncpts-2
 		    for j = i+1 to ncpts-1
 		      diam= max(diam, points(i).bpt.distance(points(j).bpt))
 		    next
 		  next
+		  'end if
 		  
 		  return diam
 		  
@@ -3962,15 +3956,13 @@ Implements StringProvider
 		  dim i as integer
 		  dim d as double
 		  
-		  d = Points(0).bpt.distance(Points(1).bpt)
 		  
-		  if d > 0 then
-		    for i = 0 to ncpts-1
-		      coord.tab(i) = Points(i).bpt
-		    next
-		    coord.constructshape(fam,forme)
-		    repositionnerpoints
-		  end If
+		  for i = 0 to ncpts-1
+		    coord.tab(i) = Points(i).bpt
+		  next
+		  coord.constructshape(fam,forme)
+		  repositionnerpoints
+		  
 		  
 		  
 		  
@@ -4149,13 +4141,25 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reconstruct()
+		Sub oldreconstruct()
 		  
 		  'if  computediam > 10*epsilon then
 		  constructshape
 		  valider
 		  tobereconstructed = false
 		  'end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInters() As intersec()
+		  return currentcontent.theintersecs.find(self)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLReadInfoArcs(EL as XMLElement)
+		  
 		End Sub
 	#tag EndMethod
 

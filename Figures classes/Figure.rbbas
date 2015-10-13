@@ -291,13 +291,24 @@ Implements StringProvider
 		  
 		  
 		  if M = nil or M.v1 = nil then
-		    QQupdateshapes
+		    if auto = 0 or auto> 3 then
+		      QQupdateshapes
+		    else
+		      tobereconstructed = true
+		    end if
 		    return true                                      ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
+		    if  tobereconstructed then
+		      reconstruct
+		    end if
 		    updatesomm(M)
 		    updatePtsSur(M)
 		    updatePtsConsted(M)
 		    updateshapes(M)
+		    if  tobereconstructed then
+		      tobereconstructed = false
+		      return true
+		    end if
 		    return checksimaff(M)
 		  end if
 		  
@@ -1399,15 +1410,7 @@ Implements StringProvider
 		    EL2 = XMLElement(EL1.Child(i))
 		    s = shapes.element(i)
 		    s.updatecoord
-		    if s isa circle or s isa Lacet then
-		      k = 0
-		      for j = 0 to ubound(s.coord.centres)
-		        if s.coord.centres(j) <>nil then
-		          Coord = XmlElement(EL2.child(k))
-		          s.coord.centres(j) = new BasicPoint(coord)
-		          k = k+1
-		        end if
-		      next
+		    if s isa circle  then             //La reconstruction des points de controles est prise en charge par la routine de peinture
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
 		    s.updateskull
@@ -1478,9 +1481,11 @@ Implements StringProvider
 		  
 		  for i = 0 to shapes.count-1
 		    d = shapes.element(i).computediam
-		    if  d < 20*epsilon then
-		      shapes.element(i).constructshape
+		    if  d <= epsilon  then
+		      shapes.element(i).invalider
 		      return true
+		    else
+		      
 		    end if
 		  next
 		  
@@ -3926,6 +3931,62 @@ Implements StringProvider
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub constructshapes()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count-1
+		    shapes.element(i).constructshape
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub invalider()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count -1
+		    shapes.element(i).invalider
+		  next
+		  
+		  invalid = true
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub valider()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count -1
+		    shapes.element(i).valider
+		  next
+		  
+		  invalid = false
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub reconstruct()
+		  dim i, j  as integer
+		  dim diam as double
+		  
+		  for i = 0 to shapes.count-1
+		    diam = shapes.element(i).computediam
+		    if diam <= epsilon then
+		      for j = 1 to ubound(shapes.element(i).points)
+		        shapes.element(i).points(j).moveto shapes.element(i).points(0).bpt
+		      next
+		      return
+		    end if
+		    Shapes.element(i).constructshape
+		    for j = 0 to ubound(shapes.element(i).points)
+		      shapes.element(i).points(j).modified = true   //Pour empêcher updatesomm de déplacer les points qui ont été remis en place
+		    next
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -4125,7 +4186,11 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		tobereconstructed(-1) As Integer
+		invalid As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		tobereconstructed As Boolean
 	#tag EndProperty
 
 
@@ -4213,6 +4278,18 @@ Implements StringProvider
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Modified"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="invalid"
+			Group="Behavior"
+			InitialValue="0"
+			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="tobereconstructed"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

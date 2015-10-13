@@ -78,6 +78,21 @@ Protected Class IntersecList
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Find(s as shape) As intersec()
+		  dim inter(-1) as intersec
+		  dim i as integer
+		  
+		  for i = 0 to count-1
+		    if element(i).sh1 = s or element(i).sh2 = s then
+		      inter.append element(i)
+		    end if
+		  next
+		  return inter
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Intersecs(-1) As Intersec

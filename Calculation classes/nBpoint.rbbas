@@ -169,18 +169,12 @@ Protected Class nBpoint
 		    a = (tab(0)+tab(1))/2
 		    b = tab(1)-tab(0)
 		    d = b.norme
-		    if d < 5*epsilon then
-		      for i = 2 to n-1
-		        tab(i) = new BasicPoint(tab(0))
-		      next
-		    else
-		      b = b.VecNorPerp
-		      c = a + b*(ori*d/(2*tan(PI/n)))
-		      M = new RotationMatrix(c,2*ori*PI/n)
-		      for i = 2 to n-1
-		        tab(i) = M*tab(i-1)
-		      next
-		    end if
+		    b = b.VecNorPerp
+		    c = a + b*(ori*d/(2*tan(PI/n)))
+		    M = new RotationMatrix(c,2*ori*PI/n)
+		    for i = 2 to n-1
+		      tab(i) = M*tab(i-1)
+		    next
 		  case 5
 		    select case  fo
 		    case 1

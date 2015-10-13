@@ -231,7 +231,10 @@ Inherits Shape
 		Sub paint(g as Graphics)
 		  dim i as integer
 		  
+		  
 		  updateskull
+		  coord.CreateExtreAndCtrlPoints(ori)
+		  
 		  if (nsk= nil ) or ( nsk.cs(0).x = 0 and nsk.cs(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if

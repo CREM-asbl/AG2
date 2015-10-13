@@ -112,7 +112,7 @@ Inherits Parallelogram
 		      return Modifier2fixes(p)
 		    elseif ubound(q.parents) = 0 then
 		      return Modifier2fixes(q)
-		    else 
+		    else
 		      return Modifier2fixes(r)
 		    end if
 		    
@@ -182,6 +182,13 @@ Inherits Parallelogram
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -193,13 +200,6 @@ Inherits Parallelogram
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

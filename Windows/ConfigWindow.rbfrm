@@ -32,7 +32,7 @@ Begin Window ConfigWindow
       Caption         =   "Save"
       ControlOrder    =   0
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -49,7 +49,7 @@ Begin Window ConfigWindow
       TextSize        =   12
       Top             =   164
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   231
       BehaviorIndex   =   0
    End
@@ -60,7 +60,7 @@ Begin Window ConfigWindow
       Caption         =   "OK"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -77,7 +77,7 @@ Begin Window ConfigWindow
       TextSize        =   12
       Top             =   198
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   1
    End
@@ -88,7 +88,7 @@ Begin Window ConfigWindow
       Caption         =   "Load"
       ControlOrder    =   2
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -105,7 +105,7 @@ Begin Window ConfigWindow
       TextSize        =   12
       Top             =   164
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   231
       BehaviorIndex   =   2
    End
@@ -116,7 +116,7 @@ Begin Window ConfigWindow
       Caption         =   "Changer le mot de passe"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -133,7 +133,7 @@ Begin Window ConfigWindow
       TextSize        =   12
       Top             =   198
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   231
       BehaviorIndex   =   3
    End
@@ -144,7 +144,7 @@ Begin Window ConfigWindow
       Caption         =   "ChangeLang"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -161,7 +161,7 @@ Begin Window ConfigWindow
       TextSize        =   12
       Top             =   126
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   231
       BehaviorIndex   =   4
    End
@@ -172,7 +172,7 @@ Begin Window ConfigWindow
       Caption         =   "CreateDict"
       ControlOrder    =   5
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -189,7 +189,7 @@ Begin Window ConfigWindow
       TextSize        =   12
       Top             =   129
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   231
       BehaviorIndex   =   5
    End
@@ -199,7 +199,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   1344944127
       ControlOrder    =   6
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -216,7 +216,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -226,7 +226,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   1584048127
       ControlOrder    =   7
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -243,7 +243,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -253,7 +253,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   8007679
       ControlOrder    =   8
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -270,7 +270,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -280,7 +280,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   952131583
       ControlOrder    =   9
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -297,7 +297,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -307,7 +307,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   115009535
       ControlOrder    =   10
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -324,7 +324,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -334,7 +334,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   454606847
       ControlOrder    =   11
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -351,7 +351,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -361,7 +361,7 @@ Begin Window ConfigWindow
       AutoDeactivate  =   "True"
       Backdrop        =   623656959
       ControlOrder    =   12
-      Enabled         =   True
+      Enabled         =   "True"
       EraseBackground =   "True"
       Height          =   36
       HelpTag         =   ""
@@ -378,7 +378,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   39
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   36
       BehaviorIndex   =   6
    End
@@ -389,7 +389,7 @@ Begin Window ConfigWindow
       Caption         =   "Sans_titre"
       ControlOrder    =   13
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   0
@@ -406,7 +406,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   86
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   7
    End
@@ -417,7 +417,7 @@ Begin Window ConfigWindow
       Caption         =   "Sans_titre"
       ControlOrder    =   14
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   1
@@ -434,7 +434,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   86
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   7
    End
@@ -445,7 +445,7 @@ Begin Window ConfigWindow
       Caption         =   "Sans_titre"
       ControlOrder    =   15
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   2
@@ -462,7 +462,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   86
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   7
    End
@@ -473,7 +473,7 @@ Begin Window ConfigWindow
       Caption         =   "Sans_titre"
       ControlOrder    =   16
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   3
@@ -490,7 +490,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   86
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   7
    End
@@ -501,7 +501,7 @@ Begin Window ConfigWindow
       Caption         =   "Sans_titre"
       ControlOrder    =   17
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   4
@@ -518,7 +518,7 @@ Begin Window ConfigWindow
       TextSize        =   0
       Top             =   86
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   7
    End

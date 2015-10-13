@@ -33,6 +33,7 @@ Inherits Triangle
 		Sub TriangIso(ol as objectslist, Temp as XMLElement)
 		  Polygon(ol,Temp)
 		  Liberte = 5
+		  ncpts = 3
 		End Sub
 	#tag EndMethod
 
@@ -114,6 +115,13 @@ Inherits Triangle
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -125,13 +133,6 @@ Inherits Triangle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -231,11 +231,11 @@ Inherits Parallelogram
 		      return Modifier2fixes(r)
 		    end if
 		    
-		  case 1   
+		  case 1
 		    p1 =point(ff.somm.element(ff.ListSommSur(0)))
 		    'if p1 <> ff.supfig.pointmobile and not (p1.isextremityofarc(n, ar) and (n = 2) and (ar.fig = ff.supfig)) then
 		    't =ff.replacerpoint(p1)
-		    'else  
+		    'else
 		    n1 = getindexpoint(p1)
 		    if n1 = getindexpoint(p) then
 		      p2 = q
@@ -257,7 +257,7 @@ Inherits Parallelogram
 		      v = u.vecnorperp
 		      if abs(n1-n3) = 2 then
 		        Bib = new BiBPoint(np2, np2+v)
-		      else 
+		      else
 		        BiB = new BiBPoint(np1,np1+v)
 		      end if
 		      np3 = np3.Projection(BiB)

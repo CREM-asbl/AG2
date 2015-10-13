@@ -31,7 +31,7 @@ Begin Window BugFindW
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   110
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window BugFindW
       TextSize        =   12
       Top             =   0
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   381
       BehaviorIndex   =   0
    End
@@ -63,7 +63,7 @@ Begin Window BugFindW
       Caption         =   "OK"
       ControlOrder    =   1
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -80,7 +80,7 @@ Begin Window BugFindW
       TextSize        =   0
       Top             =   110
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   1
    End
@@ -91,7 +91,7 @@ Begin Window BugFindW
       Caption         =   "Annuler"
       ControlOrder    =   2
       Default         =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -108,7 +108,7 @@ Begin Window BugFindW
       TextSize        =   0
       Top             =   110
       Underline       =   ""
-      Visible         =   True
+      Visible         =   "True"
       Width           =   80
       BehaviorIndex   =   2
    End

@@ -153,7 +153,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub highlight(s as shape)
-		     dim i, j as integer
+		  dim i, j as integer
 		  dim p as point
 		  dim sh as shape
 		  dim t as boolean
@@ -243,7 +243,7 @@ Inherits SelectOperation
 		  if visible = nil or visible.count = 0 then
 		    return
 		  end if
-		                            
+		  
 		  nobj = visible.count
 		  iobj = (iobj+1) mod nobj
 		  

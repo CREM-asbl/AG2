@@ -206,42 +206,6 @@ Inherits Polyqcq
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Lacet(ol as ObjectsList, Temp as XMLElement)
-		  dim List as XMLNodeList
-		  dim EL, EL1, EL2 as XMLElement
-		  dim i, k as integer
-		  
-		  Shape(ol,Temp)
-		  
-		  List = Temp.Xql("InfosArcs")
-		  if List.length > 0 then
-		    EL = XmlElement(List.Item(0))
-		    EL1= XMLElement(EL.firstchild)
-		    narcs = val(EL1.GetAttribute("N"))
-		    'if narcs = 0 then
-		    'narcs = 1
-		    'redim coord.curved(2)
-		    'redim coord.centres(2)
-		    'coord.curved(2) = 1
-		    'EL1 = XMLElement(EL.firstchild)
-		    'coord.centres(2) = new BasicPoint(val(EL1.GetAttribute("CoordX")), val(EL1.GetAttribute("CoordY")))
-		    'else
-		    redim coord.curved(npts-1)
-		    redim coord.centres(npts-1)
-		    for i=0 to EL1.ChildCount-1
-		      EL2 =  XMLElement(EL1.Child(i))
-		      k = val(EL2.GetAttribute("Nr"))
-		      coord.curved(k)=1
-		      coord.centres(k) = new BasicPoint(val(EL2.GetAttribute("CoordX")), val(EL2.GetAttribute("CoordY")))
-		    next
-		    'end if
-		  end if
-		  PrepareSkull(points(0).bpt)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ToEPS(tos as textoutputStream)
 		  dim Source as Shape
 		  dim M as Matrix
@@ -569,7 +533,7 @@ Inherits Polyqcq
 		  if nsk= nil  or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
-		  
+		  CreateExtreAndCtrlPoints
 		  updateskull
 		  nsk.fixecouleurs(self)
 		  nsk.fixeepaisseurs(self)
@@ -706,6 +670,7 @@ Inherits Polyqcq
 		  next
 		  
 		  g = g/(npts+ubound(coord.extre)+1)
+		  g = g/npts
 		  return g
 		  
 		End Function
@@ -804,6 +769,32 @@ Inherits Polyqcq
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub XMLReadInfoArcs(Temp as XMLElement)
+		  dim List as XMLNodeList
+		  dim EL, EL1, EL2 as XMLElement
+		  dim i, k as integer
+		  
+		  List = Temp.Xql("InfosArcs")
+		  if List.length > 0 then
+		    EL = XmlElement(List.Item(0))
+		    EL1= XMLElement(EL.firstchild)
+		    narcs = val(EL1.GetAttribute("N"))
+		    redim coord.curved(npts-1)
+		    redim coord.centres(npts-1)
+		    for i=0 to EL1.ChildCount-1
+		      EL2 =  XMLElement(EL1.Child(i))
+		      k = val(EL2.GetAttribute("Nr"))
+		      coord.curved(k)=1
+		      coord.centres(k) = new BasicPoint(val(EL2.GetAttribute("CoordX")), val(EL2.GetAttribute("CoordY")))
+		    next
+		    PrepareSkull(points(0).bpt)
+		    CreateExtreAndCtrlPoints
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -840,6 +831,13 @@ Inherits Polyqcq
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -851,13 +849,6 @@ Inherits Polyqcq
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -264,7 +264,7 @@ Inherits Shape
 		  
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
 		  if d <> nil then
-		    bpt = d
+		    bpt = d                       'On déplace même les points modifiés
 		    if labs.count = 1 and not labs.element(0).fixe  then
 		      labs.element(0).SetPosition
 		    end if
@@ -768,16 +768,25 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PutOnSegment(a as BasicPoint, b as BasicPoint, r as double, n as integer)
-		  if r <= 0 then
-		    moveto a
-		    location(n) = 0
-		  elseif r>= 1 then
-		    moveto b
-		    location(n) = 1
+		  location(n) = r
+		  moveto bpt.projection(a,b)
+		  
+		  if r <0 or r > 1 then
+		    invalider
 		  else
-		    moveto bpt.projection(a,b)
-		    location(n) = r
+		    valider
 		  end if
+		  
+		  'if r <= 0 then
+		  'moveto a
+		  'location(n) = 0
+		  'elseif r>= 1 then
+		  'moveto b
+		  'location(n) = 1
+		  'else
+		  'moveto bpt.projection(a,b)
+		  'location(n) = r
+		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -1593,7 +1602,7 @@ Inherits Shape
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
 		    if parents(i) isa circle then
-		      BiBPoint(parents(i).coord).CreateExtreAndCtrlPoints(parents(i).ori)
+		      parents(i).coord.CreateExtreAndCtrlPoints(parents(i).ori)
 		      parents(i).updateskull
 		    end if
 		  next

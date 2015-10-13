@@ -31,7 +31,7 @@ Begin Window PrefChangeWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -52,7 +52,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   107
       BehaviorIndex   =   0
    End
@@ -62,7 +62,7 @@ Begin Window PrefChangeWindow
       ControlOrder    =   1
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
@@ -81,7 +81,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12
       Top             =   14
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   154
       BehaviorIndex   =   1
    End
@@ -92,7 +92,7 @@ Begin Window PrefChangeWindow
       Caption         =   "OK"
       ControlOrder    =   2
       Default         =   "True"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -109,7 +109,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12
       Top             =   75
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   2
    End
@@ -120,7 +120,7 @@ Begin Window PrefChangeWindow
       Caption         =   "Annuler"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   28
       HelpTag         =   ""
       Index           =   -2147483648
@@ -137,7 +137,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12
       Top             =   75
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   69
       BehaviorIndex   =   3
    End
