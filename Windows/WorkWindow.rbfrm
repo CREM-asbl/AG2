@@ -17,9 +17,9 @@ Begin Window WorkWindow
    MaxWidth        =   32000
    MenuBar         =   -1173617590
    MenuBarVisible  =   "True"
-   MinHeight       =   500
+   MinHeight       =   595
    MinimizeButton  =   "True"
-   MinWidth        =   500
+   MinWidth        =   800
    Placement       =   0
    Resizeable      =   "True"
    Title           =   "Sans Titre"
@@ -293,9 +293,9 @@ Begin Window WorkWindow
          Italic          =   ""
          Left            =   5
          LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
-         LockTop         =   ""
+         LockLeft        =   "True"
+         LockRight       =   "True"
+         LockTop         =   "False"
          Scope           =   0
          TabPanelIndex   =   0
          TextFont        =   "System"
@@ -427,8 +427,8 @@ Begin Window WorkWindow
          Italic          =   ""
          Left            =   5
          LockBottom      =   ""
-         LockLeft        =   ""
-         LockRight       =   ""
+         LockLeft        =   "True"
+         LockRight       =   "True"
          LockTop         =   ""
          Scope           =   0
          TabPanelIndex   =   0
@@ -629,6 +629,175 @@ Begin Window WorkWindow
             BehaviorIndex   =   6
          End
       End
+<<<<<<< HEAD
+=======
+      Begin PushButton MouvBut
+         AutoDeactivate  =   "True"
+         Bold            =   "True"
+         Cancel          =   ""
+         Caption         =   "Modifier"
+         ControlOrder    =   3
+         Default         =   ""
+         Enabled         =   True
+         Height          =   30
+         HelpTag         =   ""
+         Index           =   0
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   0
+         LockBottom      =   ""
+         LockLeft        =   ""
+         LockRight       =   ""
+         LockTop         =   ""
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   31
+         Underline       =   ""
+         Visible         =   True
+         Width           =   120
+         BehaviorIndex   =   7
+      End
+      Begin GroupBox MoveBox
+         AutoDeactivate  =   "True"
+         Bold            =   "True"
+         Caption         =   "Mouvements"
+         ControlOrder    =   4
+         Enabled         =   True
+         Height          =   152
+         HelpTag         =   ""
+         Index           =   -2147483648
+         InitialParent   =   "Tools"
+         Italic          =   ""
+         Left            =   5
+         LockBottom      =   ""
+         LockLeft        =   "True"
+         LockRight       =   "True"
+         LockTop         =   "False"
+         Scope           =   0
+         TabPanelIndex   =   0
+         TextFont        =   "System"
+         TextSize        =   0
+         Top             =   59
+         Underline       =   ""
+         Visible         =   True
+         Width           =   112
+         BehaviorIndex   =   8
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Glisser"
+            ControlOrder    =   5
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   7
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   82
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Tourner"
+            ControlOrder    =   6
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   2
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   7
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   112
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Zoomer"
+            ControlOrder    =   8
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   4
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   7
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   171
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+         Begin PushButton MouvBut
+            AutoDeactivate  =   "True"
+            Bold            =   "True"
+            Cancel          =   ""
+            Caption         =   "Retourner"
+            ControlOrder    =   7
+            Default         =   ""
+            Enabled         =   True
+            Height          =   30
+            HelpTag         =   ""
+            Index           =   3
+            InitialParent   =   "MoveBox"
+            Italic          =   ""
+            Left            =   7
+            LockBottom      =   ""
+            LockLeft        =   ""
+            LockRight       =   ""
+            LockTop         =   ""
+            Scope           =   0
+            TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
+            Top             =   143
+            Underline       =   ""
+            Visible         =   True
+            Width           =   108
+            BehaviorIndex   =   7
+         End
+      End
+>>>>>>> origin/Macros
    End
 End
 #tag EndWindow
@@ -2683,7 +2852,7 @@ End
 	#tag Method, Flags = &h0
 		Sub UpdateToolBar()
 		  dim espace as integer
-		  espace = min((me.Height-me.MinHeight)/3,50)
+		  espace = min((me.Height-me.MinHeight)/3,5)
 		  if(me.Height = me.MinHeight) then
 		    MoveBox.TextSize = 8
 		    StdBox.TextSize = 8
