@@ -4,9 +4,7 @@ Inherits Operation
 Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub Intersec(s1 as shape, s2 as shape)
-		  Operation
-		  OpId = 45
-		  
+		  Intersec
 		  sh1 = s1
 		  sh2 = s2
 		  
@@ -182,12 +180,13 @@ Implements StringProvider
 		  
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
+		  bezet(h,k) = false
 		  
-		  if val(h,k) then
+		  if val(h,k) and not bezet(h,k) then
 		    validerpoint(pt,h,k)
 		    reset(h,k) = true
 		  else
-		    pt.invalider
+		    replacerphase2(pt)
 		  end if
 		  
 		  
@@ -262,7 +261,8 @@ Implements StringProvider
 		        val(i,1)= false
 		      else
 		        bptinters(i,0) = b
-		        val(i,1) = false
+		        bptinters(i,1) = b
+		        'val(i,1) = false
 		      end if
 		    case 2
 		      bptinters(i,0) = p(0)
@@ -382,19 +382,12 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub update(p as point, s1 as shape, n1 as integer, s2 as shape, n2 as integer)
-		  dim n as integer
+		Sub update(p as point)
 		  
-		  if sh1 = s2 then
-		    n = n1
-		    n1 = n2
-		    n2 = n
-		  end if
-		  
-		  //Utilisé par figure.restoreinit
+		  //Utilisé (notamment) par figure.restoreinit
 		  computeinter
 		  replacerphase1(p)
-		  replacerphase2(p)
+		  
 		  
 		  
 		End Sub
@@ -413,13 +406,13 @@ Implements StringProvider
 		  for h = 0 to nlig
 		    for k = 0 to ncol
 		      if bptinters(h,k) <> nil then
-		        for i = 0 to ubound(sh1.childs)
-		          if   sh2.getindex(sh1.childs(i)) <> -1 and sh1.childs(i).pointsur.count < 2  and  sh1.childs(i).bpt.distance(bptinters(h,k)) < epsilon then
+		        for i = 0 to ubound(sh1.points)
+		          if   sh2.getindex(sh1.points(i)) <> -1 and sh1.points(i).forme < 2  and  sh1.points(i).bpt.distance(bptinters(h,k)) < epsilon then
 		            bezet(h, k) = true      ' on ne peut placer aucun vrai pt d'inter ici
 		          end if
 		        next
-		        for i = 0 to ubound(sh2.childs)
-		          if   sh1.getindex(sh2.childs(i)) <> -1 and sh2.childs(i).pointsur.count < 2  and  sh2.childs(i).bpt.distance(bptinters(h,k)) < epsilon then
+		        for i = 0 to ubound(sh2.points)
+		          if   sh1.getindex(sh2.points(i)) <> -1 and sh2.points(i).pointsur.count < 2  and  sh2.points(i).bpt.distance(bptinters(h,k)) < epsilon then
 		            bezet(h, k) = true      ' ici non plus
 		          end if
 		        next
@@ -498,12 +491,13 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub validerpoint(pt as point, i as integer, j As integer)
 		  if bezet(i,j) = false then
-		    pt.moveto bptinters(i,j)
 		    bezet(i,j) = true
-		    if val(i,j) and bptinters(i,j) <> nil and  not sh1.invalid and not sh2.invalid then
-		      setlocation(pt,i,j)
-		      pt.modified = true
-		      pt.updateshape
+		    reset(i,j) = true
+		    pt.moveto bptinters(i,j)
+		    setlocation(pt,i,j)
+		    pt.modified = true
+		    pt.updateshape
+		    if val(i,j) and (bptinters(i,j) <> nil) and ((pt.conditionedby = nil) or (not pt.conditionedby.invalid)) and  not sh1.invalid and not sh2.invalid then
 		      pt.valider
 		    end if
 		  end if
@@ -523,10 +517,6 @@ Implements StringProvider
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
 		  
-		  if reset(h,k) then
-		    return
-		  end if
-		  
 		  d =nearest(pt,i1,j1)
 		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		    // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
@@ -537,16 +527,19 @@ Implements StringProvider
 		    else
 		      changed = true
 		    end if
-		  elseif not (sh1 isa circle) or not (sh2 isa circle) then
-		    i1 = h
-		    j1 = k
+		  else
+		    changed = true
 		  end if
 		  
 		  if changed then
 		    ids(h,k)=0
 		    ids(i1,j1) = pt.id
 		  end if
-		  validerpoint(pt,i1,j1)
+		  if val(i1,j1) then
+		    validerpoint(pt,i1,j1)
+		  else
+		    pt.invalider
+		  end if
 		  
 		  
 		End Sub
@@ -586,9 +579,9 @@ Implements StringProvider
 		  dim EL2 as XMLElement
 		  dim n, id, rid, side, num0, num1 as integer
 		  dim s1, s2 as shape
+		  dim p as point
 		  
-		  Operation
-		  OpId = 45
+		  Intersec
 		  EL2 = XMLElement(EL1.FirstChild)
 		  n =CDbl(EL2.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
@@ -605,7 +598,16 @@ Implements StringProvider
 		  
 		  currentshape = new point(currentcontent.theobjects, bptinters(num0,num1))
 		  currentshape.forme = 2
-		  currentshape.endconstruction
+		  p = point(currentshape)
+		  s1.setpoint(p)
+		  s2.setpoint(p)
+		  redim p.numside(1)
+		  redim p.location(1)
+		  p.pointsur.addshape s1
+		  p.pointsur.addshape s2
+		  setlocation(p,num0,num1)
+		  'p.endconstruction
+		  
 		End Sub
 	#tag EndMethod
 

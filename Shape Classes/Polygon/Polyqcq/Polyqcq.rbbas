@@ -71,6 +71,7 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub Polyqcq(ol as objectslist, Temp as XMLElement)
 		  Polygon(ol,Temp)
+		  ncpts = npts
 		End Sub
 	#tag EndMethod
 
@@ -128,6 +129,13 @@ Inherits Polygon
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -139,13 +147,6 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

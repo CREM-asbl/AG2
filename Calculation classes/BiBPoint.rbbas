@@ -605,14 +605,12 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function subdiv(ndiv as integer, i as integer) As BasicPoint
-		  dim n as double
 		  
 		  if first.distance(second) < epsilon then
 		    return first
 		  end if
 		  
-		  n = ndiv
-		  return first + (second-first)*(i/n)
+		  return first + (second-first)*(i/ndiv)
 		End Function
 	#tag EndMethod
 
@@ -672,7 +670,7 @@ Inherits nBpoint
 	#tag Method, Flags = &h0
 		Sub CreateExtreAndCtrlPoints(orien As integer)
 		  dim M as RotationMatrix     'Utilise uniquement pour des cercles
-		  dim p, q as BasicPoint
+		  dim q as BasicPoint
 		  dim bp1, bp2 as BasicPoint
 		  dim BiB1, Bib2 as BiBPoint
 		  dim r1,r2 as double

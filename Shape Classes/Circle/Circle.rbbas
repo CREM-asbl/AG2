@@ -210,7 +210,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updateskull()
-		  dim i, j as integer
+		  dim i as integer
 		  dim p As BasicPoint
 		  
 		  p = points(0).bpt
@@ -231,7 +231,10 @@ Inherits Shape
 		Sub paint(g as Graphics)
 		  dim i as integer
 		  
+		  
 		  updateskull
+		  coord.CreateExtreAndCtrlPoints(ori)
+		  
 		  if (nsk= nil ) or ( nsk.cs(0).x = 0 and nsk.cs(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
@@ -295,6 +298,13 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
@@ -557,13 +567,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

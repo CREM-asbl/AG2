@@ -77,6 +77,8 @@ Protected Class MacrosList
 		      addmac(mac)
 		    next
 		  end if
+		  wnd.UpdateSousMenusMacros
+		  
 		  
 		End Sub
 	#tag EndMethod

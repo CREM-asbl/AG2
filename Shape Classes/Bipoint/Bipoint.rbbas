@@ -63,6 +63,7 @@ Inherits Shape
 		Sub Bipoint(ol as objectslist, s as shape)
 		  Shape(ol)
 		  Npts=2
+		  ncpts = 2
 		  fam = s.fam
 		  forme = s.forme
 		  points(0).moveto s.points(0).bpt
@@ -75,6 +76,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub BiPoint(ol as objectslist, temp as XMLElement)
 		  Shape(ol,Temp)
+		  ncpts = 2
 		End Sub
 	#tag EndMethod
 
@@ -170,6 +172,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -181,13 +190,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

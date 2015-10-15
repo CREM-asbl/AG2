@@ -91,12 +91,12 @@ Implements StringProvider
 		  dim i, j as integer
 		  dim pt as point
 		  
-		  //conserver toutes les figures jusqu'à la fin pour mettre à jour les infos de construction
-		  temp = new figslist
-		  
 		  if count = 1 then
 		    return element(0)
 		  end if
+		  
+		  //conserver toutes les figures jusqu'à la fin pour mettre à jour les infos de construction
+		  temp = new figslist
 		  
 		  for i = count-1 downto 0
 		    temp.addfigure Element(i)
@@ -170,7 +170,7 @@ Implements StringProvider
 		      end if
 		    end if
 		  next
-		  ff.fusionnerautosimaff
+		  'ff.fusionnerautosimaff
 		  ff.fusionnerinclusions
 		  
 		  temp.adjustconstructioninfos(ff)
@@ -357,7 +357,9 @@ Implements StringProvider
 		  dim t as Boolean
 		  dim i as integer
 		  
-		  
+		  if p = nil then
+		    return false
+		  end if
 		  p.updatefirstpoint(np)
 		  t = true
 		  for i = 0 to count-1

@@ -46,7 +46,6 @@ Protected Module api
 		  dim update As string
 		  
 		  response = http.Post(url+"?method=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
-		  'MsgBox response
 		  
 		  try
 		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))

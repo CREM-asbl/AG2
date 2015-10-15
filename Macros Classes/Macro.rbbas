@@ -111,6 +111,7 @@ Protected Class Macro
 		  dim Doc as XMLDocument
 		  dim Histo as XMLElement
 		  Dim dlg as New SaveAsDialog
+		  dim d as new Date
 		  
 		  if ubound(ObFinal) = -1 then
 		    return
@@ -121,6 +122,7 @@ Protected Class Macro
 		  
 		  Doc = CurrentContent.OpList
 		  Histo = XMLElement(Doc.FirstChild)
+		  Histo.SetAttribute("Creation_Date",d.ShortDate)
 		  ToXML(Doc, Histo)
 		  
 		  dlg.InitialDirectory=app.MacFolder
@@ -149,9 +151,6 @@ Protected Class Macro
 		      app.theMacros.addmac self
 		      wnd.updatesousmenusmacros
 		    end if
-		  end if
-		  if  file = nil or tos = nil then
-		    MsgBox Dico.Value("ErrorOnSave")
 		  end if
 		  
 		  
@@ -186,9 +185,11 @@ Protected Class Macro
 		  dim ifmac As InfoMac
 		  dim s as shape
 		  
+		  //Dans cette phase, on calcule les objets et on met les valeurs numériques dans l'objet IfMac associé
+		  
 		  MacInf = MacInfo
 		  
-		  for i = 0 to ubound(MacInf.ifmacs)             'Histo.Childcount-1  // i: numéro de l'opération
+		  for i = 0 to ubound(MacInf.ifmacs)    'Histo.Childcount-1  // i: numéro de l'opération
 		    ifmac = MacInfo.ifmacs(i)
 		    if codesoper.indexof(ifmac.oper) <> -1 then //est-ce une opération de construction d'un objet?
 		      ComputeObject(ifmac)
@@ -438,6 +439,7 @@ Protected Class Macro
 		Sub Construction(ifmac as infomac, byref nbp As nBPoint)
 		  dim i,  num as integer
 		  dim ifm1, ifm2 as infomac
+		  dim p as point
 		  
 		  if ifmac.fa = 0 then
 		    redim nbp.tab(0)
@@ -451,14 +453,23 @@ Protected Class Macro
 		    redim nbp.tab(ifmac.npts-1)
 		    for i = 0 to ifmac.ncpts-1
 		      ifm1 = ifmac.childs(i)
-		      ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
-		      if ifm2.macid = ifm1.MacId then
-		        nbp.tab(i) = ifm2.coord.tab(0)
+		      if ifm1.init = true then
+		        p = point(currentcontent.theobjects.getshape(ifm1.RealId))
+		        ifm1.coord = p.GetCoord
+		        nbp.tab(i) = ifm1.coord.tab(0)
+		        if  p.forme=1 then
+		          ifm1.location = p.location(0)  //On ne tient pas compte de la valeur figurant dans la macro
+		        end if
 		      else
-		        if num < ifm2.npts then
-		          nbp.tab(i) = ifm2.coord.tab(num)
+		        ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
+		        if ifm2.macid = ifm1.MacId then
+		          nbp.tab(i) = ifm2.coord.tab(0)
 		        else
-		          nbp.tab(i) = ifm2.childs(num).coord.tab(0)
+		          if num < ifm2.npts then
+		            nbp.tab(i) = ifm2.coord.tab(num)
+		          else
+		            nbp.tab(i) = ifm2.childs(num).coord.tab(0)
+		          end if
 		        end if
 		      end if
 		    next
@@ -487,10 +498,11 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub dupliquerpoint(ifmac as infomac, byref nbp As nBPoint)
-		  dim num0, side, m as integer
+		  dim num0, side, m, n as integer
 		  dim nb as nBPoint
 		  dim ifm0, ifm1 as infomac
 		  dim Bib as BiBPoint
+		  dim s as shape
 		  
 		  if ifmac.ptsur <> 1 then
 		    return
@@ -498,8 +510,10 @@ Protected Class Macro
 		  
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme2,m)
 		  if ifm1.macId <> ifmac.forme2 then
-		    ifm1 = ifm1.childs(m)
-		  end if                                                           //infomac du dupliqué
+		    ifm1 = ifm1.childs(m)       //infomac du dupliqué
+		  end if
+		  
+		  // Si le dupliqué est
 		  ifmac.location = ifm1.location
 		  side = ifmac.numside1                           //numero de coté du dupliqué
 		  ifm0 = MacInf.GetInfoMac(ifmac.Forme0, num0)   //ifmac du support du duplicat
@@ -621,19 +635,20 @@ Protected Class Macro
 		  
 		  MacId = ifmac.MacId //numéro pour la macro de la forme construite
 		  
-		  if Obinit.indexof(MacId) <> -1 then        //Si c'est une forme initiale
+		  //Si la forme considérée est initiale, il suffit de récolter les informations dans la liste des objets précédemment créés.
+		  if Obinit.indexof(MacId) <> -1 then
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    if ifmac.seg then
 		      ifmac.coord = s.GetBiBSide(ifmac.RealSide)
 		    else
 		      ifmac.coord = s.GetCoord
+		      if s isa point and s.forme=1 then
+		        ifmac.location = point(s).location(0)  //On ne tient pas compte de la valeur figurant dans la macro
+		      end if
 		    end if
 		    for i = 0 to ifmac.npts-1
 		      ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
 		    next
-		    if s isa point and s.forme = 1 then
-		      ifmac.location = point(s).location(0)
-		    end if
 		  end if
 		  
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
@@ -658,10 +673,9 @@ Protected Class Macro
 		    
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
-		    for i = 0 to s.npts-1
-		      s.coord.tab(i) = ifmac.coord.tab(i)
-		    next
-		    if s isa point  then
+		    if s isa point then
+		      point(s).bpt=ifmac.coord.tab(0)
+		      s.coord=ifmac.coord
 		      if s.forme = 1 then
 		        redim point(s).location(0)
 		        redim point(s).numside(0)
@@ -669,15 +683,16 @@ Protected Class Macro
 		        point(s).numside(0) = ifmac.numside0
 		        ifmac.RealSide = ifmac.numside0
 		      end if
-		    else
-		      for i = 0 to s.npts-1
-		        if s.points(i).forme=1 then
-		          s.points(i).location(0) = ifmac.childs(i).location
-		          s.points(i).numside(0) = ifmac.childs(i).numside0
-		          ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
-		        end if
-		      next
 		    end if
+		    for i = 0 to s.npts-1
+		      s.coord.tab(i) = ifmac.coord.tab(i)
+		      if s.points(i).forme=1 then
+		        redim s.points(i).location(0)
+		        s.points(i).location(0) = ifmac.childs(i).location
+		        s.points(i).numside(0) = ifmac.childs(i).numside0
+		        ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
+		      end if
+		    next
 		    s.repositionnerpoints
 		  end if
 		End Sub

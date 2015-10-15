@@ -91,7 +91,7 @@ Inherits Parallelogram
 
 	#tag Method, Flags = &h0
 		Function Modifier1fixe(p as point, p1 as point) As Matrix
-		  // Routine qui modifie le rectangle  dans le cas où le point p est laissé fixe, p1 est déplacé arbitrairement et  p2 s'adapte
+		  // Routine qui modifie le rectangle  dans le cas où on ne touche plus à p, p1 est déplacé arbitrairement et  p2 s'adapte
 		  // Deux cas possibles
 		  
 		  dim n, n1, n2, n3 as integer
@@ -108,9 +108,6 @@ Inherits Parallelogram
 		  ff = getsousfigure(fig)
 		  ff.getoldnewpos(p1,ep1,np1)
 		  ff.getoldnewpos(p,ep,np)
-		  d = amplitude(ep1, np, np1)
-		  M = new rotationmatrix(np,d)
-		  p.moveto ep
 		  if abs(n-n1) = 2 then
 		    n2 = (n+1) mod 4
 		    n3 = (n1+1) mod 4
@@ -121,6 +118,7 @@ Inherits Parallelogram
 		    case (n+3) mod 4
 		      n2 = (n+1) mod 4
 		    end select
+		    n3 = (n+2) mod 4
 		  end if
 		  p2 = points(n2)
 		  p3 = points(n3)
@@ -129,14 +127,20 @@ Inherits Parallelogram
 		  if p2.pointsur.count = 1 and not p2.pointsur.element(0) isa circle  then
 		    s =  p2.pointsur.element(0)
 		    dr = s.getside(p2.numside(0))
-		    np2 = p1.bpt.projection(dr.firstp, dr.secondp)
+		    np2 = p.bpt.projection(dr.firstp, dr.secondp)
 		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		    'p3.moveto np2+np1-np
+		    'p3.modified = true
 		  elseif p3.pointsur.count = 1 and not p3.pointsur.element(0) isa circle then
 		    s =  p3.pointsur.element(0)
 		    dr = s.getside(p3.numside(0))
 		    np3 = p1.bpt.projection(dr.firstp, dr.secondp)
 		    M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
+		    'p2.moveto np3+np-np1
+		    'p3.modified = true
 		  else
+		    d = amplitude(ep1, np, np1)
+		    M = new RotationMatrix(np,d)
 		    np2 = M*ep2
 		    if abs(n-n1) = 2 then
 		      np2 = np.projection(np1,np2)
@@ -149,13 +153,13 @@ Inherits Parallelogram
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier2fixes(p as point) As Matrix
+		Function Modifier2fixes(p as point, q as point) As Matrix
 		  // Routine qui modifie le rectangle  dans le cas où deux points sont fixes et le point n peut  être déplacé (pas arbitrairement)
 		  // Deux cas selon la position des points fixes
 		  
 		  dim k, n, n1, n2 as integer
-		  dim p1, p2 as point
-		  dim ep, np, np1, np2, u, v as BasicPoint
+		  dim p1, p2, p0 as point
+		  dim ep, np, np1, np2,np0, u, v as BasicPoint
 		  dim ff as figure
 		  dim Bib1, Bib2 As  BiBPoint
 		  dim d as double
@@ -166,28 +170,30 @@ Inherits Parallelogram
 		  ff = getsousfigure(fig)
 		  ff.getoldnewpos(p,ep,np)
 		  
-		  p1 = point(ff.somm.element(ff.fx1))
-		  p2 = point(ff.somm.element(ff.fx2))
-		  n1 = getindexpoint(p1)
-		  n2 = getindexpoint(p2)
-		  np1 = p1.bpt
-		  np2 = p2.bpt
-		  
-		  //1er cas p1 et p2 sont adjacents
-		  
-		  if n2 = (n1+1) mod 4 or n2 = (n1+3) mod 4 then
-		    u = np1-np2
-		    u = u.vecnorperp
-		    select case n
-		    case (n1+2)  mod 4
-		      np = np.projection(np2, np2+u)
-		    case (n2+2) mod 4
-		      np = np.projection(np1, np1+u)
-		    end select
-		  else
+		  if not points((n+2) mod 4).modified then
+		    p1 = points((n+1) mod 4)
+		    p2 = points((n+3) mod 4)
+		    np1 = p1.bpt
+		    np2 = p2.bpt
 		    u = (np1+np2)/2
 		    d = np1.distance(np2)/2
 		    np = np.projection(u,d)
+		  else
+		    p2 = points((n+2) mod 4)
+		    
+		    if points((n+1) mod 4).modified then
+		      p1 = points((n+1) mod 4)
+		      p0 = points((n+3) mod 4)
+		    else
+		      p1 = points((n+3) mod 4)
+		      p0 = points((n+1) mod 4)
+		    end if      // p,  p1 et p2 sont modifiés, p est adjacent à p1 et p2 est adjacent à p1
+		    np1 = p1.bpt
+		    np2 = p2.bpt
+		    np0 = p0.bpt
+		    u = np1-np2
+		    u = u.vecnorperp
+		    np = np0.projection(np1, np1+u)
 		  end if
 		  
 		  p.moveto np
@@ -196,6 +202,98 @@ Inherits Parallelogram
 		  
 		  
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier3(p as point, q as point, r as point) As Matrix
+		  dim  p1, p2, p3 As point
+		  dim ep1,ep2,ep3,np1,np2,np3, u, v as BasicPoint
+		  dim i, k, n, n1, n2, n3, n4, ns as integer
+		  dim t as boolean
+		  dim ff as figure
+		  dim Bib as BiBpoint
+		  dim ar as arc
+		  
+		  ff= GetSousFigure(fig)
+		  n =ff. NbSommSur
+		  
+		  select case n
+		  case 0
+		    if getindexpoint(fig.pointmobile) <> -1 then
+		      return Modifier2fixes(fig.pointmobile)
+		    elseif  ubound(p.parents) = 0 then
+		      return Modifier2fixes(p)
+		    elseif ubound(q.parents) = 0 then
+		      return Modifier2fixes(q)
+		    else
+		      return Modifier2fixes(r)
+		    end if
+		    
+		  case 1
+		    p1 =point(ff.somm.element(ff.ListSommSur(0)))
+		    'if p1 <> ff.supfig.pointmobile and not (p1.isextremityofarc(n, ar) and (n = 2) and (ar.fig = ff.supfig)) then
+		    't =ff.replacerpoint(p1)
+		    'else
+		    n1 = getindexpoint(p1)
+		    if n1 = getindexpoint(p) then
+		      p2 = q
+		      p3 = r
+		    elseif n1 = getindexpoint(q) then
+		      p2 = p
+		      p3 =r
+		    elseif n1 = getindexpoint(r) then
+		      p2 = p
+		      p3 = q
+		    end if
+		    n2 = getindexpoint(p2)
+		    n3 = getindexpoint(p3)
+		    ff.getoldnewpos(p1,ep1,np1)
+		    ff.getoldnewpos(p2,ep2,np2)
+		    ff.getoldnewpos(p3,ep3,np3)
+		    if abs(n2-n1) <> 2 then
+		      u = np2-np1
+		      v = u.vecnorperp
+		      if abs(n1-n3) = 2 then
+		        Bib = new BiBPoint(np2, np2+v)
+		      else
+		        BiB = new BiBPoint(np1,np1+v)
+		      end if
+		      np3 = np3.Projection(BiB)
+		    else
+		      u = np3-np1
+		      v = u.vecnorperp
+		      if abs(n1-n2) = 2 then
+		        Bib = new BiBPoint(np3, np3+v)
+		      else
+		        BiB = new BiBPoint(np1,np1+v)
+		      end if
+		      np2 = np2.Projection(BiB)
+		    end if
+		    return new affinitymatrix(ep1,ep2,ep3,np1,np2,np3)
+		    'end if
+		  case 2
+		    for i = 0 to 1
+		      if point(ff.somm.element(ff.ListSommSur(i))) <> ff.supfig.pointmobile then
+		        t =ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(i))))
+		      end if
+		    next
+		  case 3
+		    p = ff.supfig.pointmobile
+		    k = ff.somm.getposition(p)
+		    if ff.Listsommsur.indexof(k) <> -1 then
+		      for i = 0 to 2
+		        if i <> k then
+		          t =ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(i))))
+		        end if
+		      next
+		    else
+		      t = ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(0))))
+		      t = ff.replacerpoint (point(ff.somm.element(ff.Listsommsur(1))))
+		    end if
+		  end select
+		  return ff.autospeupdate
 		  
 		End Function
 	#tag EndMethod
@@ -225,6 +323,13 @@ Inherits Parallelogram
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -236,13 +341,6 @@ Inherits Parallelogram
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

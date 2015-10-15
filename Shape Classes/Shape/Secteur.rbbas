@@ -286,13 +286,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub FixeCouleurFond(c as couleur, f as integer)
-		  fillcolor = c
-		  fill = f
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  dim Form, Temp as XMLElement
 		  dim i, n as integer
@@ -366,7 +359,7 @@ Inherits Shape
 		Sub ComputeArcAngle()
 		  
 		  if not drapori then
-		    ori = coord.orientation 
+		    computeori
 		  end if
 		  if   abs(arcangle)  >  0.2 and ori <> 0 then
 		    drapori = true  //on ne peut plus changer l'orientation
@@ -478,6 +471,12 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub computeori()
+		  ori = coord.orientation
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -520,6 +519,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -531,13 +537,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

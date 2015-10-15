@@ -2,6 +2,7 @@
 Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub openOpList()
+		  dim d as new Date
 		  CurrentOp = -1
 		  totaloperation = 0
 		  OpList = new XMLDocument
@@ -182,7 +183,6 @@ Protected Class WindContent
 		  TheObjects = new ObjectsList
 		  TheTransfos = new TransfosList
 		  TheIntersecs = new IntersecList
-		  TheMacros = new MacrosList
 		  OpenOpList
 		  Etiquette=64
 		  ndec = 2
@@ -202,41 +202,25 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub AddOperation(o as Operation)
-		  dim El as XMLElement
 		  dim codes() as integer
 		  
 		  codes = Array(2,4,8,9,34,41,42) //SaveBitMap, SaveEps, Print, ReadHisto, Unit, ChooseFinal, Sélectionner
+		  // 34: on ne crée pas d'historique de la lecture d'un historique
 		  
-		  if o <> nil and codes.indexof(o.OpId) = -1 then    // 34: on ne crée pas d'historique de la lecture d'un historique
-		    currentop = totaloperation
-		    if (Histo<> nil) and macrocreation then
-		      o.AddOperationToMac(OpList, Histo)
-		    elseif (Histo <> nil)  then    //On élimine la sélection
-		      El=Oplist.CreateElement(Dico.Value("Operation"))
-		      El.SetAttribute(Dico.Value("Numero"),str(TotalOperation))
-		      El.SetAttribute(Dico.Value("Type"), o.GetName)
-		      EL.SetAttribute("OpId", str(o.OpId))
-		      El.AppendChild (o.ToXml(Oplist))
-		      if not o isa Ouvrir then
-		        if FigsDeleted.childcount > 0 then
-		          EL.appendchild FigsDeleted
-		        end if
-		        if FigsCreated.childcount > 0 then
-		          EL.appendchild FigsCreated
-		        end if
-		        if FigsMoved.childcount > 0 then
-		          EL.appendchild FigsMoved
-		        end if
-		        if FigsModified.childcount > 0 then
-		          EL.appendchild FigsModified
-		        end if
-		      end if
-		      Histo.AppendChild El
-		    end if
-		    SaveHisto
-		    TotalOperation  = TotalOperation +1
-		    wnd.pushbutton1.enabled = true
+		  if (Histo = nil) or (o = nil) or (codes.indexof(o.OpId) <> -1) or (macrocreation and o isa modifier) then
+		    return
 		  end if
+		  
+		  currentop = totaloperation
+		  if macrocreation then
+		    o.AddOperationToMac(OpList, Histo)
+		  else
+		    InsertInHisto(o)
+		  end if
+		  TotalOperation  = TotalOperation +1
+		  SaveHisto
+		  wnd.pushbutton1.enabled = true
+		  
 		End Sub
 	#tag EndMethod
 
@@ -357,12 +341,7 @@ Protected Class WindContent
 		  dim curoper as Operation
 		  
 		  isaundoredo = true
-		  currentoperation = nil
 		  wnd.closefw
-		  
-		  while currentop > 0 and  Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
-		    currentop = currentop-1
-		  wend
 		  
 		  if currentop = 0 then
 		    return
@@ -377,7 +356,9 @@ Protected Class WindContent
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
 		  
-		  
+		  while currentop > 0 and  Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
+		    currentop = currentop-1
+		  wend
 		  
 		  if wnd.mousedispo then
 		    if curoper isa lier or curoper isa delier then
@@ -397,11 +378,22 @@ Protected Class WindContent
 		  dim i as integer
 		  dim s as shape
 		  dim Mac as Macro
+		  dim d as Date
+		  dim st as string
+		  dim f as FolderItem
+		  
+		  d = new Date
 		  
 		  Doc = new XmlDocument
 		  Doc.Preservewhitespace = true
 		  AG = Doc.CreateElement("AG")
 		  Doc.Appendchild (AG)
+		  AG.SetAttribute("Creation_Date",d.ShortDate)
+		  f = DocumentsFolder.Parent
+		  if f <> nil then
+		    st = f.Name
+		  end if
+		  AG.SetAttribute("Creator", st)
 		  AG.SetAttribute(Dico.Value("Langage"),Config.Langue)
 		  AG.SetAttribute(Dico.value("Config"),Config.Menu)
 		  AG.SetAttribute("Plans", str(1))
@@ -433,10 +425,10 @@ Protected Class WindContent
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
 		  AG.SetAttribute("NbrDec", str(ndec))
-		  if TheMacros.Count > 0 then
+		  if app.TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")
-		    for i = 0 to TheMacros.count-1
-		      Mac =TheMacros.element(i)
+		    for i = 0 to app.TheMacros.count-1
+		      Mac =app.TheMacros.element(i)
 		      EL = XMLElement(Doc.importnode(mac.Histo,true))
 		      Mac.ToXML(Doc,EL)
 		      TMP.AppendChild EL
@@ -847,6 +839,33 @@ Protected Class WindContent
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub InsertInHisto(o as operation)
+		  dim El as XMLElement
+		  
+		  El=Oplist.CreateElement(Dico.Value("Operation"))
+		  El.SetAttribute(Dico.Value("Numero"),str(TotalOperation))
+		  El.SetAttribute(Dico.Value("Type"), o.GetName)
+		  EL.SetAttribute("OpId", str(o.OpId))
+		  El.AppendChild (o.ToXml(Oplist))
+		  if not o isa Ouvrir then
+		    if FigsDeleted.childcount > 0 then
+		      EL.appendchild FigsDeleted
+		    end if
+		    if FigsCreated.childcount > 0 then
+		      EL.appendchild FigsCreated
+		    end if
+		    if FigsMoved.childcount > 0 then
+		      EL.appendchild FigsMoved
+		    end if
+		    if FigsModified.childcount > 0 then
+		      EL.appendchild FigsModified
+		    end if
+		  end if
+		  Histo.AppendChild El
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -1028,10 +1047,6 @@ Protected Class WindContent
 
 	#tag Property, Flags = &h0
 		MacCurop(-1) As MacroExe
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		TheMacros As MacrosList
 	#tag EndProperty
 
 

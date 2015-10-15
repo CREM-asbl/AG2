@@ -183,11 +183,11 @@ Inherits SelectOperation
 		  
 		  currentshape = tempshape.element(0)
 		  if currentshape isa point then
-		    if UBound(point(currentshape).parents) > -1 then
+		    if UBound(point(currentshape).parents) = -1 or point(currentshape).parents(0).MacConstructedBy <> nil then
 		      currentshape = point(currentshape).parents(0)
-		    else
 		      return
 		    end if
+		    currentshape = point(currentshape).parents(0)
 		  end if
 		  if currentshape <> nil then
 		    currentshape.selectneighboor
@@ -202,6 +202,13 @@ Inherits SelectOperation
 		  else
 		    DoOper
 		  end if
+		  
+		  for i = 0 to tempshape.count-1
+		    if tempshape.element(i) isa standardpolygon then
+		      standardpolygon(tempshape.element(i)).inverserori
+		      tempshape.element(i).updatecoord
+		    end if
+		  next
 		  
 		  
 		  
@@ -232,6 +239,8 @@ Inherits SelectOperation
 		    end if
 		    if s isa standardpolygon then
 		      standardpolygon(s).updateangle
+		      standardpolygon(s).inverserori
+		      s.updatecoord
 		    end if
 		    
 		    for j = 0 to ubound(s.constructedshapes)

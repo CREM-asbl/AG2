@@ -77,7 +77,7 @@ Inherits Bipoint
 		  dim i as integer
 		  dim secP as Point
 		  
-		  Shape(ol,0,2)
+		  Shape(ol,2,2)
 		  
 		  secP = new Point(ol)
 		  secP.MoveTo sp
@@ -163,7 +163,7 @@ Inherits Bipoint
 		  //Constructeur utilisé uniquement par prolonger
 		  dim i as integer
 		  
-		  Shape(ol,0,2)
+		  Shape(ol,2,2)
 		  points.append fp
 		  points.append sp
 		  
@@ -345,12 +345,14 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Function prppupdate1() As Matrix
-		  
+		  dim Bib1, BiB2 as BiBPoint
 		  dim sf as figure
 		  dim  p, q as Point
 		  dim n as integer
 		  dim  w, ep, np, eq, nq, u as Basicpoint
 		  dim d as double
+		  dim dr as droite
+		  dim M as Matrix
 		  
 		  sf = getsousfigure(fig)
 		  p = points(0)
@@ -367,7 +369,15 @@ Inherits Bipoint
 		  end if
 		  
 		  if p.modified then
-		    nq = np+w*d
+		    if q.forme=1 and q.pointsur.element(0) isa polygon then
+		      BiB1 = new BiBPoint(ep, ep+w)
+		      dr =  q.pointsur.element(0).getside(q.numside(0))
+		      Bib2 = new BiBPoint(dr.firstp,dr.secondp)
+		      M = new AffiProjectionMatrix(BiB1,Bib2)
+		      nq = M*np
+		    else
+		      nq = np+w*d
+		    end if
 		  else
 		    if q.pointsur.count = 0 then
 		      nq = nq.projection(np, np+w)
@@ -448,7 +458,7 @@ Inherits Bipoint
 		  
 		  if  ubound(p) = 1 then
 		    B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
-		    B2 = BiBPoint(coord)
+		    B2 = new BiBPoint(coord.tab(0), coord.tab(1))
 		    k = B2.BiBDroiteInterCercle(B1,p(), bq, w)
 		  else
 		    k = 0
@@ -770,6 +780,41 @@ Inherits Bipoint
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub EndConstruction()
+		  dim p0, p1 as point
+		  dim sh(-1) as shape
+		  dim i as integer
+		  dim n0, n1, m as integer
+		  dim t as boolean
+		  
+		  if currentcontent.currentoperation isa prolonger then
+		    p0 = points(0)
+		    p1 = points(1)
+		    
+		    if p0.sameparent(p1,sh) then
+		      t = false
+		      i = 0
+		      while t = false and i <= ubound(sh)
+		        n0 = sh(i).getindexpoint(p0)
+		        n1 = sh(i).getindexpoint(p1)
+		        if sh(i) isa polygon and ( (n1 = (n0+1) mod sh(i).npts) or  (n0 = (n1+1) mod sh(i).npts))    then
+		          m = min(n0,n1)
+		          if m = 0 and (n0 <> 1) and (n1 <> 1) then
+		            m = sh(i).npts-1
+		          end if
+		          setconstructedby sh(i), 8
+		          Constructedby.data.append m
+		          t = true
+		        end if
+		        i = i+1
+		      wend
+		    end if
+		  end if
+		  super.endconstruction
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -820,6 +865,13 @@ Inherits Bipoint
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -831,13 +883,6 @@ Inherits Bipoint
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

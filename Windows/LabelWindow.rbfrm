@@ -659,7 +659,11 @@ End
 		  CoordY.text = str(- corr.y)
 		  if drapnew then
 		    Delete.visible = false
-		    Polices.ListIndex = 2
+		    for i = 0 to Polices.ListCount-1
+		      if Polices.List(i) = "Times New Roman" then
+		        Polices.ListIndex = i
+		      end if
+		    next
 		  else
 		    for i = 0 to Polices.ListCount-1
 		      if Polices.List(i)  = Lab.Font then

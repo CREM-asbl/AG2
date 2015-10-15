@@ -188,8 +188,7 @@ Implements StringProvider
 	#tag Method, Flags = &h0
 		Sub Restore()
 		  dim i as integer
-		  dim ori as double
-		  dim a as double
+		  
 		  
 		  if ubound(oldbpts) > -1 then
 		    Restorebpt
@@ -227,7 +226,7 @@ Implements StringProvider
 		  dim ff as figure
 		  
 		  for i = 0 to k
-		    n = supfig.index(i)
+		    n = supfig.rang(i)
 		    ff = supfig.subs.element(n)
 		    
 		    if NbPtsCommuns(ff) > 0 then
@@ -292,18 +291,25 @@ Implements StringProvider
 		  
 		  
 		  if M = nil or M.v1 = nil then
-		    QQupdateshapes
-		    return true  'false                                           ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
+		    if auto = 0 or auto> 3 then
+		      QQupdateshapes
+		    else
+		      tobereconstructed = true
+		    end if
+		    return true                                      ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
+		    if  tobereconstructed then
+		      reconstruct
+		    end if
 		    updatesomm(M)
 		    updatePtsSur(M)
 		    updatePtsConsted(M)
 		    updateshapes(M)
-		    if not wnd.drapbug then
-		      return checksimaff(M)
-		    else
+		    if  tobereconstructed then
+		      tobereconstructed = false
 		      return true
 		    end if
+		    return checksimaff(M)
 		  end if
 		  
 		Exception err
@@ -474,7 +480,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function autosimupdate1() As Matrix
+		Function Autosimupdate1() As Matrix
 		  dim p, p1,p2 as point
 		  dim bp1, ep, np,ep1, np1 as BasicPoint
 		  dim n as integer
@@ -620,6 +626,7 @@ Implements StringProvider
 		  dim p as point
 		  dim t as boolean
 		  dim op as modifier
+		  dim list as objectslist
 		  
 		  'if   currentcontent.currentoperation isa modifier then
 		  'op = modifier(currentcontent.currentoperation)
@@ -667,24 +674,21 @@ Implements StringProvider
 		    next
 		  next
 		  
-		  if auto = 1 and  f.auto = 4 and NbTrueSommCommuns(f) >= 2 then
-		    return true
-		  end if
-		  
 		  if (auto = 2 or auto = 3 or auto = 5) and  f.auto = 4 and NbTrueSommCommuns(f) >= 3 then
 		    return true
 		  end if
 		  
+		  if auto = 1 and f.auto <> 3 and NbTrueSommCommuns(f) >= 2  then
+		    return true
+		  end if
 		  
-		  'if liberte = 0 and f.liberte <> 0 and not f.precede(self) then
-		  'for i = 0 to Somm.count-1
-		  'for j = 0 to f.Somm.count-1
-		  'if Somm.Element(i) = f.Somm.element(j) then
-		  'return true
-		  'end if
-		  'next
-		  'next
-		  'end if
+		  if auto = 3 and f.auto = 1 and NbTrueSommCommuns(f) >= 2  then
+		    return not HasPointOnConstructedshape (f)
+		  end if
+		  
+		  if auto = 1 and f.auto=3  and NbTrueSommCommuns(f) >= 2  then
+		    return f.HasPointOnConstructedShape(self)
+		  end if
 		  
 		  Return false
 		  
@@ -711,7 +715,7 @@ Implements StringProvider
 		  
 		  nc = Mat.nc
 		  
-		  redim MP(nc)
+		  redim MP(nc-1)
 		  for i = 0 to nc-1
 		    MP(i) = new MatrixnD(nc)
 		  next
@@ -723,13 +727,13 @@ Implements StringProvider
 		  
 		  // MP(k) contient les connexions en k+1 étapes
 		  
-		  redim Sommes(nc,nc)
+		  redim Sommes(nc-1,nc-1)
 		  
 		  
-		  for k = 0 to nc-2
+		  for k = 0 to nc-1
 		    for j = 0 to nc-1
-		      Sommes(k,j)=MP(k).SommCol(j)
-		    next
+		      Sommes(k,j)=MP(k).SommCol(j)  //Sommes(k,j) est le nombre de connexions en k+1 étapes aboutissant en sub(j)
+		    next                                                        //Pour une subfig(j) à la racine du graphe, toutes les sommes(k,j) valent 0
 		  next
 		End Sub
 	#tag EndMethod
@@ -817,16 +821,23 @@ Implements StringProvider
 		  
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
-		      if (subs.element(i).auto <> 4) and subs.element(i).precede(subs.element(j)) then
-		        mat.col(i,j) = 1
-		      end if
-		      if (subs.element(i).auto <> 4) and subs.element(j).precede(subs.element(i)) then
-		        mat.col(j,i) = 1
+		      if subs.element(i).auto <> 4 and subs.element(j).auto <> 4 then
+		        if  subs.element(i).precede(subs.element(j)) then
+		          mat.col(i,j) = 1
+		        end if
+		        if subs.element(j).precede(subs.element(i)) then
+		          mat.col(j,i) = 1
+		        end if
 		      end if
 		    next
 		  next
 		  
-		  
+		  'if (subs.element(i).auto <> 4) and subs.element(i).precede(subs.element(j)) then
+		  'mat.col(i,j) = 1
+		  'end if
+		  'if (subs.element(i).auto <> 4) and subs.element(j).precede(subs.element(i)) then
+		  'mat.col(j,i) = 1
+		  'end if
 		  
 		End Sub
 	#tag EndMethod
@@ -910,7 +921,12 @@ Implements StringProvider
 		      f1.auto = 1
 		    end if
 		  else
-		    f1.auto = 1
+		    for j = 0 to ubound(aut)
+		      t  = t and ((aut(j) =1 ) or (aut(j) = 6))
+		    next
+		    if t then
+		      f1.auto = 6
+		    end if
 		  end if
 		  
 		  
@@ -942,13 +958,16 @@ Implements StringProvider
 		  dim i as integer
 		  dim sf as figure
 		  
+		  if p = nil then
+		    return false
+		  end if
 		  
 		  pointmobile = p
 		  t = true
 		  
 		  listersubfigs(p)
-		  for i = 0 to ubound(index)
-		    sf = subs.element(index(i))
+		  for i = 0 to ubound(rang)
+		    sf = subs.element(rang(i))
 		    if currentcontent.drapaff then
 		      t = sf.Modifaffine(p)
 		    elseif currentcontent.drapeucli then
@@ -988,9 +1007,8 @@ Implements StringProvider
 		  for i = 0 to somm.count-1
 		    p = Point(somm.element(i))
 		    p.Transform(M)
-		    
 		    p.updateshape
-		    if  p.pointsur.count = 0 then
+		    if  p.forme = 0 then
 		      p.modified = true                //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		      p.unmodifiable = true
 		    end if
@@ -1361,12 +1379,13 @@ Implements StringProvider
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to Somm.count-1
+		      p = point(somm.element(i))
 		      Coord = XMLElement(EL1.child(i))
-		      point(somm.element(i)).moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
+		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
 		      if val(Coord.GetAttribute("Invalid")) = 0 then
-		        point(somm.element(i)).valider
+		        p.valider
 		      else
-		        point(somm.element(i)).invalider
+		        p.invalider
 		      end if
 		    next
 		  end if
@@ -1375,12 +1394,13 @@ Implements StringProvider
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to PtsConsted.count-1
+		      p = point(PtsConsted.element(i))
 		      Coord = XMLElement(EL1.child(i))
-		      point(PtsConsted.element(i)).moveto new BasicPoint(Coord)
+		      p.moveto new BasicPoint(Coord)
 		      if val(Coord.GetAttribute("Invalid")) = 0 then
-		        point(PtsConsted.element(i)).valider
+		        p.valider
 		      else
-		        point(PtsConsted.element(i)).invalider
+		        p.invalider
 		      end if
 		    next
 		  end if
@@ -1390,15 +1410,7 @@ Implements StringProvider
 		    EL2 = XMLElement(EL1.Child(i))
 		    s = shapes.element(i)
 		    s.updatecoord
-		    if s isa circle or s isa Lacet then
-		      k = 0
-		      for j = 0 to ubound(s.coord.centres)
-		        if s.coord.centres(j) <>nil then
-		          Coord = XmlElement(EL2.child(k))
-		          s.coord.centres(j) = new BasicPoint(coord)
-		          k = k+1
-		        end if
-		      next
+		    if s isa circle  then             //La reconstruction des points de controles est prise en charge par la routine de peinture
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
 		    s.updateskull
@@ -1421,25 +1433,33 @@ Implements StringProvider
 		      Coord = XMLElement(EL1.child(i))
 		      p = point(PtsSur.element(i))
 		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
+		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		        p.valider
+		      else
+		        p.invalider
+		      end if
+		    next
+		  end if
+		  
+		  Restoretsf
+		  
+		  List = EL.XQL("PtsSur")
+		  if List.length > 0 then
+		    EL1 = XMLElement(List.Item(0))
+		    for i = 0 to EL1.Childcount-1
+		      p = point(PtsSur.element(i))
 		      if p.pointsur.count = 1 then
 		        p.puton(p.pointsur.element(0))
 		      elseif p.pointsur.count = 2 then
 		        n0 = val(Coord.GetAttribute("Side0"))
 		        n1 = val(Coord.GetAttribute("Side1"))
-		        inter= CurrentContent.Theintersecs.find(p.pointsur.element(0),p.pointsur.element(1))
-		        inter.update(p,(p.pointsur.element(0),n0, p.pointsur.element(1)), n1)
-		      end if
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
-		        point(PtsSur.element(i)).valider
-		      else
-		        point(PtsSur.element(i)).invalider
+		        inter= p.GetInter 'CurrentContent.Theintersecs.find(p.pointsur.element(0),p.pointsur.element(1))
+		        inter.update(p)
 		      end if
 		    next
 		  end if
 		  
 		  
-		  
-		  Restoretsf
 		End Sub
 	#tag EndMethod
 
@@ -1455,15 +1475,19 @@ Implements StringProvider
 		    return true
 		  end if
 		  
-		  if (shapes.element(0).tobereconstructed = true) or (shapes.element(0).macconstructedby <> nil) then
-		    return true
-		  end if
-		  
-		  'for i = 0 to shapes.count-1
-		  'if not shapes.element(i).check then
-		  'return false
+		  'if  (shapes.element(0).macconstructedby <> nil) then
+		  'return true
 		  'end if
-		  'next
+		  
+		  for i = 0 to shapes.count-1
+		    d = shapes.element(i).computediam
+		    if  d <= epsilon  then
+		      shapes.element(i).invalider
+		      return true
+		    else
+		      
+		    end if
+		  next
 		  
 		  t = true
 		  for i = 0 to somm.count-1
@@ -1486,7 +1510,7 @@ Implements StringProvider
 		Function replacerpoint(p as point) As Boolean
 		  dim i as integer
 		  
-		  if p.pointsur.count = 1 and p.modified and  not p.unmodifiable and p <> supfig.pointmobile then
+		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pointmobile then
 		    unmodify p
 		    return true
 		  else
@@ -1704,9 +1728,6 @@ Implements StringProvider
 		    return
 		  end if
 		  
-		  
-		  
-		  
 		  Phase0choixpointsfixes
 		  Phase1choixpointsfixes
 		  Phase2choixpointsfixes
@@ -1716,7 +1737,7 @@ Implements StringProvider
 		    if ubound(PointsFixes) > 0 then
 		      fx2 = PointsFixes(1)
 		    else
-		      fx2 = fx1
+		      fx2 = -1
 		    end if
 		  end if
 		  
@@ -1957,7 +1978,9 @@ Implements StringProvider
 		  for i = 0 to PtsSur.count-1
 		    p = point(PtsSur.element(i))
 		    p.moveto oldptssur(i)
-		    p.puton p.pointsur.element(0)
+		    if p.forme = 1 then
+		      p.puton p.pointsur.element(0)
+		    end if
 		    if  invalidptssur.indexof(i) <> -1 then
 		      p.invalider
 		    else
@@ -2062,8 +2085,13 @@ Implements StringProvider
 		  n = NbSommSur
 		  
 		  select case n
-		  case 0,1
+		  case 0
 		    return DefaultMatrix
+		  case 1
+		    p1 = point(somm.element(Listsommsur(0)))
+		    if replacerpoint(p1) then
+		      return autosimupdate
+		    end if
 		  case 2
 		    p1 = point(somm.element(Listsommsur(0)))
 		    p2 = point(somm.element(Listsommsur(1)))
@@ -2199,7 +2227,7 @@ Implements StringProvider
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.element(i))
-		    if p.pointsur.count = 2 and p.pointsur.element(0).modified and p.pointsur.element(1).modified then
+		    if p.forme = 2 and p.pointsur.element(0).modified and p.pointsur.element(1).modified then
 		      p.unmodifiable = true
 		    end if
 		    if ubound(p.parents) >=1 then
@@ -2534,6 +2562,14 @@ Implements StringProvider
 		      return s.modifier2fixes(p)
 		    end select
 		  case 1
+		    q = point(somm.element(fx1))
+		    if s isa rect then
+		      if q.forme = 0 then
+		        return s.modifier1fixe(q,p)
+		      elseif fx2 <> -1 then
+		        return s.modifier1fixe(point(somm.element(fx2)),p)
+		      end if
+		    end if
 		    
 		  case 2
 		    n = s.Points.indexof(p)
@@ -2563,10 +2599,12 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
-		  dim p, q as point
+		  dim p, q, r as point
+		  dim ep, np, eq, nq, u, v as BasicPoint
 		  dim n1, n2 as integer
 		  dim s as shape
 		  dim i as integer
+		  dim BiB as BiBPoint
 		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
@@ -2578,15 +2616,22 @@ Implements StringProvider
 		  p = Point(somm.element(n1))
 		  q = Point(somm.element(n2))
 		  
-		  if NbSommSur(n1,n2) = 1 then
-		    if  (replacerpoint(p) or replacerpoint(q))  then
-		      return autospeupdate
+		  select case  NbSommSur(n1,n2)
+		  case 0
+		    if p = supfig.pointmobile then
+		      return s.modifier1fixe(q,p)
 		    else
 		      return s.Modifier1fixe(p,q)
-		    end if                                             //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
+		    end if
+		  case 1
+		    if  (replacerpoint(p) or replacerpoint(q))  then
+		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
+		    else
+		      return rect(s).modifier2fixes(p,q)
+		    end if
 		  else
 		    return s.Modify2(p,q)
-		  end if
+		  end select
 		  
 		End Function
 	#tag EndMethod
@@ -2617,6 +2662,10 @@ Implements StringProvider
 		  q = Point(somm.element(n2))
 		  r =Point(somm.element(n3))
 		  
+		  'if s isa quadri then
+		  'return quadri(s).modifier3(p,q,r)
+		  'end if
+		  
 		  n = NbSommSur
 		  
 		  select case n
@@ -2629,7 +2678,7 @@ Implements StringProvider
 		  case 1
 		    ps =point(somm.element(ListSommSur(0)))
 		    if ps <> supfig.pointmobile and not (ps.isextremityofarc(n, ar) and (n = 2) and (ar.fig = supfig)) then
-		      t = replacerpoint(point(somm.element(ListSommSur(0))))
+		      t = replacerpoint(ps)
 		    else
 		      getoldnewpos(p,ep,np)
 		      getoldnewpos(q,eq,nq)
@@ -3021,13 +3070,17 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub Updateshapes()
-		  dim i as integer
+		  dim i, j as integer
+		  dim diam as double
+		  dim s as shape
 		  
 		  for i = 0 to shapes.count-1
-		    if not shapes.element(i).invalid then
-		      shapes.element(i).updateshape
-		      shapes.element(i).modified = true
+		    s = shapes.element(i)
+		    if not s.invalid then
+		      s.updateshape
+		      s.modified = true
 		    end if
+		    
 		  next
 		  
 		  
@@ -3107,9 +3160,12 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Function Autosimupdate2() As Matrix
-		  dim p, q as point
-		  dim ep, eq, np, nq as basicPoint
-		  dim n1, n2 as integer
+		  dim p, q,  pmob, p3 as point
+		  dim n1, n2, npmob as integer
+		  dim M as Matrix
+		  dim k as double
+		  dim s as shape
+		  dim ep, eq, np, nq As BasicPoint
 		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
@@ -3125,12 +3181,29 @@ Implements StringProvider
 		    else
 		      return new Matrix(1)
 		    end if
-		  case 1                                       //ce cas apparait
-		    'if  replacerpoint(p) or replacerpoint(q) then
-		    'return   autosimupdate
-		    'else
-		    return DefaultMatrix
-		    'end if
+		  case 1
+		    M = DefaultMatrix
+		    pmob = supfig.pointmobile
+		    npmob=  Somm.GetPosition(pmob)
+		    if npmob= -1 then
+		      return M
+		    end if
+		    p3 = Point(Somm.element(ListSommSur(Ubound(ListSommSur))))
+		    s = p3.pointsur.element(0)
+		    if not s isa droite then
+		      return M
+		    end if
+		    getoldnewpos(p,ep,np)
+		    getoldnewpos(q,eq,nq)
+		    k = M.rapport
+		    if npmob = n2 then
+		      M = new SimilarityMatrix(ep,k,0)
+		    else
+		      M = new SimilarityMatrix(eq,k,0)
+		    end if
+		    q.moveto M*eq
+		    q.modified = true
+		    return M
 		  end select
 		  
 		  
@@ -3152,7 +3225,7 @@ Implements StringProvider
 		  for i = 0 to Somm.count-1
 		    if i <> n1 and i <> n2 then
 		      p = Point(somm.element(i))
-		      if p.pointsur.count = 1 and P.liberte = 1 and not p.modified  then
+		      if p.forme = 1 and P.liberte = 1 and not p.modified  then
 		        n = n+1
 		        ListSommSur.append i
 		      end if
@@ -3207,7 +3280,7 @@ Implements StringProvider
 		Function DefaultMatrix() As Matrix
 		  dim ep, eq, er, np, nq, nr as BasicPoint
 		  dim p, q, r as point
-		  dim n1, n2, n3 as integer
+		  dim   n1, n2, n3 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)
@@ -3315,7 +3388,7 @@ Implements StringProvider
 		  
 		  for i = 0 to Somm.count-1
 		    for j = 0 to f.Somm.count-1
-		      if Somm.Element(i) = f.Somm.element(j) then
+		      if somm.element(i).forme < 2 and (Somm.Element(i) = f.Somm.element(j)) then
 		        n = n+1
 		      end if
 		    next
@@ -3377,13 +3450,8 @@ Implements StringProvider
 		  end if
 		  updatesomm(M)
 		  updateshapes(M)
-		  if not wnd.drapbug then
-		    return checksimaff(M)
-		  else
-		    return true
-		  end if
+		  return checksimaff(M)
 		  
-		  return false
 		  
 		End Function
 	#tag EndMethod
@@ -3398,57 +3466,43 @@ Implements StringProvider
 		  else
 		    updatesomm(M)
 		    updateshapes(M)
-		    if not wnd.drapbug then
-		      return checksimaff(M)
-		    else
-		      return true
-		    end if
+		    return checksimaff(M)
 		  end if
-		  return false
+		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub listersubfigs(p as point)
-		  dim i, j, k, n as integer
-		  redim index(-1)
+		  dim i, j, k, n, h0 as integer
+		  dim t as boolean
+		  redim rang(-1)
 		  
 		  n =Subs.count-1
 		  if n = 0 then
-		    index.append 0
+		    rang.append 0
 		    return
 		  end if
 		  
 		  
-		  while ubound(index) < n
-		    i = choixsubfig(p) //on choisit une sous fig qui n'est précédée d'aucune autre
-		    if  i <> -1  then
-		      index.append i
-		      for k = 0 to n-1
-		        for j = 0 to n
-		          if Sommes(k,j) > 0 and index.indexof(j) = -1 and OKToInsert(j) then
-		            index.append j
-		          end if
-		        next
-		      next
-		    end if
-		  wend
+		  choixsubfig(p, h0)    //on choisit une sous fig de départ Toutes les sous-fig qui la précèdent doivent ...
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function OKToInsert(j as integer) As Boolean
-		  dim i, n as integer
+		  dim i as integer
 		  dim t as Boolean
 		  
-		  n = Mat.nc-1 //Toutes les sous-fig qui précèdent sub(j) ont-elles été insérées?
+		  
 		  
 		  t = true
 		  
-		  for i = 0 to n
-		    if  Mat.Col(i,j) = 1 then  // y a-t-il au moins une sous-figure qui précède subs(j) et a déjà été insérée?
-		      t = (t and index.indexof(i) <> -1)
+		  for i = 0 to Mat.nc-1                              //Toutes les sous-fig qui précèdent sub(j) ont-elles été insérées?
+		    if  Mat.Col(i,j) = 1 then
+		      t = (t and rang.indexof(i) <> -1)
 		    end if
 		  next
 		  
@@ -3457,51 +3511,110 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ChoixSubfig(p as point) As integer
-		  dim h, i,j,n, imax as integer
+		Sub ChoixSubfig(p as point, byref h0 As integer)
+		  dim h, i,j,n,m, m0, i0 as integer
 		  dim dispo(-1) as integer
 		  dim sf as figure
+		  dim t as Boolean
 		  
 		  
 		  n = subs.count -1
 		  
-		  //1ere étape: Y a-t-il des sous-figures non encore modifiées qui contiennent le point mobile et ne sont précédées d'aucune autre sous-figure ?
+		  //1ere étape: Insérer toutes les sous-figures contenant le point mobile plus celles qui les précèdent
+		  m0 = -2
+		  m = -1
 		  
-		  for i = 0 to n
-		    if  index.indexof(i) = -1 then
-		      sf = subs.element(i)
-		      if (sf.somm.getposition(p) <> -1 or sf.ptssur.getposition(p) <> -1) and (sommes(0,i) = 0) then
-		        dispo.append i
-		      end if
-		    end if
-		  next
-		  
-		  if ubound(dispo) = -1 then  //   2eme étape  Si on n'a trouvé aucune sous-figure contenant le point mobile, on recommence
+		  Do Until  m = m0 or m = n
+		    m0 = m
+		    h0 = 0
+		    i0 = -1
 		    for i = 0 to n
-		      if  index.indexof(i) = -1 then
-		        if  (sommes(0,i) = 0) then
-		          dispo.append i
+		      sf = subs.element(i)
+		      if  GetRang(i) = -1 and  ((sf.somm.getposition(p) <> -1 ) or (sf.ptssur.getposition(p) <> -1)) then
+		        h = 0
+		        while h < n and sommes(h,i) <> 0
+		          h=h+1
+		        wend
+		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i)
+		          h0 = h          'sub(i) est à la racine du graphe si h = 0
+		          i0 = i
 		        end if
 		      end if
 		    next
+		    if i0 <> -1 then
+		      if h0 <> 0  then
+		        InsertPreceding(i0)
+		      end if
+		      rang.append i0
+		    end if
+		    m = ubound (rang)
+		  Loop
+		  
+		  
+		  
+		  if m = n then
+		    return
 		  end if
 		  
-		  return choixsubfig2bis(dispo)
+		  
+		  //2eme etape: insérer  les sous-figures ne contenant pas le point mobile et précédées par au moins une autre  sous-figure
+		  m0 = -2
+		  
+		  Do Until  m = m0 or m = n
+		    m0 = m
+		    h0 = 0
+		    i0 = -1
+		    for i = 0 to n
+		      sf = subs.element(i)
+		      if  GetRang(i) = -1  then
+		        h = 0
+		        while h < n and sommes(h,i) <> 0
+		          h=h+1
+		        wend
+		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i)
+		          h0 = h          'sub(i) est à la racine du graphe si h = 0
+		          i0 = i
+		        end if
+		      end if
+		    next
+		    if i0 <> -1 then
+		      if h0 <> 0 then
+		        InsertPreceding(i0)
+		      end if
+		      rang.append i0
+		    end if
+		    m = ubound (rang)
+		  Loop
+		  
+		  if m = n then
+		    return
+		  end if
 		  
 		  
-		End Function
+		  
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ChoixSubfig2(dispo() as integer) As integer
+		Sub ChoixSubfig2()
 		  'dim h, k, i, n as integer
 		  'dim ma, imax, nvois as integer
+		  'dim dispo() as integer
+		  '
+		  '' 2eme étape: Insérer les sous-figures ne contenant pas le point mobile
 		  '
 		  'n = subs.count-1
+		  'redim dispo(-1)
 		  '
-		  'if ubound(dispo) = 0 then
-		  'return dispo(0)
-		  'elseif ubound(dispo) > -1 then
+		  'for i = 0 to n
+		  'if index.indexof(i) = -1 then
+		  'dispo.append i
+		  'end if
+		  'next
+		  '
+		  'while ubound(index) < n
 		  'ma = 0
 		  'imax = -1
 		  'for i = 0 to ubound(dispo)
@@ -3527,12 +3640,11 @@ Implements StringProvider
 		  'end if
 		  'next
 		  'end if
-		  'return imax
-		  'else
-		  'return -1
-		  'end if
+		  'InsertPreceding(imax)
+		  'index.append imax
+		  'wend
 		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3544,72 +3656,67 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ChoixSubFig2bis(dispo() as integer) As integer
-		  dim h, k, i, iret as integer
-		  dim n as integer
-		  dim ff, ff1 as figure
-		  dim p as point
-		  dim  libe() as integer
-		  dim s as shape
-		  dim t as boolean
-		  
-		  n = subs.count-1
-		  
-		  if ubound(dispo) = 0 then
-		    return dispo(0)
-		  elseif ubound(dispo) > -1 then
-		    redim libe(ubound(dispo))
-		    
-		    for i = 0 to ubound(dispo)
-		      ff = subs.element(dispo(i))
-		      s = ff.shapes.element(0)
-		      n = 0
-		      for h = 0 to ff.somm.count
-		        p = point(ff.somm.element(h))
-		        t = false
-		        for k = 0 to n
-		          t = t or ( (k<> i) and ( index.indexof(k) <> -1) and (subs.element(k).somm.getposition(p) <> -1))
-		        next
-		        if t then
-		          n = n+1
-		        end if
-		      next
-		      select case ff.auto
-		      case 0
-		        libe(i) = 0
-		      case 1
-		        libe(i) = 4 - 2*n
-		      case 2
-		        libe(i) = 6 - 2*n
-		      case 3
-		        libe(i) = 5 - 2*n
-		      case 4
-		        libe(i) = 2*s.npts - 2*n
-		      case 5
-		        if s isa traprect  or s isa trapiso then
-		          libe(i) = 6-2*n
-		        else
-		          libe(i) = 7-2*n
-		        end if
-		      case 6
-		        libe(i) = 3 -2*n
-		      end select
-		      if libe(i) < 0 then
-		        libe(i) = 0
-		      end if
-		    next
-		    
-		    for i = 0 to ubound(dispo)
-		      if libe(i) > n then
-		        n = libe(i)
-		        iret = dispo(i)
-		      end  if
-		    next
-		    return iret
-		    
-		  else
-		    return -1
-		  end if
+		Function ChoixSubFig2bis() As integer
+		  'dim h, k, i, iret as integer
+		  'dim n, m as integer
+		  'dim ff, ff1 as figure
+		  'dim p as point
+		  'dim  libe() as integer
+		  'dim s as shape
+		  'dim t as boolean
+		  'dim dispo() as integer
+		  'n = subs.count-1
+		  '
+		  'redim libe(ubound(dispo))
+		  '
+		  'for i = 0 to ubound(dispo)
+		  'ff = subs.element(dispo(i))
+		  's = ff.shapes.element(0)
+		  'm = 0
+		  'for h = 0 to ff.somm.count-1
+		  'p = point(ff.somm.element(h))
+		  't = false
+		  'for k = 0 to n       //a-t-on déjà inséré uns subfig différente de sub(i) contenant le point p
+		  't = t or ( (k<> i) and ( index.indexof(k) <> -1) and (subs.element(k).somm.getposition(p) <> -1))
+		  'next
+		  'if t then
+		  'm = m+1  // n est le nombre de subfig différentes de sub(i) déjà insérées contenant le point p
+		  'end if
+		  'next
+		  '
+		  'select case ff.auto  //On calcule le nombre de degrés de liberté dont on dispose dans le cas du choix de sub(i)
+		  'case 0
+		  'libe(i) = 0
+		  'case 1
+		  'libe(i) = 4 - 2*m
+		  'case 2
+		  'libe(i) = 6 - 2*m
+		  'case 3
+		  'libe(i) = 5 - 2*m
+		  'case 4
+		  'libe(i) = 2*s.npts - 2*m
+		  'case 5
+		  'if s isa traprect  or s isa trapiso then
+		  'libe(i) = 6-2*m
+		  'else
+		  'libe(i) = 7-2*m
+		  'end if
+		  'case 6
+		  'libe(i) = 3 -2*m
+		  'end select
+		  'if libe(i) < 0 then
+		  'libe(i) = 0
+		  'end if
+		  'next
+		  '
+		  'for i = 0 to ubound(dispo)  //Faut-il choisir la subfig qui a conservé le plus de degrés de libertés ou le moins?
+		  'if libe(i) > n then
+		  'n = libe(i)
+		  'iret = dispo(i)
+		  'end  if
+		  'next
+		  'return iret
+		  '
 		  
 		End Function
 	#tag EndMethod
@@ -3724,6 +3831,162 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub InsertPreceding(i as integer)
+		  //i est un numéro de sous-figure,
+		  // la méthode doit insérer dans l'index toutes les sous-figures qui précèdent subfig(i), en respectant les relations de précédence
+		  // on insérera d'abord celles pour lesquelles MP(1).Col(j,i) >0 et MP(2).Col(j,i) = MP(3).Col(j,i)= ... = 0
+		  //Puis celles pour lesquelles MP(2).Col(j,i) > 0  etc... On procède par récursivité
+		  
+		  dim j, h, n, s as integer
+		  dim f1, f2  as figure
+		  
+		  n = Mat.nc-1
+		  f1 = subs.element(i)
+		  
+		  for h = 0 to n
+		    f2 = subs.element(h)
+		    
+		    if rang.indexof(h)=-1 and Mat.Col(h,i) = 1 then
+		      if not( (f1.auto=2 ) and (f2.auto=1) and f1.NbTrueSommCommuns(f2) >=2) then
+		        s = 0
+		        for j = 1 to n
+		          s = s + MP(j).Col(h,i)
+		        next
+		        if s = 0 then
+		          InsertPreceding(h)
+		        end if
+		        rang.append h
+		      end if
+		    end if
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRang(n as integer) As integer
+		  dim i as integer
+		  
+		  for i=0 to ubound(Rang)
+		    if Rang(i) = n then
+		      return i
+		    end if
+		  next
+		  return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasPointOnConstructedShape(f as figure) As Boolean
+		  dim t as Boolean
+		  dim i as integer
+		  dim p as point
+		  
+		  t = false
+		  for i = 0 to somm.count-1
+		    p = point(somm.element(i))
+		    if p.forme = 1 and p.pointsur.element(0).constructedby <> nil and  f.shapes.getposition(p.pointsur.element(0).constructedby.shape ) <> -1 then
+		      t = true
+		    end if
+		  next
+		  return t
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function containsmaccstedshapewithoutinitobjects() As Boolean
+		  dim s, sh as shape
+		  dim i,j as integer
+		  
+		  
+		  for i = 0 to shapes.count-1
+		    s = shapes.element(i)
+		    if s.macconstructedby <> nil then
+		      for  j = 0 to ubound(s.macconstructedby.realinit)
+		        sh = currentcontent.theobjects.getshape(s.MacConstructedby.realinit(j))
+		        if sh.fig <> self then
+		          return false
+		        end if
+		      next
+		    end if
+		  next
+		  return true
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatemacconstructedshapes()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count-1
+		    shapes.element(i).updatemacconstructedshapes
+		  next
+		  for i = 0 to somm.count-1
+		    somm.element(i).updatemacconstructedshapes
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub constructshapes()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count-1
+		    shapes.element(i).constructshape
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub invalider()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count -1
+		    shapes.element(i).invalider
+		  next
+		  
+		  invalid = true
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub valider()
+		  dim i as integer
+		  
+		  for i = 0 to shapes.count -1
+		    shapes.element(i).valider
+		  next
+		  
+		  invalid = false
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub reconstruct()
+		  dim i, j  as integer
+		  dim diam as double
+		  
+		  for i = 0 to shapes.count-1
+		    diam = shapes.element(i).computediam
+		    if diam <= epsilon then
+		      for j = 1 to ubound(shapes.element(i).points)
+		        shapes.element(i).points(j).moveto shapes.element(i).points(0).bpt
+		      next
+		      return
+		    end if
+		    Shapes.element(i).constructshape
+		    for j = 0 to ubound(shapes.element(i).points)
+		      shapes.element(i).points(j).modified = true   //Pour empêcher updatesomm de déplacer les points qui ont été remis en place
+		    next
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -3768,7 +4031,7 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		index(-1) As Integer
+		Rang(-1) As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -3922,6 +4185,14 @@ Implements StringProvider
 		Modified As Boolean
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		invalid As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		tobereconstructed As Boolean
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -4007,6 +4278,18 @@ Implements StringProvider
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Modified"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="invalid"
+			Group="Behavior"
+			InitialValue="0"
+			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="tobereconstructed"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

@@ -3,16 +3,38 @@ Protected Class Polygon
 Inherits Shape
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
-		  dim i,j, n as Integer
-		  dim q, r as BasicPoint
-		  dim c as Boolean
+		  dim i,j, i0, j0 as Integer
+		  dim pp(3) as BasicPoint
+		  dim r as double
 		  
 		  if npts = 2 then
 		    return p.between(points(0).bpt, points(1).bpt) and p.distance(points(0).bpt, points(1).bpt)  < wnd.mycanvas1.magneticdist
-		  else
-		    return coord.pInShape(p)
+		  elseif npts = 4 then
+		    for i = 1  to 3
+		      pp(i) = coord.tab(i) - coord.tab(0)
+		      if pp(i).norme < epsilon then
+		        return false
+		      end if
+		    next
+		    
+		    if (abs(pp(2).Vect(pp(1))) < epsilon) and (abs(pp(3).Vect(pp(1))) <epsilon) then
+		      i0 = 0
+		      j0 = 1
+		      for i = 2 to 3
+		        r = coord.tab(i).location(coord.tab(0),coord.tab(1))
+		        if r > 1 then
+		          j0 = i
+		        end if
+		        if r < 0 then
+		          i0 = i
+		        end if
+		      next
+		      if p.distance(coord.tab(0), coord.tab(1)) <  wnd.Mycanvas1.MagneticDist then
+		        return p.between(coord.tab(i0), coord.tab(j0))
+		      end if
+		    end if
 		  end if
-		  
+		  return coord.pInShape(p)
 		  
 		End Function
 	#tag EndMethod
@@ -266,7 +288,7 @@ Inherits Shape
 		  
 		  r = aire
 		  
-		  if r >= 0 then
+		  if r > 0 then
 		    ori = 1
 		  else
 		    ori = -1
@@ -508,7 +530,9 @@ Inherits Shape
 		      v = v.vecnorperp
 		      if p(2).pointsur.count = 0 then
 		        M = new OrthoProjectionMatrix(u,u+v)
-		        np2 = M*np2
+		        if M <> nil and M.v1 <> nil then
+		          np2 = M*np2
+		        end if
 		      else
 		        s = p(2).pointsur.element(0)
 		        q1 = new point(u)
@@ -716,6 +740,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -727,13 +758,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -256,6 +256,7 @@ Inherits SelectOperation
 		      idf = val(EL2.GetAttribute("FigId"))
 		      ff = CurrentContent.Thefigs.getfigure(idf)
 		      ff.RestoreInit(EL2)
+		      ff.updatemacconstructedshapes
 		    next
 		  end if
 		  wnd.refresh

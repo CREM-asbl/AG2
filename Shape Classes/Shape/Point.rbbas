@@ -97,7 +97,7 @@ Inherits Shape
 		  dim s1,s2 as Shape
 		  dim p3 as Basicpoint
 		  
-		  if not PossibleAttractionWith(s) or s.hidden then
+		  if not PossibleAttractionWith(s)  then
 		    return 0
 		  end if
 		  
@@ -264,7 +264,7 @@ Inherits Shape
 		  
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
 		  if d <> nil then
-		    bpt = d
+		    bpt = d                       'On déplace même les points modifiés
 		    if labs.count = 1 and not labs.element(0).fixe  then
 		      labs.element(0).SetPosition
 		    end if
@@ -586,7 +586,7 @@ Inherits Shape
 		      liberte = constructedby.shape.liberte
 		    end select
 		  end if
-		  if (forme <> 1) and ((MacConstructedBy <>  nil )  or ((ubound(parents) > -1) and( parents(0).macconstructedby <> nil) and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
+		  if (forme <> 1) and (  (MacConstructedBy <>  nil )  or ( (ubound(parents) > -1) and (parents(0).macconstructedby <> nil)  and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
 		    liberte = 0
 		  end if
 		  
@@ -768,16 +768,25 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PutOnSegment(a as BasicPoint, b as BasicPoint, r as double, n as integer)
-		  if r <= 0 then
-		    moveto a
-		    location(n) = 0
-		  elseif r>= 1 then
-		    moveto b
-		    location(n) = 1
+		  location(n) = r
+		  moveto bpt.projection(a,b)
+		  
+		  if r <0 or r > 1 then
+		    invalider
 		  else
-		    moveto bpt.projection(a,b)
-		    location(n) = r
+		    valider
 		  end if
+		  
+		  'if r <= 0 then
+		  'moveto a
+		  'location(n) = 0
+		  'elseif r>= 1 then
+		  'moveto b
+		  'location(n) = 1
+		  'else
+		  'moveto bpt.projection(a,b)
+		  'location(n) = r
+		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -866,32 +875,45 @@ Inherits Shape
 		Sub Invalider()
 		  dim i,j,k as integer
 		  dim s as shape
+		  dim  s1, s2  as shape
+		  dim inter as intersec
+		  
+		  if currentcontent.currentoperation isa modifier and self = fig.pointmobile then
+		    return
+		  end if
 		  
 		  if not invalid  then
 		    invalid = true
 		    
-		    for i = 0 to conditioned.count -1
-		      conditioned.element(i).invalider
-		    next
-		    
-		    for i = 0 to ubound(parents)
-		      if parents(i).getindexpoint(self) <> -1 then
-		        parents(i).invalider
+		    if forme = 2 then
+		      's1 = pointsur.element(0)
+		      's2 = pointsur.element(1)
+		      inter = GetInter 'CurrentContent.TheIntersecs.Find(s1,s2)
+		      if inter <> nil then
+		        inter.bezet(numside(0), numside(1)) = false
 		      end if
-		    next
-		    
-		    for i = 0  to Ubound(ConstructedShapes)
-		      ConstructedShapes(i).Invalider
-		    next
-		    
-		    for i = 0 to tsfi.count-1
-		      for j = 0 to tsfi.element(i).constructedshapes.count -1
-		        s = tsfi.element(i).constructedshapes.element(j)
-		        s.invalider
+		      for i = 0 to conditioned.count -1
+		        conditioned.element(i).invalider
 		      next
-		    next
+		      
+		      for i = 0 to ubound(parents)
+		        if parents(i).getindexpoint(self) <> -1 then
+		          parents(i).invalider
+		        end if
+		      next
+		      
+		      for i = 0  to Ubound(ConstructedShapes)
+		        ConstructedShapes(i).Invalider
+		      next
+		      
+		      for i = 0 to tsfi.count-1
+		        for j = 0 to tsfi.element(i).constructedshapes.count -1
+		          s = tsfi.element(i).constructedshapes.element(j)
+		          s.invalider
+		        next
+		      next
+		    end if
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -1466,8 +1488,10 @@ Inherits Shape
 		    s = Point(ConstructedShapes(i))
 		    select case s.constructedby.Oper
 		    case 3, 5
-		      M1 = Matrix(s.constructedby.data(0))
-		      s.Moveto M1*(self.bpt)
+		      if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
+		        M1 = Matrix(s.constructedby.data(0))
+		        s.Moveto M1*bpt
+		      end if
 		    case 6
 		      tsf = Transformation(s.constructedby.data(0))
 		      M1 = tsf.M
@@ -1559,9 +1583,13 @@ Inherits Shape
 		  dim sh  as shape
 		  dim i as integer
 		  
-		  if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
-		    return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
+		  if bpt = nil then
+		    return
 		  end if
+		  
+		  'if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
+		  'return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
+		  'end if
 		  
 		  if  forme =1  then
 		    sh = pointsur.element(0)
@@ -1573,6 +1601,10 @@ Inherits Shape
 		  end if
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
+		    if parents(i) isa circle then
+		      parents(i).coord.CreateExtreAndCtrlPoints(parents(i).ori)
+		      parents(i).updateskull
+		    end if
 		  next
 		  if ifmac <>nil and forme = 1 then
 		    ifmac.location = location(0)
@@ -2361,8 +2393,8 @@ Inherits Shape
 		  end if
 		  
 		  if pointsur.count > 0 then
-		    if pointsur.count = 2 then
-		      inter = CurrentContent.TheIntersecs.find(pointsur.element(0), pointsur.element(1))
+		    if forme = 2 then
+		      inter = GetInter 'CurrentContent.TheIntersecs.find(pointsur.element(0), pointsur.element(1))
 		      inter.removepoint self
 		    end if
 		    for j = pointsur.count-1 downto 0
@@ -2436,17 +2468,17 @@ Inherits Shape
 		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
 		    if d > 0.1 and dret = nil then
-		      np = bpt+ (delta.normer)*0.1
+		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
 		  M = new TranslationMatrix(np-bpt)
-		  Moveto M*bpt
+		  Moveto np   'M*bpt
 		  if pointsur.count = 1 then
 		    puton pointsur.element(0)
 		  end if
 		  modified = true
 		  updateshape
-		  //Si le point mobile est un point dupliqué, tous ses duplicata sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
+		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
 		End Sub
 	#tag EndMethod
 
@@ -2868,25 +2900,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateInter()
-		  dim s1, s2 as shape
-		  dim inter as intersec
-		  
-		  if pointsur.count = 2 then
-		    s1 = pointsur.element(0)
-		    s2 = pointsur.element(1)
-		    inter = CurrentContent.TheIntersecs.Find(s1,s2)
-		    if inter <> nil then
-		      inter.update        //Le point est éventuellement re-validé
-		      if not invalid then
-		        ValiderCondiEtConstruc
-		      end if
-		    end if
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function isonasupphom(byref s as shape) As integer
 		  dim i as integer
 		  
@@ -2968,7 +2981,7 @@ Inherits Shape
 		Function SimulInter(s1 as shape, s2 as shape) As BasicPoint
 		  dim inter as intersec
 		  
-		  inter = CurrentContent.TheIntersecs.find(s1, s2)
+		  inter = GetInter  'CurrentContent.TheIntersecs.find(s1, s2)
 		  
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
@@ -2992,7 +3005,7 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  inter = CurrentContent.TheIntersecs.find(s1, s2)
+		  inter = GetInter 'CurrentContent.TheIntersecs.find(s1, s2)
 		  
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
@@ -3030,27 +3043,6 @@ Inherits Shape
 		  
 		  return ol
 		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function oldConstructing() As Boolean
-		  dim i as integer   'Utilisé uniquement dans la détermination des points "sur" qui sont initiaux d'une macro
-		  
-		  if forme <> 1 then
-		    return false
-		  end if
-		  
-		  if ubound (constructedshapes)> -1  then
-		    return true
-		  end if
-		  
-		  for i = 0 to ubound(parents)
-		    if (parents(i).getindexpoint(self) <> -1) and ubound(parents(i).constructedshapes) > -1 then
-		      return true
-		    end if
-		  next
 		  
 		End Function
 	#tag EndMethod
@@ -3135,6 +3127,39 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdateInter()
+		  dim s1, s2 as shape
+		  dim inter as intersec
+		  
+		  if forme = 2 then
+		    's1 = pointsur.element(0)
+		    's2 = pointsur.element(1)
+		    inter = GetInter 'CurrentContent.TheIntersecs.Find(s1,s2)
+		    if inter <> nil then
+		      inter.update (self)      //Le point est éventuellement re-validé
+		      if not invalid then
+		        ValiderCondiEtConstruc
+		      end if
+		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInter() As intersec
+		  dim s1, s2 as shape
+		  
+		  if forme <> 2 then
+		    return nil
+		  end if
+		  
+		  s1 = pointsur.element(0)
+		  s2 = pointsur.element(1)
+		  return CurrentContent.TheIntersecs.Find(s1,s2)
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -3217,6 +3242,13 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -3228,13 +3260,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -3513,12 +3538,6 @@ Inherits Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Surseg"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="validating"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

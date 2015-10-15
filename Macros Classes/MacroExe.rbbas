@@ -82,7 +82,7 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  if currentcontent.macrocreation then   'on utilise une macro à l'intérieur de la construction d'une autre
-		    ExecuteMacroExe(Histo)
+		    ExecuteMacro(Histo)
 		  else
 		    CreateIfMacs(Histo)
 		    mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice de la tsf
@@ -107,7 +107,6 @@ Inherits MultipleSelectOperation
 		    Finished = true
 		  else
 		    super.EndOperation
-		    CurrentContent.TheMacros.AddMac(Mac)
 		  end if
 		  MacInfo = new MacConstructionInfo(Mac)
 		  Mac.MacInf = MacInfo
@@ -222,6 +221,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MacroExe(Macr as Macro)
+		  
 		  MultipleSelectOperation
 		  Mac = Macr
 		  OpId = 43
@@ -299,6 +299,9 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateIfMacObject(EL as XMLElement, oper as integer)
+		  //Cette  méthode crée les structures Ifmac de classe Infomac mais n'y place aucune valeur numérique de position.
+		  //Cette opération est exécutée dans la deuxième phase : exécution de la macro prise en charge par la méthode macexe de la classe Macro
+		  
 		  dim i, n as integer
 		  dim EL0, EL1 as XMLElement
 		  dim ifmac, ifm As InfoMac
@@ -336,6 +339,7 @@ Inherits MultipleSelectOperation
 		    for i = 0 to ubound(ifmac.childs)
 		      ifm = ifmac.childs(i)
 		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
+		        ifm.init = true
 		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
 		      end if
 		    next
@@ -347,16 +351,21 @@ Inherits MultipleSelectOperation
 		    newshape.endconstruction
 		    newshape.ifmac = ifmac
 		    for i = 0 to newshape.npts-1
-		      newshape.points(i).ifmac = ifmac.childs(i)
-		      if ifmac.childs(i).fo = 1 and (Mac.ObInterm.indexof(ifmac.childs(i).forme0) =-1) then
-		        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifmac.childs(i).forme0))
-		        newshape.points(i).numside.append  ifmac.childs(i).numside0
-		        newshape.points(i).puton s, ifmac.childs(i).location
+		      ifm = ifmac.childs(i)
+		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
+		        ifm.init = true
+		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
+		      end if
+		      newshape.points(i).ifmac = ifm
+		      if ifm.fo = 1 and (Mac.ObInterm.indexof(ifm.forme0) =-1) then
+		        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
+		        newshape.points(i).numside.append  ifm.numside0
+		        'newshape.points(i).puton s, ifmac.childs(i).location
 		        newshape.points(i).placerptsursurfigure
 		      else
-		        ifmac.childs(i).fo = 0
+		        ifm.fo = 0
 		      end if
-		      newshape.points(i).forme = ifmac.childs(i).fo
+		      newshape.points(i).forme = ifm.fo
 		    next
 		  end if
 		  
@@ -578,7 +587,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ExecuteMacroExe(Temp as XMLElement)
+		Sub ExecuteMacro(Temp as XMLElement)
 		  
 		  dim EL as XMLElement  'on exécute une sous-macro d'une macro
 		  dim i, oper as integer
@@ -633,7 +642,7 @@ Inherits MultipleSelectOperation
 		  else                                                                     'son id dans Real et ' éventuellement le n° de côté dans RealSide. Ces données deviennent les MacId
 		    'dans la macro principale en étant reprises dans le XMLElement créé par ToMac
 		    select case oper
-		    case 0 //Construction
+		    case 0, 46 //Construction et PointSur
 		      curop = new shapeconstruction(self, EL0, EL1)
 		      createdshape = curop.currentshape
 		    case 1 //paraperp
@@ -660,9 +669,6 @@ Inherits MultipleSelectOperation
 		      createdshape = FixPConstruction(curop).tsf.FixPt
 		    case 45  //Point d'intersection
 		      curop = new Intersec(self, EL1)
-		      createdshape = curop.currentshape
-		    case 46 //PointSur
-		      curop = new ShapeConstruction (self, EL0, EL1)
 		      createdshape = curop.currentshape
 		    end select
 		    

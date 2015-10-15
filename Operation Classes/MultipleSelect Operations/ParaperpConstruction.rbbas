@@ -274,7 +274,7 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub ParaperpConstruction(Mexe as MacroExe, EL0 as XMLElement, EL1 as XMLElement)
-		  dim  fa, fo, rid, side, n, i , num as integer
+		  dim  fa, fo, rid, side, Mid, i , num as integer
 		  dim pt as point
 		  dim EL as XMLElement
 		  dim sh as shape
@@ -282,20 +282,20 @@ Inherits ShapeConstruction
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  ParaperpConstruction (fa,fo)
-		  n = val(EL1.GetAttribute("Id"))
+		  Mid = val(EL1.GetAttribute("Id"))              //Ids de la droite/segment
 		  ori = val(EL1.GetAttribute("Ori"))
-		  rid = MExe.GetRealId(n)
+		  rid = MExe.GetRealId(Mid)
 		  Refe= objects.GetShape(rid)
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
-		  side = Mexe.GetRealSide(n)
+		  side = val(EL1.GetAttribute("Index"))
 		  currentshape.constructedby.data.append side
 		  currentshape.constructedby.data.append nil
 		  currentshape.constructedby.data.append ori
 		  
 		  'Positionnement aisé du premier point
 		  EL =XMLElement(EL0.Child(0))
-		  n = val(XMLElement(EL.Child(0)).GetAttribute("Id"))
-		  rid = MExe.GetRealId(n)
+		  Mid = val(XMLElement(EL.Child(0)).GetAttribute("Id"))  //Ids du premier point
+		  rid = MExe.GetRealId(Mid)
 		  pt = point(objects.GetShape(rid))
 		  currentshape.substitutepoint(pt,currentshape.points(0))
 		  
@@ -308,8 +308,8 @@ Inherits ShapeConstruction
 		  ' si fo > 3 then  'pas de probleme rien à changer à ce qui précède : une droite n'a qu'un second point caché
 		  if fo <3 then
 		    EL = XMLElement(EL.Child(1))
-		    n = val(EL.GetAttribute("Id"))
-		    rid = MExe.GetRealId(n)
+		    Mid = val(EL.GetAttribute("Id"))   //Ids du deuxième point
+		    rid = MExe.GetRealId(Mid)
 		    pt = point(objects.GetShape(rid))
 		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
 		    'voir remarque correspondante dans  macro.paraperp
@@ -322,8 +322,8 @@ Inherits ShapeConstruction
 		      EL = XMLElement(EL.Child(0))
 		      pt.surseg = (val(EL.GetAttribute("Surseg")) = 1)
 		      EL = XMLElement(EL.Child(0))
-		      n = val(EL.GetAttribute("Id")) 'macId du support de pt
-		      rid = MExe.GetRealId(n)
+		      Mid = val(EL.GetAttribute("Id")) 'macId du support de pt
+		      rid = MExe.GetRealId(Mid)
 		      sh = objects.Getshape(rid)
 		      num = val(EL.GetAttribute("NrCote"))
 		      pt.moveto BiB1.ComputeDroiteFirstIntersect(sh,num,pt.bpt)

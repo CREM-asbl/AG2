@@ -527,11 +527,11 @@ Implements StringProvider
 		        point(constructedshapes(i)).paintall(g)
 		      end if
 		    next
-		    if not hidden then
-		      for i = 0 to labs.count-1
-		        labs.element(i).paint(g)
-		      next
-		    end if
+		    'if not hidden then
+		    'for i = 0 to labs.count-1
+		    'labs.element(i).paint(g)
+		    'next
+		    'end if
 		  end if
 		  
 		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
@@ -593,25 +593,6 @@ Implements StringProvider
 		      colcotes(i) = c
 		    next
 		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldShape(ol as objectslist, ncp as integer)
-		  if id=0 then
-		    id = ol.newId
-		  end if
-		  objects = ol
-		  labs = new LabList
-		  tsfi = new transfoslist
-		  Autos
-		  Ncpts = ncp
-		  IdGroupe = -1
-		  Fixecouleurtrait(Config.bordercolor,Config.Border)
-		  FixeCouleurFond(Config.Fillcolor,0)
-		  Borderwidth = Config.Thickness
-		  std = false
-		  plan = -1
 		End Sub
 	#tag EndMethod
 
@@ -787,17 +768,14 @@ Implements StringProvider
 		Sub UpDateSkull()
 		  dim i as integer
 		  
+		  if self isa circle or self isa Lacet then
+		    nsk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		  else
+		    sk.update(wnd.myCanvas1.transform(Points(0).bpt))
+		  end if
 		  
-		  for i=0 to npts-1
-		    if i=0 then
-		      if self isa circle or self isa Lacet then
-		        nsk.update(wnd.myCanvas1.transform(Points(0).bpt))
-		      else
-		        sk.update(wnd.myCanvas1.transform(Points(0).bpt))
-		      end if
-		    else
-		      UpdateSkull(i,wnd.myCanvas1.dtransform(Points(i).bpt-Points(0).bpt))
-		    end
+		  for i=1 to npts-1
+		    UpdateSkull(i,wnd.myCanvas1.dtransform(Points(i).bpt-Points(0).bpt))
 		  next
 		  
 		  
@@ -903,7 +881,7 @@ Implements StringProvider
 		    bp = Point(self).bpt
 		  end if
 		  
-		  if self isa point and other isa point then
+		  if self isa point and other isa point and point(other).bpt <> nil then
 		    dist = bp.distance(point(other).bpt)
 		    if dist <= magdist then
 		      return true
@@ -1152,6 +1130,7 @@ Implements StringProvider
 		  
 		  Shape(ol)
 		  Npts=s.Npts
+		  Ncpts = s.Ncpts
 		  fam =s.fam
 		  forme = s.forme
 		  auto = s.auto
@@ -1263,10 +1242,6 @@ Implements StringProvider
 		  dim a as double
 		  dim tsf as transformation
 		  
-		  if invalid then
-		    return
-		  end if
-		  
 		  updatecoord
 		  computeori
 		  a = aire
@@ -1285,17 +1260,15 @@ Implements StringProvider
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
 		      p = childs(i)
-		      if p.pointsur.count = 2 then
+		      if p.forme = 2  then
 		        s1 = p.pointsur.element(0)
 		        s2 = p.pointsur.element(1)
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
-		          inter = CurrentContent.TheIntersecs.find(s1,s2)
-		          inter.update
+		          inter = p.GetInter
+		          inter.update(p)
 		        end if
-		        p.modified = true
-		        p.updateshape
 		      end if
 		    next
 		  end if
@@ -1331,8 +1304,7 @@ Implements StringProvider
 		  
 		  if self isa Lacet then
 		    Lacet(self).CreateExtreAndCtrlPoints
-		    'Lacet(self).updateskull
-		  else
+		  elseif not self isa bipoint then
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  modified = true
@@ -1455,12 +1427,11 @@ Implements StringProvider
 		    return
 		  end if
 		  
-		  if validating or not invalid then 
+		  if validating or not invalid then
 		    return
 		  end if
 		  
 		  validating = true
-		  
 		  t = true
 		  t2 = true
 		  for i = 0 to npts-1
@@ -1475,12 +1446,12 @@ Implements StringProvider
 		    validating = false
 		    return
 		  end if
-		  for i = 0 to ncpts-1
-		    t2 = t2 and points(i).modified
-		  next
-		  if t2 then
-		    constructshape
-		  end if
+		  
+		  'for i = 0 to ncpts-1
+		  't2 = t2 and points(i).modified
+		  'next
+		  'if t2 then
+		  'end if
 		  
 		  
 		  if self isa circle or self isa lacet then
@@ -1522,7 +1493,7 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AllPtValid() As boolean
+		Function AllPtValid() As Boolean
 		  dim  i As integer
 		  
 		  for i=0 to Ubound(Points)
@@ -1931,6 +1902,11 @@ Implements StringProvider
 		    XMLReadPoints XMLElement(List.Item(0))   // ne lit pas les points sur
 		  end if
 		  
+		  List = EL.Xql("InfosArcs")
+		  if List.length > 0 then
+		    XMLReadInfoArcs(EL)
+		  end if
+		  
 		  Labs = new LabList
 		  
 		  List = EL.XQL("Label")
@@ -2267,7 +2243,7 @@ Implements StringProvider
 		      if not haspointon(s2,p) then
 		        return true
 		      end if
-		    case 3, 5, 6, 9
+		    case 3, 5, 6, 8, 9
 		      return true
 		    end select
 		  elseif constructedby <> nil and constructedby.oper = 6 then
@@ -2317,7 +2293,7 @@ Implements StringProvider
 		  end if
 		  
 		  
-		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
+		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) then 'and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
 		    t =  (constructedby = nil or constructedby.shape <> s2)   ''si un sommet de s2 est pointsur self (sans que self soit construit par s2)
 		    for k = 0 to npts-1
 		      t = t or ( (points(k).constructedby = nil) or (points(k).constructedby.shape isa point and s2.getindex(point(points(k).constructedby.shape)) <> -1) )
@@ -2326,7 +2302,6 @@ Implements StringProvider
 		      return true
 		    end if
 		  end if
-		  
 		  
 		  if s2 isa polygon then
 		    for i = 0 to s2.npts-1
@@ -2368,15 +2343,15 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  if macconstructedshapes.indexof(s2) <> - 1 then
-		    return true
-		  end if
-		  
-		  for i = 0 to ubound(childs)
-		    if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
-		      return true
-		    end if
-		  next
+		  'if macconstructedshapes.indexof(s2) <> - 1 then
+		  'return true
+		  'end if
+		  '
+		  'for i = 0 to ubound(childs)
+		  'if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
+		  'return true
+		  'end if
+		  'next
 		  
 		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
 		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
@@ -3153,8 +3128,8 @@ Implements StringProvider
 		  
 		  for i = npts-1 downto 0
 		    p = points(i)
-		    if p.pointsur.count = 2 and p.id > id then
-		      inter = CurrentContent.TheIntersecs.find(p.pointsur.element(0), p.pointsur.element(1))
+		    if p.forme = 2 and p.id > id then
+		      inter = p.GetInter  'CurrentContent.TheIntersecs.find(p.pointsur.element(0), p.pointsur.element(1))
 		      inter.removepoint p
 		    end if
 		    for j =  p.pointsur.count-1 downto 0
@@ -3333,36 +3308,19 @@ Implements StringProvider
 
 	#tag Method, Flags = &h0
 		Sub updateshape(M as Matrix)
-		  dim i as integer
+		  dim i as integer    //Ici on s'occupe des points autres que les sommets
 		  dim s1, s2 As shape
 		  dim p as point
-		  
-		  if invalid then
-		    return
-		  end if
-		  
-		  if not self isa point then
-		    computediam
-		    if diam < 10*epsilon then
-		      tobereconstructed = true
-		    end if
-		    
-		    if tobereconstructed  then
-		      constructshape
-		      'if check then
-		      'tobereconstructed = false
-		      'end if
-		    end if
-		  end if
+		  dim diam as double
 		  
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
 		      childs(i).updateshape(M)
 		    next
 		  end if
-		  
-		  
 		  updateshape
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3785,19 +3743,26 @@ Implements StringProvider
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub computediam()
+		Function computediam() As double
 		  dim i , j as integer
+		  dim diam as double
 		  
 		  diam = 0
+		  'if ncpts<3 then
+		  'diam =999
+		  'else
 		  
-		  for i = 0 to npts-2
-		    for j = i+1 to npts-1
+		  for i = 0 to ncpts-2
+		    for j = i+1 to ncpts-1
 		      diam= max(diam, points(i).bpt.distance(points(j).bpt))
 		    next
 		  next
+		  'end if
+		  
+		  return diam
 		  
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3991,15 +3956,13 @@ Implements StringProvider
 		  dim i as integer
 		  dim d as double
 		  
-		  d = Points(0).bpt.distance(Points(1).bpt)
 		  
-		  if d > 0 then
-		    for i = 0 to ncpts-1
-		      coord.tab(i) = Points(i).bpt
-		    next
-		    coord.constructshape(fam,forme)
-		    repositionnerpoints
-		  end If
+		  for i = 0 to ncpts-1
+		    coord.tab(i) = Points(i).bpt
+		  next
+		  coord.constructshape(fam,forme)
+		  repositionnerpoints
+		  
 		  
 		  
 		  
@@ -4173,6 +4136,29 @@ Implements StringProvider
 		    childs(i).print(g)
 		  next
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldreconstruct()
+		  
+		  'if  computediam > 10*epsilon then
+		  constructshape
+		  valider
+		  tobereconstructed = false
+		  'end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInters() As intersec()
+		  return currentcontent.theintersecs.find(self)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLReadInfoArcs(EL as XMLElement)
 		  
 		End Sub
 	#tag EndMethod
@@ -4445,10 +4431,6 @@ Implements StringProvider
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		diam As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		nsk As nskull
 	#tag EndProperty
 
@@ -4692,13 +4674,13 @@ Implements StringProvider
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="diam"
+			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="NotPossibleCut"
+			Name="Validating"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

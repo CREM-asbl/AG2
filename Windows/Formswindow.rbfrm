@@ -32,7 +32,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   0
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   0
@@ -49,7 +49,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   0
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -60,7 +60,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   1
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   1
@@ -77,7 +77,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   30
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -88,7 +88,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   2
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   2
@@ -105,7 +105,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   60
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -116,7 +116,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   3
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   3
@@ -133,7 +133,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   90
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -144,7 +144,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   4
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   4
@@ -161,7 +161,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   120
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -172,7 +172,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   5
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   5
@@ -189,7 +189,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   150
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -200,7 +200,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   6
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   6
@@ -217,7 +217,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   180
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -228,7 +228,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   7
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   7
@@ -245,7 +245,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   210
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -256,7 +256,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   8
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   8
@@ -273,7 +273,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   240
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -284,7 +284,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   9
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   9
@@ -301,7 +301,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   270
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -312,7 +312,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   10
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   10
@@ -329,7 +329,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   300
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -340,7 +340,7 @@ Begin Window Formswindow
       Caption         =   "Untitled"
       ControlOrder    =   11
       Default         =   "False"
-      Enabled         =   True
+      Enabled         =   "True"
       Height          =   30
       HelpTag         =   ""
       Index           =   11
@@ -357,7 +357,7 @@ Begin Window Formswindow
       TextSize        =   0
       Top             =   330
       Underline       =   "False"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   200
       BehaviorIndex   =   0
    End
@@ -509,7 +509,7 @@ End
 
 #tag Events Bouton
 	#tag Event
-		Sub MouseEnter(index as Integer)
+		Sub MouseEnter()
 		  if selection then
 		    return
 		  end if
@@ -522,7 +522,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if  selection then
 		    if index =0 then
 		      Config.ToggleFLib(fam)
@@ -559,7 +559,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  select case kit
 		  case 0
 		    if index < config.nstdf(fam) then
@@ -600,12 +600,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseUp(X As Integer, Y As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent

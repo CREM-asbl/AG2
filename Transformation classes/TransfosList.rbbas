@@ -118,9 +118,14 @@ Protected Class TransfosList
 		  for i = 0 to count-1
 		    s = element(i).supp
 		    if  s.pInShape(p) then
-		      if element(i).type > 0 and (s isa point or  element(i).index = element(i).supp.pointonside(p)) then
+		      select case element(i).type
+		      case 8
 		        TsfL.AddTsf element(i)
-		      end if
+		      else
+		        if element(i).type > 0 and (s isa point or  element(i).index = element(i).supp.pointonside(p)) then
+		          TsfL.AddTsf element(i)
+		        end if
+		      end select
 		    end if
 		  next
 		  

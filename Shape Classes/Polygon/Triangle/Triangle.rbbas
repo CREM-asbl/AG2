@@ -18,6 +18,7 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub Triangle(ol as objectslist, temp as XMLElement)
 		  Polygon(ol,Temp)
+		  ncpts = 3
 		End Sub
 	#tag EndMethod
 
@@ -79,6 +80,15 @@ Inherits Polygon
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Triangle(ol as ObjectsList)
+		  Shape(ol,3,3)
+		  redim prol(2)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -104,6 +114,13 @@ Inherits Polygon
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Validating"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
+			InheritedFrom="Shape"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
@@ -115,13 +132,6 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-			InheritedFrom="Shape"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="diam"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 			InheritedFrom="Shape"
 		#tag EndViewProperty
 		#tag ViewProperty
