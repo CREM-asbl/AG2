@@ -285,7 +285,7 @@ Protected Class ObjectsList
 		Sub Updateskull()
 		  dim i ,j as Integer
 		  
-		  for i=0 to Ubound(Objects)
+		  for i=1 to Ubound(Objects)
 		    for j = 0 to Ubound(Objects(i).Childs)
 		      Objects(i).childs(j).updateskull
 		    next
