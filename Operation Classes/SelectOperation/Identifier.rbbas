@@ -61,6 +61,7 @@ Inherits SelectOperation
 		    remplacement.puton(support)
 		    remplacement.placerptsursurfigure
 		    remplacement.updateguides
+		    remplacement.forme = 1
 		  end if
 		  
 		  remplacement.mobility

@@ -1268,6 +1268,8 @@ Implements StringProvider
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
 		          inter = p.GetInter
 		          inter.update(p)
+		          p.updateconstructedpoints
+		          p.UpdateMacConstructedshapes
 		        end if
 		      end if
 		    next
@@ -2318,7 +2320,7 @@ Implements StringProvider
 		    next
 		  end if
 		  
-		  if isaparaperp and s2.getindexpoint(points(1)) <> -1 then
+		  if isaparaperp and (s2.getindexpoint(points(1)) <> -1) and ( constructedby.shape <> s2 ) then
 		    return true
 		  end if
 		  

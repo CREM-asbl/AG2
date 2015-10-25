@@ -369,17 +369,13 @@ Inherits Bipoint
 		  end if
 		  
 		  if p.modified then
-		    if q.forme=1 and q.pointsur.element(0) isa polygon then
-		      BiB1 = new BiBPoint(ep, ep+w)
-		      dr =  q.pointsur.element(0).getside(q.numside(0))
-		      Bib2 = new BiBPoint(dr.firstp,dr.secondp)
-		      M = new AffiProjectionMatrix(BiB1,Bib2)
-		      nq = M*np
-		    else
-		      nq = np+w*d
-		    end if
+		    BiB1 = new BiBPoint(ep, ep+w)
+		    dr =  q.pointsur.element(0).getside(q.numside(0))
+		    Bib2 = new BiBPoint(dr.firstp,dr.secondp)
+		    M = new AffiProjectionMatrix(BiB1,Bib2)
+		    nq = M*np
 		  else
-		    if q.pointsur.count = 0 then
+		    if q.forme = 0 then
 		      nq = nq.projection(np, np+w)
 		      q.moveto nq
 		    else

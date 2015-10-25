@@ -493,15 +493,35 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function Modifier11(n as integer) As Matrix
-		  'Le point n° n est le seul point modifié. Il y a 1 point "sur" différent n° n. Ce point n'a pas été modifié, plus précisément il a éte "replacé".
-		  'La méthode succède à Modifier2.
+		  dim s as shape
+		  dim bp as BasicPoint
+		  
+		  if points(2).forme <> 1 then 
+		    return new Matrix(1)
+		  end if
+		  
+		  s = points(2).pointsur.element(0)
+		  bp =ArcComputeFirstIntersect(s)
+		  
+		  
+		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Modifier12(n as integer) As Matrix
-		  'Le point n° n est le seul point modifié. Il y a deux points "sur" différent n° n. Ces points ont éte "replacés".
-		  'La méthode succède à Modifier3.
+		  dim s as shape
+		  dim bp as BasicPoint
+		  
+		  if points(2).forme <> 1 then
+		    return new Matrix(1)
+		  end if
+		  
+		  s = points(2).pointsur.element(0)
+		  bp =ArcComputeFirstIntersect(s)
+		  
+		  
+		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
 		End Function
 	#tag EndMethod
 

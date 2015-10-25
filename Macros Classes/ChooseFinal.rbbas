@@ -254,7 +254,7 @@ Inherits MultipleSelectOperation
 		  dim t as boolean
 		  dim i, n as integer
 		  
-		  if dejaclasse(p) <> -1 then
+		  if dejaclasse(p) <> -1 and dejaclasse(p) <> 2  then
 		    return
 		  end if
 		  

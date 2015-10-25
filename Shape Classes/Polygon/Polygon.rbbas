@@ -366,7 +366,7 @@ Inherits Shape
 		  
 		  super.paint(g)
 		  
-		  if not hidden and Ti <> nil then
+		  if not hidden and not isinconstruction and Ti <> nil then
 		    for i = 0 to npts-1
 		      PaintTipOnSide g, i
 		    next
