@@ -223,8 +223,8 @@ Inherits MultipleSelectOperation
 		    case 11
 		      bp1 = tp.bpt+sp.bpt-fp.bpt
 		      bp2 = qp.bpt.projection(tp.bpt, bp1)
-		      qp2 = new point(objects, bp2 )
-		      currentshape = new Trap(objects, fp,sp, qp2, tp)
+		      qp.moveto bp2
+		      currentshape = new Trap(objects, fp,sp, qp, tp)
 		      index.append -1
 		    end select
 		    return true
@@ -239,6 +239,7 @@ Inherits MultipleSelectOperation
 		Protected Function GetShape(p as basicPoint) As shape
 		  dim q as point
 		  dim nbp as nbpoint
+		  
 		  
 		  currentshape = super.getshape(p)  //on liste les objets visibles et on ramène le premier
 		  if currentshape = nil then

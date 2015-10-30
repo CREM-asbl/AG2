@@ -1425,6 +1425,7 @@ Implements StringProvider
 		  dim inter as intersec
 		  dim s1, s2 as shape
 		  
+		  
 		  if  (conditionedby<>nil and conditionedby.invalid)  or (constructedby <> nil and (constructedby.shape.invalid or (constructedby.oper = 6 and (transformation(constructedby.data(0)).supp.invalid)) )) then
 		    return
 		  end if
@@ -4139,17 +4140,6 @@ Implements StringProvider
 		  next
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldreconstruct()
-		  
-		  'if  computediam > 10*epsilon then
-		  constructshape
-		  valider
-		  tobereconstructed = false
-		  'end if
 		End Sub
 	#tag EndMethod
 
