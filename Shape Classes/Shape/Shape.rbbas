@@ -2237,11 +2237,12 @@ Implements StringProvider
 		  dim s, sh as shape
 		  dim t as Boolean
 		  dim s2ci As constructioninfo
+		  dim tsf as transformation
 		  
 		  ff = s2.getsousfigure(s2.fig)
 		  s2ci = s2.constructedby
 		  if s2ci <> nil and (s2ci.shape = self or (s2ci.shape = nil and s2ci.oper = 9 and (s2ci.data(0) = self or s2ci.data(2) =self))  ) then
-		    select case  s2.constructedby.oper
+		    select case  s2ci.oper
 		    case 1, 2
 		      if not haspointon(s2,p) then
 		        return true
@@ -2257,13 +2258,21 @@ Implements StringProvider
 		  
 		  if not s2 isa point then
 		    for i = 0 to s2.npts-1
-		      if (s2.points(i).constructedby <> nil) and (s2.points(i).constructedby.shape isa point) then  //un point de s2 est image d'un point de self
+		      if (s2.points(i).constructedby <> nil) and (s2.points(i).constructedby.shape isa point) then 
+		        //un point de s2 est image d'un point de self
 		        p = point(s2.points(i).constructedby.shape)
+		        k = s2.points(i).constructedby.oper
 		        if  getindexpoint(p) <> -1  and  p.id >  id  then  //si p.id < id, le point source a été construit avant self, il appartient à une autre forme
-		          //que self et c'est celle-là qui doit précéder s2
-		          k = s2.points(i).constructedby.oper
+		                                                                                            //que self et c'est celle-là qui doit précéder s2
 		          if (k=5) or (k=6) then
 		            return  true
+		          end if
+		        else
+		          if k = 6 then
+		            tsf = transformation(s2.points(i).constructedby.data(0))
+		            if tsf.supp =self then
+		              return true
+		            end if
 		          end if
 		        end if
 		      end if
@@ -2346,21 +2355,6 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  'if macconstructedshapes.indexof(s2) <> - 1 then
-		  'return true
-		  'end if
-		  '
-		  'for i = 0 to ubound(childs)
-		  'if childs(i).macconstructedshapes.indexof(s2)  <> -1 then
-		  'return true
-		  'end if
-		  'next
-		  
-		  'for i = 0 to ubound(childs)   'mis en commentaire pour cause de création d'une boucle quand un arc a l'origine en un point initial et l'extémité sur une forme mac-construite
-		  'if childs(i).macconstructedshapes.indexof(s2) <> -1 then
-		  'return true
-		  'end if
-		  'next
 		  
 		End Function
 	#tag EndMethod
