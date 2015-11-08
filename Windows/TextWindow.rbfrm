@@ -35,7 +35,7 @@ Begin Window TextWindow
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   True
+      Enabled         =   "True"
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -64,7 +64,7 @@ Begin Window TextWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   True
+      Visible         =   "True"
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -133,18 +133,18 @@ End
 		    EF.text = ""
 		    
 		    EF.Text = "Largeur du fonds d'écran: "
-		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)
+		    
+		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)+chr(13)
 		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(wnd.mycanvas1.height) + chr(10)+chr(13)
 		    
 		    for i = 0 to Figs.count-1
 		      f = Figs.element(i)
 		      messages(f)
-		      EF.Text =  EF.Text +chr(10)+chr(13)
 		      if f.subs.count > 0 then
 		        for j=0 to f.subs.count -1
+		          EF.Text =  EF.Text +chr(10)+chr(13)
 		          ff = f.subs.element(j)
 		          messages(ff,j)
-		          EF.Text =  EF.Text +chr(10)+chr(13)
 		        next
 		      end if
 		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)
@@ -265,11 +265,13 @@ End
 		    for i = 0 to ubound(s.points)
 		      m = m + mess(s.points(i))+chr(10)
 		    next
+		    m = m+chr(10)
 		    if ubound(s.childs) > s.npts-1 then
 		      m = m + "Points Sur"+chr(13)
 		      for i = s.npts to ubound(s.childs)
-		        m = m + mess(s.childs(i))+chr(10)
+		        m = m + mess(s.childs(i))
 		      next
+		      m = m+chr(10)
 		    end if
 		    if ubound(s.constructedshapes)> -1 then
 		      m = m + "Formes Construites"+chr(10)
@@ -279,7 +281,6 @@ End
 		        else
 		          m = m + mess(s.constructedshapes(i))
 		        end if
-		        m = m+chr(10)
 		      next
 		    end if
 		  else
@@ -315,6 +316,7 @@ End
 		      EF.Text = EF.Text+mess(f.PtsConsted.element(i))+",  "
 		    next
 		  end if
+		  EF.Text = EF.Text + chr(10)+chr(13)
 		  
 		  
 		  
@@ -375,7 +377,7 @@ End
 	#tag Method, Flags = &h0
 		Sub messages(f as figure, j as integer)
 		  dim s as shape
-		  dim i as integer
+		  dim i, k as integer
 		  EF.Text = EF.Text+mess(f,j)
 		  
 		  for i = 0 to f.shapes.count -1

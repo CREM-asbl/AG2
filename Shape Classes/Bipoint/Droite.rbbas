@@ -681,7 +681,7 @@ Inherits Bipoint
 		        q.invalider
 		      else
 		        q.moveto eq
-		        q.valider  
+		        q.valider
 		      end if
 		    else
 		      nq = nil

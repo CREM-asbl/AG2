@@ -1472,7 +1472,7 @@ Implements StringProvider
 		    end if
 		  next
 		  
-		  'CurrentContent.Theobjects.validatefrom(self)
+		  CurrentContent.Theobjects.validatefrom(self)
 		  
 		  for j = 0 to ubound(ConstructedShapes)
 		    ConstructedShapes(j).valider
@@ -1992,7 +1992,7 @@ Implements StringProvider
 		      childs(i).invalider
 		    next
 		    
-		    'CurrentContent.Theobjects.invalidatefrom(self)
+		    CurrentContent.Theobjects.invalidatefrom(self)
 		    
 		    for j = 0 to ubound(ConstructedShapes)        //on invalide les images
 		      s = ConstructedShapes(j)
@@ -2258,12 +2258,12 @@ Implements StringProvider
 		  
 		  if not s2 isa point then
 		    for i = 0 to s2.npts-1
-		      if (s2.points(i).constructedby <> nil) and (s2.points(i).constructedby.shape isa point) then
+		      if (s2.points(i).constructedby <> nil) and (s2.points(i).constructedby.shape isa point) then 
 		        //un point de s2 est image d'un point de self
 		        p = point(s2.points(i).constructedby.shape)
 		        k = s2.points(i).constructedby.oper
 		        if  getindexpoint(p) <> -1  and  p.id >  id  then  //si p.id < id, le point source a été construit avant self, il appartient à une autre forme
-		          //que self et c'est celle-là qui doit précéder s2
+		                                                                                            //que self et c'est celle-là qui doit précéder s2
 		          if (k=5) or (k=6) then
 		            return  true
 		          end if
