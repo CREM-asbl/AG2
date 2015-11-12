@@ -1012,27 +1012,27 @@ Protected Class ObjectsList
 
 	#tag Method, Flags = &h0
 		Sub validatefrom(s as shape)
-		  dim i as integer
-		  
-		  
-		  for i = 0 to count-1
-		    if not element(i).deleted and element(i).invalid and element(i).id > s.id and element(i).hascommonpointwith(s) then
-		      element(i).valider
-		    end if
-		  next
+		  'dim i as integer
+		  '
+		  '
+		  'for i = 0 to count-1
+		  'if not element(i).deleted and element(i).invalid and element(i).id > s.id and element(i).hascommonpointwith(s) then
+		  'element(i).valider
+		  'end if
+		  'next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub invalidatefrom(s as shape)
-		  dim i as integer
-		  
-		  
-		  for i = 0 to count-1
-		    if not element(i).deleted and not element(i).invalid and element(i).id > s.id and element(i).hascommonpointwith(s) then
-		      element(i).invalider
-		    end if
-		  next
+		  'dim i as integer
+		  '
+		  '
+		  'for i = 0 to count-1
+		  'if not element(i).deleted and not element(i).invalid and element(i).id > s.id and element(i).hascommonpointwith(s) then
+		  'element(i).invalider
+		  'end if
+		  'next
 		End Sub
 	#tag EndMethod
 

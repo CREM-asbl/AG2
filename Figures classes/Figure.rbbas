@@ -373,6 +373,7 @@ Implements StringProvider
 		Function Autoaffupdate3() As Matrix
 		  
 		  dim p, q, r as point
+		  dim ep, eq, er, np, nq, nr As  BasicPoint
 		  dim n1, n2, n3, n4 as integer
 		  dim M, MId as Matrix
 		  dim s as shape
@@ -383,6 +384,10 @@ Implements StringProvider
 		  p = Point(somm.element(n1))
 		  q = Point(somm.element(n2))
 		  r = Point(somm.element(n3))
+		  getoldnewpos(p,ep,np)
+		  getoldnewpos(q,eq,nq)
+		  getoldnewpos(r,er,nr)
+		  
 		  
 		  Choixpointsfixes
 		  if NbUnModif > 0 then
@@ -392,15 +397,13 @@ Implements StringProvider
 		  
 		  select case NbSommSur(n1,n2,n3)
 		  case 0
-		    M = DefaultMatrix
-		    MId = new Matrix(1)
 		    s  = shapes.element(0)
-		    if M.Equal(MId) and s.getindexpoint(p) <>-1 and s.getindexpoint(q) <> -1 and s.getindexpoint(r) <> -1 and s isa parallelogram then
+		    if s.getindexpoint(p) <>-1 and s.getindexpoint(q) <> -1 and s.getindexpoint(r) <> -1 and s isa parallelogram then
 		      n4 = parallelogram(s).quatriemepoint(n1,n2,n3)
 		      s.points(n4).moveto s.points((n4+1) mod 4).bpt + s.points((n4+3) mod 4).bpt - s.points((n4+2)mod 4).bpt
 		      s.points(n4).modified = true
 		    end if
-		    return M
+		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  case 1
 		    if  replacerpoint(p) or  replacerpoint(q) or   replacerpoint(r) then
 		      return autoaffupdate // on passe à 2 pts modif, 2 pts sur ou 2 pts modif, 3 pts sur
@@ -821,14 +824,14 @@ Implements StringProvider
 		  
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
-		      if subs.element(i).auto <> 4 then 'and subs.element(j).auto <> 4 then
-		        if  subs.element(i).precede(subs.element(j)) then
-		          mat.col(i,j) = 1
-		        end if
-		        if subs.element(j).precede(subs.element(i)) then
-		          mat.col(j,i) = 1
-		        end if
+		      'if subs.element(i).auto <> 4 then 'and subs.element(j).auto <> 4 then
+		      if  subs.element(i).precede(subs.element(j)) then
+		        mat.col(i,j) = 1
 		      end if
+		      if subs.element(j).precede(subs.element(i)) then
+		        mat.col(j,i) = 1
+		      end if
+		      'end if
 		    next
 		  next
 		  
@@ -1479,15 +1482,14 @@ Implements StringProvider
 		  'return true
 		  'end if
 		  
-		  for i = 0 to shapes.count-1
-		    d = shapes.element(i).computediam
-		    if  not shapes.element(i).std and d <= epsilon  then
-		      shapes.element(i).invalider
-		      return true
-		    else
-		      
-		    end if
-		  next
+		  'for i = 0 to shapes.count-1
+		  'd = shapes.element(i).computediam
+		  'if  not shapes.element(i).std and d <= epsilon  then
+		  'shapes.element(i).invalider
+		  'return true
+		  '
+		  'end if
+		  'next
 		  
 		  t = true
 		  for i = 0 to somm.count-1
@@ -2662,18 +2664,14 @@ Implements StringProvider
 		  q = Point(somm.element(n2))
 		  r =Point(somm.element(n3))
 		  
-		  'if s isa quadri then
-		  'return quadri(s).modifier3(p,q,r)
-		  'end if
-		  
 		  n = NbSommSur
 		  
 		  select case n
 		  case 0
 		    if s isa triangle then
 		      return new Matrix(1)
-		    else
-		      return s.Modifier2fixes(r)
+		    elseif s isa rect then
+		      return rect(s).Modifier2fixes(p,q)
 		    end if
 		  case 1
 		    ps =point(somm.element(ListSommSur(0)))
@@ -2813,16 +2811,24 @@ Implements StringProvider
 		  dim p as point
 		  dim n, m as integer
 		  dim t as Boolean
+		  dim u,v as BasicPoint
+		  
 		  
 		  s = trap(shapes.element(0))
 		  
 		  
 		  if NbSommSur > 0  and not s isa trapiso and not s isa traprect then
-		    for i =0 to 3
-		      if replacerpoint(s.points(i)) then
-		        return autotrapupdate
-		      end if
-		    next
+		    i = ListSommSur(0)
+		    select case i
+		    case 0, 1
+		      u = s.points(2).bpt-s.points(3).bpt
+		      n = 1-i
+		    case 2, 3
+		      u = s.points(0).bpt-s.points(1).bpt
+		      n=5-i
+		    end select
+		    s.points(i).moveto s.points(i).bpt.projection(s.points(n).bpt,s.points(n).bpt+u)
+		    return true
 		  else
 		    if shapes.element(0).duplicateorcut then
 		      return true

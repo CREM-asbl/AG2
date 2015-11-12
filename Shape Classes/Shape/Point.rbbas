@@ -886,33 +886,32 @@ Inherits Shape
 		    invalid = true
 		    
 		    if forme = 2 then
-		      's1 = pointsur.element(0)
-		      's2 = pointsur.element(1)
-		      inter = GetInter 'CurrentContent.TheIntersecs.Find(s1,s2)
+		      inter = GetInter 
 		      if inter <> nil then
 		        inter.bezet(numside(0), numside(1)) = false
 		      end if
 		      for i = 0 to conditioned.count -1
 		        conditioned.element(i).invalider
 		      next
-		      
-		      for i = 0 to ubound(parents)
-		        if parents(i).getindexpoint(self) <> -1 then
-		          parents(i).invalider
-		        end if
-		      next
-		      
-		      for i = 0  to Ubound(ConstructedShapes)
-		        ConstructedShapes(i).Invalider
-		      next
-		      
-		      for i = 0 to tsfi.count-1
-		        for j = 0 to tsfi.element(i).constructedshapes.count -1
-		          s = tsfi.element(i).constructedshapes.element(j)
-		          s.invalider
-		        next
-		      next
 		    end if
+		    
+		    for i = 0 to ubound(parents)
+		      if parents(i).getindexpoint(self) <> -1 then
+		        parents(i).invalider
+		      end if
+		    next
+		    
+		    for i = 0  to Ubound(ConstructedShapes)
+		      ConstructedShapes(i).Invalider
+		    next
+		    
+		    for i = 0 to tsfi.count-1
+		      for j = 0 to tsfi.element(i).constructedshapes.count -1
+		        s = tsfi.element(i).constructedshapes.element(j)
+		        s.invalider
+		      next
+		    next
+		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -1097,6 +1096,7 @@ Inherits Shape
 		    location.remove k
 		    numside.Remove k
 		    pointsur.removeshape s
+		    forme = forme-1
 		  end if
 		  s.removechild self
 		  removeparent s
@@ -1220,9 +1220,6 @@ Inherits Shape
 		    end if
 		  end if
 		  
-		  'if p.pointsur.count = 1 and p.pointsur.element(0).getindexpoint(self) <> -1 then               //inutile: le remplacement n'est jamais un point "sur"
-		  'p.removepointsur(p.pointsur.element(0))
-		  'end if
 		  ol = isInvolvedInSubdivPoints //cas des points de subdivision (voir plus bas)
 		  Identify1(p)    //le remplacement est effectué chez les parents
 		  
@@ -1659,6 +1656,7 @@ Inherits Shape
 		    PointSur.addshape s
 		    location.append 0
 		    numside.append -1
+		    forme = forme+1
 		  end if
 		  
 		  if isextremityofarc(n, ar) then  //a placer dans le putonpolyg quand les polygones seront devenus des lacets
@@ -2402,7 +2400,7 @@ Inherits Shape
 		    conditionedby.conditioned.removeshape self
 		  end if
 		  
-		  if pointsur.count > 0 then
+		  if forme > 0 then
 		    if forme = 2 then
 		      inter = GetInter 'CurrentContent.TheIntersecs.find(pointsur.element(0), pointsur.element(1))
 		      inter.removepoint self
