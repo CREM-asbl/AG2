@@ -28,26 +28,26 @@ Begin Window NotesWindow
    Begin EditField EF
       AcceptTabs      =   ""
       Alignment       =   0
-      AutoDeactivate  =   "True"
+      AutoDeactivate  =   "False"
       BackColor       =   16777215
       Bold            =   ""
       Border          =   "True"
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
-      Height          =   482
+      Height          =   600
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   5
+      Left            =   0
       LimitText       =   0
-      LockBottom      =   ""
-      LockLeft        =   ""
-      LockRight       =   ""
-      LockTop         =   ""
+      LockBottom      =   "True"
+      LockLeft        =   "True"
+      LockRight       =   "True"
+      LockTop         =   "True"
       Mask            =   ""
       Multiline       =   "True"
       Password        =   ""
@@ -64,8 +64,8 @@ Begin Window NotesWindow
       Top             =   0
       Underline       =   ""
       UseFocusRing    =   "True"
-      Visible         =   "True"
-      Width           =   600
+      Visible         =   True
+      Width           =   625
       BehaviorIndex   =   0
    End
 End
