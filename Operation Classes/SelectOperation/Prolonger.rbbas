@@ -117,13 +117,6 @@ Inherits SelectOperation
 		  EL1 = XMLElement(Temp.child(0))
 		  EL2 = XMLElement(EL1.child(0))
 		  Bip = objects.getshape(val(EL2.GetAttribute("Id")))
-		  'if Bip isa droite then
-		  'Dr = droite(bip)
-		  'Droite(Bip).nextre = 0
-		  'Bip.forme = Bip.forme + 3
-		  'ibip = 0
-		  'jbip = 1
-		  'else
 		  EL2 = XMLElement(EL1.child(1))
 		  Dr = Droite(Objects.XMLLoadObject(EL2))
 		  ibip = val(EL2.GetAttribute("Ibip"))
@@ -245,7 +238,7 @@ Inherits SelectOperation
 		  
 		  
 		  
-		  'if not (Bip isa droite) then
+		  
 		  for j = ubound(Dr.childs) downto  Dr.npts
 		    p = Dr.Childs(j)
 		    p.removepointsur Dr
@@ -258,12 +251,7 @@ Inherits SelectOperation
 		      p.invalider
 		    end if
 		  next
-		  'else
-		  'for j = Dr.npts to ubound(Dr.childs)
-		  'p = Dr.Childs(j)
-		  '
-		  'next
-		  'end if
+		  
 		  
 		  
 		  

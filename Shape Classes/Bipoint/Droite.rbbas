@@ -359,7 +359,6 @@ Inherits Bipoint
 		  q = points(1)
 		  sf.getoldnewpos(p,ep,np)
 		  sf.getoldnewpos(q,eq,nq)
-		  'n = getindexpoint(Point(sf.somm.element(sf.ListPtsModifs(0))))
 		  
 		  u = eq - ep
 		  d = u.norme
@@ -368,20 +367,16 @@ Inherits Bipoint
 		    w = w*(-1)
 		  end if
 		  
-		  if p.modified then
-		    if q.forme=1 and q.pointsur.element(0) isa polygon then
-		      BiB1 = new BiBPoint(ep, ep+w)
-		      dr =  q.pointsur.element(0).getside(q.numside(0))
-		      Bib2 = new BiBPoint(dr.firstp,dr.secondp)
-		      M = new AffiProjectionMatrix(BiB1,Bib2)
-		      nq = M*np
-		    else
-		      nq = np+w*d
-		    end if
+		  if p.modified and q.forme = 1 then
+		    BiB1 = new BiBPoint(ep, ep+w)
+		    dr =  q.pointsur.element(0).getside(q.numside(0))
+		    Bib2 = new BiBPoint(dr.firstp,dr.secondp)
+		    M = new AffiProjectionMatrix(BiB1,Bib2)
+		    nq = M*np
 		  else
-		    if q.pointsur.count = 0 then
-		      nq = nq.projection(np, np+w)
-		      q.moveto nq
+		    if q.forme = 0 then
+		      w = w.normer
+		      nq = np+w*d
 		    else
 		      return prpupdate11(q,ep,eq,np,nq)
 		    end if

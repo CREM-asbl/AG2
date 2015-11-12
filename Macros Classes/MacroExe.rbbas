@@ -323,6 +323,9 @@ Inherits MultipleSelectOperation
 		    ifmac.RealId =MacInfo.GetRealInit(n)
 		    ifmac.init = true
 		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		    if s isa point then
+		      ifmac.fo = point(s).forme
+		    end if
 		    s.ifmac = ifmac
 		    if ifmac.npts < s.npts then
 		      ifmac.seg = true
@@ -362,8 +365,6 @@ Inherits MultipleSelectOperation
 		        newshape.points(i).numside.append  ifm.numside0
 		        'newshape.points(i).puton s, ifmac.childs(i).location
 		        newshape.points(i).placerptsursurfigure
-		      else
-		        ifm.fo = 0
 		      end if
 		      newshape.points(i).forme = ifm.fo
 		    next

@@ -53,6 +53,8 @@ Begin Window WorkWindow
       scaling         =   0
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   -2
       UseFocusRing    =   "False"
       Visible         =   True
@@ -77,6 +79,8 @@ Begin Window WorkWindow
       LockTop         =   "True"
       Scope           =   0
       TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   0
       Top             =   0
       TopLeftColor    =   0
       Visible         =   True
@@ -106,7 +110,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   3
+         BehaviorIndex   =   2
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
             Bold            =   "True"
@@ -133,7 +137,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -161,7 +165,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -189,7 +193,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   "True"
@@ -217,7 +221,7 @@ Begin Window WorkWindow
             Underline       =   ""
             Visible         =   True
             Width           =   108
-            BehaviorIndex   =   2
+            BehaviorIndex   =   3
          End
       End
       Begin GroupBox StdBox
@@ -244,7 +248,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   112
-         BehaviorIndex   =   5
+         BehaviorIndex   =   4
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
             AcceptTabs      =   "False"
@@ -264,11 +268,13 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   5
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "False"
@@ -289,11 +295,13 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   5
          End
          Begin Canvas StdOutil
             AcceptFocus     =   "True"
@@ -314,11 +322,13 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   240
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   5
          End
          Begin Canvas StdOutil
             AcceptFocus     =   ""
@@ -339,11 +349,13 @@ Begin Window WorkWindow
             LockTop         =   ""
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   292
             UseFocusRing    =   "True"
             Visible         =   True
             Width           =   50
-            BehaviorIndex   =   6
+            BehaviorIndex   =   5
          End
       End
       Begin PushButton PushButton1
@@ -372,7 +384,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   120
-         BehaviorIndex   =   4
+         BehaviorIndex   =   6
       End
       Begin GroupBox LibBox
          AutoDeactivate  =   "True"
@@ -418,6 +430,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -443,6 +457,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -468,6 +484,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   433
             UseFocusRing    =   "True"
             Visible         =   True
@@ -493,6 +511,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -518,6 +538,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   485
             UseFocusRing    =   "True"
             Visible         =   True
@@ -543,6 +565,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   381
             UseFocusRing    =   "True"
             Visible         =   True
@@ -568,6 +592,8 @@ Begin Window WorkWindow
             LockTop         =   "False"
             Scope           =   0
             TabPanelIndex   =   0
+            TextFont        =   "System"
+            TextSize        =   0
             Top             =   537
             UseFocusRing    =   "True"
             Visible         =   True
@@ -601,7 +627,7 @@ Begin Window WorkWindow
          Underline       =   ""
          Visible         =   True
          Width           =   120
-         BehaviorIndex   =   2
+         BehaviorIndex   =   3
       End
    End
 End
@@ -2715,6 +2741,10 @@ End
 		    MenuBar.Child("ToolsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("ToolsMenu").visible = not t
+		  for i =0 to MenuBar.Child("PrefsMenu").count-1
+		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
+		  next
+		  MenuBar.Child("PrefsMenu").visible = not t
 		  for i =0 to MenuBar.Child("EditMenu").count-2
 		    MenuBar.Child("EditMenu").Item(i).visible = not t
 		  next
@@ -2995,7 +3025,9 @@ End
 		  case 19 //Dupliquer
 		    EL2 = XMLElement(EL1.firstchild)
 		    EL3 = XMLElement(EL2.firstchild)
-		    Type = EL3.GetAttribute("Type") + " n°" + EL3.GetAttribute("Id")
+		    if EL3 <> nil then
+		      Type = EL3.GetAttribute("Type") + " n°" + EL3.GetAttribute("Id")
+		    end if
 		  end select
 		  me.Helptag = me.Helptag + " "+  lowercase(Type)
 		End Sub
@@ -3010,7 +3042,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3052,7 +3084,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3084,14 +3116,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3107,7 +3139,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3123,7 +3155,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3135,7 +3167,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -3152,12 +3184,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics)
+		Sub Paint(index as Integer, g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then

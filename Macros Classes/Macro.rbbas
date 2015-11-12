@@ -285,11 +285,11 @@ Protected Class Macro
 		    Bib = new BiBPoint(bp1,bp2)
 		    nbp.append BiB.subdiv(ifmac.ndiv,ifmac.idiv)
 		  elseif ifm.fa = 5 then
-		    if ifm.fo = 0 and ifm.coord.taille = 2 then
-		      Trib = new TriBPoint(ifm.coord.tab(0),ifm.coord.tab(1),ifm.coord.tab(1))
-		    else
-		      Trib = new TriBPoint(ifm.coord.tab(0),bp1,bp2)
-		    end if
+		    'if ifm.fo = 0 and ifm.coord.taille = 2 then
+		    'Trib = new TriBPoint(ifm.coord.tab(0),ifm.coord.tab(1),ifm.coord.tab(1))
+		    'else
+		    Trib = new TriBPoint(ifm.coord.tab(0),bp1,bp2)
+		    'end if
 		    nbp.append TriB.subdiv(ifm.ori,ifmac.ndiv, ifmac.idiv)
 		  elseif ifm1.fa = 7 then                                     'cas des lacets
 		  end if

@@ -455,6 +455,8 @@ Implements StringProvider
 		      str = thisstretch
 		    case 10
 		      str = thisdisplacement
+		    case 11
+		      str = "ce cisaillement"
 		    end select
 		    str = str + " ?"
 		    Help g, str
