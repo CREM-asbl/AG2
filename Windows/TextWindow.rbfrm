@@ -28,14 +28,14 @@ Begin Window TextWindow
    Begin EditField EF
       AcceptTabs      =   ""
       Alignment       =   0
-      AutoDeactivate  =   "True"
+      AutoDeactivate  =   "False"
       BackColor       =   16777215
       Bold            =   ""
       Border          =   "True"
       ControlOrder    =   0
       DataField       =   ""
       DataSource      =   ""
-      Enabled         =   "True"
+      Enabled         =   True
       Format          =   ""
       Height          =   607
       HelpTag         =   ""
@@ -44,27 +44,27 @@ Begin Window TextWindow
       Italic          =   ""
       Left            =   0
       LimitText       =   0
-      LockBottom      =   ""
+      LockBottom      =   "True"
       LockLeft        =   "True"
-      LockRight       =   ""
+      LockRight       =   "True"
       LockTop         =   "True"
       Mask            =   ""
       Multiline       =   "True"
       Password        =   ""
-      ReadOnly        =   "True"
+      ReadOnly        =   "False"
       Scope           =   0
       ScrollbarHorizontal=   "True"
       ScrollbarVertical=   "True"
       Styled          =   ""
       TabPanelIndex   =   0
       Text            =   ""
-      TextColor       =   0
+      TextColor       =   &h000000
       TextFont        =   "System"
       TextSize        =   0
       Top             =   0
       Underline       =   ""
-      UseFocusRing    =   "True"
-      Visible         =   "True"
+      UseFocusRing    =   "False"
+      Visible         =   True
       Width           =   822
       BehaviorIndex   =   0
    End
@@ -92,70 +92,7 @@ End
 		    Title = wnd.MyCanvas1.tit
 		  end if
 		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Paint(g As Graphics)
-		  dim  i, j, nc as integer
-		  dim s, t as shape
-		  dim mess as string
-		  dim f , ff as figure
-		  dim Doc as XMLDocument
-		  dim FAG As XMLElement
-		  
-		  
-		  tab = 0
-		  if sc  <> nil then
-		    EF.text = messages(sc)
-		    return
-		  end if
-		  
-		  if source1 or source2  then
-		    
-		    if CurrentContent.currentoperation <> nil and CurrentContent.currentoperation isa ReadHisto then
-		      if source1 then              'ctrl u
-		        Doc = new XMLDocument(ReadHisto(CurrentContent.currentoperation).Histfile)
-		      else                                 'ctrl v
-		        Doc = CurrentContent.MakeXML
-		      end if
-		    else
-		      Doc = CurrentContent.MakeXML
-		    end if
-		    
-		    if Doc <> nil then
-		      FAG = Doc.DocumentElement
-		      EF.Text =  ToString(XMLElement(Doc.FirstChild))
-		    end if
-		    
-		  else
-		    
-		    EF.text = ""
-		    
-		    EF.Text = "Largeur du fonds d'écran: "
-		    
-		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)+chr(13)
-		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(wnd.mycanvas1.height) + chr(10)+chr(13)
-		    
-		    for i = 0 to Figs.count-1
-		      f = Figs.element(i)
-		      messages(f)
-		      if f.subs.count > 0 then
-		        for j=0 to f.subs.count -1
-		          EF.Text =  EF.Text +chr(10)+chr(13)
-		          ff = f.subs.element(j)
-		          messages(ff,j)
-		        next
-		      end if
-		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)
-		    next
-		  end if
-		  
-		  for i = 0 to Macs.count-1
-		    EF.Text = EF.Text + Macs.element(i).caption +chr(10)
-		  next
-		  
-		  
+		  Afficher
 		End Sub
 	#tag EndEvent
 
@@ -483,6 +420,64 @@ End
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Afficher()
+		  dim  i, j, nc as integer
+		  dim s, t as shape
+		  dim mess as string
+		  dim f , ff as figure
+		  dim Doc as XMLDocument
+		  dim FAG As XMLElement
+		  
+		  tab = 0
+		  if sc  <> nil then
+		    EF.text = messages(sc)
+		    return
+		  end if
+		  
+		  
+		  if source1 or source2  then
+		    if CurrentContent.currentoperation <> nil and CurrentContent.currentoperation isa ReadHisto then
+		      if source1 then              'ctrl u
+		        Doc = new XMLDocument(ReadHisto(CurrentContent.currentoperation).Histfile)
+		      else                                 'ctrl v
+		        Doc = CurrentContent.MakeXML
+		      end if
+		    else
+		      Doc = CurrentContent.MakeXML
+		    end if
+		    
+		    if Doc <> nil then
+		      FAG = Doc.DocumentElement
+		      EF.Text =  ToString(XMLElement(Doc.FirstChild))
+		    end if
+		    
+		  else
+		    EF.Text = "Largeur du fonds d'écran: "
+		    
+		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)+chr(13)
+		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(wnd.mycanvas1.height) + chr(10)+chr(13)
+		    
+		    for i = 0 to Figs.count-1
+		      f = Figs.element(i)
+		      messages(f)
+		      if f.subs.count > 0 then
+		        for j=0 to f.subs.count -1
+		          EF.Text =  EF.Text +chr(10)+chr(13)
+		          ff = f.subs.element(j)
+		          messages(ff,j)
+		        next
+		      end if
+		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)
+		    next
+		  end if
+		  
+		  for i = 0 to Macs.count-1
+		    EF.Text = EF.Text + Macs.element(i).caption +chr(10)
+		  next
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -537,10 +532,3 @@ End
 
 #tag EndWindowCode
 
-#tag Events EF
-	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
-		  self.refresh
-		End Function
-	#tag EndEvent
-#tag EndEvents
