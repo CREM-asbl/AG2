@@ -176,7 +176,7 @@ Inherits SelectOperation
 		  dim tis as textinputstream
 		  
 		  
-		  f = getfolderitem("ag2.ps")
+		  f = getfolderitem("AG2.ps")
 		  if f <> nil then
 		    tis= f.openastextfile
 		    s = tis.readall
