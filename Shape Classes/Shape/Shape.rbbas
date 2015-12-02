@@ -2355,6 +2355,15 @@ Implements StringProvider
 		    end if
 		  next
 		  
+		  if s2.macconstructedby <> nil then
+		    for i = 0 to ubound(s2.macconstructedby.RealInit)
+		      h = s2.macconstructedby.RealInit(i)
+		      sh = Objects.GetShape(h)
+		      if self = sh or (sh isa point and getindex(point(sh)) <> -1) then
+		        return true
+		      end if
+		    next
+		  end if
 		  
 		End Function
 	#tag EndMethod
