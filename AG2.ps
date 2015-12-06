@@ -1089,23 +1089,28 @@ exch subp} def
              ifelse} def
                    
 /droiteintercadre {/dr@ite exch store  /d@f dr@ite decoupler exch subp store      
- 	            dr@ite decoupler pop abscisse d@f abscisse    
-                              2 copy  x@i resequ@ /t@1 exch store x@a resequ@ /t@2 exch store %t@1 bord gauche, t@2 bord droit
-                              dr@ite decoupler pop ordonnee d@f ordonnee 
-                              2 copy  y@i resequ@ /t@3 exch store y@a resequ@ /t@4 exch store  %t@3 bord inf t@4 bord sup
-                          t@1 t@2 gt {/t@1 t@2 /t@2 t@1 store store} if
-                          t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
-                          t@1 t@4 gt {/t@1 t@4 /t@4 t@1 store store} if                          
-                          t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
-                          t@2 t@3 gt {/t@2 t@3 /t@3 t@2 store store} if
-                          t@2 t@4 gt {/t@2 t@4 /t@4 t@2 store store} if
-                          t@3 t@4 gt {/t@3 t@4 /t@4 t@3 store store} if
-                          dr@ite decoupler pop d@f t@2 mulp addp 
-                          dr@ite decoupler pop d@f t@3 mulp addp
-                          2 copy dansdomaine? {dansdomaine? {accoupler true} {pop pop false} ifelse}
-                          {pop pop pop false} ifelse
+ 	            dr@ite decoupler pop abscisse d@f abscisse  
+                            0 eq {dup y@i accoupler exch y@a accoupler accoupler true}
+                                    {dr@ite decoupler pop ordonnee d@f ordonnee
+                                             0 eq {dup x@i exch accoupler exch x@a exch accoupler accoupler true}
+                                                     {dr@ite decoupler pop abscisse d@f abscisse 
+                                                      2 copy x@i resequ@ /t@1 exch store x@a resequ@ /t@2 exch store      %t@1 bord gauche, t@2 bord droit
+                                                      dr@ite decoupler pop ordonnee d@f ordonnee
+                                                      2 copy  y@i resequ@ /t@3 exch store y@a resequ@ /t@4 exch store  %t@3 bord inf t@4 bord sup
+                                                      t@1 t@2 gt {/t@1 t@2 /t@2 t@1 store store} if
+                                                      t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
+                                                      t@1 t@4 gt {/t@1 t@4 /t@4 t@1 store store} if                          
+                                                      t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
+                                                      t@2 t@3 gt {/t@2 t@3 /t@3 t@2 store store} if
+                                                      t@2 t@4 gt {/t@2 t@4 /t@4 t@2 store store} if
+                                                      t@3 t@4 gt {/t@3 t@4 /t@4 t@3 store store} if
+                                                     dr@ite decoupler pop d@f t@2 mulp addp 
+                                                     dr@ite decoupler pop d@f t@3 mulp addp
+                                                     2 copy dansdomaine? {dansdomaine? {accoupler true} {pop pop false} ifelse}
+                                                     {pop pop pop false} ifelse}
+                                                     ifelse
+                                   }ifelse
                            }def % OK
-
 
 
 /demidroite {dup  decoupler /interm@ exch store /@ri exch store droiteintercadre 

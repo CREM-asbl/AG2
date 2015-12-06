@@ -2671,18 +2671,18 @@ Implements StringProvider
 		    if s isa triangle then
 		      return new Matrix(1)
 		    elseif s isa rect then
-		      return rect(s).Modifier2fixes(p,q)
+		      return rect(s).Modifier3(p,q,r)
 		    end if
 		  case 1
-		    ps =point(somm.element(ListSommSur(0)))
-		    if ps <> supfig.pointmobile and not (ps.isextremityofarc(n, ar) and (n = 2) and (ar.fig = supfig)) then
-		      t = replacerpoint(ps)
-		    else
-		      getoldnewpos(p,ep,np)
-		      getoldnewpos(q,eq,nq)
-		      getoldnewpos(r,er,nr)
-		      return new affinitymatrix(ep,eq,er,np,nq,nr)
-		    end if
+		    'ps =point(somm.element(ListSommSur(0)))
+		    'if ps <> supfig.pointmobile and not (ps.isextremityofarc(n, ar) and (n = 2) and (ar.fig = supfig)) then
+		    't = replacerpoint(ps)
+		    'else
+		    getoldnewpos(p,ep,np)
+		    getoldnewpos(q,eq,nq)
+		    getoldnewpos(r,er,nr)
+		    return new affinitymatrix(ep,eq,er,np,nq,nr)
+		    'end if
 		  case 2
 		    for i = 0 to 1
 		      if point(somm.element(ListSommSur(i))) <> supfig.pointmobile then

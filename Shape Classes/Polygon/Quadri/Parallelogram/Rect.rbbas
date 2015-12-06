@@ -158,8 +158,8 @@ Inherits Parallelogram
 		  // Deux cas selon la position des points fixes
 		  
 		  dim k, n, n1, n2 as integer
-		  dim p1, p2, p0 as point
-		  dim ep, np, np1, np2,np0, u, v as BasicPoint
+		  dim p1, p2,  p0 as point
+		  dim ep, np, ep1, np1, ep2, np2,np0, u, v as BasicPoint
 		  dim ff as figure
 		  dim Bib1, Bib2 As  BiBPoint
 		  dim d as double
@@ -188,6 +188,9 @@ Inherits Parallelogram
 		      p1 = points((n+3) mod 4)
 		      p0 = points((n+1) mod 4)
 		    end if      // p,  p1 et p2 sont modifiés, p est adjacent à p1 et p2 est adjacent à p1
+		    'ff.getoldnewpos(p1,ep1,np1)
+		    'ff.getoldnewpos(p2,ep2,np2)
+		    'ff.getoldnewpos(p3,ep3,np3)
 		    np1 = p1.bpt
 		    np2 = p2.bpt
 		    np0 = p0.bpt
@@ -210,6 +213,7 @@ Inherits Parallelogram
 		Function Modifier3(p as point, q as point, r as point) As Matrix
 		  dim  p1, p2, p3 As point
 		  dim ep1,ep2,ep3,np1,np2,np3, u, v as BasicPoint
+		  dim ep, eq, er , np, nq, nr as BasicPoint
 		  dim i, k, n, n1, n2, n3, n4, ns as integer
 		  dim t as boolean
 		  dim ff as figure
@@ -218,18 +222,23 @@ Inherits Parallelogram
 		  
 		  ff= GetSousFigure(fig)
 		  n =ff. NbSommSur
+		  ff.getoldnewpos(p,ep,np)
+		  ff.getoldnewpos(q,eq,nq)
+		  ff.getoldnewpos(r,er,nr)
 		  
 		  select case n
 		  case 0
-		    if getindexpoint(fig.pointmobile) <> -1 then
-		      return Modifier2fixes(fig.pointmobile)
-		    elseif  ubound(p.parents) = 0 then
-		      return Modifier2fixes(p)
-		    elseif ubound(q.parents) = 0 then
-		      return Modifier2fixes(q)
-		    else
-		      return Modifier2fixes(r)
-		    end if
+		    return new affinitymatrix(ep,eq,er,np,nq,nr)
+		    
+		    'if getindexpoint(fig.pointmobile) <> -1 then
+		    'return Modifier2fixes(fig.pointmobile)
+		    'elseif  ubound(p.parents) = 0 then
+		    'return Modifier2fixes(p)
+		    'elseif ubound(q.parents) = 0 then
+		    'return Modifier2fixes(q)
+		    'else
+		    'return Modifier2fixes(r)
+		    'end if
 		    
 		  case 1
 		    p1 =point(ff.somm.element(ff.ListSommSur(0)))
@@ -252,6 +261,7 @@ Inherits Parallelogram
 		    ff.getoldnewpos(p1,ep1,np1)
 		    ff.getoldnewpos(p2,ep2,np2)
 		    ff.getoldnewpos(p3,ep3,np3)
+		    
 		    if abs(n2-n1) <> 2 then
 		      u = np2-np1
 		      v = u.vecnorperp
