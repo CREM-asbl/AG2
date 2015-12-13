@@ -27,10 +27,7 @@ Inherits Matrix
 		      v2 = new BasicPoint(w1.y, w2.y)
 		      v3=new BasicPoint(p1.x - w1*u1,p1.y-w2*u1)
 		    else
-		      M = new Matrix(1)
-		      v1 = M.v1
-		      v2 = M.v2
-		      v3=M.v3
+		      M = nil
 		    end if
 		    
 		  end if

@@ -167,7 +167,12 @@ Inherits MultipleSelectOperation
 		      for i = 0 to copies.count-1
 		        copies.element(i).ori =  -copies.element(i).ori
 		      next
-		      dret = new RetTimer(copies,self)
+		      if nocircle then
+		        dret = new RetTimer(copies,self)
+		      else
+		        DoOper
+		        EndOperation
+		      end if
 		    else
 		      dret=new TsfTimer(copies,self)
 		    end if
@@ -338,7 +343,7 @@ Inherits MultipleSelectOperation
 		  dim s1, s2 as Shape
 		  dim i,j as integer
 		  
-		  
+		  nocircle = true
 		  for i = 0 to tempshape.count-1
 		    s1 = tempshape.element(i)
 		    if s1 isa point then
@@ -352,6 +357,9 @@ Inherits MultipleSelectOperation
 		    IdentifyPointsinCopies(s2,i)
 		    s2.nonpointed = s1.nonpointed
 		    s2.endconstruction
+		    if s1 isa circle  or s1 isa lacet then
+		      nocircle = false
+		    end if
 		  next
 		  
 		  LierGroupes
@@ -493,6 +501,10 @@ Inherits MultipleSelectOperation
 
 	#tag Property, Flags = &h0
 		MId As Matrix
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		nocircle As boolean
 	#tag EndProperty
 
 

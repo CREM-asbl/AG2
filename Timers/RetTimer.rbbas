@@ -109,6 +109,7 @@ Inherits TsfTimer
 		        s.childs(j).moveto  t.TriDPts(j).ProjPlan + fp
 		      next j
 		    end if
+		    s.updatecoord
 		    if s isa Circle  then
 		      for j = 0 to 1
 		        Circle(s).coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
@@ -125,7 +126,7 @@ Inherits TsfTimer
 		        Lacet(s).coord.ctrl(j) =  t.TriDPts(ntdbp+2*Lacet(s).narcs+1+j).ProjPlan + fp
 		      next
 		    end if
-		    s.updatecoord
+		    
 		    if pas = niter/2  then
 		      if Config.stdbiface or (s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
 		        s.fixecouleurfond(s.fillcolor.comp, s.fill)

@@ -290,7 +290,7 @@ Implements StringProvider
 		  end select
 		  
 		  
-		  if M = nil or M.v1 = nil then
+		  if M = nil or M.v1 = nil  then
 		    if auto = 0 or auto> 3 then
 		      QQupdateshapes
 		    else
