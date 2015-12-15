@@ -11,7 +11,30 @@ Inherits SelectOperation
 		Sub Imprimer()
 		  SelectOperation
 		  OpId = 9
+		  dim g as Graphics
+		  dim s as String
 		  
+		  Dim shell As Shell
+		  shell= New Shell
+		  #if TargetLinux
+		    shell.execute "lp"
+		    MsgBox shell.Result
+		  #endif
+		  
+		  s = ""
+		  g = OpenPrinter()
+		  
+		  if g <> nil then
+		    s = "OpenPrinter"
+		  end if
+		  
+		  g = OpenPrinterDialog()
+		  if g  <> nil then
+		    s = "OpenDialog"
+		  end if
+		  
+		  
+		  MsgBox s
 		  
 		  if tempshape.count  = 0 then
 		    objects.selectobject objects.element(0)
@@ -37,7 +60,7 @@ Inherits SelectOperation
 		  dim o as shape
 		  dim p as BasicPoint
 		  dim d as date
-		  dim gprint as graphics
+		  dim gprint, test as graphics
 		  dim Pict As Picture
 		  
 		  if app.prtsetup = nil then
@@ -49,7 +72,7 @@ Inherits SelectOperation
 		  sc = min(sw,sh)
 		  Pict = new Picture(wnd.Mycanvas1.width,wnd.Mycanvas1.height,Screen(0).Depth)
 		  
-		  gprint = OpenPrinterDialog(app.prtsetup)
+		  gprint = OpenPrinterDialog()
 		  
 		  if gprint <> nil then
 		    if wnd.backcolor = noir then
