@@ -176,6 +176,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i as integer
+		  dim nocircle as Boolean
 		  
 		  if c = nil or p = nil then
 		    return
@@ -193,11 +194,15 @@ Inherits SelectOperation
 		    currentshape.selectneighboor
 		  end if
 		  
+		  nocircle = true
 		  for i = 0 to tempshape.count-1
 		    figs.addfigure tempshape.element(i).fig
+		    if tempshape.element(i) isa circle or tempshape.element(i) isa lacet  then
+		      nocircle = false
+		    end if
 		  next
 		  
-		  if  config.Trace  then
+		  if  config.Trace  and nocircle then
 		    dret = new RetTimer(tempshape,self)
 		  else
 		    DoOper

@@ -886,7 +886,7 @@ Inherits Shape
 		    invalid = true
 		    
 		    if forme = 2 then
-		      inter = GetInter 
+		      inter = GetInter
 		      if inter <> nil then
 		        inter.bezet(numside(0), numside(1)) = false
 		      end if
@@ -1656,7 +1656,7 @@ Inherits Shape
 		    PointSur.addshape s
 		    location.append 0
 		    numside.append -1
-		    forme = forme+1
+		    forme = PointSur.count
 		  end if
 		  
 		  if isextremityofarc(n, ar) then  //a placer dans le putonpolyg quand les polygones seront devenus des lacets

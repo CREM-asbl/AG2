@@ -1462,6 +1462,10 @@ Implements StringProvider
 		  end if
 		  invalid = false
 		  
+		  if ncpts < npts then
+		    constructshape
+		  end if
+		  
 		  for i = npts to ubound(childs)
 		    if childs(i).invalid then
 		      if childs(i).pointsur.count < 2 then

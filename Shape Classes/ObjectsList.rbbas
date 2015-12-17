@@ -530,7 +530,7 @@ Protected Class ObjectsList
 		Sub UpdateUserCoord(M as Matrix)
 		  dim i  as Integer
 		  
-		  for i=0 to Ubound(Objects)
+		  for i=1 to Ubound(Objects)
 		    Objects(i).UpdateUserCoord(M)
 		  next
 		End Sub

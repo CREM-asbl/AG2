@@ -206,9 +206,8 @@ End
 		    if ubound(s.childs) > s.npts-1 then
 		      m = m + "Points Sur"+chr(13)
 		      for i = s.npts to ubound(s.childs)
-		        m = m + mess(s.childs(i))
+		        m = m + mess(s.childs(i)) + chr(10)
 		      next
-		      m = m+chr(10)
 		    end if
 		    if ubound(s.constructedshapes)> -1 then
 		      m = m + "Formes Construites"+chr(10)
@@ -239,7 +238,7 @@ End
 		  next
 		  EF.Text = EF.Text+chr(10)+"Sommets : "
 		  for i = 0 to f.somm.count -1
-		    EF.Text = EF.Text + mess(f.somm.element(i))
+		    EF.Text = EF.Text + mess(f.somm.element(i))+", "
 		  next
 		  if  f.PtsSur.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Sur : "
@@ -282,7 +281,7 @@ End
 		  
 		  
 		  m = Type(p)
-		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "
+		  m = m +"  (" + str(p.bpt.x) + "," + str(p.bpt.y)+") "+ ", forme = "+ str(p.forme)+ ", "
 		  if p.invalid then
 		    m = m + "invalid"
 		  end if
@@ -302,7 +301,7 @@ End
 		Function mess(f as figure, i as integer) As string
 		  dim m as string
 		  
-		  m = "Sous-Figure nr "+ str(i)
+		  m = chr(13)+"Sous-Figure nr "+ str(i)
 		  return messauto(f,m) + chr(10)
 		  
 		  
@@ -454,8 +453,7 @@ End
 		    
 		  else
 		    EF.Text = "Largeur du fonds d'écran: "
-		    
-		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)+chr(13)
+		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)
 		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(wnd.mycanvas1.height) + chr(10)+chr(13)
 		    
 		    for i = 0 to Figs.count-1
