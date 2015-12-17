@@ -1067,6 +1067,9 @@ End
 #tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
 			if mousedispo then
+			#if TargetLinux
+			MsgBox "l'impression n'est pas encore fonctionnelle sur Linux mais arrivera dans une prochaine version. Par contre,  il vous est possible d'exporter en eps et bitmap, pour ensuite les imprimer. Veuillez nous excuser pour le désagrément."
+			#else
 			closefw
 			CurrentContent.currentoperation = nil
 			refreshtitle
@@ -1075,6 +1078,7 @@ End
 			Imprimer(CurrentContent.CurrentOPeration).ImmediateDoOperation
 			CurrentContent.currentoperation = nil
 			refreshtitle
+			#endif
 			end if
 			return true
 		End Function
@@ -1453,11 +1457,15 @@ End
 #tag MenuHandler
 		Function PrintSetUp() As Boolean Handles PrintSetUp.Action
 			if mousedispo then
+			#if TargetLinux then
+			MsgBox "l'impression n'est pas encore fonctionnelle sur Linux mais arrivera dans une prochaine version. Par contre,  il vous est possible d'exporter en eps et bitmap, pour ensuite les imprimer. Veuillez nous excuser pour le désagrément."
+			#else
 			closefw
 			app.prtsetup = New PrinterSetup
 			If app.prtsetup.PageSetupDialog then
 			return true
 			end if
+			#endif
 			end if
 			return true
 		End Function
