@@ -14,28 +14,6 @@ Inherits SelectOperation
 		  dim g as Graphics
 		  dim s as String
 		  
-		  Dim shell As Shell
-		  shell= New Shell
-		  #if TargetLinux
-		    shell.execute "lp"
-		    MsgBox shell.Result
-		  #endif
-		  
-		  s = ""
-		  g = OpenPrinter()
-		  
-		  if g <> nil then
-		    s = "OpenPrinter"
-		  end if
-		  
-		  g = OpenPrinterDialog()
-		  if g  <> nil then
-		    s = "OpenDialog"
-		  end if
-		  
-		  
-		  MsgBox s
-		  
 		  if tempshape.count  = 0 then
 		    objects.selectobject objects.element(0)
 		    objects.selectall

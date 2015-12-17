@@ -1067,6 +1067,9 @@ End
 #tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
 			if mousedispo then
+			#if TargetLinux
+			MsgBox "l'impression n'est pas encore fonctionnelle sur Linux mais arrivera dans une prochaine version. /n Par contre,  il vous est possible d'exporter en eps et bitmap, pour ensuite les imprimer. /nVeuillez nous excuser pour le désagrément." 
+			#else
 			closefw
 			CurrentContent.currentoperation = nil
 			refreshtitle
@@ -1075,6 +1078,7 @@ End
 			Imprimer(CurrentContent.CurrentOPeration).ImmediateDoOperation
 			CurrentContent.currentoperation = nil
 			refreshtitle
+			#endif
 			end if
 			return true
 		End Function
@@ -1453,11 +1457,15 @@ End
 #tag MenuHandler
 		Function PrintSetUp() As Boolean Handles PrintSetUp.Action
 			if mousedispo then
+			#if TargetLinux then
+			MsgBox "l'impression n'est pas encore fonctionnelle sur Linux mais arrivera dans une prochaine version. /n Par contre,  il vous est possible d'exporter en eps et bitmap, pour ensuite les imprimer. /nVeuillez nous excuser pour le désagrément." 
+			#else
 			closefw
 			app.prtsetup = New PrinterSetup
 			If app.prtsetup.PageSetupDialog then
 			return true
 			end if
+			#endif
 			end if
 			return true
 		End Function
@@ -3016,7 +3024,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action(Index As Integer, index as Integer)
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3058,7 +3066,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3090,14 +3098,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(Index As Integer, index as Integer, g As Graphics)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3113,7 +3121,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open(Index As Integer, index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3129,7 +3137,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(Index As Integer, index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3141,7 +3149,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(Index As Integer, index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -3158,12 +3166,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit(Index As Integer, index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics)
+		Sub Paint(Index As Integer, index as Integer, g As Graphics)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
