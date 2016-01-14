@@ -241,6 +241,16 @@ Implements StringProvider
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function isUnitMatrix() As Boolean
+		  dim M as Matrix
+		  
+		  M = new Matrix(1)
+		  
+		  return Equal(M)
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

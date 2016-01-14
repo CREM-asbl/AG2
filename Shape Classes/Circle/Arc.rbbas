@@ -223,12 +223,23 @@ Inherits Circle
 		  
 		  tos.writeline "newpath"
 		  s= "[ [ "+points(1).etiq + "  " + points(0).etiq  + " " + points(2).etiq + " ] "
-		  r = points(0).bpt.distance(points(1).bpt)*ori
-		  s = s + str(r) + " ] "
-		  if fill = 0 then
-		    tos.writeline s+" arccerclesecteur"
-		  elseif fill = 100 then
-		    tos.writeline s + "arcsecteur secteurdisque"
+		  r = points(0).bpt.distance(points(1).bpt)
+		  
+		  if ti <> nil then
+		    s = s + "0.5 " + str(r) +"]"
+		    if ori = 1 then
+		      tos.writeline s + "arcoripos"
+		    elseif ori = -1 then
+		      tos.writeline s + "arcorineg"
+		    end if
+		  else
+		    r = r*ori
+		    s = s +  str(r) +"]"
+		    if fill = 0 then
+		      tos.writeline s+" arccerclesecteur"
+		    elseif fill = 100 then
+		      tos.writeline s + "arcsecteur secteurdisque"
+		    end if
 		  end if
 		  
 		  for i = 0 to 2
@@ -496,7 +507,7 @@ Inherits Circle
 		  dim s as shape
 		  dim bp as BasicPoint
 		  
-		  if points(2).forme <> 1 then 
+		  if points(2).forme <> 1 then
 		    return new Matrix(1)
 		  end if
 		  
