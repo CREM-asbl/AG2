@@ -1,0 +1,86 @@
+#tag FileTypeSet
+	#tag FileType
+		CodeName=SAVE
+		Extension=fag
+		Flags=&h1
+		MacCreator=CREM
+		MacType=FAG
+		Name=SAVE
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=MACR
+		Extension=xmag;xml
+		Flags=&h1
+		MacCreator=CREM
+		MacType=MAG
+		Name=MACR
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=HIST
+		Extension=hag;xml
+		Flags=&h1
+		MacCreator=CREM
+		MacType=HAG
+		Name=HIST
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=EPS
+		Extension=eps
+		Flags=&h0
+		MacCreator=CREM
+		MacType=EPS
+		Name=EPS
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=STD
+		Extension=std;xml
+		Flags=&h0
+		MacCreator=CREM
+		MacType=STD
+		Name=STD
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=Image
+		Extension=jpg;jpeg
+		Flags=&h0
+		MacCreator=CREM
+		MacType=JPEG
+		Name=jpegType
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+#tag EndFileTypeSet
