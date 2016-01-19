@@ -79,7 +79,7 @@ Protected Module api
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://api.crem.be/AG.php\?essai", Scope = Public
+	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://api.crem.be/AG.php", Scope = Public
 	#tag EndConstant
 
 
