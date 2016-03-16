@@ -828,13 +828,13 @@ End
 
 	#tag Event
 		Sub Maximize()
-		  UpdateToolBar
+		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Moved()
-		  UpdateToolBar
+		  
 		End Sub
 	#tag EndEvent
 
@@ -876,7 +876,6 @@ End
 
 	#tag Event
 		Sub Resizing()
-		  UpdateToolBar
 		  MyCanvas1.resize
 		  Mycanvas1.refreshbackground
 		End Sub
@@ -884,7 +883,7 @@ End
 
 	#tag Event
 		Sub Restore()
-		  UpdateToolBar
+		  
 		End Sub
 	#tag EndEvent
 
@@ -2838,31 +2837,6 @@ End
 		  end if
 		  
 		  MyCanvas1.Refresh
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpdateToolBar()
-		  dim espace as integer
-		  espace = min((me.Height-me.MinHeight)/3,5)
-		  if(me.Height = me.MinHeight) then
-		    MoveBox.TextSize = 8
-		    StdBox.TextSize = 8
-		    LibBox.TextSize = 8
-		    espace = espace+2
-		  else
-		    MoveBox.TextSize = 0
-		    StdBox.TextSize = 0
-		    LibBox.TextSize = 0
-		  end if
-		  MoveBox.Top = 60+espace
-		  StdBox.top = MoveBox.top+MoveBox.Height+espace
-		  LibBox.Top = StdBox.top+StdBox.Height+espace
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
