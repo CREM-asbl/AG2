@@ -32,7 +32,7 @@ Begin Window WorkWindow
       AutoDeactivate  =   False
       Backdrop        =   0
       Background      =   0
-      Bkcol           =   
+      Bkcol           =   &c00000000
       cnt             =   0
       ctxt            =   False
       DoubleBuffer    =   False
@@ -52,10 +52,10 @@ Begin Window WorkWindow
       lastclickticks  =   0
       lastclickx      =   0
       lastclicky      =   0
-      Left            =   127
+      Left            =   124
       LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MagneticDist    =   0.0
@@ -64,7 +64,7 @@ Begin Window WorkWindow
       nobj            =   0
       OffscreenPicture=   0
       scaling         =   0.0
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -73,14 +73,14 @@ Begin Window WorkWindow
       Transparent     =   True
       UseFocusRing    =   False
       Visible         =   True
-      Width           =   676
+      Width           =   683
    End
    Begin Rectangle Tools
       AutoDeactivate  =   True
       BorderWidth     =   1
-      BottomRightColor=   
+      BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   
+      FillColor       =   &cFFFFFF00
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -91,12 +91,11 @@ Begin Window WorkWindow
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
-      TopLeftColor    =   
+      TopLeftColor    =   &cFFFFFF00
       Visible         =   True
       Width           =   122
       Begin GroupBox MoveBox
@@ -109,13 +108,13 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   5
-         LockBottom      =   False
+         Left            =   1
+         LockBottom      =   True
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
-         LockTop         =   False
-         Scope           =   "0"
+         LockTop         =   True
+         Scope           =   0
          TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
@@ -125,7 +124,7 @@ Begin Window WorkWindow
          Top             =   59
          Underline       =   False
          Visible         =   True
-         Width           =   112
+         Width           =   122
          Begin PushButton MouvBut
             AutoDeactivate  =   True
             Bold            =   True
@@ -139,13 +138,13 @@ Begin Window WorkWindow
             Index           =   2
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   7
+            Left            =   1
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockLeft        =   True
+            LockRight       =   True
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
@@ -155,7 +154,7 @@ Begin Window WorkWindow
             Top             =   112
             Underline       =   False
             Visible         =   True
-            Width           =   108
+            Width           =   120
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -170,13 +169,13 @@ Begin Window WorkWindow
             Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   7
+            Left            =   1
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockLeft        =   True
+            LockRight       =   True
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
@@ -186,7 +185,7 @@ Begin Window WorkWindow
             Top             =   142
             Underline       =   False
             Visible         =   True
-            Width           =   108
+            Width           =   120
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -201,13 +200,13 @@ Begin Window WorkWindow
             Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   7
+            Left            =   1
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockLeft        =   True
+            LockRight       =   True
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
@@ -217,7 +216,7 @@ Begin Window WorkWindow
             Top             =   172
             Underline       =   False
             Visible         =   True
-            Width           =   108
+            Width           =   120
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -232,13 +231,13 @@ Begin Window WorkWindow
             Index           =   1
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   7
+            Left            =   1
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockLeft        =   True
+            LockRight       =   True
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
@@ -248,7 +247,7 @@ Begin Window WorkWindow
             Top             =   82
             Underline       =   False
             Visible         =   True
-            Width           =   108
+            Width           =   120
          End
       End
       Begin GroupBox StdBox
@@ -261,13 +260,13 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   5
-         LockBottom      =   False
+         Left            =   1
+         LockBottom      =   True
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
-         LockTop         =   False
-         Scope           =   "0"
+         LockTop         =   True
+         Scope           =   0
          TabIndex        =   1
          TabPanelIndex   =   0
          TabStop         =   True
@@ -277,7 +276,7 @@ Begin Window WorkWindow
          Top             =   215
          Underline       =   False
          Visible         =   True
-         Width           =   112
+         Width           =   122
          Begin Canvas StdOutil
             AcceptFocus     =   False
             AcceptTabs      =   False
@@ -290,13 +289,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "StdBox"
-            Left            =   64
+            Left            =   61
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   "0"
+            Scope           =   0
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
@@ -318,13 +317,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
-            Left            =   8
+            Left            =   9
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   "0"
+            Scope           =   0
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
@@ -346,13 +345,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "StdBox"
-            Left            =   8
+            Left            =   9
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   "0"
+            Scope           =   0
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
@@ -374,13 +373,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "StdBox"
-            Left            =   64
+            Left            =   61
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   "0"
+            Scope           =   0
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
@@ -407,10 +406,10 @@ Begin Window WorkWindow
          Left            =   1
          LockBottom      =   False
          LockedInPosition=   False
-         LockLeft        =   False
-         LockRight       =   False
-         LockTop         =   False
-         Scope           =   "0"
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         Scope           =   0
          TabIndex        =   2
          TabPanelIndex   =   0
          TabStop         =   True
@@ -432,13 +431,13 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   5
-         LockBottom      =   False
+         Left            =   1
+         LockBottom      =   True
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
-         LockTop         =   False
-         Scope           =   "0"
+         LockTop         =   True
+         Scope           =   0
          TabIndex        =   3
          TabPanelIndex   =   0
          TabStop         =   True
@@ -448,7 +447,7 @@ Begin Window WorkWindow
          Top             =   352
          Underline       =   False
          Visible         =   True
-         Width           =   112
+         Width           =   122
          Begin Canvas LibOutils
             AcceptFocus     =   True
             AcceptTabs      =   False
@@ -461,13 +460,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   9
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
@@ -489,13 +488,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "LibBox"
-            Left            =   65
+            Left            =   61
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
@@ -517,13 +516,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "LibBox"
-            Left            =   65
+            Left            =   61
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
@@ -545,13 +544,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   4
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   9
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
@@ -573,13 +572,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   6
             InitialParent   =   "LibBox"
-            Left            =   64
+            Left            =   60
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   4
             TabPanelIndex   =   0
             TabStop         =   True
@@ -601,13 +600,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   9
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   5
             TabPanelIndex   =   0
             TabStop         =   True
@@ -629,13 +628,13 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   9
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   False
+            LockLeft        =   True
             LockRight       =   False
-            LockTop         =   False
-            Scope           =   "0"
+            LockTop         =   True
+            Scope           =   0
             TabIndex        =   6
             TabPanelIndex   =   0
             TabStop         =   True
@@ -662,10 +661,10 @@ Begin Window WorkWindow
          Left            =   1
          LockBottom      =   False
          LockedInPosition=   False
-         LockLeft        =   False
-         LockRight       =   False
-         LockTop         =   False
-         Scope           =   "0"
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         Scope           =   0
          TabIndex        =   4
          TabPanelIndex   =   0
          TabStop         =   True
@@ -829,13 +828,13 @@ End
 
 	#tag Event
 		Sub Maximize()
-		  UpdateToolBar
+		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Moved()
-		  UpdateToolBar
+		  
 		End Sub
 	#tag EndEvent
 
@@ -877,7 +876,6 @@ End
 
 	#tag Event
 		Sub Resizing()
-		  UpdateToolBar
 		  MyCanvas1.resize
 		  Mycanvas1.refreshbackground
 		End Sub
@@ -885,7 +883,7 @@ End
 
 	#tag Event
 		Sub Restore()
-		  UpdateToolBar
+		  
 		End Sub
 	#tag EndEvent
 
@@ -2842,31 +2840,6 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub UpdateToolBar()
-		  dim espace as integer
-		  espace = min((me.Height-me.MinHeight)/3,5)
-		  if(me.Height = me.MinHeight) then
-		    MoveBox.TextSize = 8
-		    StdBox.TextSize = 8
-		    LibBox.TextSize = 8
-		    espace = espace+2
-		  else
-		    MoveBox.TextSize = 0
-		    StdBox.TextSize = 0
-		    LibBox.TextSize = 0
-		  end if
-		  MoveBox.Top = 60+espace
-		  StdBox.top = MoveBox.top+MoveBox.Height+espace
-		  LibBox.Top = StdBox.top+StdBox.Height+espace
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Note, Name = Licence
 		
@@ -3026,7 +2999,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3068,7 +3041,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3100,14 +3073,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3123,7 +3096,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3197,7 +3170,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3209,7 +3182,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -3226,12 +3199,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then

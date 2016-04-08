@@ -220,3 +220,4 @@ pip-log.txt
 .AG2.rbuistate
 *.exe
 *.obsolete
+*.xojo_uistate

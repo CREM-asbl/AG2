@@ -656,12 +656,5 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuItem Untitled9
-      SpecialMenu = 0
-      Text = ""
-      Index = -2147483648
-      AutoEnable = True
-      Visible = True
-   End
 End
 #tag EndMenu
