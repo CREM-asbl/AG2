@@ -111,6 +111,11 @@ Inherits Timer
 			InitialValue="2"
 			Type="Integer"
 			EditorType="Enum"
+			#tag EnumValues
+				"0 - Off"
+				"1 - Single"
+				"2 - Multiple"
+			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"

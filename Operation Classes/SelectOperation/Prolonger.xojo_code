@@ -4,7 +4,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
-		   super.Constructor
+		  super.Constructor
 		  OpId = 28
 		  wnd.PointerPolyg
 		  
@@ -15,7 +15,7 @@ Inherits SelectOperation
 		Sub Constructor(MExe as MacroExe, EL1 as XMLElement)
 		  dim n, rid as integer
 		  
-		   Constructor()
+		  Constructor()
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
 		  Bip = objects.GetShape(rid)

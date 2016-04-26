@@ -3,7 +3,7 @@ Protected Class Retourner
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		   super.Constructor
+		  super.Constructor
 		  OPId=16
 		  
 		End Sub
@@ -11,7 +11,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(C as BasicPoint, P as BasicPoint)
-		   super.Constructor
+		  super.Constructor
 		  OPId=16
 		  self.C = C
 		  self.P = P

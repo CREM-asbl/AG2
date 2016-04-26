@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Bande
 Inherits Shape
-	#tag CompatibilityFlags = (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub computeextre()
 		  dim p1,p2,q1,q2 as basicPoint

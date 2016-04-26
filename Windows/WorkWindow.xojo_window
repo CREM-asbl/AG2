@@ -35,7 +35,7 @@ Begin Window WorkWindow
       Bkcol           =   &c00000000
       cnt             =   0
       ctxt            =   False
-      DoubleBuffer    =   False
+      DoubleBuffer    =   True
       Doubleclicktime =   0
       drapzone        =   False
       Enabled         =   True
@@ -52,10 +52,10 @@ Begin Window WorkWindow
       lastclickticks  =   0
       lastclickx      =   0
       lastclicky      =   0
-      Left            =   124
+      Left            =   120
       LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       MagneticDist    =   0.0
@@ -69,18 +69,18 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       TabStop         =   True
       tit             =   ""
-      Top             =   -2
+      Top             =   0
       Transparent     =   True
       UseFocusRing    =   False
       Visible         =   True
-      Width           =   683
+      Width           =   680
    End
    Begin Rectangle Tools
       AutoDeactivate  =   True
-      BorderWidth     =   1
+      BorderWidth     =   0
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFFFFFF00
+      FillColor       =   &cC0C0C000
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -94,6 +94,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &cFFFFFF00
       Visible         =   True
@@ -124,7 +125,7 @@ Begin Window WorkWindow
          Top             =   59
          Underline       =   False
          Visible         =   True
-         Width           =   122
+         Width           =   117
          Begin PushButton MouvBut
             AutoDeactivate  =   True
             Bold            =   True
@@ -154,7 +155,7 @@ Begin Window WorkWindow
             Top             =   112
             Underline       =   False
             Visible         =   True
-            Width           =   120
+            Width           =   115
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -185,7 +186,7 @@ Begin Window WorkWindow
             Top             =   142
             Underline       =   False
             Visible         =   True
-            Width           =   120
+            Width           =   115
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -216,7 +217,7 @@ Begin Window WorkWindow
             Top             =   172
             Underline       =   False
             Visible         =   True
-            Width           =   120
+            Width           =   115
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -247,7 +248,7 @@ Begin Window WorkWindow
             Top             =   82
             Underline       =   False
             Visible         =   True
-            Width           =   120
+            Width           =   115
          End
       End
       Begin GroupBox StdBox
@@ -276,7 +277,7 @@ Begin Window WorkWindow
          Top             =   215
          Underline       =   False
          Visible         =   True
-         Width           =   122
+         Width           =   118
          Begin Canvas StdOutil
             AcceptFocus     =   False
             AcceptTabs      =   False
@@ -419,7 +420,7 @@ Begin Window WorkWindow
          Top             =   1
          Underline       =   False
          Visible         =   True
-         Width           =   120
+         Width           =   117
       End
       Begin GroupBox LibBox
          AutoDeactivate  =   True
@@ -447,7 +448,7 @@ Begin Window WorkWindow
          Top             =   352
          Underline       =   False
          Visible         =   True
-         Width           =   122
+         Width           =   119
          Begin Canvas LibOutils
             AcceptFocus     =   True
             AcceptTabs      =   False
@@ -674,7 +675,7 @@ Begin Window WorkWindow
          Top             =   31
          Underline       =   False
          Visible         =   True
-         Width           =   120
+         Width           =   117
       End
    End
 End
@@ -2999,7 +3000,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3041,7 +3042,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3073,14 +3074,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3096,7 +3097,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -3170,7 +3171,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3182,7 +3183,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim i As Integer
 		  
 		  if mousedispo then
@@ -3199,12 +3200,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  dim Visible as Boolean
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
@@ -3322,7 +3323,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty

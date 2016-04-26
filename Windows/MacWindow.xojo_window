@@ -31,7 +31,7 @@ Begin Window MacWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       BehaviorIndex   =   0
       Bold            =   True
       Border          =   True
@@ -59,7 +59,7 @@ Begin Window MacWindow
       Multiline       =   True
       Password        =   "False"
       ReadOnly        =   True
-      Scope           =   "0"
+      Scope           =   0
       ScrollbarHorizontal=   False
       ScrollbarVertical=   True
       Styled          =   False
@@ -67,7 +67,7 @@ Begin Window MacWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   14.0
       TextUnit        =   0
@@ -98,7 +98,7 @@ Begin Window MacWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -131,7 +131,7 @@ Begin Window MacWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -295,7 +295,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty
