@@ -31,7 +31,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -54,12 +54,12 @@ Begin Window PassChangeWindow
       Mask            =   ""
       Password        =   True
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
@@ -74,7 +74,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -97,12 +97,12 @@ Begin Window PassChangeWindow
       Mask            =   ""
       Password        =   True
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
@@ -117,7 +117,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -140,12 +140,12 @@ Begin Window PassChangeWindow
       Mask            =   ""
       Password        =   True
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
@@ -174,7 +174,7 @@ Begin Window PassChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
@@ -205,7 +205,7 @@ Begin Window PassChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
@@ -235,14 +235,14 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -270,14 +270,14 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -305,14 +305,14 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -437,7 +437,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty

@@ -425,7 +425,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
-		   super.Constructor
+		  super.Constructor
 		  OpId = 8
 		  if tempshape.count  = 0 then
 		    objects.selectall
@@ -440,7 +440,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as string, name as string, tip as boolean)
-		   super.Constructor
+		  super.Constructor
 		  disp = s
 		  ti = tip
 		  nom = name

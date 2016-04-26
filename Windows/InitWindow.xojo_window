@@ -45,7 +45,7 @@ Begin Window InitWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -76,7 +76,7 @@ Begin Window InitWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -93,7 +93,7 @@ Begin Window InitWindow
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFF00FF
       Bold            =   True
       Border          =   True
       CueText         =   ""
@@ -116,12 +116,12 @@ Begin Window InitWindow
       Mask            =   ""
       Password        =   False
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
@@ -150,7 +150,7 @@ Begin Window InitWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -181,7 +181,7 @@ Begin Window InitWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -212,7 +212,7 @@ Begin Window InitWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -243,7 +243,7 @@ Begin Window InitWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
@@ -433,17 +433,7 @@ End
 		  next
 		  
 		  me.ListIndex = max(0,me.ListIndex)
-		  'for i=1 to app.AppFolder.count
-		  'nom = app.AppFolder.trueItem(i).Name
-		  'if right(nom,4)=".dct" then
-		  'n = n+1
-		  'lg = Left(nom,len(nom)-4)
-		  'me.addRow(lg)
-		  'if lg = config.Langue then
-		  'me.ListIndex = n
-		  'end if
-		  'end if
-		  'next
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -500,7 +490,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty

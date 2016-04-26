@@ -45,7 +45,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -76,7 +76,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -107,7 +107,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -138,7 +138,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -169,7 +169,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -200,7 +200,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -230,7 +230,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
@@ -258,7 +258,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
@@ -286,7 +286,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
@@ -314,7 +314,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
@@ -342,7 +342,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
@@ -370,7 +370,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
@@ -398,7 +398,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
@@ -427,7 +427,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
@@ -458,7 +458,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
@@ -489,7 +489,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
@@ -520,7 +520,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
@@ -551,7 +551,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
@@ -1457,7 +1457,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty

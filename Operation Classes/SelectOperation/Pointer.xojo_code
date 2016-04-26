@@ -3,7 +3,7 @@ Protected Class Pointer
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		   super.Constructor
+		  super.Constructor
 		  OpId = 38
 		  
 		End Sub

@@ -4,7 +4,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
-		   super.Constructor
+		  super.Constructor
 		  OpId = 14
 		  
 		  
@@ -16,7 +16,7 @@ Inherits SelectOperation
 		  dim sh as shape
 		  dim n, rid, side as integer
 		  
-		   super.Constructor
+		  super.Constructor
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
 		  sh = objects.getshape(rid)

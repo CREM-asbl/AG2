@@ -13,7 +13,7 @@ Protected Class Configuration
 	#tag Method, Flags = &h0
 		Sub ChargerConfig()
 		  dim List as XMLNodeList
-		  dim i,j,k as integer
+		  dim k as integer
 		  dim C as XMLDocument
 		  dim El,temp as  XMLElement
 		  dim fi as FolderItem
@@ -325,7 +325,6 @@ Protected Class Configuration
 		  dim El,El1 as XMLNode
 		  dim El2 as XMLTextNode
 		  dim List as XMLNodeList
-		  dim lastmaj,f() as String
 		  
 		  initParams
 		  fi=app.DocFolder.Child("AG_Init.xml")

@@ -3,7 +3,7 @@ Protected Class Hide
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		   super.Constructor
+		  super.Constructor
 		  OpId = 15
 		  wnd.Drapshowall = true
 		  
@@ -14,7 +14,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(t as Boolean)
-		   super.Constructor
+		  super.Constructor
 		  OpId = 15
 		  
 		End Sub

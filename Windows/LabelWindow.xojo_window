@@ -31,7 +31,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -54,12 +54,12 @@ Begin Window LabelWindow
       Mask            =   ""
       Password        =   False
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -89,7 +89,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -120,7 +120,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       State           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
@@ -153,7 +153,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -168,9 +168,9 @@ Begin Window LabelWindow
    Begin Rectangle RecColor
       AutoDeactivate  =   False
       BorderWidth     =   1
-      BottomRightColor=   
+      BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   
+      FillColor       =   &cFFFFFF00
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -181,12 +181,12 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
       Top             =   49
-      TopLeftColor    =   
+      TopLeftColor    =   &c00000000
       Visible         =   True
       Width           =   20
    End
@@ -195,7 +195,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -218,12 +218,12 @@ Begin Window LabelWindow
       Mask            =   ""
       Password        =   False
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -238,7 +238,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -261,12 +261,12 @@ Begin Window LabelWindow
       Mask            =   ""
       Password        =   False
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -290,7 +290,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
@@ -312,7 +312,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
@@ -339,7 +339,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
@@ -383,7 +383,7 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   False
       RequiresSelection=   False
-      Scope           =   "0"
+      Scope           =   0
       ScrollbarHorizontal=   False
       ScrollBarVertical=   True
       SelectionType   =   0
@@ -420,7 +420,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
@@ -450,7 +450,7 @@ Begin Window LabelWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       State           =   0
       TabIndex        =   18
       TabPanelIndex   =   0
@@ -482,14 +482,14 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   19
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Texte :"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -517,14 +517,14 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   20
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Taille :"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -552,14 +552,14 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   21
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -587,14 +587,14 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   22
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -622,14 +622,14 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   23
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -657,14 +657,14 @@ Begin Window LabelWindow
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   24
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Police :"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -1018,7 +1018,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty

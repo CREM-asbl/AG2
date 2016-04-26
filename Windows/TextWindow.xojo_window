@@ -31,7 +31,7 @@ Begin Window TextWindow
       Alignment       =   0
       AutoDeactivate  =   False
       AutomaticallyCheckSpelling=   True
-      BackColor       =   
+      BackColor       =   &cFFFFFF00
       BehaviorIndex   =   0
       Bold            =   False
       Border          =   True
@@ -59,7 +59,7 @@ Begin Window TextWindow
       Multiline       =   True
       Password        =   "False"
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       ScrollbarHorizontal=   True
       ScrollbarVertical=   True
       Styled          =   False
@@ -67,7 +67,7 @@ Begin Window TextWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -586,7 +586,6 @@ End
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
 			"9 - Metal Window"
-			"10 - Drawer Window"
 			"11 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty

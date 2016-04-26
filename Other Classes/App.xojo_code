@@ -27,9 +27,6 @@ Inherits Application
 	#tag Event
 		Sub EnableMenuItems()
 		  dim B, B1, B2 as boolean
-		  dim item as MenuItem
-		  dim i as integer
-		  
 		  
 		  if currentcontent <> nil  then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
@@ -86,7 +83,7 @@ Inherits Application
 		Sub OpenDocument(item As FolderItem)
 		  'reste un problème avec accent
 		  dim s As string
-		  s = item.AbsolutePath
+		  s = item.NativePath
 		  
 		  if Right(s,1) = "\" then
 		    s = s.mid(1,Len(s)-1)
@@ -102,7 +99,7 @@ Inherits Application
 
 	#tag Event
 		Function UnhandledException(error As RuntimeException) As Boolean
-		  dim st(-1), cre, Op as String
+		  dim st(-1), cre as String
 		  dim bugw as BugFindW
 		  dim i as integer
 		  dim curoper as Operation
@@ -267,9 +264,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
 		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
-		  #if DebugBuild then
-		    return
-		  #endif
+		  '#if DebugBuild then
+		  'return
+		  '#endif
 		  
 		  api.init
 		  api.Connect

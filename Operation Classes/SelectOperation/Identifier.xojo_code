@@ -3,7 +3,7 @@ Protected Class Identifier
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		   super.Constructor
+		  super.Constructor
 		  OpId = 35
 		  
 		  
