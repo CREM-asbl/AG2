@@ -141,7 +141,6 @@ Begin Window Confirmation
       Selectable      =   False
       TabIndex        =   4
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -152,7 +151,7 @@ Begin Window Confirmation
       Transparent     =   True
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   268
    End
 End
 #tag EndWindow
@@ -160,8 +159,6 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  
-		  
 		  Title = Dico.value("Confirmation")
 		  
 		  if CurrentContent.bugfound then
@@ -248,7 +245,7 @@ End
 #tag Events Label1
 	#tag Event
 		Sub Open()
-		  me.Text = Dico.value("FileSave")
+		  me.Text = Dico.value("savepic") + " " + str(CurrentContent.id)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
