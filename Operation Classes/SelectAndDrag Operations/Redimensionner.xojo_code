@@ -14,14 +14,15 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  if CurrentShape isa repere then
-		    C= new BasicPoint(wnd.Mycanvas1.width/2,wnd.Mycanvas1.height/2)
-		    newpoint = wnd.mycanvas1.mousecan
+		    C= new BasicPoint(can.width/2,can.height/2)
+		    newpoint = can.mousecan
 		    k= NewPoint.Distance(c)/EndPoint.Distance(c)
 		    if k < epsilon then
 		      return
 		    end if
 		    newrep(c,k)
 		    endpoint = newpoint
+		    super.completeoperation(NewPoint)
 		    return
 		  end if
 		  
@@ -40,6 +41,8 @@ Inherits SelectAndDragOperation
 		    end if
 		  end if
 		  CurrentContent.TheObjects.EnableModifyAll
+		  
+		  super.completeoperation(NewPoint)
 		  
 		  Exception err
 		    dim d As Debug
@@ -69,8 +72,8 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(EL as XmlElement)
-		  dim EL1 as XmlElement
+		Sub Constructor(EL as XMLElement)
+		  dim EL1 as XMLElement
 		  dim List as XmlNodeList
 		  
 		  super.constructor
@@ -90,7 +93,7 @@ Inherits SelectAndDragOperation
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod(GetName,"Redimensionner(EL as XmlElement)")
+		    d.setMethod(GetName,"Redimensionner(EL as XMLElement)")
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString
 		    
@@ -116,7 +119,7 @@ Inherits SelectAndDragOperation
 		  '
 		  'if currentshape = nil then
 		  'currentcontent.currentoperation = nil
-		  'wnd.mycanvas1.mousecursor = arrowcursor
+		  'can.mousecursor = System.Cursors.StandardPointer
 		  'oldvisible.tspfalse
 		  'else
 		  'ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
@@ -155,24 +158,24 @@ Inherits SelectAndDragOperation
 		  if visible.count > 0  then
 		    nobj = visible.count
 		    for i =  nobj-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if currentcontent.macrocreation then
-		        visible.removeshape(s)
+		        visible.removeobject(s)
 		      end if
 		      for j = 0 to s.fig.shapes.count-1
-		        if s.fig.shapes.element(j).std then
-		          visible.removeshape(s)
+		        if s.fig.shapes.item(j).std then
+		          visible.removeobject(s)
 		        end if
 		      next
 		      if   s isa point  or  not choixvalide(s)  then
-		        Visible.removeShape(s)
+		        Visible.removeobject(s)
 		      end if
 		      nobj = visible.count
 		    next
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(0)
+		    return visible.item(0)
 		  else
 		    return nil
 		  end if
@@ -197,7 +200,7 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  
 		  if currentshape = nil then
-		    wnd.mycanvas1.mousecursor = System.Cursors.StandardPointer
+		    can.mousecursor = System.Cursors.StandardPointer
 		    oldvisible.tspfalse
 		  elseif c <> nil then
 		    ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
@@ -216,7 +219,7 @@ Inherits SelectAndDragOperation
 		  repere(CurrentShape).origine =  c + (repere(CurrentShape).origine -c) *k
 		  repere(CurrentShape).Idx = repere(CurrentShape).Idx * k
 		  repere(CurrentShape).Idy = repere(CurrentShape).Idy * k
-		  wnd.mycanvas1.setrepere(repere(CurrentShape))
+		  can.setrepere(repere(CurrentShape))
 		  CurrentContent.theobjects.updateskull
 		  CurrentContent.theobjects.updatelabels(k)
 		  
@@ -249,7 +252,7 @@ Inherits SelectAndDragOperation
 		  
 		  EL = XMLElement(Temp.child(0))
 		  SelectIdForms(EL)
-		  currentshape = tempshape.element(0)
+		  currentshape = tempshape.item(0)
 		  ratio = val(EL.GetAttribute(Dico.value("Ratio")))
 		  c = new basicpoint(val(EL.GetAttribute("CX")), val(EL.GetAttribute("CY")))
 		  startpoint = new Basicpoint(val(EL.GetAttribute("startx")),val(EL.GetAttribute("starty")))
@@ -268,7 +271,7 @@ Inherits SelectAndDragOperation
 		    CurrentContent.theobjects.updateskull
 		  else
 		    for i = 0 to tempshape.count-1
-		      figs.addfigure tempshape.element(i).fig
+		      figs.addobject tempshape.item(i).fig
 		    next
 		    figs.creerlistesfigures
 		    if Config.Trace then
@@ -287,8 +290,8 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Doc as XMLDocument) As XMLelement
-		  Dim Myself as XmlElement
+		Function ToXML(Doc as XMLDocument) As XMLElement
+		  Dim Myself as XMLElement
 		  dim Temp as XMLElement
 		  
 		  if c <> nil then
@@ -309,7 +312,7 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UndoOperation(Temp as XmlElement)
+		Sub UndoOperation(Temp as XMLElement)
 		  dim  M as Matrix
 		  dim r as Double
 		  dim EL as XMLElement
@@ -319,7 +322,7 @@ Inherits SelectAndDragOperation
 		  
 		  r = val(EL.GetAttribute(Dico.value("Ratio")))
 		  r = 1/r
-		  currentshape = tempshape.element(0)
+		  currentshape = tempshape.item(0)
 		  
 		  
 		  if currentshape isa repere then

@@ -22,7 +22,7 @@ Inherits Operation
 		  drx = x1
 		  dry = y1
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
-		  pic.graphics.drawpicture wnd.mycanvas1.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
+		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
 		  EndOperation
 		  
@@ -48,9 +48,9 @@ Inherits Operation
 		    luy = dry
 		    dry = temp
 		  end if
-		  'wnd.MyCanvas1.RefreshBackground
+		  'can.RefreshBackground
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
-		  pic.graphics.drawpicture wnd.mycanvas1.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
+		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
 		  
 		End Sub
@@ -62,7 +62,7 @@ Inherits Operation
 		  luy = 0
 		  drx = 0
 		  dry = 0
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.StandardPointer
+		  can.Mousecursor = System.Cursors.StandardPointer
 		  finished = true
 		  
 		End Sub
@@ -79,7 +79,7 @@ Inherits Operation
 		  dim q as basicpoint
 		  
 		  drap = true
-		  q = wnd.mycanvas1.transform(p)
+		  q = can.transform(p)
 		  drx = q.x
 		  dry = q.y
 		  lux = q.x
@@ -94,7 +94,7 @@ Inherits Operation
 		  dim q as BasicPoint
 		  
 		  if drap then
-		    q = wnd.mycanvas1.transform(p)
+		    q = can.transform(p)
 		    if q.x <> drx or q.y <> dry then
 		      drx = q.x
 		      dry = q.y
@@ -106,7 +106,7 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub MouseUp(p as BasicPoint)
 		  if drap and (drx <> lux) and (dry <> luy) then
-		    wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		    can.Mousecursor = System.Cursors.Wait
 		    DoOperation
 		    EndOperation
 		  else

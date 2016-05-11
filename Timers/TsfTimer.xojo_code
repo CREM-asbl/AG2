@@ -5,16 +5,12 @@ Inherits Timer
 		Sub Action()
 		  dim i, j as integer
 		  dim s as shape
-		  dim  p as BasicPoint
-		  
-		  
 		  
 		  if self isa RetTimer then
 		    RetTimer(self).agir
 		  else
-		    can.MouseCursor = System.Cursors.wait
 		    for i=0 to ncop
-		      s=copies.element(i)
+		      s=copies.item(i)
 		      s.Transform(M1)
 		      if s isa circle then
 		        circle(s).coord.MoveExtreCtrl(M1)
@@ -22,21 +18,20 @@ Inherits Timer
 		      for j = 0 to ubound(s.childs)
 		        s.childs(j).modified = true
 		      next
-		      if s isa Lacet then
+		      if s.Hybrid then
 		        Lacet(s).coord.MoveExtreCtrl(M1)
 		      end if
 		    next
-		    can.RefreshBackground
+		    can.invalidate
 		    copies.enablemodifyall
 		    pas = pas-1
 		    
-		    
 		    if pas =  0 then
 		      for i = 0 to ncop
-		        s = copies.element(i)
+		        s = copies.item(i)
 		        s.unhighlight
 		        if s isa point and point(s).pointsur.count = 1 then
-		          point(s).puton Point(s).pointsur.element(0)
+		          point(s).puton Point(s).pointsur.item(0)
 		          point(s).mobility
 		        end if
 		        if s isa standardpolygon then
@@ -58,22 +53,19 @@ Inherits Timer
 		  dim i as integer
 		  dim s as shape
 		  
-		  can = wnd.Mycanvas1
 		  objects = CurrentContent.Theobjects
 		  
 		  self.copies = copies
 		  ncop = copies.count-1
 		  for i = 0 to ncop
-		    s = copies.element(i)
+		    s = copies.item(i)
 		    if s isa circle then
 		      s.coord.createextreandctrlpoints(s.ori)
 		    end if
 		  next
 		  niter = 60
-		  pas = niter
-		  
-		  Mode=2
-		  period=50
+		  Mode = ModeMultiple
+		  period= 50
 		  
 		  
 		  
@@ -83,64 +75,28 @@ Inherits Timer
 
 	#tag Method, Flags = &h0
 		Sub Constructor(copies as ObjectsList, curop as AppliquerTsf)
-		  dim q, v as BasicPoint
-		  dim u1, u2, u3, u4 As  BasicPoint
-		  dim Mat as SimilarityMatrix
-		  dim bib1, Bib2 as BiBPoint
-		  dim r1, r2 as double
 		  
-		  constructor(copies)
+		  dim i as integer
+		  dim s as shape
+		  
+		  objects =CurrentContent.Theobjects
+		  enabled = false
+		  self.copies = copies
+		  ncop = copies.count-1
+		  for i = 0 to ncop
+		    s = copies.item(i)
+		    if s isa circle then
+		      s.coord.createextreandctrlpoints(s.ori)
+		    end if
+		  next
+		  
 		  curoper = AppliquerTsf(curop)
-		  self.tsf = curop.tsf
-		  
-		  select case Tsf.type
-		  case 1
-		    v = tsf.sp -tsf.fp
-		    v = v/niter
-		    M1 = new TranslationMatrix(v*tsf.ori)
-		  case 2
-		    M1 = new rotationmatrix (tsf.supp.points(0).bpt, arc(tsf.supp).arcangle/niter)
-		  case 3
-		    M1 = new rotationmatrix(point(tsf.supp).bpt, PI/niter)
-		  case 4
-		    M1 = new rotationmatrix(point(tsf.supp).bpt,PIDEMI/niter)
-		  case 5
-		    M1 = new rotationmatrix(point(tsf.supp).bpt, -PIDEMI/niter)
-		  case 7,71,72
-		    Mat = SimilarityMatrix(tsf.M)
-		    M1 = new HomothetyMatrix(Mat.centre,  (Mat.rapport)^(1/niter))
-		  case 8, 81, 82
-		    Mat = SimilarityMatrix(tsf.M)
-		    if abs(Mat.angle) < epsilon and abs(Mat.rapport-1) < epsilon then
-		      M1 = new TranslationMatrix(Mat.v3/niter)
-		    else
-		      M1 = new Similaritymatrix (Mat.centre, (Mat.rapport)^(1/niter), Mat.angle/niter)
-		    end if
-		  case 9
-		    u1= tsf.supp.points(0).bpt
-		    u2= tsf.supp.points(1).bpt
-		    u3= tsf.supp.points(3).bpt
-		    u4 = tsf.supp.points(2).bpt
-		    Bib1 = new BiBPoint(u1,u2)
-		    Bib2 = new BiBPoint(u3,u4)
-		    q = Bib2.BibInterdroites(bib1,0,0,r1,r2)
-		    u4 = q + (u3 -q)*(((r1-1)/r1)^(1/niter))
-		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
-		  case 10
-		    Mat = SimilarityMatrix(tsf.M)
-		    if Mat.angle <> 0 then
-		      M1 = new Similaritymatrix (Mat.centre, 1, Mat.angle/niter)
-		    else
-		      M1 = new Matrix(Mat.v1, Mat.v2, Mat.v3/niter)
-		    end if
-		  case 11
-		    u1= tsf.supp.points(0).bpt
-		    u2= tsf.supp.points(1).bpt
-		    u3= tsf.supp.points(3).bpt
-		    u4 = tsf.supp.points(2).bpt
-		    u4 = u3 + (u4-u3)/niter
-		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
-		  end select
+		  can.MouseCursor = system.Cursors.wait
+		  niter = 60
+		  M1 = curop.tsf.RacN(niter)
+		  Mode = 2'ModeMultiple
+		  period= 50
+		  pas = niter
 		  enabled = true
 		End Sub
 	#tag EndMethod
@@ -190,10 +146,6 @@ Inherits Timer
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
-
-	#tag Property, Flags = &h0
-		can As Mycanvas
-	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		copies As objectslist

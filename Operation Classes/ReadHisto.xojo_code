@@ -55,7 +55,7 @@ Inherits Operation
 		  
 		  'objects = CurrentContent.TheObjects
 		  XMLLoadOperations(CurrentContent.OpList)
-		  wnd.mycanvas1.mousecursor = System.Cursors.StandardPointer
+		  can.mousecursor = System.Cursors.StandardPointer
 		  Hcmd = New HistCmd
 		  Hcmd.ShowWithin(wnd)
 		  Hcmd.HistCtrl.rh = self
@@ -70,11 +70,11 @@ Inherits Operation
 		  dim fid As integer
 		  
 		  for i = 0 to CurrentContent.TheFigs.count-1
-		    fid = max (fid, CurrentContent.TheFigs.element(i).idfig)
+		    fid = max (fid, CurrentContent.TheFigs.item(i).idfig)
 		  next
 		  CurrentContent.TheFigs.previdfig = fid
 		  
-		  wnd.Mycanvas1.Mousecursor = system.Cursors.wait
+		  can.Mousecursor = system.Cursors.wait
 		  CurrentContent.CurrentOperation=nil
 		  wnd.menubar = menu
 		  wnd.MenuBar.Child("Fenetres").Item(wnd.GetNumWindow).Checked = true
@@ -86,7 +86,7 @@ Inherits Operation
 		  CurrentContent.totaloperation = currentop+1
 		  Config.Trace = OldTrace
 		  super.endoperation
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.StandardPointer
+		  can.Mousecursor = System.Cursors.StandardPointer
 		End Sub
 	#tag EndMethod
 
@@ -152,7 +152,7 @@ Inherits Operation
 		    CurOper.RedoOperation(EL)
 		  end if
 		  
-		  wnd.mycanvas1.refreshbackground
+		  'can.invalidate
 		End Sub
 	#tag EndMethod
 
@@ -181,7 +181,7 @@ Inherits Operation
 		  curoper= CurrentContent.CreerOperation(EL)
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
-		  wnd.mycanvas1.refreshbackground
+		  'can.invalidate
 		  
 		End Sub
 	#tag EndMethod
@@ -194,7 +194,7 @@ Inherits Operation
 		  
 		  OldTrace  = Config.Trace
 		  
-		  wnd.mycanvas1.mousecursor = system.cursors.wait
+		  can.mousecursor = system.cursors.wait
 		  NOper = Histo.Childcount
 		  
 		  NewLang = Histo.GetAttribute(Dico.Value("Langage"))

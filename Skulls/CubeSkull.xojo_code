@@ -1,6 +1,6 @@
 #tag Class
 Protected Class CubeSkull
-Inherits Skull
+Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub Constructor(p as BasicPoint, f as integer, k as integer)
 		  dim cs as curveshape
@@ -9,12 +9,12 @@ Inherits Skull
 		  dim M as Rotationmatrix
 		  dim bp(-1),q as BasicPoint
 		  
-		  CC = new Group2D
+		  
 		  ref = p
-		  CC.x = 0
-		  CC.y = 0
-		  CC.borderwidth = 1
-		  CC.border = 100
+		  x = 0
+		  y = 0
+		  borderwidth = 1
+		  border = 100
 		  fs = new figureshape
 		  
 		  bp.append new BasicPoint(0,0)
@@ -38,31 +38,29 @@ Inherits Skull
 		  end select
 		  
 		  for i = 0 to 5
-		    cs = new curveshape
-		    cs.X = bp(i).X
-		    cs.Y = bp(i).Y
+		    append new curveshape
+		    item(i).X = bp(i).X
+		    item(i).Y = bp(i).Y
 		    
-		    cs.X2 = bp((i+1) mod 6).X
-		    cs.Y2 = bp((i+1) mod 6).Y
-		    fs.append cs
+		    Item(i).X2 = bp((i+1) mod 6).X
+		    Item(i).Y2 = bp((i+1) mod 6).Y
 		  next
-		  Group2D(CC).append fs
+		  
 		  for i = 0 to 2
-		    cs = new curveshape
-		    cs.X = bp(6).X
-		    cs.Y = bp(6).Y
-		    cs.X2 = bp(2*i+1-(f mod 2) ).X
-		    cs.Y2 = bp(2*i+1-(f mod 2) ).Y
-		    Group2D(CC).append cs
+		    append new curveshape
+		    Item(5+i).X = bp(6).X
+		    Item(5+i).Y = bp(6).Y
+		    Item(5+i).X2 = bp(2*i+1-(f mod 2) ).X
+		    Item(5+i).Y2 = bp(2*i+1-(f mod 2) ).Y
 		  next
 		  if f = 2  then
 		    for i = 0 to 2
-		      cs = new curveshape
-		      cs.X = bp(7).X
-		      cs.Y = bp(7).Y
-		      cs.X2 = bp(2*i).X
-		      cs.Y2 = bp(2*i).Y
-		      Group2D(CC).append cs
+		      append new curveshape
+		      Item(7+i).X = bp(7).X
+		      Item(7+i).Y = bp(7).Y
+		      Item(7+i).X2 = bp(2*i).X
+		      Item(7+i).Y2 = bp(2*i).Y
+		      append cs
 		    next
 		  end if
 		  
@@ -71,12 +69,11 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Function GetCote(i as integer) As curveshape
-		  dim fs as figureshape
+		  
 		  if i < 6 then
-		    fs = figureshape(Group2D(CC).item(0))
-		    return  curveshape(fs.item(i))
+		    return  item(i)
 		  else
-		    return curveshape(Group2D(CC).item(i-5))
+		    return item(i-5) 
 		  end if
 		End Function
 	#tag EndMethod
@@ -87,25 +84,9 @@ Inherits Skull
 		  dim fs as figureshape
 		  dim cs as curveshape
 		  
-		  fs = figureshape(Group2D(CC).item(0))
+		  g.drawobject self, ref.x, ref.y
 		  
-		  fs.fillcolor = CC.fillcolor
-		  fs.fill = cc.fill
-		  g.drawobject fs, ref.x, ref.y
 		  
-		  For i = 0 to 5
-		    cs = fs.item(i)
-		    cs.Borderwidth = CC.borderwidth
-		    cs.Border = CC.border
-		    g.drawobject cs, ref.x, ref.y
-		  next
-		  
-		  for i = 1 to Group2D(cc).count-1
-		    cs = curveshape(Group2D(CC).item(i))
-		    cs.Borderwidth = CC.borderwidth
-		    cs.Border = CC.border
-		    g.drawobject cs, ref.x, ref.y
-		  next
 		  
 		  
 		  
@@ -120,9 +101,8 @@ Inherits Skull
 		  
 		  ref = p
 		  if m = 1 then
-		    cs = CurveShape(Group2D(CC).item(1))
-		    cs.X2 = p.X
-		    cs.Y2 = p.Y
+		    item(1).X2 = p.X
+		    item(1).Y2 = p.Y
 		  end if
 		  
 		End Sub
@@ -131,19 +111,14 @@ Inherits Skull
 	#tag Method, Flags = &h0
 		Sub Updatebordercolors(colcotes() as couleur)
 		  dim i as integer
-		  dim fs as figureshape
-		  dim cs as curveshape
 		  
-		  fs = figureshape(Group2D(CC).item(0))
 		  
 		  For i = 0 to 5
-		    cs = fs.item(i)
-		    cs.Bordercolor = colcotes(i).col
+		    item(i).Bordercolor = colcotes(i).col
 		  next
 		  
-		  for i = 1 to Group2D(CC).count-1
-		    cs = curveshape(Group2D(CC).item(i))
-		    cs.Bordercolor = colcotes(5+i).col
+		  for i = 1 to count-1
+		    item(i).Bordercolor = colcotes(5+i).col
 		  next
 		End Sub
 	#tag EndMethod
@@ -151,21 +126,17 @@ Inherits Skull
 	#tag Method, Flags = &h0
 		Sub UpdateBorderwidth(w as double)
 		  dim i as integer
-		  dim fs as figureshape
-		  dim cs as curveshape
 		  
-		  CC.Borderwidth = w
+		  Borderwidth = w
 		  
-		  fs = figureshape(Group2D(CC).item(0))
+		  
 		  
 		  For i = 0 to 5
-		    cs = fs.item(i)
-		    cs.Borderwidth = w
+		    item(i).Borderwidth = w
 		  next
 		  
-		  for i = 1 to Group2D(CC).count-1
-		    cs = curveshape(Group2D(CC).item(i))
-		    cs.Borderwidth = w
+		  for i = 1 to count-1
+		    item(i).Borderwidth = w
 		  next
 		End Sub
 	#tag EndMethod
@@ -173,51 +144,42 @@ Inherits Skull
 	#tag Method, Flags = &h0
 		Sub updatesommet(n as integer, p as BasicPoint, m as integer)
 		  dim cs, cs0 as curveshape
-		  dim fs as figureshape
 		  dim i as integer
 		  
-		  fs = figureshape(Group2D(CC).item(0))
 		  if n < 6 then
-		    cs = fs.item(n)
-		    cs.X=p.x
-		    cs.Y=p.y
+		    item(n).X=p.x
+		    item(n).Y=p.y
 		    if n <> 0 then
-		      cs = fs.item(n-1)
-		      cs.X2=p.x
-		      cs.Y2=p.y
+		      item(n-1).X2=p.x
+		      item(n-1).Y2=p.y
 		    end if
 		    if  n = 5  then
-		      cs = fs.item(5)
-		      cs0 = fs.item(0)
-		      cs.X2 = cs0.X
-		      cs.Y2 = cs0.Y
+		      item(5).X2 = item(0).X
+		      item(5).Y2 = item(0).Y
 		    end if
 		    i = n+m-1
 		    if i mod 2 = 0 then
 		      i = i/2
-		      cs = CurveShape(Group2D(CC).item(i+1))
-		      cs.X2 = p.X
-		      cs.Y2 = p.Y
+		      item(i+1).X2 = p.X
+		      item(i+1).Y2 = p.Y
 		    end if
 		  end if
 		  
 		  if n = 6 then
 		    for i = 1 to 3
-		      cs = curveshape(Group2D(CC).item(i))
-		      cs.X = p.X
-		      cs.y = p.Y
-		      cs.X2 = fs.item(2*i-1-m).X
-		      cs.Y2 = fs.item(2*i-1-m).Y
+		      item(i).X = p.X
+		      item(i).y = p.Y
+		      item(i).X2 = item(2*i-1-m).X
+		      item(i).Y2 =item(2*i-1-m).Y
 		    next
 		  end if
 		  
 		  if n = 7 then
 		    for i = 4 to 6
-		      cs = curveshape(Group2D(CC).item(i))
-		      cs.X = p.X
-		      cs.y = p.Y
-		      cs.X2 = fs.item(2*(i-4)).X
-		      cs.Y2 = fs.item(2*(i-4)).Y
+		      item(i).X = p.X
+		      item(i).y = p.Y
+		      item(i).X2 =item(2*(i-4)).X
+		      item(i).Y2 = item(2*(i-4)).Y
 		    next
 		  end if
 		End Sub
@@ -248,6 +210,11 @@ Inherits Skull
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="angle"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Border"
 			Group="Behavior"
 			InitialValue="0"
@@ -264,6 +231,17 @@ Inherits Skull
 			Group="Behavior"
 			InitialValue="0"
 			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Count"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="currentcurve"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Fill"

@@ -967,6 +967,10 @@ Protected Module Globals
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		can As CustomCanvas1
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Config As Configuration
 	#tag EndProperty
 

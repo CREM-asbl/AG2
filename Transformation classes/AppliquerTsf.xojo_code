@@ -27,7 +27,7 @@ Inherits MultipleSelectOperation
 		  rid = MExe.GetRealId(n)
 		  supp = objects.Getshape(rid)
 		  num = val(EL1.GetAttribute("Nr"))
-		  tsf = supp.tsfi.element(num)
+		  tsf = supp.tsfi.item(num)
 		  
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
@@ -35,14 +35,14 @@ Inherits MultipleSelectOperation
 		  objects.unselectall
 		  objects.selectobject(s1)
 		  CreerCopies
-		  tsf.appliquer(s1,copies.element(0))
-		  tsf.setconstructioninfos1(s1,copies.element(0))
+		  tsf.appliquer(s1,copies.item(0))
+		  tsf.setconstructioninfos1(s1,copies.item(0))
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(EL as XmlElement)
-		  dim EL1 as XmlElement
+		Sub Constructor(EL as XMLElement)
+		  dim EL1 as XMLElement
 		  dim s as shape
 		  dim i as integer
 		  
@@ -51,7 +51,7 @@ Inherits MultipleSelectOperation
 		  EL1 = XMLElement(EL.FirstChild)
 		  s = Objects.getshape(val(EL1.GetAttribute("Id")))
 		  i = val(EL1.GetAttribute("NumTSF"))
-		  ListTsf.AddTsf  s.tsfi.element(i)
+		  ListTsf.AddObject  s.tsfi.item(i)
 		  itsf = 0
 		  SelectIdForms(EL)
 		  Config.Trace = true
@@ -66,7 +66,7 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  for i = 0 to tempshape.count-1
-		    s1 = tempshape.element(i)
+		    s1 = tempshape.item(i)
 		    if s1 isa point then
 		      s2 = s1.paste(Objects,Point(s1).bpt)
 		    else
@@ -90,8 +90,8 @@ Inherits MultipleSelectOperation
 		  dim s1, s2 as shape
 		  
 		  for i = 0 to tempshape.count -1
-		    s1 = tempshape.element(i)
-		    s2 = copies.element(i)
+		    s1 = tempshape.item(i)
+		    s2 = copies.item(i)
 		    tsf.appliquer(s1,s2)
 		    if tsf.type = 6 and  Config.stdbiface  then
 		      s2.fixecouleurfond(s2.fillcolor.comp, s2.fill)
@@ -111,13 +111,13 @@ Inherits MultipleSelectOperation
 		  if  Config.Trace  and TrajValide then
 		    draptraj = true
 		    for i = 0 to copies.count-1
-		      for j = 0 to ubound(copies.element(i).points)
-		        copies.element(i).points(j).tracept = tempshape.element(i).points(j).tracept
+		      for j = 0 to ubound(copies.item(i).points)
+		        copies.item(i).points(j).tracept = tempshape.item(i).points(j).tracept
 		      next
 		    next
 		    if tsf.type = 6 then
 		      for i = 0 to copies.count-1
-		        copies.element(i).ori =  -copies.element(i).ori
+		        copies.item(i).ori =  -copies.item(i).ori
 		      next
 		      dret = new RetTimer(copies,self)
 		    else
@@ -139,8 +139,8 @@ Inherits MultipleSelectOperation
 		  super.endoperation
 		  CurrentItemToSet=2
 		  for i = 0 to copies.count-1
-		    for j = 0 to ubound(copies.element(i).points)
-		      copies.element(i).points(j).tracept =  false
+		    for j = 0 to ubound(copies.item(i).points)
+		      copies.item(i).points(j).tracept =  false
 		    next
 		  next
 		  copies.removeall
@@ -168,17 +168,20 @@ Inherits MultipleSelectOperation
 		    return GetTsf(p)
 		  case 2
 		    for i =  visible.count-1 downto 0
-		      s = visible.element(i)
+		      s = visible.item(i)
 		      if s <> nil and  s.isaellipse then
-		        visible.removeshape s
+		        visible.removeobject s
+		      end if
+		      if self isa TrajectoireTsf and not s isa point then
+		        visible.removeobject s
 		      end if
 		      for j = 0 to tsf.constructedshapes.count-1
-		        if tsf.constructedshapes.element(j).constructedby.shape = s  then
-		          visible.removeshape s
+		        if tsf.constructedshapes.item(j).constructedby.shape = s  then
+		          visible.removeobject s
 		        end if
 		      next
 		    next
-		    s = visible.element(iobj)
+		    s = visible.item(iobj)
 		    CurrentHighlightedShape = s
 		    return s
 		  end select
@@ -195,9 +198,9 @@ Inherits MultipleSelectOperation
 		  CurrentContent.TheTransfos.ShowAll
 		  if ntsf > 0 then
 		    CurrentContent.TheTransfos.HideAll
-		    ListTsf.element(itsf).Hidden = false
-		    ListTsf.element(itsf).Highlight
-		    currenthighlightedtsf = listtsf.element(itsf)
+		    ListTsf.item(itsf).Hidden = false
+		    ListTsf.item(itsf).Highlight
+		    currenthighlightedtsf = listtsf.item(itsf)
 		  else
 		    Currentcontent.Thetransfos.showall
 		  end if
@@ -214,7 +217,7 @@ Inherits MultipleSelectOperation
 		    NextItem
 		    if FinishedSelecting then
 		      Finished = false
-		      wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		      can.Mousecursor = System.Cursors.Wait
 		      DoOperation
 		    end if
 		  end if
@@ -244,9 +247,9 @@ Inherits MultipleSelectOperation
 		    MouseWheelTsf
 		    CurrentContent.TheTransfos.HideAll
 		    if ListTsf.count >0 then
-		      ListTsf.element(itsf).Hidden = false
+		      ListTsf.item(itsf).Hidden = false
 		    end if
-		    Wnd.mycanvas1.refreshbackground
+		    'can.invalidate
 		  case 2
 		    super.MouseWheel
 		  end select
@@ -277,13 +280,15 @@ Inherits MultipleSelectOperation
 		      else
 		        str = str + thisform + "?"
 		      end select
+		    elseif self isa TrajectoireTsf then
+		      str = choose+apoint
 		    else
 		      str = choose+aform
 		    end if
 		    Help g, str
-		  else
-		    wnd.mycanvas1.mousecursor = system.cursors.wait
-		    Help g, "Un peu de patience..."
+		    'else
+		    'can.mousecursor = system.cursors.wait
+		    'Help g, wait
 		  end select
 		  
 		  
@@ -303,7 +308,7 @@ Inherits MultipleSelectOperation
 		  
 		  EL1 = XMLElement(EL.Child(0))
 		  num = val(EL1.GetAttribute("NumTSF"))
-		  tsf = s.tsfi.element(num)
+		  tsf = s.tsfi.item(num)
 		  
 		  SelectIdForms(EL)
 		  CreerCopies
@@ -320,7 +325,7 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  
 		  for i = 0 to tempshape.count-1
-		    tsf.setconstructioninfos(tempshape.element(i),copies.element(i))
+		    tsf.setconstructioninfos(tempshape.item(i),copies.item(i))
 		  next
 		  
 		  Exception err
@@ -342,11 +347,11 @@ Inherits MultipleSelectOperation
 		  select case CurrentItemtoSet
 		  case 1
 		    ntsf = ListTsf.count
-		    if ntsf > 0 then 'and not ListTsf.element(itsf).M.equal(MId)  then
-		      tsf = ListTsf.element(itsf)
+		    if ntsf > 0 then 'and not ListTsf.item(itsf).M.equal(MId)  then
+		      tsf = ListTsf.item(itsf)
 		      CurrentContent.TheTransfos.HideAll
 		      tsf.Hidden = false
-		      wnd.mycanvas1.refreshbackground
+		      'can.invalidate
 		      return true
 		    else
 		      return false
@@ -375,7 +380,7 @@ Inherits MultipleSelectOperation
 		  dim s2 as shape
 		  dim Temp as XMLElement
 		  
-		  s2 = copies.element(0)
+		  s2 = copies.item(0)
 		  
 		  
 		  Temp = s2.XMLPutIdINContainer(Doc)
@@ -388,7 +393,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
-		  Dim Myself as XmlElement
+		  Dim Myself as XMLElement
 		  dim Temp as XMLElement
 		  
 		  Myself= Doc.CreateElement(GetName)
@@ -445,7 +450,7 @@ Inherits MultipleSelectOperation
 		  
 		  EL1 = XMLElement(EL.Child(0))
 		  num = val(EL1.GetAttribute("NumTSF"))
-		  tsf = s.tsfi.element(num)
+		  tsf = s.tsfi.item(num)
 		  
 		  EL1 = XMLElement(EL.Child(2))
 		  for i = 0 to EL1.childcount-1
@@ -453,7 +458,7 @@ Inherits MultipleSelectOperation
 		    n =  val(EL2.GetAttribute("Id"))
 		    s = objects.getshape(n)
 		    tsf.removeconstructioninfos(s)
-		    CurrentContent.removeshape s
+		    CurrentContent.removeobject s
 		  next
 		  
 		  RedeleteCreatedFigures(Temp)

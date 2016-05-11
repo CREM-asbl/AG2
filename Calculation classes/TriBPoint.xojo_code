@@ -25,6 +25,8 @@ Inherits nBpoint
 		  Tab.append q
 		  Tab.append r
 		  ori = orientation
+		  redim extre(-1)
+		  redim ctrl(-1)
 		  redim extre(1)
 		  redim ctrl(5)
 		End Sub
@@ -34,8 +36,10 @@ Inherits nBpoint
 		Sub Constructor(s as shape)
 		  super.constructor(s)
 		  ori = orientation
-		  redim extre(1)
-		  redim ctrl(5)
+		  redim extre(-1)
+		  redim ctrl(-1)
+		  redim extre(5)
+		  redim ctrl(17)
 		  
 		  
 		End Sub

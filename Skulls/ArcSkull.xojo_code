@@ -4,11 +4,12 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub Constructor(p as BasicPoint)
 		  dim i as integer
-		  ref = p
-		  redim cs(2)
+		  ref = can.transform(p)
+		  x = ref.x
+		  y = ref.y
 		  for i = 0 to 2
-		    cs(i) = new CurveShape
-		    cs(i).order = 2
+		    append new CurveShape
+		    item(i).order = 2
 		  next
 		End Sub
 	#tag EndMethod
@@ -17,11 +18,59 @@ Inherits NSkull
 		Sub paint(g as graphics)
 		  dim i as integer
 		  
-		  for i = 0 to 2
-		    if (cs(i).x <> 0 or cs(i).y <> 0) and (cs(i).x2 <> 0 or cs(i).y2 <> 0) then
-		      g.drawobject cs(i), ref.x, ref.y
-		    end if
+		  if skullof isa stdcircle then
+		    g.drawobject self, x, y
+		  end if
+		  
+		  update(skullof)
+		  for i = 0 to count-1
+		    g.drawobject item(i), x, y
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub update(s as shape)
+		  dim i as integer
+		  dim p, q as BasicPoint
+		  
+		  skullof.coord.CreateExtreAndCtrlPoints(skullof.ori)
+		  
+		  p =s.getgravitycenter
+		  ref = can.transform(p)
+		  x = ref.x
+		  y = ref.y
+		  
+		  q = can.dtransform(s.coord.tab(1)-p)
+		  item(0).x = q.x
+		  item(0).y = q.y
+		  q = can.dtransform(s.coord.extre(0)-p)
+		  item(0).x2 = q.x
+		  item(0).y2 = q.y
+		  item(1).x=q.x
+		  item(1).y=q.y
+		  q = can.dtransform(s.coord.extre(1)-p)
+		  item(1).x2 = q.x
+		  item(1).y2 = q.y
+		  item(2).x=q.x
+		  item(2).y=q.y
+		  if s isa arc then
+		    q = can.dtransform(s.coord.tab(2)-p)
+		  else
+		    q =can.dtransform(s.coord.tab(1)-p)
+		  end if
+		  item(2).x2 = q.x
+		  item(2).y2 = q.y
+		  
+		  for i = 0 to 5
+		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p))
+		  next
+		  
+		  
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -29,8 +78,8 @@ Inherits NSkull
 		Sub updatebordercolor(col as color, c as double)
 		  dim i as integer
 		  for i = 0 to 2
-		    cs(i).bordercolor = col
-		    cs(i).border = c
+		    item(i).bordercolor = col
+		    item(i).border = c
 		  next
 		End Sub
 	#tag EndMethod
@@ -39,7 +88,7 @@ Inherits NSkull
 		Sub updateborderwidth(d as double)
 		  dim i as integer
 		  for i = 0 to 2
-		    cs(i).borderwidth = d
+		    item(i).borderwidth = d
 		  next
 		End Sub
 	#tag EndMethod
@@ -50,37 +99,19 @@ Inherits NSkull
 		  
 		  j = i\2
 		  i = i mod 2
-		  cs(j).controlx(i) = p.x
-		  cs(j).controly(i) = p.y
+		  item(j).controlx(i) = p.x
+		  item(j).controly(i) = p.y
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updateextre(n as integer, p as BasicPoint)
-		  
-		  cs(n).x2 = p.x
-		  cs(n).y2 = p.y
-		  cs(n+1).x = p.x
-		  cs(n+1).y = p.y
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatesommet(n as integer, p as BasicPoint)
-		  select case n
-		  case 1
-		    cs(0).x = p.x
-		    cs(0).y = p.y
-		  case 2
-		    cs(2).x2 = p.x
-		    cs(2).y2 = p.y
-		  end select
 		End Sub
 	#tag EndMethod
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="angle"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
 			Group="Behavior"

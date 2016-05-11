@@ -1,10 +1,11 @@
 #tag Class
 Protected Class LabList
+Inherits Liste
 	#tag Method, Flags = &h0
-		Sub AddLab(Lab as Etiq)
+		Sub AddObject(Lab as Etiq)
 		  if Lab <> nil then
 		    if (not lab.chape isa repere and GetPosition(Lab)  = -1) or  (lab.chape isa repere and Getlab(lab.correction) = nil) then
-		      Labs.append Lab
+		      Objects.append Lab
 		    end if
 		  end if
 		  
@@ -12,36 +13,15 @@ Protected Class LabList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function count() As integer
-		  return ubound(Labs)+1
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function element(n as integer) As Etiq
-		  if n >= 0 and n <= Ubound(Labs) then
-		    return  Labs(n)
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetLab(corr as BasicPoint) As Etiq
 		  dim i as Integer
 		  dim scale as double
 		  
-		  scale = wnd.mycanvas1.scaling
+		  scale = can.scaling
 		  
-		  for i=0 to UBound(Labs)
-		    if corr.distance(Labs(i).correction) < Config.magneticdist/scale then
-		      return Labs(i)
+		  for i=0 to UBound(Objects)
+		    if corr.distance(Etiq(Objects(i)).correction) < Config.magneticdist/scale then
+		      return Objects(i)
 		    end if
 		  next
 		  
@@ -54,10 +34,10 @@ Protected Class LabList
 		  dim i as Integer
 		  
 		  
-		  for i=0 to UBound(Labs)
+		  for i=0 to UBound(Objects)
 		    
-		    if Labs(i).loc = loc  then
-		      return Labs(i)
+		    if Etiq(objects(i)).loc = loc  then
+		      return objects(i)
 		    end if
 		    
 		  next
@@ -67,9 +47,10 @@ Protected Class LabList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetPosition(Lab as Etiq) As Integer
-		  
-		  return labs.indexof (lab)
+		Function item(n as integer) As Etiq
+		  if n >= 0 and n <= Ubound(objects) then
+		    return  objects(n)
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -92,14 +73,14 @@ Protected Class LabList
 		  Lab = new Etiq(loc,temp)
 		  
 		  if sh isa repere then
-		    for i =0 to UBound(Labs)
-		      if Labs(i).correction = lab.correction  then
+		    for i =0 to UBound(Objects)
+		      if Etiq(Objects(i)).correction = lab.correction  then
 		        exists  = true
 		      end if
 		    next
 		  else
-		    for i =0 to UBound(Labs)
-		      if Labs(i).loc = loc  then
+		    for i =0 to UBound(Objects)
+		      if Etiq(Objects(i)).loc = loc  then
 		        exists  = true
 		      end if
 		    next
@@ -111,24 +92,6 @@ Protected Class LabList
 		    return lab
 		  end if
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Removeall()
-		  redim labs(-1)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub RemoveLab(Lab as Etiq)
-		  dim pos as integer
-		  
-		  pos = GetPosition(Lab)
-		  
-		  if pos <> -1 then
-		    Labs.remove Pos
-		  end if
-		End Sub
 	#tag EndMethod
 
 
@@ -152,11 +115,6 @@ Protected Class LabList
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
-
-
-	#tag Property, Flags = &h0
-		Labs(-1) As Etiq
-	#tag EndProperty
 
 
 	#tag ViewBehavior

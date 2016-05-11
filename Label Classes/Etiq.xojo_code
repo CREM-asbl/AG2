@@ -1,10 +1,11 @@
 #tag Class
 Protected Class Etiq
+Inherits Label
 	#tag Method, Flags = &h0
 		Function arrondi2(d as double) As string
 		  dim s1, s2, s3 as string
 		  dim r, k as double
-		  dim m, n, i as integer
+		  dim m,  i as integer
 		  dim b as boolean
 		  dim p as integer
 		  
@@ -45,16 +46,16 @@ Protected Class Etiq
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Lab as Etiq)
-		  
-		  setcolor(lab.col)
-		  correction = new BasicPoint(lab.correction)
-		  setfont(lab.font)
-		  setitalic(lab.italique)
+		  super.constructor
+		  setcolor(lab.Textcolor)
+		  correction = new BasicPoint(lab.correction.x, lab.correction.y)
+		  setfont(lab.Textfont)
+		  setitalic(lab.italic)
 		  loc = lab.loc
-		  position = new BasicPoint(lab.position)
+		  position = new BasicPoint(lab.position.x, lab.position.y)
 		  psh = lab.psh
 		  psw = lab.psw
-		  setsize(lab.size)
+		  setsize(lab.Textsize)
 		  text = lab.text
 		  
 		End Sub
@@ -63,13 +64,13 @@ Protected Class Etiq
 	#tag Method, Flags = &h0
 		Sub Constructor(n As integer)
 		  
-		  
+		  super.constructor
 		  if chr(Etiquette) <> "*" and chr(Etiquette) <> "%"  then
 		    Etiquette = Etiquette+1
 		  end if
 		  Text = chr(Etiquette)
 		  loc = n
-		  size = sizelabel
+		  TextSize = sizelabel
 		  
 		End Sub
 	#tag EndMethod
@@ -77,32 +78,31 @@ Protected Class Etiq
 	#tag Method, Flags = &h0
 		Sub Constructor(side as integer, EL as XMLElement)
 		  dim coul as couleur
-		  dim s as string
-		  dim can as Mycanvas
 		  
-		  can = wnd.Mycanvas1
+		  super.constructor
+		  
 		  dim corr as BasicPoint
 		  
 		  Text = El.GetAttribute("Text")
 		  if Text = "*" then
 		    wnd.drapdim = true
 		  end if
-		  Font = EL.GetAttribute("Font")
-		  Size = val(El.GetAttribute("Size"))
-		  Oldsize = size
+		  TextFont = EL.GetAttribute("Font")
+		  TextSize = val(El.GetAttribute("Size"))
+		  Oldsize = Textsize
 		  coul = new Couleur(EL)
-		  col = coul.col
+		  Textcolor = coul.col
 		  if El.GetAttribute("Italic")= "True" then
-		    Italique = true
+		    Italic = true
 		  else
-		    Italique = false
+		    Italic = false
 		  end if
 		  loc = side
 		  Corr= new BasicPoint( val(El.GetAttribute("CorrectionX")),  val(El.GetAttribute("CorrectionY")))
 		  if val(EL.GetAttribute("Fixe")) = 1 then
-		    fixe = true
+		    SetFixe(true)
 		  else
-		    Fixe = false
+		    SetFixe(false)
 		  end if
 		  if wnd.version >= 222 then
 		    correction = corr
@@ -121,13 +121,14 @@ Protected Class Etiq
 		  
 		  L.Text = Text
 		  L.Position = Position
-		  L.size = size
-		  L.col = col
-		  L.Italique = Italique
+		  L.Textsize = Textsize
+		  L.Textcolor = TextColor
+		  L.Italic = Italic
 		  L.Correction = Correction
-		  L.font = font
+		  L.Textfont = Textfont
 		  L.chape = chape
-		  L.fixe = fixe
+		  L.Lockright = Lockright
+		  L.LockBottom = LockBottom
 		  return L
 		End Function
 	#tag EndMethod
@@ -164,12 +165,10 @@ Protected Class Etiq
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim  q as BasicPoint
-		  dim a, iobj  as integer
+		  dim a  as integer
 		  dim  dat as string
-		  dim idat as integer
 		  dim vis as objectslist
 		  dim sh as shape
-		  dim ch as string
 		  dim type as integer  // 0 longueur  //1 aire // 2 abscisse
 		  dim dr as droite
 		  
@@ -182,7 +181,7 @@ Protected Class Etiq
 		  end if
 		  
 		  q = position + correction
-		  q = wnd.mycanvas1.transform(q)
+		  q = can.transform(q)
 		  SetParam(g)
 		  
 		  if chape.highlighted then
@@ -214,7 +213,7 @@ Protected Class Etiq
 		    else
 		      vis = currentcontent.theobjects.findbipoint(point(chape).bpt)
 		      if vis.count > 0  then
-		        sh = vis.element(0)
+		        sh = vis.item(0)
 		        if sh isa bipoint then
 		          dat = arrondi2(point(chape).bpt.location(bipoint(sh)))
 		        elseif sh isa polygon then
@@ -319,9 +318,9 @@ Protected Class Etiq
 		  next
 		  
 		  
-		  psw = psw*size
-		  psp = psp*size
-		  psh = psh*size
+		  psw = psw*Textsize
+		  psp = psp*Textsize
+		  psh = psh*Textsize
 		End Sub
 	#tag EndMethod
 
@@ -337,25 +336,26 @@ Protected Class Etiq
 
 	#tag Method, Flags = &h0
 		Sub SetColor(c as Color)
-		  col  = c
+		  Textcolor  = c
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetFixe(t as Boolean)
-		  Fixe = t
+		  LockRight = t
+		  LockBottom = t
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetFont(f as string)
-		  font = f
+		  TextFont = f
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetItalic(it As boolean)
-		  Italique = it
+		  Italic = it
 		  
 		End Sub
 	#tag EndMethod
@@ -365,11 +365,11 @@ Protected Class Etiq
 		  
 		  OldCol = g.ForeColor
 		  OldSize = g.TextSize
-		  g.TextFont = Font
-		  g.ForeColor = col
-		  g.TextSize=size
+		  g.TextFont = TextFont
+		  g.ForeColor = TextColor
+		  g.TextSize=Textsize
 		  g.bold = true
-		  g.Italic = Italique
+		  g.Italic = Italic
 		  
 		  
 		End Sub
@@ -378,7 +378,7 @@ Protected Class Etiq
 	#tag Method, Flags = &h0
 		Sub SetPosition()
 		  dim fp, sp as BasicPoint
-		  dim Trib as TriBPoint
+		  
 		  
 		  
 		  if chape isa cube then
@@ -409,7 +409,7 @@ Protected Class Etiq
 		    sp = chape.points(loc).bpt
 		  end if
 		  
-		  if chape isa repere or fixe then
+		  if chape isa repere or (LockRight and LockBottom) then
 		    Position = new BasicPoint(0,0)
 		  elseif (chape isa polygon or chape isa bande or chape isa secteur) and loc <> -1 then
 		    Position = (fp+sp) /2
@@ -426,7 +426,7 @@ Protected Class Etiq
 
 	#tag Method, Flags = &h0
 		Sub SetSize(s as integer)
-		  size = s
+		  Textsize = s
 		End Sub
 	#tag EndMethod
 
@@ -436,7 +436,7 @@ Protected Class Etiq
 		  dim conv as string
 		  dim TE as TextEncoding
 		  dim eti as string
-		  dim a, aa As  double
+		  dim a As  double
 		  
 		  q =  position + correction
 		  
@@ -475,23 +475,19 @@ Protected Class Etiq
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  dim El as XmlElement
-		  dim can as Mycanvas
-		  dim corr as BasicPoint
-		  
-		  can = wnd.mycanvas1
+		  dim El as XMLElement
 		  
 		  El = Doc.CreateElement("Label")
 		  El.SetAttribute ("Text",Text)
-		  El.SetAttribute ("Font",Font)
-		  El.SetAttribute ("Size",str(size))
-		  if fixe then
+		  El.SetAttribute ("Font",TextFont)
+		  El.SetAttribute ("Size",str(Textsize))
+		  if LockRight and LockBottom then
 		    El.SetAttribute("Fixe",str(1))
 		  end if
-		  El.SetAttribute(Dico.value("Rouge"), str(Col.red))
-		  El.SetAttribute(Dico.Value("Vert"), str(col.green))
-		  El.SetAttribute(Dico.Value("Bleu"), str(col.blue))
-		  El.SetAttribute ("Italic",str(Italique))
+		  El.SetAttribute(Dico.value("Rouge"), str(TextColor.red))
+		  El.SetAttribute(Dico.Value("Vert"), str(Textcolor.green))
+		  El.SetAttribute(Dico.Value("Bleu"), str(Textcolor.blue))
+		  El.SetAttribute ("Italic",str(Italic))
 		  El.SetAttribute ("CorrectionX",str(Correction.X))
 		  El.SetAttribute ("CorrectionY",str(Correction.Y))
 		  if not chape isa repere then
@@ -529,23 +525,11 @@ Protected Class Etiq
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		col As Color
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		correction As BasicPoint
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		fixe As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Font As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Italique As Boolean = true
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -580,32 +564,59 @@ Protected Class Etiq
 		psw As double
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		size As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Text As string = "A"
-	#tag EndProperty
-
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="col"
-			Group="Behavior"
-			InitialValue="&h000000"
-			Type="Color"
+			Name="AutoDeactivate"
+			Visible=true
+			Group="Appearance"
+			InitialValue="True"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Bold"
+			Visible=true
+			Group="Font"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="DataField"
+			Visible=true
+			Group="Database Binding"
+			Type="String"
+			EditorType="DataField"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="DataSource"
+			Visible=true
+			Group="Database Binding"
+			Type="String"
+			EditorType="DataSource"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Enabled"
+			Visible=true
+			Group="Appearance"
+			InitialValue="True"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="fixe"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Font"
-			Group="Behavior"
-			Type="string"
+			Name="Height"
+			Visible=true
+			Group="Position"
+			InitialValue="20"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="HelpTag"
+			Visible=true
+			Group="Appearance"
+			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -614,11 +625,16 @@ Protected Class Etiq
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Italique"
-			Group="Behavior"
-			InitialValue="0"
+			Name="InitialParent"
+			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Italic"
+			Visible=true
+			Group="Font"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -635,10 +651,41 @@ Protected Class Etiq
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="LockBottom"
+			Visible=true
+			Group="Position"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="LockLeft"
+			Visible=true
+			Group="Position"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="LockRight"
+			Visible=true
+			Group="Position"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="LockTop"
+			Visible=true
+			Group="Position"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Multiline"
+			Visible=true
+			Group="Appearance"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
 			Type="String"
+			EditorType="String"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Oldcol"
@@ -677,29 +724,120 @@ Protected Class Etiq
 			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="size"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
+			Name="Selectable"
+			Visible=true
+			Group="Appearance"
+			InitialValue="False"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
 			Type="String"
+			EditorType="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TabIndex"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TabPanelIndex"
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Text"
 			Group="Behavior"
 			InitialValue="A"
-			Type="string"
+			Type="String"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TextAlign"
+			Visible=true
+			Group="Appearance"
+			InitialValue="0"
+			Type="Integer"
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - Left"
+				"1 - Center"
+				"2 - Right"
+			#tag EndEnumValues
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TextColor"
+			Visible=true
+			Group="Appearance"
+			InitialValue="&h000000"
+			Type="Color"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TextFont"
+			Visible=true
+			Group="Font"
+			InitialValue="System"
+			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TextSize"
+			Visible=true
+			Group="Font"
+			InitialValue="0"
+			Type="Single"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TextUnit"
+			Visible=true
+			Group="Font"
+			InitialValue="0"
+			Type="FontUnits"
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - Default"
+				"1 - Pixel"
+				"2 - Point"
+				"3 - Inch"
+				"4 - Millimeter"
+			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Transparent"
+			Visible=true
+			Group="Appearance"
+			InitialValue="False"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Underline"
+			Visible=true
+			Group="Font"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Visible"
+			Visible=true
+			Group="Appearance"
+			InitialValue="True"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Width"
+			Visible=true
+			Group="Position"
+			InitialValue="100"
 			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior

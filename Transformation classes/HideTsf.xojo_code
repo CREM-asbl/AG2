@@ -74,7 +74,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc As XMLDocument) As XMLElement
-		  dim Temp As  XmlElement
+		  dim Temp As  XMLElement
 		  
 		  Temp = currenttsf.XMLPutInContainer(Doc)
 		  return Temp
@@ -89,11 +89,6 @@ Inherits SelectOperation
 		  dooperation
 		End Sub
 	#tag EndMethod
-
-
-	#tag Property, Flags = &h0
-		CurrentTsf As Transformation
-	#tag EndProperty
 
 
 	#tag ViewBehavior

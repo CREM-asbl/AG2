@@ -26,12 +26,51 @@ Begin Window NewLanguageWindow
    Title           =   "Créer un dictionnaire"
    Visible         =   True
    Width           =   232
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Langue :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   14
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   137
+   End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -62,9 +101,11 @@ Begin Window NewLanguageWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
+      BehaviorIndex   =   2
       Bold            =   False
       Border          =   True
+      ControlOrder    =   "2"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -83,9 +124,13 @@ Begin Window NewLanguageWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
+      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "True"
+      Styled          =   "False"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -102,10 +147,12 @@ Begin Window NewLanguageWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -131,41 +178,6 @@ Begin Window NewLanguageWindow
       Visible         =   True
       Width           =   69
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   89
-   End
 End
 #tag EndWindow
 
@@ -173,7 +185,7 @@ End
 	#tag Event
 		Sub Open()
 		  Title= Dico.value("CreateDict")
-		  Label1.text  = Dico.value("NewLanguage") + ":"
+		  StaticText1.text  = Dico.value("NewLanguage") + ":"
 		  EditField1.setfocus
 		End Sub
 	#tag EndEvent

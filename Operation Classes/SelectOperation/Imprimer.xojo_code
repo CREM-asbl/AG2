@@ -8,7 +8,7 @@ Inherits SelectOperation
 		  
 		  
 		  if tempshape.count  = 0 then
-		    objects.selectobject objects.element(0)
+		    objects.selectobject objects.item(0)
 		    objects.selectall
 		  end if
 		  
@@ -38,10 +38,10 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  sw = app.prtsetup.width/wnd.Mycanvas1.width
-		  sh = app.prtsetup.height/wnd.Mycanvas1.height
+		  sw = app.prtsetup.width/can.width
+		  sh = app.prtsetup.height/can.height
 		  sc = min(sw,sh)
-		  Pict = new Picture(wnd.Mycanvas1.width,wnd.Mycanvas1.height,Screen(0).Depth)
+		  Pict = new Picture(can.width,can.height,Screen(0).Depth)
 		  
 		  gprint = OpenPrinterDialog(app.prtsetup)
 		  
@@ -50,10 +50,10 @@ Inherits SelectOperation
 		      switch = true
 		      wnd.switchcolors
 		    end if
-		    wnd.Mycanvas1.mousecursor = system.Cursors.Wait
+		    can.mousecursor = system.Cursors.Wait
 		    for copies=1 to gprint.Copies
 		      for i=0 to tempshape.count-1
-		        o = tempshape.Element(i)
+		        o = tempshape.item(i)
 		        if (not o.invalid  and not o.hidden and not o.deleted) or o isa repere then
 		          o.print(Pict.Graphics)
 		        end if
@@ -64,18 +64,18 @@ Inherits SelectOperation
 		      end if
 		      
 		      if CurrentContent.TheObjects.tracept then
-		        Pict.Graphics.DrawPicture wnd.Mycanvas1.OffscreenPicture, 0, 0
+		        Pict.Graphics.DrawPicture can.OffscreenPicture, 0, 0
 		      end if
 		      
 		      d = new date
-		      gprint.DrawPicture Pict,0,0,wnd.Mycanvas1.width*sc, wnd.Mycanvas1.height*sc,0,0,wnd.Mycanvas1.width,wnd.Mycanvas1.height
+		      gprint.DrawPicture Pict,0,0,can.width*sc, can.height*sc,0,0,can.width,can.height
 		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year) , 0,  -2
-		      gprint.drawrect 0,0,wnd.Mycanvas1.width*sc, (wnd.Mycanvas1.height-1)*sc
+		      gprint.drawrect 0,0,can.width*sc, (can.height-1)*sc
 		      if copies<gprint.Copies then
 		        gprint.NextPage
 		      end if
 		    next
-		    wnd.Mycanvas1.mousecursor = System.Cursors.StandardPointer
+		    can.mousecursor = System.Cursors.StandardPointer
 		  end if
 		  if switch then
 		    wnd.switchcolors

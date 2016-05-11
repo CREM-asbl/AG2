@@ -1,27 +1,35 @@
 #tag Class
 Protected Class FigsList
+Inherits Liste
 	#tag Method, Flags = &h0
-		Sub AddFigure(f as Figure)
+		Sub AddObject(Obj as Figure)
 		  dim i As integer
 		  
-		  if f = nil then
+		  
+		  if Obj = nil then
 		    return
 		  end if
 		  
-		  if GetPosition(f)  <> -1 then
+		  if GetPosition(Obj)  <> -1 then
 		    return
 		  else
-		    Figures.append f
+		    Objects.append Obj
+		  end if
+		  if not Obj isa Figure then
+		    return
 		  end if
 		  
-		  if (self = CurrentContent.TheFigs) and  f.idfig = -1 then
-		    f.idfig = newIdFig
-		    for i = 0 to f.subs.count-1
-		      if f.subs.element(i).supfig <> f then
+		  super.AddObject(obj)
+		  
+		  
+		  if (self = CurrentContent.TheFigs) and  Obj.idfig = -1 then
+		    Obj.idfig = newIdFig
+		    for i = 0 to Obj.subs.count-1
+		      if Obj.subs.item(i).supfig <> Obj then
 		        MsgBox  Dico.Value("InconsistFigs")
 		      end if
 		    next
-		    f.XMLPutInContainer(1,CurrentContent.Oplist)
+		    Obj.XMLPutInContainer(1,CurrentContent.Oplist)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -32,22 +40,22 @@ Protected Class FigsList
 		  dim tsf as transformation
 		  dim f as figure
 		  
-		  for k = 0 to count -1
-		    for i =  element(k).Constructedfigs.count-1 downto 0
-		      f =  element(k).Constructedfigs.element(i)
+		  for k = 0 to count-1
+		    for i =  item(k).Constructedfigs.count-1 downto 0
+		      f =  item(k).Constructedfigs.item(i)
 		      if getposition(f) = -1 then
 		        for j = 0 to ubound(f.constructioninfos)
-		          if f.constructioninfos(j).sourcefig = element(k) then
+		          if f.constructioninfos(j).sourcefig = item(k) then
 		            f.constructioninfos(j).sourcefig = ff
 		          end if
 		        next
 		      else
 		        for j = ubound(f.constructioninfos) downto 0
-		          if f.constructioninfos(j).sourcefig = element(k) then
+		          if f.constructioninfos(j).sourcefig = item(k) then
 		            ff.setconstructedby ff, f.constructioninfos(j).tsf
 		            tsf = f.Constructioninfos(j).tsf
 		            tsf.constructedfigs.removefigure f
-		            tsf.constructedfigs.addfigure ff
+		            tsf.constructedfigs.addobject ff
 		            f.constructioninfos.remove j
 		          end if
 		        next
@@ -62,11 +70,10 @@ Protected Class FigsList
 		  dim f, sf as figure
 		  dim i, j as integer
 		  dim tsf as Transformation
-		  dim sh as shape
 		  dim pt as point
 		  
 		  for j =  count-1 downto 0
-		    sf = element(j)
+		    sf = item(j)
 		    for i =  ubound(sf.constructioninfos) downto 0
 		      f = sf.constructioninfos(i).sourcefig
 		      tsf = sf.constructioninfos(i).tsf
@@ -77,7 +84,7 @@ Protected Class FigsList
 		        ff.setconstructedby ff, tsf
 		      end if
 		      tsf.constructedfigs.removefigure sf
-		      tsf.constructedfigs.addfigure ff
+		      tsf.constructedfigs.addobject ff
 		      sf.constructioninfos.remove i
 		    next
 		  next
@@ -91,7 +98,7 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i = 0 to liste.count-1
-		    addfigure liste.element(i)
+		    addobject liste.item(i)
 		  next
 		End Sub
 	#tag EndMethod
@@ -120,7 +127,7 @@ Protected Class FigsList
 		Sub Bouger(M as matrix)
 		  dim i as integer
 		  dim A,  M0, M1, M2, MId  as Matrix
-		  dim but, source, supp as figure
+		  dim but, source as figure
 		  dim dr as shape
 		  
 		  
@@ -155,7 +162,7 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    element(i).cancelfixedpoints
+		    item(i).cancelfixedpoints
 		  next
 		End Sub
 	#tag EndMethod
@@ -165,7 +172,7 @@ Protected Class FigsList
 		  dim j as integer
 		  
 		  for j = 0 to count-1
-		    element(j).canceloldbpts
+		    item(j).canceloldbpts
 		  next
 		End Sub
 	#tag EndMethod
@@ -175,7 +182,7 @@ Protected Class FigsList
 		  dim i As integer
 		  
 		  for i = 0 to count -1
-		    element(i).canceltrace
+		    item(i).canceltrace
 		  next
 		End Sub
 	#tag EndMethod
@@ -188,70 +195,70 @@ Protected Class FigsList
 		  dim pt as point
 		  
 		  if count = 1 then
-		    return element(0)
+		    return item(0)
 		  end if
 		  
 		  //conserver toutes les figures jusqu'à la fin pour mettre à jour les infos de construction
 		  temp = new figslist
 		  
 		  for i = count-1 downto 0
-		    temp.addfigure Element(i)
+		    temp.addobject item(i)
 		  next
 		  
 		  ff = new Figure
 		  
 		  for i = 0 to count-1
-		    ff.shapes.concat element(i).shapes
+		    ff.shapes.concat item(i).shapes
 		  next
 		  
 		  for i = 0 to count-1
-		    ff.somm.concat element(i).somm
+		    ff.somm.concat item(i).somm
 		  next
 		  
 		  for i = 0 to count-1
-		    ff.PtsSur.concat element(i).PtsSur
+		    ff.PtsSur.concat item(i).PtsSur
 		  next
 		  
 		  for i = 0 to count-1
-		    ff.PtsConsted.concat element(i).PtsConsted
+		    ff.PtsConsted.concat item(i).PtsConsted
 		  next
 		  
 		  for i = 0 to count-1
-		    if element(i).isapoint = nil then                                    'Probleme: pourquoi avoir un jour supprimé ce test?  (révision 75) Prévu pour le cas ou des sommets de formes sont
-		      for j = 0 to element(i).subs.count-1                          'construits avant les formes.
-		        ff.subs.addfigure element(i).subs.element(j)
+		    if item(i).isapoint = nil then                                    'Probleme: pourquoi avoir un jour supprimé ce test?  (révision 75) Prévu pour le cas ou des sommets de formes sont
+		      for j = 0 to item(i).subs.count-1                          'construits avant les formes.
+		        ff.subs.addobject item(i).subs.item(j)
 		      next
 		    end if
 		  next
 		  
 		  for i = 0 to ff.subs.count-1
-		    ff.subs.element(i).supfig = ff
+		    ff.subs.item(i).supfig = ff
 		  next
 		  
 		  for i = 0 to ff.shapes.count-1
-		    ff.shapes.element(i).fig = ff
+		    ff.shapes.item(i).fig = ff
 		  next
 		  
 		  for i = 0 to ff.somm.count-1
-		    ff.somm.element(i).fig = ff
+		    ff.somm.item(i).fig = ff
 		  next
 		  
 		  for i = 0 to ff.PtsSur.count-1
-		    ff.PtsSur.element(i).fig = ff
+		    ff.PtsSur.item(i).fig = ff
 		  next
 		  
 		  for i = 0 to ff.PtsConsted.count-1
-		    ff.PtsConsted.element(i).fig = ff
+		    ff.PtsConsted.item(i).fig = ff
 		  next
 		  
 		  for i = 0 to ff.somm.count-1
-		    pt = point(ff.somm.element(i))
+		    pt = point(ff.somm.item(i))
 		    if pt <> nil and pt.macconstructedby = nil then
-		      ff.shapes.removeshape pt   // indispensable pour éviter certains bugs -- (cas où le point n'était pas construit)
+		      ff.shapes.removeobject pt   // indispensable pour éviter certains bugs -- (cas où le point n'était pas construit)
 		      if pt.pointsur.count > 0 then
 		        ff.ptssur.addshape pt
 		        for j = 0 to pt.pointsur.count-1
-		          sf = pt.pointsur.element(j).getsousfigure(ff)
+		          sf = pt.pointsur.item(j).getsousfigure(ff)
 		          if sf <> nil then
 		            sf.ptssur.addshape pt
 		          end if
@@ -292,7 +299,7 @@ Protected Class FigsList
 
 	#tag Method, Flags = &h0
 		Function count() As integer
-		  return Ubound(Figures)+1
+		  return Ubound(objects)+1
 		End Function
 	#tag EndMethod
 
@@ -301,7 +308,7 @@ Protected Class FigsList
 		  dim j as integer
 		  dim EL as XMLElement
 		  
-		  EL = CurrentContent.Oplist.createelement(st)
+		  EL = CurrentContent.Oplist.CreateElement(st)
 		  
 		  if p <> nil and p.pointsur.count > 0 and p.multassomm < 2 then
 		    EL.appendchild InsertPointSurInState(p, CurrentContent.OpList)
@@ -317,7 +324,7 @@ Protected Class FigsList
 		  
 		  if st <> "FinalState" then
 		    for j = 0 to count-1
-		      element(j).createstate(EL)
+		      item(j).createstate(EL)
 		    next
 		  end if
 		  
@@ -353,7 +360,7 @@ Protected Class FigsList
 		  else
 		    p = q.guide
 		  end if
-		  index.append Figures.indexof(p.fig)
+		  index.append Objects.indexof(p.fig)
 		  
 		  for i = 0 to count-1
 		    if index.indexof(i) = -1 then
@@ -386,15 +393,15 @@ Protected Class FigsList
 		  tsflist = CurrentContent.TheTransfos
 		  CurrentContent.TheFigs.enablechooseall
 		  for i = 0 to tsflist.count-1
-		    tsf = TsfList.element(i)
+		    tsf = TsfList.item(i)
 		    for j = 0 to tsf.constructedfigs.count-1
-		      tsf.constructedfigs.element(j).chosen = false
+		      tsf.constructedfigs.item(j).chosen = false
 		    next
 		  next
 		  
 		  for i = 0 to count-1
-		    figs0.addfigure element(i)
-		    figs0.element(i).chosen = true
+		    figs0.addobject item(i)
+		    figs0.item(i).chosen = true
 		  next
 		  
 		  if tsflist.count = 0 then
@@ -408,18 +415,18 @@ Protected Class FigsList
 		    n1 = figs0.count-1
 		    n2 = ubound(listetsf)+1
 		    for i = 0 to tsflist.count-1
-		      tsf = TsfList.element(i)
+		      tsf = TsfList.item(i)
 		      for j = 0 to tsf.constructedfigs.count-1
-		        if not tsf.constructedfigs.element(j).chosen then
-		          ff = tsf.constructedfigs.element(j).constructioninfos(0).sourcefig
+		        if not tsf.constructedfigs.item(j).chosen then
+		          ff = tsf.constructedfigs.item(j).constructioninfos(0).sourcefig
 		          m0 = figs0.getposition(ff)
 		          m1 = figs0.getposition(tsf.supp.fig)
 		          if (m0 > n0 and m0 <= n1) or (m1 > n0 and m1 <= n1) then
 		            listesources.append ff
 		            listetsf.append tsf
-		            listebuts.append tsf.constructedfigs.element(j)
-		            figs0.addfigure tsf.constructedfigs.element(j)
-		            tsf.constructedfigs.element(j).chosen = true
+		            listebuts.append tsf.constructedfigs.item(j)
+		            figs0.addobject tsf.constructedfigs.item(j)
+		            tsf.constructedfigs.item(j).chosen = true
 		          end if
 		        end if
 		      next
@@ -443,10 +450,10 @@ Protected Class FigsList
 		  
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
-		      if element(i).precede(element(j)) then
+		      if item(i).precede(item(j)) then
 		        mat.col(i,j) = 1
 		      end if
-		      if element(j).precede(element(i)) then
+		      if item(j).precede(item(i)) then
 		        mat.col(j,i) = 1
 		      end if
 		    next
@@ -470,18 +477,10 @@ Protected Class FigsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function element(idx As Integer) As Figure
-		  if idx>=0 and idx<=Ubound(Figures) then
-		    return Figures(idx)
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Enablechooseall()
 		  dim i as integer
 		  for i = 0 to count-1
-		    element(i).chosen = false
+		    item(i).chosen = false
 		  next
 		  
 		End Sub
@@ -492,13 +491,13 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i = 0 to count -1
-		    element(i).enablemodifyall
+		    item(i).enablemodifyall
 		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub fusionner(n as integer)
+		Sub fusionner()
 		  dim i, j, nc as integer
 		  dim ff as new figslist
 		  dim f as figure
@@ -508,7 +507,7 @@ Protected Class FigsList
 		  
 		  for i = 0 to nc-1
 		    if M1.col (i,i) > 0 then
-		      ff.addfigure element(i)
+		      ff.addobject item(i)
 		      index.append i
 		    end if
 		  next
@@ -519,12 +518,12 @@ Protected Class FigsList
 		    f.ListerPrecedences
 		    
 		    for j = ubound(index) downto 0
-		      CurrentContent.TheFigs.removefigure element(index(j))
-		      removefigure element(index(j))
+		      CurrentContent.TheFigs.removefigure item(index(j))
+		      removefigure item(index(j))
 		    next
 		    
-		    addfigure f
-		    CurrentContent.TheFigs.addfigure f
+		    addobject f
+		    CurrentContent.TheFigs.addobject f
 		  end if
 		  
 		  
@@ -536,7 +535,7 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i=0 to count-1
-		    element(i).fx1cancel
+		    item(i).fx1cancel
 		  next
 		End Sub
 	#tag EndMethod
@@ -546,8 +545,8 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    if element(i).idfig = n then
-		      return element(i)
+		    if item(i).idfig = n then
+		      return item(i)
 		    end if
 		  next
 		  
@@ -558,7 +557,7 @@ Protected Class FigsList
 	#tag Method, Flags = &h0
 		Function GetPosition(f as Figure) As Integer
 		  
-		  return figures.indexof(f)
+		  return Objects.indexof(f)
 		End Function
 	#tag EndMethod
 
@@ -568,8 +567,8 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  s = "FigsList{"
-		  for i=0 to UBound(Figures)
-		    s = s+Figures(i).getString+","
+		  for i=0 to UBound(Objects)
+		    s = s+Figure(Objects(i)).getString+","
 		  next
 		  s = s+"}"
 		  
@@ -612,7 +611,6 @@ Protected Class FigsList
 		Function InsertConstedPoints(p as point, Doc as XMLDocument) As XMLElement
 		  dim i as integer
 		  dim  Form, EL as XMLElement
-		  dim s as shape
 		  dim tsf as Transformation
 		  
 		  Form = Doc.CreateElement("PtsConsted")
@@ -646,7 +644,7 @@ Protected Class FigsList
 		  
 		  for i = 0 to p.pointsur.count - 1
 		    EL = Doc.CreateElement("Forme")
-		    EL.SetAttribute("Id",str(p.pointsur.element(i).id))
+		    EL.SetAttribute("Id",str(p.pointsur.item(i).id))
 		    EL.SetAttribute("Location", str(p.location(i)))
 		    EL.SetAttribute("Numside", str(p.numside(i)))
 		    Form.appendchild EL
@@ -676,12 +674,18 @@ Protected Class FigsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function item(n as integer) As Figure
+		  return Figure(element(n))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Move(M as matrix)
 		  dim i as integer
 		  
 		  
 		  for i = 0 to count-1
-		    element(i).Move(M)
+		    item(i).Move(M)
 		  next
 		  
 		  
@@ -695,7 +699,7 @@ Protected Class FigsList
 		  
 		  
 		  for i = 0 to count-1
-		    element(i).MovePoints(M)
+		    item(i).MovePoints(M)
 		  next
 		End Sub
 	#tag EndMethod
@@ -710,17 +714,17 @@ Protected Class FigsList
 
 	#tag Method, Flags = &h0
 		Sub optimize(ff as figure)
-		  dim i, j as integer
+		  dim i as integer
 		  dim pt as point
 		  dim temp as figslist
 		  
 		  temp = new figslist
 		  
 		  for i = 0 to count-1
-		    pt = element(i).Isapoint
+		    pt = item(i).Isapoint
 		    if pt <> nil then
 		      if ff.somm.getposition(pt) <> -1 then
-		        temp.addfigure element(i)
+		        temp.addobject item(i)
 		      end if
 		    end if
 		  next
@@ -748,21 +752,13 @@ Protected Class FigsList
 		  CreerMatricePrecedences(count)
 		  
 		  if not Mat.Null and  Bouclesasupprimer (n0) then
-		    fusionner ( n0)
+		    fusionner 
 		    return ordonner
 		  else
 		    CreerIndex
 		    return true
 		  end if
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Removeall()
-		  redim Figures(-1)
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -788,7 +784,7 @@ Protected Class FigsList
 		    end if
 		  end if
 		  
-		  figures.remove figures.indexof(f)
+		  RemoveObject f
 		  
 		  
 		  
@@ -800,7 +796,7 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i =  Figs.count-1 downto 0
-		    RemoveFigure figs.element(i)
+		    RemoveFigure figs.item(i)
 		  next
 		End Sub
 	#tag EndMethod
@@ -810,7 +806,7 @@ Protected Class FigsList
 		  dim j as integer
 		  
 		  for j = 0 to count-1
-		    element(j).restore
+		    item(j).restore
 		  next
 		End Sub
 	#tag EndMethod
@@ -820,7 +816,7 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    element(i).restructurer
+		    item(i).restructurer
 		  next
 		End Sub
 	#tag EndMethod
@@ -830,7 +826,7 @@ Protected Class FigsList
 		  dim j as integer
 		  
 		  for j = 0 to count-1
-		    element(j).save
+		    item(j).save
 		  next
 		End Sub
 	#tag EndMethod
@@ -852,7 +848,7 @@ Protected Class FigsList
 		  p.updatefirstpoint(np)
 		  t = true
 		  for i = 0 to count-1
-		    t =element(index(i)).update1(p) and t
+		    t =item(index(i)).update1(p) and t
 		  next
 		  
 		  return t
@@ -865,7 +861,7 @@ Protected Class FigsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    element(i).updatematrixduplicatedshapes(M)
+		    item(i).updatematrixduplicatedshapes(M)
 		  next
 		End Sub
 	#tag EndMethod
@@ -874,7 +870,7 @@ Protected Class FigsList
 		Sub updateoldM()
 		  dim i as integer
 		  for i = 0 to count-1
-		    element(i).updateoldM
+		    item(i).updateoldM
 		  next
 		End Sub
 	#tag EndMethod
@@ -904,10 +900,6 @@ Protected Class FigsList
 
 	#tag Property, Flags = &h0
 		figs0 As figslist
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Figures(-1) As Figure
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

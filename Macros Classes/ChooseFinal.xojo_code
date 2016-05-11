@@ -103,12 +103,12 @@ Inherits MultipleSelectOperation
 		  IdentifyInit(currentshape)
 		  
 		  for i = 1 to currentcontent.TheObjects.count -1
-		    s =  currentcontent.TheObjects.element(i)
+		    s =  currentcontent.TheObjects.item(i)
 		    if DejaClasse(s) <> -1 then
 		      fixecouleurs(s)
 		    end if
 		  next
-		  wnd.mycanvas1.refreshbackground
+		  'can.invalidate
 		  showattraction
 		  
 		  
@@ -128,7 +128,7 @@ Inherits MultipleSelectOperation
 		  mac.Trier
 		  
 		  for i =  currentcontent.TheObjects.count -1 downto 1
-		    s =  currentcontent.TheObjects.element(i)
+		    s =  currentcontent.TheObjects.item(i)
 		    if DejaClasse(s) <> -1 then
 		      fixecouleurs(s)
 		    else
@@ -192,7 +192,7 @@ Inherits MultipleSelectOperation
 		    s.borderwidth = 2
 		    if s isa point then
 		      s.fixecouleurfond(red,100)
-		      s.sk.cc.scale=2
+		      s.nsk.scale=2
 		    end if
 		  case 1
 		    s.fixecouleurtrait(black,100)
@@ -222,16 +222,16 @@ Inherits MultipleSelectOperation
 		  
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if DejaClasse(s) = 2 then
-		        visible.removeshape s
+		        visible.removeobject s
 		        nobj = visible.count
 		      end if
 		    next
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(iobj)
+		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -432,7 +432,7 @@ Inherits MultipleSelectOperation
 		      tsf = transformation(p.constructedby.Data(0))
 		      AddTsfInterm(tsf)
 		    case 10
-		      IdentifyInit(p.pointsur.element(0))
+		      IdentifyInit(p.pointsur.item(0))
 		      IdentifyInit(p.constructedby.shape)
 		    end select
 		    

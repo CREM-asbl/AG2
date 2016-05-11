@@ -9,7 +9,7 @@ Inherits SelectOperation
 		    if s isa circle then
 		      col = new couleur(circle(s).nsk.bordercolor)
 		    else
-		      col = new couleur(s.sk.cc.bordercolor)
+		      col = new couleur(s.nsk.bordercolor)
 		    end if
 		  else
 		    col = s.bordercolor
@@ -28,7 +28,7 @@ Inherits SelectOperation
 		  dim cs as curveshape
 		  dim col as Couleur
 		  drapseg = false
-		  cs = figskull(s.sk).getcote(i)
+		  cs = LSkull(s.nsk).item(i)
 		  if ti then
 		    col = new couleur(cs.bordercolor)
 		  else
@@ -65,10 +65,10 @@ Inherits SelectOperation
 		  if ti then
 		    if s isa circle then
 		      if  circle(s).nsk.borderwidth <> borderwidth then
-		        borderwidth = s.sk.borderwidth
+		        borderwidth = s.nsk.borderwidth
 		      end if
-		    elseif s.sk.cc.borderwidth <> borderwidth then
-		      borderwidth = s.sk.cc.borderwidth
+		    elseif s.nsk.borderwidth <> borderwidth then
+		      borderwidth = s.nsk.borderwidth
 		    end if
 		    tos.writeline(str(borderwidth) + " fixeepaisseurtrait")
 		  elseif s.borderwidth <> borderwidth then
@@ -83,17 +83,17 @@ Inherits SelectOperation
 		Sub adapterparametiq(lab as etiq, tos as textoutputstream)
 		  dim font as string
 		  
-		  if lab.size <> corps then
-		    corps = lab.size
+		  if lab.Textsize <> corps then
+		    corps = lab.Textsize
 		    tos.writeline(str(corps) + " fixecorps")
 		  end if
-		  font = adapterpolice(lab.font,lab.italique)
+		  font = adapterpolice(lab.Textfont,lab.italic)
 		  if font <> police then
 		    police = font
 		    tos.writeline(police + "fixepolice")
 		  end if
-		  if lab.col <> textcolor.col then
-		    textcolor = new couleur(lab.col)
+		  if lab.Textcolor <> textcolor.col then
+		    textcolor = new couleur(lab.Textcolor)
 		    tos.writeline(colorToEPS(Textcolor.col) + " fixecouleurtexte")
 		  end if
 		  
@@ -107,22 +107,22 @@ Inherits SelectOperation
 		  dim col as couleur
 		  dim co as color
 		  
-		  if (s.sk = nil) and (s.nsk = nil)  then
+		  if  s.nsk = nil  then
 		    return
 		  end if
 		  
 		  
 		  if s isa point then
-		    co = s.sk.cc.bordercolor
+		    co = s.nsk.bordercolor
 		  elseif s isa circle or s isa lacet then
 		    co =s.nsk.fillcolor
 		  else
-		    co = s.sk.cc.fillcolor
+		    co = s.nsk.fillcolor
 		  end if
 		  
 		  if s.fill > 49 then
 		    if ti then
-		      col = new couleur(s.sk.cc.fillcolor)
+		      col = new couleur(s.nsk.fillcolor)
 		    else
 		      col = new couleur(co)
 		    end if
@@ -158,6 +158,7 @@ Inherits SelectOperation
 		  
 		  if (not q.hidden or (ubound(q.parents) > -1 ) )  and not q.invalid and not q.deleted then
 		    if n > Ubound(Obeps) then
+		      redim obeps(-1)
 		      redim Obeps(n)
 		    end if
 		    
@@ -216,14 +217,14 @@ Inherits SelectOperation
 		  
 		  
 		  for i = 0 to s.labs.count -1
-		    lab = s.labs.element(i)
+		    lab = s.labs.item(i)
 		    bp = lab.correction
 		    bp = bp + lab.position
 		    ajustminmax(bp.x,bp.y)
 		    
 		    lab.pssize
 		    bp1 = new BasicPoint(lab.psw, -lab.psh)
-		    bp1 = wnd.myCanvas1.idtransform(bp1)
+		    bp1 = can.idtransform(bp1)
 		    bp1= bp1*(50/28.35)
 		    bp1 = bp1 +bp
 		    
@@ -231,7 +232,7 @@ Inherits SelectOperation
 		    bp = lab.correction
 		    
 		    bp1 = new BasicPoint(lab.psw, -lab.psp)
-		    bp1 = wnd.myCanvas1.idtransform(bp1)
+		    bp1 = can.idtransform(bp1)
 		    bp1= bp1*(50/28.35)
 		    bp1.y = - bp1.y
 		    bp1 = bp1 +bp
@@ -258,7 +259,7 @@ Inherits SelectOperation
 		  // On commence par définir les points
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    n = s.id
 		    if  s isa point then
 		      adjoindrepoint(tos,Point(s))
@@ -275,10 +276,10 @@ Inherits SelectOperation
 		  next
 		  
 		  // On écrit les titres
-		  s = wnd.mycanvas1.rep
+		  s = can.rep
 		  for j = 0 to  s.labs.count -1
-		    adapterparametiq(s.labs.element(j), tos)
-		    s.labs.element(j).toEPS(tos)
+		    adapterparametiq(s.labs.item(j), tos)
+		    s.labs.item(j).toEPS(tos)
 		  next
 		  
 		  for i = 1 to CurrentContent.TheObjects.count-1
@@ -295,13 +296,13 @@ Inherits SelectOperation
 		      end if
 		      if s.tsfi.count > 0 then
 		        for j = 0 to s.tsfi.count-1
-		          s.tsfi.element(j).toEps(tos)
+		          s.tsfi.item(j).toEps(tos)
 		        next
 		      end if
 		      for j = 0 to  s.labs.count -1
-		        if wnd.drapdim or s.labs.element(j).text <> "*" then
-		          adapterparametiq(s.labs.element(j), tos)
-		          s.labs.element(j).toEPS(tos)
+		        if wnd.drapdim or s.labs.item(j).text <> "*" then
+		          adapterparametiq(s.labs.item(j), tos)
+		          s.labs.item(j).toEPS(tos)
 		        end if
 		      next
 		    end if
@@ -323,11 +324,11 @@ Inherits SelectOperation
 		  xmin = 999
 		  ymin = 999
 		  
-		  s = wnd.mycanvas1.rep
+		  s = can.rep
 		  ajustminmaxlab(s)
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if  not s.invalid and not s.deleted then
 		      ajustminmaxlab(s)
 		      if s isa point then
@@ -372,7 +373,7 @@ Inherits SelectOperation
 		      t = false
 		      j = 0
 		      while not t and j <= Oblist.count-1
-		        s = Oblist.element(j)
+		        s = Oblist.item(j)
 		        t =  (s.id = i)
 		        if not t then
 		          for k = 0 to ubound(s.childs)
@@ -396,8 +397,8 @@ Inherits SelectOperation
 		      if t and s isa point  and not s.invalid  and not s.deleted then
 		        'adapterparamdessin(s, tos)
 		        if s.labs.count = 1 then
-		          adapterparametiq(s.labs.element(0),tos)
-		          s.labs.element(0).toeps(tos)
+		          adapterparametiq(s.labs.item(0),tos)
+		          s.labs.item(0).toeps(tos)
 		        end if
 		      end if
 		    end if
@@ -451,7 +452,7 @@ Inherits SelectOperation
 		Sub CreateTip(tos as TextOutputStream)
 		  dim cur1, cur2 as basicpoint
 		  
-		  cur2  = wnd.Mycanvas1.MouseUser
+		  cur2  = can.MouseUser
 		  tos.writeline("noir fixecouleurtrait")
 		  tos.writeline("blanc fixecouleurfond")
 		  tos.writeline("/Courier fixepolice")
@@ -538,6 +539,10 @@ Inherits SelectOperation
 		  bordercolor = black
 		  fillcolor = black
 		  textcolor = black
+		  'tos.writeline("0 .pushpdf14devicefilter")
+		  'tos.writeline("<< >> 28 28 " + str(ceil(urx)) + " "+ str(ceil(ury)) + " .begintransparencygroup")
+		  'tos.writeline("0.5 .setopacityalpha")
+		  
 		  
 		  
 		End Sub
@@ -550,7 +555,7 @@ Inherits SelectOperation
 		  dim n as integer
 		  dim f as folderitem
 		  
-		  if tempshape.count =  0 and wnd.Mycanvas1.rep.labs.count = 0 then
+		  if tempshape.count =  0 and can.rep.labs.count = 0 then
 		    return
 		  end if
 		  
@@ -568,7 +573,7 @@ Inherits SelectOperation
 		  f = getsavefolderitem(FileAGTypes.EPS, Titre)
 		  
 		  if f <> nil then
-		    wnd.MyCanvas1.MouseCursor= System.Cursors.wait
+		    can.MouseCursor= System.Cursors.wait
 		    tos=f.createTextFile
 		    creerprologueeps(tos)
 		    Body(tos,tempshape)
@@ -576,9 +581,11 @@ Inherits SelectOperation
 		    if ti then
 		      CreateTip(tos)
 		    end if
+		    'tos.writeline(".endtransparencygroup")
+		    'tos.writeline(".poppdf14devicefilter")
 		    tos.writeline("fin")
 		    tos.close
-		    wnd.MyCanvas1.MouseCursor= System.Cursors.StandardPointer
+		    can.MouseCursor= System.Cursors.StandardPointer
 		  end if
 		  redim obeps(-1)
 		  tempshape.canceldejaexporte
@@ -594,15 +601,11 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub readag2ps()
-		  dim f as folderitem
 		  dim tis as textinputstream
 		  
-		  
-		  f = getfolderitem("AG2.ps")
-		  if f <> nil then
-		    tis= f.openastextfile
-		    s = tis.readall
-		  end if
+		  tis= TextInputStream.Open(app.appfolder.child("AG2.ps"))
+		  s = tis.readall
+		  tis.close
 		  
 		  
 		End Sub
@@ -613,7 +616,7 @@ Inherits SelectOperation
 		  dim u, c, p as BasicPoint
 		  
 		  
-		  u = new BasicPoint(wnd.MyCanvas1.Rep.Idx)
+		  u = new BasicPoint(can.Rep.Idx.x, can.Rep.Idx.y)
 		  u.y = - u.y
 		  alpha = u.anglepolaire
 		  c = new BasicPoint(0,0)

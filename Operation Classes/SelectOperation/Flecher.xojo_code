@@ -37,7 +37,7 @@ Inherits SelectOperation
 		  dim EL as XMLElement
 		  EL = XMLElement(Temp.FirstChild)
 		  SelectIdForms(EL)
-		  currenthighlightedshape = tempshape.element(0)
+		  currenthighlightedshape = tempshape.item(0)
 		  DoOperation
 		End Sub
 	#tag EndMethod

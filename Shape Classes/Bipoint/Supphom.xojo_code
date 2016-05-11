@@ -13,7 +13,7 @@ Inherits Shape
 		  setpoint sp
 		  SetPoint qp
 		  points(0).borderwidth = 2
-		  sk = new SegSkull(wnd.mycanvas1.transform(fp.bpt))
+		  nsk = new SegSkull(can.transform(fp.bpt))
 		  updateshape
 		  endconstruction
 		  ol.optimize
@@ -26,7 +26,7 @@ Inherits Shape
 		Sub Constructor(ol as objectslist, temp as XMLElement)
 		  
 		  Super.Constructor(ol,Temp)
-		  sk = new SegSkull(wnd.mycanvas1.transform(points(1).bpt))
+		  nsk = new SegSkull(can.transform(points(1).bpt))
 		End Sub
 	#tag EndMethod
 
@@ -65,7 +65,7 @@ Inherits Shape
 		Function PointOnSide(p as BasicPoint) As integer
 		  dim d as double
 		  
-		  d= wnd.Mycanvas1.MagneticDist
+		  d= can.MagneticDist
 		  
 		  if p.distance(points(1).bpt,points(2).bpt) < d and p.between(points(1).bpt,points(2).bpt) then
 		    return 0
@@ -99,11 +99,11 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub UpDateSkull()
-		  dim pt As BasicPoint
-		  
-		  sk.update(wnd.myCanvas1.transform(Points(1).bpt))
-		  pt = wnd.myCanvas1.dtransform(points(2).bpt-Points(1).bpt)
-		  segskull(sk).updatesommet(1,pt)
+		  'dim pt As BasicPoint
+		  '
+		  'sk.update(can.transform(Points(1).bpt))
+		  'pt = can.dtransform(points(2).bpt-Points(1).bpt)
+		  'segskull(sk).updatesommet(1,pt)
 		  
 		  
 		End Sub
@@ -203,6 +203,11 @@ Inherits Shape
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -12,7 +12,6 @@ Protected Class Grid
 	#tag Method, Flags = &h0
 		Sub Constructor(taillepoints as integer)
 		  
-		  can = wnd.Mycanvas1
 		  gs = taillepoints
 		End Sub
 	#tag EndMethod
@@ -83,7 +82,7 @@ Protected Class Grid
 
 
 	#tag Property, Flags = &h0
-		can As Mycanvas
+		can As CustomCanvas1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

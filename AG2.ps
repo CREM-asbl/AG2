@@ -133,7 +133,7 @@ macrosgn begin	      %OK
                        BB@ut closefile} def
                          
 
-%% Routines générales 
+%% Routines générales Les tests laissent l'objet sur la pile, suivi de true ou false
 /nom? {dup type str (nametype) eq} def % xx -> xx true-ou-false
 /entier? {dup type str (integertype) eq} def % xx -> xx true-ou-false
 /reel? {dup type str (realtype) eq} def % xx -> xx true-ou-false
@@ -154,7 +154,7 @@ macrosgn begin	      %OK
 /suitepoints?{point? {true} {array? {dup true exch {point? exch pop and} forall} {false} ifelse} ifelse} def
                         %% % % xx -> xx true-ou-false
 /bipoint? {suitepoints? {dup  length 2 eq} {false} ifelse} def
-/droite? {bipoint?} def
+/droite? {dup bipoint? {decoupler subp norme 0 eq {false} {true} ifelse}{pop false} ifelse} def
 /tripoint?{suitepoints? {dup length 3 eq } {false} ifelse} def
 /arccercle?{tripoint?} def
 /arcellipse?{array?{dup length 4 eq {dup 0 get tripoint? exch pop} {false} ifelse}{false} ifelse} def 
@@ -517,8 +517,8 @@ macrosgn begin	      %OK
 /appe {1 sub {append} repeat} def %OK concatenation de plus de deux tableaux
   % syntaxe t1 t2 ... tn n appe résultat sur la pile
 /ret@urner {/tab@ri exch store tab@ri length 1 sub /n@ exch  store n@  1 add array /tabf@n exch store 0 1 n@  {tab@ri n@  2 index  sub get tabf@n 3 1 roll  put} for tabf@n } def
-%% Dessin d'un point 
 
+%% Dessin d'un point 
 % Formes possibles :
 		   % /dot, /pavetriangle, /pavecarre, /pavepentagone
 		   % /pavehexagone  /etoile5 /etoile6
@@ -1077,49 +1077,69 @@ exch subp} def
 /traittirete {[4] 0 setdash} def
 /traitpointille {[2] 0 setdash} def
 
-/droitehori {decoupler pop ordonnee dup x@i exch accoupler exch x@a exch accoupler accoupler segment} def
-/droiteverti {decoupler pop abscisse dup y@i accoupler exch y@a  accoupler accoupler segment} def
 
-/droite {/dr@ite exch store
-             dr@ite decoupler abscisse exch abscisse eq 
-            {dr@ite droiteverti} 
-            {dr@ite decoupler ordonnee exch ordonnee eq
-                          {dr@ite droitehori} 
-	         {dr@ite droiteintercadre {segment} if} ifelse}
-             ifelse} def
+/droitehoriintercadre {droitehori? {decoupler pop ordonnee dup x@i exch accoupler exch x@a exch accoupler accoupler} if } def
+/demidroitehoriintercadre{droitehori? {decoupler /p@2 exch store /p@1 exch store 
+                                                                         p@1 abscisse p@2 abscisse lt 
+                                                                                                 {[ p@1 dup ordonnee x@a exch accoupler ] }
+                                                                                                 {[ p@1 dup ordonnee x@i exch accoupler ] }
+                                                                                                 ifelse} if } def          
+/droitehori {droitehori? {droitehoriintercadre segment} if } def
+/droitehori? {dup decoupler subp ordonnee abs epszero lt {true}{false} ifelse}  def
+/demidroitehori {droitehori? {demidroitehoriintercadre segment} if } def
+
+/droitevertiintercadre {droiteverti?  {decoupler pop abscisse dup y@i accoupler exch y@a  accoupler accoupler} if} def
+/demidroitevertiintercadre{droiteverti? {decoupler /p@2 exch store /p@1 exch store 
+                                                                         p@1 ordonnee p@2 ordonnee lt 
+                                                                                                 {[ p@1 dup abscisse y@a accoupler ] }
+                                                                                                 {[ p@1 dup abscisse y@i accoupler ] }
+                                                                                                 ifelse} if } def                                                                    
+/droiteverti {droiteverti? {droitevertiintercadre segment} if } def
+/droiteverti? {dup decoupler subp abscisse abs epszero lt {true}{false} ifelse}  def
+/demidroiteverti {droiteverti? {demidroitevertiintercadre segment} if } def
+
+/droiteobliintercadre{ /dr@ite exch store dr@ite decoupler exch subp /d@f exch  store calculdrintercadre} def
+/demidroiteobliintercadre{ /dr@ite exch store dr@ite decoupler exch subp /d@f exch  store calculdemidrintercadre} def
+
+/droite {droite? {droiteintercadre segment}{pop} ifelse} def
+/demidroite {droite? {demidroiteintercadre segment}{pop} ifelse} def     
+
+
                    
-/droiteintercadre {/dr@ite exch store  /d@f dr@ite decoupler exch subp store      
- 	            dr@ite decoupler pop abscisse d@f abscisse  
-                            0 eq {dup y@i accoupler exch y@a accoupler accoupler true}
-                                    {dr@ite decoupler pop ordonnee d@f ordonnee
-                                             0 eq {dup x@i exch accoupler exch x@a exch accoupler accoupler true}
-                                                     {dr@ite decoupler pop abscisse d@f abscisse 
-                                                      2 copy x@i resequ@ /t@1 exch store x@a resequ@ /t@2 exch store      %t@1 bord gauche, t@2 bord droit
-                                                      dr@ite decoupler pop ordonnee d@f ordonnee
-                                                      2 copy  y@i resequ@ /t@3 exch store y@a resequ@ /t@4 exch store  %t@3 bord inf t@4 bord sup
-                                                      t@1 t@2 gt {/t@1 t@2 /t@2 t@1 store store} if
-                                                      t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
-                                                      t@1 t@4 gt {/t@1 t@4 /t@4 t@1 store store} if                          
-                                                      t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
-                                                      t@2 t@3 gt {/t@2 t@3 /t@3 t@2 store store} if
-                                                      t@2 t@4 gt {/t@2 t@4 /t@4 t@2 store store} if
-                                                      t@3 t@4 gt {/t@3 t@4 /t@4 t@3 store store} if
-                                                     dr@ite decoupler pop d@f t@2 mulp addp 
-                                                     dr@ite decoupler pop d@f t@3 mulp addp
-                                                     2 copy dansdomaine? {dansdomaine? {accoupler true} {pop pop false} ifelse}
-                                                     {pop pop pop false} ifelse}
-                                                     ifelse
-                                   }ifelse
-                           }def % OK
+/droiteintercadre {droiteverti? {droitevertiintercadre}
+                                                         {droitehori? {droitehoriintercadre} {droiteobliintercadre} ifelse}
+                                   ifelse  } def
+/demidroiteintercadre {droiteverti? {demidroitevertiintercadre}
+                                                                  {droitehori? {demidroitehoriintercadre} {demidroiteobliintercadre} ifelse}
+                                   ifelse  } def
 
 
-/demidroite {dup  decoupler /interm@ exch store /@ri exch store droiteintercadre 
-                             {dup 0 get @ri accoupler interm@ exch danssegment?  
-                              {0 get } {1 get} ifelse @ri accoupler segment} if} def 
+/CalculBordsGaucheEtDroit{dr@ite decoupler  pop abscisse d@f  abscisse 
+                                                      2 copy x@i resequ@ /t@1 exch store x@a resequ@ /t@2 exch store} def     
+/CalculBordsInfEtSup{dr@ite decoupler  pop ordonnee d@f ordonnee
+                                                      2 copy  y@i resequ@ /t@3 exch store y@a resequ@ /t@4 exch store} def     
+/ClassementBords{ t@1 t@2 gt {/t@1 t@2 /t@2 t@1 store store} if
+                                     t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
+                                     t@1 t@4 gt {/t@1 t@4 /t@4 t@1 store store} if                          
+                                     t@1 t@3 gt {/t@1 t@3 /t@3 t@1 store store} if
+                                     t@2 t@3 gt {/t@2 t@3 /t@3 t@2 store store} if
+                                     t@2 t@4 gt {/t@2 t@4 /t@4 t@2 store store} if
+                                     t@3 t@4 gt {/t@3 t@4 /t@4 t@3 store store} if} def
 
-/demidroitebis {dup  decoupler /interm@ exch store /@ri exch store droiteintercadre 
-                             {dup 0 get @ri accoupler interm@ exch danssegment?  
-                              {0 get } {1 get} ifelse @ri } if} def 
+/calculdrintercadre{CalculBordsGaucheEtDroit
+                                     CalculBordsInfEtSup
+                                     ClassementBords
+                                     dr@ite 0 get d@f t@2 mulp addp 
+                                     dr@ite 0 get d@f t@3 mulp addp
+                                     accoupler  
+                                     }def % 
+
+/calculdemidrintercadre{CalculBordsGaucheEtDroit
+                                              CalculBordsInfEtSup
+                                              ClassementBords
+                                              dr@ite 0 get dup d@f t@3 mulp addp
+                                              accoupler  
+                                              }def % 
                         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%  Decoupage du cadre en deux  régions déterminées par une droite %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1227,6 +1247,8 @@ exch subp} def
       pt@ addp dup /pt@ exch store} ifelse true} def
 
 /pointmobilefonction{dup f accoupler true} def
+
+/pointsurcourbeparam {dup fx exch fy accoupler } def
 
 /calculcourbe {/dr@p 0 store 1 index /ss exch store /dr@pp 0 store
     4 -1 roll /p@tm@bile exch store 
@@ -1466,7 +1488,7 @@ c@mpos2 /m@2 exch store  1 1 m@t@tomise length 1 sub
 
 /fixemaille {/typ@ exch store /p@int exch store /v@ct1 exch store 
                  typ@ dup (P1) eq exch (P2) eq or { /v@ct2 exch store} if
-                 typ@ dup dup dup dup (P3) eq exch (P6) eq or exch (Pm3) eq or exch (P3m) eq or exch (P6m) eq or{ /v@ct2 v@ct1 60 origine rotation  store} if
+                 typ@ dup dup dup dup (P3) eq exch (P6) eq or exch (Pm3) eq or exch (P3m) eq or exch (P6m) eq or{ /v@ct2 v@ct1 60                              origine rotation  store} if
                  typ@ dup dup  (P4) eq exch (Pm4) eq or exch (P4m) eq or { /v@ct2 v@ct1 90 origine rotation  store} if                  
                  typ@ dup (Pm1) eq exch (Pm2) eq or {/v@ct2 v@ct1 origine p@int paralld symetrie store /p@int p@int 0 get store} if
                  typ@ dup dup dup (P1m) eq exch (P2m) eq or exch (P1g) eq or exch (Pg2) eq or

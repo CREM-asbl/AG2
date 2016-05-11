@@ -15,7 +15,7 @@ Inherits MultipleSelectOperation
 		  s.UnHighLight
 		  
 		  for i =  visible.count-1 downto 0
-		    s = visible.element(i)
+		    s = visible.item(i)
 		    ExclureDoublons(s, p)
 		    select case type
 		    case  1 // translation
@@ -50,7 +50,7 @@ Inherits MultipleSelectOperation
 		        k = s.pointonside(p)
 		        t = false
 		        for j = s.tsfi.count-1 downto 0
-		          t = (s.tsfi.element(j).type = 6) and  (s.tsfi.element(j).index = k)
+		          t = (s.tsfi.item(j).type = 6) and  (s.tsfi.item(j).index = k)
 		        next
 		        if k > -1 and not t then
 		          index.insert 0, s.pointonside(p)         // index contient les numéros de côtés
@@ -95,7 +95,7 @@ Inherits MultipleSelectOperation
 		  
 		  nobj = visible.count
 		  if nobj >0 then
-		    return Visible.element(iobj)
+		    return Visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -114,13 +114,13 @@ Inherits MultipleSelectOperation
 		  
 		  visible = Objects.FindPoint(p)
 		  'for i = visible.count-1 downto 0
-		  's = visible.element(i)
+		  's = visible.item(i)
 		  'if type = 1 and  not choixvalide(point(s)) then
-		  'visible.removeshape(s)
+		  'visible.removeobject(s)
 		  'end if
 		  'next
 		  
-		  s = visible.element(iobj)
+		  s = visible.item(iobj)
 		  
 		  if s = nil or s = fp then
 		    return nil
@@ -168,8 +168,8 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(EL as XmlElement)
-		  dim EL1 as XmlElement
+		Sub Constructor(EL as XMLElement)
+		  dim EL1 as XMLElement
 		  dim num as integer
 		  
 		  Constructor(val(EL.GetAttribute("TsfType")))
@@ -179,7 +179,7 @@ Inherits MultipleSelectOperation
 		  CurrentShape =objects.Getshape(val(EL1.Getattribute("Id")))
 		  num = val(EL.GetAttribute("Num"))
 		  if CurrentShape.tsfi.count-1>=num then
-		    tsf = CurrentShape.tsfi.element(num)
+		    tsf = CurrentShape.tsfi.item(num)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -188,7 +188,7 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  
 		  tsf = new transformation (currentshape, type, index(iobj) , ori)
-		  currentshape.tsfi.addtsf tsf
+		  currentshape.tsfi.addObject tsf
 		  if currentshape isa point then
 		    currentshape.borderwidth = 2
 		  end if
@@ -225,7 +225,7 @@ Inherits MultipleSelectOperation
 		  
 		  if  s.tsfi.count > 0 then
 		    for j = 0 to s.tsfi.count-1
-		      if s.tsfi.element(j).type = type and s.tsfi.element(j).index = s.pointonside(p)  then
+		      if s.tsfi.item(j).type = type and s.tsfi.item(j).index = s.pointonside(p)  then
 		        visremove(s)
 		      end if
 		    next
@@ -262,10 +262,10 @@ Inherits MultipleSelectOperation
 		    return choix2(p)
 		  case 3            // pour les homothéties, similitudes, étirements, isométries, cisaillements
 		    visible= Objects.findPoint(p)
-		    return point(visible.element(iobj))
+		    return point(visible.item(iobj))
 		  case 4
 		    visible = Objects.findpoint(p)
-		    q = point( visible.element(iobj))
+		    q = point( visible.item(iobj))
 		    if q = nil then
 		      return nil
 		    else
@@ -401,7 +401,7 @@ Inherits MultipleSelectOperation
 		    ReCreateCreatedFigures(Temp)
 		  end if
 		  tsf = new Transformation(supp,EL)
-		  supp.tsfi.addtsf tsf
+		  supp.tsfi.addObject tsf
 		  if supp isa point then
 		    supp.borderwidth = 2
 		  end if
@@ -550,7 +550,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Doc as XMLDocument) As XMLelement
+		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim Temp  as XMLElement
 		  
 		  
@@ -601,8 +601,8 @@ Inherits MultipleSelectOperation
 		  EL = XMLElement(Temp.firstchild)
 		  supp = SelectForm(EL)
 		  num = val(EL.Getattribute("NumTSF"))
-		  CurrentContent.TheTransfos.RemoveTsf(supp.tsfi.element(num))
-		  supp.tsfi.Transfos.Remove num
+		  CurrentContent.TheTransfos.RemoveObject(supp.tsfi.item(num))
+		  supp.tsfi.Objects.Remove num
 		  if supp.tsfi.count = 0 then
 		    'if val(EL.GetAttribute("NewSupp")) = 1 then
 		    'supp.delete

@@ -28,10 +28,10 @@ Inherits SelectOperation
 		  setoldthicknesses
 		  
 		  for i = 0 to tempshape.count -1
-		    if not tempshape.element(i) isa cube then
-		      tempshape.element(i).borderwidth = thickness
-		      for j = 0 to ubound(tempshape.element(i).childs)
-		        tempshape.element(i).childs(j).borderwidth = thickness
+		    if not tempshape.item(i) isa cube then
+		      tempshape.item(i).borderwidth = thickness
+		      for j = 0 to ubound(tempshape.item(i).childs)
+		        tempshape.item(i).childs(j).borderwidth = thickness
 		      next
 		    end if
 		  next
@@ -62,7 +62,7 @@ Inherits SelectOperation
 		  n = tempshape.count-1
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    s.borderwidth = r
 		    for j = 0 to ubound(s.childs)
 		      s.childs(j).borderwidth = r
@@ -79,14 +79,14 @@ Inherits SelectOperation
 		  
 		  n = tempshape.count-1
 		  for i = 0 to n
-		    oldthicknesses.append tempshape.element(i).borderwidth
+		    oldthicknesses.append tempshape.item(i).borderwidth
 		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, EL1 as XmlElement
+		  Dim Myself , EL, EL1 as XMLElement
 		  dim i,n as integer
 		  
 		  n = tempshape.count
@@ -94,7 +94,7 @@ Inherits SelectOperation
 		  Myself= Doc.CreateElement(Dico.value("Forms"))
 		  Myself.setattribute("NewThickness", str(thickness))
 		  for i = 0 to n-1
-		    Myself.appendchild  tempshape.element(i).XMLPutIdInContainer(Doc)
+		    Myself.appendchild  tempshape.item(i).XMLPutIdInContainer(Doc)
 		  next
 		  return Myself
 		  
@@ -103,7 +103,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, EL1 as XmlElement
+		  Dim Myself , EL, EL1 as XMLElement
 		  dim i,n as integer
 		  
 		  n = tempshape.count
@@ -140,7 +140,7 @@ Inherits SelectOperation
 		  EL1 = XMLElement(EL.child(1))
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    EL2 = XMLElement(EL1.child(i))
 		    r = Val(EL2.GetAttribute("Old"))
 		    s.borderwidth = r

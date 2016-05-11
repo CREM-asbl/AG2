@@ -243,6 +243,7 @@ Inherits nBpoint
 		  dim r as double
 		  dim bq, v as BasicPoint
 		  dim dr as droite
+		  redim q(-1)
 		  redim q(1)
 		  
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
@@ -483,6 +484,8 @@ Inherits nBpoint
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
 		  super.constructor(s)
+		  redim extre(-1)
+		  redim ctrl(-1)
 		  redim extre(1)
 		  redim ctrl(5)
 		  
@@ -540,9 +543,9 @@ Inherits nBpoint
 		  dim r, r1, r2 as double
 		  
 		  
-		  wnd.mycanvas1.coins(csg,csd,cig,cid)
+		  can.coins(csg,csd,cig,cid)
 		  
-		  if abs(first.x-second.x) < wnd.mycanvas1.magneticdist then
+		  if abs(first.x-second.x) < can.magneticdist then
 		    r = second.y-first.y
 		    if r > 0 then
 		      ma = (csg.y-first.y)/r

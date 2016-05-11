@@ -31,7 +31,7 @@ Begin Window NotesWindow
       Alignment       =   0
       AutoDeactivate  =   False
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -86,8 +86,8 @@ End
 		  
 		  
 		  if appquitting then
-		    conf = new Confirmation
-		    conf.Label1.Text = "Save Notes ?"
+		    conf = new Confirmation("Save Notes ?")
+		    
 		    conf.ShowModal
 		    select case Conf.result
 		    case -1
@@ -119,33 +119,11 @@ End
 	#tag Event
 		Sub Open()
 		  dim f as folderitem
-		  
-		  Title = Dico.Value("Notes")
-		  
-		  FileMenu.Text = Dico.Value("FileMenu")
-		  FileOpen.Text = Dico.Value("FileOpen")
-		  FileSave.Text = Dico.Value("FileSave")
-		  FileClose.Text = Dico.Value("FileClose")
-		  FilePrint.Text = Dico.Value("FilePrint")
-		  EditMenu.Text = Dico.value("EditMenu")
-		  EditCopy.Text = Dico.Value("EditCopy")
-		  EditPaste.Text = Dico.Value("EditPaste")
-		  NormalMenu.Text = Dico.Value("NormalMenu")
-		  GrasMenu.Text = Dico.Value("GrasMenu")
-		  ItaliqueMenu.Text = Dico.Value("ItalicMenu")
-		  CouleurMenu.Text =Dico.Value("ToolsColor")
-		  TailleMenu.Text =Dico.Value("Size")
-		  GaucheMenu.Text =Dico.Value("Left")
-		  CentrerMenu.Text =Dico.Value("Centre")
-		  DroiteMenu.Text =Dico.Value("Right")
-		  FontMenu.Text =Dico.Value("Fonts")
-		  Col(0).Text = Dico.value("ColRed")
-		  Col(1).Text = Dico.value("ColVert")
-		  Col(2).Text = Dico.value("ColBleu")
-		  Col(3).Text = Dico.value("ColNoir")
-		  
 		  Dim m as MenuItem
 		  Dim i,n as Integer
+		  
+		  SetMenu
+		  Title = Dico.Value("Notes")
 		  
 		  if FontMenu.count = 1 then
 		    n= FontCount-1
@@ -160,15 +138,18 @@ End
 		    Next
 		  end if
 		  
-		  'If Config.username = "Tutoriel" then
-		  'if tutor = 0 then
-		  'tutor = 1
-		  'end if
-		  'Title = "Tutor"+str(tutor)+".rtf"
-		  'f=getfolderitem(Title)
-		  'f.OpenStyledEditField EF
-		  'end if
+		  If Config.username = "Tutoriel" then
+		    if tutor = 0 then
+		      tutor = 1
+		    end if
+		    Title = "Tutor"+str(tutor)+".rtf"
+		    f=getfolderitem(Title)
+		    if EF.open(f) = false then
+		      return
+		    end if
+		  end if
 		  
+		  EF.Styled = true
 		  EF.width = self.width-10
 		  EF.height = self.height-10
 		End Sub
@@ -245,18 +226,19 @@ End
 
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
-			'dim f as folderitem
-			'
-			'Dim TT as New FileType
-			'
-			'TT.Name= "Rtf  Files"
-			'TT.Extensions=".rtf"
-			'
-			'f =GetOpenFolderItem(TT)
-			'if f <> nil then
-			'f.OpenStyledEditField EF
-			'title = f.name
-			'end if
+			dim f as folderitem
+			
+			Dim TT as New FileType
+			
+			TT.Name= "Rtf  Files"
+			TT.Extensions=".rtf"
+			
+			f =GetOpenFolderItem(TT)
+			if f <> nil then
+			if EF.Open(f) then
+			title = f.name
+			end if
+			end if
 		End Function
 	#tag EndMenuHandler
 
@@ -310,16 +292,17 @@ End
 
 	#tag MenuHandler
 		Function NextMenu() As Boolean Handles NextMenu.Action
-			'dim f as FolderItem
-			'
-			'Tutor=Tutor+1
-			'
-			'If Config.username = "Tutoriel" then
-			'Title = "Tutor"+str(tutor)+".rtf"
-			'f=getfolderitem(Title)
-			'f.OpenStyledEditField EF
-			'refresh
-			'end if
+			dim f as FolderItem
+			
+			Tutor=Tutor+1
+			
+			If Config.username = "Tutoriel" then
+			Title = "Tutor"+str(tutor)+".rtf"
+			f=getfolderitem(Title)
+			if EF.Open(f) then
+			refresh
+			end if
+			end if
 		End Function
 	#tag EndMenuHandler
 
@@ -348,29 +331,58 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Save()
-		  'dim f as folderitem
-		  'dim nomfich as string
-		  'dim n as integer
-		  '
-		  'if currentcontent.currentoperation isa choosefinal then
-		  'currentcontent.Mac.Expli =  EF.text
-		  'return
-		  'end if
-		  '
-		  'if title = "" then
-		  'nomfich= Dico.value("Notes.rtf")
-		  'else
-		  'n = instr(title,".")
-		  'if n <>0 then
-		  'nomfich = left(title,n-1)+".rtf"
-		  'else
-		  'nomfich = title+".rtf"
-		  'end if
-		  'end if
-		  'f =GetSaveFolderItem("StyledText",nomfich)
-		  'if f <> nil then
-		  'f.SaveStyledEditField EF
-		  'end if
+		  dim f as folderitem
+		  dim nomfich as string
+		  dim n as integer
+		  
+		  if currentcontent.currentoperation isa choosefinal then
+		    currentcontent.Mac.Expli =  EF.text
+		    return
+		  end if
+		  
+		  if title = "" then
+		    nomfich= Dico.value("Notes.rtf")
+		  else
+		    n = instr(title,".")
+		    if n <>0 then
+		      nomfich = left(title,n-1)+".rtf"
+		    else
+		      nomfich = title+".rtf"
+		    end if
+		  end if
+		  f =GetSaveFolderItem("StyledText",nomfich)
+		  if f <> nil then
+		    if not EF.Save(f) then
+		      return
+		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetMenu()
+		  FileMenu.Text = Dico.Value("FileMenu")
+		  FileOpen.Text = Dico.Value("FileOpen")
+		  FileSave.Text = Dico.Value("FileSave")
+		  FileClose.Text = Dico.Value("FileClose")
+		  FilePrint.Text = Dico.Value("FilePrint")
+		  EditMenu.Text = Dico.value("EditMenu")
+		  EditCopy.Text = Dico.Value("EditCopy")
+		  EditPaste.Text = Dico.Value("EditPaste")
+		  NormalMenu.Text = Dico.Value("NormalMenu")
+		  GrasMenu.Text = Dico.Value("GrasMenu")
+		  ItaliqueMenu.Text = Dico.Value("ItalicMenu")
+		  CouleurMenu.Text =Dico.Value("ToolsColor")
+		  TailleMenu.Text =Dico.Value("Size")
+		  GaucheMenu.Text =Dico.Value("Left")
+		  CentrerMenu.Text =Dico.Value("Centre")
+		  DroiteMenu.Text =Dico.Value("Right")
+		  FontMenu.Text =Dico.Value("Fonts")
+		  Col(0).Text = Dico.value("ColRed")
+		  Col(1).Text = Dico.value("ColVert")
+		  Col(2).Text = Dico.value("ColBleu")
+		  Col(3).Text = Dico.value("ColNoir")
+		  
 		End Sub
 	#tag EndMethod
 

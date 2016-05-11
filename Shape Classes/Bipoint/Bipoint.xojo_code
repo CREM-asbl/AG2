@@ -55,6 +55,15 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetGravityCenter() As BasicPoint
+		  dim g as BasicPoint
+		  
+		  g =coord.tab(0)+coord.tab(1)
+		  return g/2
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetType() As string
 		  return "BiPoint"
 		End Function
@@ -92,7 +101,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function pInShape(p As BasicPoint) As Boolean
 		  
-		  return  (p.Distance(FirstP,SecondP) < wnd.Mycanvas1.MagneticDist)
+		  return  (p.Distance(FirstP,SecondP) < can.MagneticDist)
 		  
 		End Function
 	#tag EndMethod
@@ -241,6 +250,11 @@ Inherits Shape
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

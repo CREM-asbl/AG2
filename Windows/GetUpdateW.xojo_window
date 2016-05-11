@@ -26,12 +26,69 @@ Begin Window GetUpdateW
    Title           =   "Update"
    Visible         =   True
    Width           =   438
+   Begin FtpConnexion FTP
+      Address         =   ""
+      BehaviorIndex   =   0
+      ControlOrder    =   "0"
+      crlf            =   ""
+      CurrentFile     =   ""
+      dataport        =   12345
+      Enabled         =   True
+      Index           =   -2147483648
+      InitialParent   =   ""
+      LockedInPosition=   False
+      Port            =   0
+      Scope           =   0
+      TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   "0"
+      transfert       =   False
+   End
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   1
+      Bold            =   True
+      ControlOrder    =   "1"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   77
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Recherche de mises à jour ..."
+      TextAlign       =   1
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   18.0
+      TextUnit        =   0
+      Top             =   0
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   438
+   End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Mettre à jour"
+      ControlOrder    =   "2"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -57,12 +114,51 @@ Begin Window GetUpdateW
       Visible         =   True
       Width           =   134
    End
+   Begin Label Statut
+      AutoDeactivate  =   True
+      BehaviorIndex   =   3
+      Bold            =   False
+      ControlOrder    =   "3"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   33
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   51
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   True
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   89
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   350
+   End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
+      BehaviorIndex   =   4
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "4"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -88,40 +184,32 @@ Begin Window GetUpdateW
       Visible         =   True
       Width           =   80
    End
-   Begin Label Label1
+   Begin ProgressBar TotalBar
       AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
+      BehaviorIndex   =   5
+      ControlOrder    =   "5"
       Enabled         =   True
-      Height          =   59
+      Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Italic          =   False
-      Left            =   0
+      Left            =   51
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
+      LockTop         =   False
+      Maximum         =   100
       Scope           =   0
-      Selectable      =   False
-      TabIndex        =   5
+      TabIndex        =   "5"
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Recherche de mises à jour"
-      TextAlign       =   1
-      TextColor       =   &c00000000
       TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   36
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   438
+      TextSize        =   "0"
+      Top             =   68
+      Value           =   0
+      Visible         =   False
+      Width           =   350
    End
 End
 #tag EndWindow
@@ -133,7 +221,7 @@ End
 		  
 		  refs = Split(list,"-")
 		  newVersion = refs(0)
-		  Label1.Text = newVersion+" est disponible ("+SizeUnit(val(refs(1)),0)+")"
+		  StaticText1.Text = newVersion+" est disponible ("+SizeUnit(val(refs(1)),0)+")"
 		  
 		  
 		End Sub
@@ -175,11 +263,11 @@ End
 		  'dim f as FolderItem
 		  '
 		  '#if TargetWin32
-		  'f = SpecialFolder.Desktop.Child(newversion)
+		  'f = DesktopFolder.Child(newversion)
 		  '#else
-		  'f =SpecialFolder.Desktop
+		  'f = DesktopFolder
 		  '#endif
-		  'Label1.Text = "Ouverture de la mise à jour..."
+		  'StaticText1.Text = "Ouverture de la mise à jour..."
 		  'api.updateDone
 		  'f.Launch
 		  'Quit
@@ -231,11 +319,76 @@ End
 
 #tag EndWindowCode
 
+#tag Events FTP
+	#tag Event
+		Sub AfficherEtat(msg as String)
+		  Statut.Text = msg
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub NextStage(msg As String)
+		  dim code As integer
+		  dim  temp() as String
+		  
+		  code = val( NthField(msg," ",1))
+		  
+		  select case code
+		  case 220
+		    me.Commande("USER",me.login)
+		  case 331
+		    me.Commande("PASS",me.pass)
+		  case 230
+		    me.Commande("CWD","MAJ/")
+		  case 226,250
+		    if not me.GetFile then
+		      me.Stop
+		      StaticText1.Text="Téléchargement terminé."
+		      Update
+		    end if
+		  case 257
+		    me.Commande("TYPE","I")
+		  case 213
+		    me.DataSocket.gFileSize = val( NthField(msg," ",2))
+		    me.Commande("PASV","")
+		  case 200
+		    me.Commande ("SIZE",me.CurrentFile)
+		  case 227
+		    msg = Replace(msg,")","")
+		    temp = Split(msg,",")
+		    me.dataport = val(temp(4))*256+val(temp(5))
+		    me.Commande("RETR",me.CurrentFile)
+		  end
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function NextFiles() As boolean
+		  'if not updated then
+		  'CurrentFolder = DesktopFolder
+		  'me.CurrentFile = newVersion
+		  'me.DataSocket.SetFTT(CurrentFolder.Child(newversion))
+		  'me.Commande("PWD","")
+		  'updated = true
+		  'return true
+		  'end if
+		  '
+		  'return false
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub Progress(percent as integer)
+		  TotalBar.Value = percent
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/#!/logiciels/-K0QFCVwKVLay6Bb2-Xn")
-		  close
+		  FTP.Start
+		  StaticText1.Text = "Téléchargement en cours..."
+		  PushButton1.Visible = false
+		  TotalBar.Visible = true
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -248,6 +401,8 @@ End
 #tag Events PushButton2
 	#tag Event
 		Sub Action()
+		  Ftp.Stop
+		  StaticText1.Text = "Mise à jour annulée."
 		  updated = false
 		  Close
 		End Sub

@@ -32,7 +32,7 @@ Inherits SelectOperation
 		    CurrentHighlightedShape=nil
 		    if FinishedSelecting then
 		      Finished = false
-		      wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		      can.Mousecursor = System.Cursors.Wait
 		      DoOperation
 		      EndOperation
 		    end if
@@ -74,7 +74,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Visremove(s as Shape)
 		  s.tsp = false
-		  Visible.removeShape(s)
+		  Visible.removeobject(s)
 		  
 		End Sub
 	#tag EndMethod

@@ -35,6 +35,7 @@ Inherits Circle
 		  dim bq, v as BasicPoint
 		  dim dr as droite
 		  dim p as point
+		  redim q(-1)
 		  redim q(1)
 		  
 		  p = points(2)  ' ce point est "sur" s
@@ -107,7 +108,7 @@ Inherits Circle
 		  Points(2).moveto Points(0).bpt+ v*d
 		  
 		  if Points(2).pointsur.count> 0 then
-		    points(2).puton points(2).pointsur.element(0)
+		    points(2).puton points(2).pointsur.item(0)
 		  end if
 		  return true
 		  
@@ -218,6 +219,7 @@ Inherits Circle
 		    computearcangle
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
+		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
 
@@ -257,6 +259,8 @@ Inherits Circle
 		    Points(i).moveto(p)
 		  next
 		  
+		  updatecoord
+		  coord.CreateExtreAndCtrlPoints(ori)
 		  select case n
 		  case 0
 		    arcangle = 0
@@ -267,7 +271,6 @@ Inherits Circle
 		    constructshape
 		    updatecoord
 		    coord.CreateExtreAndCtrlPoints(ori)
-		    updateskull
 		  end select
 		  
 		  
@@ -277,16 +280,18 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetType() As string
-		  return Dico.value("Arc")
+		Function GetGravityCenter() As BasicPoint
+		  dim g as BasicPoint
+		  
+		  g = coord.tab(0)+coord.tab(1)+coord.tab(2)
+		  return g/3
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub InitConstruction()
-		  super.initconstruction
-		  
-		End Sub
+		Function GetType() As string
+		  return Dico.value("Arc")
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -347,7 +352,7 @@ Inherits Circle
 		    return new Matrix(1)
 		  end if
 		  
-		  s = points(2).pointsur.element(0)
+		  s = points(2).pointsur.item(0)
 		  bp =ArcComputeFirstIntersect(s)
 		  
 		  
@@ -364,7 +369,7 @@ Inherits Circle
 		    return new Matrix(1)
 		  end if
 		  
-		  s = points(2).pointsur.element(0)
+		  s = points(2).pointsur.item(0)
 		  bp =ArcComputeFirstIntersect(s)
 		  
 		  
@@ -460,7 +465,7 @@ Inherits Circle
 		  dim p As point
 		  
 		  p = points(n)
-		  sh = p.pointsur.element(0)
+		  sh = p.pointsur.item(0)
 		  
 		  select case n
 		  case 0
@@ -512,8 +517,8 @@ Inherits Circle
 		  dim Bib as BiBPoint
 		  
 		  
-		  shn = points(n).pointsur.element(0)
-		  shm = points(m).pointsur.element(0)
+		  shn = points(n).pointsur.item(0)
+		  shm = points(m).pointsur.item(0)
 		  k = TroisiemeIndex(n,m)  'Ce troisième sommet n'est pas "sur"
 		  
 		  select case k
@@ -580,12 +585,55 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub oldUpDateSkull()
+		  dim i, j as integer
+		  dim p As BasicPoint
+		  
+		  p = points(0).bpt
+		  nsk.update(can.transform(p))
+		  if IndexConstructedPoint > 0 then
+		    for i = 1 to 2
+		      nsk.updatesommet(i,can.dtransform(points(i).bpt-p))
+		    next
+		    for i = 0 to 1
+		      nsk.updateextre(i,  can.dtransform(coord.extre(i)-p))
+		    next
+		    for i = 0 to 5
+		      nsk.updatectrl(i, can.dtransform(coord.ctrl(i)-p))
+		    next
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
 		  if abs(arcangle) < 0.01  then
 		    return
 		  end if
 		  
-		  super.paint(g)
+		  
+		  dim i as integer
+		  coord.CreateExtreAndCtrlPoints(ori)
+		  
+		  nsk.update(self)
+		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
+		    return
+		  end if
+		  nsk.fixecouleurs(self)
+		  nsk.fixeepaisseurs(self)
+		  
+		  for i = 0 to nsk.count-1
+		    g.drawobject nsk.item(i), nsk.x, nsk.y
+		  next
+		  
+		  
+		  if not hidden then
+		    for i = 0 to labs.count-1
+		      Labs.item(i).paint(g)
+		    next
+		  end if
+		  
 		  
 		  if (not hidden ) and  (Ti <> nil) and (dret = nil) then
 		    PaintTipOnArc(g, bordercolor)
@@ -621,7 +669,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function PInShape(p as BasicPoint) As Boolean
-		  if  Points(0).bpt.Distance(p) >  Radius + wnd.Mycanvas1.MagneticDist  then
+		  if  Points(0).bpt.Distance(p) >  Radius + can.MagneticDist  then
 		    return False
 		  end if
 		  
@@ -775,28 +823,6 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpDateSkull()
-		  dim i, j as integer
-		  dim p As BasicPoint
-		  
-		  p = points(0).bpt
-		  nsk.update(wnd.Mycanvas1.transform(p))
-		  if IndexConstructedPoint > 0 then
-		    for i = 1 to 2
-		      nsk.updatesommet(i,wnd.Mycanvas1.dtransform(points(i).bpt-p))
-		    next
-		    for i = 0 to 1
-		      nsk.updateextre(i,  wnd.mycanvas1.dtransform(coord.extre(i)-p))
-		    next
-		    for i = 0 to 5
-		      nsk.updatectrl(i, wnd.mycanvas1.dtransform(coord.ctrl(i)-p))
-		    next
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  
 		  dim Form, temp As XMLElement
@@ -938,6 +964,11 @@ Inherits Circle
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

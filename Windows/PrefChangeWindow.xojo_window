@@ -26,9 +26,48 @@ Begin Window PrefChangeWindow
    Title           =   "Choix Config"
    Visible         =   True
    Width           =   366
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Configuration :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   14
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   107
+   End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
+      ControlOrder    =   "1"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -59,10 +98,12 @@ Begin Window PrefChangeWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "2"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -90,10 +131,12 @@ Begin Window PrefChangeWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -118,41 +161,6 @@ Begin Window PrefChangeWindow
       Underline       =   False
       Visible         =   True
       Width           =   69
-   End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   27
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   20
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
    End
 End
 #tag EndWindow
@@ -204,6 +212,13 @@ End
 
 #tag EndWindowCode
 
+#tag Events StaticText1
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("Configuration")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events PopupMenu1
 	#tag Event
 		Sub Change()
@@ -246,13 +261,6 @@ End
 		  Config.Menu = oldMenu
 		  update
 		  Close
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Label1
-	#tag Event
-		Sub Open()
-		  me.Text = Dico.value("Configuration")
 		End Sub
 	#tag EndEvent
 #tag EndEvents

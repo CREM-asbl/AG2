@@ -16,8 +16,8 @@ Inherits SelectOperation
 		  dim i as integer
 		  
 		  for i = 0 to tempshape.count-1
-		    tempshape.element(i).IdGroupe = -1
-		    redim tempshape.element(i).OldIdGroupes(-1)
+		    tempshape.item(i).IdGroupe = -1
+		    redim tempshape.item(i).OldIdGroupes(-1)
 		  next
 		  objects.groupes(numlist).removeall
 		  objects.OptimizeGroups
@@ -40,7 +40,7 @@ Inherits SelectOperation
 		    numlist = Currenthighlightedshape.IdGroupe
 		    if numlist <> -1 then
 		      for j = 0 to objects.Groupes(numlist).count -1
-		        objects.selectobject objects.groupes(numlist).element(j)
+		        objects.selectobject objects.groupes(numlist).item(j)
 		      next
 		      DoOperation
 		      endoperation
@@ -70,9 +70,9 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim EL1 as XmlElement
+		  dim EL1 as XMLElement
 		  
-		  EL1 = XmlElement(Temp.FirstChild)
+		  EL1 = XMLElement(Temp.FirstChild)
 		  numlist = val(EL1.GetAttribute("IdGroupe"))
 		  SelectIdForms(EL1)
 		  
@@ -96,16 +96,16 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim EL1 as XmlElement
+		  dim EL1 as XMLElement
 		  dim i as integer
 		  
-		  EL1 = XmlElement(Temp.FirstChild)
+		  EL1 = XMLElement(Temp.FirstChild)
 		  numlist = val(EL1.GetAttribute("IdGroupe"))
 		  SelectIdForms(EL1)
 		  
 		  objects.groupes.Insert(numlist,new ObjectsList)
 		  for i = 0 to tempshape.count-1
-		    Objects.Groupes(Numlist).addShape tempshape.element(i)
+		    Objects.Groupes(Numlist).addShape tempshape.item(i)
 		  next
 		  objects.OptimizeGroups
 		  objects.unselectall

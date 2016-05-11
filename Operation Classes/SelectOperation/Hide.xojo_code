@@ -29,7 +29,7 @@ Inherits SelectOperation
 		  else
 		    n = tempshape.count
 		    for i=0 to n-1
-		      tempshape.element(i).swap
+		      tempshape.item(i).swap
 		    next
 		  end if
 		  

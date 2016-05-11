@@ -25,7 +25,7 @@ Inherits Bipoint
 		    return
 		  end if
 		  
-		  if firstp.distance(secondp) < wnd.mycanvas1.magneticdist  then
+		  if firstp.distance(secondp) < can.magneticdist  then
 		    extre1= firstp
 		    extre2= secondp
 		  else
@@ -234,6 +234,7 @@ Inherits Bipoint
 		  dim i, index, ori as integer
 		  dim s as shape
 		  
+		  'Ne concerne que les paraperp
 		  
 		  if constructedby <> nil and (constructedby.oper < 3) then
 		    updatecoord
@@ -258,7 +259,8 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub createskull(p as basicPoint)
-		  sk = new SegSkull(wnd.mycanvas1.transform(p))
+		  nsk = new SegSkull(can.transform(p))
+		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
 
@@ -271,9 +273,9 @@ Inherits Bipoint
 		  
 		  tsf.constructedshapes.addshape self
 		  'tsf.supp = constructedby.shape
-		  tsf.supp.tsfi.addtsf tsf
+		  tsf.supp.tsfi.addObject tsf
 		  'tsf.index =constructedby.data(0)
-		  CurrentContent.TheTransfos.addtsf tsf
+		  CurrentContent.TheTransfos.addObject tsf
 		  
 		  
 		End Sub
@@ -297,7 +299,7 @@ Inherits Bipoint
 		  'end if
 		  createskull(firstp)
 		  computeextre
-		  Updateskull
+		  
 		  
 		  
 		End Sub
@@ -345,8 +347,10 @@ Inherits Bipoint
 		  for i = n to 1
 		    Points(i).MoveTo(p)
 		  next
-		  constructshape
-		  
+		  if (forme mod 3) <> 0 then
+		    constructshape
+		    segskull(nsk).update(self)
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -484,7 +488,6 @@ Inherits Bipoint
 		  
 		  
 		  ComputeExtre
-		  UpDateSkull
 		  super.Paint(g)
 		  e = (coord.tab(1)-coord.tab(0))*0.1
 		  m =(coord.tab(0)+coord.tab(1))/2
@@ -550,7 +553,7 @@ Inherits Bipoint
 		  dim r , delta as double
 		  dim t as boolean
 		  
-		  delta = wnd.Mycanvas1.MagneticDist
+		  delta = can.MagneticDist
 		  
 		  if firstp <> nil and secondp <> nil then
 		    t = p.Distance(FirstP,SecondP) < delta
@@ -574,7 +577,7 @@ Inherits Bipoint
 		  dim delta as double
 		  
 		  
-		  delta = wnd.Mycanvas1.MagneticDist
+		  delta = can.MagneticDist
 		  
 		  if p.distance(firstp, secondp) < delta then
 		    return 0
@@ -659,7 +662,7 @@ Inherits Bipoint
 		  
 		  if p.modified and q.forme = 1 then
 		    BiB1 = new BiBPoint(ep, ep+w)
-		    dr =  q.pointsur.element(0).getside(q.numside(0))
+		    dr =  q.pointsur.item(0).getside(q.numside(0))
 		    Bib2 = new BiBPoint(dr.firstp,dr.secondp)
 		    M = new AffiProjectionMatrix(BiB1,Bib2)
 		    nq = M*np
@@ -735,7 +738,7 @@ Inherits Bipoint
 		  dim n as integer
 		  dim r1, r2 as double
 		  
-		  sh = q.pointsur.element(0)
+		  sh = q.pointsur.item(0)
 		  w = constructbasis
 		  
 		  if not sh isa circle then
@@ -805,19 +808,6 @@ Inherits Bipoint
 		  for i = 0 to 1
 		    points(i).toeps(tos)
 		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpDateSkull()
-		  dim pt As BasicPoint
-		  
-		  ComputeExtre
-		  sk.update(wnd.myCanvas1.transform(Extre1))
-		  pt = wnd.myCanvas1.dtransform(Extre2-Extre1)
-		  segskull(sk).updatesommet(1,pt)
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -947,6 +937,11 @@ Inherits Bipoint
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

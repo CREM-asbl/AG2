@@ -28,7 +28,7 @@ Protected Module api
 		  dim update As string
 		  
 		  response = http.Post(url+"?method=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
-		  'MsgBox response
+		  
 		  try
 		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))
 		    EL = doc.FirstChild
@@ -79,7 +79,7 @@ Protected Module api
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://api.crem.be/AG.php", Scope = Public
+	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://www.crem.be/api/AG.php", Scope = Public
 	#tag EndConstant
 
 

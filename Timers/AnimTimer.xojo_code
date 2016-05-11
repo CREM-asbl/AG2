@@ -16,7 +16,7 @@ Inherits Timer
 		    restart
 		  end if
 		  
-		  can.RefreshBackground
+		  can.invalidate
 		  
 		End Sub
 	#tag EndEvent
@@ -26,12 +26,11 @@ Inherits Timer
 		Sub Constructor(oper as Modifier)
 		  dim q as BasicPoint
 		  self.oper = oper
-		  can = wnd.Mycanvas1
 		  niter = 60
 		  Mode=2
 		  period=100
 		  enabled = true
-		  s = oper.pointmobile.pointsur.element(0)
+		  s = oper.pointmobile.pointsur.item(0)
 		  if s isa freecircle then
 		    niter = 60*PI
 		    M = new RotationMatrix(s.points(0).bpt, 2*PI*s.ori/niter)
@@ -91,7 +90,7 @@ Inherits Timer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		can As mycanvas
+		can As CustomCanvas1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

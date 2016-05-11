@@ -21,7 +21,7 @@ Protected Class TriDshape
 		    next
 		  end if
 		  
-		  if s isa Lacet then
+		  if s.Hybrid then
 		    for j = 0 to ubound(lacet(s).coord.extre)
 		      TriDpts.append new TriDpoint(Lacet(s).coord.extre(j)-fp)
 		    next

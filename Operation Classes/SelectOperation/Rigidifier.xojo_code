@@ -14,7 +14,7 @@ Inherits SelectOperation
 		  dim i as integer
 		  
 		  for i = 0 to tempshape.count -1
-		    tempshape.element(i).rigidifier
+		    tempshape.item(i).rigidifier
 		  next
 		  
 		  
@@ -80,7 +80,7 @@ Inherits SelectOperation
 		Sub UndoOperation(Temp As XMLElement)
 		  dim EL as XMLElement
 		  
-		  EL = XmlElement(Temp.Child(0))
+		  EL = XMLElement(Temp.Child(0))
 		  objects.unselectall
 		  SelectIdForms(EL)
 		  DoOperation

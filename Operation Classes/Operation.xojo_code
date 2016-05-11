@@ -2,7 +2,7 @@
 Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub AddOperationToMac(OpList as XMLDocument, EL1 as XMLElement)
-		  dim EL as XmlElement
+		  dim EL as XMLElement
 		  dim str as string
 		  
 		  if (self isa shapeconstruction) and (currentshape isa point)  then
@@ -38,7 +38,7 @@ Protected Class Operation
 		  CurrentContent.curoper = nil
 		  CurrentContent.CreateFigs
 		  if not self isa SaveBitMap then
-		    wnd.mycanvas1.clearoffscreen
+		    can.clearoffscreen
 		  end if
 		  finished = true
 		  
@@ -86,22 +86,22 @@ Protected Class Operation
 		  end if
 		  
 		  for i = visible.count-1  downto 0
-		    s = Visible.element(i)
+		    s = Visible.item(i)
 		    if s isa Bande or S isa Polygon or S isa secteur or s isa droite then
 		      ind = s.pointonside(p)
 		      if ind = -1 then
-		        Visible.removeShape(s)
+		        Visible.removeobject(s)
 		      else
 		        index.insert 0, ind
 		      end if
 		    elseif not (s isa droite) then
-		      Visible.removeShape(s)
+		      Visible.removeobject(s)
 		    end if
 		  next
 		  
 		  nobj = visible.count
 		  if visible.count > 0 then
-		    return Visible.element(iobj)
+		    return Visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -130,7 +130,7 @@ Protected Class Operation
 		  if visible.count <> nobj then
 		    oldvisible = new objectslist
 		    for i = 0 to visible.count-1
-		      oldvisible.addshape visible.element(i)
+		      oldvisible.addshape visible.item(i)
 		    next
 		    iobj = 0
 		  end if
@@ -141,9 +141,9 @@ Protected Class Operation
 		    return nil
 		  else
 		    for i=0 to nobj-1
-		      visible.element(i).tsp = true
+		      visible.item(i).tsp = true
 		    next
-		    return Visible.element(iobj)
+		    return Visible.item(iobj)
 		  end if
 		  
 		  
@@ -156,6 +156,7 @@ Protected Class Operation
 		  if Config.ShowHelp then
 		    g.forecolor = Config.bordercolor.col
 		    g.DrawString  lowercase(s1+info) ,Mcanx+8,Mcany+3
+		    'can.invalidate
 		  end if
 		End Sub
 	#tag EndMethod
@@ -188,7 +189,7 @@ Protected Class Operation
 		      magnetism=GridMagnetism
 		      magneticD=gridd - AttractedPoint.bpt
 		      CurrentAttractedShape=AttractedPoint
-		      Currentattractingshape = wnd.mycanvas1.rep
+		      Currentattractingshape = can.rep
 		    end if
 		  end if
 		  return magnetism
@@ -235,7 +236,7 @@ Protected Class Operation
 		    if GridMagnetism>magnetism then
 		      magnetism=GridMagnetism
 		      magneticD= gridd    'currentpoint.bpt+gridd
-		      currentattractingshape = wnd.mycanvas1.rep
+		      currentattractingshape = can.rep
 		    end if
 		  end if
 		  
@@ -251,13 +252,13 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Function Mcanx() As integer
-		  return wnd.Mycanvas1.MouseCan.x
+		  return can.MouseCan.x
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Mcany() As integer
-		  return wnd.Mycanvas1.MouseCan.y-10
+		  return can.MouseCan.y-10
 		End Function
 	#tag EndMethod
 
@@ -281,7 +282,7 @@ Protected Class Operation
 		    currentshape = nil
 		  end if
 		  if not (self isa readhisto) then
-		    if oldp <> nil and p.distance(oldp) > wnd.mycanvas1.magneticdist  then
+		    if oldp <> nil and p.distance(oldp) > can.magneticdist  then
 		      oldp = p
 		      objects.unhighlightall
 		      CurrentHighlightedShape = GetShape(p)
@@ -313,19 +314,19 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Function Muser() As BasicPoint
-		  return wnd.Mycanvas1.MouseUser
+		  return can.MouseUser
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Muserx() As double
-		  return wnd.Mycanvas1.MouseUser.x
+		  return can.MouseUser.x
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Musery() As double
-		  return wnd.Mycanvas1.MouseUser.y
+		  return can.MouseUser.y
 		End Function
 	#tag EndMethod
 
@@ -355,7 +356,7 @@ Protected Class Operation
 		  #endif
 		  
 		  if wnd.drappt then
-		    info = info + " (" + left(str(wnd.MyCanvas1.Mouseuser.x),5)+", "+ left(str(wnd.MyCanvas1.Mouseuser.y),5) +")"
+		    info = info + " (" + left(str(can.Mouseuser.x),5)+", "+ left(str(can.Mouseuser.y),5) +")"
 		  end if
 		End Sub
 	#tag EndMethod
@@ -552,13 +553,13 @@ Protected Class Operation
 		    end if
 		    for i = 0 to s.tsfi.count-1
 		      t = true
-		      t = t and ty = s.tsfi.element(i).type
-		      t = t and  orien = s.tsfi.element(i).ori
+		      t = t and ty = s.tsfi.item(i).type
+		      t = t and  orien = s.tsfi.item(i).ori
 		      if s isa polygon or s isa bande or s isa secteur then
-		        t = t and ind = s.tsfi.element(i).index
+		        t = t and ind = s.tsfi.item(i).index
 		      end if
 		      if t then
-		        return s.tsfi.element(i)
+		        return s.tsfi.item(i)
 		      end if
 		    next
 		  end if
@@ -577,9 +578,9 @@ Protected Class Operation
 		  
 		  if CurrentAttractingShape<>nil then
 		    if currentcontent.currentoperation isa duplicate and   duplicate(currentcontent.currentoperation).copyptsur and currentattractingshape isa polygon  then
-		      icot = currentattractingshape.pointonside(point(duplicate(currentcontent.currentoperation).copies.element(0)).bpt)
+		      icot = currentattractingshape.pointonside(point(duplicate(currentcontent.currentoperation).copies.item(0)).bpt)
 		      if icot <> -1 then
-		        Polygon(currentattractingshape).Paintside(wnd.mycanvas1.graphics,icot,2,Config.highlightcolor)
+		        Polygon(currentattractingshape).Paintside(can.graphics,icot,2,Config.highlightcolor)
 		      end if
 		    else
 		      CurrentAttractingShape.HighLight
@@ -699,6 +700,7 @@ Protected Class Operation
 		4) MultipleSelectOperation
 		TransfoConstruction: 17
 		AppliquerTsf: 24  
+		TrajectoireTsf: 48
 		Decouper: 25  
 		Divide: 26   
 		Fusion: 27

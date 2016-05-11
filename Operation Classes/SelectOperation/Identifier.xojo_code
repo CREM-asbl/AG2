@@ -18,12 +18,12 @@ Inherits SelectOperation
 		  
 		  if nobj = 2  then
 		    if remplacement.Labs.count = 1 then
-		      labremplacement = remplacement.labs.element(0).Text
+		      labremplacement = remplacement.labs.item(0).Text
 		    else
 		      labremplacement = ""
 		    end if
 		    if remplace.Labs.Count = 1 then
-		      LabRemplace = remplace.Labs.element(0).Text
+		      LabRemplace = remplace.Labs.item(0).Text
 		    else
 		      Labremplace = ""
 		    end if
@@ -82,17 +82,17 @@ Inherits SelectOperation
 		  s = super.getshape(p)
 		  
 		  for i =  visible.count-1 downto 0
-		    s = Visible.element(i)
+		    s = Visible.item(i)
 		    if  not (s isa point)  or (point(s).hasstdparent) or (s.constructedby <> nil and s.constructedby.oper = 9)  then
-		      Visible.removeShape(s)
+		      Visible.removeobject(s)
 		      nobj = visible.count
 		    end if
 		  next
 		  
-		  if nobj = 2 and point(visible.element(0)).bpt.distance(point(visible.element(1)).bpt) < epsilon  then
-		    t = positionner(point(visible.element(0)), point(visible.element(1)))
+		  if nobj = 2 and point(visible.item(0)).bpt.distance(point(visible.item(1)).bpt) < epsilon  then
+		    t = positionner(point(visible.item(0)), point(visible.item(1)))
 		  elseif nobj = 1 then
-		    remplacement = point(visible.element(0))
+		    remplacement = point(visible.item(0))
 		    mag = remplacement.magnetisme(magneticD,sh, nextsh)
 		    if cancelattraction(remplacement) then
 		      remplacement = nil
@@ -129,7 +129,7 @@ Inherits SelectOperation
 		  Objects.Unselectall
 		  Objects.selectobject(CurrentHighLightedshape)
 		  Finished = false
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		  can.Mousecursor = System.Cursors.Wait
 		  wnd.refreshtitle
 		  
 		  CurrentContent.Thefigs.removefigure remplacement.fig
@@ -208,7 +208,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
-		  'Dim Temp,  EL1 as XmlElement
+		  'Dim Temp,  EL1 as XMLElement
 		  'dim i as integer
 		  '
 		  'if nobj = 2 then 'remplacement et remplace sont deux points
@@ -243,7 +243,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
-		  Dim Myself, EL, EL1 as XmlElement
+		  Dim Myself, EL, EL1 as XMLElement
 		  dim i as integer
 		  
 		  
@@ -288,9 +288,9 @@ Inherits SelectOperation
 		  EL1 = XMLElement(EL.child(0))
 		  Remplacement  = point(objects.Getshape(val(EL1.Getattribute("Id"))))
 		  if labremplacement <> "" then
-		    remplacement.labs.element(0).Text = labremplacement
+		    remplacement.labs.item(0).Text = labremplacement
 		  else
-		    redim remplacement.labs.labs(-1)
+		    redim remplacement.labs.objects(-1)
 		  end if
 		  
 		  EL2 = XMLElement(EL.child(1))
@@ -327,7 +327,7 @@ Inherits SelectOperation
 		    
 		    if remplacement.pointsur.count >0 then
 		      for i = remplacement.pointsur.count-1 downto 0
-		        s = remplacement.pointsur.element(i)
+		        s = remplacement.pointsur.item(i)
 		        remplacement.removepointsur(s)
 		        remplace.puton s
 		      next

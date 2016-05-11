@@ -56,9 +56,9 @@ Inherits Operation
 		  
 		  if r <> 1 then
 		    c = new BasicPoint(0,0)
-		    wnd.mycanvas1.rep.idx = wnd.mycanvas1.rep.idx*r
-		    wnd.mycanvas1.rep.idy = wnd.mycanvas1.rep.idy*r
-		    wnd.mycanvas1.setrepere(wnd.mycanvas1.rep)
+		    can.rep.idx = can.rep.idx*r
+		    can.rep.idy = can.rep.idy*r
+		    can.setrepere(can.rep)
 		    Mat = new HomothetyMatrix(c, 1/r)
 		    Objects.UpdateUserCoord(Mat)
 		  end if

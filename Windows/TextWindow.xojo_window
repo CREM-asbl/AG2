@@ -29,13 +29,11 @@ Begin Window TextWindow
    Begin TextArea EF
       AcceptTabs      =   False
       Alignment       =   0
-      AutoDeactivate  =   False
+      AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
       BackColor       =   &cFFFFFF00
-      BehaviorIndex   =   0
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -57,7 +55,6 @@ Begin Window TextWindow
       LockTop         =   True
       Mask            =   ""
       Multiline       =   True
-      Password        =   "False"
       ReadOnly        =   False
       Scope           =   0
       ScrollbarHorizontal=   True
@@ -87,18 +84,18 @@ End
 		  width = wnd.width/3
 		  height = wnd.height/3
 		  objects = CurrentContent.TheObjects
-		  figs = CurrentContent.TheFigs
+		  Figs = CurrentContent.TheFigs
 		  Macs = app.TheMacros
 		  EF.height = height
 		  EF.ReadOnly = true
-		  if wnd.MyCanvas1.sctxt = nil then
+		  if can.sctxt = nil then
 		    Title = "Objets"
 		  elseif  currentcontent.Macrocreation then
 		    Title =currentcontent.Mac.GetName
 		    EF.ReadOnly = false
 		  else
-		    sc = wnd.MyCanvas1.sctxt
-		    Title = wnd.MyCanvas1.tit
+		    sc = can.sctxt
+		    Title = can.tit
 		  end if
 		  
 		  Afficher
@@ -154,16 +151,16 @@ End
 		    
 		  else
 		    EF.Text = "Largeur du fonds d'écran: "
-		    EF.Text = EF.Text+ str(wnd.mycanvas1.width) + chr(10)
-		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(wnd.mycanvas1.height) + chr(10)+chr(13)
+		    EF.Text = EF.Text+ str(can.width) + chr(10)
+		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(can.height) + chr(10)+chr(13)
 		    
 		    for i = 0 to Figs.count-1
-		      f = Figs.element(i)
+		      f = Figs.item(i)
 		      messages(f)
 		      if f.subs.count > 0 then
 		        for j=0 to f.subs.count -1
 		          EF.Text =  EF.Text +chr(10)+chr(13)
-		          ff = f.subs.element(j)
+		          ff = f.subs.item(j)
 		          messages(ff,j)
 		        next
 		      end if
@@ -172,8 +169,9 @@ End
 		  end if
 		  
 		  for i = 0 to Macs.count-1
-		    EF.Text = EF.Text + Macs.element(i).caption +chr(10)
+		    EF.Text = EF.Text + Macs.item(i).caption +chr(10)
 		  next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -217,7 +215,7 @@ End
 		  end if
 		  if P.PointSur <> Nil then
 		    for i = 0 to P.Pointsur.count-1
-		      m = m + "Point Sur  " + Type(P.PointSur.element(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", "
+		      m = m + "Point Sur  " + Type(P.PointSur.item(i)) + " Côté:  N°" + str(P.numside(i)) + ", Abscisse :  " +str(P.location(i))+", "
 		    next i
 		  end if
 		  if p.constructedby <> nil or p.conditionedby<> nil or ubound(p.constructedshapes)>-1 then
@@ -252,22 +250,22 @@ End
 		  EF.Text = EF.Text + "Figure "+ str(f.idfig)+chr(10)
 		  EF.Text = EF.Text + "Formes: "
 		  for i = 0 to f.shapes.count-1
-		    EF.Text = EF.Text + mess(f.shapes.element(i))+",  "
+		    EF.Text = EF.Text + mess(f.shapes.item(i))+",  "
 		  next
 		  EF.Text = EF.Text+chr(10)+"Sommets : "
 		  for i = 0 to f.somm.count -1
-		    EF.Text = EF.Text + mess(f.somm.element(i))+", "
+		    EF.Text = EF.Text + mess(f.somm.item(i))+", "
 		  next
 		  if  f.PtsSur.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Sur : "
 		    for i = 0 to f.PtsSur.count -1
-		      EF.Text = EF.Text+ mess(f.PtsSur.element(i))+", "
+		      EF.Text = EF.Text+ mess(f.PtsSur.item(i))+", "
 		    next
 		  end if
 		  if f.PtsConsted.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Construits : "
 		    for i = 0 to f.PtsConsted.count -1
-		      EF.Text = EF.Text+mess(f.PtsConsted.element(i))+",  "
+		      EF.Text = EF.Text+mess(f.PtsConsted.item(i))+",  "
 		    next
 		  end if
 		  EF.Text = EF.Text + chr(10)+chr(13)
@@ -286,7 +284,7 @@ End
 		  
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "
-		    s = f.shapes.element(i)
+		    s = f.shapes.item(i)
 		    EF.Text = EF.Text+ messages(s)
 		  next
 		  
@@ -539,6 +537,13 @@ End
 
 #tag EndWindowCode
 
+#tag Events EF
+	#tag Event
+		Sub TextChange()
+		  self.Afficher
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="BackColor"

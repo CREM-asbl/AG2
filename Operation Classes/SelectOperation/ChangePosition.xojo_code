@@ -20,7 +20,7 @@ Inherits SelectOperation
 		  
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    pos.append currentcontent.plans.indexof(s.id)
 		    if foreground = 0 then
 		      currentcontent.moveback(s.id)
@@ -103,7 +103,7 @@ Inherits SelectOperation
 		  
 		  temp = Doc.CreateElement(Dico.value("Forms"))
 		  for i = 0 to tempshape.count-1
-		    temp.AppendChild tempshape.element(i).XMLPutIdINContainer(Doc)
+		    temp.AppendChild tempshape.item(i).XMLPutIdINContainer(Doc)
 		  next
 		  temp.setattribute("Foreground", str(foreground))
 		  
@@ -147,11 +147,12 @@ Inherits SelectOperation
 		  SelectIdForms(Temp)
 		  EL = XMLElement(Temp.child(1))
 		  
+		  redim pos(-1)
 		  redim pos(tempshape.count-1)
 		  for i = tempshape.count - 1 downto 0
 		    EL1 = XMLElement(EL.Child(i))
 		    pos(i) = val(EL1.GetAttribute(Dico.Value("Old")))
-		    s=tempshape.element(i)
+		    s=tempshape.item(i)
 		    currentcontent.setposition(s,pos(i))
 		  next
 		  

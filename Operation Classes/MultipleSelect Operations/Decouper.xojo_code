@@ -16,11 +16,11 @@ Inherits MultipleSelectOperation
 		      CurrentContent.Thefigs.Removefigure ff
 		      CurrentContent.Thefigs.Removefigure p.fig
 		      List1 = new figslist
-		      list1.addfigure ff
-		      list1.addfigure p.fig
+		      list1.addobject ff
+		      list1.addobject p.fig
 		      ff = list1.concat
 		      ff.ListerPrecedences
-		      CurrentContent.TheFigs.AddFigure ff
+		      CurrentContent.TheFigs.addobject ff
 		    end if
 		  next
 		End Sub
@@ -110,7 +110,7 @@ Inherits MultipleSelectOperation
 		  dim centres() as BasicPoint
 		  dim curved() as integer
 		  
-		  if (currentshape isa Circle)  or (currentshape isa Lacet) then
+		  if (currentshape isa Circle)  or (currentshape.hybrid) then
 		    s = new Lacet(Objects)   //initialisation de la pièce
 		  else
 		    s = new Polyqcq(Objects)
@@ -232,7 +232,7 @@ Inherits MultipleSelectOperation
 		    visible = objects.findpoint(p)
 		    if visible.count > 0 then
 		      for i =visible.count-1 downto 0
-		        pt = point(visible.element(i))
+		        pt = point(visible.item(i))
 		        if not choixvalide(pt) then
 		          visible.objects.remove i
 		        end if
@@ -240,7 +240,7 @@ Inherits MultipleSelectOperation
 		    end if
 		    if visible.count > 0 then
 		      nobj = visible.count
-		      return visible.element(iobj)
+		      return visible.item(iobj)
 		    else
 		      return nil
 		    end if
@@ -270,8 +270,8 @@ Inherits MultipleSelectOperation
 		    oldCol = g.ForeColor
 		    g.ForeColor =  Config.Weightlesscolor.col
 		    for i=1 to ncutpt-1
-		      a = wnd.mycanvas1.transform(CutPts(i-1).bpt)
-		      b = wnd.mycanvas1.transform(CutPts(i).bpt)
+		      a = can.transform(CutPts(i-1).bpt)
+		      b = can.transform(CutPts(i).bpt)
 		      g.DrawLine(a.x,a.y,b.x,b.y)
 		    next
 		    g.ForeColor = oldCol
@@ -280,8 +280,8 @@ Inherits MultipleSelectOperation
 		      Help g, choose + anothercutpoint
 		    elseif currenthighlightedshape isa point then
 		      g.ForeColor =  Config.Weightlesscolor.col
-		      a = wnd.mycanvas1.transform(CutPts(ncutpt-1).bpt)
-		      b = wnd.mycanvas1.transform(Point(CurrentHighlightedShape).bpt)
+		      a = can.transform(CutPts(ncutpt-1).bpt)
+		      b = can.transform(Point(CurrentHighlightedShape).bpt)
 		      g.DrawLine(a.x,a.y,b.x,b.y)
 		      g.ForeColor = oldCol
 		    end if

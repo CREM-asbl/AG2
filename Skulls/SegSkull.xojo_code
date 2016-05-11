@@ -1,15 +1,19 @@
 #tag Class
 Protected Class SegSkull
-Inherits Skull
+Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub Constructor(p as BasicPoint)
-		  CC = new CurveShape
-		  ref = p
-		  CC.x = 0
-		  CC.y = 0
-		  CurveShape(CC).X2 = 0
-		  CurveShape(CC).Y2 = 0
-		  CC.borderwidth = 1
+		  
+		  X = 0
+		  Y = 0
+		  append new curveshape
+		  item(0).x = 0
+		  item(0).y = 0
+		  item(0).X2 = 0
+		  item(0).Y2 = 0
+		  updatesize(1)
+		  borderwidth = 1
+		  
 		  
 		  
 		  
@@ -17,9 +21,29 @@ Inherits Skull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateSommet(n as integer, p as BasicPoint)
-		  CurveShape(CC).X2 = p.x
-		  CurveShape(CC).Y2 = p.y
+		Sub paint(g As graphics)
+		  g.drawobject self, self.x, self.y
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub update(s as shape)
+		  dim p, q as BasicPoint
+		  
+		  p =s.getgravitycenter
+		  ref = can.transform(p)
+		  x = ref.x
+		  y = ref.y
+		  
+		  q= can.dtransform(droite(s).extre1-p)
+		  item(0).x=q.x
+		  item(0).y=q.y
+		  q= can.dtransform(droite(s).extre2-p)
+		  item(0).x2=q.x
+		  item(0).y2=q.y
+		  
+		  fixecouleurs(s)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -48,6 +72,11 @@ Inherits Skull
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="angle"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Border"
 			Group="Behavior"
 			InitialValue="0"
@@ -64,6 +93,17 @@ Inherits Skull
 			Group="Behavior"
 			InitialValue="0"
 			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Count"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="currentcurve"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Fill"

@@ -62,8 +62,8 @@ Protected Class Macro
 		  'k = ObFinal.indexof(MacId)
 		  if  ifm.final then      //Si le support est une forme finale ou initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
-		    s.tsfi.element(ifmac.num).setfpsp(s)
-		    s.tsfi.element(ifmac.num).M =  ifm.M
+		    s.tsfi.item(ifmac.num).setfpsp(s)
+		    s.tsfi.item(ifmac.num).M =  ifm.M
 		  end if
 		End Sub
 	#tag EndMethod
@@ -119,6 +119,8 @@ Protected Class Macro
 		      point(s).bpt=ifmac.coord.tab(0)
 		      s.coord=ifmac.coord
 		      if s.forme = 1 then
+		        redim point(s).location(-1)
+		        redim point(s).numside(-1)
 		        redim point(s).location(0)
 		        redim point(s).numside(0)
 		        point(s).location(0) = ifmac.location
@@ -129,7 +131,10 @@ Protected Class Macro
 		    for i = 0 to s.npts-1
 		      s.coord.tab(i) = ifmac.coord.tab(i)
 		      if s.points(i).forme=1 then
+		        redim s.points(i).location(-1)
+		        redim s.points(i).numside(-1)
 		        redim s.points(i).location(0)
+		        redim s.points(i).numside(0)
 		        s.points(i).location(0) = ifmac.childs(i).location
 		        s.points(i).numside(0) = ifmac.childs(i).numside0
 		        ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
@@ -147,6 +152,7 @@ Protected Class Macro
 		  dim p as point
 		  
 		  if ifmac.fa = 0 then
+		    redim nbp.tab(-1)
 		    redim nbp.tab(0)
 		    ifm1 =  MacInf.GetInfoMac(ifmac.forme1,num)
 		    if ifm1.macid = ifmac.forme1 then
@@ -155,6 +161,7 @@ Protected Class Macro
 		      nbp.tab(0) = ifm1.coord.tab(num)
 		    end if
 		  else
+		    redim nbp.tab(-1)
 		    redim nbp.tab(ifmac.npts-1)
 		    for i = 0 to ifmac.ncpts-1
 		      ifm1 = ifmac.childs(i)
@@ -328,7 +335,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub Elaguer()
 		  dim i, ObId as integer
-		  dim EL, EL1 as XmlElement
+		  dim EL, EL1 as XMLElement
 		  
 		  for i = Histo.childcount -1 downto 0
 		    EL = XMLElement(Histo.Child(i))
@@ -559,7 +566,7 @@ Protected Class Macro
 		    n = 2
 		  end if
 		  w=BiB1.VecNorParaPerp(n)
-		  
+		  redim nbp.tab(-1)
 		  redim  nbp.tab(1)
 		  //Ensuite on recherche l'origine
 		  nbp.tab(0) = ifmac.childs(0).coord.tab(0)    'GetCoordChild(ifmac.childs(0))
@@ -608,7 +615,7 @@ Protected Class Macro
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
 		  
-		  
+		  redim nbp.tab(-1)
 		  redim nbp.tab(0)
 		  
 		  
@@ -702,7 +709,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, n as integer) As XMLElement
-		  dim Temp, EL as XmlElement
+		  dim Temp, EL as XMLElement
 		  dim i as integer
 		  dim s as shape
 		  dim categorie as string
@@ -767,6 +774,7 @@ Protected Class Macro
 		  end if
 		  nbp1 = ifm2.coord
 		  n = nbp1.taille
+		  redim nbp.tab(-1)
 		  redim nbp.tab(n-1)
 		  M = ifm1.M
 		  if M <> nil and M.v1 <> nil  then

@@ -58,7 +58,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub Addshape(s as shape)
-		  dim i as integer
 		  
 		  TheObjects.addshape s
 		  
@@ -96,16 +95,17 @@ Protected Class WindContent
 		  UL = 1
 		  IcotUL = -1
 		  currentoperation = nil
-		  wnd.mycanvas1.sctxt = nil
-		  wnd.mycanvas1.ctxt = false
-		  
+		  if can <> nil then
+		    can.sctxt = nil
+		    can.ctxt = false
+		  end if
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CreateFigs()
-		  dim Temp as XMLElement
+		  
 		  
 		  
 		  FigsCreated = OpList.CreateElement("Created_Figures")
@@ -147,7 +147,6 @@ Protected Class WindContent
 		    end if
 		    if fi <> nil then
 		      FiHisto = fi
-		      FiHisto.MacType = FileAGTypes.HIST
 		    end if
 		  end if
 		  
@@ -160,10 +159,11 @@ Protected Class WindContent
 		  dim s as shape
 		  
 		  n = TheObjects.count-1
+		  redim plans(-1)
 		  redim plans(n)
 		  plans(0)=0
 		  for i = 1 to n
-		    s = TheObjects.element(i)
+		    s = TheObjects.item(i)
 		    if s.plan = -1  or  s.plan = 0  or s.plan > ubound(plans) then
 		      plans.append s.id
 		      s.plan = ubound(plans)
@@ -193,7 +193,6 @@ Protected Class WindContent
 		  dim n as integer
 		  dim mac as Macro
 		  dim cap as string
-		  dim f as folderitem
 		  dim Doc as XMLDocument
 		  
 		  nop = val(Temp.GetAttribute("OpId"))
@@ -312,7 +311,7 @@ Protected Class WindContent
 		  addshape currentoperation.currentshape
 		  AddOperation(CurrentOperation)
 		  CurrentOperation = nil
-		  wnd.mycanvas1.mousecursor = System.Cursors.StandardPointer
+		  can.mousecursor = System.Cursors.StandardPointer
 		  
 		End Sub
 	#tag EndMethod
@@ -344,7 +343,7 @@ Protected Class WindContent
 		  setpolygpointes(val(Temp.GetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"))))
 		  wnd.settrace(val(Temp.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
 		  SetFleches(val(Temp.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
-		  TheObjects.updatelabels(wnd.mycanvas1.rep.echelle)
+		  TheObjects.updatelabels(can.rep.echelle)
 		  
 		End Sub
 	#tag EndMethod
@@ -381,8 +380,8 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function GetRepere() As Repere
-		  if TheObjects.element(0) isa repere then
-		    return Repere(TheObjects.element(0))
+		  if TheObjects.item(0) isa repere then
+		    return Repere(TheObjects.item(0))
 		  else
 		    return nil
 		  end if
@@ -457,7 +456,7 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Function MakeXML() As XMLDocument
 		  dim Doc as XMLDocument
-		  dim AG, TMP, EL, Grille as XmlElement
+		  dim AG, TMP, EL as XMLElement
 		  dim i as integer
 		  dim s as shape
 		  dim Mac as Macro
@@ -468,7 +467,6 @@ Protected Class WindContent
 		  d = new Date
 		  
 		  Doc = new XmlDocument
-		  Doc.Preservewhitespace = true
 		  AG = Doc.CreateElement("AG")
 		  Doc.Appendchild (AG)
 		  AG.SetAttribute("Creation_Date",d.ShortDate)
@@ -511,7 +509,7 @@ Protected Class WindContent
 		  if app.TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")
 		    for i = 0 to app.TheMacros.count-1
-		      Mac =app.TheMacros.element(i)
+		      Mac =app.TheMacros.item(i)
 		      EL = XMLElement(Doc.importnode(mac.Histo,true))
 		      Mac.ToXML(Doc,EL)
 		      TMP.AppendChild EL
@@ -519,16 +517,16 @@ Protected Class WindContent
 		    AG.appendchild TMP
 		  end if
 		  
-		  if TheObjects.element(0) isa repere then
+		  if TheObjects.item(0) isa repere then
 		    TMP = Doc.CreateElement(Dico.Value("Objects"))
-		    TMP.AppendChild TheObjects.Element(0).XMLPutInContainer(Doc)
+		    TMP.AppendChild TheObjects.item(0).XMLPutInContainer(Doc)
 		  else
 		    MsgBox Dico.value("CorruptedFile")
 		    return nil
 		  end if
 		  TheObjects.unselectall //désélection  pour que les objets soient dans le même ordre que dans la mémoire
 		  for i = 1 to TheObjects.count-1
-		    s = TheObjects.element(i)
+		    s = TheObjects.item(i)
 		    s.plan = CurrentContent.plans.IndexOf(s.id)
 		    TMP.appendchild s.XMLPutInContainer(Doc)
 		  next
@@ -604,10 +602,10 @@ Protected Class WindContent
 		  dim i as Integer
 		  
 		  for i = TheObjects.count downto 0
-		    if TheObjects.element(i) isa point then
-		      pt = point(TheObjects.element(i))
+		    if TheObjects.item(i) isa point then
+		      pt = point(TheObjects.item(i))
 		      if Ubound(pt.parents) >-1 and (pt.constructedby = nil or pt.constructedby.oper = 10)  then
-		        RemoveShape pt
+		        removeobject pt
 		      end if
 		    end if
 		  next
@@ -646,17 +644,17 @@ Protected Class WindContent
 		  SaveHisto
 		  CurrentFileUpToDate=false
 		  curoper = CreerOperation(EL)
-		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
-		  wnd.MyCanvas1.ClearOffscreen
+		  can.Mousecursor = system.cursors.wait
+		  can.ClearOffscreen
 		  CurOper.RedoOperation(EL)
 		  
 		  if wnd.mousedispo then
 		    wnd.refresh
 		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(wnd.mycanvas1.graphics)
+		      curoper.paint(can.graphics)
 		    end if
 		    isaundoredo = false
-		    wnd.Mycanvas1.Mousecursor = System.Cursors.StandardPointer
+		    can.Mousecursor = System.Cursors.StandardPointer
 		  end if
 		  
 		  
@@ -669,7 +667,7 @@ Protected Class WindContent
 		  dim i as integer
 		  
 		  for i = 0 to TheTransfos.count-1
-		    s = TheTransfos.element(i).supp
+		    s = TheTransfos.item(i).supp
 		    if s isa point and ubound(point(s).parents)> -1 then
 		      point(s).parents(0).movetofront
 		    else
@@ -687,11 +685,11 @@ Protected Class WindContent
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RemoveShape(s as shape)
+		Sub removeobject(s as shape)
 		  if plans.indexof(s.id) <> -1 then
 		    plans.remove  plans.indexof(s.id)
 		  end if
-		  TheObjects.removeshape s
+		  TheObjects.removeobject s
 		  UpdatePlans
 		  
 		  #if TargetLinux then
@@ -707,20 +705,10 @@ Protected Class WindContent
 		  if currentfile = nil then
 		    saveas
 		  else
-		    Dim fileStream as TextOutputStream
 		    dim Doc as XMLDocument
-		    
 		    Doc = MakeXML
-		    
 		    if Doc <> nil then
-		      fileStream=currentfile.createTextFile
-		      if fileStream=nil then
-		        MsgBox  Dico.value("ErrorOnSave")
-		        return
-		      else
-		        filestream.write Doc.tostring
-		        fileStream.close
-		      end if
+		      Doc.SaveXml(currentfile)
 		    end if
 		    TheObjects.unselectall
 		    CurrentFileUpToDate=true
@@ -732,7 +720,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub SaveAs()
-		  dim file as folderitem
+		  
 		  dim Titre as string
 		  dim n as integer
 		  
@@ -837,7 +825,7 @@ Protected Class WindContent
 		  SaveHisto
 		  curoper = CreerOperation(EL)
 		  CurrentFileUpToDate=false
-		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
+		  can.Mousecursor = system.cursors.wait
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
 		  
@@ -847,10 +835,10 @@ Protected Class WindContent
 		  
 		  if wnd.mousedispo then
 		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(wnd.mycanvas1.graphics)
+		      curoper.paint(can.graphics)
 		    end if
 		    isaundoredo = false
-		    wnd.Mycanvas1.Mousecursor = System.Cursors.StandardPointer
+		    can.Mousecursor = System.Cursors.StandardPointer
 		  end if
 		  
 		End Sub
@@ -861,7 +849,7 @@ Protected Class WindContent
 		  dim i as integer
 		  
 		  for i = 0 to TheObjects.count-1
-		    TheObjects.element(i).plan = plans.indexof(TheObjects.element(i).id)
+		    TheObjects.item(i).plan = plans.indexof(TheObjects.item(i).id)
 		  next
 		End Sub
 	#tag EndMethod

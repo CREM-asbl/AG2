@@ -28,6 +28,8 @@ Begin Window BugReport
    Width           =   300
    Begin ProgressBar TotalBar
       AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      ControlOrder    =   "0"
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -44,17 +46,21 @@ Begin Window BugReport
       TabIndex        =   "0"
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   143
+      TextFont        =   "System"
+      TextSize        =   "0"
+      Top             =   133
       Value           =   0
       Visible         =   True
       Width           =   268
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
+      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -80,69 +86,11 @@ Begin Window BugReport
       Visible         =   True
       Width           =   80
    End
-   Begin ProgressBar FirstBar
+   Begin Label StaticText1
       AutoDeactivate  =   True
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   132
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Maximum         =   100
-      Scope           =   0
-      TabIndex        =   "2"
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Top             =   74
-      Value           =   0
-      Visible         =   True
-      Width           =   152
-   End
-   Begin ProgressBar SecondBar
-      AutoDeactivate  =   True
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   132
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Maximum         =   100
-      Scope           =   0
-      TabIndex        =   "3"
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Top             =   42
-      Value           =   0
-      Visible         =   True
-      Width           =   152
-   End
-   Begin FtpConnexion FTP
-      Address         =   ""
-      crlf            =   ""
-      CurrentFile     =   ""
-      dataport        =   12345
-      Enabled         =   True
-      Index           =   -2147483648
-      InitialParent   =   ""
-      LockedInPosition=   False
-      Port            =   1000
-      Scope           =   0
-      TabPanelIndex   =   0
-      transfert       =   False
-   End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   True
+      BehaviorIndex   =   2
+      Bold            =   False
+      ControlOrder    =   "2"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -154,9 +102,9 @@ Begin Window BugReport
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
@@ -170,14 +118,16 @@ Begin Window BugReport
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   42
-      Transparent     =   True
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   100
    End
-   Begin Label Label2
+   Begin Label StaticText2
       AutoDeactivate  =   True
-      Bold            =   True
+      BehaviorIndex   =   3
+      Bold            =   False
+      ControlOrder    =   "3"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -189,9 +139,9 @@ Begin Window BugReport
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
@@ -205,49 +155,70 @@ Begin Window BugReport
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   74
-      Transparent     =   True
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   88
+      Width           =   100
    End
-   Begin Label Label3
+   Begin ProgressBar FirstBar
       AutoDeactivate  =   True
-      Bold            =   True
-      DataField       =   ""
-      DataSource      =   ""
+      BehaviorIndex   =   4
+      ControlOrder    =   "4"
       Enabled         =   True
-      Height          =   25
+      Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
+      Left            =   120
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
+      LockTop         =   False
+      Maximum         =   100
       Scope           =   0
-      Selectable      =   False
-      TabIndex        =   4
+      TabIndex        =   "4"
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Avancement général"
-      TextAlign       =   0
-      TextColor       =   &c00000000
       TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   106
-      Transparent     =   True
-      Underline       =   False
+      TextSize        =   "0"
+      Top             =   42
+      Value           =   0
       Visible         =   True
-      Width           =   132
+      Width           =   152
    End
-   Begin Label Etat
+   Begin ProgressBar SecondBar
       AutoDeactivate  =   True
+      BehaviorIndex   =   5
+      ControlOrder    =   "5"
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   120
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Maximum         =   100
+      Scope           =   0
+      TabIndex        =   "5"
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   "0"
+      Top             =   74
+      Value           =   0
+      Visible         =   True
+      Width           =   152
+   End
+   Begin Label StaticText3
+      AutoDeactivate  =   True
+      BehaviorIndex   =   6
       Bold            =   False
+      ControlOrder    =   "6"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -256,29 +227,84 @@ Begin Window BugReport
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   8
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
-      TabIndex        =   5
+      TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "idle"
+      Text            =   "Avancement général "
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   203
-      Transparent     =   True
+      Top             =   106
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   49
+      Width           =   118
+   End
+   Begin FtpConnexion FTP
+      Address         =   ""
+      BehaviorIndex   =   7
+      ControlOrder    =   "7"
+      crlf            =   ""
+      CurrentFile     =   ""
+      dataport        =   12345
+      Enabled         =   True
+      Index           =   -2147483648
+      InitialParent   =   ""
+      LockedInPosition=   False
+      Port            =   1000
+      Scope           =   0
+      TabPanelIndex   =   0
+      TextFont        =   "System"
+      TextSize        =   "0"
+      transfert       =   False
+   End
+   Begin Label Etat
+      AutoDeactivate  =   True
+      BehaviorIndex   =   8
+      Bold            =   False
+      ControlOrder    =   "8"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   28
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   " Idle"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   197
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   300
    End
 End
 #tag EndWindow

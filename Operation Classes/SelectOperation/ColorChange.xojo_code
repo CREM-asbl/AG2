@@ -21,7 +21,7 @@ Inherits SelectOperation
 		  n = tempshape.count -1
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if Bord then
 		      if s isa polygon and icot <> -1 then
 		        polygon(s).colcotes(icot) = newcolor
@@ -67,7 +67,7 @@ Inherits SelectOperation
 		  
 		  if bord then
 		    for i = 0 to visible.count-1
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if s isa polygon  then
 		        index.append polygon(s).pointonside(p)
 		      else
@@ -77,16 +77,16 @@ Inherits SelectOperation
 		    icot = index(iobj)
 		  else
 		    for i = visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if s isa arc then
-		        visible.removeshape s
+		        visible.removeobject s
 		      end if
 		    next
 		  end if
 		  
 		  
 		  
-		  return visible.element(iobj)
+		  return visible.item(iobj)
 		  
 		  
 		End Function
@@ -150,7 +150,7 @@ Inherits SelectOperation
 		  icot = Val(EL.getattribute("Icot"))
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if Bord then
 		      if s isa polygon and icot <> -1 then
 		        polygon(s).colcotes(icot) = newcolor
@@ -175,7 +175,7 @@ Inherits SelectOperation
 		  n = tempshape.count-1
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if Bord then
 		      if  s isa polygon  then
 		        if icot <> -1 then
@@ -197,12 +197,12 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument) As XMLElement
-		  Dim Myself  as XmlElement
+		  Dim Myself  as XMLElement
 		  dim i as integer
 		  
 		  Myself= Doc.CreateElement(Dico.value("Forms"))
 		  for i = 0 to tempshape.count-1
-		    Myself.appendchild tempshape.element(i).XMLPutIdInContainer(Doc)
+		    Myself.appendchild tempshape.item(i).XMLPutIdInContainer(Doc)
 		  next
 		  if Bord then
 		    Myself.SetAttribute("Bord", "true")
@@ -218,7 +218,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, Temp as XmlElement
+		  Dim Myself , EL, Temp as XMLElement
 		  dim i,j,n as integer
 		  dim s as shape
 		  
@@ -275,7 +275,7 @@ Inherits SelectOperation
 		  EL1 = XMLElement(EL.child(2))
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    EL2 = XMLElement(EL1.child(i))
 		    r = Val(EL2.GetAttribute(Dico.Value("Rouge")))
 		    g = Val(EL2.GetAttribute(Dico.Value("Vert")))

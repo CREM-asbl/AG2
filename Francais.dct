@@ -30,7 +30,10 @@
     <ToolsColorBorder Name="Couleur_Bord" />
     <ToolsColorFill Name="Couleur_Fond" />
     <Fororientedarea Name=" 'Aire orientée'" />
-    <ToolsColorTransparent Name="Transparent/Opaque" />
+    <ToolsColorTransparent Name="Opacité" />
+    <ToolsOpq Name="Opaque" />
+    <ToolsSTsp Name="Semi-transparent" />
+    <ToolsTsp Name="Transparent" />
     <ToolsThickness Name="Modifier l'épaisseur" />
     <ToolsThick1 Name="Mince" />
     <ToolsThick2 Name="Epais" />
@@ -81,6 +84,7 @@
     <TransfosAppliquer Name="Appliquer" />
     <TransfosFixedPoints Name="Point fixe" />
     <TransfosHide Name="Montrer-Cacher des transformations" />
+    <TransfosTrajectoire Name="Courbes invariantes"/>
     <PrefsMenu Name="Préférences" />
     <Fonds Name="Fonds d'écran" />
     <Install Name="Installer" />

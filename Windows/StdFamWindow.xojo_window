@@ -26,12 +26,88 @@ Begin Window StdFamWindow
    Title           =   "Standardiser"
    Visible         =   True
    Width           =   263
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Nom de la famille :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   14
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin Label StaticText2
+      AutoDeactivate  =   True
+      BehaviorIndex   =   1
+      Bold            =   False
+      ControlOrder    =   "1"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Couleur de la famille :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   52
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   121
+   End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
+      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   22
@@ -59,10 +135,12 @@ Begin Window StdFamWindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   22
@@ -93,9 +171,11 @@ Begin Window StdFamWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
+      BehaviorIndex   =   4
       Bold            =   True
       Border          =   True
+      ControlOrder    =   "4"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -114,9 +194,13 @@ Begin Window StdFamWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
+      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "True"
+      Styled          =   "False"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -133,10 +217,12 @@ Begin Window StdFamWindow
    End
    Begin PushButton ChooseColButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   5
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Pousser ici"
+      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   22
@@ -162,76 +248,6 @@ Begin Window StdFamWindow
       Visible         =   True
       Width           =   80
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   6
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   12
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin Label Label2
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   7
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   51
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
 End
 #tag EndWindow
 
@@ -242,8 +258,8 @@ End
 		  OKButton.Caption = Dico.Value("OK")
 		  CancelButton.Caption = Dico.value("Cancel")
 		  if config.langue = "english" then
-		    Label1.Text = Dico.Value("Family Name")
-		    Label2.Text = Dico.Value("Family Color")
+		    StaticText1.Text = Dico.Value("Family Name")
+		    StaticText2.Text = Dico.Value("Family Color")
 		  end if
 		  curop = SaveStd(currentcontent.currentoperation)
 		End Sub

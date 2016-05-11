@@ -47,7 +47,6 @@ Inherits MultipleSelectOperation
 		Sub Constructor(fam as integer, form As integer)
 		  super.constructor()
 		  OpId = 0
-		  
 		  Objects.unselectAll
 		  Famille = Fam
 		  Forme = form
@@ -121,7 +120,7 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  if famille <> -1 then
-		    p = wnd.mycanvas1.MouseUser
+		    p = can.MouseUser
 		  end if
 		  
 		  if Famille <10 then
@@ -146,7 +145,7 @@ Inherits MultipleSelectOperation
 		    case 2
 		      select case forme
 		      case 0
-		        currentshape = new Triangle(objects,3,p)
+		        currentshape = new  Polyqcq(objects,3,p)
 		      case 1
 		        currentshape = new TriangIso(objects,p)
 		      case 2
@@ -183,6 +182,8 @@ Inherits MultipleSelectOperation
 		        currentshape = new FreeCircle(objects, p)
 		      case 1
 		        currentshape = new Arc(objects,p)
+		      case 2
+		        currentshape = new DSect(objects,p)
 		      end select
 		    case 6
 		      if forme = 0 then
@@ -212,7 +213,9 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
+		  'Le fixecoord se trouve dans MouseMove
+		  currentshape.constructshape
+		  'can.invalidate
 		  currentshape.endconstruction  //insère la forme dans currentcontent.TheObjects et crée la figure
 		  finished = true
 		  
@@ -299,6 +302,10 @@ Inherits MultipleSelectOperation
 		      TraitementIntersec()
 		    end if
 		  end if
+		  'can.Invalidate
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
