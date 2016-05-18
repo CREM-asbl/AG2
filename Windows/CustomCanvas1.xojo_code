@@ -266,7 +266,7 @@ Inherits Canvas
 		  
 		  p =mouseuser
 		  sctxt = nil
-		  
+		  curop = currentcontent.currentoperation
 		  if dret = nil and not CurrentContent.bugfound then
 		    if Curop<>nil and not curop isa ouvrir then
 		      Curop.MouseMove(p)
@@ -291,7 +291,7 @@ Inherits Canvas
 		      end if
 		    end if
 		  end if
-		  can.invalidate
+		  can.refresh
 		  
 		  if curop <> nil or curop isa conditionner then
 		    ctxt = false
@@ -361,10 +361,7 @@ Inherits Canvas
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
-		  
-		  RefreshBackground
-		  Resize
-		  
+		  g.drawPicture Background, 0, 0
 		End Sub
 	#tag EndEvent
 
@@ -617,7 +614,7 @@ Inherits Canvas
 		  end if
 		  
 		  cnt = cnt+1
-		  'EraseBackground
+		  EraseBackground
 		  
 		  if drapzone then
 		    drawzone(MouseCan)
@@ -649,8 +646,7 @@ Inherits Canvas
 		  end if
 		  
 		  Background.graphics.DrawPicture OffscreenPicture, 0, 0
-		  me.Graphics.drawpicture Background,0,0
-		  
+		  can.refresh
 		  
 		  
 		  
@@ -667,9 +663,12 @@ Inherits Canvas
 		  top = 0
 		  width = wnd.width - left
 		  height = wnd.height 
+		  if config = nil then
+		    return
+		  end if
 		  
 		  Background=NewPicture(width,height,Screen(0).Depth)
-		  Background.graphics.ForeColor= Bkcol
+		  Background.graphics.ForeColor= &cFFFFFF
 		  Background.graphics.FillRect(0,0,width,height)
 		  Background.graphics.forecolor = Config.bordercolor.col
 		  Background.graphics.TextSize = Config.TextSize
@@ -679,9 +678,7 @@ Inherits Canvas
 		    OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
 		    OffscreenPicture.Transparent = 1
 		  end if
-		  if config <> nil then
-		    bkcol = Config.Fillcolor.col
-		  end if
+		  bkcol = Config.Fillcolor.col
 		  calculcoins
 		  
 		  

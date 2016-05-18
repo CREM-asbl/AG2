@@ -302,7 +302,9 @@ Inherits MultipleSelectOperation
 		      TraitementIntersec()
 		    end if
 		  end if
-		  'can.Invalidate
+		  can.refreshbackground
+		  can.refresh
+		  
 		  
 		  
 		  

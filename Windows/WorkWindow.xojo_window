@@ -7,7 +7,7 @@ Begin Window WorkWindow
    Composite       =   True
    Frame           =   0
    FullScreen      =   False
-   FullScreenButton=   True
+   FullScreenButton=   False
    HasBackColor    =   True
    Height          =   695
    ImplicitInstance=   False
@@ -27,8 +27,8 @@ Begin Window WorkWindow
    Visible         =   False
    Width           =   800
    Begin CustomCanvas1 MyCanvas1
-      AcceptFocus     =   False
-      AcceptTabs      =   False
+      AcceptFocus     =   True
+      AcceptTabs      =   True
       AutoDeactivate  =   True
       Backdrop        =   0
       Background      =   0
@@ -69,7 +69,7 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       TabStop         =   True
       tit             =   ""
-      Top             =   0
+      Top             =   7
       Transparent     =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -830,6 +830,7 @@ End
 		Sub Maximize()
 		  
 		  UpdateToolBar
+		  can.resize
 		End Sub
 	#tag EndEvent
 
@@ -879,9 +880,9 @@ End
 
 	#tag Event
 		Sub Resizing()
-		  UpdateToolBar
+		  
 		  can.resize
-		  can.refreshbackground
+		  
 		End Sub
 	#tag EndEvent
 
@@ -2662,8 +2663,11 @@ End
 		    haut = ury-dly
 		    taille = 0.8*h/max(larg,haut)
 		    ico(fam).UpdateSize(taille)
-		    ico(fam).x = StdOutil(Fam).Left - StdBox.left ' + (h-larg*taille)/2
-		    ico(fam).y = StdOutil(Fam).Top - StdBox.Top  '+ (h-haut*taille)/2 
+		    ico(fam).x =  (h-larg*taille)/4
+		    if dlx < 0 then
+		      ico(fam).x = ico(fam).x-dlx*taille/2
+		    end if
+		    ico(fam).y =  (h+haut*taille)/4
 		    ico(fam).borderwidth = 0.02
 		  else
 		    'ico(fam) = new oldcircleskull(1,new BasicPoint(h/2,h/2))

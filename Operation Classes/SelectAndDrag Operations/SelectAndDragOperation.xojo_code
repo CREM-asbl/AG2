@@ -95,7 +95,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(NewPoint as BasicPoint)
-		  can.invalidate
+		  can.refreshBackGround
+		  can.refresh
 		End Sub
 	#tag EndMethod
 

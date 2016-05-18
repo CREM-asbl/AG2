@@ -48,7 +48,7 @@ Inherits Operation
 		    luy = dry
 		    dry = temp
 		  end if
-		  'can.RefreshBackground
+		  can.RefreshBackground
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
 		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
@@ -100,6 +100,8 @@ Inherits Operation
 		      dry = q.y
 		    end if
 		  end if
+		  can.refreshbackground
+		  can.refresh
 		End Sub
 	#tag EndMethod
 

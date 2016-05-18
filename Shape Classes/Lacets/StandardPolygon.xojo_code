@@ -60,17 +60,20 @@ Inherits Polygon
 		Sub Constructor(Obl as ObjectsList, other as StandardPolygon, p As BasicPoint)
 		  dim i as integer
 		  
-		  super.constructor(obl, other, p)
-		  ncpts = 1
-		  file = other.file
-		  MySpecs=other.MySpecs
-		  stdsize=other.getStdsize
-		  updateskull
-		  nonpointed = other.nonpointed
 		  for i = 0 to npts-2
 		    Angles.append other.Angles(i)
 		  next
+		  MySpecs=other.MySpecs
+		  super.constructor(obl, other, p)
+		  ncpts = 1
+		  file = other.file
+		  updateskull
+		  
+		  stdsize=other.getStdsize
+		  nonpointed = other.nonpointed
+		  
 		  autos
+		  
 		  
 		  
 		End Sub
@@ -114,6 +117,13 @@ Inherits Polygon
 		  dim q as BasicPoint
 		  dim i as integer
 		  dim cap as double
+		  
+		  if ubound(angles) = -1 then
+		    for i=0 to npts-2
+		      Angles.Append Myspecs.Angles(i)
+		      Distances.Append Myspecs.Distances(i)
+		    next
+		  end if
 		  
 		  coord.tab(0) = points(0).bpt
 		  cap = angles(0)

@@ -79,10 +79,6 @@ Inherits Timer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Can As CustomCanvas1
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		niter As Integer
 	#tag EndProperty
 

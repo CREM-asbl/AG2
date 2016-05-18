@@ -258,7 +258,9 @@ Inherits SelectOperation
 		Sub UndoOperation(Temp as XMLElement)
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
-		  wnd.refresh
+		  can.RefreshBackground
+		  can.Refresh
+		  
 		End Sub
 	#tag EndMethod
 

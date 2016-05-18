@@ -209,11 +209,10 @@ Inherits Operation
 		  else
 		    Objects.Unselectall
 		  end if
-		  'can.invalidate
+		  can.RefreshBackground
+		  can.refresh
 		  currentshape = nil
-		  
 		  super.EndOperation  // Recréation des figures
-		  
 		  Figs = new FigsList
 		  Finished = true   //Ceci ne devrait-il pas être la dernière instruction du "DoOperation"?
 		  can.mousecursor = System.Cursors.StandardPointer

@@ -289,6 +289,8 @@ Protected Class Operation
 		      if CurrentHighlightedShape<>nil   then
 		        CurrentHighlightedShape.HighLight
 		      end if
+		      can.refreshBackground
+		      can.refresh
 		    end if
 		  end if
 		  
@@ -355,9 +357,9 @@ Protected Class Operation
 		    end if
 		  #endif
 		  
-		  if wnd.drappt then
-		    info = info + " (" + left(str(can.Mouseuser.x),5)+", "+ left(str(can.Mouseuser.y),5) +")"
-		  end if
+		  'if wnd.drappt then
+		  'info = info + " (" + left(str(can.Mouseuser.x),5)+", "+ left(str(can.Mouseuser.y),5) +")"
+		  'end if
 		End Sub
 	#tag EndMethod
 

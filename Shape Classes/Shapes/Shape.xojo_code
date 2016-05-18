@@ -633,7 +633,7 @@ Protected Class Shape
 		Sub doSelect()
 		  
 		  selected = true
-		  can.invalidate
+		  can.refreshbackground
 		End Sub
 	#tag EndMethod
 
@@ -1272,7 +1272,7 @@ Protected Class Shape
 		    next
 		  end if
 		  
-		  can.invalidate
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1393,7 +1393,7 @@ Protected Class Shape
 		      childs(i).invalider
 		    next
 		    
-		    'CurrentContent.Theobjects.invalidatefrom(self)
+		    CurrentContent.Theobjects.invalidatefrom(self)
 		    
 		    for j = 0 to ubound(ConstructedShapes)        //on invalide les images
 		      s = ConstructedShapes(j)
@@ -2939,7 +2939,6 @@ Protected Class Shape
 		  
 		  if  self isa point then
 		    highlighted = false
-		    'can.invalidate
 		  else
 		    for i = 0 to Ubound(childs)
 		      childs(i).UnHighlight
@@ -2959,7 +2958,6 @@ Protected Class Shape
 		  
 		  if highlighted then
 		    highlighted = false 
-		    'can.invalidate
 		  end if
 		  
 		  Exception err

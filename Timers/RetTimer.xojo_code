@@ -84,7 +84,8 @@ Inherits TsfTimer
 		    CurrentContent.isaundoredo = false
 		    can.Mousecursor =System.Cursors.StandardPointer
 		  end if
-		  can.invalidate
+		  can.refreshbackground
+		  can.refresh
 		End Sub
 	#tag EndMethod
 
