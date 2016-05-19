@@ -1,60 +1,56 @@
 #tag Class
 Protected Class Secteurskull
-Inherits Skull
+Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub Constructor(p As Basicpoint)
-		  dim cs as curveshape
-		  dim i as integer
-		  dim GCC as Group2D
-		  dim ars as arcshape
+		  'dim cs as curveshape
+		  'dim i as integer
+		  '
+		  'dim ars as arcshape
+		  '
+		  ''CC = new Group2D
+		  ''GCC = Group2D(CC)
+		  'ref = p
+		  'x = 0
+		  'y = 0
+		  'borderwidth = 1
+		  'border = 0
+		  '
+		  'for i = 0 to 1
+		  'cs =new curveshape
+		  'cs.X = 0
+		  'cs.Y = 0
+		  'cs.X2 = 0
+		  'cs.Y2 = 0
+		  'cs.border = 0
+		  'cs.fill = 0
+		  ''GCC.append cs
+		  'next
+		  '
+		  'ars =new arcshape
+		  '
+		  'diag = can.width^2
+		  'diag = diag + can.height^2
+		  'diag = sqrt(diag)
+		  '
+		  'ars.width = 2*diag
+		  'ars.height = 2*diag
+		  'Ars.Startangle = 0
+		  'Ars.Arcangle = 0
+		  'ars.border = 0
+		  'ars.fill=0
 		  
-		  CC = new Group2D
-		  GCC = Group2D(CC)
-		  ref = p
-		  CC.x = 0
-		  CC.y = 0
-		  CC.borderwidth = 1
-		  CC.border = 0
-		  
-		  for i = 0 to 1
-		    cs =new curveshape
-		    cs.X = 0
-		    cs.Y = 0
-		    cs.X2 = 0
-		    cs.Y2 = 0
-		    cs.border = 0
-		    cs.fill = 0
-		    GCC.append cs
-		  next
-		  
-		  ars =new arcshape
-		  
-		  diag = wnd.mycanvas1.width^2
-		  diag = diag + wnd.mycanvas1.height^2
-		  diag = sqrt(diag)
-		  
-		  ars.width = 2*diag
-		  ars.height = 2*diag
-		  Ars.Startangle = 0
-		  Ars.Arcangle = 0
-		  ars.border = 0
-		  ars.fill=0
-		  
-		  GCC.append ars
+		  'append ars
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetCote(n as integer) As curveshape
-		  dim GCC as Group2D
-		  
-		  GCC = Group2D(CC)
-		  
 		  select case n
 		  case 0
-		    return curveshape(GCC.item(0))
+		    return item(0) 
 		  case 1
-		    return curveshape(GCC.item(1))
+		    return item(1)
 		  end select
 		End Function
 	#tag EndMethod
@@ -65,7 +61,7 @@ Inherits Skull
 		  
 		  
 		  for i =  2 downto 0
-		    g.drawobject Group2D(CC).item(i), ref.x, ref.y
+		    g.drawobject item(i), ref.x, ref.y
 		  next
 		  
 		  
@@ -74,13 +70,13 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Sub Updateangles(ang as double, start as double)
-		  dim GCC as Group2D
+		  'dim GCC as Group2D
 		  
-		  GCC = Group2D(CC)
+		  'GCC = Group2D(CC)
 		  
 		  
-		  ArcShape(GCC.item(2)).Startangle = start
-		  ArcShape(GCC.item(2)).Arcangle = ang
+		  ArcShape(item(2)).Startangle = start
+		  ArcShape(item(2)).Arcangle = ang
 		  
 		  
 		  
@@ -89,14 +85,14 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Sub Updatebordercolor(col as color, f as integer)
-		  dim GCC as Group2D
+		  'dim GCC as Group2D
 		  dim i as integer
 		  
-		  GCC= Group2D(CC)
+		  'GCC= Group2D(CC)
 		  
 		  for i = 0 to 1
-		    curveshape(GCC.item(i)).bordercolor = col
-		    curveshape(GCC.item(i)).border = f
+		    curveshape(item(i)).bordercolor = col
+		    curveshape(item(i)).border = f
 		  next
 		  
 		End Sub
@@ -104,13 +100,13 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Sub UpdateBorderwidth(n as integer)
-		  dim GCC as Group2D
+		  'dim GCC as Group2D
 		  dim i as integer
 		  
-		  GCC= Group2D(CC)
+		  'GCC= Group2D(CC)
 		  
 		  for i = 0 to 1
-		    curveshape(GCC.item(i)).borderwidth= n
+		    curveshape(item(i)).borderwidth= n
 		  next
 		  
 		End Sub
@@ -119,14 +115,14 @@ Inherits Skull
 	#tag Method, Flags = &h0
 		Sub UpdateFillColor(c as color, f as integer)
 		  
-		  dim GCC as Group2D
+		  'dim GCC as Group2D
 		  
 		  
-		  GCC= Group2D(CC)
+		  'GCC= Group2D(CC)
 		  
 		  
-		  arcshape(GCC.item(2)).fillcolor = c
-		  arcshape(GCC.item(2)).fill = f
+		  arcshape(item(2)).fillcolor = c
+		  arcshape(item(2)).fill = f
 		  
 		  
 		End Sub
@@ -134,19 +130,19 @@ Inherits Skull
 
 	#tag Method, Flags = &h0
 		Sub updatesommet(n as integer, bp as basicPoint)
-		  dim GCC as Group2D
+		  'dim GCC as Group2D
 		  
-		  GCC= Group2D(CC)
+		  'GCC= Group2D(CC)
 		  
 		  select case n
 		  case 0
-		    curveshape(GCC.item(0)).X2 = bp.x
-		    curveshape(GCC.item(0)).Y2 = bp.y
-		    curveshape(GCC.item(0)).border = 100
+		    curveshape(item(0)).X2 = bp.x
+		    curveshape(item(0)).Y2 = bp.y
+		    curveshape(item(0)).border = 100
 		  case 1
-		    curveshape(GCC.item(1)).X2 = bp.x
-		    curveshape(GCC.item(1)).Y2 = bp.y
-		    curveshape(GCC.item(1)).border = 100
+		    curveshape(item(1)).X2 = bp.x
+		    curveshape(item(1)).Y2 = bp.y
+		    curveshape(item(1)).border = 100
 		  end select
 		  
 		End Sub
@@ -159,6 +155,11 @@ Inherits Skull
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="angle"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
 			Group="Behavior"
@@ -176,6 +177,17 @@ Inherits Skull
 			Group="Behavior"
 			InitialValue="0"
 			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Count"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="currentcurve"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="diag"

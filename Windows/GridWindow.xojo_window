@@ -26,12 +26,51 @@ Begin Window GridWindow
    Title           =   ""
    Visible         =   True
    Width           =   394
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   8
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Grille:"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   14
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   46
+   End
    Begin PushButton OkButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -59,10 +98,12 @@ Begin Window GridWindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -90,7 +131,9 @@ Begin Window GridWindow
    End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
+      ControlOrder    =   "3"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -119,9 +162,48 @@ Begin Window GridWindow
       Visible         =   True
       Width           =   102
    End
+   Begin Label StaticText2
+      AutoDeactivate  =   True
+      BehaviorIndex   =   4
+      Bold            =   False
+      ControlOrder    =   "4"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   187
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Taille des points"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   13
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
    Begin PopupMenu PopupMenu2
       AutoDeactivate  =   True
+      BehaviorIndex   =   5
       Bold            =   False
+      ControlOrder    =   "5"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -150,9 +232,48 @@ Begin Window GridWindow
       Visible         =   True
       Width           =   80
    End
+   Begin Label StaticText3
+      AutoDeactivate  =   True
+      BehaviorIndex   =   6
+      Bold            =   False
+      ControlOrder    =   "6"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   9
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Écart"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   65
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   35
+   End
    Begin PopupMenu PopupMenu3
       AutoDeactivate  =   True
+      BehaviorIndex   =   7
       Bold            =   False
+      ControlOrder    =   "7"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -181,123 +302,18 @@ Begin Window GridWindow
       Visible         =   True
       Width           =   103
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   8
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   61
-   End
-   Begin Label Label2
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   209
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   61
-   End
-   Begin Label Label3
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   -1
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   10
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   66
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   61
-   End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Label1.Text = Dico.Value("ToolsGrid")
-		  Label2.Text = Dico.Value("PtSize")
+		  StaticText1.Text = Dico.Value("ToolsGrid")
+		  StaticText2.Text = Dico.Value("PtSize")
 		  PopupMenu1.AddRow Dico.Value("Blank")
 		  PopupMenu1.AddRow Dico.Value("Squares")
 		  PopupMenu1.AddRow Dico.Value("Triangles")
-		  Label3.Text = Dico.Value("Step")
+		  StaticText3.Text = Dico.Value("Step")
 		  Popupmenu3.addrow "1"
 		  PopupMenu3.AddRow "1/2"
 		  PopupMenu3.AddRow "1/3"
@@ -347,6 +363,13 @@ End
 
 #tag EndWindowCode
 
+#tag Events StaticText1
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("ToolsGrid")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events OkButton
 	#tag Event
 		Sub Action()
@@ -365,6 +388,13 @@ End
 	#tag Event
 		Sub Open()
 		  me.caption = Dico.Value("Cancel")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events StaticText2
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("SizePoint")
 		End Sub
 	#tag EndEvent
 #tag EndEvents

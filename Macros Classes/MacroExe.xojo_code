@@ -3,7 +3,7 @@ Protected Class MacroExe
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor(n as integer)
-		  Mac = app.TheMacros.element(n)
+		  Mac = app.TheMacros.item(n)
 		  Constructor(Mac)
 		  
 		  mac.OpenDescripWindow
@@ -274,10 +274,10 @@ Inherits MultipleSelectOperation
 		      createdshape = curop.currentshape
 		    case 24 //AppliquerTsf
 		      curop = new AppliquerTsf(self,  EL1)
-		      createdshape = AppliquerTsf(curop).copies.element(0)
+		      createdshape = AppliquerTsf(curop).copies.item(0)
 		    case 26 //Point de division
 		      curop = new divide(self, EL1)
-		      createdshape = divide(curop).createdshapes.element(0)
+		      createdshape = divide(curop).createdshapes.item(0)
 		    case 28 //Prolonger
 		      curop = new Prolonger(self,EL1)
 		      createdshape = Prolonger(curop).Dr
@@ -346,8 +346,8 @@ Inherits MultipleSelectOperation
 		  
 		  tsf.setfpsp(s)
 		  tsf.computematrix
-		  CurrentContent.TheTransfos.AddTsf(tsf)
-		  s.tsfi.addtsf tsf
+		  CurrentContent.TheTransfos.AddObject(tsf)
+		  s.tsfi.addObject tsf
 		  
 		  return tsf
 		  
@@ -365,7 +365,7 @@ Inherits MultipleSelectOperation
 		    CreateIfMacs(Histo)
 		    mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice de la tsf
 		    CreateFinalSkulls
-		    wnd.mycanvas1.refreshbackground
+		    'can.invalidate
 		  end if
 		End Sub
 	#tag EndMethod
@@ -391,7 +391,7 @@ Inherits MultipleSelectOperation
 		  Redim MacId(-1)
 		  Redim Real(-1)
 		  Redim RealSide(-1)
-		  wnd.mycanvas1.mousecursor = System.Cursors.StandardPointer
+		  can.mousecursor = System.Cursors.StandardPointer
 		  
 		  
 		  
@@ -449,13 +449,14 @@ Inherits MultipleSelectOperation
 		  sh = operation.getshape(p)
 		  str = lowercase(identifier(fa, fo))
 		  nobj = visible.count-1
+		  redim index(-1)
 		  redim index(nobj)
 		  selectionnerobjetini(p)
 		  for i = 0 to visible.count-1
-		    sh = visible.element(i)
+		    sh = visible.item(i)
 		    index(i) =sh.pointonside(p)
 		  next
-		  sh = visible.element(iobj)
+		  sh = visible.item(iobj)
 		  if sh = nil then
 		    return nil
 		  end if
@@ -563,7 +564,7 @@ Inherits MultipleSelectOperation
 		    Obj= XMLElement(List.Item(0))
 		    if obj.childcount > 0 then
 		      for i =0 to  Obj.Childcount-1
-		        EL1 = XMLelement(Obj.Child(i))
+		        EL1 = XMLElement(Obj.Child(i))
 		        n = val(EL1.GetAttribute("Id"))
 		        s = objects.Getshape(n)
 		        t = setitem(s)
@@ -583,7 +584,7 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  for i = visible.count-1 downto 0
-		    sh = visible.element(i)
+		    sh = visible.item(i)
 		    b = (sh.fam = fa)
 		    
 		    select case fa                        //une macro valable pour (par ex) un Triangle doit pouvoir être appliquée à un triangiso ou un triangrect ou...
@@ -711,7 +712,7 @@ Inherits MultipleSelectOperation
 		    Obj= XMLElement(List.Item(0))
 		    if obj.childcount > 0 then
 		      for i = Obj.Childcount-1 downto 0
-		        EL1 = XMLelement(Obj.Child(i))
+		        EL1 = XMLElement(Obj.Child(i))
 		        n = val(EL1.GetAttribute("Id"))
 		        s = objects.Getshape(n)
 		        s.delete

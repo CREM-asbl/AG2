@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Configuration
 	#tag Method, Flags = &h0
-		Sub ChargerBoutons(El as XmlElement)
+		Sub ChargerBoutons(El as XMLElement)
 		  MvBt(0) = EL.XQL("Modify").length > 0
 		  MvBt(1) = EL.XQL("Slide").length > 0
 		  MvBt(2) = EL.XQL("Turn").length > 0
@@ -13,7 +13,7 @@ Protected Class Configuration
 	#tag Method, Flags = &h0
 		Sub ChargerConfig()
 		  dim List as XMLNodeList
-		  dim k as integer
+		  dim i,j,k as integer
 		  dim C as XMLDocument
 		  dim El,temp as  XMLElement
 		  dim fi as FolderItem
@@ -69,11 +69,11 @@ Protected Class Configuration
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerLibForms(El as XmlElement)
+		Sub ChargerLibForms(El as XMLElement)
 		  ' todo : (peut-être même un module)
 		  dim i, j,k,n as integer
 		  dim List as XMLNodeList
-		  dim Temp as XmlElement
+		  dim Temp as XMLElement
 		  dim Names(-1) as string
 		  
 		  
@@ -104,8 +104,8 @@ Protected Class Configuration
 		    Libfamilies(4,j)=Names(j)
 		  next
 		  
-		  Names = Array("FreeCircle", "Arc")
-		  nlibf(5)=1
+		  Names = Array("FreeCircle", "Arc","DSect")
+		  nlibf(5)=2
 		  for j = 0 to nlibf(5)
 		    Libfamilies(5,j)=Names(j)
 		  next
@@ -115,6 +115,8 @@ Protected Class Configuration
 		  for j = 0 to nlibf(6)
 		    Libfamilies(6,j)=Names(j)
 		  next
+		  
+		  
 		  
 		  for i = 0 to 6
 		    for j = 0 to nlibf(i)
@@ -145,7 +147,7 @@ Protected Class Configuration
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerMenu(El As XmlElement)
+		Sub ChargerMenu(El As XMLElement)
 		  dim mmenubar as MenuItem
 		  
 		  'un moyen plus propre ?
@@ -325,6 +327,7 @@ Protected Class Configuration
 		  dim El,El1 as XMLNode
 		  dim El2 as XMLTextNode
 		  dim List as XMLNodeList
+		  dim lastmaj,f() as String
 		  
 		  initParams
 		  fi=app.DocFolder.Child("AG_Init.xml")

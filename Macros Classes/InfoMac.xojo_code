@@ -68,9 +68,9 @@ Protected Class InfoMac
 		Sub Constructor(Temp as XMLElement)
 		  dim List as XMLNodeList
 		  dim i as integer
-		  dim EL1 as XMLElement
+		  dim EL1, EL2 as XMLElement
 		  
-		  coord = new nBPoint
+		  
 		  fa = val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  fo= val(Temp.GetAttribute(Dico.Value("NrForm")))
 		  Npts = val(Temp.GetAttribute("Npts"))
@@ -101,8 +101,10 @@ Protected Class InfoMac
 		  List = Temp.XQL("Coords")
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
+		    coord = new nBPoint
 		    for i = 0 to EL1.Childcount-1
-		      coord.append new BasicPoint (XMLElement(EL1.Child(i)))
+		      EL2 = XMLElement(EL1.Child(i))
+		      coord.append new BasicPoint(val(EL2.GetAttribute("X")), val(EL2.GetAttribute("Y")))
 		    next
 		  end if
 		  

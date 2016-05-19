@@ -26,9 +26,48 @@ Begin Window StdFormswindow
    Title           =   "StdForms"
    Visible         =   True
    Width           =   277
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   14
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "StdFile: "
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   14
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
+      ControlOrder    =   "1"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -57,9 +96,48 @@ Begin Window StdFormswindow
       Visible         =   True
       Width           =   126
    End
+   Begin Label StaticText2
+      AutoDeactivate  =   True
+      BehaviorIndex   =   2
+      Bold            =   False
+      ControlOrder    =   "2"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   14
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Label:"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   63
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
    Begin PopupMenu PopupMenu2
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
+      ControlOrder    =   "3"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -90,10 +168,12 @@ Begin Window StdFormswindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   4
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "4"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -121,10 +201,12 @@ Begin Window StdFormswindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   5
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
+      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -150,76 +232,6 @@ Begin Window StdFormswindow
       Visible         =   True
       Width           =   69
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   6
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   6
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin Label Label2
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   6
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   7
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   63
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
 End
 #tag EndWindow
 
@@ -230,8 +242,8 @@ End
 		  Title = Dico.Value("PrefsStdForms")
 		  OKButton.Caption = Dico.Value("OK")
 		  CancelButton.Caption = Dico.value("Cancel")
-		  Label1.Text = Dico.Value("PrefsStdFormsFile")
-		  Label2.Text = Dico.Value("PrefsStdFormsSize")
+		  StaticText1.Text = Dico.Value("PrefsStdFormsFile")
+		  StaticText2.Text = Dico.Value("PrefsStdFormsSize")
 		  
 		End Sub
 	#tag EndEvent

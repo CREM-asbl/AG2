@@ -26,12 +26,51 @@ Begin Window Confirmation
    Title           =   "Attention"
    Visible         =   True
    Width           =   308
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Sauver?"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   25
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   150
+   End
    Begin PushButton Yes
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Oui"
+      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -59,10 +98,12 @@ Begin Window Confirmation
    End
    Begin PushButton No
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Non"
+      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -90,10 +131,12 @@ Begin Window Confirmation
    End
    Begin PushButton Cancel
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -119,46 +162,14 @@ Begin Window Confirmation
       Visible         =   True
       Width           =   69
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   25
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   268
-   End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Event
 		Sub Open()
+		  
+		  
 		  Title = Dico.value("Confirmation")
 		  
 		  if CurrentContent.bugfound then
@@ -167,6 +178,22 @@ End
 		  result=-1
 		End Sub
 	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub Constructor(i as integer)
+		  Super.Window
+		  StaticText1.text = Dico.value("savepic") + " " + str(i)+" ?"
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(s as string)
+		  Super.Window
+		  StaticText1.text = s
+		End Sub
+	#tag EndMethod
 
 
 	#tag Note, Name = Licence
@@ -202,6 +229,13 @@ End
 
 #tag EndWindowCode
 
+#tag Events StaticText1
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("FileSave")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events Yes
 	#tag Event
 		Sub Action()
@@ -239,13 +273,6 @@ End
 	#tag Event
 		Sub Open()
 		  me.caption = Dico.value("Cancel")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Label1
-	#tag Event
-		Sub Open()
-		  me.Text = Dico.value("savepic") + " " + str(CurrentContent.id)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

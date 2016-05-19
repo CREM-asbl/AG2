@@ -6,14 +6,14 @@ Inherits SelectAndDragOperation
 		  dim i as integer
 		  
 		  for i =  tempshape.count-1 downto 0
-		    CurrentContent.thefigs.RemoveFigure copies.element(i).fig
-		    copies.element(i).delete
+		    CurrentContent.thefigs.RemoveFigure copies.item(i).fig
+		    copies.item(i).delete
 		  next
 		  copies.removeall
 		  Finished = true
 		  CurrentContent.TheObjects.unselectall
-		  wnd.Mycanvas1.refreshbackground
-		  wnd.mycanvas1.mousecursor =System.Cursors.StandardPointer
+		  can.invalidate
+		  can.mousecursor =System.Cursors.StandardPointer
 		  copyptsur = false
 		End Sub
 	#tag EndMethod
@@ -27,12 +27,14 @@ Inherits SelectAndDragOperation
 		  if copyptsur then
 		    cop.moveto newpoint
 		    if dret = nil then
-		      magnetism = Magnetisme(copies.element(0),MagneticD)
+		      magnetism = Magnetisme(copies.item(0),MagneticD)
 		    end if
 		    endpoint = newpoint
 		  elseif Newpoint <> EndPoint and tempshape.count > 0 then
 		    Glissement(NewPoint)
 		  end if
+		  
+		  super.completeoperation(NewPoint)
 		  
 		  
 		End Sub
@@ -88,7 +90,7 @@ Inherits SelectAndDragOperation
 		    end if
 		  end if
 		  for i = 0 to copies.count-1
-		    if tempshape.element(i).fam < 10 then
+		    if tempshape.item(i).fam < 10 then
 		      setconstructioninfo(i, M)
 		    end if
 		  next
@@ -138,13 +140,13 @@ Inherits SelectAndDragOperation
 		      abort
 		      return
 		    end if
-		    pt = point(tempshape.element(0))
-		    q = point(copies.element(0))
-		    sh = pt.pointsur.element(0)
+		    pt = point(tempshape.item(0))
+		    q = point(copies.item(0))
+		    sh = pt.pointsur.item(0)
 		    
 		    if pt.constructedby <> nil and pt.constructedby.oper = 10 then
 		      s1 =point(pt.constructedby.shape)
-		      if s1.pointsur.element(0) = pt.pointsur.element(0)  and s1.numside(0) = pt.numside(0) then
+		      if s1.pointsur.item(0) = pt.pointsur.item(0)  and s1.numside(0) = pt.numside(0) then
 		        abort
 		      end if
 		    end if
@@ -196,25 +198,25 @@ Inherits SelectAndDragOperation
 		  
 		  if visible.count > 0 then
 		    for i = visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if s.constructedby <> nil and s.constructedby.oper = 6 then
-		        visible.removeshape s
+		        visible.removeobject s
 		      end if
 		      if s isa point and point(s).pointsur.count=1 and s.constructedby <> nil and s.constructedby.oper = 10 then
 		        s1 =point(s.constructedby.shape)
-		        if s1.pointsur.element(0) = point(s).pointsur.element(0)  and s1.numside(0) = point(s).numside(0) then
-		          visible.removeshape s
+		        if s1.pointsur.item(0) = point(s).pointsur.item(0)  and s1.numside(0) = point(s).numside(0) then
+		          visible.removeobject s
 		        end if
 		      end if
 		      if currentcontent.macrocreation and not s.isptsur then
-		        visible.removeshape s
+		        visible.removeobject s
 		      end if
 		      nobj = visible.count
 		    next
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(iobj)
+		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -231,15 +233,15 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  for i = tempshape.count-1 downto 0
-		    if tempshape.element(i).constructedby <> nil and tempshape.element(i).constructedby.oper = 6 then
-		      tempshape.element(i).dounselect
-		      tempshape.removeshape tempshape.element(i)
+		    if tempshape.item(i).constructedby <> nil and tempshape.item(i).constructedby.oper = 6 then
+		      tempshape.item(i).dounselect
+		      tempshape.removeobject tempshape.item(i)
 		    end if
 		  next
 		  
 		  figs.removeall
-		  StartPoint = new BasicPoint(p)
-		  EndPoint = new BasicPoint(p)
+		  StartPoint = p
+		  EndPoint = p
 		  
 		  selection
 		  currentshape = currenthighlightedshape
@@ -252,7 +254,7 @@ Inherits SelectAndDragOperation
 		  if CurrentShape.Idgroupe <> -1 then
 		    currentshape.SelectGroup
 		  end if                                            // Ici, on sélectionne uniquement les objets liés au currentshape
-		  if tempshape.count = 1 and tempshape.element(0).isptsur then
+		  if tempshape.count = 1 and tempshape.item(0).isptsur then
 		    CopyPtsur = true
 		  end if
 		  SetCopies(p)
@@ -342,12 +344,12 @@ Inherits SelectAndDragOperation
 		  
 		  EL1 = XMLElement(EL.Child(1))
 		  
-		  if tempshape.element(0) isa point and EL1.Name = Dico.value("Form") then
+		  if tempshape.item(0) isa point and EL1.Name = Dico.value("Form") then
 		    RecreateCreatedFigures(Temp)
 		    if Config.Trace  then
 		      CopyPtSur = true
 		      EL3 = XMLElement(EL1.firstchild)
-		      startpoint = Point(tempshape.element(0)).bpt
+		      startpoint = Point(tempshape.item(0)).bpt
 		      endpoint = new BasicPoint(val(EL3.GetAttribute("X")), val(EL3.GetAttribute("Y")))
 		      dep =  EndPoint-StartPoint
 		      dep = dep/60
@@ -369,7 +371,7 @@ Inherits SelectAndDragOperation
 		    reputids(EL1)
 		    ReCreateCreatedFigures(copies,Temp)
 		    for i = 0 to tempshape.count-1
-		      figs.addfigure copies.element(i).fig
+		      figs.addobject copies.item(i).fig
 		    next
 		    EndPoint = new BasicPoint(val(EL.GetAttribute("DX")), val(EL.GetAttribute("DY")))
 		    StartPoint = new BasicPoint(0,0)
@@ -400,7 +402,7 @@ Inherits SelectAndDragOperation
 		  
 		  //sh est la nouvelle copie, (duplicata de s)
 		  
-		  s = tempshape.element(i)
+		  s = tempshape.item(i)
 		  if s.centerordivpoint then                            //les dupliqués des points de subdivision ou des centres sont considérés cimme des points de subdiv
 		    q = point(sh)                                             //ou des centres pourautant que la forme mère des originaux soit également dupliquée
 		    s1 = s.constructedby.shape
@@ -408,14 +410,14 @@ Inherits SelectAndDragOperation
 		    if n <> -1 then                                        //on vérifie que la forme s1, père du point s (division ou centre) figure parmi les dupliqués
 		      op = s.constructedby.oper              // op = 0 (centre) ou 4 (division) ou 7 (pt fixe de tsf)
 		      if op <> 7 then                                  //on ne duplique pas une tsf en même temps que son support
-		        q.setconstructedby(copies.element(n),op)
+		        q.setconstructedby(copies.item(n),op)
 		        if op = 4 then
 		          p = point(s.constructedby.data(0))
 		          j = s1.getindexpoint(p)
-		          q.constructedby.data.append copies.element(n).points(j)
+		          q.constructedby.data.append copies.item(n).points(j)
 		          p = point(s.constructedby.data(1))
 		          j = s1.getindexpoint(p)
-		          q.constructedby.data.append copies.element(n).points(j)
+		          q.constructedby.data.append copies.item(n).points(j)
 		          q.constructedby.data.append s.constructedby.data(2)
 		          q.constructedby.data.append s.constructedby.data(3)
 		        end if
@@ -435,8 +437,8 @@ Inherits SelectAndDragOperation
 		  dim M1 as Matrix
 		  dim ff as figure
 		  
-		  s = tempshape.element(i)
-		  q =copies.element(i)
+		  s = tempshape.item(i)
+		  q =copies.item(i)
 		  
 		  if q.centerordivpoint then
 		    return
@@ -458,7 +460,7 @@ Inherits SelectAndDragOperation
 		        n = tempshape.getposition(s1)
 		        if n <> -1 and (n < i) and tempshape.getposition(s.points(j)) <> -1 then
 		          k = tempshape.getposition(s.points(j))
-		          q.SubstitutePoint(point(copies.element(k)), q.points(j))
+		          q.SubstitutePoint(point(copies.item(k)), q.points(j))
 		        end if
 		      else
 		        q.points(j).setconstructedby s.points(j), 3
@@ -487,14 +489,14 @@ Inherits SelectAndDragOperation
 		  p = new BasicPoint(0,0)
 		  
 		  if copyPtSur then
-		    s1 = tempshape.element(0)
+		    s1 = tempshape.item(0)
 		    cop = new point(objects, point(s1).bpt)
 		    cop.forme = s1.forme
 		    cop.surseg = point(s1).surseg
 		    copies.addshape cop
 		  else
 		    for i = 0 to tempshape.count-1
-		      s1=tempshape.element(i)
+		      s1=tempshape.item(i)
 		      if s1 isa point then
 		        s2 = s1.paste(objects,point(s1).bpt)
 		      else
@@ -512,20 +514,20 @@ Inherits SelectAndDragOperation
 		    
 		    for i = 0 to tempshape.count-2         //Si deux formes sources sont dans la même figure, les images doivent aussi être dans la même figure
 		      for j = i+1 to tempshape.count-1
-		        if (tempshape.element(i).fig = tempshape.element(j).fig) and (copies.element(i).fig <> copies.element(j).fig)  then
+		        if (tempshape.item(i).fig = tempshape.item(j).fig) and (copies.item(i).fig <> copies.item(j).fig)  then
 		          ffigs = new Figslist
-		          ffigs.AddFigure copies.element(i).fig
-		          ffigs.AddFigure copies.element(j).fig
+		          ffigs.addobject copies.item(i).fig
+		          ffigs.addobject copies.item(j).fig
 		          CurrentContent.Thefigs.Removefigures ffigs
 		          ff = ffigs.concat
 		          ff.ListerPrecedences
-		          CurrentContent.TheFigs.AddFigure ff
+		          CurrentContent.TheFigs.addobject ff
 		        end if
 		      next
 		    next                                                  //Il faudra faire attention aux points construits dans setconstructioninfo
 		    
 		    for i = 0 to tempshape.count-1
-		      figs.addfigure copies.element(i).fig
+		      figs.addobject copies.item(i).fig
 		    next
 		  end if
 		End Sub
@@ -537,7 +539,7 @@ Inherits SelectAndDragOperation
 		  
 		  if copyptsur then
 		    Temp = cop.XMLPutIdINContainer(Doc)
-		    Temp.setAttribute("Forme0", str(cop.pointsur.element(0).id))
+		    Temp.setAttribute("Forme0", str(cop.pointsur.item(0).id))
 		    EL.appendchild Temp
 		    EL.appendchild cop.XMLPutConstructionInfoInContainer(Doc)
 		  end if
@@ -561,7 +563,7 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  if rotationpoint <> nil then
-		    Temp=XmlElement(Doc.CreateElement("Rotation"))
+		    Temp=XMLElement(Doc.CreateElement("Rotation"))
 		    Temp.appendchild RotationPoint.XMLPutIdInContainer(Doc)
 		    Temp.setattribute("angle",str(angle))
 		    Myself.appendchild(Temp)
@@ -596,7 +598,7 @@ Inherits SelectAndDragOperation
 		  
 		  EL1 = XMLElement(EL.Child(1))
 		  
-		  if tempshape.element(0) isa point and EL1.Name = Dico.value("Form") then
+		  if tempshape.item(0) isa point and EL1.Name = Dico.value("Form") then
 		    CopyPtSur = true
 		    n = val(EL1.GetAttribute("Id"))
 		    copies.addshape Objects.Getshape(n)
@@ -609,16 +611,16 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  for i =  tempshape.count-1 downto 0
-		    s2 = copies.element(i)
+		    s2 = copies.item(i)
 		    if s2.constructedby <> nil then
 		      s1 = s2.constructedby.shape
 		      j = s1.constructedshapes.indexof(s2)
 		      s1.constructedshapes.remove j
 		    end if
 		    if CopyPtSur then
-		      point(s2).pointsur.element(0).removechild s2
+		      point(s2).pointsur.item(0).removechild s2
 		    end if
-		    currentcontent.removeshape s2
+		    currentcontent.removeobject s2
 		  next
 		  
 		  ReDeleteCreatedFigures(Temp)

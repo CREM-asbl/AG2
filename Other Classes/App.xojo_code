@@ -27,16 +27,19 @@ Inherits Application
 	#tag Event
 		Sub EnableMenuItems()
 		  dim B, B1, B2 as boolean
+		  dim item as MenuItem
+		  dim i as integer
+		  
 		  
 		  if currentcontent <> nil  then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
 		  end if
 		  
-		  if wnd<>nil and wnd.MyCanvas1.rep <> nil and currentcontent <> nil then
+		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
 		    B =  CurrentContent.TheObjects.count > 1
 		    B1 = CurrentContent.TheGrid <> nil
-		    B2 = wnd.MyCanvas1.rep.labs.count > 0
+		    B2 = can.rep.labs.count > 0
 		    B = (B or B1 or B2) and not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
 		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
@@ -66,6 +69,9 @@ Inherits Application
 	#tag Event
 		Sub Open()
 		  CheckProcess
+		  #if TargetWin32 then
+		    UseGDIPlus=true
+		  #endif
 		  if not ipctransfert then
 		    CheckSystem
 		    InitFolders
@@ -76,6 +82,7 @@ Inherits Application
 		    themacros = new macroslist
 		    CheckUpdate
 		  end if
+		  
 		End Sub
 	#tag EndEvent
 
@@ -99,7 +106,7 @@ Inherits Application
 
 	#tag Event
 		Function UnhandledException(error As RuntimeException) As Boolean
-		  dim st(-1), cre as String
+		  dim st(-1), cre, Op as String
 		  dim bugw as BugFindW
 		  dim i as integer
 		  dim curoper as Operation
@@ -250,6 +257,7 @@ Inherits Application
 		Sub CheckSystem()
 		  #if TargetWin32 then
 		    sys = "win32"
+		    UseGDIPlus=true
 		  #elseif TargetLinux then
 		    sys="Linux"
 		  #elseif TargetMacOSClassic then
@@ -264,9 +272,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
 		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
-		  '#if DebugBuild then
-		  'return
-		  '#endif
+		  #if DebugBuild then
+		    return
+		  #endif
 		  
 		  api.init
 		  api.Connect
@@ -310,7 +318,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub InitFolders()
 		  AppFolder=GetFolderItem("")
-		  AppFolder = AppFolder.Parent
+		  #if DebugBuild then
+		    AppFolder = AppFolder.Parent
+		  #endif
 		  DocFolder = SpecialFolder.Documents.Child("Apprenti geometre")
 		  if not DocFolder.Exists then
 		    DocFolder.CreateAsFolder

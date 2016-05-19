@@ -54,8 +54,8 @@ Inherits Operation
 		  end if
 		  
 		  Finished = true
-		  wnd.Mycanvas1.refreshbackground
-		  wnd.mycanvas1.mousecursor =System.Cursors.StandardPointer
+		  'can.invalidate
+		  can.mousecursor =System.Cursors.StandardPointer
 		  
 		  
 		  
@@ -77,7 +77,7 @@ Inherits Operation
 		Sub MouseDown(p as BasicPoint)
 		  currentshape = currenthighlightedshape
 		  Finished = false
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		  can.Mousecursor = System.Cursors.Wait
 		  DoOperation
 		  endoperation
 		  
@@ -96,9 +96,9 @@ Inherits Operation
 		      CurrentHighlightedShape.UnHighLight
 		    end if
 		    
-		    CurrentHighlightedShape = visible.element(iobj)
+		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
-		    Wnd.mycanvas1.refreshbackground
+		    'can.invalidate
 		    
 		  end if
 		  

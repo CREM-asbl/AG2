@@ -15,11 +15,12 @@ Inherits SelectAndDragOperation
 		    CurrentShape.Transform(M)
 		    endpoint = newpoint
 		    CurrentContent.theobjects.updateskull
-		    return
 		  elseif NewPoint <> EndPoint and tempshape.count > 0 then
 		    Glissement(NewPoint)
+		    CurrentContent.TheTransfos.enablemodifyall
 		  end if
-		  CurrentContent.TheTransfos.enablemodifyall
+		  
+		  super.CompleteOperation(NewPoint)
 		  
 		  
 		  
@@ -59,18 +60,18 @@ Inherits SelectAndDragOperation
 		  
 		  if visible.count > 0 then
 		    for i = visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if (s isa point and Point(s).liberte = 0)  then
-		        Visible.removeShape(s)
+		        Visible.removeobject(s)
 		      elseif not choixvalide(s) then
-		        Visible.removeShape(s)
+		        Visible.removeobject(s)
 		      end if
 		      nobj = visible.count
 		    next
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(iobj)
+		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -119,6 +120,8 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  Help g, display
+		  
+		  'can.invalidate
 		End Sub
 	#tag EndMethod
 
@@ -137,7 +140,7 @@ Inherits SelectAndDragOperation
 		    return
 		  end if
 		  
-		  currentshape = tempshape.element(0)
+		  currentshape = tempshape.item(0)
 		  EndPoint = new BasicPoint(val(EL.GetAttribute("DX")), val(EL.GetAttribute("DY")))
 		  StartPoint = new BasicPoint(0,0)
 		  
@@ -159,7 +162,7 @@ Inherits SelectAndDragOperation
 		    CurrentContent.theobjects.updateskull
 		  else
 		    for i = 0 to tempshape.count-1
-		      figs.addfigure tempshape.element(i).fig
+		      figs.addobject tempshape.item(i).fig
 		    next
 		    figs.creerlistesfigures
 		    if Config.Trace and  endpoint.norme/60 > epsilon  then
@@ -206,7 +209,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself as XmlElement
+		  Dim Myself as XMLElement
 		  dim Temp as XMLElement
 		  
 		  Myself= Doc.CreateElement(GetName)
@@ -216,7 +219,7 @@ Inherits SelectAndDragOperation
 		  Myself.appendchild tempshape.XMLPutIdInContainer(Doc)
 		  
 		  if rotationpoint <> nil then
-		    Temp=XmlElement(Doc.CreateElement("Rotation"))
+		    Temp=XMLElement(Doc.CreateElement("Rotation"))
 		    Temp.appendchild RotationPoint.XMLPutIdInContainer(Doc)
 		    Temp.setattribute("angle",str(angle))
 		    Myself.appendchild(Temp)
@@ -237,8 +240,8 @@ Inherits SelectAndDragOperation
 		  SelectIdForms(EL)
 		  D = new BasicPoint(-val(EL.GetAttribute("DX")), -val(EL.GetAttribute("DY")))
 		  
-		  if tempshape.element(0) isa repere then
-		    CurrentShape = tempshape.element(0)
+		  if tempshape.item(0) isa repere then
+		    CurrentShape = tempshape.item(0)
 		    M = new Translationmatrix(D)
 		    CurrentShape.Transform(M)
 		    CurrentContent.theobjects.updateskull

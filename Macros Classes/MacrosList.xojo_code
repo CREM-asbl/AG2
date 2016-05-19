@@ -34,14 +34,6 @@ Protected Class MacrosList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function element(idx As Integer) As Macro
-		  if idx>=0 and idx<=Ubound(macs) then
-		    return macs(idx)
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetMacro(str as string) As Macro
 		  dim i as integer
 		  
@@ -59,6 +51,14 @@ Protected Class MacrosList
 		  return macs.indexof(m)
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function item(idx As Integer) As Macro
+		  if idx>=0 and idx<=Ubound(macs) then
+		    return macs(idx)
+		  end if
 		End Function
 	#tag EndMethod
 

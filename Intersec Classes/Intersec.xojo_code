@@ -3,8 +3,7 @@ Protected Class Intersec
 Inherits Operation
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
-		  dim n, i1, i2, j1, j2, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
-		  dim bp as BasicPoint
+		  dim i1, i2, j1, j2, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
 		  dim d as Double
 		  
 		  if pts.indexof(p) <> -1 then
@@ -14,7 +13,7 @@ Inherits Operation
 		  // différent de la version du 19/08/12
 		  
 		  d = nearest(p,i1,j1)
-		  if bezet(i1,j1) or (d > wnd.mycanvas1.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
+		  if bezet(i1,j1) or (d > can.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
 		    p.invalider
 		    return
 		  end if
@@ -74,7 +73,6 @@ Inherits Operation
 		Sub computeintercercles()
 		  dim k as integer
 		  dim bq() as basicpoint
-		  dim t2(-1) as boolean
 		  dim g1, g2 as circle
 		  
 		  g1 = circle(sh1)
@@ -140,6 +138,7 @@ Inherits Operation
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
 		    g2 = circle(sh2)
+		    redim p(-1)
 		    redim p(1)
 		    b = new BasicPoint(0,0)
 		    w = new BasicPoint(0,0)
@@ -198,7 +197,7 @@ Inherits Operation
 		  
 		  
 		  dim EL2 as XMLElement
-		  dim n, id, rid, side, num0, num1 as integer
+		  dim n, rid, side, num0, num1 as integer
 		  dim s1, s2 as shape
 		  dim p as point
 		  
@@ -223,7 +222,9 @@ Inherits Operation
 		  p = point(currentshape)
 		  s1.setpoint(p)
 		  s2.setpoint(p)
+		  redim p.numside(-1)
 		  redim p.numside(1)
+		  redim p.location(-1)
 		  redim p.location(1)
 		  p.pointsur.addshape s1
 		  p.pointsur.addshape s2
@@ -268,9 +269,11 @@ Inherits Operation
 		  else
 		    ncol = sh2.npts-1
 		  end if
-		  
+		  redim bptinters(-1,-1)
 		  redim bptinters(nlig, ncol)
+		  redim ids(-1,-1)
 		  redim ids(nlig,ncol)
+		  redim val(-1,-1)
 		  redim val(nlig,ncol)
 		  redim pts(-1)
 		  
@@ -309,6 +312,9 @@ Inherits Operation
 		Sub init()
 		  dim i, j as integer
 		  
+		  redim reset(-1,-1)
+		  redim bezet(-1,-1)
+		  redim ids(-1,-1)
 		  redim reset(nlig,ncol)
 		  redim bezet(nlig,ncol)
 		  redim ids(nlig, ncol)
@@ -345,7 +351,7 @@ Inherits Operation
 		    next
 		  next
 		  
-		  if  bezet(i1,j1) or (r1 > wnd.mycanvas1.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
+		  if  bezet(i1,j1) or (r1 > can.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
 		    return nil
 		  else
 		    return bptinters(i1,j1)
@@ -358,7 +364,7 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Function nbnear(q as Point) As integer
 		  dim i, m  as integer
-		  dim bp as basicpoint
+		  
 		  
 		  
 		  for i = 0 to ubound(pts)
@@ -466,7 +472,7 @@ Inherits Operation
 		  
 		  
 		  if  ubound(pts) = -1 then
-		    CurrentContent.TheIntersecs.removeintersec self
+		    CurrentContent.TheIntersecs.removeobject self
 		  end if
 		End Sub
 	#tag EndMethod

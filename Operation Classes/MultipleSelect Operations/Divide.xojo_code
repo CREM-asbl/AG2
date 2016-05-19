@@ -3,7 +3,7 @@ Protected Class Divide
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AddOperationToMac(OpList as XMLDocument, EL1 as XMLElement)
-		  dim EL as XmlElement
+		  dim EL as XMLElement
 		  dim i as integer
 		  
 		  for i = 0 to CreatedShapes.count -1
@@ -115,6 +115,7 @@ Inherits MultipleSelectOperation
 		    Q.ConstructedBy.data.append i
 		    Q.ConstructedBy.data.append side
 		    CreatedShapes.addshape  Q
+		    Q.mobility
 		  next
 		  
 		End Sub
@@ -153,13 +154,13 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  for i = visible.count-1 downto 0
-		    s = visible.element(i)
+		    s = visible.item(i)
 		    if not ((s isa bipoint) or (s isa polygon) or (s isa circle) or (s isa arc) or (s isa point)) or (s isa droite and droite(s).nextre <> 2) or (s isa polygon and s.PointOnSide(p) = -1)   then
-		      visible.removeshape visible.element(i)
+		      visible.removeobject visible.item(i)
 		    end if
 		  next
 		  
-		  s = visible.element(iobj)
+		  s = visible.item(iobj)
 		  if s = nil or  (currentitemtoset = 2 and s = firstpoint) then
 		    return nil
 		  end if
@@ -248,9 +249,9 @@ Inherits MultipleSelectOperation
 		  createshapes
 		  EL1 = XMLElement(EL.Child(3))
 		  for i = 0 to createdshapes.count-1
-		    createdshapes.element(i).id = val(XMLElement(EL1.child(i)).GetAttribute("Id"))
-		    createdshapes.element(i).plan  = val(XMLElement(EL1.child(i)).GetAttribute("plan"))
-		    currentcontent.addshape createdshapes.element(i)
+		    createdshapes.item(i).id = val(XMLElement(EL1.child(i)).GetAttribute("Id"))
+		    createdshapes.item(i).plan  = val(XMLElement(EL1.child(i)).GetAttribute("plan"))
+		    currentcontent.addshape createdshapes.item(i)
 		  next
 		  ReDeleteDeletedFigures(Temp)
 		  ReCreateCreatedFigures(Temp)
@@ -312,8 +313,8 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  
-		  EL.appendchild createdshapes.element(i).XMLPutIdinContainer(Doc)
-		  EL.appendchild  createdshapes.element(i).XMLPutConstructionInfoInContainer(Doc)
+		  EL.appendchild createdshapes.item(i).XMLPutIdinContainer(Doc)
+		  EL.appendchild  createdshapes.item(i).XMLPutConstructionInfoInContainer(Doc)
 		  
 		  return EL
 		End Function
@@ -322,7 +323,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
 		  
-		  Dim Myself as XmlElement
+		  Dim Myself as XMLElement
 		  
 		  Myself= Doc.CreateElement(GetName)
 		  Myself.setattribute("NumberOfDivisions",str(Numberofdivisions))
@@ -346,7 +347,7 @@ Inherits MultipleSelectOperation
 		  SelectIdForms(EL)
 		  
 		  for i =  tempshape.count-1 downto 0
-		    tempshape.element(i).delete
+		    tempshape.item(i).delete
 		  next
 		  
 		  s = selectform(EL)

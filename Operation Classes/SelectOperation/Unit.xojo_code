@@ -118,22 +118,22 @@ Inherits SelectOperation
 		  case 0
 		    
 		    for i = 0 to visible.count-1
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if not ( s isa droite and droite(s).nextre = 2) and not (s isa polygon and polygon(s).pointonside(p) <> -1) then
-		        visible.removeshape s
+		        visible.removeobject s
 		      end if
 		    next
 		    
 		  case 1
 		    
 		    for i = 0 to visible.count-1
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if not (( s isa polygon or s isa Stdcircle or s isa freecircle)  and abs(s.aire) > epsilon)  then
-		        visible.removeshape s
+		        visible.removeobject s
 		      end if
 		    next
 		  end select
-		  return visible.element(iobj)
+		  return visible.item(iobj)
 		  
 		  
 		End Function
@@ -234,7 +234,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, EL1 as XmlElement
+		  Dim Myself , EL, EL1 as XMLElement
 		  
 		  
 		  Myself= Doc.CreateElement(GetName)

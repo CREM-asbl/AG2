@@ -32,7 +32,7 @@ Inherits SelectOperation
 		  figs.Bouger(M)
 		  
 		  for i = 0 to tempshape.count -1
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    s.signaire = - s.signaire
 		    s.ori = -s.ori
 		    
@@ -59,7 +59,7 @@ Inherits SelectOperation
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		      circle(s).updateskull
 		    end if
-		    if s isa Lacet then
+		    if s.Hybrid then
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
 		  next
@@ -85,7 +85,7 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  currentshape = tempshape.element(0)
+		  currentshape = tempshape.item(0)
 		  if currentshape isa point then
 		    if UBound(point(currentshape).parents) = -1 or point(currentshape).parents(0).MacConstructedBy <> nil then
 		      currentshape = point(currentshape).parents(0)
@@ -98,7 +98,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i = 0 to tempshape.count-1
-		    figs.addfigure tempshape.element(i).fig
+		    figs.addobject tempshape.item(i).fig
 		  next
 		  
 		  if  config.Trace  then
@@ -108,9 +108,9 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i = 0 to tempshape.count-1
-		    if tempshape.element(i) isa standardpolygon then
-		      standardpolygon(tempshape.element(i)).inverserori
-		      tempshape.element(i).updatecoord
+		    if tempshape.item(i) isa standardpolygon then
+		      standardpolygon(tempshape.item(i)).inverserori
+		      tempshape.item(i).updatecoord
 		    end if
 		  next
 		  
@@ -134,9 +134,9 @@ Inherits SelectOperation
 		  
 		  if visible.count > 0 then
 		    for i = 0 to visible.count-1
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if (s isa cube)  or (s isa point and point(s).pointoncube) or not choixvalide(s)   then
-		        Visible.removeShape(s)
+		        Visible.removeobject(s)
 		        nobj = visible.count
 		        i = i-1
 		      end if
@@ -144,7 +144,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(0)
+		    return visible.item(0)
 		  else
 		    return nil
 		  end if
@@ -197,9 +197,9 @@ Inherits SelectOperation
 		    if p <> nil then
 		      g.forecolor = Config.Transfocolor.col
 		      P1 = C + P
-		      P1 = Wnd.Mycanvas1.Transform(P1)
+		      P1 = can.Transform(P1)
 		      P2 = C - P
-		      P2 = Wnd.Mycanvas1.Transform(P2)
+		      P2 = can.Transform(P2)
 		      g.drawline P1.x, P1.y, P2.x, P2.y
 		      display = choose + anaxis + puis + click
 		      Help g, display
@@ -218,7 +218,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Doc as XMLDocument) As XMLelement
+		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim Temp as XMLElement
 		  
 		  Temp=Doc.CreateElement(GetName)

@@ -2,9 +2,9 @@
 Protected Class Modifier
 Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
-		Sub AccrocherInitial(p as point, temp as xmlelement)
+		Sub AccrocherInitial(p as point, temp as XMLElement)
 		  dim List as XmlNodeList
-		  DIM MF, MFInit, MFFin, EL, EL1, EL2, EL3 as XmlElement
+		  DIM MF, MFInit, MFFin, EL, EL1, EL2, EL3 as XMLElement
 		  dim i, j, k, m, n, n0, sid as integer
 		  dim t as Boolean
 		  dim s as shape
@@ -84,7 +84,7 @@ Inherits SelectAndDragOperation
 		  
 		  pointmobile = p
 		  currentshape = pointmobile
-		  s = p.pointsur.element(0)
+		  s = p.pointsur.item(0)
 		  Initfigs
 		  figs.createstate("InitState",pointmobile)
 		  
@@ -132,7 +132,7 @@ Inherits SelectAndDragOperation
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
 		    if (sh isa arc) then
-		      if (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and  not (p.pointsur.element(0) isa circle and (p.pointsur.element(0).getindex(sh.points(0)) = 0) )  then
+		      if (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and  not (p.pointsur.item(0) isa circle and (p.pointsur.item(0).getindex(sh.points(0)) = 0) )  then
 		        return false
 		      end if
 		      'if sh.GetIndexPoint(p)=1 and sh.points(2).forme=2 then
@@ -165,6 +165,8 @@ Inherits SelectAndDragOperation
 		  Endpoint = pc
 		  figs.enablemodifyall
 		  UpdateFigs(pc)
+		  super.completeoperation(pc)
+		  
 		  
 		  
 		  
@@ -186,7 +188,7 @@ Inherits SelectAndDragOperation
 		  CurrentContent.TheObjects.UnselectAll
 		  
 		  for i = 0 to CurrentContent.TheFigs.count-1
-		    CurrentContent.thefigs.element(i).assocfigs = nil
+		    CurrentContent.thefigs.item(i).assocfigs = nil
 		  next
 		  
 		  drapchoix = true
@@ -212,9 +214,9 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DecrocherInitial(p as point, temp as xmlelement)
+		Sub DecrocherInitial(p as point, temp as XMLElement)
 		  dim List as XmlNodeList
-		  DIM MF, MFInit, MFFin, EL, EL1, EL2, EL3 as XmlElement
+		  DIM MF, MFInit, MFFin, EL, EL1, EL2, EL3 as XMLElement
 		  dim i, j, k, m, n, n0, sid as integer
 		  dim t as Boolean
 		  dim s as shape
@@ -240,7 +242,7 @@ Inherits SelectAndDragOperation
 		    sid = val(XMLElement(EL2.child(0)).GetAttribute("Id"))
 		    s = objects.getshape(sid)
 		    if  FormeAbsente(sid, EL3) then
-		      p.removepointsur(p.pointsur.element(0))
+		      p.removepointsur(p.pointsur.item(0))
 		    end if
 		  end if
 		  
@@ -304,7 +306,7 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  pointmobile.drapmagn = false
-		  
+		  pointmobile.unhighlight
 		  figs.createstate("FinalState",pointmobile)
 		  figs.updateoldM
 		  figs.fx1cancel
@@ -344,10 +346,10 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  for i = visible.count-1 downto 0
-		    s = point(Visible.element(i))
+		    s = point(Visible.item(i))
 		    
 		    if not choixvalid(s) then
-		      visible.removeshape(s)
+		      visible.removeobject(s)
 		    end if
 		  next
 		  
@@ -357,7 +359,7 @@ Inherits SelectAndDragOperation
 		    return nil
 		  end if
 		  
-		  s = point(visible.element(iobj))
+		  s = point(visible.item(iobj))
 		  
 		  if s <> nil then
 		    for i = 0 to ubound(point(s).parents)
@@ -396,9 +398,9 @@ Inherits SelectAndDragOperation
 		  
 		  figu = pointmobile.fig
 		  figu.listerassociatedfigures
-		  figs.addfigure figu
+		  figs.addobject figu
 		  for i = 0 to figu.AssocFigs.count-1
-		    figs.addfigure figu.assocfigs.element(i)
+		    figs.addobject figu.assocfigs.item(i)
 		  next
 		  
 		  if figs.ordonner  then
@@ -419,7 +421,7 @@ Inherits SelectAndDragOperation
 		  dim M as Matrix
 		  
 		  CurrentContent.TheObjects.tracept = false
-		  wnd.mycanvas1.ClearOffscreen
+		  can.ClearOffscreen
 		  super.MouseDown(p)
 		  
 		  if currentshape = nil or not testfinished  then
@@ -432,7 +434,7 @@ Inherits SelectAndDragOperation
 		  figs.createstate("InitState",pointmobile)
 		  if gGetSpecialkey = 4  then
 		    if (pointmobile.pointsur.count =1) and (ubound(currentshape.constructedshapes) = -1) and (currentshape.constructedby = nil )  then
-		      pointmobile.removepointsur pointmobile.pointsur.element(0)
+		      pointmobile.removepointsur pointmobile.pointsur.item(0)
 		    elseif pointmobile.pointsur.count = 0 and pointmobile.multassomm > 1  then
 		      remplini = new Point(Objects,pointmobile.bpt)
 		      for i =  ubound(pointmobile.parents) -1 downto 0
@@ -513,7 +515,7 @@ Inherits SelectAndDragOperation
 		      next
 		    end if
 		    
-		    CurrentHighlightedShape = visible.element(iobj)
+		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
 		    
 		    if currenthighlightedshape isa point then
@@ -525,7 +527,7 @@ Inherits SelectAndDragOperation
 		      end if
 		    end if
 		    
-		    Wnd.mycanvas1.refreshbackground
+		    can.invalidate
 		    
 		    
 		  end if
@@ -620,7 +622,7 @@ Inherits SelectAndDragOperation
 		  dim q1 as BasicPoint
 		  
 		  testfinished = false
-		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
+		  can.Mousecursor = system.cursors.wait
 		  
 		  startpoint = p.bpt
 		  pointmobile = p
@@ -631,14 +633,14 @@ Inherits SelectAndDragOperation
 		  else
 		    s = ptguide(pointmobile)
 		    figs.save
-		    q1 = new basicpoint(2*rnd()-1,2*rnd()-1) *(2*wnd.mycanvas1.magneticdist)
+		    q1 = new basicpoint(2*rnd()-1,2*rnd()-1) *(2*can.magneticdist)
 		    t = figs.update(s, s.bpt+q1)
 		    figs.restore
 		    figs.canceloldbpts
 		    figs.EnableModifyall
 		    wnd.setcross
 		    testfinished = true
-		    wnd.mycanvas1.refreshbackground
+		    can.invalidate
 		    pointmobile = nil
 		    currentshape = nil
 		    return t
@@ -692,7 +694,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself, EL, Form as XmlElement
+		  Dim Myself, EL, Form as XMLElement
 		  dim i as integer
 		  dim p as point
 		  

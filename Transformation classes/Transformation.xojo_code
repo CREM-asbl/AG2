@@ -28,7 +28,7 @@ Protected Class Transformation
 		      s2.computearcangle
 		      s2.drapori = true
 		    end if
-		    if s2 isa Lacet then
+		    if s2.Hybrid then
 		      Lacet(s2).coord.MoveExtreCtrl(M)
 		    end if
 		  else
@@ -45,13 +45,14 @@ Protected Class Transformation
 		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 		  
-		  for i = 0 to ubound(s2.coord.extre)
-		    s2.coord.extre(i) = M*s1.coord.extre(i)
-		  next
-		  for i = 0 to ubound(s2.coord.ctrl)
-		    s2.coord.ctrl(i) = M*s1.coord.ctrl(i)
-		  next
-		  if s1 isa lacet then
+		  if s1.Hybrid then
+		    for i = 0 to ubound(s2.coord.extre)
+		      s2.coord.extre(i) = M*s1.coord.extre(i)
+		    next
+		    for i = 0 to ubound(s2.coord.ctrl)
+		      s2.coord.ctrl(i) = M*s1.coord.ctrl(i)
+		    next
+		    
 		    for i = 0 to ubound(s1.coord.centres)
 		      if s1.coord.centres(i) <> nil then
 		        s2.coord.centres(i) = M*s1.coord.centres(i)
@@ -69,10 +70,10 @@ Protected Class Transformation
 		  dim tsf as transformation
 		  
 		  for i =  constructedfigs.count-1 downto 0
-		    ff = constructedfigs.element(i)
+		    ff = constructedfigs.item(i)
 		    t = true
 		    for j = 0 to constructedshapes.count-1
-		      t = t and constructedshapes.element(j).fig <> ff
+		      t = t and constructedshapes.item(j).fig <> ff
 		    next
 		    
 		    if t then
@@ -204,7 +205,7 @@ Protected Class Transformation
 		  end if
 		  
 		  setfpsp(s)                             'Deux premiers points du support
-		  CurrentContent.TheTransfos.AddTsf(self)
+		  CurrentContent.TheTransfos.AddObject(self)
 		End Sub
 	#tag EndMethod
 
@@ -236,10 +237,8 @@ Protected Class Transformation
 		Sub DrawTip(g as graphics, col as couleur)
 		  
 		  dim a,b as BasicPoint
-		  dim can as mycanvas
 		  dim i as integer
 		  
-		  can = wnd.mycanvas1
 		  if type < 3 or type > 6 then
 		    select case type
 		    case 1
@@ -289,7 +288,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Function Equal(tsf as Transformation) As Boolean
 		  if type = 0 then
-		    return (tsf.type = 0) and (supp=tsf.supp) and (index = tsf.index) 'and (constructedshapes.element(0) = tsf.constructedshapes.element(0))
+		    return (tsf.type = 0) and (supp=tsf.supp) and (index = tsf.index) 'and (constructedshapes.item(0) = tsf.constructedshapes.item(0))
 		  else
 		    return (Type = tsf.type) and (supp = tsf.supp) and (ori = tsf.ori) and (index = tsf.index)
 		  end if
@@ -305,7 +304,7 @@ Protected Class Transformation
 		    ffl = new figslist
 		    for i = 0 to ubound(f.constructioninfos)
 		      if f.constructioninfos(i).tsf = self then
-		        ffl.addfigure f.constructioninfos(i).sourcefig
+		        ffl.addobject f.constructioninfos(i).sourcefig
 		      end if
 		    next
 		    return ffl
@@ -364,6 +363,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Highlight()
 		  highlighted = true
+		  can.invalidate
 		End Sub
 	#tag EndMethod
 
@@ -378,7 +378,7 @@ Protected Class Transformation
 		  
 		  if M <> nil and M.v1 <> nil then
 		    for i = 0 to constructedshapes.count -1
-		      s2 = Constructedshapes.element(i)
+		      s2 = Constructedshapes.item(i)
 		      s1 = s2.constructedby.shape
 		      Appliquer(s1,s2)
 		      if s1 isa circle  or s1 isa lacet then
@@ -428,6 +428,70 @@ Protected Class Transformation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function RacN(niter as integer) As Matrix
+		  dim q, v as BasicPoint
+		  dim u1, u2, u3, u4 As  BasicPoint
+		  dim Mat as SimilarityMatrix
+		  dim M1 as Matrix
+		  dim bib1, Bib2 as BiBPoint
+		  dim r1, r2 as double
+		  dim i as integer
+		  dim s as shape
+		  
+		  select case type
+		  case 1
+		    v =sp -fp
+		    v = v/niter
+		    M1 = new TranslationMatrix(v*ori)
+		  case 2
+		    M1 = new rotationmatrix (supp.points(0).bpt, arc(supp).arcangle/niter)
+		  case 3
+		    M1 = new rotationmatrix(point(supp).bpt, PI/niter)
+		  case 4
+		    M1 = new rotationmatrix(point(supp).bpt,PIDEMI/niter)
+		  case 5
+		    M1 = new rotationmatrix(point(supp).bpt, -PIDEMI/niter)
+		  case 7,71,72
+		    Mat = SimilarityMatrix(M)
+		    M1 = new HomothetyMatrix(Mat.centre,  (Mat.rapport)^(1/niter))
+		  case 8, 81, 82
+		    Mat = SimilarityMatrix(M)
+		    if abs(Mat.angle) < epsilon and abs(Mat.rapport-1) < epsilon then
+		      M1 = new TranslationMatrix(Mat.v3/niter)
+		    else
+		      M1 = new Similaritymatrix (Mat.centre, (Mat.rapport)^(1/niter), Mat.angle/niter)
+		    end if
+		  case 9
+		    u1= supp.points(0).bpt
+		    u2= supp.points(1).bpt
+		    u3= supp.points(3).bpt
+		    u4 = supp.points(2).bpt
+		    Bib1 = new BiBPoint(u1,u2)
+		    Bib2 = new BiBPoint(u3,u4)
+		    q = Bib2.BibInterdroites(bib1,0,0,r1,r2)
+		    u4 = q + (u3 -q)*(((r1-1)/r1)^(1/niter))
+		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
+		  case 10
+		    Mat = SimilarityMatrix(M)
+		    if Mat.angle <> 0 then
+		      M1 = new Similaritymatrix (Mat.centre, 1, Mat.angle/niter)
+		    else
+		      M1 = new Matrix(Mat.v1, Mat.v2, Mat.v3/niter)
+		    end if
+		  case 11
+		    u1= supp.points(0).bpt
+		    u2= supp.points(1).bpt
+		    u3= supp.points(3).bpt
+		    u4 = supp.points(2).bpt
+		    u4 = u3 + (u4-u3)/niter
+		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
+		  end select
+		  
+		  return M1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub removeconstructioninfos(s as shape)
 		  dim ff as figure
 		  dim s1, s2,s3  As  shape
@@ -446,8 +510,8 @@ Protected Class Transformation
 		  
 		  t = true
 		  for i = 0 to constructedshapes.count -1
-		    if constructedshapes.element(i) <> s then
-		      t = t and (constructedshapes.element(i).fig <> s.fig)
+		    if constructedshapes.item(i) <> s then
+		      t = t and (constructedshapes.item(i).fig <> s.fig)
 		    end if
 		  next
 		  if t then
@@ -460,8 +524,8 @@ Protected Class Transformation
 		  k = ff.shapes.getposition(s1)
 		  for i = 0 to ff.shapes.count-1
 		    if i <> k then
-		      for j = 0 to ubound(ff.shapes.element(i).constructedshapes)
-		        s3 = ff.shapes.element(i).constructedshapes(j)
+		      for j = 0 to ubound(ff.shapes.item(i).constructedshapes)
+		        s3 = ff.shapes.item(i).constructedshapes(j)
 		        if s3.constructedby.oper = 6 then
 		          t = t and s3.fig <> s.fig
 		        end if
@@ -474,7 +538,7 @@ Protected Class Transformation
 		  end if
 		  
 		  s1.constructedshapes.remove s1.constructedshapes.indexof(s)
-		  constructedshapes.removeshape s
+		  constructedshapes.removeobject s
 		  
 		End Sub
 	#tag EndMethod
@@ -650,6 +714,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Unhighlight()
 		  highlighted = False
+		  can.invalidate
 		End Sub
 	#tag EndMethod
 
@@ -695,7 +760,7 @@ Protected Class Transformation
 
 	#tag Method, Flags = &h0
 		Sub updatefigconstructioninfos(s as shape)
-		  constructedfigs.addfigure s.fig
+		  constructedfigs.addobject s.fig
 		  
 		End Sub
 	#tag EndMethod

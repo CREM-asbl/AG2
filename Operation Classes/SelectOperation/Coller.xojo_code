@@ -25,7 +25,7 @@ Inherits SelectOperation
 		  s1 = s.constructedby.shape
 		  
 		  for j =0 to i-1
-		    if s1 = tempshape.element(j) then
+		    if s1 = tempshape.item(j) then
 		      i0 = j
 		    end if
 		  next
@@ -34,23 +34,23 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  s2.setconstructedby(copies.element(i0),s.constructedby.oper)
+		  s2.setconstructedby(copies.item(i0),s.constructedby.oper)
 		  select case s.constructedby.oper
 		  case 0
-		    point(s2).moveto copies.element(i0).getgravitycenter
+		    point(s2).moveto copies.item(i0).getgravitycenter
 		  case 4
 		    fp =  point(s.constructedby.data(0))
 		    n = s1.getindexpoint(fp)
-		    fp = copies.element(i0).points(n)
+		    fp = copies.item(i0).points(n)
 		    s2.constructedby.data.append fp
 		    sp =  point(s.constructedby.data(1))
 		    n = s1.getindexpoint(sp)
-		    sp = copies.element(i0).points(n)
+		    sp = copies.item(i0).points(n)
 		    s2.constructedby.data.append sp
 		    s2.constructedby.data.append s.constructedby.data(2)
 		    s2.constructedby.data.append s.constructedby.data(3)
 		    if s2 isa circle then
-		      TriB = new TriBPoint(copies.element(0).getgravitycenter,fp.bpt,sp.bpt)
+		      TriB = new TriBPoint(copies.item(0).getgravitycenter,fp.bpt,sp.bpt)
 		      point(s2).moveto Trib.subdiv (s1.ori,s.constructedby.data(2), s.constructedby.data(3))
 		    else
 		      bib = new BibPoint(fp.bpt,sp.bpt)
@@ -66,8 +66,8 @@ Inherits SelectOperation
 		  dim s, s1, s2 as shape
 		  dim p0 as BasicPoint
 		  
-		  p0 = wnd.MyCanvas1.MouseUser
-		  s = tempshape.element(0)
+		  p0 = can.MouseUser
+		  s = tempshape.item(0)
 		  if not (s isa point) then
 		    p0 = p0 - s.Points(0).bpt
 		  else
@@ -80,7 +80,7 @@ Inherits SelectOperation
 		    s2.endconstruction
 		  else
 		    for i = 0 to n-1
-		      s = tempshape.element(i)
+		      s = tempshape.item(i)
 		      s2 = s.Paste(Objects,p0)
 		      copies.addshape s2
 		      IdentifyPointsinCopies(s2,i)
@@ -93,7 +93,7 @@ Inherits SelectOperation
 		    next
 		    LierGroupes
 		    for i = 0 to n-1
-		      tempshape.objects(i) = copies.element(i)
+		      tempshape.objects(i) = copies.item(i)
 		    next
 		    copies.removeall
 		  end if
@@ -124,22 +124,22 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RedoOperation(Temp as XMLelement)
+		Sub RedoOperation(Temp as XMLElement)
 		  ReCreateCreatedFigures(Temp)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UndoOperation(Temp as XMLelement)
+		Sub UndoOperation(Temp as XMLElement)
 		  dim i as integer
 		  dim EL as XMLElement
 		  objects.unselectall
 		  
-		  EL = XmlElement(Temp.FirstChild)
+		  EL = XMLElement(Temp.FirstChild)
 		  SelectIdForms(EL)
 		  
 		  for i =  tempshape.count-1 downto 0
-		    tempshape.element(i).delete
+		    tempshape.item(i).delete
 		  next
 		  
 		  RedeleteCreatedFigures(Temp)

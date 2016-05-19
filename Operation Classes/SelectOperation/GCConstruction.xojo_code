@@ -37,7 +37,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if not (s isa Point) then
 		      t = true
 		      for j = 0 to Ubound(s.constructedshapes)
@@ -78,16 +78,16 @@ Inherits SelectOperation
 		  
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
-		      s = Visible.element(i)
-		      if s isa point or  s isa bande or s isa secteur or s isa Lacet or (s isa droite and droite(s).nextre < 2)  or s isa arc  then
-		        visible.removeshape s
+		      s = Visible.item(i)
+		      if s isa point or  s isa bande or s isa secteur or s.hybrid or (s isa droite and droite(s).nextre < 2)  or s isa arc  then
+		        visible.removeobject s
 		        nobj = visible.count
 		      end if
 		    next
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(iobj)
+		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -107,7 +107,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RedoOperation(Temp as XmlElement)
+		Sub RedoOperation(Temp as XMLElement)
 		  
 		  ReDeleteDeletedFigures (Temp)
 		  ReCreateCreatedFigures(Temp)
@@ -133,7 +133,7 @@ Inherits SelectOperation
 		  Temp.appendchild Tempshape.XMLPutIdInContainer(Doc)
 		  EL = Doc.CreateElement(Dico.Value("Centres"))
 		  for i = 0 to tempshape.count-1
-		    EL.AppendChild tempshape.element(i).GetGC.XMLPutINContainer(Doc)
+		    EL.AppendChild tempshape.item(i).GetGC.XMLPutINContainer(Doc)
 		  next
 		  Temp.appendchild EL
 		  return temp
@@ -141,7 +141,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UndoOperation(Temp as XmlElement)
+		Sub UndoOperation(Temp as XMLElement)
 		  dim s as shape
 		  dim i, j, n as integer
 		  dim EL as XMLElement
@@ -152,7 +152,7 @@ Inherits SelectOperation
 		  
 		  n = tempshape.count-1
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if not (s isa point) and not (s isa circle) then
 		      p = s.GetGC
 		      p.delete

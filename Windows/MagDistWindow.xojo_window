@@ -26,14 +26,53 @@ Begin Window MagDistWindow
    Title           =   "DistMag"
    Visible         =   True
    Width           =   281
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   8
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Distance Magnétique"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   22
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   127
+   End
    Begin TextField EditField1
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
+      BehaviorIndex   =   1
       Bold            =   False
       Border          =   True
+      ControlOrder    =   "1"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -52,9 +91,13 @@ Begin Window MagDistWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
+      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "False"
+      Styled          =   "False"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -71,10 +114,12 @@ Begin Window MagDistWindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -102,10 +147,12 @@ Begin Window MagDistWindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
+      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -131,41 +178,6 @@ Begin Window MagDistWindow
       Visible         =   True
       Width           =   69
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   22
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
 End
 #tag EndWindow
 
@@ -174,7 +186,7 @@ End
 		Sub Open()
 		  
 		  Title = " "
-		  Label1.Text = Dico.Value("MagDist")
+		  StaticText1.Text = Dico.Value("MagDist")
 		  CancelButton.Caption = Dico.Value("Cancel")
 		  OKButton.Caption = Dico.Value("OK")
 		  EditField1.text = str(Config.magneticdist)

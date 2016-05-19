@@ -91,19 +91,5 @@ Begin Menu Menu
       AutoEnable = False
       Visible = True
    End
-   Begin MenuItem UntitledMenu0
-      SpecialMenu = 0
-      Text = ""
-      Index = -2147483648
-      AutoEnable = False
-      Visible = True
-   End
-   Begin MenuItem Untitled2
-      SpecialMenu = 0
-      Text = ""
-      Index = -2147483648
-      AutoEnable = True
-      Visible = True
-   End
 End
 #tag EndMenu

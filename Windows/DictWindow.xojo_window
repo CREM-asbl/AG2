@@ -29,11 +29,13 @@ Begin Window DictWindow
    Begin ListBox ListBox1
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
+      BehaviorIndex   =   0
       Bold            =   False
       Border          =   True
       ColumnCount     =   1
       ColumnsResizable=   True
       ColumnWidths    =   ""
+      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
@@ -311,7 +313,7 @@ End
 		  dim Doc as XMLDocument
 		  dim EL, EL1 as XMLNode
 		  dim EL2 as XMLElement
-		  dim Key as variant
+		  dim Key as String
 		  dim  Txt as string
 		  dim i,j,k as integer
 		  dim f as folderitem
@@ -340,9 +342,9 @@ End
 		      if txt = "---" then
 		        txt = ""
 		      end if
-		      'if ndict = 1 then
-		      'listbox1.addrow Key
-		      'end if
+		      if ndict = 1 then
+		        listbox1.addrow Key
+		      end if
 		      listbox1.cell(j,ndict) = Txt
 		      j = j+1
 		      EL2= XMLElement(EL2.NextSibling)

@@ -129,7 +129,7 @@ Inherits ShapeConstruction
 		  end if
 		  currentshape.constructedby.data.append tsf
 		  tsf.constructedshapes.addshape currentshape
-		  refe.tsfi.addtsf tsf
+		  refe.tsfi.addObject tsf
 		  BiB2 = droite(currentshape).coord.GetBiB(0)
 		  u = BiB1.second-BiB1.first
 		  v = BiB2.second-BiB2.first
@@ -184,7 +184,7 @@ Inherits ShapeConstruction
 		    if magnetism>0  then
 		      currentattractedshape = currentshape.points(currentshape.IndexConstructedPoint)
 		      ShowAttraction
-		      wnd.mycanvas1.RefreshBackground
+		      'can.invalidate
 		      if nextcurrentattractingshape = nil then
 		        CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		      elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
@@ -208,9 +208,9 @@ Inherits ShapeConstruction
 		    if CurrentHighlightedShape<>nil then
 		      CurrentHighlightedShape.UnHighLight
 		    end if
-		    CurrentHighlightedShape = visible.element(iobj)
+		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
-		    Wnd.mycanvas1.refreshbackground
+		    'can.invalidate
 		  end if
 		  
 		End Sub
@@ -257,7 +257,7 @@ Inherits ShapeConstruction
 		    return false
 		  end
 		  
-		  p = wnd.mycanvas1.mouseuser
+		  p = can.mouseuser
 		  magneticD = new BasicPoint(0,0)
 		  
 		  select case  currentitemtoset
@@ -292,7 +292,7 @@ Inherits ShapeConstruction
 		    end if
 		    if currentattractingshape isa polygon  then
 		      curshape.surseg = true
-		      if currentshape.points(0).pointsur.count = 1 and currentshape.points(0).pointsur.element(0) isa polygon then
+		      if currentshape.points(0).pointsur.count = 1 and currentshape.points(0).pointsur.item(0) isa polygon then
 		        currentshape.points(0).surseg = true
 		      end if
 		    end if

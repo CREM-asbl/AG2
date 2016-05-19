@@ -110,7 +110,6 @@ Begin Window GetUpdateW
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Recherche de mises à jour"
       TextAlign       =   1
       TextColor       =   &c00000000
@@ -170,25 +169,6 @@ End
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Update()
-		  'dim f as FolderItem
-		  '
-		  '#if TargetWin32
-		  'f = SpecialFolder.Desktop.Child(newversion)
-		  '#else
-		  'f =SpecialFolder.Desktop
-		  '#endif
-		  'Label1.Text = "Ouverture de la mise à jour..."
-		  'api.updateDone
-		  'f.Launch
-		  'Quit
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Note, Name = Licence
 		
@@ -234,7 +214,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/#!/logiciels/-K0QFCVwKVLay6Bb2-Xn")
+		  showUrl("http://crem.be/#logiciels/-K0QFCVwKVLay6Bb2-Xn")
 		  close
 		  
 		End Sub

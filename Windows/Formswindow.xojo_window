@@ -28,10 +28,12 @@ Begin Window Formswindow
    Width           =   200
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "0"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -59,10 +61,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -90,10 +94,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -121,10 +127,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -152,10 +160,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "4"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -183,10 +193,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -214,10 +226,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "6"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -245,10 +259,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "7"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -276,10 +292,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "8"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -307,10 +325,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "9"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -338,10 +358,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   True
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "10"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -369,10 +391,12 @@ Begin Window Formswindow
    End
    Begin PushButton Bouton
       AutoDeactivate  =   False
+      BehaviorIndex   =   0
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Untitled"
+      ControlOrder    =   "11"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -423,7 +447,7 @@ End
 
 	#tag Event
 		Sub Open()
-		  'Title = Dico.Value("Forms")
+		  Title = Dico.Value("Forms")
 		  Height = hauteur
 		  updateTextSize
 		  

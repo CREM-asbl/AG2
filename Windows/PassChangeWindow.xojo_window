@@ -26,14 +26,127 @@ Begin Window PassChangeWindow
    Title           =   "Changer le mot de passe"
    Visible         =   True
    Width           =   321
+   Begin Label StaticText1
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   False
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Mot de passe actuel"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   13
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   168
+   End
+   Begin Label StaticText2
+      AutoDeactivate  =   True
+      BehaviorIndex   =   1
+      Bold            =   False
+      ControlOrder    =   "1"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Nouveau mot de passe"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   46
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   168
+   End
+   Begin Label StaticText3
+      AutoDeactivate  =   True
+      BehaviorIndex   =   2
+      Bold            =   False
+      ControlOrder    =   "2"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Confirmation"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   78
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   168
+   End
    Begin TextField EditField1
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
+      BehaviorIndex   =   3
       Bold            =   False
       Border          =   True
+      ControlOrder    =   "3"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -52,9 +165,13 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
+      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "True"
+      Styled          =   "False"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -74,9 +191,11 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
+      BehaviorIndex   =   4
       Bold            =   False
       Border          =   True
+      ControlOrder    =   "4"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -95,9 +214,13 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
+      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "True"
+      Styled          =   "False"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -117,9 +240,11 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
+      BehaviorIndex   =   5
       Bold            =   False
       Border          =   True
+      ControlOrder    =   "5"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -138,9 +263,13 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
+      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
+      ScrollbarHorizontal=   "False"
+      ScrollbarVertical=   "True"
+      Styled          =   "False"
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -157,10 +286,12 @@ Begin Window PassChangeWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
+      BehaviorIndex   =   6
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Ok"
+      ControlOrder    =   "6"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -188,10 +319,12 @@ Begin Window PassChangeWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
+      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "7"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -217,120 +350,13 @@ Begin Window PassChangeWindow
       Visible         =   True
       Width           =   69
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   8
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   20
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin Label Label2
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   46
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin Label Label3
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   10
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   78
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Label1.Text= Dico.Value("PresentPW")
-		  Label2.Text= Dico.Value("NewPW")
-		  Label3.Text= Dico.Value("Confirmation")
+		  Title=Dico.value("PassCWindow")
 		End Sub
 	#tag EndEvent
 
@@ -359,6 +385,20 @@ End
 
 #tag EndWindowCode
 
+#tag Events StaticText1
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.Value("PresentPW")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events StaticText3
+	#tag Event
+		Sub Open()
+		  me.text = Dico.value("Confirmation")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events PushButton1
 	#tag Event
 		Sub Action()

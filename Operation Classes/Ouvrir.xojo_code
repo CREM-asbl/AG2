@@ -74,7 +74,7 @@ Inherits Operation
 		  if currentcontent.ndec =0 then
 		    currentcontent.ndec = 2
 		  end if
-		  wnd.Mycanvas1.Mousecursor = system.cursors.wait
+		  can.Mousecursor = system.cursors.wait
 		  BkCol = FAG.GetAttribute("BkCol")
 		  if BkCol = "noir" and wnd.BackColor = &cFFFFFF then
 		    wnd.switchcolors
@@ -87,7 +87,8 @@ Inherits Operation
 		  wnd.refresh
 		  finished = true
 		  CurrentContent.AddOperation(self)
-		  wnd.mycanvas1.mousecursor = System.Cursors.StandardPointer
+		  can.mousecursor = System.Cursors.StandardPointer
+		  'can.invalidate
 		  
 		End Sub
 	#tag EndMethod
@@ -107,7 +108,7 @@ Inherits Operation
 		  Temp = XMLElement(EL.Child(0))
 		  Objects.XMLLoadObjects(Temp)
 		  Objects.updateids
-		  wnd.Mycanvas1.RefreshBackground
+		  'can.invalidate
 		  
 		End Sub
 	#tag EndMethod
@@ -122,7 +123,7 @@ Inherits Operation
 		  CurrentContent.CreateFigs
 		  
 		  for i = 0 to CurrentContent.TheFigs.count-1
-		    CurrentContent.TheFigs.element(i).XMLPutIncontainer(1,CurrentContent.OpList)
+		    CurrentContent.TheFigs.item(i).XMLPutIncontainer(1,CurrentContent.OpList)
 		  next
 		  
 		  EL = Doc.CreateElement(Dico.value("ObjectsLus"))

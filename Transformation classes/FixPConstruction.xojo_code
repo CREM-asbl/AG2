@@ -20,7 +20,7 @@ Inherits SelectOperation
 		  rid = MExe.GetRealId(n)
 		  supp = objects.GetShape(rid)
 		  num = val(EL.GetAttribute("Nr"))
-		  tsf = supp.tsfi.element(num)
+		  tsf = supp.tsfi.item(num)
 		  tsf.computematrix
 		  DoOperation
 		  
@@ -73,11 +73,11 @@ Inherits SelectOperation
 		  redim CurTsf(-1)
 		  
 		  for j = 0 to Visible.count-1
-		    s=Visible.element(j)
+		    s=Visible.item(j)
 		    if s.tsfi.count > 0 then
 		      for i = 0 to s.tsfi.count-1
-		        if s.tsfi.element(i).Type > 6 and  s.tsfi.element(i).Type <> 9  and  s.tsfi.element(i).Type <> 11 then
-		          CurTsf.Append (s.tsfi.element(i))
+		        if s.tsfi.item(i).Type > 6 and  s.tsfi.item(i).Type <> 9  and  s.tsfi.item(i).Type <> 11 then
+		          CurTsf.Append (s.tsfi.item(i))
 		        end if
 		      next
 		    end if
@@ -114,7 +114,7 @@ Inherits SelectOperation
 		    CurrentContent.TheTransfos.HideAll
 		    CurTsf(itsf).Hidden = false
 		    CurTsf(itsf).Highlighted = true
-		    Wnd.mycanvas1.refreshbackground
+		    'can.invalidate
 		  end if
 		  
 		End Sub
@@ -140,14 +140,14 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RedoOperation(Temp as XmlElement)
+		Sub RedoOperation(Temp as XMLElement)
 		  dim s as shape
 		  dim i, n, k as integer
 		  dim EL, EL1, EL2  as XMLElement
 		  dim Fix as point
 		  
 		  'EL1 = XMLElement(Temp.Child(0))
-		  ''EL =  XmlElement(EL1.Child(0))
+		  ''EL =  XMLElement(EL1.Child(0))
 		  ''n = val(EL.GetAttribute("Id"))
 		  ''s = Objects.Getshape(n)
 		  's = SelectForm(EL1)
@@ -155,7 +155,7 @@ Inherits SelectOperation
 		  'n = Val(EL.GetAttribute("Num"))
 		  'tsf = s.tsfi(n)
 		  '
-		  'EL = XmlElement(EL1.Child(2))
+		  'EL = XMLElement(EL1.Child(2))
 		  'Fix = new Point(objects, EL)
 		  'Fix.moveto tsf.ComputeFixPt
 		  '
@@ -222,7 +222,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UndoOperation(Temp as XmlElement)
+		Sub UndoOperation(Temp as XMLElement)
 		  
 		  dim s as shape
 		  dim i, j, n as integer
@@ -232,7 +232,7 @@ Inherits SelectOperation
 		  EL1 = XMLElement(Temp.Child(0))
 		  s = SelectForm(EL1)
 		  EL = XMLElement(EL1.Child(1))
-		  tsf = s.tsfi.element(Val(EL.GetAttribute("Num")))
+		  tsf = s.tsfi.item(Val(EL.GetAttribute("Num")))
 		  p = tsf.fixpt
 		  p.delete
 		  
@@ -274,14 +274,6 @@ Inherits SelectOperation
 
 	#tag Property, Flags = &h0
 		CurTsf() As Transformation
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		itsf As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ntsf As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

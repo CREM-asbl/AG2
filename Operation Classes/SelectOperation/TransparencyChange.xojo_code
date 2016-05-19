@@ -2,10 +2,11 @@
 Protected Class TransparencyChange
 Inherits SelectOperation
 	#tag Method, Flags = &h0
-		Sub Constructor()
+		Sub Constructor(f as integer)
 		  
 		  super.constructor
 		  OpId = 18
+		  self.f = f
 		  
 		End Sub
 	#tag EndMethod
@@ -15,14 +16,12 @@ Inherits SelectOperation
 		  dim s as shape
 		  dim i, n as integer
 		  
-		  
 		  n = tempshape.count -1
 		  for i = 0 to n
-		    s = tempshape.element(i)
-		    if s isa StandardPolygon then
-		      s.fill = 50 - s.Fill
-		    else
-		      s.fill = 100 - s.fill
+		    s = tempshape.item(i)
+		    oldfill = s.fill
+		    if not (s.std and f = 50) then
+		      s.fill = f
 		    end if
 		  next
 		  
@@ -36,6 +35,17 @@ Inherits SelectOperation
 		Function GetName() As string
 		  return Dico.Value("ToolsColorTransparent")
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ImmediateDoOperation(f as integer)
+		  if tempshape.count > 0 then
+		    can.Mousecursor = System.Cursors.Wait
+		    wnd.refreshtitle
+		    DoOperation
+		    endoperation
+		  end if
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -54,6 +64,7 @@ Inherits SelectOperation
 		Sub UndoOperation(Temp As XMLElement)
 		  objects.unselectall
 		  SelectIdForms(Temp)
+		  f = oldfill
 		  DoOperation
 		  objects.unselectall
 		  
@@ -84,12 +95,26 @@ Inherits SelectOperation
 	#tag EndNote
 
 
+	#tag Property, Flags = &h0
+		f As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		OldFill As Integer = 100
+	#tag EndProperty
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="f"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Finished"
@@ -151,6 +176,12 @@ Inherits SelectOperation
 			Name="ntsf"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OldFill"
+			Group="Behavior"
+			InitialValue="100"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -13,16 +13,17 @@ Inherits SelectAndDragOperation
 		    return
 		  end if
 		  
-		  if tempshape.element(0) isa repere then
-		    c = new basicpoint(wnd.mycanvas1.width/2,wnd.mycanvas1.height/2)
+		  if tempshape.item(0) isa repere then
+		    c = new basicpoint(can.width/2,can.height/2)
 		    a = GetAngle(c,newpoint)-GetAngle(c,endpoint)
 		    M = new RotationMatrix(c,a)
-		    Repere(tempshape.element(0)).Origine = M*Repere(tempshape.element(0)).Origine
+		    Repere(tempshape.item(0)).Origine = M*Repere(tempshape.item(0)).Origine
 		    M = new Rotationmatrix(new BasicPoint(0,0),a)
-		    tempshape.element(0).Transform(M)
+		    tempshape.item(0).Transform(M)
 		    endpoint = newpoint
 		    CurrentContent.theobjects.updateskull
-		    wnd.MyCanvas1.refreshbackground
+		    'can.invalidate
+		    super.CompleteOperation(NewPoint)
 		    return
 		  end if
 		  
@@ -38,6 +39,8 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  EndPoint =NewPoint
+		  
+		  super.CompleteOperation(NewPoint)
 		  
 		End Sub
 	#tag EndMethod
@@ -76,10 +79,10 @@ Inherits SelectAndDragOperation
 		  
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if tempshape.count > 1 then
 		        if C <> nil or  not s.selected then
-		          Visible.removeShape(s)
+		          Visible.removeobject(s)
 		        end if
 		      end if
 		      nobj = visible.count
@@ -88,16 +91,16 @@ Inherits SelectAndDragOperation
 		  
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if not choixvalide(s) then
-		        Visible.removeShape(s)
+		        Visible.removeobject(s)
 		      end if
 		    next
 		  end if
 		  nobj = visible.count
 		  
 		  if Visible.count > 0  then
-		    return visible.element(0)
+		    return visible.item(0)
 		  else
 		    return nil
 		  end if
@@ -186,7 +189,7 @@ Inherits SelectAndDragOperation
 		  
 		  EL = XMLElement(Temp.child(0))
 		  SelectIdForms(EL)
-		  currentshape = tempshape.element(0)
+		  currentshape = tempshape.item(0)
 		  c = new basicpoint(val(EL.GetAttribute("CX")), val(EL.GetAttribute("CY")))
 		  startpoint = new Basicpoint(val(EL.GetAttribute("startx")),val(EL.GetAttribute("starty")))
 		  endpoint = new Basicpoint(val(EL.GetAttribute("endx")),val(EL.GetAttribute("endy")))
@@ -204,7 +207,7 @@ Inherits SelectAndDragOperation
 		    CurrentContent.theobjects.updateskull
 		  else
 		    for i = 0 to tempshape.count-1
-		      figs.addfigure tempshape.element(i).fig
+		      figs.addobject tempshape.item(i).fig
 		    next
 		    figs.creerlistesfigures
 		    if Config.Trace then
@@ -220,8 +223,8 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Doc as XMLDocument) As XMLelement
-		  Dim Myself as XmlElement
+		Function ToXML(Doc as XMLDocument) As XMLElement
+		  Dim Myself as XMLElement
 		  
 		  Myself= Doc.CreateElement("Tourner")
 		  Myself.appendchild tempshape.XMLPutIdInContainer(Doc)
@@ -249,14 +252,14 @@ Inherits SelectAndDragOperation
 		  a = val(EL.GetAttribute(Dico.value("Angle")))
 		  a = -a
 		  
-		  if tempshape.element(0) isa repere then
+		  if tempshape.item(0) isa repere then
 		    cx = val(EL.GetAttribute("CX"))
 		    cy = val(EL.GetAttribute("CY"))
 		    c = new basicpoint(cx, cy)
 		    M = new RotationMatrix(c,a)
-		    Repere(tempshape.element(0)).Origine = M*Repere(tempshape.element(0)).Origine
+		    Repere(tempshape.item(0)).Origine = M*Repere(tempshape.item(0)).Origine
 		    M = new Rotationmatrix(new BasicPoint(0,0),a)
-		    tempshape.element(0).Transform(M)
+		    tempshape.item(0).Transform(M)
 		    CurrentContent.theobjects.updateskull
 		  else
 		    super.UndoOperation(Temp)

@@ -8,7 +8,7 @@ Inherits Circle
 		  radius=s.radius
 		  angles.append s.angles(0)
 		  file = s.file
-		  nsk = new CircleSkull(wnd.Mycanvas1.transform(p))
+		  nsk = new ArcSkull(can.transform(p))
 		  nsk.updatesize(1)
 		  
 		  
@@ -20,6 +20,7 @@ Inherits Circle
 		  
 		  dim Myspecs as StdPolygonSpecifications
 		  
+		  std = true
 		  super.Constructor(ol,1,p)
 		  npts = 2
 		  self.fam = fam
@@ -32,9 +33,8 @@ Inherits Circle
 		  
 		  fixecouleurtrait(config.bordercolor,100)
 		  FixeCouleurFond(config.StdColor(Fam-10),100)
-		  std = true
-		  autos
 		  ori = 1
+		  
 		End Sub
 	#tag EndMethod
 
@@ -50,9 +50,9 @@ Inherits Circle
 		  end if //pour pouvoir relire d'anciens fichiers
 		  radius=Val(El.getAttribute("Rayon"))
 		  angles.append Val(EL.getAttribute("Angle"))
-		  sc = wnd.Mycanvas1.scaling
+		  sc = can.scaling
 		  rsk= radius*Config.StdSize*sc
-		  'nsk = new CircleSkull(wnd.Mycanvas1.transform(Points(0).bpt))
+		  'nsk = new CircleSkull(can.transform(Points(0).bpt))
 		  'nsk.updatesize(1)
 		  std = true
 		  autos
@@ -62,16 +62,32 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ConstructShape()
+		  Points(1).Moveto Points(0).bpt + new BasicPoint(radius,0)
+		  updatecoord
+		  if nsk = nil then
+		    createskull(coord.tab(0))
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint)
+		  coord.CreateExtreAndCtrlPoints(1)
+		  
+		  nsk = new ArcSkull(can.transform(points(0).bpt))
+		  nsk.skullof = self
+		  nsk.updatesize(1)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub EndConstruction()
 		  
 		  
-		  coord.CreateExtreAndCtrlPoints(1)
+		  
 		  Points(0).Hide
 		  Points(1).hide
-		  
-		  nsk = new CircleSkull(wnd.Mycanvas1.transform(points(0).bpt))
-		  nsk.updatesize(1)
-		  updateskull
 		  super.endconstruction
 		  
 		End Sub
@@ -80,7 +96,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  points(0).moveto p
-		  Points(1).Moveto Points(0).bpt + new BasicPoint(radius,0)
+		  
 		  updatecoord
 		  
 		End Sub
@@ -218,6 +234,11 @@ Inherits Circle
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

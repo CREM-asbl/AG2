@@ -28,7 +28,9 @@ Begin Window Languagewindow
    Width           =   251
    Begin PopupMenu LanguagePopup
       AutoDeactivate  =   True
+      BehaviorIndex   =   0
       Bold            =   False
+      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -59,10 +61,12 @@ Begin Window Languagewindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28

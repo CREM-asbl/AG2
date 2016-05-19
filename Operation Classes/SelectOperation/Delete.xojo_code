@@ -31,7 +31,7 @@ Inherits SelectOperation
 		  figs = new figslist
 		  for i = 0 to ubound(todelete)
 		    objects.selectobject todelete(i)
-		    figs.addfigure todelete(i).fig
+		    figs.addobject todelete(i).fig
 		  next
 		  CurrentContent.Thefigs.Removefigures figs
 		  
@@ -69,16 +69,16 @@ Inherits SelectOperation
 		  
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
-		      s = Visible.element(i)
+		      s = Visible.item(i)
 		      if s isa point  and not point(s).isolated   then
-		        visible.removeshape s
+		        visible.removeobject s
 		        nobj = visible.count
 		      end if
 		    next
 		  end if
 		  
 		  if Visible.count > 0  then
-		    return visible.element(iobj)
+		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -119,8 +119,8 @@ Inherits SelectOperation
 		  next
 		  
 		  for i = 0 to s.tsfi.count-1
-		    for j = 0 to s.tsfi.element(i).constructedshapes.count -1
-		      highlight(s.tsfi.element(i).constructedshapes.element(j))
+		    for j = 0 to s.tsfi.item(i).constructedshapes.count -1
+		      highlight(s.tsfi.item(i).constructedshapes.item(j))
 		    next
 		  next
 		  
@@ -154,7 +154,7 @@ Inherits SelectOperation
 		Sub MouseDown(p as BasicPoint)
 		  
 		  Finished = false
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		  can.Mousecursor = System.Cursors.Wait
 		  DoOperation
 		  endoperation
 		  
@@ -173,7 +173,7 @@ Inherits SelectOperation
 		  s = Getshape(p)
 		  if s <> nil then
 		    highlight(s)
-		    'wnd.mycanvas1.refreshbackground
+		    'can.refreshbackground
 		    currenthighlightedshape = s
 		  end if
 		  
@@ -197,7 +197,7 @@ Inherits SelectOperation
 		  iobj = (iobj+1) mod nobj
 		  
 		  
-		  CurrentHighlightedShape = visible.element(iobj)
+		  CurrentHighlightedShape = visible.item(iobj)
 		  Highlight(CurrentHighlightedShape)
 		  if currenthighlightedshape isa point then
 		    pt = point(currenthighlightedshape)
@@ -206,7 +206,7 @@ Inherits SelectOperation
 		    next
 		  end if
 		  
-		  Wnd.mycanvas1.refreshbackground
+		  'can.invalidate
 		  
 		End Sub
 	#tag EndMethod
@@ -238,7 +238,7 @@ Inherits SelectOperation
 		  
 		  SelectIdForms(Temp)
 		  for i =  tempshape.count -1 downto 0
-		    tempshape.element(i).delete
+		    tempshape.item(i).delete
 		  next
 		  objects.unselectall
 		  
@@ -258,7 +258,9 @@ Inherits SelectOperation
 		Sub UndoOperation(Temp as XMLElement)
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
-		  wnd.refresh
+		  can.RefreshBackground
+		  can.Refresh
+		  
 		End Sub
 	#tag EndMethod
 

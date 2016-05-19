@@ -1,75 +1,24 @@
 #tag Class
 Protected Class TransfosList
-	#tag Method, Flags = &h0
-		Sub AddTsf(tsf as Transformation)
-		  if tsf <> nil and GetPosition(tsf)  = -1 then
-		    Transfos.append tsf
-		  end if
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
+Inherits Liste
 	#tag Method, Flags = &h0
 		Sub CleanConstructedFigs()
 		  dim i as integer
 		  
 		  for i = 0 to count -1
-		    element(i).cleanConstructedFigs
+		    item(i).cleanConstructedFigs
 		  next
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor()
-		  
-		  CurrentTransfo = nil
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function count() As integer
-		  return ubound(transfos)+1
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function element(n as integer) As transformation
-		  if n >= 0 and n <= Ubound(Transfos) then
-		    return Transfos(n)
-		  end if
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub EnableModifyall()
 		  dim i as integer
 		  
-		  for i = 0 to ubound(transfos)
-		    transfos(i).modified = false
+		  for i = 0 to ubound(objects)
+		    Transformation(objects(i)).modified = false
 		  next
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetPosition(tsf as Transformation) As Integer
-		  dim i as Integer
-		  
-		  if tsf = nil then
-		    return -1
-		  end if
-		  
-		  for i=0 to UBound(Transfos)
-		    if  tsf.Equal(Transfos(i)) then
-		      return i
-		    end if
-		  next
-		  
-		  return -1
-		  
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -80,14 +29,14 @@ Protected Class TransfosList
 		  
 		  
 		  for i = 0 to count-1
-		    s = element(i).supp
+		    s = item(i).supp
 		    if  s.pInShape(p) then
-		      select case element(i).type
+		      select case item(i).type
 		      case 8
-		        TsfL.AddTsf element(i)
+		        TsfL.AddObject item(i)
 		      else
-		        if element(i).type > 0 and (s isa point or  element(i).index = element(i).supp.pointonside(p)) then
-		          TsfL.AddTsf element(i)
+		        if item(i).type > 0 and (s isa point or  item(i).index = item(i).supp.pointonside(p)) then
+		          TsfL.AddObject item(i)
 		        end if
 		      end select
 		    end if
@@ -101,8 +50,8 @@ Protected Class TransfosList
 		Sub HideAll()
 		  dim i as integer
 		  
-		  for i=0 to UBound(Transfos)
-		    Transfos(i).Hidden = true
+		  for i=0 to UBound(Objects)
+		    Transformation(Objects(i)).Hidden = true
 		  next
 		  
 		  //Utilisé uniquement après le choix d'une tsf à appliquer
@@ -110,29 +59,36 @@ Protected Class TransfosList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RemoveAll()
-		  redim Transfos(-1)
-		End Sub
+		Function item(n as integer) As transformation
+		  return Transformation(element(n))
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RemoveTsf(tsf as Transformation)
-		  dim pos as integer
+		Function OldGetPosition(tsf as Transformation) As Integer
+		  dim i as Integer
 		  
-		  pos = GetPosition(tsf)
-		  
-		  if pos <> -1 then
-		    Transfos.remove Pos
+		  if tsf = nil then
+		    return -1
 		  end if
-		End Sub
+		  
+		  for i=0 to UBound(Objects)
+		    if  tsf.Equal(Transformation(Objects(i))) then
+		      return i
+		    end if
+		  next
+		  
+		  return -1
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ShowAll()
 		  dim i as integer
 		  
-		  for i=0 to UBound(Transfos)
-		    Transfos(i).Hidden = false
+		  for i=0 to UBound(Objects)
+		    Transformation(Objects(i)).Hidden = false
 		  next
 		  
 		  //On montre les tsf qui ne sont pas cachées par Hidden2
@@ -143,8 +99,8 @@ Protected Class TransfosList
 		Sub Unhighlightall()
 		  dim i as integer
 		  
-		  for i =0 to ubound(transfos)
-		    transfos(i).unhighlight
+		  for i =0 to ubound(objects)
+		    Transformation(objects(i)).unhighlight
 		  next
 		End Sub
 	#tag EndMethod
@@ -178,10 +134,6 @@ Protected Class TransfosList
 
 	#tag Property, Flags = &h0
 		DrapShowALL As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Transfos(-1) As Transformation
 	#tag EndProperty
 
 

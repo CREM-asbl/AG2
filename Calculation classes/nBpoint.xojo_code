@@ -13,6 +13,25 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function BoundingRadius() As double
+		  dim g as BasicPoint
+		  dim i as integer
+		  dim br as double
+		  
+		  g = centre
+		  br = 0
+		  
+		  if taille > 0 then
+		    for i = 0 to Taille-1
+		      br = max(br, g.distance(tab(i)))
+		    next
+		  end if
+		  
+		  return br
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Centre() As BasicPoint
 		  dim p as BasicPoint
 		  dim i as integer
@@ -39,6 +58,31 @@ Protected Class nBpoint
 		  a = e - startangle
 		  return Normalize(a,orien)
 		  'a a toujours meme signe que orien
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ComputeBoundingBox() As BiBPoint
+		  dim dlx, dly, urx, ury as double
+		  dim i as integer
+		  
+		  
+		  dlx = tab(0).x
+		  dly = tab(0).y
+		  urx = tab(0).x
+		  ury = tab(0).y
+		  for i = 1 to taille-1
+		    dlx = Min(dlx,tab(i).x)
+		    dly = Min(dly,tab(i).y)
+		    urx = Max(urx,tab(i).x)
+		    ury = Max(ury,tab(i).y)
+		  next
+		  
+		  dim dl as new BasicPoint(dlx,dly)
+		  dim ur as new BasicPoint(urx,ury)
+		  return new BiBPoint(dl,ur)
+		  
+		  
 		End Function
 	#tag EndMethod
 
@@ -73,12 +117,18 @@ Protected Class nBpoint
 		    append point(s).bpt
 		  end if
 		  
+		  redim curved(-1)
 		  redim curved(taille-1)
 		  for i = 0 to taille-1
 		    curved(i) = 0
 		  next
 		  
+		  redim centres(-1)
 		  redim centres(taille-1)
+		  redim extre(-1)
+		  redim extre(2*taille-1)
+		  redim ctrl(-1)
+		  redim ctrl(6*taille-1)
 		End Sub
 	#tag EndMethod
 
@@ -142,7 +192,7 @@ Protected Class nBpoint
 		      M =  new OrthoProjectionMatrix(a,a+b)
 		      tab(2) = M*tab(2)
 		      tab(3) = tab(0)-tab(1)+tab(2)
-		    case 6
+		    case 6      'Losanges
 		      d = tab(0).distance(tab(1))
 		      b = tab(2)-tab(1)
 		      if tab(1).distance(tab(2)) > 0 then
@@ -168,13 +218,7 @@ Protected Class nBpoint
 		    next
 		  case 5
 		    select case  fo
-		    case 1
-		      d = tab(0).distance(tab(1))
-		      tab(2) = tab(2).projection(tab(0),d)
-		    end select
-		  case 7
-		    select case  fo
-		    case 0
+		    case 1, 2 'arcs et secteurs de disque
 		      d = tab(0).distance(tab(1))
 		      tab(2) = tab(2).projection(tab(0),d)
 		    end select

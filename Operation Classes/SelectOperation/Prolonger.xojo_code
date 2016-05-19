@@ -93,8 +93,8 @@ Inherits SelectOperation
 		    Dr.childs(i).fig = Dr.fig
 		    Dr.fig.PtsSur.addshape Dr.childs(i)
 		    for j = 0 to Dr.fig.subs.count - 1
-		      if Dr.fig.subs.element(j).shapes.getposition(Dr) <> -1 then
-		        Dr.fig.subs.element(j).PtsSur.addshape Dr.childs(i)
+		      if Dr.fig.subs.item(j).shapes.getposition(Dr) <> -1 then
+		        Dr.fig.subs.item(j).PtsSur.addshape Dr.childs(i)
 		      end if
 		    next
 		  next
@@ -136,22 +136,23 @@ Inherits SelectOperation
 		  
 		  nobj = visible.count
 		  for i = visible.count-1 downto 0
-		    s = Visible.element(i)
+		    s = Visible.item(i)
 		    if not s.ValidSegment(p,ibip) or ( s isa polygon and polygon(s).prol(ibip) ) then  //le côté a déjà été prolongé
-		      visible.removeshape(s)
+		      visible.removeobject(s)
 		    end if
 		    if s isa droite and droite(s).nextre = 0 then
-		      visible.removeshape s
+		      visible.removeobject s
 		    end if
 		  next
 		  
 		  nobj = visible.count
+		  redim index(-1)
 		  redim index(nobj)
 		  
 		  iobj = 0
 		  
 		  for i = 0 to visible.count-1
-		    s = visible.element(i)
+		    s = visible.item(i)
 		    if s isa droite then
 		      index(i) = 0
 		    else
@@ -159,7 +160,7 @@ Inherits SelectOperation
 		    end if
 		  next
 		  
-		  s = visible.element(iobj)
+		  s = visible.item(iobj)
 		  if s = nil then
 		    return nil
 		  end if
@@ -288,7 +289,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLelement
+		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
 		  
 		  Temp =  Dr.XMLPutIdInContainer(Doc)
@@ -301,7 +302,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Doc as XMLDocument) As XMLelement
+		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim Temp, EL as XMLElement
 		  
 		  Temp=Doc.CreateElement(GetName)

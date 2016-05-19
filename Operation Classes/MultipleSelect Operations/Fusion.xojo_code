@@ -17,7 +17,7 @@ Inherits MultipleSelectOperation
 		  dim alpha, beta as double
 		  dim BiB as BiBPoint
 		  
-		  if (Fus1 isa Lacet) or (Fus2 isa Lacet) then
+		  if (Fus1.Hybrid) or (Fus2.Hybrid) then
 		    
 		  elseif  dir = -1  then
 		    if Fus1.std or Fus2.std then
@@ -58,6 +58,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  if not Fus.std then
 		    Fus.autos
+		    redim fus.coord.curved(-1)
 		    redim fus.coord.curved(fus.npts-1)
 		  end if
 		  Fus.forme = Fus.npts-3
@@ -104,17 +105,17 @@ Inherits MultipleSelectOperation
 		  dim S As Shape
 		  
 		  S = Operation.GetShape(p)
-		  if S = nil or (not s isa polygon) or s isa cube then
+		  if S = nil or (not s isa Lacet) or s isa cube then
 		    return nil
 		  end if
 		  
 		  select case CurrentItemToSet
 		  case 1
-		    if S isa polygon and not s isa lacet then
+		    if S isa polygon then
 		      return s
 		    end if
 		  case 2
-		    if S isa polygon and not s isa lacet  and S<>Fus1 and Polygon(Fus1).PossibleFusionWith(Polygon(s), start1, start2, dir) then
+		    if S isa polygon and S<>Fus1 and Polygon(Fus1).PossibleFusionWith(Polygon(s), start1, start2, dir) then
 		      return s
 		    end if
 		  end select
@@ -233,13 +234,13 @@ Inherits MultipleSelectOperation
 		Function SetItem(S as shape) As boolean
 		  select case CurrentItemToSet
 		  case 1
-		    if s isa lacet then
+		    if s.Hybrid then
 		      Fus1 = lacet(s)
 		    else
 		      Fus1 = Polygon(s)
 		    end if
 		  case 2
-		    if s isa lacet then
+		    if s.Hybrid then
 		      Fus2 = Lacet(s)
 		    else
 		      Fus2 =Polygon(s)
@@ -257,7 +258,7 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToXML(Doc as XMLDocument) As XmlElement
+		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim EL0, EL1 as XMLElement
 		  
 		  EL0 = Doc.CreateElement(GetName)
@@ -316,15 +317,15 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Fus As Polygon
+		Fus As Lacet
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Fus1 As Polygon
+		Fus1 As Lacet
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Fus2 As Polygon
+		Fus2 As Lacet
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

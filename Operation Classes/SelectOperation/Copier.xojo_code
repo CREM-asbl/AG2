@@ -20,7 +20,7 @@ Inherits SelectOperation
 		  
 		  n = tempshape.count-1
 		  for i = 0 to n
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    app.tampon.addshape(s)
 		  next
 		  
@@ -51,7 +51,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  Finished = false
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		  can.Mousecursor = System.Cursors.Wait
 		  currentcontent.MoveFront(CurrentHighlightedShape.id)
 		  CurrentHighlightedShape.SelectNeighboor
 		  wnd.refreshtitle

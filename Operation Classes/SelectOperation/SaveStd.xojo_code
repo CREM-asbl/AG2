@@ -20,7 +20,7 @@ Inherits SelectOperation
 		  dim f as folderitem
 		  dim stdw as StdFamWindow
 		  dim Doc, NewDoc as XmlDocument
-		  dim FStd, Temp, EL, EL1  As XmlElement
+		  dim FStd, Temp, EL, EL1  As XMLElement
 		  dim s as shape
 		  dim Bib as BiBPoint
 		  dim alpha, beta as double
@@ -54,7 +54,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    EL = Doc.CreateElement("Forme")
 		    EL.AppendChild s.FillColor.XMLPutInContainer(Doc,"Couleur")
 		    EL.SetAttribute("Nom", "Forme "+str(i+1))

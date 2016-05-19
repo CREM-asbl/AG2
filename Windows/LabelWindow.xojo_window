@@ -26,12 +26,12 @@ Begin Window LabelWindow
    Title           =   "Nommer"
    Visible         =   True
    Width           =   614
-   Begin TextField Eti
+   Begin TextField Text
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -165,12 +165,82 @@ Begin Window LabelWindow
       Visible         =   True
       Width           =   80
    End
+   Begin Label Txt
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   22
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   12
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Texte :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   13
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   36
+   End
+   Begin Label TxtSize
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   12
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Taille :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   49
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   36
+   End
    Begin Rectangle RecColor
       AutoDeactivate  =   False
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFFFFFF00
+      FillColor       =   &cFF00FFFF
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -190,12 +260,117 @@ Begin Window LabelWindow
       Visible         =   True
       Width           =   20
    End
+   Begin Label TxtColor
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   111
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Couleur :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   49
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   47
+   End
+   Begin Label TxtX
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   12
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Axe X :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   81
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   36
+   End
+   Begin Label TxtY
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   128
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Axe Y :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   81
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   45
+   End
    Begin TextField CoordX
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -208,7 +383,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   54
+      Left            =   60
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -238,7 +413,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -350,6 +525,41 @@ Begin Window LabelWindow
       Underline       =   False
       Visible         =   True
       Width           =   80
+   End
+   Begin Label Pol
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   209
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   15
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Police :"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   49
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   40
    End
    Begin ListBox Polices
       AutoDeactivate  =   True
@@ -464,216 +674,6 @@ Begin Window LabelWindow
       Visible         =   True
       Width           =   78
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   19
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Texte :"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   42
-   End
-   Begin Label Label2
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   20
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Taille :"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   50
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   48
-   End
-   Begin Label Label3
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   21
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   80
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   55
-   End
-   Begin Label Label4
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   104
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   22
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   48
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   54
-   End
-   Begin Label Label5
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   111
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   23
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   80
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   52
-   End
-   Begin Label Label6
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   194
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   24
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Police :"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   50
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   55
-   End
 End
 #tag EndWindow
 
@@ -694,19 +694,17 @@ End
 		  drapnew = addlab.drapnew
 		  Lab = addlab.lab
 		  Title = Dico.value("Nommer")
-		  Label1.Text = Dico.value("Name")+" : "
-		  Eti.Text = lab.Text
-		  Label6.Text = Dico.value("Font")+ " :"
-		  Label2.Text = Dico.value("Size")+" : "
-		  size.Text = str(lab.size)
-		  Label4.Text = Dico.value("Color")+" : "
-		  Label3.Text = Dico.value("Axe")+" X  : "
-		  Label5.Text = Dico.value("Axe")+" Y  : "
-		  RecColor.FillColor = Lab.col
+		  Txt.caption = Dico.value("Name")+" : "
+		  Text.Text = lab.Text
+		  Pol.Caption = Dico.value("Font")+ " :"
+		  TxtSize.caption = Dico.value("Size")+" : "
+		  size.Text = str(lab.Textsize)
+		  TxtColor.caption = Dico.value("Color")+" : "
+		  RecColor.FillColor = Lab.TextColor
 		  Italic.caption = " "+Dico.value("Italic")
-		  Italic.setBoolean(lab.Italique)
+		  'Italic.setBoolean(lab.TextFont)
 		  Fixe.Caption = Dico.value("Fixe")
-		  corr = wnd.mycanvas1.dtransform(lab.correction)
+		  corr = can.dtransform(lab.correction)
 		  CoordX.text =str(corr.X)
 		  CoordY.text = str(- corr.y)
 		  if drapnew then
@@ -718,7 +716,7 @@ End
 		    next
 		  else
 		    for i = 0 to Polices.ListCount-1
-		      if Polices.List(i)  = Lab.Font then
+		      if Polices.List(i)  = Lab.TextFont then
 		        Polices.ListIndex = i
 		      end if
 		    next
@@ -774,7 +772,7 @@ End
 
 #tag EndWindowCode
 
-#tag Events Eti
+#tag Events Text
 	#tag Event
 		Sub TextChange()
 		  dim n as integer
@@ -856,16 +854,16 @@ End
 		Sub Down()
 		  CoordX.Text = str(val(CoordX.Text)-1)
 		  Corr.X = val(CoordX.text)
-		  lab.correction = wnd.mycanvas1.idtransform(corr)
-		  Wnd.Mycanvas1.Refreshbackground
+		  lab.correction = can.idtransform(corr)
+		  can.Refreshbackground
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Up()
 		  CoordX.Text = str(val(CoordX.Text)+1)
 		  Corr.X = val(CoordX.text)
-		  lab.correction = wnd.mycanvas1.idtransform(corr)
-		  Wnd.Mycanvas1.Refreshbackground
+		  lab.correction = can.idtransform(corr)
+		  can.Refreshbackground
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -874,16 +872,16 @@ End
 		Sub Down()
 		  CoordY.Text = str(val(CoordY.Text)-1)
 		  Corr.Y = - val(CoordY.text)
-		  lab.correction = wnd.mycanvas1.idtransform(corr)
-		  Wnd.Mycanvas1.RefreshBackground
+		  lab.correction = can.idtransform(corr)
+		  can.RefreshBackground
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Up()
 		  CoordY.Text = str(val(CoordY.Text)+1)
 		  Corr.Y = - val(CoordY.text)
-		  lab.correction = wnd.mycanvas1.idtransform(corr)
-		  Wnd.Mycanvas1.RefreshBackground
+		  lab.correction = can.idtransform(corr)
+		  can.RefreshBackground
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -896,9 +894,9 @@ End
 		  
 		  If OldLab <> nil then
 		    Lab.Text = OldLab.Text
-		    Lab.col = OldLab.col
-		    Lab.size = OldLab.size
-		    Lab.Italique = OldLab.Italique
+		    Lab.TextColor = OldLab.TextColor
+		    Lab.Textsize = OldLab.Textsize
+		    Lab.TextFont = OldLab.TextFont
 		    Lab.fixe = OldLab.fixe
 		    Lab.Correction = OldLab.Correction
 		  else
@@ -940,7 +938,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Change()
-		  Lab.font = me.text
+		  Lab.Textfont = me.text
 		  wnd.refresh
 		End Sub
 	#tag EndEvent
@@ -954,7 +952,7 @@ End
 	#tag Event
 		Sub Action()
 		  lab.text = ""
-		  lab.chape.labs.removelab(lab)
+		  lab.chape.labs.removeobject(lab)
 		  self.close
 		End Sub
 	#tag EndEvent

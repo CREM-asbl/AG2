@@ -52,30 +52,9 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(P as BasicPoint)
-		  x=P.x
-		  y=P.y
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(pX as Double, pY as Double)
 		  x=pX
 		  y=pY
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(P as Point)
-		  x=P.Bpt.x
-		  y=P.Bpt.y
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(EL as XMLElement)
-		  x = val(EL.GetAttribute("X"))
-		  y = val(EL.GetAttribute("Y"))
 		End Sub
 	#tag EndMethod
 
@@ -131,6 +110,16 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Duplicata() As BasicPoint
+		  dim x,y as double
+		  
+		  x=self.x
+		  y=self.y
+		  return new BasicPoint(x,y)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function getString() As String
 		  return "("+str(x)+","+str(y)+")"
 		End Function
@@ -139,7 +128,7 @@ Protected Class BasicPoint
 	#tag Method, Flags = &h0
 		Function insidescreen() As Boolean
 		  dim csg, cig, csd, cid as BasicPoint
-		  wnd.mycanvas1.coins(csg,csd,cig,cid)
+		  can.coins(csg,csd,cig,cid)
 		  if x > cig.x and x < cid.x and y > cig.y and y < csg.y then
 		    return true
 		  else
@@ -257,6 +246,22 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Mulp(v as basicpoint) As double
+		  return x*v.x + y*v.y
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Mulp(r as double) As basicpoint
+		  dim v as new BasicPoint(0,0)
+		  v.x = x*r
+		  v.y = y*r
+		  return  v
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function norme() As double
 		  return sqrt(x*x+y*y)
 		End Function
@@ -275,8 +280,23 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function oldConstruct(EL as XMLElement) As BasicPoint
+		  dim x,y as double
+		  
+		  x = val(EL.GetAttribute("X"))
+		  y = val(EL.GetAttribute("Y"))
+		  return new BasicPoint(x,y)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Operator_Add(v as basicpoint) As basicpoint
-		  return new basicpoint (x+v.x,y+v.y)
+		  return new BasicPoint(x+v.x, y+v.y)
+		  
+		  'ret.x = self.x+v.x
+		  'ret.y = self.y+v.y
+		  'return ret
 		End Function
 	#tag EndMethod
 
@@ -287,14 +307,21 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Multiply(v as basicpoint) As double
-		  return x*v.x + y*v.y
+		Function Operator_Multiply(v as BasicPoint) As double
+		  dim d as double
+		  
+		  d = x*v.x+y*v.y
+		  return d
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Multiply(r as double) As basicpoint
-		  return new basicpoint(x*r,y*r)
+		Function Operator_Multiply(r as double) As BasicPoint
+		  dim v as new BasicPoint(0,0)
+		  
+		  v.x = x*r
+		  v.y = y*r
+		  return v
 		End Function
 	#tag EndMethod
 
@@ -318,12 +345,13 @@ Protected Class BasicPoint
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim sk as oldcircleskull
+		  dim sk as OvalSkull
 		  
-		  sk = new oldcircleskull(1,wnd.Mycanvas1.transform(self))
-		  sk.updatefillcolor(bleu,100)
-		  sk.updatebordercolor(bleu,100)
+		  sk = new Ovalskull(1,can.transform(self))
+		  sk.updatecolor(bleu,100)
 		  sk.paint(g)
+		  
+		  
 		End Sub
 	#tag EndMethod
 

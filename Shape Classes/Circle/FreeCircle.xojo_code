@@ -74,12 +74,12 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
 		  
-		  nsk = new CircleSkull(p)
+		  nsk = new ArcSkull(p)
 		  if ubound(points) > 0 then
 		    computeradius
 		    coord.CreateExtreAndCtrlPoints(ori)
-		    updateskull
 		  end if
+		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
 
@@ -95,7 +95,7 @@ Inherits Circle
 		    Points(1).moveto p
 		    updatecoord
 		    coord.CreateExtreAndCtrlPoints(ori)
-		    updateskull
+		    'updateskull
 		  end if
 		  
 		End Sub
@@ -158,12 +158,10 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Paint(g as Graphics)
 		  dim a,b,e as BasicPoint
-		  dim can as mycanvas
 		  
 		  super.Paint(g)
 		  
 		  if not hidden and Ti <> nil and not dret isa rettimer then
-		    can = wnd.mycanvas1
 		    b = points(0).bpt * 2 - points(1).bpt
 		    e = b - points(0).bpt
 		    e = (e.vecnorperp)*ori
@@ -215,15 +213,6 @@ Inherits Circle
 		  end if
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Updateskull()
-		  radius=coord.distance01
-		  if radius <> -1 then
-		    super.updateskull
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -346,6 +335,11 @@ Inherits Circle
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

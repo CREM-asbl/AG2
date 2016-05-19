@@ -24,7 +24,7 @@ Inherits SelectAndDragOperation
 		  if Lab.text = "*" then
 		    wnd.drapdim = true
 		  elseif Lab.text = "" then
-		    currentshape.labs.removelab lab
+		    currentshape.labs.removeobject lab
 		  end if
 		  currentshape.dounselect
 		  
@@ -75,7 +75,7 @@ Inherits SelectAndDragOperation
 		  s = Operation.GetShape(p)
 		  
 		  if s = nil  then
-		    return wnd.mycanvas1.getrepere
+		    return can.getrepere
 		  end if
 		  
 		  if s isa cube then
@@ -104,7 +104,7 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  if currentshape isa repere then
-		    Lab = Currentshape.Labs.GetLab(wnd.Mycanvas1.MouseUser)
+		    Lab = Currentshape.Labs.GetLab(can.MouseUser)
 		  else
 		    Lab =  Currentshape.Labs.GetLab(loc)
 		  end if
@@ -117,7 +117,7 @@ Inherits SelectAndDragOperation
 		    Lab.chape = currentshape
 		    Lab.setposition
 		    Lab.MouseCorrection(p)  // la séparation entre position et correction permet de ne pas recalculer complètement la position
-		    Currentshape.Labs.AddLab  Lab   // de l'étiquette en cas de mouvement ou modification
+		    Currentshape.Labs.AddObject  Lab   // de l'étiquette en cas de mouvement ou modification
 		    drapnew = true
 		  end if
 		  
@@ -167,13 +167,13 @@ Inherits SelectAndDragOperation
 		  Lw = new LabelWindow
 		  Lw.ShowModal
 		  
-		  if lab.fixe then
+		  if lab.LockRight and lab.LockBottom then
 		    pos = lab.position +lab.correction
 		    lab.position = new BasicPoint(0,0)
 		    lab.correction = pos
 		  end if
 		  finished = false
-		  wnd.mycanvas1.MouseCursor = system.cursors.wait
+		  can.MouseCursor = system.cursors.wait
 		  
 		  DoOperation
 		  endoperation
@@ -198,13 +198,13 @@ Inherits SelectAndDragOperation
 		    oldcol = g.forecolor
 		    g.forecolor = Config.highlightcolor.col
 		    for i = 0 to currentshape.labs.count-1
-		      bp = currentshape.labs.element(i).position  + currentshape.labs.element(i).correction
-		      bp = wnd.mycanvas1.transform(bp)
+		      bp = currentshape.labs.item(i).position  + currentshape.labs.item(i).correction
+		      bp = can.transform(bp)
 		      g.fillrect(bp.x, bp.y,5,5)
 		    next
 		    g.forecolor = oldcol
 		    display =   click + pour + putatitle
-		    Lab1 = Currentshape.Labs.GetLab(wnd.Mycanvas1.MouseUser)
+		    Lab1 = Currentshape.Labs.GetLab(can.MouseUser)
 		    
 		  elseif currentshape <> nil then
 		    display =   click+ pour + putalabel
@@ -240,10 +240,10 @@ Inherits SelectAndDragOperation
 		    end if
 		    
 		    if lab1 <> nil then
-		      oldcol = Lab1.col
-		      Lab1.col = Config.highlightcolor.col
+		      oldcol = Lab1.TextColor
+		      Lab1.TextColor = Config.highlightcolor.col
 		      Lab1.paint(g)
-		      Lab1.col = oldcol
+		      Lab1.Textcolor = oldcol
 		    end if
 		  end if
 		  
@@ -265,7 +265,7 @@ Inherits SelectAndDragOperation
 		  EL = XMLElement(Temp.Child(0))
 		  type = EL.GetAttribute("Type")
 		  
-		  EL1 = XmlElement(EL.Child(0))
+		  EL1 = XMLElement(EL.Child(0))
 		  CurrentShape = Objects.GetShape(val(EL1.GetAttribute("Id")))
 		  
 		  select case type
@@ -273,15 +273,15 @@ Inherits SelectAndDragOperation
 		    EL1 = XMLElement(EL.Child(1))
 		    ResetLab(EL1,CurrentShape)
 		  case "Modification"
-		    EL1 = XmlElement(EL.child(2))
+		    EL1 = XMLElement(EL.child(2))
 		    Lab1 = GetLab(EL1)
-		    currentshape.labs.removelab Lab1
+		    currentshape.labs.removeobject Lab1
 		    EL1 = XMLElement(EL.Child(1))
 		    ResetLab(EL1,CurrentShape)
 		  case "Deletion"
-		    EL1 = XmlElement(EL.child(1))
+		    EL1 = XMLElement(EL.child(1))
 		    Lab1 = GetLab(EL1)
-		    currentshape.labs.removelab lab1
+		    currentshape.labs.removeobject lab1
 		  end select
 		  
 		  if lab1  <> nil and lab1.text = "*" then
@@ -308,13 +308,13 @@ Inherits SelectAndDragOperation
 		  Lab1 = new Etiq(loc,EL)
 		  lab1.chape = sh
 		  lab1.setposition
-		  sh.labs.addlab lab1
+		  sh.labs.addobject lab1
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
-		  dim El As XmlElement
+		  dim El As XMLElement
 		  dim type as string
 		  
 		  El = Doc.CreateElement(GetName)
@@ -359,7 +359,7 @@ Inherits SelectAndDragOperation
 		  EL = XMLElement(Temp.Child(0))
 		  type = EL.GetAttribute("Type")
 		  
-		  El1 = XmlElement(EL.Child(0))
+		  El1 = XMLElement(EL.Child(0))
 		  CurrentShape = Objects.GetShape(val(El1.GetAttribute("Id")))
 		  
 		  
@@ -367,11 +367,11 @@ Inherits SelectAndDragOperation
 		  case "Creation"
 		    EL1 = XMLElement(EL.Child(1))
 		    Lab1 = GetLab(EL1)
-		    currentshape.labs.removelab Lab1
+		    currentshape.labs.removeobject Lab1
 		  case "Modification"
 		    EL1 = XMLElement(EL.Child(1))
 		    Lab1 =GetLab(EL1)
-		    currentshape.labs.removelab Lab1
+		    currentshape.labs.removeobject Lab1
 		    EL1 = XMLElement(EL.Child(2))
 		    ResetLab(EL1, CurrentShape)
 		  case "Deletion"

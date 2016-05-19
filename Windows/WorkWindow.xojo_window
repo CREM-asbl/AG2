@@ -9,7 +9,7 @@ Begin Window WorkWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   True
-   Height          =   595
+   Height          =   695
    ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
@@ -26,10 +26,10 @@ Begin Window WorkWindow
    Title           =   "Sans Titre"
    Visible         =   False
    Width           =   800
-   Begin MyCanvas MyCanvas1
+   Begin CustomCanvas1 MyCanvas1
       AcceptFocus     =   True
       AcceptTabs      =   True
-      AutoDeactivate  =   False
+      AutoDeactivate  =   True
       Backdrop        =   0
       Background      =   0
       Bkcol           =   &c00000000
@@ -39,9 +39,9 @@ Begin Window WorkWindow
       Doubleclicktime =   0
       drapzone        =   False
       Enabled         =   True
-      EraseBackground =   True
+      EraseBackground =   False
       FondsEcran      =   0
-      Height          =   592
+      Height          =   595
       HelpTag         =   ""
       icot            =   0
       IdContent       =   0
@@ -52,12 +52,12 @@ Begin Window WorkWindow
       lastclickticks  =   0
       lastclickx      =   0
       lastclicky      =   0
-      Left            =   120
-      LockBottom      =   True
+      Left            =   119
+      LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
       MagneticDist    =   0.0
       n               =   0
       NeedsRefresh    =   False
@@ -69,19 +69,19 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       TabStop         =   True
       tit             =   ""
-      Top             =   0
-      Transparent     =   True
-      UseFocusRing    =   False
+      Top             =   7
+      Transparent     =   False
+      UseFocusRing    =   True
       Visible         =   True
-      Width           =   680
+      Width           =   673
    End
    Begin Rectangle Tools
       AutoDeactivate  =   True
-      BorderWidth     =   0
+      BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cC0C0C000
-      Height          =   595
+      FillColor       =   &cDCD9A500
+      Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -94,8 +94,9 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
-      TopLeftColor    =   &cFFFFFF00
+      TopLeftColor    =   &c00000000
       Visible         =   True
       Width           =   122
       Begin GroupBox MoveBox
@@ -108,12 +109,12 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   1
-         LockBottom      =   True
+         Left            =   5
+         LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
-         LockTop         =   True
+         LockTop         =   False
          Scope           =   0
          TabIndex        =   0
          TabPanelIndex   =   0
@@ -124,7 +125,7 @@ Begin Window WorkWindow
          Top             =   59
          Underline       =   False
          Visible         =   True
-         Width           =   117
+         Width           =   112
          Begin PushButton MouvBut
             AutoDeactivate  =   True
             Bold            =   True
@@ -138,12 +139,12 @@ Begin Window WorkWindow
             Index           =   2
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   1
+            Left            =   7
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
-            LockRight       =   True
-            LockTop         =   True
+            LockLeft        =   False
+            LockRight       =   False
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   0
             TabPanelIndex   =   0
@@ -154,12 +155,12 @@ Begin Window WorkWindow
             Top             =   112
             Underline       =   False
             Visible         =   True
-            Width           =   115
+            Width           =   108
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
             Bold            =   True
-            ButtonStyle     =   "7"
+            ButtonStyle     =   "0"
             Cancel          =   False
             Caption         =   "Retourner"
             Default         =   False
@@ -169,12 +170,12 @@ Begin Window WorkWindow
             Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   1
+            Left            =   7
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
-            LockRight       =   True
-            LockTop         =   True
+            LockLeft        =   False
+            LockRight       =   False
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   1
             TabPanelIndex   =   0
@@ -185,7 +186,7 @@ Begin Window WorkWindow
             Top             =   142
             Underline       =   False
             Visible         =   True
-            Width           =   115
+            Width           =   108
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -200,12 +201,12 @@ Begin Window WorkWindow
             Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   1
+            Left            =   7
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
-            LockRight       =   True
-            LockTop         =   True
+            LockLeft        =   False
+            LockRight       =   False
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   2
             TabPanelIndex   =   0
@@ -216,7 +217,7 @@ Begin Window WorkWindow
             Top             =   172
             Underline       =   False
             Visible         =   True
-            Width           =   115
+            Width           =   108
          End
          Begin PushButton MouvBut
             AutoDeactivate  =   True
@@ -231,12 +232,12 @@ Begin Window WorkWindow
             Index           =   1
             InitialParent   =   "MoveBox"
             Italic          =   False
-            Left            =   1
+            Left            =   7
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
-            LockRight       =   True
-            LockTop         =   True
+            LockLeft        =   False
+            LockRight       =   False
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   3
             TabPanelIndex   =   0
@@ -247,7 +248,7 @@ Begin Window WorkWindow
             Top             =   82
             Underline       =   False
             Visible         =   True
-            Width           =   115
+            Width           =   108
          End
       End
       Begin GroupBox StdBox
@@ -260,12 +261,12 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   1
-         LockBottom      =   True
+         Left            =   5
+         LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
-         LockTop         =   True
+         LockTop         =   False
          Scope           =   0
          TabIndex        =   1
          TabPanelIndex   =   0
@@ -276,7 +277,7 @@ Begin Window WorkWindow
          Top             =   215
          Underline       =   False
          Visible         =   True
-         Width           =   118
+         Width           =   112
          Begin Canvas StdOutil
             AcceptFocus     =   False
             AcceptTabs      =   False
@@ -284,12 +285,12 @@ Begin Window WorkWindow
             Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
-            EraseBackground =   True
+            EraseBackground =   False
             Height          =   50
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "StdBox"
-            Left            =   61
+            Left            =   64
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -300,7 +301,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TabStop         =   True
             Top             =   240
-            Transparent     =   True
+            Transparent     =   False
             UseFocusRing    =   True
             Visible         =   True
             Width           =   50
@@ -317,7 +318,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
-            Left            =   9
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -335,7 +336,7 @@ Begin Window WorkWindow
          End
          Begin Canvas StdOutil
             AcceptFocus     =   True
-            AcceptTabs      =   False
+            AcceptTabs      =   True
             AutoDeactivate  =   False
             Backdrop        =   0
             DoubleBuffer    =   False
@@ -345,7 +346,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "StdBox"
-            Left            =   9
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -356,24 +357,24 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TabStop         =   True
             Top             =   240
-            Transparent     =   True
+            Transparent     =   False
             UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
          Begin Canvas StdOutil
-            AcceptFocus     =   False
+            AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
             Backdrop        =   0
-            DoubleBuffer    =   False
+            DoubleBuffer    =   True
             Enabled         =   True
             EraseBackground =   True
             Height          =   50
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "StdBox"
-            Left            =   61
+            Left            =   64
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -406,9 +407,9 @@ Begin Window WorkWindow
          Left            =   1
          LockBottom      =   False
          LockedInPosition=   False
-         LockLeft        =   True
-         LockRight       =   True
-         LockTop         =   True
+         LockLeft        =   False
+         LockRight       =   False
+         LockTop         =   False
          Scope           =   0
          TabIndex        =   2
          TabPanelIndex   =   0
@@ -419,7 +420,7 @@ Begin Window WorkWindow
          Top             =   1
          Underline       =   False
          Visible         =   True
-         Width           =   117
+         Width           =   120
       End
       Begin GroupBox LibBox
          AutoDeactivate  =   True
@@ -431,12 +432,12 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   1
-         LockBottom      =   True
+         Left            =   5
+         LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
-         LockTop         =   True
+         LockTop         =   False
          Scope           =   0
          TabIndex        =   3
          TabPanelIndex   =   0
@@ -447,7 +448,7 @@ Begin Window WorkWindow
          Top             =   352
          Underline       =   False
          Visible         =   True
-         Width           =   119
+         Width           =   112
          Begin Canvas LibOutils
             AcceptFocus     =   True
             AcceptTabs      =   False
@@ -460,12 +461,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "LibBox"
-            Left            =   9
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   0
             TabPanelIndex   =   0
@@ -488,12 +489,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "LibBox"
-            Left            =   61
+            Left            =   65
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   1
             TabPanelIndex   =   0
@@ -516,12 +517,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "LibBox"
-            Left            =   61
+            Left            =   65
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   2
             TabPanelIndex   =   0
@@ -544,12 +545,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   4
             InitialParent   =   "LibBox"
-            Left            =   9
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   3
             TabPanelIndex   =   0
@@ -572,12 +573,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   6
             InitialParent   =   "LibBox"
-            Left            =   60
+            Left            =   64
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   4
             TabPanelIndex   =   0
@@ -600,12 +601,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "LibBox"
-            Left            =   9
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   5
             TabPanelIndex   =   0
@@ -628,12 +629,12 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
-            Left            =   9
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
-            LockLeft        =   True
+            LockLeft        =   False
             LockRight       =   False
-            LockTop         =   True
+            LockTop         =   False
             Scope           =   0
             TabIndex        =   6
             TabPanelIndex   =   0
@@ -661,9 +662,9 @@ Begin Window WorkWindow
          Left            =   1
          LockBottom      =   False
          LockedInPosition=   False
-         LockLeft        =   True
-         LockRight       =   True
-         LockTop         =   True
+         LockLeft        =   False
+         LockRight       =   False
+         LockTop         =   False
          Scope           =   0
          TabIndex        =   4
          TabPanelIndex   =   0
@@ -674,7 +675,7 @@ Begin Window WorkWindow
          Top             =   31
          Underline       =   False
          Visible         =   True
-         Width           =   117
+         Width           =   120
       End
    End
 End
@@ -722,7 +723,7 @@ End
 	#tag Event
 		Sub EnableMenuItems()
 		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
-		    MyCanvas1.mousecursor =System.Cursors.StandardPointer
+		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
 		    setcross
 		  end if
@@ -757,7 +758,7 @@ End
 		    currentcontent.drapeucli = not currentcontent.drapeucli
 		    currentcontent.drapaff = false
 		  case  20 ' ctrl-shft t
-		    wnd.mycanvas1.sctxt = nil
+		    can.sctxt = nil
 		    tw = new TextWindow
 		    tw.visible = true
 		  case 21 'ctrl-shft u
@@ -829,6 +830,8 @@ End
 	#tag Event
 		Sub Maximize()
 		  
+		  UpdateToolBar
+		  can.resize
 		End Sub
 	#tag EndEvent
 
@@ -843,8 +846,7 @@ End
 		  if app.ipctransfert then
 		    Quit
 		  end if
-		  
-		  initParams()
+		  InitParams()
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
@@ -857,7 +859,7 @@ End
 		  if app.iw <> nil then
 		    app.iw.Close
 		  end if
-		  maximize
+		  
 		  if app.fileName <> "" then
 		    dim f as FolderItem
 		    f = GetFolderItem(app.FileName)
@@ -869,6 +871,9 @@ End
 		    app.FileName = ""
 		  end if
 		  
+		  Maximize
+		  
+		  
 		  
 		  
 		End Sub
@@ -876,14 +881,15 @@ End
 
 	#tag Event
 		Sub Resizing()
-		  MyCanvas1.resize
-		  Mycanvas1.refreshbackground
+		  
+		  can.resize
+		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Restore()
-		  
+		  UpdateToolBar
 		End Sub
 	#tag EndEvent
 
@@ -1160,7 +1166,6 @@ End
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
 			Dim f As FolderItem
-			dim op As Operation
 			
 			if mousedispo then
 			closefw
@@ -1313,7 +1318,7 @@ End
 			if mousedispo then
 			closefw
 			Config.ShowHelp=not Config.ShowHelp
-			wnd.Mycanvas1.RefreshBackground
+			can.RefreshBackground
 			MenuBar.Child("HelpMenu").Child("HelpView").checked = Config.showhelp
 			end if
 			return true
@@ -1373,7 +1378,7 @@ End
 	#tag MenuHandler
 		Function MacrosClose2(index as Integer) As Boolean Handles MacrosClose2.Action
 			
-			app.themacros.RemoveMac app.themacros.element(index)
+			app.themacros.RemoveMac app.themacros.item(index)
 			Return True
 			
 		End Function
@@ -1381,7 +1386,6 @@ End
 
 	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			dim i as integer
 			
 			closefw
 			newcontent(true)
@@ -1398,7 +1402,7 @@ End
 		Function MacrosDescri2(index as Integer) As Boolean Handles MacrosDescri2.Action
 			dim Mac as Macro
 			
-			Mac = app.themacros.element(index)
+			Mac = app.themacros.item(index)
 			Mac.OpenDescripWindow
 			Return True
 			
@@ -1408,27 +1412,25 @@ End
 	#tag MenuHandler
 		Function MacrosErase2(index as Integer) As Boolean Handles MacrosErase2.Action
 			Dim f As FolderItem
-			dim dlg as OpenDialog
 			dim mac as macro
-			dim conf as Confirmation
+			dim cf as Confirmation
 			
 			closefw
 			currentcontent.currentoperation = nil
 			refreshtitle
 			
-			mac= app.themacros.element(index)
+			mac= app.themacros.item(index)
 			f = app.MacFolder.Child(mac.caption+".xmag")
 			
 			if f <> nil then
-			conf = new Confirmation
-			conf.Label1.Text = "Voulez-vous vraiment supprimer cette macro du disque dur?"
-			conf.showmodal
+			cf = new Confirmation("Voulez-vous vraiment supprimer cette macro du disque dur?")
+			cf.showmodal
 			
-			if conf.result = 1 then
-			app.themacros.RemoveMac app.themacros.element(index)
+			if cf.result = 1 then
+			app.themacros.RemoveMac app.themacros.item(index)
 			f.delete
 			end if
-			conf.close
+			cf.close
 			end if
 			
 			return true
@@ -1546,7 +1548,7 @@ End
 	#tag MenuHandler
 		Function OperaDivide() As Boolean Handles OperaDivide.Action
 			dim diw as DivideWindow
-			dim n as integer
+			
 			if mousedispo then
 			closefw
 			diw = new DivideWindow
@@ -1652,7 +1654,7 @@ End
 
 	#tag MenuHandler
 		Function PrefsStdForms() As Boolean Handles PrefsStdForms.Action
-			dim i,n as integer
+			
 			dim stdw as StdFormsWindow
 			
 			if mousedispo then
@@ -1858,6 +1860,7 @@ End
 			end if
 			MyCanvas1.Mousecursor = System.Cursors.StandardPointer
 			end if
+			return true
 			
 		End Function
 	#tag EndMenuHandler
@@ -1996,7 +1999,7 @@ End
 			MenuMacros(true)
 			end if
 			MenuBar.Child("Fenetres").Item(index).checked = true
-			wnd.mycanvas1.sctxt = nil
+			can.sctxt = nil
 			refresh
 			end if
 			end if
@@ -2157,15 +2160,15 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag Method, Flags = &h0
 		Function CopyMenuItem(mitem as menuitem) As menuitem
-		  dim item as menuitem
+		  dim item, jtem as menuitem
 		  dim i, nitem as integer
 		  
 		  
 		  item = new MenuItem
 		  item.Name = mitem.Name
-		  item.KeyboardShortcut = mitem.KeyboardShortcut 
+		  item.KeyboardShortCut = mitem.KeyboardShortCut
 		  item.index = mitem.index
 		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2")   then '
 		    item.Text = Dico.Value(item.Name)
@@ -2185,13 +2188,13 @@ End
 		    if mitem.checked then
 		      return item
 		    else
-		      mitem.visible = false
-		      return item
+		      return nil
 		    end if
 		  else
 		    for i = 0 to nitem-1
-		      if not mitem.item(i) isa separator then
-		        item.append CopyMenuItem(mitem.item(i))
+		      jtem = CopyMenuItem(mitem.item(i))
+		      if jtem <> nil then
+		        item.append jtem
 		      end if
 		    next
 		    if item.count > 0 then
@@ -2221,7 +2224,7 @@ End
 		    mitem.index  = i
 		    mitem.checked = true
 		    muitem.append mitem
-		    mitem.Text = app.TheMacros.element(i).caption
+		    mitem.Text = app.TheMacros.item(i).caption
 		  next
 		  
 		  
@@ -2245,14 +2248,14 @@ End
 
 	#tag Method, Flags = &h0
 		Sub deleteContent()
-		  
+		  dim conf as Confirmation
 		  dim i,n,val As integer
-		  dim conf as confirmation
+		  
 		  val = 0
 		  
 		  if not currentcontent.macrocreation then
 		    if CurrentContent.TheObjects.count > 1 and not CurrentContent.CurrentFileUptoDate then
-		      conf = new Confirmation
+		      conf = new Confirmation(CurrentContent.id)
 		      Conf.ShowModal
 		      val = Conf.result      ''Yes
 		      conf.close
@@ -2357,11 +2360,19 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub initParams()
+		Sub IcoDraw(Fa as integer, Fo as integer)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InitParams()
 		  title = Config.username
 		  AcceptFileDrop(FileAGTypes.SAVE)
 		  AcceptFileDrop(FileAGTypes.HIST)
 		  wnd = self
+		  can = wnd.mycanvas1
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2581,9 +2592,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub refreshtitle()
-		  'if currentcontent.macrocreation then
-		  'Title=Dico.Value("MacrosCreate") + "*"
-		  if draphisto then
+		  if currentcontent.macrocreation then
+		    Title=Dico.Value("MacrosCreate") + "*"
+		  elseif draphisto then
 		    Title =  Rh.Histfile.Name
 		  else
 		    Title=CurrentContent.GetWindTitle
@@ -2603,7 +2614,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ScreenAdjust()
-		  'MyCanvas1.Resize
+		  MyCanvas1.Resize
 		  
 		End Sub
 	#tag EndMethod
@@ -2620,7 +2631,8 @@ End
 
 	#tag Method, Flags = &h0
 		Sub SetIco(Fam as integer, Form As integer)
-		  dim h, taille, bord, haut, larg as double
+		  dim i,  h, taille, haut, larg as double
+		  dim dlx, dly, urx, ury as double
 		  dim specs as StdPolygonSpecifications
 		  
 		  StdOutil(fam).Visible = fam < Config.nstdfam
@@ -2633,24 +2645,34 @@ End
 		  specs = config.stdfamilies(fam,form)
 		  
 		  if specs.family = "Cubes"  then
-		    ico(fam) = new Cubeskull(new BasicPoint(3,h-8), form,1)
+		    'ico(fam) = new Cubeskull(new BasicPoint(3,h-8), form,1)
 		    taille = 0.5*h
 		    if form = 1 then
-		      ico(Fam).Update new BasicPoint (h/2,h-6)
+		      'ico(Fam).Update new BasicPoint (h/2,h-6)
 		      taille = 0.4*h
 		    end if
 		  elseif specs.family = "Rods" then
-		    ico(fam) = new Cubeskull(new BasicPoint(3,h-8), 0, 1)
+		    'ico(fam) = new Cubeskull(new BasicPoint(3,h-8), 0, 1)
 		    taille = 0.5*h
 		  elseif specs.family="Segments" or ubound(specs.angles) > 0 then
-		    ico(Fam) = new Figskull(config.stdfamilies(fam,form))
-		    larg = Figskull(ico(Fam)).urx-Figskull(ico(fam)).dlx
-		    haut = Figskull(ico(Fam)).ury-Figskull(ico(fam)).dly
+		    ico(Fam) = new LSkull(config.stdfamilies(fam,form))
+		    dlx = ico(Fam).BB.First.x
+		    dly = ico(Fam).BB.first.y
+		    urx = ico(Fam).BB.second.x
+		    ury = ico(Fam).BB.second.y
+		    larg = urx - dlx
+		    haut = ury-dly
 		    taille = 0.8*h/max(larg,haut)
-		    ico(Fam).Update new BasicPoint (3-Figskull(ico(fam)).dlx*taille,h-5-Figskull(ico(fam)).ury*taille)
+		    ico(fam).UpdateSize(taille)
+		    ico(fam).x =  (h-larg*taille)/4
+		    if dlx < 0 then
+		      ico(fam).x = ico(fam).x-dlx*taille/2
+		    end if
+		    ico(fam).y =  (h+haut*taille)/4
+		    ico(fam).borderwidth = 0.02
 		  else
-		    ico(fam) = new oldcircleskull(1,new BasicPoint(h/2,h/2))
-		    taille = 0.4*h*specs.distances(0)
+		    'ico(fam) = new oldcircleskull(1,new BasicPoint(h/2,h/2))
+		    'taille = 0.4*h*specs.distances(0)
 		  end if
 		  ico(fam).updatebordercolor(Config.Bordercolor.col,100)
 		  if specs.family = "Rods" then
@@ -2662,8 +2684,7 @@ End
 		    ico(fam).updatefillcolor(config.stdcolor(fam).col,0)
 		  end if
 		  
-		  ico(fam).Updateborderwidth(1/h)
-		  ico(fam).UpdateSize(taille)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2704,10 +2725,8 @@ End
 		Sub Switchcolors()
 		  dim i , j, k As integer
 		  dim s as shape
-		  dim can as mycanvas
 		  dim coul as couleur
 		  
-		  can = wnd.mycanvas1
 		  
 		  Config.Hidecolor = config.Hidecolor.comp
 		  config.Fillcolor = config.Fillcolor.comp
@@ -2724,12 +2743,12 @@ End
 		  
 		  s = can.rep
 		  for j = 0 to s.labs.count-1
-		    coul = new couleur(s.labs.element(i).col)
-		    s.labs.element(i).col = coul.comp.col
+		    coul = new couleur(s.labs.item(i).TextColor)
+		    s.labs.item(i).TextColor = coul.comp.col
 		  next
 		  
 		  for i = 1 to CurrentContent.TheObjects.count -1
-		    s = CurrentContent.TheObjects.element(i)
+		    s = CurrentContent.TheObjects.item(i)
 		    s.colsw = false
 		    for j = 0 to ubound(s.childs)
 		      s.childs(j).colsw = false
@@ -2737,21 +2756,21 @@ End
 		  next
 		  
 		  for i = 1 to CurrentContent.TheObjects.count -1
-		    s = CurrentContent.TheObjects.element(i)
+		    s = CurrentContent.TheObjects.item(i)
 		    if not s.colsw then
 		      s.bordercolor = s.bordercolor.comp
 		      s.fillcolor = s.fillcolor.comp
 		      for j = 0 to s.labs.count-1
-		        coul = new couleur(s.labs.element(j).col)
-		        s.labs.element(j).col = coul.comp.col
+		        coul = new couleur(s.labs.item(j).TextColor)
+		        s.labs.item(j).Textcolor = coul.comp.col
 		      next
 		      for j = 0 to ubound(s.childs)
 		        if not s.childs(j).colsw then
 		          s.childs(j).bordercolor = s.childs(j).bordercolor.comp
 		          if s.childs(j).labs.count > 0 then
 		            for k = 0 to s.childs(j).labs.count-1
-		              coul = new couleur(s.childs(j).labs.element(k).col)
-		              s.childs(j).labs.element(k).col = coul.comp.col
+		              coul = new couleur(s.childs(j).labs.item(k).TextColor)
+		              s.childs(j).labs.item(k).TextColor = coul.comp.col
 		            next
 		          end if
 		          s.childs(j).colsw = true
@@ -2839,6 +2858,31 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdateToolBar()
+		  dim espace as integer
+		  espace = min((me.Height-me.MinHeight)/3,5)
+		  if(me.Height = me.MinHeight) then
+		    MoveBox.TextSize = 8
+		    StdBox.TextSize = 8
+		    LibBox.TextSize = 8
+		    espace = espace+2
+		  else
+		    MoveBox.TextSize = 0
+		    StdBox.TextSize = 0
+		    LibBox.TextSize = 0
+		  end if
+		  MoveBox.Top = 60+espace
+		  StdBox.top = MoveBox.top+MoveBox.Height+espace
+		  LibBox.Top = StdBox.top+StdBox.Height+espace
+		  
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -2867,7 +2911,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected Cerc As circleskull
+		Protected Cerc As OvalSkull
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -2902,22 +2946,6 @@ End
 		drapstdcolor As boolean
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected Fig2 As Figskull
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected Fig4 As Figskull
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected Fig5 As figskull
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected Fig6 As Figskull
-	#tag EndProperty
-
 	#tag Property, Flags = &h0
 		Form As integer
 	#tag EndProperty
@@ -2931,7 +2959,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected Ico(4) As skull
+		Protected Ico(4) As Nskull
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -2998,7 +3026,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3034,13 +3062,13 @@ End
 #tag Events StdBox
 	#tag Event
 		Sub Open()
-		  StdBoxRefresh
+		  'StdBoxRefresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3064,7 +3092,7 @@ End
 		    drapstdcolor = false
 		  else
 		    selectedTool = index
-		    Tools.refresh
+		    'stdoutil(index).invalidate
 		    drapico = true
 		    openformswindow(0,SelectedTool)
 		  end if
@@ -3072,18 +3100,19 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
-		    self.ico(Index).paint(g)
+		    g.drawobject ico(index), ico(index).x, ico(index).y
+		    
 		    if index=selectedTool and Kit = "Standard"  then
 		      g.forecolor = rouge
 		      g.penwidth = 2.5
@@ -3095,7 +3124,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -3169,7 +3198,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3181,8 +3210,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
-		  dim i As Integer
+		Sub MouseUp(X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    selectedTool = index
@@ -3198,13 +3226,13 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  dim Visible as Boolean
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
 		    g.ForeColor = RGB(255,255,255)

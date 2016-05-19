@@ -2,65 +2,80 @@
 Protected Class NSkull
 Inherits FigureShape
 	#tag Method, Flags = &h0
+		Sub Constructor(p as BasicPoint)
+		  dim q as BasicPoint
+		  q = can.transform(p)
+		  x = q.x
+		  Y = q.y
+		  ref = q
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim loc, i, n as integer
-		  dim cs(-1) as curveshape
+		  dim loc, i, n, b, f as integer
+		  
+		  b = s.border
+		  f= s.fill
 		  
 		  if s isa lacet then
-		    cs = lacet(s).nsk.cs
 		    if s.hidden or s.tsp  then
 		      updatefillcolor(s.fillcolor.col,0)
+		      updatebordercolor(s.bordercolor.col,0)
 		    else
-		      updatefillcolor(s.fillcolor.col,s.fill)
+		      updatefillcolor(s.fillcolor.col,f)
+		      'updatebordercolor(s.bordercolor.col,b)
 		    end if
 		    currentcurve = 0
 		    for i = 0 to s.npts-1
-		      if s.hidden and s.highlighted then
-		        updatecurvecolor(s,i,config.HighlightColor.col, 100)
-		      elseif s.hidden Then
-		        updatecurvecolor(s,i, config.HideColor.col,100)
+		      'if s.hidden and s.highlighted then
+		      'updatecurvecolor(s,i,config.HighlightColor.col, b)
+		      if s.hidden Then
+		        updatecurvecolor(s,i, config.HideColor.col,b)
 		      elseif s.highlighted then
 		        n = s.getindexside
 		        if n = -1 or n = i then
-		          updatecurvecolor(s,i, config.HighlightColor.col, 100)
+		          updatecurvecolor(s,i, config.HighlightColor.col,b)
 		        else
-		          updatecurvecolor(s,i,  lacet(s).colcotes(i).col,100)
+		          updatecurvecolor(s,i,  lacet(s).colcotes(i).col,b)
 		        end if
-		      elseif s.selected then
-		        updatecurvecolor(s,i, config.BorderColor.col, 100)
+		      elseif s.isinconstruction then
+		        'updatefillcolor(config.Weightlesscolor.col,0)
+		        updatecurvecolor(s,i , config.WeightlessColor.col, 100)
 		      else
-		        updatecurvecolor(s,i, lacet(s).colcotes(i).col, 100)
+		        updatecurvecolor(s,i, lacet(s).colcotes(i).col, b)
 		      end if
-		      border = 100
 		    next
 		  else
 		    if s.tracept then
-		      updatebordercolor (bleu,100)
+		      updatebordercolor (bleu,b)
 		    elseif s.hidden and s.highlighted Then
-		      updatebordercolor(config.HighlightColor.col, 100)
+		      updatebordercolor(config.HighlightColor.col, b)
 		      updatefillcolor(s.fillcolor.col,0)
 		    elseif s.hidden Then
-		      updatebordercolor(cyan, 100)
+		      updatebordercolor(cyan, b)
 		      updatefillcolor(s.fillcolor.col,0)
 		    elseif s.tsp and s.Highlighted then
 		      updatefillcolor(s.fillColor.col,0)
-		      updatebordercolor(config.HighlightColor.col,100)
+		      updatebordercolor(config.HighlightColor.col,b)
 		    elseif s.tsp then
 		      updatefillcolor(s.fillColor.col,0)
-		      updatebordercolor(s.BorderColor.col,100)
+		      updatebordercolor(s.BorderColor.col,b)
 		    elseif s.highlighted and s.selected then
-		      updatebordercolor(config.HighlightColor.col,100)
+		      updatebordercolor(config.HighlightColor.col,b)
 		    elseif s.highlighted  then
-		      updatefillcolor(s.fillColor.col,fill)
-		      updatebordercolor(config.HighlightColor.col,100)
+		      updatefillcolor(s.fillColor.col,f)
+		      updatebordercolor(config.HighlightColor.col,b)
 		    elseif s.selected and s.fillcolor.equal(white) then
-		      updatebordercolor(s.BorderColor.col, 100)
+		      updatebordercolor(s.BorderColor.col, b)
 		    elseif s.isinconstruction then
 		      updatefillcolor(config.Weightlesscolor.col,0)
-		      updatebordercolor(config.WeightlessColor.col,100)
+		      updatebordercolor(config.WeightlessColor.col,b)
 		    else
-		      updatefillcolor(s.Fillcolor.col,s.fill)
-		      updatebordercolor(s.BorderColor.col,s.border)
+		      updatefillcolor(s.Fillcolor.col,f)
+		      updatebordercolor(s.BorderColor.col,b)
 		    end if
 		  end if
 		End Sub
@@ -69,10 +84,8 @@ Inherits FigureShape
 	#tag Method, Flags = &h0
 		Sub fixeepaisseurs(s as shape)
 		  dim loc, i, n as integer
-		  dim cs(-1) as curveshape
 		  
 		  if s isa lacet then
-		    cs = lacet(s).nsk.cs
 		    currentcurve = 0
 		    for i = 0 to s.npts-1
 		      if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
@@ -92,17 +105,31 @@ Inherits FigureShape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub paint(g as graphics)
-		  g.drawobject self, ref.x, ref.y
+		Sub InsertPoint(p as BasicPoint, n as integer)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub paint(s as shape, g as graphics)
-		  update(wnd.mycanvas1.transform(s.points(0).bpt))
+		Sub oldpaint(s as shape, g as graphics)
+		  update(can.transform(s.points(0).bpt))
 		  paint(g)
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub paint(g as graphics)
+		  dim i as integer
+		  
+		  
+		  if self isa LSkull then
+		    g.drawobject self, x, y
+		    for i = 0 to count-1
+		      g.drawobject item(i), x, y
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -113,8 +140,25 @@ Inherits FigureShape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub removepoint(n as integer)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub update(p as BasicPoint)
-		  ref = p
+		  
+		  
+		  
+		  x = p.x
+		  y =p.y
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub update(s as shape)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -147,13 +191,13 @@ Inherits FigureShape
 		  end if
 		  
 		  if lac.coord.curved(i) = 0 then
-		    lac.nsk.cs(currentcurve).bordercolor = col
-		    lac.nsk.cs(currentcurve).border = c
+		    lac.nsk.item(currentcurve).bordercolor = col
+		    lac.nsk.item(currentcurve).border = c
 		    currentcurve = currentcurve+1
 		  else
 		    for n = 0 to 2
-		      lac.nsk.cs(currentcurve+n).bordercolor = col
-		      lac.nsk.cs(currentcurve+n).border = c
+		      lac.nsk.item(currentcurve+n).bordercolor = col
+		      lac.nsk.item(currentcurve+n).border = c
 		    next
 		    currentcurve = currentcurve+3
 		  end if
@@ -172,11 +216,11 @@ Inherits FigureShape
 		  end if
 		  
 		  if lac.coord.curved(i) = 0 then
-		    lac.nsk.cs(currentcurve).borderwidth = c
+		    lac.nsk.item(currentcurve).borderwidth = c
 		    currentcurve = currentcurve+1
 		  else
 		    for n = 0 to 2
-		      lac.nsk.cs(currentcurve+n).borderwidth = c
+		      lac.nsk.item(currentcurve+n).borderwidth = c
 		    next
 		    currentcurve = currentcurve+3
 		  end if
@@ -201,14 +245,14 @@ Inherits FigureShape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatesize(k as double)
-		  scale = k
+		Sub updaterotation(a as double)
+		  rotation = a
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updateskull()
-		  
+		Sub updatesize(k as double)
+		  scale = k
 		End Sub
 	#tag EndMethod
 
@@ -220,7 +264,11 @@ Inherits FigureShape
 
 
 	#tag Property, Flags = &h0
-		cs(-1) As curveshape
+		angle As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		BB As BiBPoint
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -231,8 +279,17 @@ Inherits FigureShape
 		ref As BasicPoint
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		skullof As shape
+	#tag EndProperty
+
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="angle"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
 			Group="Behavior"

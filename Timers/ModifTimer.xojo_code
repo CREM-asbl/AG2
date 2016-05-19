@@ -28,7 +28,7 @@ Inherits Timer
 		    end if
 		  end if
 		  
-		  can.RefreshBackground
+		  can.invalidate
 		  
 		  
 		  
@@ -39,7 +39,6 @@ Inherits Timer
 	#tag Method, Flags = &h0
 		Sub Constructor(oper as SelectOperation)
 		  self.oper = oper
-		  can = wnd.Mycanvas1
 		  can.MouseCursor = system.cursors.wait
 		  niter = 60
 		  pas = niter
@@ -77,10 +76,6 @@ Inherits Timer
 
 	#tag Property, Flags = &h0
 		BPInter As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Can As MyCanvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

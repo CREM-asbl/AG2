@@ -36,7 +36,7 @@ Inherits Operation
 		  
 		  'On ne peut pas déplacer une forme construite par une macro sauf si les objets initiaux sont dans la même figure
 		  
-		  if  s.macconstructedby <> nil and s.fig.containsmaccstedshapewithoutinitobjects then
+		  if  s.macconstructedby <> nil then
 		    return false
 		  end if
 		  // On invalide ensuite les formes appartenant à une figure qui contient une image sans contenir la source et le support de la transformation
@@ -47,16 +47,16 @@ Inherits Operation
 		    return false
 		  else
 		    ffl = new figslist
-		    ffl.AddFigure s.fig
+		    ffl.addobject s.fig
 		  end if
 		  
 		  if s.IDGroupe <> -1 then
 		    ob = objects.groupes(s.idgroupe)
 		    for i = 0 to Ob.count-1
-		      if not ob.element(i).fig.PossibleDrag(self) then
+		      if not ob.item(i).fig.PossibleDrag(self) then
 		        return false
 		      else
-		        ffl.AddFigure ob.element(i).fig
+		        ffl.addobject ob.item(i).fig
 		      end if
 		    next
 		  end if
@@ -65,7 +65,7 @@ Inherits Operation
 		  
 		  
 		  for  i = 0 to s.fig.constructedfigs.count-1
-		    ff = s.fig.constructedfigs.element(i)
+		    ff = s.fig.constructedfigs.item(i)
 		    if ff <> s.fig then           //toutes les figures images de s.fig sauf  s.fig elle-même (pour le cas où...)
 		      for j = 0 to ubound(ff.Constructioninfos)
 		        tsf = ff.Constructioninfos(j).tsf
@@ -80,14 +80,14 @@ Inherits Operation
 		  // et aux figures images par une tsf de support dans s.fig
 		  
 		  for i = 0 to s.fig.shapes.count-1
-		    s1 = s.fig.shapes.element(i)   //toutes les formes de la même figure que s
+		    s1 = s.fig.shapes.item(i)   //toutes les formes de la même figure que s
 		    for j = 0 to s1.tsfi.count-1
-		      tsf = s1.tsfi.element(j)                           //tous les supports de tsf situés dans la même figure que s
+		      tsf = s1.tsfi.item(j)                           //tous les supports de tsf situés dans la même figure que s
 		      for h = 0 to tsf.constructedfigs.count-1
-		        fig1 = tsf.constructedfigs.element(h)   //on teste toutes les figures images de ces tsfi
+		        fig1 = tsf.constructedfigs.item(h)   //on teste toutes les figures images de ces tsfi
 		        ffl = tsf.getfigsources(fig1)                     //toutes les sources de ces tsf
 		        for k = 0 to ffl.count-1
-		          if (ffl.element(k) = fig1) and (s.fig <> fig1) and not (tsf.type = 1 and self isa glisser) and  not (tsf.type = 2 and self isa tourner and tourner(self).c = tsf.supp.points(0).bpt) then
+		          if (ffl.item(k) = fig1) and (s.fig <> fig1) and not (tsf.type = 1 and self isa glisser) and  not (tsf.type = 2 and self isa tourner and tourner(self).c = tsf.supp.points(0).bpt) then
 		            return false  // false si une figure différente de s.fig contient la source et l'image d'une transfo de support dans s.fig
 		          end if
 		        next
@@ -139,7 +139,7 @@ Inherits Operation
 		  
 		  
 		  for i = 0 to figs.count-1
-		    Flist.addfigure figs.element(i)
+		    Flist.addobject figs.item(i)
 		  next
 		  
 		  return flist
@@ -155,7 +155,7 @@ Inherits Operation
 		  
 		  
 		  for i = 0 to tempshape.count-1
-		    Oblist.addshape tempshape.element(i)
+		    Oblist.addshape tempshape.item(i)
 		  next
 		  
 		  return Oblist
@@ -203,20 +203,19 @@ Inherits Operation
 		    else
 		      objects.unselectall
 		      for i = 0  to appliquertsf(self).copies.count-1
-		        objects.selectobject(appliquertsf(self).copies.element(i))
+		        objects.selectobject(appliquertsf(self).copies.item(i))
 		      next
 		    end if
 		  else
 		    Objects.Unselectall
 		  end if
-		  
+		  can.RefreshBackground
+		  can.refresh
 		  currentshape = nil
-		  
 		  super.EndOperation  // Recréation des figures
-		  
 		  Figs = new FigsList
 		  Finished = true   //Ceci ne devrait-il pas être la dernière instruction du "DoOperation"?
-		  wnd.mycanvas1.mousecursor = System.Cursors.StandardPointer
+		  can.mousecursor = System.Cursors.StandardPointer
 		  
 		  
 		  
@@ -311,18 +310,18 @@ Inherits Operation
 		  dim p as point
 		  // s est l'élément i0 de copies
 		  
-		  sh = tempshape.element(i0)
+		  sh = tempshape.item(i0)
 		  if not sh isa point then
 		    for i = 0 to sh.npts-1
 		      p = sh.points(i)
 		      j = 0
-		      while (j < i0)and p.parents.indexof(tempshape.element(j)) = -1
+		      while (j < i0)and p.parents.indexof(tempshape.item(j)) = -1
 		        j = j+1
 		      wend
 		      if j < i0 then
-		        k = tempshape.element(j).getindexpoint(p)
+		        k = tempshape.item(j).getindexpoint(p)
 		        if k <> -1 then
-		          s2 = copies.element(j)
+		          s2 = copies.item(j)
 		          s.SubstitutePoint(s2.points(k), s.points(i))
 		        end if
 		      end if
@@ -340,7 +339,7 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub ImmediateDoOperation()
 		  if tempshape.count > 0 then
-		    wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		    can.Mousecursor = System.Cursors.Wait
 		    wnd.refreshtitle
 		    DoOperation
 		    endoperation
@@ -355,14 +354,14 @@ Inherits Operation
 		  dim i, j, numlist as integer
 		  
 		  for i = 0 to tempshape.count-1
-		    if  tempshape.element(i).IdGroupe <> -1 then
-		      if copies.element(i).Idgroupe = -1 then
+		    if  tempshape.item(i).IdGroupe <> -1 then
+		      if copies.item(i).Idgroupe = -1 then
 		        Objects.Groupes.append new ObjectsList
 		        Numlist = Ubound(Objects.Groupes)
 		        for j = 0 to copies.count-1
-		          if tempshape.element(j).IdGroupe = tempshape.element(i).Idgroupe then
-		            copies.element(j).IDGroupe = Numlist
-		            Objects.Groupes(Numlist).addShape copies.element(j)
+		          if tempshape.item(j).IdGroupe = tempshape.item(i).Idgroupe then
+		            copies.item(j).IDGroupe = Numlist
+		            Objects.Groupes(Numlist).addShape copies.item(j)
 		          end if
 		        next
 		      end if
@@ -382,7 +381,7 @@ Inherits Operation
 		  selection
 		  
 		  Finished = false
-		  wnd.Mycanvas1.Mousecursor = System.Cursors.Wait
+		  can.Mousecursor = System.Cursors.Wait
 		  
 		  wnd.refreshtitle
 		  DoOperation
@@ -403,7 +402,7 @@ Inherits Operation
 		    CurrentContent.TheTransfos.unhighlightall
 		    CurrentContent.TheTransfos.GetTsf(p, ListTsf)
 		    if ListTsf.count  > 0 then
-		      CurrentHighlightedTsf = ListTsf.element(itsf)
+		      CurrentHighlightedTsf = ListTsf.item(itsf)
 		      CurrentHighlightedTsf.highlight
 		      ntsf = ListTsf.count
 		    end if
@@ -423,10 +422,10 @@ Inherits Operation
 		    if CurrentHighlightedShape<>nil then
 		      CurrentHighlightedShape.UnHighLight
 		    end if
-		    CurrentHighlightedShape = visible.element(iobj)
+		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
 		    currentshape = currenthighlightedshape
-		    Wnd.mycanvas1.refreshbackground
+		    'can.invalidate
 		  end if
 		  
 		  
@@ -436,33 +435,33 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub MouseWheelTsf()
 		  if ListTsf.count > 0 then
-		    ListTsf.element(itsf).Highlighted = false
+		    ListTsf.item(itsf).Highlighted = false
 		    itsf = (itsf+1) mod ntsf
-		    ListTsf.element(itsf).Highlighted = true
-		    currenthighlightedtsf = ListTsf.element(itsf)
-		    Wnd.mycanvas1.refreshbackground
+		    ListTsf.item(itsf).Highlighted = true
+		    currenthighlightedtsf = ListTsf.item(itsf)
+		    'can.invalidate
 		  end if
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reputids(EL as XMLelement)
-		  dim EL2, EL3 as XMLelement
+		Sub reputids(EL as XMLElement)
+		  dim EL2, EL3 as XMLElement
 		  dim i,j,n as integer
 		  
 		  for i = 0 to EL.childcount-1
 		    EL2 = XMLElement(EL.child(i))
-		    copies.element(i).id =  val(EL2.GetAttribute("Id"))
-		    copies.element(i).plan = val(EL2.GetAttribute("Plan"))
-		    currentcontent.plans(copies.element(i).plan) = copies.element(i).id     //Correction 3-09-2012
-		    if tempshape.element(i).IdGroupe > -1 then
-		      copies.element(i).IdGroupe = val(EL2.GetAttribute("IdGroupe"))
+		    copies.item(i).id =  val(EL2.GetAttribute("Id"))
+		    copies.item(i).plan = val(EL2.GetAttribute("Plan"))
+		    currentcontent.plans(copies.item(i).plan) = copies.item(i).id     //Correction 3-09-2012
+		    if tempshape.item(i).IdGroupe > -1 then
+		      copies.item(i).IdGroupe = val(EL2.GetAttribute("IdGroupe"))
 		    end if
 		    if EL2.GetAttribute(Dico.value("Type")) <>  Dico.Value("Point") then
 		      EL3 = XMLElement(EL2.child(0))
-		      for j = 0 to copies.element(i).npts-1
-		        copies.element(i).points(j).id = val(XMLElement(EL3.child(j)).GetAttribute("Id"))
+		      for j = 0 to copies.item(i).npts-1
+		        copies.item(i).points(j).id = val(XMLElement(EL3.child(j)).GetAttribute("Id"))
 		      next
 		    end if
 		  next
@@ -471,7 +470,7 @@ Inherits Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SelectIdForms(Temp as XmlElement)
+		Sub SelectIdForms(Temp as XMLElement)
 		  dim List as XMLNodeList
 		  dim EL, EL1 as XMLElement
 		  dim i, n as integer
@@ -487,7 +486,7 @@ Inherits Operation
 		      if n <> 0 then
 		        tempshape.addshape Objects.Getshape(n)
 		      else
-		        tempshape.addshape Objects.element(0)
+		        tempshape.addshape Objects.item(0)
 		      end if
 		    next
 		  end if
@@ -510,14 +509,14 @@ Inherits Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToMac(Doc as XmlDocument) As XMLelement
+		Function ToMac(Doc as XmlDocument) As XMLElement
 		  return ToXML(Doc)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc As XMLDocument) As XMLElement
-		  dim Temp As  XmlElement
+		  dim Temp As  XMLElement
 		  
 		  Temp = Doc.CreateElement(GetName)
 		  Temp.appendchild Tempshape.XMLPutIdInContainer(Doc)

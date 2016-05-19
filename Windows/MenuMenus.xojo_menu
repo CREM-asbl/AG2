@@ -8,7 +8,7 @@ Begin Menu MenuMenus
       Visible = True
       Begin MenuItem EditUndo
          SpecialMenu = 0
-         Text = ""
+         Text = "Annuler"
          Index = -2147483648
          ShortcutKey = "Z"
          Shortcut = "Cmd+Z"
@@ -18,7 +18,7 @@ Begin Menu MenuMenus
       End
       Begin MenuItem EditRedo
          SpecialMenu = 0
-         Text = ""
+         Text = "Refaire"
          Index = -2147483648
          ShortcutKey = "Y"
          Shortcut = "Cmd+Y"
@@ -30,14 +30,14 @@ Begin Menu MenuMenus
       End
       Begin MenuItem EditSelection
          SpecialMenu = 0
-         Text = ""
+         Text = "Select"
          Index = -2147483648
          AutoEnable = True
          Visible = True
       End
       Begin MenuItem EditSelectall
          SpecialMenu = 0
-         Text = ""
+         Text = "Selectall"
          Index = -2147483648
          ShortcutKey = "A"
          Shortcut = "Cmd+A"
@@ -47,7 +47,7 @@ Begin Menu MenuMenus
       End
       Begin MenuItem EditReselect
          SpecialMenu = 0
-         Text = "Resélectionner"
+         Text = "Reselect"
          Index = -2147483648
          Style = 2
          AutoEnable = True
@@ -69,21 +69,15 @@ Begin Menu MenuMenus
       End
       Begin MenuItem EditCopy
          SpecialMenu = 0
-         Text = ""
+         Text = "Copier"
          Index = -2147483648
-         ShortcutKey = "C"
-         Shortcut = "Cmd+C"
-         MenuModifier = True
          AutoEnable = True
          Visible = True
       End
       Begin MenuItem EditPaste
          SpecialMenu = 0
-         Text = ""
+         Text = "Coller"
          Index = -2147483648
-         ShortcutKey = "V"
-         Shortcut = "Cmd+V"
-         MenuModifier = True
          AutoEnable = True
          Visible = True
       End
@@ -91,8 +85,8 @@ Begin Menu MenuMenus
          SpecialMenu = 0
          Text = "Supprimer"
          Index = -2147483648
-         AutoEnable = False
-         Visible = False
+         AutoEnable = True
+         Visible = True
       End
    End
    Begin MenuItem ToolsMenu
@@ -110,28 +104,28 @@ Begin Menu MenuMenus
       End
       Begin MenuItem ToolsColor
          SpecialMenu = 0
-         Text = "Color"
+         Text = "Couleurs"
          Index = -2147483648
          AutoEnable = True
          SubMenu = True
          Visible = True
          Begin MenuItem ToolsColorBorder
             SpecialMenu = 0
-            Text = ""
+            Text = "Border"
             Index = -2147483648
             AutoEnable = True
             Visible = True
          End
          Begin MenuItem ToolsColorFill
             SpecialMenu = 0
-            Text = ""
+            Text = "Fill"
             Index = -2147483648
             AutoEnable = True
             Visible = True
          End
          Begin MenuItem ToolsColorStdFam
             SpecialMenu = 0
-            Text = ""
+            Text = "StdForms"
             Index = -2147483648
             AutoEnable = True
             Visible = True
@@ -142,7 +136,29 @@ Begin Menu MenuMenus
          Text = "Transparence"
          Index = -2147483648
          AutoEnable = True
+         SubMenu = True
          Visible = True
+         Begin MenuItem Opaque
+            SpecialMenu = 0
+            Text = "Opaque"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem SemiTsp
+            SpecialMenu = 0
+            Text = "SemiTsp"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem Tsp
+            SpecialMenu = 0
+            Text = "Tsp"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
       End
       Begin MenuItem ToolsThickness
          SpecialMenu = 0
@@ -203,7 +219,7 @@ Begin Menu MenuMenus
       End
       Begin MenuItem ToolsHisto
          SpecialMenu = 0
-         Text = "Histo"
+         Text = "Historique"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -224,28 +240,28 @@ Begin Menu MenuMenus
       End
       Begin MenuItem OperaCut
          SpecialMenu = 0
-         Text = ""
+         Text = "Decouper"
          Index = -2147483648
          AutoEnable = True
          Visible = True
       End
       Begin MenuItem OperaMerge
          SpecialMenu = 0
-         Text = ""
+         Text = "Fusionner"
          Index = -2147483648
          AutoEnable = True
          Visible = True
       End
       Begin MenuItem OperaClone
          SpecialMenu = 0
-         Text = ""
+         Text = "Dupliquer"
          Index = -2147483648
          AutoEnable = True
          Visible = True
       End
       Begin MenuItem OperaProl
          SpecialMenu = 0
-         Text = ""
+         Text = "Prolonger"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -327,6 +343,13 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
+         Begin MenuItem UntitledSeparator0
+            SpecialMenu = 0
+            Text = "-"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
          Begin MenuItem DefinirHomothetie
             SpecialMenu = 0
             Text = "Homothétie"
@@ -337,6 +360,13 @@ Begin Menu MenuMenus
          Begin MenuItem DefinirSimilitude
             SpecialMenu = 0
             Text = "Similitude"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem UntitledSeparator1
+            SpecialMenu = 0
+            Text = "-"
             Index = -2147483648
             AutoEnable = True
             Visible = True
@@ -373,6 +403,13 @@ Begin Menu MenuMenus
       Begin MenuItem TransfosHide
          SpecialMenu = 0
          Text = "HideTsf"
+         Index = -2147483648
+         AutoEnable = True
+         Visible = True
+      End
+      Begin MenuItem InvCurve
+         SpecialMenu = 0
+         Text = "CourbeInvariante"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -416,6 +453,14 @@ Begin Menu MenuMenus
          SpecialMenu = 0
          Text = "Abandonner"
          Index = -2147483648
+         AutoEnable = True
+         Visible = True
+      End
+      Begin MenuItem MacSeparator
+         SpecialMenu = 0
+         Text = "-"
+         Index = -2147483648
+         Style = 4
          AutoEnable = True
          Visible = True
       End
@@ -628,7 +673,7 @@ Begin Menu MenuMenus
       Visible = True
       Begin MenuItem HelpView
          SpecialMenu = 0
-         Text = "View"
+         Text = "Aide"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -642,7 +687,7 @@ Begin Menu MenuMenus
       End
       Begin MenuItem HelpVisit
          SpecialMenu = 0
-         Text = "Visiter"
+         Text = "CREM"
          Index = -2147483648
          Style = 4
          AutoEnable = True

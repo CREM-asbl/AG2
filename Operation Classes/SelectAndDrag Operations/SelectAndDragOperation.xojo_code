@@ -95,7 +95,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(NewPoint as BasicPoint)
-		  
+		  can.refreshBackGround
+		  can.refresh
 		End Sub
 	#tag EndMethod
 
@@ -138,7 +139,7 @@ Inherits SelectOperation
 		  
 		  if dret = nil then
 		    for i = 0 to figs.count-1
-		      tempM =  Magnetisme(MagneticD, figs.element(i))
+		      tempM =  Magnetisme(MagneticD, figs.item(i))
 		      if tempM > Magnetism then
 		        Magnetism = tempm
 		        Mp =  MagneticD
@@ -165,8 +166,8 @@ Inherits SelectOperation
 		  drapUL = false
 		  figs.removeall
 		  
-		  StartPoint = new BasicPoint(p)
-		  EndPoint = new BasicPoint(p)
+		  StartPoint = p
+		  EndPoint = p
 		  
 		  if (CurrentHighlightedShape = nil) and (self isa modifier)    then
 		    return
@@ -174,8 +175,8 @@ Inherits SelectOperation
 		  
 		  if currenthighlightedshape = nil and  objects.findobject(p).count = 0  then
 		    Objects.unselectall
-		    CurrentShape = wnd.Mycanvas1.getrepere
-		    StartPoint = wnd.MyCanvas1.MouseCan
+		    CurrentShape = can.getrepere
+		    StartPoint = can.MouseCan
 		    EndPoint = StartPoint
 		    objects.selectobject(currentshape)
 		    
@@ -189,7 +190,7 @@ Inherits SelectOperation
 		    if not self isa modifier    then
 		      CurrentShape.SelectNeighboor //sélectionne  toute la figure  et les formes  liées
 		      for i = 0 to tempshape.count-1
-		        figs.addfigure tempshape.element(i).fig
+		        figs.addobject tempshape.item(i).fig
 		      next
 		      figs.creerlistesfigures
 		      figs.figs0.createstate("FigsMoved", nil)
@@ -197,10 +198,10 @@ Inherits SelectOperation
 		    
 		    if self isa redimensionner then
 		      for i = 0 to figs.count -1
-		        if figs.element(i).shapes.getposition(currentcontent.SHUL) <> -1 then
+		        if figs.item(i).shapes.getposition(currentcontent.SHUL) <> -1 then
 		          drapUL = true
 		        end if
-		        if figs.element(i).shapes.getposition(currentcontent.SHUA) <> -1 then
+		        if figs.item(i).shapes.getposition(currentcontent.SHUA) <> -1 then
 		          drapUA = true
 		        end if
 		      next
@@ -223,7 +224,7 @@ Inherits SelectOperation
 		  ReinitAttraction
 		  
 		  if CurrentShape isa repere then
-		    pc = wnd.MyCanvas1.transform(pc)
+		    pc = can.transform(pc)
 		  end if
 		  
 		  if visi <> nil then
@@ -233,10 +234,10 @@ Inherits SelectOperation
 		  if not self isa modifier then
 		    visi = objects.findobject(pc)
 		    for i = 0 to visi.count-1
-		      if objects.getposition(currentshape) < objects.getposition(visi.element(i)) then
-		        visi.element(i).tsp = true
+		      if objects.getposition(currentshape) < objects.getposition(visi.item(i)) then
+		        visi.item(i).tsp = true
 		      else
-		        visi.element(i).tsp = false
+		        visi.item(i).tsp = false
 		      end if
 		    next
 		  end if
@@ -252,7 +253,7 @@ Inherits SelectOperation
 		Sub MouseUp(p As BasicPoint)
 		  
 		  if  tempshape.count > 0 then
-		    wnd.mycanvas1.MouseCursor = system.cursors.wait
+		    can.MouseCursor = system.cursors.wait
 		    endoperation
 		  else
 		    super.mouseup(p)
@@ -293,7 +294,7 @@ Inherits SelectOperation
 		  dim s as shape
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.element(i)
+		    s = tempshape.item(i)
 		    if s isa StandardPolygon  then
 		      StandardPolygon(s).angles(0) = StandardPolygon(s).angles(0) + a
 		    end if

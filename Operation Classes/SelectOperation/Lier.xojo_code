@@ -21,7 +21,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(El as XmlElement)
+		Sub Constructor(El as XMLElement)
 		  dim List as XmlNodeList
 		  
 		  Constructor()
@@ -41,11 +41,11 @@ Inherits SelectOperation
 		  dim s as point
 		  
 		  for i = tempshape.count -1 downto 0
-		    if tempshape.element(i).constructedby <> nil and  tempshape.element(i).constructedby.oper = 6 then
-		      objects.unselectobject tempshape.element(i)
+		    if tempshape.item(i).constructedby <> nil and  tempshape.item(i).constructedby.oper = 6 then
+		      objects.unselectobject tempshape.item(i)
 		    end if
-		    if tempshape.element(i) isa point and UBound(point(tempshape.element(i)).parents) > -1 then
-		      s = point(tempshape.element(i))
+		    if tempshape.item(i) isa point and UBound(point(tempshape.item(i)).parents) > -1 then
+		      s = point(tempshape.item(i))
 		      for k = 0 to UBound(s.parents)
 		        objects.selectobject s.parents(k)
 		      next
@@ -58,18 +58,18 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i =  tempshape.count-1 downto 0
-		    k =  tempshape.element(i).IDGroupe
+		    k =  tempshape.item(i).IDGroupe
 		    if prem then
 		      if k = -1 then
 		        Objects.Groupes.append new ObjectsList
 		        Numlist = Ubound(Objects.Groupes)
-		        adjoindre(tempshape.element(i), NumList)
+		        adjoindre(tempshape.item(i), NumList)
 		      end if
-		      NumList = tempshape.element(i).IdGroupe
+		      NumList = tempshape.item(i).IdGroupe
 		      prem = false
 		    else
 		      if k = -1 then
-		        adjoindre(tempshape.element(i), NumList)
+		        adjoindre(tempshape.item(i), NumList)
 		      elseif  k <> NumList then
 		        n1 = min(k, NumList)
 		        n2 = max(k, NumList)
@@ -98,13 +98,13 @@ Inherits SelectOperation
 		  end if
 		  objects.unselectall
 		  
-		  wnd.Mycanvas1.Mousecursor =System.Cursors.StandardPointer
+		  can.Mousecursor =System.Cursors.StandardPointer
 		  
-		  n = objects.element(1).idgroupe
+		  n = objects.item(1).idgroupe
 		  
 		  if objects.count > 2 then
 		    for i = 2 to objects.count-1
-		      if objects.element(i).IDGroupe <> n then
+		      if objects.item(i).IDGroupe <> n then
 		        return
 		      end if
 		    next
@@ -124,7 +124,7 @@ Inherits SelectOperation
 		  dim s as shape
 		  
 		  for j = 0 to Objects.Groupes(N).count-1
-		    s = objects.Groupes(N).element(j)
+		    s = objects.Groupes(N).item(j)
 		    s.OldIdGroupes.append s.IDGroupe
 		    s.IDGroupe = k
 		    Objects.Groupes(k).addShape s
@@ -150,13 +150,13 @@ Inherits SelectOperation
 		  s = super.getshape(p)
 		  
 		  for i = visible.count-1 downto 0
-		    s1 = visible.element(i)
+		    s1 = visible.item(i)
 		    if ( s1.constructedby <> nil and s1.constructedby.oper = 6)  then
-		      visible.removeshape s1
+		      visible.removeobject s1
 		    end  if
 		  next
 		  nobj = visible.count-1
-		  return visible.element(iobj)
+		  return visible.item(iobj)
 		End Function
 	#tag EndMethod
 
@@ -174,7 +174,7 @@ Inherits SelectOperation
 		  if tempshape.count >0 then
 		    i = 0
 		    while (i < tempshape.count and ok = true)
-		      s = tempshape.element(i)
+		      s = tempshape.item(i)
 		      cg = s.IDGroupe
 		      if g1 = -1then
 		        g1 = cg
@@ -296,8 +296,8 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.element(i)
-		    objects.groupes(numlist).removeShape s
+		    s = tempshape.item(i)
+		    objects.groupes(numlist).removeobject s
 		    s.IDGroupe = s.OldIdgroupes.pop
 		    if fusion <> -1 then
 		      objects.groupes(fusion).addShape s

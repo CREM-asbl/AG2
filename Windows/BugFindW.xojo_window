@@ -26,12 +26,51 @@ Begin Window BugFindW
    Title           =   "Bug découvert"
    Visible         =   True
    Width           =   421
+   Begin Label StaticText2
+      AutoDeactivate  =   True
+      BehaviorIndex   =   0
+      Bold            =   True
+      ControlOrder    =   "0"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   110
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   True
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Cette figure a provoqué une erreur et va être fermée.\r\nNous nous excusons de ce désagrément.\r\n"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "SmallSystem"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   0
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   381
+   End
    Begin PushButton Accepter
       AutoDeactivate  =   True
+      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
+      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -59,10 +98,12 @@ Begin Window BugFindW
    End
    Begin PushButton Refuser
       AutoDeactivate  =   True
+      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
+      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -88,41 +129,6 @@ Begin Window BugFindW
       Visible         =   True
       Width           =   80
    End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   True
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   40
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Untitled"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   40
-      Transparent     =   True
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
 End
 #tag EndWindow
 
@@ -134,10 +140,10 @@ End
 		  s = " "+ EndOfLine +  dico.value("bugfound")+ EndOfLine + dico.value("bugcontinue") + EndOfLine + dico.value( "bugsorry")
 		  if System.Network.IsConnected then
 		    Refuser.visible = true
-		    Label1.text = s + EndofLine + EndOfLine+dico.value( "bugsignal")
+		    StaticText2.text = s + EndofLine + EndOfLine+dico.value( "bugsignal")
 		  else
 		    Refuser.visible = false
-		    Label1.text = s
+		    StaticText2.text = s
 		  end if
 		End Sub
 	#tag EndEvent

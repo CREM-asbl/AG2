@@ -73,8 +73,8 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetGravityCenter() As basicPoint
-		  return Points(0).bpt
+		Function GetGravityCenter() As BasicPoint
+		  return coord.tab(0)
 		End Function
 	#tag EndMethod
 
@@ -130,19 +130,19 @@ Inherits Shape
 		  dim i as integer
 		  
 		  
-		  updateskull
-		  coord.CreateExtreAndCtrlPoints(ori)
 		  
-		  if (nsk= nil ) or ( nsk.cs(0).x = 0 and nsk.cs(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
+		  coord.CreateExtreAndCtrlPoints(ori)
+		  nsk.update(self)
+		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
 		  nsk.fixecouleurs(self)
 		  nsk.fixeepaisseurs(self)
-		  nsk.paint(self,g)
+		  nsk.paint(g)
 		  
 		  if not hidden then
 		    for i = 0 to labs.count-1
-		      Labs.element(i).paint(g)
+		      Labs.item(i).paint(g)
 		    next
 		  end if
 		  
@@ -153,7 +153,7 @@ Inherits Shape
 		Sub paint(g as graphics, c As couleur)
 		  updateskull
 		  nsk.updatebordercolor (c.col,100)
-		  nsk.paint(self, g)
+		  nsk.paint(g)
 		  
 		End Sub
 	#tag EndMethod
@@ -170,7 +170,7 @@ Inherits Shape
 		  
 		  d =  p.distance(points(0).bpt)
 		  
-		  if d <= GetRadius + epsilon and abs(radius -d)  <  wnd.Mycanvas1.MagneticDist then
+		  if d <= GetRadius + epsilon and abs(radius -d)  <  can.MagneticDist then
 		    return  0
 		  else
 		    return  -1
@@ -254,25 +254,6 @@ Inherits Shape
 		      p.updateshape
 		    end if
 		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updateskull()
-		  dim i as integer
-		  dim p As BasicPoint
-		  
-		  p = points(0).bpt
-		  
-		  nsk.update(wnd.Mycanvas1.transform(p))
-		  nsk.updatesommet(1,wnd.Mycanvas1.dtransform(points(1).bpt-p))
-		  for i = 0 to 1
-		    nsk.updateextre(i,  wnd.mycanvas1.dtransform(coord.extre(i)-p))
-		  next
-		  for i = 0 to 5
-		    nsk.updatectrl(i, wnd.mycanvas1.dtransform(coord.ctrl(i)-p))
-		  next
-		  
 		End Sub
 	#tag EndMethod
 
@@ -380,6 +361,11 @@ Inherits Shape
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Hybrid"
+			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

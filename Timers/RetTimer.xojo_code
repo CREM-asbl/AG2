@@ -10,10 +10,10 @@ Inherits TsfTimer
 		  dim v as TriDPoint
 		  dim M as Matrix
 		  
-		  can.refreshbackground
+		  can.invalidate
 		  
 		  for i = 0 to ncop
-		    s = copies.element(i)
+		    s = copies.item(i)
 		    t = TriDCopies(i)
 		    for j =0 to Ubound(t.TriDPts)
 		      t.TriDPts(j) = M3D* (t.TriDPts(j))
@@ -34,7 +34,7 @@ Inherits TsfTimer
 		        Circle(s).coord.ctrl(j) =  t.TriDPts(ntdbp+3+j).ProjPlan + fp
 		      next
 		    end if
-		    if s isa Lacet then
+		    if s.Hybrid then
 		      for j = 0 to ubound(lacet(s).coord.extre)
 		        Lacet(s).coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
 		      next
@@ -57,10 +57,10 @@ Inherits TsfTimer
 		  
 		  if pas = 0 then
 		    for i = 0 to ncop
-		      s = copies.element(i)
+		      s = copies.item(i)
 		      s.unhighlight
 		      if s isa point and point(s).pointsur.count = 1 then
-		        point(s).puton Point(s).pointsur.element(0)
+		        point(s).puton Point(s).pointsur.item(0)
 		        point(s).mobility
 		      end if
 		      if s isa standardpolygon then
@@ -82,9 +82,10 @@ Inherits TsfTimer
 		    end if
 		    objects.unselectall
 		    CurrentContent.isaundoredo = false
-		    wnd.Mycanvas1.Mousecursor =System.Cursors.StandardPointer
+		    can.Mousecursor =System.Cursors.StandardPointer
 		  end if
-		  wnd.mycanvas1.refreshbackground
+		  can.refreshbackground
+		  can.refresh
 		End Sub
 	#tag EndMethod
 
@@ -124,9 +125,9 @@ Inherits TsfTimer
 		  dim i, j as integer
 		  
 		  for i = 0 to tempshape.count-1
-		    for j = 0 to ubound(tempshape.element(i).constructedshapes)
-		      if tempshape.element(i).constructedshapes(j).centerordivpoint then
-		        tempshape.addshape tempshape.element(i).constructedshapes(j)
+		    for j = 0 to ubound(tempshape.item(i).constructedshapes)
+		      if tempshape.item(i).constructedshapes(j).centerordivpoint then
+		        tempshape.addshape tempshape.item(i).constructedshapes(j)
 		      end if
 		    next
 		  next
@@ -158,7 +159,7 @@ Inherits TsfTimer
 		  M3D = new Matrix3D(beta,alpha)
 		  
 		  for i = 0 to ncop
-		    s = copies.element(i)
+		    s = copies.item(i)
 		    s.tsp = false
 		    if curoper isa Retourner then
 		      Td = new TriDshape(s,fp)
@@ -200,10 +201,6 @@ Inherits TsfTimer
 
 	#tag Property, Flags = &h0
 		beta As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Curoper As Operation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

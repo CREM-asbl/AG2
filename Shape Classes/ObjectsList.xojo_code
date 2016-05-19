@@ -1,5 +1,6 @@
 #tag Class
 Protected Class ObjectsList
+Inherits Liste
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
 		  
@@ -27,10 +28,7 @@ Protected Class ObjectsList
 		      end if
 		    next
 		  end if
-		  if GetPosition(s)  = -1 then
-		    objects.append s
-		  end if
-		  
+		  super.addobject(s)
 		End Sub
 	#tag EndMethod
 
@@ -42,20 +40,20 @@ Protected Class ObjectsList
 		  dim  ff, ff1 as figure
 		  dim s as shape
 		  
-		  s = Element(0).constructedby.shape
+		  s = item(0).constructedby.shape
 		  ff = s.fig
 		  ff1 = s.getsousfigure(ff)
 		  
 		  CurrentContent.TheFigs.RemoveFigure s.fig
 		  
 		  for i =  0 to count-1
-		    ff.ptsconsted.addshape element(i)
-		    ff1.ptsconsted.addshape element(i)
-		    element(i).fig = ff
+		    ff.ptsconsted.addshape item(i)
+		    ff1.ptsconsted.addshape item(i)
+		    item(i).fig = ff
 		  next
 		  ff.ListerPrecedences
 		  ff.idfig = -1
-		  CurrentContent.TheFigs.AddFigure ff
+		  CurrentContent.TheFigs.addobject ff
 		  
 		End Sub
 	#tag EndMethod
@@ -70,8 +68,8 @@ Protected Class ObjectsList
 		  
 		  if groupes(n) <> nil then
 		    for i=0 to Groupes(n).count-1
-		      s = Groupes(n).element(i)
-		      p = wnd.mycanvas1.transform(s.GetGravitycenter)
+		      s = Groupes(n).item(i)
+		      p = can.transform(s.GetGravitycenter)
 		      g.DrawString("Groupe "+str(n),p.x-20, p.y+5)
 		    next
 		  end if
@@ -84,7 +82,7 @@ Protected Class ObjectsList
 		  dim s as shape
 		  
 		  for i = 0 to count-1
-		    s = element(i)
+		    s = item(i)
 		    for j = 0 to ubound(s.childs)
 		      s.childs(j).dejaexporte = false
 		    next
@@ -105,7 +103,7 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  for i = 0 to ol.count-1
-		    concat ol.element(i)
+		    concat ol.item(i)
 		  next
 		End Sub
 	#tag EndMethod
@@ -233,23 +231,15 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function element(idx As Integer) As Shape
-		  if idx>=0 and idx<=Ubound(objects) then
-		    return objects(idx)
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub EnableModifyAll()
 		  dim i,j as integer
 		  
 		  for i = 0 to count-1
-		    element(i).enablemodify
-		    for j = 0 to ubound(element(i).constructedshapes)
-		      Element(i).constructedshapes(j).enablemodify
+		    item(i).enablemodify
+		    for j = 0 to ubound(item(i).constructedshapes)
+		      item(i).constructedshapes(j).enablemodify
 		    next
-		    element(i).Modified = false
+		    item(i).Modified = false
 		  next
 		  
 		End Sub
@@ -260,7 +250,7 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    element(i).enabletoupdatelabel
+		    item(i).enabletoupdatelabel
 		  next
 		End Sub
 	#tag EndMethod
@@ -270,8 +260,8 @@ Protected Class ObjectsList
 		  dim i as integer //utilisé uniquement par divide
 		  
 		  for i = 0 to count-1
-		    point(element(i)).mobility
-		    CurrentContent.addShape element(i)
+		    point(item(i)).mobility
+		    CurrentContent.addShape item(i)
 		  next
 		  
 		  if  CurrentContent.ForHisto then
@@ -325,7 +315,7 @@ Protected Class ObjectsList
 		      s1=s1.SelectShape(p)
 		      if s1 <> nil and not s1.invalid and not s1.deleted then
 		        if s1 isa bipoint and not (s1 isa droite or s1 isa supphom)  then
-		          s1 = findpoint(p).element(0)
+		          s1 = findpoint(p).item(0)
 		        end if
 		        'if  s1 <> nil  then
 		        Visible.addshape S1
@@ -404,24 +394,17 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetPosition(s As Shape) As Integer
-		  return objects.indexof(s)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetShape(id as integer) As shape
 		  
 		  dim i as Integer
-		  dim temp as Shape
+		  dim s, temp as Shape
 		  
 		  
 		  
 		  for i=0 to Ubound(objects)
-		    if  not objects(i).deleted then   'not objects(i).invalid and
-		      temp=GetShapeIn(objects(i),id)
+		    s = Shape(Objects(i))
+		    if  not s.deleted then   'not objects(i).invalid and
+		      temp=GetShapeIn(s,id)
 		      if temp<>nil then
 		        return temp
 		      end if
@@ -478,8 +461,8 @@ Protected Class ObjectsList
 		  '
 		  '
 		  'for i = 0 to count-1
-		  'if not element(i).deleted and not element(i).invalid and element(i).id > s.id and element(i).hascommonpointwith(s) then
-		  'element(i).invalider
+		  'if not item(i).deleted and not item(i).invalid and item(i).id > s.id and item(i).hascommonpointwith(s) then
+		  'item(i).invalider
 		  'end if
 		  'next
 		End Sub
@@ -492,8 +475,8 @@ Protected Class ObjectsList
 		  
 		  if count > 1 then
 		    for i = 0 to count\2 -1
-		      s1 = element(i)
-		      s2 = element(count-1-i)
+		      s1 = item(i)
+		      s2 = item(count-1-i)
 		      CurrentContent.TheObjects.SwapObjects(s1,s2)
 		    next
 		  end if
@@ -505,12 +488,18 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  For i = 0 to count-1
-		    if element(i) <> obl.element(i) then
+		    if item(i) <> obl.item(i) then
 		      return false
 		    end if
 		  next
 		  
 		  return true
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function item(n As Integer) As Shape
+		  return Shape(element(n))
 		End Function
 	#tag EndMethod
 
@@ -554,7 +543,7 @@ Protected Class ObjectsList
 		  
 		  for i = 0 to ubound(groupes)
 		    for j = 0 to Groupes(i).count-1
-		      Groupes(i).element(j).IdGroupe = i
+		      Groupes(i).item(j).IdGroupe = i
 		    next
 		  next
 		  
@@ -581,9 +570,9 @@ Protected Class ObjectsList
 		  dim i,j as integer
 		  
 		  for i = 0 to count-1
-		    element(i).Attracting = True
-		    for j = 0 to ubound (element(i).Childs)
-		      element(i).Childs(j).Attracting = true
+		    item(i).Attracting = True
+		    for j = 0 to ubound (item(i).Childs)
+		      item(i).Childs(j).Attracting = true
 		    next
 		  next
 		End Sub
@@ -597,12 +586,10 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub removeShape(s As Shape)
+		Sub RemoveObject(s as Variant)
 		  dim i as integer
 		  
-		  if objects.indexof(s) <> -1 then
-		    objects.remove objects.indexof(s)
-		  end if
+		  super.removeobject s
 		  
 		  i = ubound(groupes)
 		  while i > -1 and groupes(i).getposition(s) = -1
@@ -610,7 +597,7 @@ Protected Class ObjectsList
 		  wend
 		  
 		  if i >-1 then
-		    groupes(i).removeshape s
+		    groupes(i).removeobject s
 		    optimizegroups
 		  end if
 		  
@@ -625,7 +612,7 @@ Protected Class ObjectsList
 		  Unselectall
 		  
 		  for i=0 to Oldselection.count -1
-		    ob =Oldselection.element(i)
+		    ob =Oldselection.item(i)
 		    if not ob.Hidden and not ob.invalid and not ob.deleted then
 		      selection.addShape ob
 		      ob.doSelect
@@ -637,10 +624,12 @@ Protected Class ObjectsList
 	#tag Method, Flags = &h0
 		Function ReverseFindObject(p as BasicPoint) As shape
 		  dim i As Integer
-		  dim S as Shape
+		  dim S, sh as Shape
+		  
 		  for i=0 to Ubound(Objects)
-		    if (not Objects(i).Hidden or wnd.DrapShowALL)  and not objects(i).invalid and (not objects(i).deleted) then
-		      S=Objects(i).SelectShape(p)
+		    sh = shape(objects(i))
+		    if (not sh.Hidden or wnd.DrapShowALL)  and not sh.invalid and (not sh.deleted) then
+		      S=sh.SelectShape(p)
 		      if S<>nil then
 		        return S
 		      end if
@@ -676,7 +665,7 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  for i = 0 to figu.shapes.count-1
-		    selectobject(figu.shapes.element(i))
+		    selectobject(figu.shapes.item(i))
 		  next
 		End Sub
 	#tag EndMethod
@@ -719,7 +708,7 @@ Protected Class ObjectsList
 		  dim i as Integer
 		  
 		  for i=0 to Ubound(Objects)
-		    Objects(i).Show
+		    Shape(Objects(i)).Show
 		  next
 		  
 		End Sub
@@ -746,7 +735,7 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    element(i).tsp = false
+		    item(i).tsp = false
 		  next
 		End Sub
 	#tag EndMethod
@@ -756,7 +745,7 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  for i =  ubound(objects) downto 0
-		    objects(i).unhighlight
+		    shape(objects(i)).unhighlight
 		  next
 		End Sub
 	#tag EndMethod
@@ -765,7 +754,7 @@ Protected Class ObjectsList
 		Sub unselectAll()
 		  dim i As Integer
 		  for i=0 to selection.count-1
-		    selection.element(i).DoUnselect
+		    selection.item(i).DoUnselect
 		  next
 		  selection.removeAll
 		End Sub
@@ -774,7 +763,7 @@ Protected Class ObjectsList
 	#tag Method, Flags = &h0
 		Sub unSelectObject(s As Shape)
 		  
-		  selection.removeShape s
+		  selection.removeobject s
 		  s.doUnSelect
 		  
 		End Sub
@@ -783,11 +772,14 @@ Protected Class ObjectsList
 	#tag Method, Flags = &h0
 		Sub updateids()
 		  dim i,j,n as integer
+		  dim s as shape
+		  
 		  n = 0
 		  for i = 0 to Ubound(objects)
-		    n = max(n, objects(i).id)
-		    for j = 0 to Ubound(objects(i).childs)
-		      n = max(n, objects(i).childs(j).id)
+		    s = shape(objects(i))
+		    n = max(n, s.id)
+		    for j = 0 to Ubound(s.childs)
+		      n = max(n, s.childs(j).id)
 		    next
 		  next
 		  setid(n)
@@ -799,21 +791,23 @@ Protected Class ObjectsList
 		  dim i as integer
 		  
 		  for i = 0 to count-1
-		    element(i).updatelabel(k)
+		    item(i).updatelabel(k)
 		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Updateskull()
-		  dim i ,j as Integer
-		  
-		  for i=1 to Ubound(Objects)
-		    for j = 0 to Ubound(Objects(i).Childs)
-		      Objects(i).childs(j).updateskull
-		    next
-		    Objects(i).Updateskull
-		  next
+		  'dim i ,j as Integer
+		  'dim s as shape
+		  '
+		  'for i=1 to Ubound(Objects)
+		  's = shape(objects(i))
+		  'for j = 0 to Ubound(s.Childs)
+		  's.childs(j).updateskull
+		  'next
+		  's.Updateskull
+		  'next
 		  
 		End Sub
 	#tag EndMethod
@@ -821,9 +815,11 @@ Protected Class ObjectsList
 	#tag Method, Flags = &h0
 		Sub UpdateUserCoord(M as Matrix)
 		  dim i  as Integer
+		  dim s as shape
 		  
 		  for i=1 to Ubound(Objects)
-		    Objects(i).UpdateUserCoord(M)
+		    s = shape(objects(i))
+		    s.UpdateUserCoord(M)
 		  next
 		End Sub
 	#tag EndMethod
@@ -834,15 +830,15 @@ Protected Class ObjectsList
 		  '
 		  '
 		  'for i = 0 to count-1
-		  'if not element(i).deleted and element(i).invalid and element(i).id > s.id and element(i).hascommonpointwith(s) then
-		  'element(i).valider
+		  'if not item(i).deleted and item(i).invalid and item(i).id > s.id and item(i).hascommonpointwith(s) then
+		  'item(i).valider
 		  'end if
 		  'next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub XMLLireCondi(Obj as XMLelement)
+		Sub XMLLireCondi(Obj as XMLElement)
 		  dim i, j as integer
 		  dim s as shape
 		  dim p as point
@@ -927,8 +923,8 @@ Protected Class ObjectsList
 		  
 		  n = 0
 		  for i = 0 to CurrentContent.TheFigs.Count-1
-		    CurrentContent.TheFigs.element(i).ListerPrecedences
-		    idf = CurrentContent.Thefigs.element(i).idfig
+		    CurrentContent.TheFigs.item(i).ListerPrecedences
+		    idf = CurrentContent.Thefigs.item(i).idfig
 		    n = max(n, idf)
 		  next
 		  
@@ -981,11 +977,11 @@ Protected Class ObjectsList
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub XMLLirePointsSur(Obj as XMLelement)
+		Sub XMLLirePointsSur(Obj as XMLElement)
 		  dim i, fam  as integer
 		  dim s as shape
 		  dim List1 as XMLNodeList
-		  dim Temp as XMLelement
+		  dim Temp as XMLElement
 		  
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
@@ -1042,7 +1038,7 @@ Protected Class ObjectsList
 		    s = new Repere(self,temp)
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère
 		    CurrentContent.CreateFigs
-		    wnd.MyCanvas1.Setrepere(Repere(s))
+		    can.Setrepere(Repere(s))
 		  case 0
 		    s = new Point(self,Temp)
 		  case 1
@@ -1122,6 +1118,7 @@ Protected Class ObjectsList
 		  If Val(Temp.GetAttribute("IdGroupe")) <> -1 then
 		    s.IdGroupe = val(Temp.GetAttribute("IdGroupe"))
 		    if Ubound(Groupes) < s.IdGroupe then
+		      Redim Groupes(-1)
 		      Redim Groupes(s.idGroupe)
 		    end if
 		    if Groupes(s.IdGroupe) = nil then
@@ -1166,7 +1163,7 @@ Protected Class ObjectsList
 		    updateids
 		  end if
 		  for i = 0 to CurrentContent.TheObjects.count-1
-		    s=  CurrentContent.TheObjects.element(i)
+		    s=  CurrentContent.TheObjects.item(i)
 		    if s.id =0 and not s isa repere then
 		      s.id = newid
 		    end if
@@ -1206,14 +1203,16 @@ Protected Class ObjectsList
 
 	#tag Method, Flags = &h0
 		Function XMLPutIdInContainer(Doc as XMLDocument) As XMLElement
-		  Dim Temp as XmlElement
+		  Dim Temp as XMLElement
 		  dim i as integer
+		  dim s as shape
 		  
 		  
 		  if count > 0 then
 		    Temp = Doc.CreateElement(Dico.Value("Forms"))
 		    for i  = 0 to Ubound(objects)
-		      Temp.appendchild objects(i).XMLPutIdinContainer(Doc)
+		      s = shape(objects(i))
+		      Temp.appendchild s.XMLPutIdinContainer(Doc)
 		    next
 		    return Temp
 		  else
@@ -1229,13 +1228,15 @@ Protected Class ObjectsList
 		  dim i  As  integer
 		  dim EL as XMLElement
 		  dim  MAG as XMLElement
+		  dim s as shape
 		  
 		  optimize
 		  
 		  EL =  Doc.CreateElement(Dico.Value("Objects"))
 		  
 		  for i=0 to UBound(Objects)
-		    EL.AppendChild(objects(i).XMLPutInContainer(Doc))
+		    s = shape(objects(i))
+		    EL.AppendChild(s.XMLPutInContainer(Doc))
 		  next
 		  
 		  return EL
@@ -1289,10 +1290,6 @@ Protected Class ObjectsList
 
 	#tag Property, Flags = &h0
 		Groupes(-1) As ObjectsList
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		objects(-1) As Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

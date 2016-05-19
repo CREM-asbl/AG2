@@ -17,7 +17,7 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  if sctxt.conditionedby <> nil then   //On déconditionne
 		    oldcondby = sctxt.conditionedby
-		    sctxt.conditionedby.conditioned.removeshape sctxt
+		    sctxt.conditionedby.conditioned.removeobject sctxt
 		    sctxt.conditionedby = nil
 		    endoperation
 		    currentcontent.currentoperation = nil
@@ -50,15 +50,15 @@ Inherits SelectOperation
 		  s = super.getshape(p)
 		  
 		  for i = visible.count downto 0
-		    if (not visible.element(i) isa point) or point(visible.element(i)).pointsur.count <> 2 then
-		      visible.removeshape visible.element(i)
+		    if (not visible.item(i) isa point) or point(visible.item(i)).pointsur.count <> 2 then
+		      visible.removeobject visible.item(i)
 		    end if
 		  next
 		  
 		  nobj = visible.count
 		  
 		  if visible.count > 0 then
-		    return visible.element(iobj)
+		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
@@ -105,7 +105,7 @@ Inherits SelectOperation
 		    condby = point(currentcontent.TheObjects.Getshape(val(EL.GetAttribute("Point"))))
 		    if val(EL.GetAttribute("Condi"))=0 then
 		      sctxt.conditionedby = nil
-		      condby.conditioned.removeshape sctxt
+		      condby.conditioned.removeobject sctxt
 		    else
 		      sctxt.conditionedby = condby
 		      condby.conditioned.addshape sctxt
@@ -118,7 +118,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc As XMLDocument) As XMLElement
-		  dim Temp As  XmlElement
+		  dim Temp As  XMLElement
 		  
 		  Temp = Doc.CreateElement(GetName)
 		  Temp.appendchild sctxt.XMLPutIdInContainer(Doc)
@@ -153,7 +153,7 @@ Inherits SelectOperation
 		    condby = point(currentcontent.TheObjects.Getshape(val(EL.GetAttribute("Point"))))
 		    if val(EL.GetAttribute("Condi"))=1 then
 		      sctxt.conditionedby = nil
-		      condby.conditioned.removeshape sctxt
+		      condby.conditioned.removeobject sctxt
 		    else
 		      sctxt.conditionedby = condby
 		      condby.conditioned.addshape sctxt
