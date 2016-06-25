@@ -45,7 +45,7 @@ Protected Class Transformation
 		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 		  
-		  if s1.Hybrid then
+		  if s1.Hybrid or s1 isa circle then
 		    for i = 0 to ubound(s2.coord.extre)
 		      s2.coord.extre(i) = M*s1.coord.extre(i)
 		    next
@@ -363,7 +363,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Highlight()
 		  highlighted = true
-		  can.invalidate
+		  
 		End Sub
 	#tag EndMethod
 
@@ -383,7 +383,6 @@ Protected Class Transformation
 		      Appliquer(s1,s2)
 		      if s1 isa circle  or s1 isa lacet then
 		        AppliquerExtreCtrl(s1,s2)
-		        s2.updateskull
 		      end if
 		    next
 		    'constructedfigs.updatematrixduplicatedshapes(M)
@@ -714,7 +713,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Unhighlight()
 		  highlighted = False
-		  can.invalidate
+		  
 		End Sub
 	#tag EndMethod
 

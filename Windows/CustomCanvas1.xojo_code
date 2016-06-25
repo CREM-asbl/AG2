@@ -5,7 +5,7 @@ Inherits Canvas
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
 		  dim p as BasicPoint
 		  dim s as shape
-		  dim i as integer
+		  dim m as MenuItem
 		  
 		  ctxt = false
 		  
@@ -56,69 +56,79 @@ Inherits Canvas
 		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
+		  
+		  
 		  if icot = -1 then
-		    if sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc)  then
-		      base.append( New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
+		    if sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc) then
+		      base.append(New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
 		    end if
 		    
-		    if (not sctxt isa point) and (not sctxt isa droite) and (not sctxt isa arc) then
-		      base.append( New MenuItem(Dico.value("ToolsColorFill")))
-		    end if
 		    
-		    if (not sctxt isa point) or (ubound(point(sctxt).parents) = -1) then
-		      base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
-		      base.append(New MenuItem(Dico.Value("ToolsARPlan")))
-		    end if
-		    
-		    if sctxt.borderwidth = 1 then
-		      base.append( New MenuItem(Dico.Value("Epais")))
+		  end if
+		  
+		  if icot = -1 and  (not sctxt isa point) and (not sctxt isa droite) and (not sctxt isa arc) then
+		    m = new MenuItem(Dico.value("ToolsColorTransparent"))
+		    base.append m
+		    m.append(New MenuItem(Dico.value("ToolsOpq")))
+		    m.append(New MenuItem(Dico.value("ToolsSTsp")))
+		    m.append(New MenuItem(Dico.value("ToolsTsp")))
+		    base.append( New MenuItem(Dico.value("ToolsColorFill")))
+		  end if
+		  
+		  if (not sctxt isa point) or (ubound(point(sctxt).parents) = -1) then
+		    base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
+		    base.append(New MenuItem(Dico.Value("ToolsARPlan")))
+		  end if
+		  
+		  if sctxt.borderwidth = 1 then
+		    base.append( New MenuItem(Dico.Value("Epais")))
+		  else
+		    base.append(New MenuItem(Dico.Value("Mince")))
+		  end if
+		  
+		  if sctxt isa point and  point(sctxt).pointsur.count = 0 then
+		    if not Point(sctxt).std  then
+		      base.append(New MenuItem(Dico.Value("Rigidifier")))
 		    else
-		      base.append(New MenuItem(Dico.Value("Mince")))
-		    end if
-		    
-		    if sctxt isa point and  point(sctxt).pointsur.count = 0 then
-		      if not Point(sctxt).std  then
-		        base.append(New MenuItem(Dico.Value("Rigidifier")))
-		      else
-		        base.append(New MenuItem(Dico.Value("Derigidifier")))
-		      end if
-		    end if
-		    
-		    if not sctxt isa point then
-		      if sctxt.nonpointed then
-		        base.append(New MenuItem(Dico.Value("Pointer")))
-		      else
-		        base.append(New MenuItem(Dico.Value("DePointer")))
-		      end if
-		      if  sctxt.ti = nil   then
-		        base.append( New MenuItem(Dico.Value("Flecher")))
-		      else
-		        base.append(New MenuItem(Dico.Value("DeFlecher")))
-		      end if
-		    end if
-		    
-		    if sctxt.tracept then
-		      base.append(New MenuItem(Dico.Value("DeTracer")))
-		    else
-		      base.append(New MenuItem(Dico.Value("Tracer")))
-		    end if
-		    
-		    if sctxt.conditionedby = nil then
-		      base.append( New MenuItem(Dico.Value("Condition")))
-		    else
-		      base.append(New MenuItem(Dico.Value("Decondition")))
-		    end if
-		    
-		    if sctxt isa point and point(sctxt).pointsur.count = 1 then
-		      s = point(sctxt).pointsur.item(0)
-		      if s isa polygon  and not point(sctxt).surseg  then
-		        base.Append (New MenuItem(Dico.Value("Limiter")))
-		      end if
-		      if (s isa droite and droite(s).nextre = 2) or (s isa freecircle) or (s isa arc) then
-		        base.append (New MenuItem(Dico.Value("Animer")))
-		      end if
+		      base.append(New MenuItem(Dico.Value("Derigidifier")))
 		    end if
 		  end if
+		  
+		  if not sctxt isa point then
+		    if sctxt.nonpointed then
+		      base.append(New MenuItem(Dico.Value("Pointer")))
+		    else
+		      base.append(New MenuItem(Dico.Value("DePointer")))
+		    end if
+		    if  sctxt.ti = nil   then
+		      base.append( New MenuItem(Dico.Value("Flecher")))
+		    else
+		      base.append(New MenuItem(Dico.Value("DeFlecher")))
+		    end if
+		  end if
+		  
+		  if sctxt.tracept then
+		    base.append(New MenuItem(Dico.Value("DeTracer")))
+		  else
+		    base.append(New MenuItem(Dico.Value("Tracer")))
+		  end if
+		  
+		  if sctxt.conditionedby = nil then
+		    base.append( New MenuItem(Dico.Value("Condition")))
+		  else
+		    base.append(New MenuItem(Dico.Value("Decondition")))
+		  end if
+		  
+		  if sctxt isa point and point(sctxt).pointsur.count = 1 then
+		    s = point(sctxt).pointsur.item(0)
+		    if s isa polygon  and not point(sctxt).surseg  then
+		      base.Append (New MenuItem(Dico.Value("Limiter")))
+		    end if
+		    if (s isa droite and droite(s).nextre = 2) or (s isa freecircle) or (s isa arc) then
+		      base.append (New MenuItem(Dico.Value("Animer")))
+		    end if
+		  end if
+		  
 		  
 		  Return True//display the contextual menu
 		  
@@ -169,6 +179,18 @@ Inherits Canvas
 		      currentoper = colorchange(currentcontent.currentoperation)
 		      EndOperMenuContext
 		    end if
+		  case Dico.Value("ToolsOpq")
+		    currentcontent.currentoperation = new TransparencyChange(100)
+		    currentoper = Transparencychange(currentcontent.currentoperation)
+		    EndOperMenuContext
+		  case Dico.Value("ToolsSTsp")
+		    currentcontent.currentoperation = new TransparencyChange(50)
+		    currentoper = Transparencychange(currentcontent.currentoperation)
+		    EndOperMenuContext
+		  case Dico.Value("ToolsTsp")
+		    currentcontent.currentoperation = new TransparencyChange(0)
+		    currentoper = Transparencychange(currentcontent.currentoperation)
+		    EndOperMenuContext
 		  case Dico.Value("ToolsAVPlan")
 		    CurrentContent.CurrentOperation=new ChangePosition(1)
 		    currentoper = ChangePosition(CurrentContent.Currentoperation)
@@ -251,7 +273,6 @@ Inherits Canvas
 		  if dret = nil then
 		    if CurrentContent.CurrentOperation<>nil then
 		      CurrentContent.CurrentOperation.MouseDrag(itransform(new BasicPoint(x,y)))
-		      can.invalidate
 		    end if
 		  end if
 		End Sub
@@ -260,7 +281,6 @@ Inherits Canvas
 	#tag Event
 		Sub MouseMove(X As Integer, Y As Integer)
 		  //On passe d'abord dans le mousemove du canvas, puis dans celui de la fenêtre
-		  dim s as shape
 		  dim p as BasicPoint
 		  dim curop as operation
 		  
@@ -281,6 +301,7 @@ Inherits Canvas
 		        if currenthighlightedshape <> nil then
 		          currenthighlightedshape.highlight
 		        end if
+		        can.refreshbackground
 		      end if
 		      if currenthighlightedshape <> nil and not currentcontent.macrocreation then
 		        AfficherChoixContext
@@ -291,7 +312,7 @@ Inherits Canvas
 		      end if
 		    end if
 		  end if
-		  can.refresh
+		  
 		  
 		  if curop <> nil or curop isa conditionner then
 		    ctxt = false
@@ -333,7 +354,6 @@ Inherits Canvas
 
 	#tag Event
 		Function MouseWheel(X As Integer, Y As Integer, deltaX as Integer, deltaY as Integer) As Boolean
-		  dim nobj as integer
 		  
 		  if CurrentContent.CurrentOperation <> nil then
 		    CurrentContent.CurrentOperation.MouseWheel
@@ -361,7 +381,9 @@ Inherits Canvas
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
-		  g.drawPicture Background, 0, 0
+		  g.drawPicture(Background, 0, 0)
+		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -470,7 +492,7 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Function dtransform(bp as basicpoint) As basicpoint
-		  dim res, u1, u2  as basicpoint
+		  dim u1, u2  as basicpoint
 		  u1 = (CTM.v1)*(round(1000*bp.x)/1000)
 		  u2 =  (CTM.v2)*(round(1000*bp.y)/1000)
 		  return u1 + u2
@@ -517,7 +539,7 @@ Inherits Canvas
 		    s = vis.item(iobj)
 		    if s isa polygon and polygon(s).pointonside(p ) <>-1 then
 		      icot = polygon(s).pointonside(p)
-		      polygon(s).paintside(graphics,icot,2,Config.highlightcolor)
+		      polygon(s).paintside(background.graphics,icot,2,Config.highlightcolor)
 		    else
 		      icot = -1
 		    end if
@@ -603,17 +625,15 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub RefreshBackground()
-		  dim i, j as Integer
-		  dim o as shape
+		  dim  j as Integer
 		  dim op As operation
-		  dim pt as point
+		  
 		  
 		  
 		  if Background = nil or CurrentContent = nil or CurrentContent.GetRepere = nil then
 		    return
 		  end if
 		  
-		  cnt = cnt+1
 		  EraseBackground
 		  
 		  if drapzone then
@@ -630,8 +650,10 @@ Inherits Canvas
 		    CurrentContent.TheGrid.Paint(Background.Graphics)
 		  end if
 		  
-		  CurrentContent.TheObjects.paint(Background.Graphics)
 		  op = CurrentContent.currentoperation
+		  
+		  CurrentContent.TheObjects.paint(Background.Graphics)
+		  
 		  if op <> nil  then
 		    op.Paint(Background.Graphics)
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
@@ -645,8 +667,8 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  Background.graphics.DrawPicture OffscreenPicture, 0, 0
-		  can.refresh
+		  Background.graphics.DrawPicture (OffscreenPicture, 0, 0)
+		  refresh
 		  
 		  
 		  
@@ -663,22 +685,20 @@ Inherits Canvas
 		  top = 0
 		  width = wnd.width - left
 		  height = wnd.height 
-		  if config = nil then
-		    return
-		  end if
 		  
 		  Background=NewPicture(width,height,Screen(0).Depth)
 		  Background.graphics.ForeColor= &cFFFFFF
 		  Background.graphics.FillRect(0,0,width,height)
-		  Background.graphics.forecolor = Config.bordercolor.col
-		  Background.graphics.TextSize = Config.TextSize
+		  if config <> nil then
+		    Background.graphics.forecolor = Config.bordercolor.col
+		    Background.graphics.TextSize = Config.TextSize
+		    bkcol = Config.Fillcolor.col
+		  end if
 		  Background.graphics.Bold = true
 		  
-		  if currentcontent <> nil and not currentcontent.theobjects.tracept then
-		    OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
-		    OffscreenPicture.Transparent = 1
-		  end if
-		  bkcol = Config.Fillcolor.col
+		  
+		  OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
+		  OffscreenPicture.Transparent = 1
 		  calculcoins
 		  
 		  
@@ -688,9 +708,8 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub saveAsPict()
-		  dim p as Picture
+		  
 		  dim fi as folderItem
-		  dim i As integer
 		  
 		  #if targetMacOS
 		    fi=GetSaveFolderItem("application/pict","Sauvegarde.pict")
@@ -784,10 +803,6 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		cig As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		cnt As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -945,12 +960,6 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="&h000000"
 			Type="Color"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="cnt"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ctxt"

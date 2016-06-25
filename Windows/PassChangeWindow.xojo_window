@@ -28,9 +28,7 @@ Begin Window PassChangeWindow
    Width           =   321
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -50,7 +48,6 @@ Begin Window PassChangeWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Mot de passe actuel"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -65,9 +62,7 @@ Begin Window PassChangeWindow
    End
    Begin Label StaticText2
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
-      ControlOrder    =   "1"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -87,7 +82,6 @@ Begin Window PassChangeWindow
       Selectable      =   False
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Nouveau mot de passe"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -102,9 +96,7 @@ Begin Window PassChangeWindow
    End
    Begin Label StaticText3
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
-      ControlOrder    =   "2"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -124,7 +116,6 @@ Begin Window PassChangeWindow
       Selectable      =   False
       TabIndex        =   2
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Confirmation"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -142,11 +133,9 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   3
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "3"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -165,13 +154,9 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "True"
-      Styled          =   "False"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -191,11 +176,9 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   4
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "4"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -214,13 +197,9 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "True"
-      Styled          =   "False"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -240,11 +219,9 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   5
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "5"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -263,13 +240,9 @@ Begin Window PassChangeWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "True"
-      Styled          =   "False"
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -286,12 +259,10 @@ Begin Window PassChangeWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
-      BehaviorIndex   =   6
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Ok"
-      ControlOrder    =   "6"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -319,12 +290,10 @@ Begin Window PassChangeWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
-      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "7"
       Default         =   False
       Enabled         =   True
       Height          =   28

@@ -19,6 +19,9 @@ Inherits FigureShape
 		  
 		  b = s.border
 		  f= s.fill
+		  if b = 0 then
+		    b = 100
+		  end if
 		  
 		  if s isa lacet then
 		    if s.hidden or s.tsp  then
@@ -26,12 +29,10 @@ Inherits FigureShape
 		      updatebordercolor(s.bordercolor.col,0)
 		    else
 		      updatefillcolor(s.fillcolor.col,f)
-		      'updatebordercolor(s.bordercolor.col,b)
+		      updatebordercolor(s.bordercolor.col,b)
 		    end if
 		    currentcurve = 0
 		    for i = 0 to s.npts-1
-		      'if s.hidden and s.highlighted then
-		      'updatecurvecolor(s,i,config.HighlightColor.col, b)
 		      if s.hidden Then
 		        updatecurvecolor(s,i, config.HideColor.col,b)
 		      elseif s.highlighted then
@@ -83,7 +84,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixeepaisseurs(s as shape)
-		  dim loc, i, n as integer
+		  dim  i as integer
 		  
 		  if s isa lacet then
 		    currentcurve = 0
@@ -124,11 +125,19 @@ Inherits FigureShape
 		  dim i as integer
 		  
 		  
-		  if self isa LSkull then
+		  if self isa LSkull and not self.skullof isa Secteur then
 		    g.drawobject self, x, y
 		    for i = 0 to count-1
 		      g.drawobject item(i), x, y
 		    next
+		  end if
+		  
+		  if self.skullof isa Secteur then
+		    if fill > 0 then
+		      g.drawobject self, x, y
+		    end if
+		    g.drawobject item(0),x,y
+		    g.drawobject item(4),x,y
 		  end if
 		End Sub
 	#tag EndMethod

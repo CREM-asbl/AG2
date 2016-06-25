@@ -16,7 +16,7 @@ Inherits Timer
 		    restart
 		  end if
 		  
-		  can.invalidate
+		  can.RefreshBackground
 		  
 		End Sub
 	#tag EndEvent

@@ -116,8 +116,6 @@ Inherits SelectOperation
 		    co = s.nsk.bordercolor
 		  elseif s isa circle or s isa lacet then
 		    co =s.nsk.fillcolor
-		  else
-		    co = s.nsk.fillcolor
 		  end if
 		  
 		  if s.fill > 49 then
@@ -158,7 +156,6 @@ Inherits SelectOperation
 		  
 		  if (not q.hidden or (ubound(q.parents) > -1 ) )  and not q.invalid and not q.deleted then
 		    if n > Ubound(Obeps) then
-		      redim obeps(-1)
 		      redim Obeps(n)
 		    end if
 		    
@@ -191,9 +188,6 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub ajustminmax(q as point)
-		  dim p, w, h as double
-		  dim bp, bp1 as basicpoint
-		  
 		  
 		  if  ubound(q.parents) > -1 then
 		    ajustminmax(q.bpt.x, q.bpt.y)
@@ -539,6 +533,7 @@ Inherits SelectOperation
 		  bordercolor = black
 		  fillcolor = black
 		  textcolor = black
+		  'Pour la transparence
 		  'tos.writeline("0 .pushpdf14devicefilter")
 		  'tos.writeline("<< >> 28 28 " + str(ceil(urx)) + " "+ str(ceil(ury)) + " .begintransparencygroup")
 		  'tos.writeline("0.5 .setopacityalpha")

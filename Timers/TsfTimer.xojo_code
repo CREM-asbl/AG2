@@ -22,7 +22,7 @@ Inherits Timer
 		        Lacet(s).coord.MoveExtreCtrl(M1)
 		      end if
 		    next
-		    can.invalidate
+		    can.RefreshBackground
 		    copies.enablemodifyall
 		    pas = pas-1
 		    
@@ -91,6 +91,7 @@ Inherits Timer
 		  next
 		  
 		  curoper = AppliquerTsf(curop)
+		  curtsf = curop.tsf
 		  can.MouseCursor = system.Cursors.wait
 		  niter = 60
 		  M1 = curop.tsf.RacN(niter)
@@ -98,6 +99,7 @@ Inherits Timer
 		  period= 50
 		  pas = niter
 		  enabled = true
+		  type = curtsf.type
 		End Sub
 	#tag EndMethod
 
@@ -155,6 +157,10 @@ Inherits Timer
 		curoper As Operation
 	#tag EndProperty
 
+	#tag Property, Flags = &h1
+		Protected curtsf As Transformation
+	#tag EndProperty
+
 	#tag Property, Flags = &h0
 		drap As Boolean
 	#tag EndProperty
@@ -179,8 +185,8 @@ Inherits Timer
 		pas As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected Tsf As Transformation
+	#tag Property, Flags = &h0
+		type As Integer
 	#tag EndProperty
 
 
@@ -249,6 +255,11 @@ Inherits Timer
 			Group="ID"
 			Type="String"
 			EditorType="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="type"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

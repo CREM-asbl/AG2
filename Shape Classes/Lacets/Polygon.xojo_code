@@ -66,7 +66,6 @@ Inherits Lacet
 		  
 		  endconstruction
 		  createskull(Points(0).bpt)
-		  'updateskull
 		  ol.optimize
 		End Sub
 	#tag EndMethod
@@ -148,16 +147,6 @@ Inherits Lacet
 		  end if
 		  return num
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetSide(i as integer) As Droite
-		  dim d as Droite
-		  
-		  d = new Droite(Points(i),Points((i+1) mod npts))
-		  d.nextre = 2
-		  return d
 		End Function
 	#tag EndMethod
 
@@ -483,7 +472,6 @@ Inherits Lacet
 		  
 		  d = new droite(ob, self, icot)
 		  d.ComputeExtre
-		  'd.updateskull
 		  
 		  return d
 		End Function
@@ -707,6 +695,11 @@ Inherits Lacet
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -776,11 +769,6 @@ Inherits Lacet
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

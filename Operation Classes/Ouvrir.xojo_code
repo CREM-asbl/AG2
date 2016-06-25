@@ -84,11 +84,11 @@ Inherits Operation
 		  Objects.XMLLoadObjects(FAG)
 		  Objects.updateids
 		  currentcontent.FinInitialisation(FAG, f)
-		  wnd.refresh
 		  finished = true
 		  CurrentContent.AddOperation(self)
 		  can.mousecursor = System.Cursors.StandardPointer
-		  'can.invalidate
+		  can.refreshbackground
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -108,7 +108,6 @@ Inherits Operation
 		  Temp = XMLElement(EL.Child(0))
 		  Objects.XMLLoadObjects(Temp)
 		  Objects.updateids
-		  'can.invalidate
 		  
 		End Sub
 	#tag EndMethod

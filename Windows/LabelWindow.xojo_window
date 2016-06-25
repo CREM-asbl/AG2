@@ -31,7 +31,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -147,7 +147,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   254
+      Left            =   261
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -160,7 +160,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   82
+      Top             =   77
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -240,7 +240,7 @@ Begin Window LabelWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFF00FFFF
+      FillColor       =   &cFFFFFF00
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -370,7 +370,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -413,7 +413,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -694,12 +694,12 @@ End
 		  drapnew = addlab.drapnew
 		  Lab = addlab.lab
 		  Title = Dico.value("Nommer")
-		  Txt.caption = Dico.value("Name")+" : "
+		  Txt.Text = Dico.value("Name")+" : "
 		  Text.Text = lab.Text
-		  Pol.Caption = Dico.value("Font")+ " :"
-		  TxtSize.caption = Dico.value("Size")+" : "
+		  Pol.Text = Dico.value("Font")+ " :"
+		  TxtSize.Text = Dico.value("Size")+" : "
 		  size.Text = str(lab.Textsize)
-		  TxtColor.caption = Dico.value("Color")+" : "
+		  TxtColor.Text = Dico.value("Color")+" : "
 		  RecColor.FillColor = Lab.TextColor
 		  Italic.caption = " "+Dico.value("Italic")
 		  'Italic.setBoolean(lab.TextFont)

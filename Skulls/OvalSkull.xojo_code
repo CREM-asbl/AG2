@@ -29,6 +29,9 @@ Inherits OvalShape
 		    Update(p,Hauteur,true)
 		  end if
 		  ref = can.transform(p)
+		  'x = p.x
+		  'y = p.y
+		  
 		End Sub
 	#tag EndMethod
 

@@ -31,9 +31,8 @@ Begin Window WorkWindow
       AcceptTabs      =   True
       AutoDeactivate  =   True
       Backdrop        =   0
-      Background      =   0
+      Background      =   454606847
       Bkcol           =   &c00000000
-      cnt             =   0
       ctxt            =   False
       DoubleBuffer    =   True
       Doubleclicktime =   0
@@ -80,7 +79,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cDCD9A500
+      FillColor       =   &cE3DB9D00
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
@@ -160,7 +159,7 @@ Begin Window WorkWindow
          Begin PushButton MouvBut
             AutoDeactivate  =   True
             Bold            =   True
-            ButtonStyle     =   "0"
+            ButtonStyle     =   "1"
             Cancel          =   False
             Caption         =   "Retourner"
             Default         =   False
@@ -880,9 +879,18 @@ End
 	#tag EndEvent
 
 	#tag Event
+		Sub Resized()
+		  can.resize
+		  can.RefreshBackground
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Resizing()
 		  
 		  can.resize
+		  can.RefreshBackground
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -1355,7 +1363,7 @@ End
 			if f=nil then
 			return true
 			else
-			mycanvas1.FondsEcran = f.OpenAsPicture()
+			mycanvas1.FondsEcran = Picture.Open(f)
 			end if
 			end if
 			
@@ -1798,12 +1806,6 @@ End
 
 	#tag MenuHandler
 		Function ToolsColorTransparent() As Boolean Handles ToolsColorTransparent.Action
-			if mousedispo then
-			closefw
-			CurrentContent.CurrentOperation=new TransparencyChange
-			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
 			return true
 		End Function
 	#tag EndMenuHandler
@@ -1877,6 +1879,20 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function ToolsOpq() As Boolean Handles ToolsOpq.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation=new TransparencyChange(100)
+			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+			refreshtitle
+			end if
+			return true
+			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function ToolsRigid() As Boolean Handles ToolsRigid.Action
 			if mousedispo then
 			closefw
@@ -1885,6 +1901,19 @@ End
 			refreshtitle
 			end if
 			return true
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ToolsSTsp() As Boolean Handles ToolsSTsp.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation=new TransparencyChange(50)
+			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+			refreshtitle
+			end if
+			Return True
+			
 		End Function
 	#tag EndMenuHandler
 
@@ -1925,6 +1954,19 @@ End
 			end if
 			return true
 			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ToolsTsp() As Boolean Handles ToolsTsp.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation=new TransparencyChange(0)
+			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+			refreshtitle
+			end if
+			Return True
 			
 		End Function
 	#tag EndMenuHandler
@@ -2581,7 +2623,7 @@ End
 		      updatemenu
 		    end if
 		    PushButton1.Visible = not draphisto
-		    Mycanvas1.RefreshBackground
+		    can.RefreshBackground
 		    MoveBoxRefresh
 		    StdBoxRefresh
 		    LibBoxRefresh
@@ -2788,7 +2830,7 @@ End
 		    config.stdcolor(i) = config.stdcolor(i).comp
 		    ico(i).updatefillcolor(config.stdcolor(i).col,100)
 		  next
-		  Mycanvas1.RefreshBackground
+		  can.RefreshBackground
 		End Sub
 	#tag EndMethod
 

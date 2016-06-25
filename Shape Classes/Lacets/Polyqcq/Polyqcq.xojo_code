@@ -14,7 +14,7 @@ Inherits Polygon
 		  npts = npts+1
 		  ncpts = ncpts+1
 		  
-		  'AddPoint très différent dans Figskull et LSkull (Polyqcq et Lacet). Il faudra récrire FigSkull sur le modèle de LSkull
+		  
 		  
 		  
 		End Sub
@@ -39,7 +39,8 @@ Inherits Polygon
 		  npts = 1
 		  ncpts = 1
 		  fam = 6
-		  createskull(p)
+		  Nsk = new Lskull(p)
+		  nsk.skullof = self
 		  Lskull(Nsk).addpoint(new BasicPoint(0,0))
 		  
 		  
@@ -107,6 +108,11 @@ Inherits Polygon
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -177,11 +183,6 @@ Inherits Polygon
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

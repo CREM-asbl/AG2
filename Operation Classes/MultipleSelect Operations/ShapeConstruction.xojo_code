@@ -215,7 +215,6 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  'Le fixecoord se trouve dans MouseMove
 		  currentshape.constructshape
-		  'can.invalidate
 		  currentshape.endconstruction  //insère la forme dans currentcontent.TheObjects et crée la figure
 		  finished = true
 		  
@@ -241,7 +240,6 @@ Inherits MultipleSelectOperation
 		  else
 		    super.EndOperation
 		  end if
-		  currentshape = nil
 		  CreateShape  //On relance la construction suivante
 		End Sub
 	#tag EndMethod
@@ -303,7 +301,7 @@ Inherits MultipleSelectOperation
 		    end if
 		  end if
 		  can.refreshbackground
-		  can.refresh
+		  
 		  
 		  
 		  

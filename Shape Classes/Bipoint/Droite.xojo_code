@@ -134,7 +134,7 @@ Inherits Bipoint
 		  end select
 		  createskull(firstp)
 		  computeextre
-		  Updateskull
+		  
 		End Sub
 	#tag EndMethod
 
@@ -168,7 +168,6 @@ Inherits Bipoint
 		  createskull(fp.bpt)
 		  computeextre
 		  EndConstruction
-		  Updateskull
 		  
 		End Sub
 	#tag EndMethod
@@ -198,7 +197,7 @@ Inherits Bipoint
 		  endconstruction
 		  createskull(fp.bpt)
 		  computeextre
-		  Updateskull
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -542,7 +541,6 @@ Inherits Bipoint
 		  
 		  s = new Droite(Obl,self, p)
 		  s.computeextre
-		  s.updateskull
 		  
 		  return s
 		End Function
@@ -868,6 +866,11 @@ Inherits Bipoint
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -940,11 +943,6 @@ Inherits Bipoint
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -1011,6 +1009,11 @@ Inherits Bipoint
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

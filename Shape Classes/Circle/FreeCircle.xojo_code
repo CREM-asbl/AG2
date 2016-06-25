@@ -21,7 +21,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Constructor(ol As ObjectsList, p As BasicPoint)
 		  Super.Constructor(ol,2,p)
-		  Npts=2
+		  
 		  Ori=1
 		  createskull(p)
 		End Sub
@@ -77,7 +77,6 @@ Inherits Circle
 		  nsk = new ArcSkull(p)
 		  if ubound(points) > 0 then
 		    computeradius
-		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  nsk.skullof = self
 		End Sub
@@ -91,11 +90,13 @@ Inherits Circle
 		    for i = 0 to 1
 		      Points(i).MoveTo(p)
 		    next
+		    
 		  else
 		    Points(1).moveto p
 		    updatecoord
+		    coord.centres(0) = points(0).bpt
+		    coord.curved(0) = 1
 		    coord.CreateExtreAndCtrlPoints(ori)
-		    'updateskull
 		  end if
 		  
 		End Sub
@@ -120,7 +121,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  super.InitConstruction
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -159,9 +160,11 @@ Inherits Circle
 		Sub Paint(g as Graphics)
 		  dim a,b,e as BasicPoint
 		  
+		  
+		  
 		  super.Paint(g)
 		  
-		  if not hidden and Ti <> nil and not dret isa rettimer then
+		  if not Isinconstruction and  not hidden and Ti <> nil and not dret isa rettimer then
 		    b = points(0).bpt * 2 - points(1).bpt
 		    e = b - points(0).bpt
 		    e = (e.vecnorperp)*ori
@@ -178,10 +181,16 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function Paste(Obl as ObjectsList, q as BasicPoint) As shape
 		  dim  a, b as shape
-		  dim j as integer
+		  dim i as integer
 		  dim s as FreeCircle
 		  
 		  s = new FreeCircle(Obl,self,q)
+		  for i = 0 to 1
+		    s.coord.extre(i) = coord.extre(i)
+		  next
+		  for i = 0 to 5
+		    s.coord.ctrl(i) = coord.ctrl(i)
+		  next
 		  s.ori = ori
 		  return s
 		  
@@ -263,7 +272,7 @@ Inherits Circle
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -338,11 +347,6 @@ Inherits Circle
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -409,6 +413,11 @@ Inherits Circle
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

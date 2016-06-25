@@ -110,7 +110,7 @@ Inherits Operation
 		    currentop = 1
 		  end if
 		  curop1 = currentop
-		  
+		  can.refreshbackground
 		End Sub
 	#tag EndMethod
 
@@ -152,7 +152,7 @@ Inherits Operation
 		    CurOper.RedoOperation(EL)
 		  end if
 		  
-		  'can.invalidate
+		  can.refreshbackground
 		End Sub
 	#tag EndMethod
 
@@ -181,7 +181,7 @@ Inherits Operation
 		  curoper= CurrentContent.CreerOperation(EL)
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
-		  'can.invalidate
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod

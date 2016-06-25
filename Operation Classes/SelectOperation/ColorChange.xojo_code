@@ -29,7 +29,11 @@ Inherits SelectOperation
 		        s.FixeCouleurTrait Newcolor, Config.Border
 		      end if
 		    else
-		      s.FixeCouleurFond Newcolor, 100
+		      if s.fill <> 0 then
+		        s.FixeCouleurFond Newcolor, s.fill
+		      else
+		        s.FixeCouleurFond Newcolor, 100
+		      end if
 		      s.tsp = false
 		    end if
 		  next
@@ -158,7 +162,6 @@ Inherits SelectOperation
 		        s.FixeCouleurTrait Newcolor, Config.Border
 		      end if
 		    else
-		      s.fill = 100
 		      s.FixeCouleurFond newcolor, s.fill
 		      s.tsp = false
 		    end if

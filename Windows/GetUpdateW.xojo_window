@@ -110,6 +110,7 @@ Begin Window GetUpdateW
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Recherche de mises à jour"
       TextAlign       =   1
       TextColor       =   &c00000000

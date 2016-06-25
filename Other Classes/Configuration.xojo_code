@@ -168,6 +168,9 @@ Protected Class Configuration
 		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorFill").checked = El.XQL("ColFill").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorStdFam").checked = El.XQL("ColStdFam").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsTsp").checked = El.XQL("ColTsp").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = El.XQL("Thickness").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = El.XQL("Thickness").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsHide").checked = El.XQL("Hide").length > 0
@@ -190,17 +193,17 @@ Protected Class Configuration
 		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").checked = El.XQL("CreateCenter").length > 0
 		  
 		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").checked = El.XQL("Transformations").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirTranslation").checked = El.XQL("Translation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirTranslation").checked = El.XQL("Translation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimi").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimi").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
 		  

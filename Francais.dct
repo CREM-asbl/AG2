@@ -80,6 +80,9 @@
     <DefinirEtirement Name="Etirement" />
     <DefinirDeplacement Name="Déplacement" />
     <DefinirCisaillement Name="Cisaillement" />
+    <DefinirIso Name="Isométries"/>
+    <DefinirSimi Name="Similitudes"/>
+    <DefinirAffi Name="Affinités"/>
     <TransfosMontrerCacher Name="Montrer-Cacher" />
     <TransfosAppliquer Name="Appliquer" />
     <TransfosFixedPoints Name="Point fixe" />

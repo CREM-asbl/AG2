@@ -167,7 +167,7 @@ End
 		      elseif dir.Item(i).Type = "HIST" then
 		        ListFiles.AddRow(dir.item(i).name)
 		      end if
-		      ListFiles.cell(row+i,1)=dir.item(i).AbsolutePath
+		      ListFiles.cell(row+i,1)=dir.item(i).NativePath
 		    next
 		  end if
 		End Sub

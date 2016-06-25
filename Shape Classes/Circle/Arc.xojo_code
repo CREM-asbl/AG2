@@ -2,25 +2,6 @@
 Protected Class Arc
 Inherits Circle
 	#tag Method, Flags = &h0
-		Function AffiOrSimili() As Matrix
-		  if  (ep2.alignes(ep1,ep0)) or (np2.alignes(np0,np1)) then
-		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
-		      return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
-		    elseif abs(amplitude(ep1,ep0,ep2)) < 0.2*epsilon or abs(amplitude(np1,np0,np2)) < 0.2*epsilon or abs(amplitude(ep1,ep0,ep2) -2*PI) <0.2* epsilon or abs(amplitude(np1,np0,np2) - 2*PI) < 0.2*epsilon then
-		      np2 = np1
-		      ep2 = ep1
-		      points(2).moveto np2
-		      points(2).modified = true
-		      computearcangle
-		      return new similaritymatrix(ep1,ep0,np1,np0)  // cas des secteurs nuls
-		    end if
-		  else
-		    return  new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles à cause des points alignés
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function aire() As double
 		  return arcangle*Pow(getradius,2)/2
 		End Function
@@ -31,19 +12,20 @@ Inherits Circle
 		  dim q() as BasicPoint
 		  dim Bib, BiB0 As  BiBPoint
 		  dim i,n, k as integer
-		  dim r as double
 		  dim bq, v as BasicPoint
-		  dim dr as droite
 		  dim p as point
 		  redim q(-1)
 		  redim q(1)
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  p = points(2)  ' ce point est "sur" s
 		  if p.forme <> 1 then
 		    return nil
 		  end if
 		  k = p.numside(0)
-		  BiB0 =  new BiBPoint(np0,np1)
+		  BiB0 =  new BiBPoint(points(0).bpt, points(1).bpt)
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
 		    Bib =S.getBiBside(k)
 		    select case BiB.nextre
@@ -155,6 +137,7 @@ Inherits Circle
 		Sub Constructor(Ol as ObjectsList, s as Arc, p as basicPoint)
 		  shape.Constructor(ol,s)
 		  ncpts = 2
+		  narcs = 1
 		  arcangle = s.arcangle
 		  endangle = s.endangle
 		  startangle = s.startangle
@@ -175,8 +158,8 @@ Inherits Circle
 		Sub Constructor(ol as objectslist, p as basicPoint)
 		  
 		  Super.Constructor(ol,3,p)
-		  npts = 3
 		  liberte = 5
+		  narcs = 1
 		  createskull(p)
 		  
 		  
@@ -190,11 +173,13 @@ Inherits Circle
 		  Shape.Constructor(ol,Temp)
 		  IndexConstructedPoint = 2  '(clutch)
 		  ncpts = 3
+		  narcs = 1
 		  liberte = 5
 		  drapori = true
 		  createskull(points(0).bpt)
+		  arcangle = computeangle(points(0).bpt)
 		  nsk.updatesize(1)
-		  updateskull
+		  
 		  
 		  
 		End Sub
@@ -214,11 +199,6 @@ Inherits Circle
 		Sub createskull(p as BasicPoint)
 		  
 		  nsk = new ArcSkull(p)
-		  if ubound(points)> 0 then
-		    computeradius
-		    computearcangle
-		    coord.CreateExtreAndCtrlPoints(ori)
-		  end if
 		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
@@ -242,16 +222,6 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub epnp()
-		  
-		  ff = getsousfigure(fig)
-		  ff.getoldnewpos(points(0),ep0,np0)
-		  ff.getoldnewpos(points(1),ep1,np1)
-		  ff.getoldnewpos(points(2),ep2,np2)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  dim i as Integer
 		  
@@ -260,13 +230,16 @@ Inherits Circle
 		  next
 		  
 		  updatecoord
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  
 		  select case n
 		  case 0
 		    arcangle = 0
+		    coord.centres(1) = p
 		  case 1
+		    coord.curved(1) = 1
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    computeradius
-		    startangle = coord.startangle         'GetAngle(Points(0).bpt, Points(1).bpt)
+		    startangle = coord.startangle         
 		  case 2
 		    constructshape
 		    updatecoord
@@ -277,15 +250,6 @@ Inherits Circle
 		  
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetGravityCenter() As BasicPoint
-		  dim g as BasicPoint
-		  
-		  g = coord.tab(0)+coord.tab(1)+coord.tab(2)
-		  return g/3
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -303,310 +267,6 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier1(n as integer) As Matrix
-		  dim  m as integer
-		  
-		  epnp
-		  
-		  m = ff.NbSommsur(n)
-		  
-		  
-		  select case m
-		  case 0
-		    return Modifier10(n)
-		  case 1
-		    return Modifier11(n)
-		  case 2
-		    return Modifier12(n)
-		  end select
-		  
-		  //Les deux derniers cas ne peuvent normalement pas se présenter (il y aurait plus d'un point modifié)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier10(n as integer) As Matrix
-		  'Le point n° n est le seul point modifié. Il y a 0 points "sur"
-		  dim  r as double
-		  
-		  select case n
-		  case 0, 1
-		    return new SimilarityMatrix(ep0,ep1,np0,np1)
-		  case 2
-		    r = getradius
-		    points(2).moveto np2.projection(np0,r)
-		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
-		  end select
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier11(n as integer) As Matrix
-		  dim s as shape
-		  dim bp as BasicPoint
-		  
-		  if points(2).forme <> 1 then
-		    return new Matrix(1)
-		  end if
-		  
-		  s = points(2).pointsur.item(0)
-		  bp =ArcComputeFirstIntersect(s)
-		  
-		  
-		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier12(n as integer) As Matrix
-		  dim s as shape
-		  dim bp as BasicPoint
-		  
-		  if points(2).forme <> 1 then
-		    return new Matrix(1)
-		  end if
-		  
-		  s = points(2).pointsur.item(0)
-		  bp =ArcComputeFirstIntersect(s)
-		  
-		  
-		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier2(n1 as integer, n2 as integer) As Matrix
-		  dim n0 as integer
-		  dim r as double
-		  dim M as Matrix
-		  
-		  epnp
-		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
-		  
-		  select case n0
-		  case 0   'On rétablit la figure en déplaçant le centre de l'arc points(0)
-		    if points(0).forme  <> 1 then
-		      return new SimilarityMatrix(ep1,ep2,np1,np2)
-		    end if
-		  case 1 'On modifie l'amplitude de l'arc
-		    if points(1).forme <> 1 then
-		      r = getradius
-		      points(2).moveto np2.projection(np0,r)
-		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
-		    end if
-		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
-		    if points(2).forme <> 1 then
-		      M = new RotationMatrix(Points(0).bpt, arcangle)
-		      points(2).moveto M*Points(1).bpt
-		      return AffiOrSimili
-		      'return new SimilarityMatrix(ep0,ep1,np0,np1)
-		    end if
-		  end select
-		  
-		  return new Matrix(1)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier3() As Matrix
-		  dim n as integer
-		  
-		  epnp
-		  n = ff.NbSommSur
-		  
-		  select case n
-		  case 0
-		    return Modifier30
-		  case 1
-		    return Modifier31(ff.listsommsur(0))
-		  case 2
-		    return modifier32(ff.listsommsur(0),ff.listsommsur(1))
-		  case 3
-		    return modifier33
-		  end select
-		  
-		  
-		  
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier30() As Matrix
-		  //Trois sommets modifiés, aucun n'est un point "sur"
-		  
-		  if fig.pointmobile = points(2) then
-		    constructshape
-		    'points(2).modified = false
-		  end if
-		  epnp
-		  
-		  if abs(np0.distance(np1) - np0.distance(np2)) < epsilon then
-		    return AffiOrSimili
-		  else
-		    return new Matrix(1)
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier31(n as integer) As Matrix
-		  // Trois sommets modifiés Un seul est un point "sur". C'est le sommet de n° n.
-		  dim k, i,  n1, n2 as integer
-		  dim ep, np, u, v as BasicPoint
-		  
-		  dim Bib, Bib2 As  BiBPoint
-		  dim sh As shape
-		  dim p As point
-		  
-		  p = points(n)
-		  sh = p.pointsur.item(0)
-		  
-		  select case n
-		  case 0
-		    u = np1-np2
-		    u = u.VecNorPerp
-		    v = (np1+np2)/2
-		    Bib = new BiBPoint(v, u+v)
-		    np0 = Bib.computefirstintersect(0,sh,p)
-		    points(0).moveto np0
-		  case 1
-		    if ff.supfig.pointmobile = points(2) then
-		      np2 = np2.projection(np0,np0.distance(np1))
-		      points(2).moveto np2
-		    else
-		      Bib = new BiBPoint(np0, np2)
-		      np1 = Bib.computefirstintersect(1,sh,p)
-		      points(1).moveto np1
-		    end if
-		  case 2
-		    Bib = new BiBPoint(np0,np1)
-		    np2 = Bib.computefirstintersect(1,sh,p)
-		    if np2 <> nil and abs (np0.distance(np2) - np0.distance(np1)) < epsilon then
-		      points(2).moveto np2
-		      points(2).valider
-		    else
-		      points(2).invalider
-		    end if
-		  end select
-		  
-		  
-		  
-		  if not points(n).invalid  then
-		    return AffiOrSimili 'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
-		  else
-		    return new Matrix(1)
-		  end if
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier32(n as integer, m as integer) As Matrix
-		  // Trois sommets modifiés Deux sont "sur". Ce sont les sommets de n° n0 et n1.
-		  dim k as integer
-		  dim p, p0, p1, p2 as point
-		  dim shn, shm as shape
-		  dim Bib as BiBPoint
-		  
-		  
-		  shn = points(n).pointsur.item(0)
-		  shm = points(m).pointsur.item(0)
-		  k = TroisiemeIndex(n,m)  'Ce troisième sommet n'est pas "sur"
-		  
-		  select case k
-		  case 0, 1                 'on adapte points(2)
-		    if n = 1-k  then   'alors m = 2
-		      np2  =Arccomputefirstintersect(shm)
-		    else                  'n = 2, m = 1
-		      np2  = Arccomputefirstintersect(shn)
-		    end if
-		    if np2 <> nil then
-		      points(2).bpt  = np2
-		    end if
-		    
-		  case 2
-		    Bib = new BiBPoint(np0,np2)
-		    if n = 1 then   'alors m = 0
-		      np1  = Bib.computefirstintersect(1,shn,points(1))
-		    else                  'n = 0, m = 1
-		      np1  = Bib.computefirstintersect(1,shm,points(1))
-		    end if
-		    if np1 <> nil then
-		      points(1).bpt = np1
-		    end if
-		  end select
-		  
-		  if k = 2 then
-		    p = points(1)
-		  else
-		    p = points(2)
-		  end if
-		  if np1 <> nil and np2 <> nil then
-		    p.valider
-		    return  AffiOrSimili  'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
-		  else
-		    p.invalider
-		    return new Matrix(1)
-		  end if
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier33() As Matrix
-		  dim M as Matrix
-		  
-		  M = new SimilarityMatrix(points(1), points(2),ep0,np0)
-		  if M <> nil and M.v1 <> nil then
-		    np1 = M*ep1
-		    points(1).moveto np1
-		    np2 = M*ep2
-		    points(2).moveto np2
-		    
-		    if np1 <> nil and np2 <> nil then
-		      return  AffiOrSimili 'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
-		    else
-		      return new Matrix(1)
-		    end if
-		  else
-		    return new Matrix(1)
-		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldUpDateSkull()
-		  dim i, j as integer
-		  dim p As BasicPoint
-		  
-		  p = points(0).bpt
-		  nsk.update(can.transform(p))
-		  if IndexConstructedPoint > 0 then
-		    for i = 1 to 2
-		      nsk.updatesommet(i,can.dtransform(points(i).bpt-p))
-		    next
-		    for i = 0 to 1
-		      nsk.updateextre(i,  can.dtransform(coord.extre(i)-p))
-		    next
-		    for i = 0 to 5
-		      nsk.updatectrl(i, can.dtransform(coord.ctrl(i)-p))
-		    next
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
 		  if abs(arcangle) < 0.01  then
 		    return
@@ -614,7 +274,10 @@ Inherits Circle
 		  
 		  
 		  dim i as integer
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  
+		  if dret = nil then
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  
 		  nsk.update(self)
 		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
@@ -635,7 +298,7 @@ Inherits Circle
 		  end if
 		  
 		  
-		  if (not hidden ) and  (Ti <> nil) and (dret = nil) then
+		  if (not hidden ) and  (Ti <> nil) and not dret isa rettimer then
 		    PaintTipOnArc(g, bordercolor)
 		  end if
 		  
@@ -758,19 +421,6 @@ Inherits Circle
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Function TroisiemeIndex(n1 as integer, n2 as integer) As integer
-		  dim i, n as integer
-		  
-		  for i = 0 to 2
-		    if i <> n1 and i <> n2 then
-		      n = i
-		    end if
-		  next
-		  return n
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub updatecenter(p as point, np as basicpoint)
 		  dim v, mid as BasicPoint
@@ -843,34 +493,6 @@ Inherits Circle
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ep0 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ep1 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ep2 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ff As Figure
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		np0 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		np1 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		np2 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		startangle As double
 	#tag EndProperty
 
@@ -886,7 +508,7 @@ Inherits Circle
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -967,11 +589,6 @@ Inherits Circle
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -1038,6 +655,11 @@ Inherits Circle
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

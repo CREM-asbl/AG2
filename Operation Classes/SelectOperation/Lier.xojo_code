@@ -197,8 +197,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim i as integer
-		  dim s as shape
-		  dim p as BasicPoint
+		  
 		  
 		  if CurrentContent.currentoperation = self then
 		    display = choose + aform + alier

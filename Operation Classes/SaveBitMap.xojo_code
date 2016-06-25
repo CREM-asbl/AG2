@@ -101,7 +101,7 @@ Inherits Operation
 		    end if
 		  end if
 		  can.refreshbackground
-		  can.refresh
+		  
 		End Sub
 	#tag EndMethod
 

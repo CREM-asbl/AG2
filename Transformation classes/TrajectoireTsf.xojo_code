@@ -35,7 +35,6 @@ Inherits AppliquerTsf
 		      MR.appliquer(s1,s2)
 		      tempshape.objects(i) = s2
 		    next
-		    'can.invalidate
 		  next
 		  endoperation
 		End Sub

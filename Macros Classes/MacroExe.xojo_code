@@ -365,7 +365,6 @@ Inherits MultipleSelectOperation
 		    CreateIfMacs(Histo)
 		    mac.macexe(macinfo)                                       //Exécution de la macro: calcul des positions de tous les points ou de la matrice de la tsf
 		    CreateFinalSkulls
-		    'can.invalidate
 		  end if
 		End Sub
 	#tag EndMethod

@@ -21,7 +21,7 @@ Inherits MultipleSelectOperation
 		    
 		  elseif  dir = -1  then
 		    if Fus1.std or Fus2.std then
-		      Fus = new StandardPolygon(Objects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
+		      'Fus = new StandardPolygon(Objects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
 		    else
 		      Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
 		    end if
@@ -58,8 +58,6 @@ Inherits MultipleSelectOperation
 		  end if
 		  if not Fus.std then
 		    Fus.autos
-		    redim fus.coord.curved(-1)
-		    redim fus.coord.curved(fus.npts-1)
 		  end if
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)

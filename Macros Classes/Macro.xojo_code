@@ -560,7 +560,7 @@ Protected Class Macro
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
 		  side = Ifmac.Numside0
 		  //On calcule d'abord le vecteur directeur de la paraperp
-		  BiB1 = ifm1.coord.getBiB(side)  'new BiBPoint(c.tab(side), c.tab((side+1) mod c.taille))
+		  BiB1 =BiBPoint(ifm1.coord.getBiBSide(side))  'new BiBPoint(c.tab(side), c.tab((side+1) mod c.taille))
 		  n = 1
 		  if ifmac.fo = 2 or ifmac.fo = 5 Then
 		    n = 2
@@ -584,7 +584,7 @@ Protected Class Macro
 		      nbp.tab(1) =  ifm2.coord.tab(0).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
 		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
-		      BiB2 = ifm3.coord.GetBiB(ifm2.numside0)
+		      BiB2 = BiBPoint(ifm3.coord.GetBiBSide(ifm2.numside0))
 		      n1 = 0
 		      if ifm3.fa <> 5 then
 		        if ifm3.fo < 3 then
@@ -632,7 +632,7 @@ Protected Class Macro
 		        BiB = new BiBPoint(ifm1.coord.tab(2),ifm1.coord.tab(2)+ifm1.coord.tab(1)-ifm1.coord.tab(0))
 		      end if
 		    else
-		      BiB = ifm1.coord.GetBiB(side)
+		      BiB = BiBPoint(ifm1.coord.GetBiBSide(side))
 		    end if
 		    nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
 		  else

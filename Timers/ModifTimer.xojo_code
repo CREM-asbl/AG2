@@ -28,7 +28,7 @@ Inherits Timer
 		    end if
 		  end if
 		  
-		  can.invalidate
+		  can.refreshbackground
 		  
 		  
 		  

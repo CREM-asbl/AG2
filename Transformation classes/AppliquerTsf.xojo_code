@@ -169,9 +169,9 @@ Inherits MultipleSelectOperation
 		  case 2
 		    for i =  visible.count-1 downto 0
 		      s = visible.item(i)
-		      if s <> nil and  s.isaellipse then
-		        visible.removeobject s
-		      end if
+		      'if s <> nil and  s.isaellipse then
+		      'visible.removeobject s
+		      'end if
 		      if self isa TrajectoireTsf and not s isa point then
 		        visible.removeobject s
 		      end if
@@ -233,6 +233,7 @@ Inherits MultipleSelectOperation
 		  case 2
 		    super.MouseMove(p)
 		  end select
+		  can.refreshbackground
 		  
 		  
 		  
@@ -249,7 +250,7 @@ Inherits MultipleSelectOperation
 		    if ListTsf.count >0 then
 		      ListTsf.item(itsf).Hidden = false
 		    end if
-		    'can.invalidate
+		    can.refreshbackground
 		  case 2
 		    super.MouseWheel
 		  end select
@@ -286,9 +287,9 @@ Inherits MultipleSelectOperation
 		      str = choose+aform
 		    end if
 		    Help g, str
-		    'else
-		    'can.mousecursor = system.cursors.wait
-		    'Help g, wait
+		  else
+		    can.mousecursor = system.cursors.wait
+		    Help g, wait
 		  end select
 		  
 		  
@@ -351,7 +352,6 @@ Inherits MultipleSelectOperation
 		      tsf = ListTsf.item(itsf)
 		      CurrentContent.TheTransfos.HideAll
 		      tsf.Hidden = false
-		      'can.invalidate
 		      return true
 		    else
 		      return false

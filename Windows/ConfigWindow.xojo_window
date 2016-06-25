@@ -28,12 +28,10 @@ Begin Window ConfigWindow
    Width           =   619
    Begin PushButton SaveButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Save"
-      ControlOrder    =   "0"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -61,12 +59,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -94,12 +90,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton LoadButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Load"
-      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -127,12 +121,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton PWButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Changer le mot de passe"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -160,12 +152,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton LangChangeButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   4
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "ChangeLang"
-      ControlOrder    =   "4"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -193,12 +183,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton CreateDictButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   5
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "CreateDict"
-      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -229,8 +217,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   1344944127
-      BehaviorIndex   =   6
-      ControlOrder    =   "6"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -248,8 +234,6 @@ Begin Window ConfigWindow
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -261,8 +245,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   1584048127
-      BehaviorIndex   =   6
-      ControlOrder    =   "7"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -280,8 +262,6 @@ Begin Window ConfigWindow
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -293,8 +273,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   8007679
-      BehaviorIndex   =   6
-      ControlOrder    =   "8"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -312,8 +290,6 @@ Begin Window ConfigWindow
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -325,8 +301,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   952131583
-      BehaviorIndex   =   6
-      ControlOrder    =   "9"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -344,8 +318,6 @@ Begin Window ConfigWindow
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -357,8 +329,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   115009535
-      BehaviorIndex   =   6
-      ControlOrder    =   "10"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -376,8 +346,6 @@ Begin Window ConfigWindow
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -389,8 +357,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   454606847
-      BehaviorIndex   =   6
-      ControlOrder    =   "11"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -408,8 +374,6 @@ Begin Window ConfigWindow
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -421,8 +385,6 @@ Begin Window ConfigWindow
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   623656959
-      BehaviorIndex   =   6
-      ControlOrder    =   "12"
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
@@ -440,8 +402,6 @@ Begin Window ConfigWindow
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   39
       Transparent     =   True
       UseFocusRing    =   True
@@ -450,12 +410,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton MouvBut
       AutoDeactivate  =   True
-      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Sans_titre"
-      ControlOrder    =   "13"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -483,12 +441,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton MouvBut
       AutoDeactivate  =   True
-      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Sans_titre"
-      ControlOrder    =   "14"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -516,12 +472,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton MouvBut
       AutoDeactivate  =   True
-      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Sans_titre"
-      ControlOrder    =   "15"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -549,12 +503,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton MouvBut
       AutoDeactivate  =   True
-      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Sans_titre"
-      ControlOrder    =   "16"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -582,12 +534,10 @@ Begin Window ConfigWindow
    End
    Begin PushButton MouvBut
       AutoDeactivate  =   True
-      BehaviorIndex   =   7
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Sans_titre"
-      ControlOrder    =   "17"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -1442,9 +1392,9 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  if not Config.nlibvis(index) then
-		    me.Graphics.ForeColor = &c000000
-		    me.Graphics.DrawLine 0,0,me.width,me.height
-		    me.Graphics.DrawLine 0,me.height,me.width,0
+		    g.ForeColor = &c000000
+		    g.DrawLine 0,0,me.width,me.height
+		    g.DrawLine 0,me.height,me.width,0
 		  end if
 		  
 		  

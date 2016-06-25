@@ -556,12 +556,13 @@ Inherits Liste
 		  dim o as shape
 		  
 		  tracept = false
-		  for i=0 to count-1
+		  for i=1 to count-1
 		    o = GetPlan(i)
 		    if o <> nil then
 		      o.PaintAll(g)
 		    end if
 		  next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -793,22 +794,6 @@ Inherits Liste
 		  for i = 0 to count-1
 		    item(i).updatelabel(k)
 		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Updateskull()
-		  'dim i ,j as Integer
-		  'dim s as shape
-		  '
-		  'for i=1 to Ubound(Objects)
-		  's = shape(objects(i))
-		  'for j = 0 to Ubound(s.Childs)
-		  's.childs(j).updateskull
-		  'next
-		  's.Updateskull
-		  'next
-		  
 		End Sub
 	#tag EndMethod
 
@@ -1094,6 +1079,8 @@ Inherits Liste
 		      s = new FreeCircle(self,temp)
 		    case 1
 		      s = new Arc(self,temp)
+		    case 2
+		      s = new DSect(self,temp)
 		    end select
 		  case 6
 		    s = new Polyqcq(self,temp)

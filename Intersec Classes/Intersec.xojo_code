@@ -105,24 +105,32 @@ Inherits Operation
 		  
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
-		    for j = 0 to ncol
-		      bp = nil
-		      d2 = sh2.getside(j)
-		      if not(sh1 isa droite and droite(sh1).parallelto(sh2,j)) and not (sh2 isa droite and droite(sh2).parallelto(sh1,i)) then
-		        k = d1.inter(d2,bp,r1,r2)
-		        if bp <> nil then
-		          bptinters(i,j) = bp
-		        end if
-		        if k = 0 or r1 > 998 then
+		    if d1 <> nil then
+		      for j = 0 to ncol
+		        d2 = sh2.getside(j)
+		        if d2 <> nil then
+		          if not(sh1 isa droite and droite(sh1).parallelto(sh2,j)) and not (sh2 isa droite and droite(sh2).parallelto(sh1,i)) then
+		            bp = nil
+		            k = d1.inter(d2,bp,r1,r2)
+		            if bp <> nil then
+		              bptinters(i,j) = bp
+		            end if
+		            if k = 0 or r1 > 998 then
+		              val(i,j) = false
+		            end if
+		            if r1 > 998 then
+		              drappara = true
+		            end if
+		          else
+		            val(i,j) = false
+		          end if
+		        else
 		          val(i,j) = false
 		        end if
-		        if r1 > 998 then
-		          drappara = true
-		        end if
-		      else
-		        val(i,j) = false
-		      end if
-		    next
+		      next
+		    else
+		      val(i,j) =false
+		    end if
 		  next
 		End Sub
 	#tag EndMethod

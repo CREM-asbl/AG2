@@ -220,7 +220,6 @@ Inherits SelectAndDragOperation
 		  repere(CurrentShape).Idx = repere(CurrentShape).Idx * k
 		  repere(CurrentShape).Idy = repere(CurrentShape).Idy * k
 		  can.setrepere(repere(CurrentShape))
-		  CurrentContent.theobjects.updateskull
 		  CurrentContent.theobjects.updatelabels(k)
 		  
 		End Sub
@@ -268,7 +267,6 @@ Inherits SelectAndDragOperation
 		      M = new HomothetyMatrix(new BasicPoint(0,0),ratio)
 		      currentshape.Transform(M)
 		    end if
-		    CurrentContent.theobjects.updateskull
 		  else
 		    for i = 0 to tempshape.count-1
 		      figs.addobject tempshape.item(i).fig
@@ -328,7 +326,6 @@ Inherits SelectAndDragOperation
 		  if currentshape isa repere then
 		    M = new HomothetyMatrix(new BasicPoint(0,0),r)
 		    currentshape.Transform(M)
-		    CurrentContent.theobjects.updateskull
 		  else
 		    super.UndoOperation(Temp)
 		  end if

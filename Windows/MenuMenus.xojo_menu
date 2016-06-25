@@ -138,21 +138,21 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem Opaque
+         Begin MenuItem ToolsOpq
             SpecialMenu = 0
             Text = "Opaque"
             Index = -2147483648
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem SemiTsp
+         Begin MenuItem ToolsSTsp
             SpecialMenu = 0
             Text = "SemiTsp"
             Index = -2147483648
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem Tsp
+         Begin MenuItem ToolsTsp
             SpecialMenu = 0
             Text = "Tsp"
             Index = -2147483648
@@ -294,96 +294,117 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem DefinirTranslation
+         Begin MenuItem DefinirIso
             SpecialMenu = 0
-            Text = "Translation"
+            Text = "Isometries"
             Index = -2147483648
             AutoEnable = True
+            SubMenu = True
             Visible = True
+            Begin MenuItem DefinirTranslation
+               SpecialMenu = 0
+               Text = "Translation"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirRotation
+               SpecialMenu = 0
+               Text = "Rotation"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirDemiTour
+               SpecialMenu = 0
+               Text = "Demi-tour"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirQuartG
+               SpecialMenu = 0
+               Text = "Quart de tour à gauche"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirQuartD
+               SpecialMenu = 0
+               Text = "Quart de tour à droite"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirDeplacement
+               SpecialMenu = 0
+               Text = "Déplacement"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirSymetrieaxiale
+               SpecialMenu = 0
+               Text = "Symétrie axiale"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
          End
-         Begin MenuItem DefinirRotation
+         Begin MenuItem DefinirSimi
             SpecialMenu = 0
-            Text = "Rotation"
+            Text = "Similitudes"
             Index = -2147483648
             AutoEnable = True
+            SubMenu = True
             Visible = True
+            Begin MenuItem DefinirHomothetie
+               SpecialMenu = 0
+               Text = "Homothétie"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirSimilitude
+               SpecialMenu = 0
+               Text = "Similitude directe"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
          End
-         Begin MenuItem DefinirDemitour
+         Begin MenuItem DefinirAffi
             SpecialMenu = 0
-            Text = "Demi-tour"
+            Text = "Affinités"
             Index = -2147483648
             AutoEnable = True
+            SubMenu = True
             Visible = True
-         End
-         Begin MenuItem DefinirQuartG
-            SpecialMenu = 0
-            Text = "Quart de tour à gauche"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirQuartD
-            SpecialMenu = 0
-            Text = "Quart de tour à droite"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirDeplacement
-            SpecialMenu = 0
-            Text = "Déplacement"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirSymetrieaxiale
-            SpecialMenu = 0
-            Text = "Symetrie axiale"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem UntitledSeparator0
-            SpecialMenu = 0
-            Text = "-"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirHomothetie
-            SpecialMenu = 0
-            Text = "Homothétie"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirSimilitude
-            SpecialMenu = 0
-            Text = "Similitude"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem UntitledSeparator1
-            SpecialMenu = 0
-            Text = "-"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirEtirement
-            SpecialMenu = 0
-            Text = "Etirement"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
-         End
-         Begin MenuItem DefinirCisaillement
-            SpecialMenu = 0
-            Text = "Cisaillement"
-            Index = -2147483648
-            AutoEnable = True
-            Visible = True
+            Begin MenuItem DefinirEtirement
+               SpecialMenu = 0
+               Text = "Etirement"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
+            Begin MenuItem DefinirCisaillement
+               SpecialMenu = 0
+               Text = "Cisaillement"
+               Index = -2147483648
+               AutoEnable = True
+               SubMenu = True
+               Visible = True
+            End
          End
       End
       Begin MenuItem TransfosAppliquer

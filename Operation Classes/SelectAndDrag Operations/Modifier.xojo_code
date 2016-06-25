@@ -527,8 +527,7 @@ Inherits SelectAndDragOperation
 		      end if
 		    end if
 		    
-		    can.invalidate
-		    
+		    can.refreshbackground
 		    
 		  end if
 		End Sub
@@ -640,7 +639,6 @@ Inherits SelectAndDragOperation
 		    figs.EnableModifyall
 		    wnd.setcross
 		    testfinished = true
-		    can.invalidate
 		    pointmobile = nil
 		    currentshape = nil
 		    return t

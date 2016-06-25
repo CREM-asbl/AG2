@@ -209,9 +209,8 @@ Inherits Operation
 		  else
 		    Objects.Unselectall
 		  end if
-		  can.RefreshBackground
-		  can.refresh
 		  currentshape = nil
+		  can.RefreshBackground
 		  super.EndOperation  // Recréation des figures
 		  Figs = new FigsList
 		  Finished = true   //Ceci ne devrait-il pas être la dernière instruction du "DoOperation"?
@@ -405,6 +404,7 @@ Inherits Operation
 		      CurrentHighlightedTsf = ListTsf.item(itsf)
 		      CurrentHighlightedTsf.highlight
 		      ntsf = ListTsf.count
+		      can.refreshbackground
 		    end if
 		  end if
 		  
@@ -425,7 +425,7 @@ Inherits Operation
 		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
 		    currentshape = currenthighlightedshape
-		    'can.invalidate
+		    can.refreshBackground
 		  end if
 		  
 		  
@@ -439,7 +439,7 @@ Inherits Operation
 		    itsf = (itsf+1) mod ntsf
 		    ListTsf.item(itsf).Highlighted = true
 		    currenthighlightedtsf = ListTsf.item(itsf)
-		    'can.invalidate
+		    can.refreshbackground
 		  end if
 		  
 		End Sub

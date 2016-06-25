@@ -29,7 +29,6 @@ Begin ContainerControl ContainerControl1
       AcceptFocus     =   False
       AutoDeactivate  =   True
       BackColor       =   &c00000000
-      BehaviorIndex   =   0
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -37,7 +36,6 @@ Begin ContainerControl ContainerControl1
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      ControlOrder    =   "0"
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
@@ -75,7 +73,6 @@ Begin ContainerControl ContainerControl1
       AcceptFocus     =   False
       AutoDeactivate  =   True
       BackColor       =   &c00000000
-      BehaviorIndex   =   1
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -83,7 +80,6 @@ Begin ContainerControl ContainerControl1
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      ControlOrder    =   "1"
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
@@ -121,7 +117,6 @@ Begin ContainerControl ContainerControl1
       AcceptFocus     =   False
       AutoDeactivate  =   True
       BackColor       =   &c00000000
-      BehaviorIndex   =   2
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -129,7 +124,6 @@ Begin ContainerControl ContainerControl1
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      ControlOrder    =   "2"
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
@@ -167,7 +161,6 @@ Begin ContainerControl ContainerControl1
       AcceptFocus     =   False
       AutoDeactivate  =   True
       BackColor       =   &c00000000
-      BehaviorIndex   =   3
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -175,7 +168,6 @@ Begin ContainerControl ContainerControl1
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      ControlOrder    =   "3"
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
@@ -213,7 +205,6 @@ Begin ContainerControl ContainerControl1
       AcceptFocus     =   False
       AutoDeactivate  =   True
       BackColor       =   &c00000000
-      BehaviorIndex   =   4
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -221,7 +212,6 @@ Begin ContainerControl ContainerControl1
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      ControlOrder    =   "4"
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0

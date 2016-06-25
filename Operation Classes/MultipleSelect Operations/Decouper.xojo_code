@@ -198,9 +198,8 @@ Inherits MultipleSelectOperation
 		      Lacet(s).narcs = Lacet(s).narcs+curved(i)
 		    next
 		    Lacet(s).prepareskull(s.points(0).bpt)
-		    Lacet(s).CreateExtreAndCtrlPoints
+		    Lacet(s).coord.CreateExtreAndCtrlPoints(s.ori)
 		  end if
-		  s.updateskull
 		  recopiercouleurs (s)
 		  s.Move(M)
 		  s.endconstruction

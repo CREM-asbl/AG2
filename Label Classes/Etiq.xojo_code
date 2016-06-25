@@ -233,7 +233,7 @@ Inherits Label
 		    Type = 2
 		  end if
 		  ////////////////////// Longueurs
-		  if (chape isa droite)  or (chape isa arc) or ((chape isa polygon  or chape isa freecircle) and loc <>-1 ) then
+		  if (chape isa droite)  or (chape isa arc) or ((chape isa Lacet  or chape isa freecircle) and loc <>-1 ) then
 		    Type = 0
 		    if chape isa droite then
 		      if droite(chape).nextre = 2 then
@@ -265,7 +265,7 @@ Inherits Label
 		  
 		  ////////////  Aires
 		  
-		  if ( (chape isa polygon)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
+		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
 		    if chape = currentcontent.SHUA then
 		      dat = arrondi2(chape.Aire)
 		    elseif currentcontent.UA <> 0 then

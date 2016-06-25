@@ -79,7 +79,7 @@ Inherits SelectOperation
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
 		      s = Visible.item(i)
-		      if s isa point or  s isa bande or s isa secteur or s.hybrid or (s isa droite and droite(s).nextre < 2)  or s isa arc  then
+		      if s isa point or  s isa bande or s isa secteur  or (s isa droite and droite(s).nextre < 2)  or s isa arc  then
 		        visible.removeobject s
 		        nobj = visible.count
 		      end if

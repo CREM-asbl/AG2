@@ -1,6 +1,6 @@
 #tag Class
 Protected Class Secteur
-Inherits Shape
+Inherits DSect
 	#tag Method, Flags = &h0
 		Function computeangle(q as Basicpoint) As double
 		  dim e, a as double
@@ -45,23 +45,23 @@ Inherits Shape
 		  dim D1 as BiBPoint
 		  dim mi, ma as double
 		  
-		  p0 = Points(0).bpt
-		  p1 = Points(1).bpt
-		  p2 = Points(2).bpt
 		  
+		  p0 = coord.tab(0)
+		  p1 = coord.tab(1)
+		  p2 =coord.tab(2)
 		  
-		  if p1.distance(p2) < epsilon  then
-		    extre(0)= p1
-		    extre(1)= p2
-		  else
+		  if p1.distance(p2) > epsilon  then
 		    D1 = new BiBPoint(p0,p1)
 		    D1.Interscreen(mi,ma)
-		    extre(0) = D1.BptOnBiBpt(ma+0.1)
+		    p1 = D1.BptOnBiBpt(ma+1)
 		    D1 = new BiBPoint(p0,p2)
 		    D1.Interscreen(mi,ma)
-		    extre(1) = D1.BptOnBiBpt(ma+0.1)
+		    p2 = D1.BptOnBiBpt(ma+1)
 		  end if
 		  
+		  skullcoord = new TriBPoint(TriBPoint(coord))
+		  skullcoord.tab(1) = p1
+		  skullcoord.tab(2) = p2
 		  
 		End Sub
 	#tag EndMethod
@@ -76,11 +76,12 @@ Inherits Shape
 		Sub Constructor(ol as objectslist, p as BasicPoint)
 		  
 		  super.constructor(ol,3,3)
+		  narcs = 1
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
 		  ori = 0
-		  nsk = new Secteurskull(can.transform(Points(0).bpt))
-		  nsk.updatefillcolor(blanc,0)
+		  createskull(p)
+		  
 		  
 		  
 		  
@@ -111,7 +112,7 @@ Inherits Shape
 		  Super.Constructor(ol,Temp)
 		  ncpts = 3
 		  nsk = new Secteurskull(can.transform(Points(0).bpt))
-		  Updateskull
+		  
 		End Sub
 	#tag EndMethod
 
@@ -131,28 +132,34 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
-		  'dim i as integer
-		  'dim cs as curveshape
-		  '
-		  'select case n
-		  'case 0
-		  'for i = 0 to 2
-		  'Points(i).moveto(p)
-		  'next
-		  'sk.update(can.transform(p))
-		  'case 1
-		  'for i = 1 to 2
-		  'Points(i).moveto(p)
-		  'next
-		  'case 2
-		  'Points(2).moveto(p)
-		  'computearcangle
-		  'end select
+		  dim i as integer
+		  for i = n to 2
+		    Points(i).moveto(p)
+		  next
 		  
+		  updatecoord
 		  'if n > 0 then
-		  'updateskull
+		  'coord.CreateExtreAndCtrlPoints(ori)
 		  'end if
+		  select case n
+		  case 0
+		    arcangle = 0
+		    coord.centres(1) = p
+		    Lskull(nsk).item(0).border = 100
+		  case 1
+		    startangle = coord.startangle  
+		    for i = 1 to 3
+		      Lskull(nsk).item(i).border = 0  
+		    next
+		  case 2
+		    
+		    Lskull(nsk).item(4).border = 100
+		  end select
 		  
+		  computeextre
+		  constructshape
+		  updatecoord
+		  'coord.CreateExtreAndCtrlPoints(ori)
 		  
 		End Sub
 	#tag EndMethod
@@ -250,37 +257,14 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Move(M as Matrix)
 		  super.Move(M)
-		  updateskull
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as Graphics)
-		  dim op as operation
-		  dim i, n as integer
+		  super.paint(g)
 		  
-		  computeextre
-		  updateskull
-		  n = -1
-		  op =CurrentContent.currentoperation
-		  
-		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
-		    if op isa transfoconstruction or op isa  paraperpconstruction then
-		      n = op.index(op.iobj)
-		    end if
-		  end if
-		  
-		  if highlighted and n > -1  then
-		    for i = 0 to 1
-		      if i <> n then
-		        paintside (g, i, 1, bordercolor)
-		      else
-		        paintside (g, n, 2, Config.highlightcolor)
-		      end if
-		    next
-		  else
-		    super.paint(g)
-		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -300,8 +284,9 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Paste(Obl as objectslist, p as basicpoint) As shape
-		  dim s, a, b as shape
+		Function Paste(Obl as objectslist, p as basicpoint) As Secteur
+		  dim s as Secteur
+		  dim a, b as Point
 		  dim j as integer
 		  
 		  s = new Secteur(Obl,self,p)
@@ -388,6 +373,8 @@ Inherits Shape
 		  dim b as Boolean
 		  
 		  Shape.UpdateShape
+		  updateangles
+		  computeextre
 		  
 		  for i = 0 to Ubound(ConstructedShapes)
 		    s = ConstructedShapes(i)
@@ -401,39 +388,6 @@ Inherits Shape
 		      next
 		    end if
 		  next
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updateskull()
-		  dim i as integer
-		  'dim bp as Basicpoint
-		  'dim sangle as double
-		  '
-		  'bp = points(0).bpt
-		  'bp = can.transform(bp)
-		  '
-		  'computeextre
-		  '
-		  '
-		  'for i=0 to npts-1
-		  'if i=0 then
-		  'sk.update(bp)
-		  'else
-		  'secteurskull(sk).Updatesommet(i-1,can.dtransform(extre(i-1)-points(0).bpt))
-		  'end
-		  'next
-		  '
-		  'bp = can.Rep.Idx
-		  'sangle = bp.Anglepolaire
-		  'updateangles
-		  'secteurskull(sk).updateangles(-arcangle,-startangle+sangle)
-		  'secteurskull(sk).updateborderwidth(borderwidth)
-		  
-		  
 		  
 		  
 		  
@@ -510,19 +464,7 @@ Inherits Shape
 
 
 	#tag Property, Flags = &h0
-		arcangle As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		endangle As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		extre(1) As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		startangle As double
+		skullcoord As nbpoint
 	#tag EndProperty
 
 
@@ -531,7 +473,7 @@ Inherits Shape
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -612,11 +554,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -685,6 +622,11 @@ Inherits Shape
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ncpts"
 			Group="Behavior"
 			InitialValue="0"
@@ -719,6 +661,12 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="radius"
+			Group="Behavior"
+			InitialValue="0"
+			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"

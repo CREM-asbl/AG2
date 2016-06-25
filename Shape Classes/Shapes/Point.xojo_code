@@ -190,9 +190,8 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function authorisedputon(s as shape) As boolean
-		  dim i, j ,  h as integer
+		  dim i, j  as integer
 		  dim par  as shape
-		  dim t1, t2 as Boolean
 		  
 		  if pointsur.getposition(s) <> -1 then
 		    return true
@@ -298,7 +297,6 @@ Inherits Shape
 		  pointsur = new objectslist
 		  conditioned = new objectslist
 		  createskull(can.transform(Bpt))
-		  'updateskull
 		  
 		End Sub
 	#tag EndMethod
@@ -813,7 +811,6 @@ Inherits Shape
 		Sub Invalider()
 		  dim i,j as integer
 		  dim s as shape
-		  dim   s2  as shape
 		  dim inter as intersec
 		  
 		  if currentcontent.currentoperation isa modifier and self = fig.pointmobile then
@@ -852,6 +849,20 @@ Inherits Shape
 		    
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsCenterOfACircle() As Circle
+		  dim i as integer
+		  
+		  for i = 0 to ubound(parents)
+		    if parents(i) isa Circle and parents(i).getindex(self) = 0 then
+		      return Circle(parents(i))
+		    end if
+		  next
+		  return nil
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1034,10 +1045,8 @@ Inherits Shape
 		  dim i, j as integer
 		  dim CurrentMagnetism  as Integer
 		  dim StrongestMagnetism as Integer
-		  dim p2, td,q,c as BasicPoint
+		  dim  td,q as BasicPoint
 		  dim cx,cy, delta as double
-		  dim Dist as double
-		  dim s2 as Shape
 		  dim p3 as Basicpoint
 		  
 		  if not PossibleAttractionWith(s)  then
@@ -1223,7 +1232,6 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Mobility()
 		  dim i as integer
-		  dim sh as Shape
 		  dim p, p1 as point
 		  
 		  liberte = 2
@@ -1333,7 +1341,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function OnSameShape(Q as Point, Byref s as shape) As boolean
-		  dim i,j, m,n as integer
+		  dim i,j,n as integer
 		  dim num1,num2 as double
 		  dim sh(-1) as shape
 		  dim t as Boolean
@@ -1468,7 +1476,10 @@ Inherits Shape
 		  end if
 		  
 		  if tracept and (modified or currentcontent.currentoperation isa appliquertsf)  then
-		    paint(can.OffscreenPicture.Graphics,blue)
+		    rsk.bordercolor = bleu
+		    rsk.fillcolor = bleu
+		    can.OffscreenPicture.Graphics.DrawOval  rsk.ref.x, rsk.ref.y, 2, 2
+		    'paint(can.OffscreenPicture.Graphics,blue)
 		    currentcontent.theobjects.tracept = true
 		  end if
 		  
@@ -1485,7 +1496,7 @@ Inherits Shape
 		Sub paint(g as graphics, c as couleur)
 		  if not invalid then
 		    rsk.updatecolor (c.col,100)
-		    rsk.paint(g)
+		    g.drawobject rsk, rsk.ref.x, rsk.ref.y
 		  end if
 		  
 		  
@@ -1977,7 +1988,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PutOnArc(s as arc)
-		  dim alpha,  e as double
+		  dim alpha as double
 		  dim n as integer
 		  dim a as BasicPoint
 		  
@@ -2286,6 +2297,7 @@ Inherits Shape
 		  dim a, b,bp as BasicPoint
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
+		  dim side as integer
 		  
 		  s = constructedby.shape
 		  select case ConstructedBy.oper
@@ -2297,6 +2309,15 @@ Inherits Shape
 		    if s isa circle then
 		      Trib = new TriBPoint(s.getgravitycenter,a,b)
 		      bp = Trib.subdiv(s.ori,ConstructedBy.data(2), ConstructedBy.data(3))
+		    elseif s isa lacet then
+		      side = constructedby.data(4)
+		      if lacet(s).coord.curved(side) = 0 then
+		        Bib = new BiBpoint(a,b)
+		        bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
+		      else
+		        Trib = new TribPoint(lacet(s).getcentre(side),a,b)
+		        bp = Trib.subdiv(s.ori,ConstructedBy.data(2), ConstructedBy.data(3))
+		      end if
 		    else
 		      BiB = new BiBPoint(a,b)
 		      bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
@@ -2440,7 +2461,7 @@ Inherits Shape
 		Sub SpecialPuton(sh as shape, n as integer, s as shape, k as integer)
 		  // n est le numéro du point de sh à placer sur s
 		  
-		  dim p, q, u, v as basicpoint
+		  dim p, q as basicpoint
 		  dim Bib1 as BiBPoint
 		  dim bp As BasicPoint
 		  
@@ -2667,7 +2688,6 @@ Inherits Shape
 		  dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
-		  dim  n as integer
 		  
 		  
 		  delta = np-bpt
@@ -2724,7 +2744,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateInter()
-		  dim  s2 as shape
 		  dim inter as intersec
 		  
 		  if forme = 2 then
@@ -2856,7 +2875,6 @@ Inherits Shape
 		    parents(i).updatecoord
 		    if parents(i) isa circle then
 		      parents(i).coord.CreateExtreAndCtrlPoints(parents(i).ori)
-		      parents(i).updateskull
 		    end if
 		  next
 		  if ifmac <>nil and forme = 1 then
@@ -3037,7 +3055,6 @@ Inherits Shape
 		Function XMLPutIdINContainer(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  //Utilisé uniquement dans le cadre des macros
 		  dim Form, Temp as XMLElement
-		  dim n as integer
 		  
 		  if currentcontent.macrocreation  then
 		    Form = XMLPutIdInContainer(Doc)
@@ -3067,7 +3084,6 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  dim Form, Temp as XMLElement
-		  dim  n as integer
 		  
 		  Form = XMLPutIdInContainer(Doc)
 		  
@@ -3253,6 +3269,11 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -3343,11 +3364,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -3414,6 +3430,11 @@ Inherits Shape
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

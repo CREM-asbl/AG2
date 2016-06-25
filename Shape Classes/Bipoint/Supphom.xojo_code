@@ -92,7 +92,7 @@ Inherits Shape
 		Sub Updateshape()
 		  super.UpdateShape
 		  
-		  updateskull
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -206,11 +206,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -277,6 +272,11 @@ Inherits Shape
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

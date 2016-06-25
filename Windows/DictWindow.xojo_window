@@ -29,13 +29,11 @@ Begin Window DictWindow
    Begin ListBox ListBox1
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
-      BehaviorIndex   =   0
       Bold            =   False
       Border          =   True
       ColumnCount     =   1
       ColumnsResizable=   True
       ColumnWidths    =   ""
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1

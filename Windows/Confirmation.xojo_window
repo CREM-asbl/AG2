@@ -28,9 +28,7 @@ Begin Window Confirmation
    Width           =   308
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -65,12 +63,10 @@ Begin Window Confirmation
    End
    Begin PushButton Yes
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Oui"
-      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -98,12 +94,10 @@ Begin Window Confirmation
    End
    Begin PushButton No
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Non"
-      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -131,12 +125,10 @@ Begin Window Confirmation
    End
    Begin PushButton Cancel
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28

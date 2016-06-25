@@ -53,21 +53,28 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub ComputeExtreCtrl(i as integer,  nbp as nbpoint)
 		  dim tbp as TriBPoint
+		  dim j, ncurv, m as integer
 		  
+		  ncurv = 0
+		  for j = 0 to i-1
+		    if nbp.curved(j)=1 then
+		      ncurv = ncurv+1
+		    end if
+		  next
 		  
 		  if nbp.curved(i) > 0 then
 		    tbp = new TriBPoint(nbp.centres(i), nbp.tab(i), nbp.tab((i+1) mod nbp.taille))
 		    tbp.CreateExtreAndCtrlPoints(tbp.ori)
 		    
-		    nbp.extre(2*i) = tbp.extre(0)
-		    nbp.extre(2*i+1) = tbp.extre(1)
+		    m= 2*ncurv
+		    for j =0 to 1
+		      nbp.extre(m+j) = tbp.extre(j)
+		    next
 		    
-		    nbp.ctrl(6*i) = tbp.ctrl(0)
-		    nbp.ctrl(6*i+1) = tbp.ctrl(1)
-		    nbp.ctrl(6*i+2) = tbp.ctrl(2)
-		    nbp.ctrl(6*i+3) = tbp.ctrl(3)
-		    nbp.ctrl(6*i+4) = tbp.ctrl(4)
-		    nbp.ctrl(6*i+5) = tbp.ctrl(5)
+		    m= 6*ncurv
+		    for j = 0 to 5
+		      nbp.ctrl(m+j) = tbp.ctrl(j)
+		    next
 		  end if
 		  
 		  
@@ -220,8 +227,20 @@ Inherits NSkull
 		  x = ref.x
 		  y = ref.y
 		  
+		  if s isa Bande then
+		    updateBande(Bande(s))
+		    return 
+		  end if
+		  
+		  if s isa Secteur then
+		    updateSecteur(Secteur(s))
+		    return
+		  end if
+		  
 		  for i = 0 to s.npts-1
-		    ComputeExtreCtrl(i, s.coord)
+		    if dret = nil then
+		      ComputeExtreCtrl(i, s.coord)
+		    end if
 		    updateside(i, s.coord, p)
 		  next
 		  
@@ -238,9 +257,49 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub updateBande(s as Bande)
+		  dim i as integer
+		  dim p as BasicPoint
+		  
+		  p =s.getgravitycenter
+		  
+		  
+		  for i = 0 to 3
+		    updatesideBande(i, s.skullcoord, p)
+		  next
+		  
+		  fixecouleurs(s)
+		  fixeepaisseurs(s)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateSecteur(s as Secteur)
+		  dim i, j as integer
+		  dim p as BasicPoint
+		  
+		  p =s.getgravitycenter
+		  '
+		  'for i = 0 to 2
+		  'updatesideSecteur(i, s.skullcoord, p)
+		  'next
+		  
+		  for i = 0 to s.npts-1
+		    if dret = nil then
+		      ComputeExtreCtrl(i, s.skullcoord)
+		    end if
+		    updateside(i, s.skullcoord, p)
+		  next
+		  
+		  fixecouleurs(s)
+		  fixeepaisseurs(s)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub updateside(i as integer,  nbp as nbpoint, gc as basicpoint)
 		  dim q as BasicPoint
-		  dim k, j as integer
+		  dim k, j, ncurv, m as integer
 		  
 		  k = getSide(i)
 		  
@@ -252,15 +311,22 @@ Inherits NSkull
 		    item(k).x2 = q.x
 		    item(k).y2 = q.y
 		  else
+		    ncurv = 0
+		    for j = 0 to i-1
+		      if nbp.curved(j)=1 then
+		        ncurv = ncurv+1
+		      end if
+		    next
+		    m = 2*ncurv
 		    q = can.dtransform(nbp.tab(i)-gc)
 		    item(k).x = q.x
 		    item(k).y = q.y
-		    q = can.dtransform(nbp.extre(2*i)-gc)
+		    q = can.dtransform(nbp.extre(m)-gc)
 		    item(k).X2=q.x
 		    item(k).y2=q.y
 		    item(k+1).x = q.x
 		    item(k+1).y = q.y
-		    q = can.dtransform(nbp.extre(2*i+1)-gc)
+		    q = can.dtransform(nbp.extre(m+1)-gc)
 		    item(k+1).x2 = q.x
 		    item(k+1).y2= q.y
 		    item(k+2).x = q.x
@@ -269,25 +335,52 @@ Inherits NSkull
 		    item(k+2).x2 = q.x
 		    item(k+2).y2 = q.y
 		    
-		    q = can.dtransform(nbp.ctrl(6*i) -gc)
+		    m = 6*ncurv
+		    q = can.dtransform(nbp.ctrl(m) -gc)
 		    item(k).controlx(0) = q.x
 		    item(k).controly(0) = q.y
-		    q = can.dtransform(nbp.ctrl(6*i+1) -gc)
+		    q = can.dtransform(nbp.ctrl(m+1) -gc)
 		    item(k).controlx(1) = q.x
 		    item(k).controly(1) = q.y
-		    q = can.dtransform(nbp.ctrl(6*i+2) -gc)
+		    q = can.dtransform(nbp.ctrl(m+2) -gc)
 		    item(k+1).controlx(0) = q.x
 		    item(k+1).controly(0) = q.y
-		    q = can.dtransform(nbp.ctrl(6*i+3) -gc)
+		    q = can.dtransform(nbp.ctrl(m+3) -gc)
 		    item(k+1).controlx(1) = q.x
 		    item(k+1).controly(1) = q.y
-		    q = can.dtransform(nbp.ctrl(6*i+4) -gc)
+		    q = can.dtransform(nbp.ctrl(m+4) -gc)
 		    item(k+2).controlx(0) = q.x
 		    item(k+2).controly(0) = q.y
-		    q = can.dtransform(nbp.ctrl(6*i+5) -gc)
+		    q = can.dtransform(nbp.ctrl(m+5) -gc)
 		    item(k+2).controlx(1) = q.x
 		    item(k+2).controly(1) = q.y
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatesidebande(i as integer,  nbp as nbpoint, gc as basicpoint)
+		  dim q as BasicPoint
+		  
+		  q = can.dtransform(nbp.tab(i)-gc)
+		  item(i).x = q.x
+		  item(i).y = q.y
+		  q = can.dtransform(nbp.tab((i+1) mod nbp.taille)-gc)
+		  item(i).x2 = q.x
+		  item(i).y2 = q.y
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateSideSecteur(i as integer,  nbp as TriBpoint, gc as basicpoint)
+		  dim q(2) as BasicPoint
+		  
+		  'q = can.dtransform(nbp.tab()-gc)
+		  'item(i).x = q.x
+		  'item(i).y = q.y
+		  'q = can.dtransform(nbp.tab((i+1) mod nbp.taille)-gc)
+		  'item(i).x2 = q.x
+		  'item(i).y2 = q.y
 		End Sub
 	#tag EndMethod
 

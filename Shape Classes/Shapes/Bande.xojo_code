@@ -7,29 +7,34 @@ Inherits Shape
 		  dim p1,p2,q1,q2 as basicPoint
 		  dim D1 as BiBPoint
 		  dim mi, ma as double
+		  dim ar(-1) as BasicPoint
 		  
+		  redim ar(-1)
 		  p1 = Points(0).bpt
 		  p2 = Points(1).bpt
 		  q1 = Points(2).bpt
 		  q2 = q1+p2-p1
 		  
 		  if p1.distance(p2) < epsilon  then
-		    extre(0)= p1
-		    extre(1)= p2
-		    extre(2) = q1
-		    extre(3) = q2
+		    ar.append  p1
+		    ar.append p2
+		    ar.append q2
+		    ar.append  q1
 		  else
 		    D1 = new BiBPoint(p1,p2)
 		    D1.Interscreen(mi,ma)
-		    extre(0) = D1.BptOnBiBpt(mi-0.1)
-		    extre(1) = D1.BptOnBiBpt(ma+0.1)
+		    ar.append D1.BptOnBiBpt(mi-0.1)
+		    ar.append D1.BptOnBiBpt(ma+0.1)
 		    D1 = new BiBPoint(q1,q2)
 		    D1.Interscreen(mi,ma)
-		    extre(3) = D1.BptOnBiBpt(mi-0.1)
-		    extre(2) = D1.BptOnBiBpt(ma+0.2)
+		    ar.append D1.BptOnBiBpt(ma+0.2)
+		    ar.append D1.BptOnBiBpt(mi-0.1)
 		  end if
 		  
+		  'skullcoord joue pour les bandes le même rôle que coord pour les autres formes
 		  
+		  
+		  skullcoord = new nbpoint(ar)
 		End Sub
 	#tag EndMethod
 
@@ -62,7 +67,8 @@ Inherits Shape
 		  super.constructor(ol,3,3)
 		  Points.append new Point(ol, p)
 		  SetPoint(Points(0))
-		  nsk = new Lskull(can.transform(Points(0).bpt))
+		  createskull(p)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -74,7 +80,19 @@ Inherits Shape
 		  ncpts = 3
 		  nsk = new Lskull(can.transform(Points(0).bpt))
 		  computeextre
-		  Updateskull
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint)
+		  'Le skull d'une bande est basé sur QUATRE basic-points et 
+		  'non sur 3. Le deuxième côté de la bande est en effet une droiteparallèle au premier côté et a donc besoin de deux points. 
+		  'La méthode "Point3" calcule automatiquement les coordonnées de ce quatrième point qui n'existe que sous forme de 
+		  'basicpoint (il n'est donc pas une instance de la classe point).
+		  
+		  nsk = new Lskull(4, p)
+		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
 
@@ -88,17 +106,16 @@ Inherits Shape
 		    for i = 0 to 2
 		      Points(i).moveto(p)
 		    next
-		    'sk.update(can.transform(p))
+		    nsk.update(can.transform(p))
 		  case 1
 		    Points(1).moveto(p)
-		    Lskull(nsk).Updatesommet(1,can.dtransform(p-Points(0).bpt))
+		    nsk.Updatesommet(1,can.dtransform(p-Points(0).bpt))
 		    Points(2).moveto(p)
 		  case 2
 		    Points(2).moveto(p)
-		    constructshape
 		  end select
 		  computeextre
-		  'updateskull
+		  
 		  
 		  
 		End Sub
@@ -121,7 +138,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function GetGravitycenter() As BasicPoint
-		  return (Points(2).bpt+ Points(1).bpt)/2
+		  return (Points(0).bpt+Points(2).bpt+ Points(1).bpt)/3
 		  
 		End Function
 	#tag EndMethod
@@ -155,7 +172,6 @@ Inherits Shape
 		  dim i, n as integer
 		  
 		  computeextre
-		  updateskull
 		  n = -1
 		  op =CurrentContent.currentoperation
 		  
@@ -281,29 +297,8 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
-		  dim i,j as integer
-		  dim s,t as shape
 		  
-		  
-		  ConstructShape
-		  Shape.UpdateShape
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updateskull()
-		  dim i as integer
-		  
-		  'for i=0 to 3
-		  'if i=0 then
-		  'sk.update(can.transform(extre(0)))
-		  'else
-		  'figskull(sk).Updatesommet(i,can.dtransform(extre(i)-extre(0)))
-		  'end
-		  'next
+		  Super.UpdateShape
 		  
 		  
 		  
@@ -334,7 +329,7 @@ Inherits Shape
 
 
 	#tag Property, Flags = &h0
-		extre(3) As BasicPoint
+		skullcoord As nbpoint
 	#tag EndProperty
 
 
@@ -412,11 +407,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -483,6 +473,11 @@ Inherits Shape
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

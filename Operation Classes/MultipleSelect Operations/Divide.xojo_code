@@ -155,7 +155,7 @@ Inherits MultipleSelectOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s = visible.item(i)
-		    if not ((s isa bipoint) or (s isa polygon) or (s isa circle) or (s isa arc) or (s isa point)) or (s isa droite and droite(s).nextre <> 2) or (s isa polygon and s.PointOnSide(p) = -1)   then
+		    if not ((s isa bipoint) or (s isa lacet) or (s isa circle) or (s isa point)) or (s isa droite and droite(s).nextre <> 2) or (s isa lacet and s.PointOnSide(p) = -1)   then
 		      visible.removeobject visible.item(i)
 		    end if
 		  next
@@ -287,7 +287,7 @@ Inherits MultipleSelectOperation
 		        d = cube(s).getside(side)
 		        firstpoint = d.points(0)
 		        secondpoint= d.points(1)
-		      elseif s isa polygon and side <> -1 then
+		      elseif s isa lacet and side <> -1 then
 		        firstpoint = s.points(side)
 		        secondpoint = s.points((side +1) mod s.npts)
 		      end if

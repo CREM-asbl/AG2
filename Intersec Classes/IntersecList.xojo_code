@@ -38,7 +38,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function item(n as integer) As Intersec
-		  return Intersec(item(n))
+		  return Intersec(Element(n))
 		End Function
 	#tag EndMethod
 

@@ -156,7 +156,6 @@ Protected Class Operation
 		  if Config.ShowHelp then
 		    g.forecolor = Config.bordercolor.col
 		    g.DrawString  lowercase(s1+info) ,Mcanx+8,Mcany+3
-		    'can.invalidate
 		  end if
 		End Sub
 	#tag EndMethod
@@ -290,7 +289,6 @@ Protected Class Operation
 		        CurrentHighlightedShape.HighLight
 		      end if
 		      can.refreshBackground
-		      can.refresh
 		    end if
 		  end if
 		  
@@ -582,7 +580,7 @@ Protected Class Operation
 		    if currentcontent.currentoperation isa duplicate and   duplicate(currentcontent.currentoperation).copyptsur and currentattractingshape isa polygon  then
 		      icot = currentattractingshape.pointonside(point(duplicate(currentcontent.currentoperation).copies.item(0)).bpt)
 		      if icot <> -1 then
-		        Polygon(currentattractingshape).Paintside(can.graphics,icot,2,Config.highlightcolor)
+		        Polygon(currentattractingshape).Paintside(can.Background.graphics,icot,2,Config.highlightcolor)
 		      end if
 		    else
 		      CurrentAttractingShape.HighLight

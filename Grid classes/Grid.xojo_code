@@ -82,10 +82,6 @@ Protected Class Grid
 
 
 	#tag Property, Flags = &h0
-		can As CustomCanvas1
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		gs As double
 	#tag EndProperty
 

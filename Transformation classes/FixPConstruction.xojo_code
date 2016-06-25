@@ -114,7 +114,7 @@ Inherits SelectOperation
 		    CurrentContent.TheTransfos.HideAll
 		    CurTsf(itsf).Hidden = false
 		    CurTsf(itsf).Highlighted = true
-		    'can.invalidate
+		    can.refreshbackground
 		  end if
 		  
 		End Sub

@@ -14,7 +14,6 @@ Inherits SelectAndDragOperation
 		  if CurrentShape isa repere then
 		    CurrentShape.Transform(M)
 		    endpoint = newpoint
-		    CurrentContent.theobjects.updateskull
 		  elseif NewPoint <> EndPoint and tempshape.count > 0 then
 		    Glissement(NewPoint)
 		    CurrentContent.TheTransfos.enablemodifyall
@@ -121,7 +120,7 @@ Inherits SelectAndDragOperation
 		  
 		  Help g, display
 		  
-		  'can.invalidate
+		  
 		End Sub
 	#tag EndMethod
 
@@ -159,7 +158,6 @@ Inherits SelectAndDragOperation
 		    else
 		      currentshape.Transform(M)
 		    end if
-		    CurrentContent.theobjects.updateskull
 		  else
 		    for i = 0 to tempshape.count-1
 		      figs.addobject tempshape.item(i).fig
@@ -244,7 +242,6 @@ Inherits SelectAndDragOperation
 		    CurrentShape = tempshape.item(0)
 		    M = new Translationmatrix(D)
 		    CurrentShape.Transform(M)
-		    CurrentContent.theobjects.updateskull
 		  else
 		    super.UndoOperation(Temp)
 		    if EL.childcount = 2 then

@@ -108,7 +108,6 @@ Inherits MultipleSelectOperation
 		      fixecouleurs(s)
 		    end if
 		  next
-		  'can.invalidate
 		  showattraction
 		  
 		  

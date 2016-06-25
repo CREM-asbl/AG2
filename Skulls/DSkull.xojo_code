@@ -12,11 +12,14 @@ Inherits LSkull
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
-		  
-		  border = 0
-		  g.drawobject self, ref.x, ref.y
-		  
-		  
+		  if not (currentcontent.currentoperation isa retourner and dret <>nil) then
+		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
+		    update(skullof)
+		  end if
+		  g.drawobject self, x, y
+		  for i = 0 to count-1
+		    g.drawobject item(i), x, y
+		  next
 		End Sub
 	#tag EndMethod
 

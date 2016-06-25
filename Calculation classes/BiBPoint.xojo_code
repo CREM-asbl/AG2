@@ -483,11 +483,23 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
-		  super.constructor(s)
+		  dim i as integer
+		  
+		  if s.npts <> 2 then
+		    return
+		  end if
+		  
+		  for i = 0 to 1
+		    append s.points(i).bpt
+		  next
 		  redim extre(-1)
 		  redim ctrl(-1)
 		  redim extre(1)
 		  redim ctrl(5)
+		  redim curved(-1)
+		  redim curved(0)
+		  redim centres(-1)
+		  redim centres(0)
 		  
 		  
 		End Sub
@@ -524,7 +536,6 @@ Inherits nBpoint
 		      ctrl(i) = M*ctrl(i-2)
 		    next
 		  end if
-		  'end if
 		  
 		  
 		End Sub

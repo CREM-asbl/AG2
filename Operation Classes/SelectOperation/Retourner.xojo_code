@@ -2,6 +2,36 @@
 Protected Class Retourner
 Inherits SelectOperation
 	#tag Method, Flags = &h0
+		Sub choisiraxe()
+		  dim q as BasicPoint
+		  dim alpha as double
+		  
+		  p = nil
+		  
+		  q = Muser
+		  q = q - c
+		  alpha = q.anglepolaire
+		  if abs(alpha) <= PI/8 or abs(alpha-PI) <= PI/8  or abs(alpha-2*PI)  <= PI/8 then
+		    angle = 0
+		    P = new BasicPoint(2,0)
+		  elseif abs(alpha-PIDEMI) <= PI/8 or abs(alpha-3*PIDEMI) <= PI/8 then
+		    angle = PIDEMI
+		    P = new BasicPoint(0,2)
+		  elseif abs(alpha-PI/4) < PI/8 or abs(alpha-5*PI/4) < PI/8 then
+		    angle = PI/4
+		    P = new BasicPoint(sqrt(2),sqrt(2))
+		  elseif abs(alpha-3*PI/4) < PI/8 or abs(alpha-7*PI/4) < PI/8 then
+		    angle = -PI/4
+		    P = new BasicPoint(sqrt(2),-sqrt(2))
+		  end if
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  super.Constructor
 		  OPId=16
@@ -55,11 +85,7 @@ Inherits SelectOperation
 		    if s isa arc then
 		      arc(s).computearcangle
 		    end if
-		    if s isa circle then
-		      s.coord.CreateExtreAndCtrlPoints(s.ori)
-		      circle(s).updateskull
-		    end if
-		    if s.Hybrid then
+		    if s isa circle or s.Hybrid then
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
 		  next
@@ -161,38 +187,24 @@ Inherits SelectOperation
 		  dim alpha as double
 		  dim i as integer
 		  dim pt As point
+		  dim Cercle as Circle
 		  
 		  SelectOperation.Paint(g)
 		  if dret = nil then
 		    if CurrentHighlightedShape = nil   or ((CurrentHighlightedShape isa point) and (Point(currenthighlightedshape).ispointoncube) ) then
 		      return
 		    end if
-		    if currenthighlightedshape isa point and ubound(point(currenthighlightedshape).parents) > 0   then
-		      pt = point(currenthighlightedshape)
-		      currentshape = pt.parents(0)
-		      for i = 0 to ubound(pt.parents)
-		        pt.parents(i).highlight
-		        pt.parents(i).paint(g)
-		      next
+		    if currenthighlightedshape isa point   then
+		      Cercle = point(currenthighlightedshape).IsCenterOfACircle
+		      if Cercle <> nil then
+		        currenthighlightedshape.unhighlight
+		        currenthighlightedshape = Cercle
+		        Cercle.highlight
+		      end if
 		    end if
 		    C =CurrentHighlightedShape.GetGravityCenter
 		    C.Paint(g)
-		    q = Muser
-		    q = q - c
-		    alpha = q.anglepolaire
-		    if abs(alpha) <= PI/8 or abs(alpha-PI) <= PI/8  or abs(alpha-2*PI)  <= PI/8 then
-		      angle = 0
-		      P = new BasicPoint(2,0)
-		    elseif abs(alpha-PIDEMI) <= PI/8 or abs(alpha-3*PIDEMI) <= PI/8 then
-		      angle = PIDEMI
-		      P = new BasicPoint(0,2)
-		    elseif abs(alpha-PI/4) < PI/8 or abs(alpha-5*PI/4) < PI/8 then
-		      angle = PI/4
-		      P = new BasicPoint(sqrt(2),sqrt(2))
-		    elseif abs(alpha-3*PI/4) < PI/8 or abs(alpha-7*PI/4) < PI/8 then
-		      angle = -PI/4
-		      P = new BasicPoint(sqrt(2),-sqrt(2))
-		    end if
+		    choisiraxe
 		    
 		    if p <> nil then
 		      g.forecolor = Config.Transfocolor.col

@@ -3,30 +3,30 @@ Protected Class Secteurskull
 Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub Constructor(p As Basicpoint)
-		  'dim cs as curveshape
-		  'dim i as integer
-		  '
-		  'dim ars as arcshape
-		  '
-		  ''CC = new Group2D
-		  ''GCC = Group2D(CC)
-		  'ref = p
-		  'x = 0
-		  'y = 0
-		  'borderwidth = 1
-		  'border = 0
-		  '
-		  'for i = 0 to 1
-		  'cs =new curveshape
-		  'cs.X = 0
-		  'cs.Y = 0
-		  'cs.X2 = 0
-		  'cs.Y2 = 0
-		  'cs.border = 0
-		  'cs.fill = 0
-		  ''GCC.append cs
-		  'next
-		  '
+		  dim cs as curveshape
+		  dim i as integer
+		  
+		  dim ars as arcshape
+		  
+		  'CC = new Group2D
+		  'GCC = Group2D(CC)
+		  ref = p
+		  x = 0
+		  y = 0
+		  borderwidth = 1
+		  border = 0
+		  
+		  for i = 0 to 1
+		    cs =new curveshape
+		    cs.X = 0
+		    cs.Y = 0
+		    cs.X2 = 0
+		    cs.Y2 = 0
+		    cs.border = 0
+		    cs.fill = 0
+		    'GCC.append cs
+		  next
+		  
 		  'ars =new arcshape
 		  '
 		  'diag = can.width^2
@@ -39,7 +39,7 @@ Inherits NSkull
 		  'Ars.Arcangle = 0
 		  'ars.border = 0
 		  'ars.fill=0
-		  
+		  '
 		  'append ars
 		End Sub
 	#tag EndMethod

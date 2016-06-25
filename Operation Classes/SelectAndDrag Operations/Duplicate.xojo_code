@@ -12,7 +12,6 @@ Inherits SelectAndDragOperation
 		  copies.removeall
 		  Finished = true
 		  CurrentContent.TheObjects.unselectall
-		  can.invalidate
 		  can.mousecursor =System.Cursors.StandardPointer
 		  copyptsur = false
 		End Sub

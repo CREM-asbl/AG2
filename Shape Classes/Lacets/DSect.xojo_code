@@ -45,9 +45,7 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist,  p as BasicPoint)
 		  
-		  super.constructor(ol,p)
-		  ncpts = 3
-		  npts = 3
+		  super.constructor(ol, 3, p)
 		  fam = 5
 		  forme = 2
 		  auto = 3
@@ -59,26 +57,24 @@ Inherits Lacet
 		  
 		  
 		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub constructor(ol as objectslist, s as DSect, q as BasicPoint)
 		  
-		  dim M as Matrix
 		  
-		  Shape.constructor(ol,s)
+		  
+		  super.constructor(ol,s,q)
 		  Ori=s.Ori
 		  liberte = s.liberte
-		  M = new TranslationMatrix(q)
 		  radius = s.radius
 		  arcangle = s.arcangle
 		  drapori = s.drapori
-		  narcs = 1
-		  coord.centres(1) = s.coord.centres(1)
 		  coord.CreateExtreAndCtrlPoints(ori)
-		  updateskull
-		  Move(M)
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -88,32 +84,16 @@ Inherits Lacet
 		  super.constructor(ol, Temp)
 		  coord.CreateExtreAndCtrlPoints(ori)
 		  createskull(points(0).bpt)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub createskull(p as BasicPoint)
-		  dim i as integer
-		  
-		  nsk = new LSkull(5, p)
-		  nsk.item(0).order = 0
-		  for i = 1 to 3
-		    nsk.item(i).order = 2
-		  next
-		  nsk.item(4).order = 0
-		  
-		  nsk.skullof = self
-		  
-		  '
-		  
+		  InitCurvesOrders
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  updateshape
+		  'updateshape
+		  computearcangle
 		  super.endconstruction
-		  coord.centres(1) = coord.tab(0)
+		  'coord.centres(1) = coord.tab(0)
 		  
 		End Sub
 	#tag EndMethod
@@ -179,8 +159,8 @@ Inherits Lacet
 		  super.InitConstruction
 		  coord.curved(1)=1
 		  coord.centres(1) = coord.tab(0)
-		  'coord.CreateExtreAndCtrlPoints(ori)
-		  'updateskull
+		  InitCurvesOrders
+		  
 		End Sub
 	#tag EndMethod
 
@@ -193,66 +173,9 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier1(n as integer) As Matrix
-		  dim  m as integer
-		  dim ff as Figure
-		  
-		  ff = fig.supfig
-		  
-		  
-		  m = ff.NbSommsur(n)
-		  
-		  
-		  select case m
-		  case 0
-		    return Modifier10(n)
-		  case 1
-		    return Modifier11(n)
-		  case 2
-		    return Modifier12(n)
-		  end select
-		  
-		  //Les deux derniers cas ne peuvent normalement pas se présenter (il y aurait plus d'un point modifié)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier10(n as integer) As Matrix
-		  ''Le point n° n est le seul point modifié. Il y a 0 points "sur"
-		  dim  r as double
-		  
-		  'select case n
-		  'case 0, 1
-		  'return new SimilarityMatrix(ep0,ep1,np0,np1)
-		  'case 2
-		  'r = getradius(1)
-		  'points(2).moveto np2.projection(np0,r)
-		  'return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
-		  'end select
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier11(n as integer) As Matrix
-		  'Le point n° n est le seul point modifié. Il y a 1 point "sur" différent n° n. Ce point n'a pas été modifié, plus précisément il a éte "replacé".
-		  'La méthode succède à Modifier2.
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier12(n as integer) As Matrix
-		  'Le point n° n est le seul point modifié. Il y a deux points "sur" différent n° n. Ces points ont éte "replacés".
-		  'La méthode succède à Modifier3.
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Paste(Obl as ObjectsList, p as BasicPoint) As DSect
 		  
-		  return  new DSect(Obl,self,p)
+		  return  new DSect(Obl, DSect(self),p)
 		  
 		End Function
 	#tag EndMethod
@@ -270,11 +193,33 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ToEps(tos as TextOutputStream)
+		  dim s as string
+		  dim r as double
+		  dim i as integer
+		  
+		  tos.writeline "newpath"
+		  s= "[ [ "+points(1).etiquet + "  " + points(0).etiquet  + " " + points(2).etiquet + " ] "
+		  r = points(0).bpt.distance(points(1).bpt)
+		  r = r*ori
+		  s = s +  str(r) +"]"
+		  tos.writeline s + "arcsecteur secteurdisque"
+		  
+		  
+		  
+		  for i = 0 to 2
+		    points(i).ToEPS(tos)
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateShape()
 		  dim i,j as integer
 		  dim s,t as shape
 		  dim b as Boolean
 		  
+		  coord.centres(1) = coord.tab(0)
 		  Super.UpdateShape
 		  computearcangle
 		  
@@ -298,11 +243,35 @@ Inherits Lacet
 
 
 	#tag Property, Flags = &h0
-		arcangle As double
+		endangle As double
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		endangle As double
+		ep0 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ep1 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ep2 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ff As figure
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np0 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np1 As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		np2 As BasicPoint
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -319,7 +288,7 @@ Inherits Lacet
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -397,11 +366,6 @@ Inherits Lacet
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

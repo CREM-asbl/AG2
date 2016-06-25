@@ -688,8 +688,8 @@ Protected Class Figure
 		  n = ListPtsModifs(0)
 		  s = shapes.item(0)
 		  
-		  if s isa arc then
-		    return arc(s).Modifier1(n)
+		  if s isa arc or s isa DSect  then
+		    return s.Modifier1(n)
 		  end if
 		  
 		  p = Point(somm.item(n))
@@ -754,8 +754,8 @@ Protected Class Figure
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  s = shapes.item(0)
-		  if s isa arc then
-		    return arc(s).Modifier2(n1,n2)
+		  if s isa arc  or s isa DSect then
+		    return s.Modifier2(n1,n2)
 		  end if
 		  
 		  p = Point(somm.item(n1))
@@ -791,8 +791,8 @@ Protected Class Figure
 		  
 		  
 		  s = shapes.item(0)
-		  if s isa arc  then
-		    return arc(s).modifier3
+		  if s isa arc  or s isa DSect then
+		    return s.modifier3
 		  end if
 		  
 		  Choixpointsfixes
@@ -2014,7 +2014,7 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function gettransfosto(f as figure) As transfoslist
+		Function gettransfosto() As transfoslist
 		  dim i as integer
 		  dim tsfl as transfoslist
 		  
@@ -2408,11 +2408,16 @@ Protected Class Figure
 		  for j = 0 to shapes.count -1
 		    s= shapes.item(j)
 		    s.Mmove = M
-		    if s isa Circle or s.Hybrid  then
+		    if (s isa Circle or s.Hybrid) and not s isa secteur   then
 		      s.coord.MoveExtreCtrl(M)
 		    end if
-		    if s isa arc   or s isa cube then
-		      s.updateskull
+		    if s isa secteur then
+		      secteur(s).ComputeExtre
+		      secteur(s).skullcoord.CreateExtreAndCtrlPoints(s.ori)
+		      secteur(s).skullcoord.MoveExtreCtrl(M)
+		    end if
+		    if  s isa cube then
+		      cube(s).updateskull
 		    end if
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
 		      s.endmove
@@ -3013,12 +3018,6 @@ Protected Class Figure
 		    p.modified = true // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
 		  next
 		  
-		  'for i = 0 to shapes.count-1
-		  'if shapes.item(i) isa Lacet then
-		  'Lacet(shapes.item(i)).createextreandctrlpoints
-		  'Lacet(shapes.item(i)).updateskull
-		  'end if
-		  'next
 		  
 		  EndQQupdateshapes
 		  
@@ -3096,7 +3095,6 @@ Protected Class Figure
 		Sub Restorebpt()
 		  dim i, j, i0 as integer
 		  dim p as point
-		  dim s as Lacet
 		  dim sh as shape
 		  
 		  
@@ -3113,15 +3111,19 @@ Protected Class Figure
 		  i0 = 0
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Lacet  then
-		      s = Lacet(shapes.item(i))
-		      for j = 0 to s.npts-1
-		        if s.coord.curved(j) = 1 then
-		          s.coord.centres(j) = oldcentres(i0)
+		      's = Lacet(shapes.item(i))
+		      sh = shapes.item(i)
+		      for j = 0 to sh.npts-1
+		        if sh.coord.curved(j) = 1 then
+		          sh.coord.centres(j) = oldcentres(i0)
 		          i0 = i0+1
 		        else
-		          s.coord.centres(j) = nil
+		          sh.coord.centres(j) = nil
 		        end if
 		      next
+		      if sh isa secteur then
+		        secteur(sh).computeextre
+		      end if
 		    end if
 		  next
 		  
@@ -3162,9 +3164,8 @@ Protected Class Figure
 		      sh.coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
 		    if sh isa lacet then
-		      Lacet(sh).CreateExtreAndCtrlPoints
+		      Lacet(sh).coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
-		    sh.updateskull
 		  next
 		  
 		  
@@ -3221,7 +3222,6 @@ Protected Class Figure
 		    if s isa circle  then             //La reconstruction des points de controles est prise en charge par la routine de peinture
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
-		    s.updateskull
 		    s.updatelab
 		    if s.duplicateorcut then
 		      M = new Matrix(EL2)
@@ -3472,7 +3472,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Save()
 		  dim i, j as integer
-		  dim s as Lacet
+		  dim s as shape
 		  
 		  redim invalidpts(-1)
 		  redim invalidptscsted(-1)
@@ -3506,8 +3506,8 @@ Protected Class Figure
 		  next
 		  
 		  for i = 0 to shapes.count-1
-		    if shapes.item(i) isa Lacet  then
-		      s = Lacet(shapes.item(i))
+		    if shapes.item(i) isa Lacet  or shapes.item(i) isa secteur  then
+		      s = shapes.item(i)
 		      for j = 0 to s.npts-1
 		        if s.coord.curved(j) = 1 then
 		          oldcentres.append s.coord.centres(j)
@@ -3875,7 +3875,7 @@ Protected Class Figure
 		  dim i as integer
 		  
 		  for i = 0 to shapes.count-1
-		    if shapes.item(i) isa Circle then
+		    if shapes.item(i) isa Circle  then
 		      Circle(shapes.item(i)).UpdatePtsConsted
 		    end if
 		    shapes.item(i).updateshape(M)

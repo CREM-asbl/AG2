@@ -31,11 +31,9 @@ Begin Window MacWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   0
+      BackColor       =   &cFFFFFF00
       Bold            =   True
       Border          =   True
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -57,7 +55,6 @@ Begin Window MacWindow
       LockTop         =   False
       Mask            =   ""
       Multiline       =   True
-      Password        =   "False"
       ReadOnly        =   True
       Scope           =   0
       ScrollbarHorizontal=   False
@@ -79,12 +76,10 @@ Begin Window MacWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
-      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   22
@@ -112,12 +107,10 @@ Begin Window MacWindow
    End
    Begin PushButton PushButton3
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Close"
-      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   22

@@ -153,6 +153,7 @@ Inherits SelectAndDragOperation
 		  if loc = -1 or currentshape isa circle then
 		    currenthighlightedshape = currentshape   'on n'a pas choisi un cote de polygone, ni de bande, ni de secteur
 		  end if
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod

@@ -36,7 +36,6 @@ Inherits Polygon
 		  
 		  endconstruction
 		  nsk = new Lskull(can.transform(Points(0).bpt))
-		  updateskull
 		  ol.optimize
 		End Sub
 	#tag EndMethod
@@ -171,11 +170,6 @@ Inherits Polygon
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

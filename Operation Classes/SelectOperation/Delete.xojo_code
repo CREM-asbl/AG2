@@ -206,7 +206,7 @@ Inherits SelectOperation
 		    next
 		  end if
 		  
-		  'can.invalidate
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod
@@ -259,7 +259,7 @@ Inherits SelectOperation
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
 		  can.RefreshBackground
-		  can.Refresh
+		  
 		  
 		End Sub
 	#tag EndMethod

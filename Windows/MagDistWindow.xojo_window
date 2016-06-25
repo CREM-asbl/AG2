@@ -28,9 +28,7 @@ Begin Window MagDistWindow
    Width           =   281
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -50,7 +48,6 @@ Begin Window MagDistWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Distance Magnétique"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -68,11 +65,9 @@ Begin Window MagDistWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   1
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "1"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -91,13 +86,9 @@ Begin Window MagDistWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "False"
-      Styled          =   "False"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -114,12 +105,10 @@ Begin Window MagDistWindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -147,12 +136,10 @@ Begin Window MagDistWindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28

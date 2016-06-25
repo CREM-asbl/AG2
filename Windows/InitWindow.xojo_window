@@ -28,9 +28,7 @@ Begin Window InitWindow
    Width           =   772
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   True
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -61,12 +59,10 @@ Begin Window InitWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Ok"
-      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -97,11 +93,9 @@ Begin Window InitWindow
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   2
+      BackColor       =   &cFFFFFF00
       Bold            =   True
       Border          =   True
-      ControlOrder    =   "2"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -120,13 +114,9 @@ Begin Window InitWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "False"
-      Styled          =   "False"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -143,12 +133,10 @@ Begin Window InitWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   False
-      BehaviorIndex   =   3
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Enseignant(e)"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -176,12 +164,10 @@ Begin Window InitWindow
    End
    Begin PushButton PushButton3
       AutoDeactivate  =   True
-      BehaviorIndex   =   4
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Elève"
-      ControlOrder    =   "4"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -209,12 +195,10 @@ Begin Window InitWindow
    End
    Begin PushButton PushButton4
       AutoDeactivate  =   True
-      BehaviorIndex   =   5
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -242,9 +226,7 @@ Begin Window InitWindow
    End
    Begin PopupMenu ComboBox1
       AutoDeactivate  =   True
-      BehaviorIndex   =   6
       Bold            =   False
-      ControlOrder    =   "6"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True

@@ -50,6 +50,7 @@ Inherits Shape
 		  angle = 0
 		  arcangle = 2*PI
 		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -128,14 +129,18 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
 		  dim i as integer
+		  dim b as Boolean
 		  
-		  
-		  
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  b = (dret <> nil) and ( (dret isa RetTimer) or ((dret isa TsfTimer) and ((TsfTimer(dret).type = 6) or  TsfTimer(dret).type = 9 or TsfTimer(dret).type =11)) )
+		  if not b and not isaellipse then
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  nsk.update(self)
+		  
 		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
+		  
 		  nsk.fixecouleurs(self)
 		  nsk.fixeepaisseurs(self)
 		  nsk.paint(g)
@@ -151,7 +156,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics, c As couleur)
-		  updateskull
+		  
 		  nsk.updatebordercolor (c.col,100)
 		  nsk.paint(g)
 		  
@@ -189,7 +194,7 @@ Inherits Shape
 		  
 		  radius = r
 		  
-		  UpDateSkull
+		  
 		End Sub
 	#tag EndMethod
 
@@ -270,10 +275,6 @@ Inherits Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		arcangle As double
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Radius As double
 	#tag EndProperty
 
@@ -289,7 +290,7 @@ Inherits Shape
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -364,11 +365,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -435,6 +431,11 @@ Inherits Shape
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

@@ -54,7 +54,6 @@ Inherits Operation
 		  end if
 		  
 		  Finished = true
-		  'can.invalidate
 		  can.mousecursor =System.Cursors.StandardPointer
 		  
 		  
@@ -98,7 +97,7 @@ Inherits Operation
 		    
 		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
-		    'can.invalidate
+		    can.refreshbackground
 		    
 		  end if
 		  
