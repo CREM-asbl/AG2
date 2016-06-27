@@ -214,7 +214,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/#logiciels/-K0QFCVwKVLay6Bb2-Xn")
+		  showUrl("http://crem.be/logiciels/-K0QFCVwKVLay6Bb2-Xn")
 		  close
 		  
 		End Sub
