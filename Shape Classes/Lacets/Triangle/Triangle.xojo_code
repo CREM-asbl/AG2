@@ -32,10 +32,11 @@ Inherits Polygon
 		  end if
 		  
 		  initcolcotes
-		  
+		  redim prol(-1)
+		  redim  prol(npts-1)
 		  
 		  endconstruction
-		  nsk = new Lskull(can.transform(Points(0).bpt))
+		  createskull(Points(0).bpt)
 		  ol.optimize
 		End Sub
 	#tag EndMethod
