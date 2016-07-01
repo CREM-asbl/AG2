@@ -48,6 +48,7 @@ Begin Window NewLanguageWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Langue :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -96,7 +97,7 @@ Begin Window NewLanguageWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
       Bold            =   False
       Border          =   True
       CueText         =   ""

@@ -48,6 +48,7 @@ Begin Window StdFamWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Nom de la famille :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -82,6 +83,7 @@ Begin Window StdFamWindow
       Selectable      =   False
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Couleur de la famille :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -161,7 +163,7 @@ Begin Window StdFamWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
       Bold            =   True
       Border          =   True
       CueText         =   ""

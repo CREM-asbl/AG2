@@ -169,14 +169,13 @@ Inherits SelectOperation
 		  dim dr as droite
 		  
 		  objects.unhighlightall
-		  
+		  can.refreshbackground
 		  s = Getshape(p)
 		  if s <> nil then
 		    highlight(s)
-		    'can.refreshbackground
 		    currenthighlightedshape = s
 		  end if
-		  
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod

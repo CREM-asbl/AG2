@@ -209,7 +209,7 @@ Inherits Shape
 		  dim i as integer
 		  dim s as string
 		  
-		  s = "[  " + points(0).etiquet + " " + "[ " +points(0).etiquet+  points(1).etiquet +" ] distance ]  "
+		  s = "[  " + points(0).etiquet + " " + "[ " +points(0).etiquet+ " " +  points(1).etiquet +" ] distance ]  "
 		  
 		  if fill > 49 and not tsp then
 		    if ti <> nil then
