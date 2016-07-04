@@ -75,18 +75,18 @@ Begin Window WorkWindow
       Width           =   673
    End
    Begin Rectangle Tools
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cDB9D00E3
+      FillColor       =   &cFFD56400
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True

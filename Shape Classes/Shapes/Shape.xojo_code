@@ -4157,7 +4157,7 @@ Protected Class Shape
 		    case 3
 		      XMLReadConstructionInfoDuplicate(Tmp)
 		    case 4
-		      XMLReadConstructionInfoDivPoint(Tmp)
+		      XMLReadConstructionInfoDivPoint(Tmp, s)
 		    case 5
 		      XMLReadConstructionInfoCutPoints(Tmp)
 		    case 6
@@ -4241,7 +4241,7 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub XMLReadConstructionInfoDivPoint(Tmp as XMLElement)
+		Sub XMLReadConstructionInfoDivPoint(Tmp as XMLElement, s as shape)
 		  dim n as integer
 		  
 		  n = Val(Tmp.GetAttribute("Id0"))
@@ -4250,6 +4250,10 @@ Protected Class Shape
 		  constructedBy.data.append Point(objects.getshape(n))
 		  constructedBy.data.append Val(Tmp.GetAttribute("NDivP"))
 		  constructedBy.data.append Val(Tmp.GetAttribute("DivP"))
+		  if s isa Lacet then
+		    constructedBy.data.append val(Tmp.GetAttribute("Side"))
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 

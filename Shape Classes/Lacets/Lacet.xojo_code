@@ -791,8 +791,9 @@ Inherits Shape
 		  end if
 		  
 		  
-		  'Lacet(self).
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  if hybrid then'Lacet(self).
+		    coord.CreateExtreAndCtrlPoints(ori)
+		  end if
 		  'elseif not self isa bipoint then
 		  'coord.CreateExtreAndCtrlPoints(ori)
 		  'end if

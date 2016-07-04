@@ -555,7 +555,7 @@ Inherits Liste
 		  dim i as integer
 		  dim o as shape
 		  
-		  tracept = false
+		  'tracept = false
 		  for i=1 to count-1
 		    o = GetPlan(i)
 		    if o <> nil then

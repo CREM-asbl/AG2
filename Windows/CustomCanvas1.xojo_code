@@ -177,6 +177,7 @@ Inherits Canvas
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(false,new couleur(col))
 		      currentoper = colorchange(currentcontent.currentoperation)
+		      colorchange(currentoper).icot = -1
 		      EndOperMenuContext
 		    end if
 		  case Dico.Value("ToolsOpq")
@@ -629,7 +630,6 @@ Inherits Canvas
 		  dim op As operation
 		  
 		  
-		  
 		  if Background = nil or CurrentContent = nil or CurrentContent.GetRepere = nil then
 		    return
 		  end if
@@ -667,7 +667,7 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  Background.graphics.DrawPicture (OffscreenPicture, 0, 0)
+		  Background.graphics.DrawPicture (OffscreenPicture, 0, 0)  'drawobject  ObjectsTraced, 0,0                                 '
 		  refresh
 		  
 		  
@@ -887,6 +887,10 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		nobj As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ObjectsTraced As Group2D
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

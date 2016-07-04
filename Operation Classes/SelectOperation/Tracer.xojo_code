@@ -12,7 +12,9 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  currenthighlightedshape.tracept = not currenthighlightedshape.tracept
-		  
+		  if currenthighlightedshape.tracept then
+		    currentcontent.theobjects.tracept = true
+		  end if
 		End Sub
 	#tag EndMethod
 

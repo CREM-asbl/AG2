@@ -1310,17 +1310,29 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub MoveTo(d as BasicPoint)
-		  
-		  
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
 		  if d <> nil then
 		    bpt = d                       'On déplace même les points modifiés
 		    if labs.count = 1 and not(labs.item(0).LockRight and labs.item(0).LockBottom) then
 		      labs.item(0).SetPosition
 		    end if
-		    if tracept then
-		      Trace.append d
-		    end if
+		    'if tracept then
+		    'if can.ObjectsTraced = nil then
+		    'can.ObjectsTraced = new Group2D
+		    'can.ObjectsTraced.border = 100
+		    'can.objectsTraced.bordercolor = bleu
+		    'can.objectstraced.x = can.rep.origine.x
+		    'can.objectstraced.y = can.rep.origine.y
+		    'end if
+		    'rsk.Border = 100
+		    'rsk.Bordercolor = bleu
+		    'rsk.fillcolor = bleu
+		    'rsk.fill = 100
+		    'rsk.x = 0
+		    'rsk.y = 0
+		    'can.ObjectsTraced.append rsk
+		    ''Trace.append d
+		    'end if
 		  end if
 		  
 		End Sub

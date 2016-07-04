@@ -3160,11 +3160,8 @@ Protected Class Figure
 		    if sh isa arc then
 		      Arc(sh).computearcangle
 		    end if
-		    if sh isa circle then
+		    if sh.hybrid then
 		      sh.coord.CreateExtreAndCtrlPoints(sh.ori)
-		    end if
-		    if sh isa lacet then
-		      Lacet(sh).coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
 		  next
 		  

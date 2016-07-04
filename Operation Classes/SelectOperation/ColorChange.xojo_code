@@ -58,7 +58,7 @@ Inherits SelectOperation
 		          newfill = 100
 		        end if
 		        s.FixeCouleurFond Newcolor, newfill
-		        's.tsp = false
+		        s.tsp = false
 		      end if
 		    next
 		  end if
@@ -169,11 +169,8 @@ Inherits SelectOperation
 		  SelectIdForms(EL)
 		  n = tempshape.count-1
 		  EL1 = XMLElement(EL.child(1))
-		  r = Val(EL1.GetAttribute(Dico.Value("Rouge")))
-		  g = Val(EL1.GetAttribute(Dico.Value("Vert")))
-		  b = Val(EL1.GetAttribute(Dico.Value("Bleu")))
-		  newcolor = new couleur(r,g,b)
-		  newfill = val(EL1.GetAttribute("Newfill"))
+		  newcolor = new couleur(EL1)
+		  newfill = val(EL.GetAttribute("Newfill"))
 		  icot = Val(EL.getattribute("Icot"))
 		  
 		  for i = 0 to n
@@ -203,7 +200,7 @@ Inherits SelectOperation
 		  nmax = computensidemax
 		  
 		  redim OldColors(n,nmax)
-		  redim oldfills(n-1)
+		  redim oldfills(n)
 		  
 		  if icot <> -1 then
 		    s = tempshape.item(0)
@@ -293,6 +290,7 @@ Inherits SelectOperation
 		          EL1.appendchild Oldcolors(i,0).XMLPutInContainer(Doc, "OldColor")
 		        end if
 		      else
+		        EL1.appendchild Oldcolors(i,0).XMLPutInContainer(Doc, "OldColor")
 		        EL1.SetAttribute("Fill", str(OldFills(i)))
 		      end if
 		      EL.appendchild EL1
@@ -335,11 +333,7 @@ Inherits SelectOperation
 		  if icot <> -1 then 
 		    s = tempshape.item(0)
 		    EL2 = XMLElement(EL1.child(0))
-		    r = Val(EL2.GetAttribute(Dico.Value("Rouge")))
-		    g = Val(EL2.GetAttribute(Dico.Value("Vert")))
-		    b = Val(EL2.GetAttribute(Dico.Value("Bleu")))
-		    c = new Couleur(r,g,b)
-		    s.colcotes(icot) = c
+		    s.colcotes(icot) = new Couleur(EL2)
 		  else
 		    for i = 0 to n
 		      s = tempshape.item(i)
@@ -348,19 +342,17 @@ Inherits SelectOperation
 		        if s isa Lacet then
 		          for j = 0 to s.npts-1
 		            EL3 = XMLElement(EL2.child(j))
-		            r = Val(EL3.GetAttribute(Dico.Value("Rouge")))
-		            g = Val(EL3.GetAttribute(Dico.Value("Vert")))
-		            b = Val(EL3.GetAttribute(Dico.Value("Bleu")))
-		            c = new Couleur(r,g,b)
-		            lacet(s).colcotes(j) = c
+		            lacet(s).colcotes(j) =new Couleur(EL2)
 		          next
 		        else
-		          s.FixeCouleurTrait c, s.border
+		          s.FixeCouleurTrait new couleur(EL2), s.border
 		        end if
 		      else
+		        EL3 = XMLElement(EL2.child(j))
+		        c = new Couleur(EL2)
 		        f = Val(EL2.GetAttribute("Fill"))
 		        s.FixeCouleurFond c, f
-		        's.tsp = false
+		        s.tsp = false
 		      end if
 		    next
 		  end if
