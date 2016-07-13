@@ -51,7 +51,7 @@ Begin Window WorkWindow
       lastclickticks  =   0
       lastclickx      =   0
       lastclicky      =   0
-      Left            =   119
+      Left            =   120
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -68,7 +68,7 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       TabStop         =   True
       tit             =   ""
-      Top             =   7
+      Top             =   0
       Transparent     =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -2664,9 +2664,9 @@ End
 	#tag Method, Flags = &h0
 		Sub setcross()
 		  if backcolor = blanc then
-		    mycanvas1.mousecursor = cross
+		    can.mousecursor = cross
 		  else
-		    mycanvas1.mousecursor = whitecross
+		    can.mousecursor = whitecross
 		  end if
 		End Sub
 	#tag EndMethod
@@ -3092,7 +3092,7 @@ End
 		    end select
 		    refreshtitle
 		    if index <> 0 then
-		      mycanvas1.mousecursor = System.Cursors.StandardPointer
+		      can.mousecursor = System.Cursors.StandardPointer
 		    else
 		      wnd.setcross
 		    end if

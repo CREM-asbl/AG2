@@ -21,8 +21,52 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub fixecouleurs(s as shape)
+		  dim loc, i, n, b, f as integer
+		  
+		  b = s.border
+		  f= s.fill
+		  if b = 0 then
+		    b = 100
+		  end if
+		  
+		  
+		  if s.tracept then
+		    updatebordercolor (bleu,b)
+		  elseif s.hidden and s.highlighted Then
+		    updatebordercolor(config.HighlightColor.col, b)
+		  elseif s.hidden Then
+		    updatebordercolor(cyan, b)
+		  elseif s.highlighted  then
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.selected  then
+		    updatebordercolor(s.BorderColor.col, b)
+		  elseif s.isinconstruction then
+		    updatebordercolor(config.WeightlessColor.col,b)
+		  else
+		    updatebordercolor(s.BorderColor.col,b)
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub fixeepaisseurs(s as shape)
+		  '
+		  if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
+		    'updateborderwidth(2*s.borderwidth)
+		    item(0).borderwidth = 2*s.borderwidth
+		  else
+		    'updateborderwidth(s.borderwidth)
+		    item(0).borderwidth = s.borderwidth
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub paint(g As graphics)
-		  g.drawobject self, self.x, self.y
+		  g.drawobject item(0), x, y
 		End Sub
 	#tag EndMethod
 
@@ -43,7 +87,20 @@ Inherits NSkull
 		  item(0).y2=q.y
 		  
 		  fixecouleurs(s)
-		  
+		  fixeepaisseurs(s)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatebordercolor(col as color, c as double)
+		  item(0).bordercolor = col
+		  item(0).border = c
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updateborderwidth(d as double)
+		  item(0).borderwidth = d
 		End Sub
 	#tag EndMethod
 

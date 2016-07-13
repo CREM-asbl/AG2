@@ -750,7 +750,7 @@ Protected Class WindContent
 		    CreateHisto
 		  end if
 		  
-		  if FiHisto <> nil then
+		  if FiHisto <> nil and TotalOperation >1 then
 		    fileStream=FiHisto.createTextFile
 		    if fileStream=nil then
 		      MsgBox Dico.Value("ErrorOnSave")

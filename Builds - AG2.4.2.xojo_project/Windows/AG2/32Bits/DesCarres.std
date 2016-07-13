@@ -1,0 +1,108 @@
+<Formes_Standard>
+<Famille Nom ="9Carres">
+<Couleur Rouge="255" Vert="0" Bleu="0"/>
+<Forme Nom="Carre1">
+		<Arete Longueur="0.2" Angle="0"/>
+		<Arete Longueur="0.2" Angle="90"/>
+		<Arete Longueur="0.2" Angle="90"/>
+</Forme>
+<Forme Nom="Carre2">
+		<Arete Longueur="0.8" Angle="0"/>
+		<Arete Longueur="0.8" Angle="90"/>
+		<Arete Longueur="0.8" Angle="90"/>
+</Forme>
+<Forme Nom="Carre3">
+		<Arete Longueur="1.4" Angle="0"/>
+                                    <Arete Longueur="1.4" Angle="90"/>
+		<Arete Longueur="1.4" Angle="90"/>
+</Forme>
+<Forme Nom="Carre4">
+		<Arete Longueur="1.6" Angle="0"/>
+		<Arete Longueur="1.6" Angle="90"/>
+		<Arete Longueur="1.6" Angle="90"/>
+</Forme>
+<Forme Nom="Carre5">
+		<Arete Longueur="1.8" Angle="0"/>
+		<Arete Longueur="1.8" Angle="90"/>
+		<Arete Longueur="1.8" Angle="90"/>
+</Forme>
+<Forme Nom="Carre6">
+		<Arete Longueur="2" Angle="0"/>
+		<Arete Longueur="2" Angle="90"/>
+		<Arete Longueur="2" Angle="90"/>
+</Forme>
+<Forme Nom="Carre7">
+		<Arete Longueur="2.8" Angle="0"/>
+		<Arete Longueur="2.8" Angle="90"/>
+		<Arete Longueur="2.8" Angle="90"/>
+</Forme>
+<Forme Nom="Carre8">
+		<Arete Longueur="3" Angle="0"/>
+		<Arete Longueur="3" Angle="90"/>
+		<Arete Longueur="3" Angle="90"/>
+</Forme>
+<Forme Nom="Carre9">
+		<Arete Longueur="3.6" Angle="0"/>
+		<Arete Longueur="3.6" Angle="90"/>
+		<Arete Longueur="3.6" Angle="90"/>
+</Forme>
+</Famille>
+<Famille Nom ="11Carres">
+<Couleur Rouge="255" Vert="255" Bleu="0"/>
+<Forme Nom="Carre1">
+		<Arete Longueur="0.45" Angle="0"/>
+		<Arete Longueur="0.45" Angle="90"/>
+		<Arete Longueur="0.45" Angle="90"/>
+</Forme>
+<Forme Nom="Carre2">
+		<Arete Longueur="0.8" Angle="0"/>
+		<Arete Longueur="0.8" Angle="90"/>
+		<Arete Longueur="0.8" Angle="90"/>
+</Forme>
+<Forme Nom="Carre3">
+		<Arete Longueur="1.05" Angle="0"/>
+		<Arete Longueur="1.05" Angle="90"/>
+		<Arete Longueur="1.05" Angle="90"/>
+</Forme>
+<Forme Nom="Carre4">
+		<Arete Longueur="1.25" Angle="0"/>
+		<Arete Longueur="1.25" Angle="90"/>
+		<Arete Longueur="1.25" Angle="90"/>
+</Forme>
+<Forme Nom="Carre5">
+		<Arete Longueur="1.7" Angle="0"/>
+		<Arete Longueur="1.7" Angle="90"/>
+		<Arete Longueur="1.7" Angle="90"/>
+</Forme>
+<Forme Nom="Carre6">
+		<Arete Longueur="2.05" Angle="0"/>
+		<Arete Longueur="2.05" Angle="90"/>
+		<Arete Longueur="2.05" Angle="90"/>
+</Forme>
+<Forme Nom="Carre7">
+		<Arete Longueur="2.15" Angle="0"/>
+		<Arete Longueur="2.15" Angle="90"/>
+		<Arete Longueur="2.15" Angle="90"/>
+</Forme>
+<Forme Nom="Carre8">
+		<Arete Longueur="2.85" Angle="0"/>
+		<Arete Longueur="2.85" Angle="90"/>
+		<Arete Longueur="2.85" Angle="90"/>
+</Forme>
+<Forme Nom="Carre9">
+		<Arete Longueur="3.85" Angle="0"/>
+		<Arete Longueur="3.85" Angle="90"/>
+		<Arete Longueur="3.85" Angle="90"/>
+</Forme>
+<Forme Nom="Carre10">
+		<Arete Longueur="3.9" Angle="0"/>
+		<Arete Longueur="3.9" Angle="90"/>
+		<Arete Longueur="3.9" Angle="90"/>
+</Forme>
+<Forme Nom="Carre11">
+		<Arete Longueur="4.95" Angle="0"/>
+		<Arete Longueur="4.95" Angle="90"/>
+		<Arete Longueur="4.95" Angle="90"/>
+</Forme>
+</Famille>
+</Formes_Standard>

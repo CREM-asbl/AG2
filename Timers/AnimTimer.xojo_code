@@ -90,10 +90,6 @@ Inherits Timer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		can As CustomCanvas1
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		M As RotationMatrix
 	#tag EndProperty
 

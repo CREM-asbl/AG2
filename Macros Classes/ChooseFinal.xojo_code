@@ -191,7 +191,6 @@ Inherits MultipleSelectOperation
 		    s.borderwidth = 2
 		    if s isa point then
 		      s.fixecouleurfond(red,100)
-		      s.nsk.scale=2
 		    end if
 		  case 1
 		    s.fixecouleurtrait(black,100)

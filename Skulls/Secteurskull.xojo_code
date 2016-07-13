@@ -8,8 +8,7 @@ Inherits NSkull
 		  
 		  dim ars as arcshape
 		  
-		  'CC = new Group2D
-		  'GCC = Group2D(CC)
+		  
 		  ref = p
 		  x = 0
 		  y = 0
@@ -24,23 +23,9 @@ Inherits NSkull
 		    cs.Y2 = 0
 		    cs.border = 0
 		    cs.fill = 0
-		    'GCC.append cs
 		  next
 		  
-		  'ars =new arcshape
-		  '
-		  'diag = can.width^2
-		  'diag = diag + can.height^2
-		  'diag = sqrt(diag)
-		  '
-		  'ars.width = 2*diag
-		  'ars.height = 2*diag
-		  'Ars.Startangle = 0
-		  'Ars.Arcangle = 0
-		  'ars.border = 0
-		  'ars.fill=0
-		  '
-		  'append ars
+		  
 		End Sub
 	#tag EndMethod
 
@@ -70,9 +55,6 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub Updateangles(ang as double, start as double)
-		  'dim GCC as Group2D
-		  
-		  'GCC = Group2D(CC)
 		  
 		  
 		  ArcShape(item(2)).Startangle = start
@@ -100,10 +82,10 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub UpdateBorderwidth(n as integer)
-		  'dim GCC as Group2D
+		  
 		  dim i as integer
 		  
-		  'GCC= Group2D(CC)
+		  
 		  
 		  for i = 0 to 1
 		    curveshape(item(i)).borderwidth= n
@@ -115,11 +97,6 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub UpdateFillColor(c as color, f as integer)
 		  
-		  'dim GCC as Group2D
-		  
-		  
-		  'GCC= Group2D(CC)
-		  
 		  
 		  arcshape(item(2)).fillcolor = c
 		  arcshape(item(2)).fill = f
@@ -130,9 +107,6 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub updatesommet(n as integer, bp as basicPoint)
-		  'dim GCC as Group2D
-		  
-		  'GCC= Group2D(CC)
 		  
 		  select case n
 		  case 0

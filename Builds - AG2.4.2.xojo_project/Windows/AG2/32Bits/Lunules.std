@@ -1,0 +1,41 @@
+<Formes_Standard>
+<Famille Nom ="Lunules convexes">
+<Couleur Rouge="255" Vert="0" Bleu="0"/>
+<Forme Nom="Lunule_mince">
+		<Arete Longueur="0.3" Angle="75"/>
+		<Arete Longueur="0.3" Angle="6" Repete="5"/>
+		<Arete Longueur="0.3" Angle="150"/>
+		<Arete Longueur="0.3" Angle ="6" Repete="4"/>
+</Forme>
+<Forme Nom="Lunule_epaisse">
+                 		<Arete Longueur="0.3" Angle="60"/>
+		<Arete Longueur="0.3" Angle="6" Repete="10"/>
+		<Arete Longueur="0.3" Angle="120"/>
+		<Arete Longueur="0.3" Angle ="6" Repete="9"/>
+</Forme>
+</Famille>
+<Famille Nom ="Lunules concaves">
+<Couleur Rouge="255" Vert="255" Bleu="0"/>
+<Forme Nom="Lunule_mince">
+		<Arete Longueur="0.3" Angle="105"/>
+		<Arete Longueur="0.3" Angle="-6" Repete="5"/>
+		<Arete Longueur="0.5" Angle="105"/>
+                                   <Arete Longueur="0.3" Angle="105"/>
+		<Arete Longueur="0.3" Angle ="-6" Repete="5"/>
+</Forme>
+<Forme Nom="Lunule_epaisse">
+                 		<Arete Longueur="0.3" Angle="120"/>
+		<Arete Longueur="0.3" Angle="-6" Repete="10"/>
+		<Arete Longueur="1.5" Angle="120"/>
+		<Arete Longueur="0.3" Angle="120"/>
+		<Arete Longueur="0.3" Angle ="-6" Repete="10"/>
+</Forme>
+</Famille>
+<Famille Nom ="Cercles concaves">
+<Couleur Rouge="0" Vert="255" Bleu="0"/>
+<Forme Nom="Rayon_1">
+		<Arete Longueur="0.3" Angle="6" Repete="60"/>
+</Forme>
+</Famille>
+
+</Formes_Standard>

@@ -151,6 +151,48 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub fixecouleurs(s as shape)
+		  dim loc, i, n, b, f as integer
+		  
+		  b = s.border
+		  f= s.fill
+		  if b = 0 then
+		    b = 100
+		  end if
+		  
+		  
+		  if s.hidden or s.tsp  then
+		    updatefillcolor(s.fillcolor.col,0)
+		    updatebordercolor(s.bordercolor.col,0)
+		  else
+		    updatefillcolor(s.fillcolor.col,f)
+		    updatebordercolor(s.bordercolor.col,b)
+		  end if
+		  currentcurve = 0
+		  for i = 0 to s.npts-1
+		    if s.hidden Then
+		      updatecurvecolor(s,i, config.HideColor.col,b)
+		    elseif s.highlighted then
+		      n = s.getindexside
+		      if n = -1 or n = i then
+		        updatecurvecolor(s,i, config.HighlightColor.col,b)
+		      else
+		        updatecurvecolor(s,i,  lacet(s).colcotes(i).col,b)
+		      end if
+		    elseif s.isinconstruction then
+		      'updatefillcolor(config.Weightlesscolor.col,0)
+		      updatecurvecolor(s,i , config.WeightlessColor.col, 100)
+		    else
+		      updatecurvecolor(s,i, lacet(s).colcotes(i).col, b)
+		    end if
+		  next
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetCurve(n as integer) As curveshape
 		  return item(n)
 		End Function

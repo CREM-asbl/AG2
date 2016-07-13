@@ -23,62 +23,39 @@ Inherits FigureShape
 		    b = 100
 		  end if
 		  
-		  if s isa lacet then
-		    if s.hidden or s.tsp  then
-		      updatefillcolor(s.fillcolor.col,0)
-		      updatebordercolor(s.bordercolor.col,0)
-		    else
-		      updatefillcolor(s.fillcolor.col,f)
-		      updatebordercolor(s.bordercolor.col,b)
-		    end if
-		    currentcurve = 0
-		    for i = 0 to s.npts-1
-		      if s.hidden Then
-		        updatecurvecolor(s,i, config.HideColor.col,b)
-		      elseif s.highlighted then
-		        n = s.getindexside
-		        if n = -1 or n = i then
-		          updatecurvecolor(s,i, config.HighlightColor.col,b)
-		        else
-		          updatecurvecolor(s,i,  lacet(s).colcotes(i).col,b)
-		        end if
-		      elseif s.isinconstruction then
-		        'updatefillcolor(config.Weightlesscolor.col,0)
-		        updatecurvecolor(s,i , config.WeightlessColor.col, 100)
-		      else
-		        updatecurvecolor(s,i, lacet(s).colcotes(i).col, b)
-		      end if
-		    next
+		  
+		  if s.tracept then
+		    updatebordercolor (bleu,b)
+		  elseif s.hidden and s.highlighted Then
+		    updatebordercolor(config.HighlightColor.col, b)
+		    updatefillcolor(s.fillcolor.col,0)
+		  elseif s.hidden Then
+		    updatebordercolor(cyan, b)
+		    updatefillcolor(s.fillcolor.col,0)
+		  elseif s.tsp and s.Highlighted then
+		    updatefillcolor(s.fillColor.col,0)
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.tsp then
+		    updatefillcolor(s.fillColor.col,0)
+		    updatebordercolor(s.BorderColor.col,b)
+		  elseif s.highlighted and s.selected then
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.highlighted  then
+		    updatefillcolor(s.fillColor.col,f)
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.selected and s.fillcolor.equal(white) then
+		    updatebordercolor(s.BorderColor.col, b)
+		  elseif s.isinconstruction then
+		    updatefillcolor(config.Weightlesscolor.col,0)
+		    updatebordercolor(config.WeightlessColor.col,b)
 		  else
-		    if s.tracept then
-		      updatebordercolor (bleu,b)
-		    elseif s.hidden and s.highlighted Then
-		      updatebordercolor(config.HighlightColor.col, b)
-		      updatefillcolor(s.fillcolor.col,0)
-		    elseif s.hidden Then
-		      updatebordercolor(cyan, b)
-		      updatefillcolor(s.fillcolor.col,0)
-		    elseif s.tsp and s.Highlighted then
-		      updatefillcolor(s.fillColor.col,0)
-		      updatebordercolor(config.HighlightColor.col,b)
-		    elseif s.tsp then
-		      updatefillcolor(s.fillColor.col,0)
-		      updatebordercolor(s.BorderColor.col,b)
-		    elseif s.highlighted and s.selected then
-		      updatebordercolor(config.HighlightColor.col,b)
-		    elseif s.highlighted  then
-		      updatefillcolor(s.fillColor.col,f)
-		      updatebordercolor(config.HighlightColor.col,b)
-		    elseif s.selected and s.fillcolor.equal(white) then
-		      updatebordercolor(s.BorderColor.col, b)
-		    elseif s.isinconstruction then
-		      updatefillcolor(config.Weightlesscolor.col,0)
-		      updatebordercolor(config.WeightlessColor.col,b)
-		    else
-		      updatefillcolor(s.Fillcolor.col,f)
-		      updatebordercolor(s.BorderColor.col,b)
-		    end if
+		    updatefillcolor(s.Fillcolor.col,f)
+		    updatebordercolor(s.BorderColor.col,b)
 		  end if
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -270,6 +247,31 @@ Inherits FigureShape
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Note, Name = Explications
+		
+		Les "skulls" sont les "squelettes" des différentes formes géométriques, c'est-à-dire les objets informatiques de bas niveau qui sont 
+		réellement dessinés.
+		Lors de chaque exécution d'une routine "paint", les skulls doivent être mis à jour du point de vue des coordonnées de chacun des sommets,
+		(ou autres points significatifs), des couleurs et de l'épaisseur de chaque côté.  Les informations nécessaires sont extraites des objets de haut niveau correspondants.
+		Tous les côtés d'une forme ont même épaisseur mais pas nécessairement même épaisseur.
+		
+		Il y a deux de classes de skulls. Toutes sont des sous-classes de la classe Object2D du langage RealBasic.
+		
+		1ere famille de classes de skulls
+		
+		Object2D --- FigureShape --- NSkull ---- ArcSkull  ------- Utilisé pour les classes ---- Arc, FreeCircle, StdCircle
+		                                                                ---- CubeSkull ----------------------------------  Cube
+		                                                                ---- Lskull     ------------------------------------- Bande,  DSect, Lacet, Polreg, Polygon (et sous-classes,
+		                                                                                                                                                     Polyqcq, Standardölygon, etc, sauf Cube)                                                                                                                                                  
+		                                                                ---- SecteurSkull --------------------------------  Secteur
+		                                                                ---- SegSkull ------------------------------------  Droite
+		
+		2eme famille de classes de skulls 
+		
+		Object2D ----OvalShape  ---- OvalSkull ---------------------------------------------- Point
+	#tag EndNote
 
 
 	#tag Property, Flags = &h0

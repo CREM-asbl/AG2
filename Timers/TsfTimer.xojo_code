@@ -19,7 +19,7 @@ Inherits Timer
 		        s.childs(j).modified = true
 		      next
 		      if s.Hybrid then
-		        Lacet(s).coord.MoveExtreCtrl(M1)
+		        s.coord.MoveExtreCtrl(M1)
 		      end if
 		    next
 		    can.RefreshBackground

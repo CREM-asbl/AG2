@@ -29,7 +29,7 @@ Protected Class Transformation
 		      s2.drapori = true
 		    end if
 		    if s2.Hybrid then
-		      Lacet(s2).coord.MoveExtreCtrl(M)
+		      AppliquerExtreCtrl (s1,s2)'coord.MoveExtreCtrl(M)
 		    end if
 		  else
 		    Point(s2).moveto M*Point(s1).bpt
