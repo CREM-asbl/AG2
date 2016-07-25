@@ -64,7 +64,7 @@ Inherits NSkull
 		  
 		  if nbp.curved(i) > 0 then
 		    tbp = new TriBPoint(nbp.centres(i), nbp.tab(i), nbp.tab((i+1) mod nbp.taille))
-		    tbp.CreateExtreAndCtrlPoints(tbp.ori)
+		    tbp.CreateExtreAndCtrlPoints(skullof.ori)
 		    
 		    m= 2*ncurv
 		    for j =0 to 1
@@ -167,6 +167,9 @@ Inherits NSkull
 		  else
 		    updatefillcolor(s.fillcolor.col,f)
 		    updatebordercolor(s.bordercolor.col,b)
+		  end if
+		  if s isa Bande then
+		    return
 		  end if
 		  currentcurve = 0
 		  for i = 0 to s.npts-1

@@ -129,7 +129,9 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  
+		  if sctxt isa polygon then
+		    base.append (New MenuItem(dico.value("AutoIntersec")))
+		  end if
 		  Return True//display the contextual menu
 		  
 		End Function
@@ -159,8 +161,10 @@ Inherits Canvas
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(true,new couleur(col))
 		      currentoper = colorchange(currentcontent.currentoperation)
-		      if sctxt isa polygon then
+		      if sctxt isa Lacet then
 		        colorchange(currentoper).icot = icot
+		      else
+		        colorchange(currentoper).icot = -1
 		      end if
 		      EndOperMenuContext
 		    end if
@@ -228,6 +232,10 @@ Inherits Canvas
 		    currentoper = Modifier(currentcontent.currentoperation)
 		    ClearOffscreen
 		    Modifier(currentoper).Animer(point(sctxt))
+		  case Dico.value("AutoIntersec")
+		    currentoper = new AutoIntersec(polygon(sctxt))
+		    AutoIntersec(currentoper).ComputeInterLines
+		    AutoIntersec(currentoper).Paint(Background.graphics)
 		  end select
 		  
 		  ctxt = false

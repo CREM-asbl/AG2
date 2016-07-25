@@ -174,20 +174,18 @@ Inherits FigureShape
 		  
 		  if s isa lacet then
 		    lac = lacet(s)
+		    if lac.coord.curved(i) = 0 then
+		      lac.nsk.item(currentcurve).bordercolor = col
+		      lac.nsk.item(currentcurve).border = c
+		      currentcurve = currentcurve+1
+		    else
+		      for n = 0 to 2
+		        lac.nsk.item(currentcurve+n).bordercolor = col
+		        lac.nsk.item(currentcurve+n).border = c
+		      next
+		      currentcurve = currentcurve+3
+		    end if
 		  end if
-		  
-		  if lac.coord.curved(i) = 0 then
-		    lac.nsk.item(currentcurve).bordercolor = col
-		    lac.nsk.item(currentcurve).border = c
-		    currentcurve = currentcurve+1
-		  else
-		    for n = 0 to 2
-		      lac.nsk.item(currentcurve+n).bordercolor = col
-		      lac.nsk.item(currentcurve+n).border = c
-		    next
-		    currentcurve = currentcurve+3
-		  end if
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -264,7 +262,7 @@ Inherits FigureShape
 		Object2D --- FigureShape --- NSkull ---- ArcSkull  ------- Utilisé pour les classes ---- Arc, FreeCircle, StdCircle
 		                                                                ---- CubeSkull ----------------------------------  Cube
 		                                                                ---- Lskull     ------------------------------------- Bande,  DSect, Lacet, Polreg, Polygon (et sous-classes,
-		                                                                                                                                                     Polyqcq, Standardölygon, etc, sauf Cube)                                                                                                                                                  
+		                                                                                                                                                     Polyqcq, Standardpölygon, etc, sauf Cube)                                                                                                                                                  
 		                                                                ---- SecteurSkull --------------------------------  Secteur
 		                                                                ---- SegSkull ------------------------------------  Droite
 		

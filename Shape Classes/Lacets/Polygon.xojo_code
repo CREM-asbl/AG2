@@ -401,6 +401,11 @@ Inherits Lacet
 		  
 		  shape.paint(g)
 		  
+		  if autointer <> nil then
+		    autointer.paint(g)
+		  end if
+		  
+		  
 		  if not hidden and not isinconstruction and Ti <> nil then
 		    for i = 0 to npts-1
 		      PaintTipOnSide g, i
@@ -687,6 +692,10 @@ Inherits Lacet
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
+
+	#tag Property, Flags = &h0
+		autointer As autointersec
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		prol() As Boolean

@@ -79,7 +79,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFFD56400
+      FillColor       =   &c00FF8040
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648

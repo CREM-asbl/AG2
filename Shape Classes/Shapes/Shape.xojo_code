@@ -2149,9 +2149,6 @@ Protected Class Shape
 		  for i = 0 to Ubound(Childs)
 		    Childs(i). Move(M)
 		  next
-		  if (self isa circle) or Hybrid then
-		    coord.MoveExtreCtrl(M)
-		  end if
 		  Mmove = M
 		  EndMove
 		End Sub
@@ -2349,104 +2346,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldfixecouleurs()
-		  'dim i, n as integer
-		  'dim cs as curveshape
-		  '
-		  'if (self isa  polygon or self isa bande ) and not self.hybrid then
-		  'if hidden or tsp or (self.std and self.isinconstruction and wnd.stdflag) then
-		  'nsk.updatefillcolor(fillcolor.col,0)
-		  'else
-		  'nsk.updatefillcolor(fillcolor.col,fill)
-		  'end if
-		  '
-		  'for i = 0 to LSkull(nsk).count-1
-		  'cs = Lskull(nsk).item(i)
-		  'if not hidden and currentcontent.currentoperation isa imprimer then
-		  'if self isa polygon  then
-		  'cs.bordercolor = colcotes(i).col
-		  'else
-		  'cs.bordercolor = self.bordercolor.col
-		  'end if
-		  'elseif hidden and highlighted then
-		  'cs.bordercolor = Config.highlightcolor.col
-		  'cs.border = 100
-		  'elseif hidden Then
-		  'cs.bordercolor = Config.HideColor.col
-		  'cs.border = 100
-		  'elseif highlighted then
-		  'n = getindexside
-		  'if n = -1 or n = i then
-		  'cs.bordercolor = Config.highlightcolor.col
-		  'cs.border = 100
-		  'else
-		  'cs.bordercolor = colcotes(i).col
-		  'cs.border = 100
-		  'end if
-		  'cs.fill = 0
-		  'elseif isinconstruction  then
-		  'cs.bordercolor = Config.Weightlesscolor.col
-		  'cs.border = 100
-		  'elseif selected then
-		  'cs.bordercolor = Config.bordercolor.col
-		  'cs.border = 100
-		  'else
-		  'if self isa polygon  then
-		  'cs.bordercolor = colcotes(i).col
-		  'elseif self isa bande then
-		  'cs.bordercolor = self.bordercolor.col
-		  'else
-		  'cs.bordercolor = Config.bordercolor.col
-		  'end if
-		  'cs.border = 100
-		  'end if
-		  'next
-		  '
-		  'else
-		  'if hidden and highlighted Then
-		  'nsk.updatebordercolor(Config.highlightcolor.col, 100)
-		  'nsk.updatefillcolor(fillcolor.col,0)
-		  'elseif hidden Then
-		  'nsk.updatebordercolor(cyan, 100)
-		  'nsk.updatefillcolor(fillcolor.col,0)
-		  'elseif tsp and Highlighted then
-		  'nsk.updatefillcolor(fillColor.col,0)
-		  'nsk.updatebordercolor(Config.highlightcolor.col,100)
-		  'elseif tsp then
-		  'nsk.updatefillcolor(fillColor.col,0)
-		  'nsk.updatebordercolor(BorderColor.col,100)
-		  'elseif highlighted and selected then
-		  'nsk.updatebordercolor(Config.highlightcolor.col,100)
-		  'elseif highlighted  then
-		  'nsk.updatefillcolor(fillColor.col,fill)
-		  'nsk.updatebordercolor(Config.highlightcolor.col,100)
-		  'elseif selected and fillcolor.equal(white) then
-		  'nsk.updatebordercolor(BorderColor.col, 100)
-		  'elseif isinconstruction then
-		  'nsk.updatefillcolor(Config.Weightlesscolor.col,0)
-		  'nsk.updatebordercolor(Config.Weightlesscolor.col,100)
-		  'else
-		  'nsk.updatefillcolor(Fillcolor.col,fill)
-		  'nsk.updatebordercolor(BorderColor.col,border)
-		  'end if
-		  'end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldfixeepaisseurs()
-		  '
-		  'if highlighted or isinconstruction  or selected then
-		  'nsk.updateborderwidth(2*borderwidth)
-		  'else
-		  'nsk.updateborderwidth(borderwidth)
-		  'end if
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Ordonner(Byref p as point, byref q as point, byref r as point)
 		  dim m, n(3) ,i,j as integer
 		  
@@ -2611,6 +2510,28 @@ Protected Class Shape
 		  // Les méthodes CreerCopies de AppliquerTSF, SetCopies de Dupliquer et DoOperation de Coller s'en chargent (essayer de les unifier).
 		  //Donc à ne pas insérer dans les routines de création des copies.
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PasteCtrlExe(s as shape)
+		  dim i as integer
+		  
+		  redim coord.centres(ubound(s.coord.centres))
+		  redim coord.curved(ubound(s.coord.curved))
+		  narcs = s.narcs
+		  for i = 0 to ubound(s.coord.centres)
+		    coord.centres(i) = s.coord.centres(i)
+		  next
+		  for i = 0 to ubound(s.coord.ctrl)
+		    coord.ctrl(i) =  s.coord.ctrl(i)
+		  next
+		  for i = 0 to ubound(s.coord.extre)
+		    coord.extre(i) = s.coord.extre(i)
+		  next
+		  for i = 0 to ubound(s.coord.curved)
+		    coord.curved(i) = s.coord.curved(i)
+		  next
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3390,7 +3311,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Transform(M as Matrix)
-		  dim i As  Integer      // Utilisé pour les  mouvements
+		  dim i As  Integer      // Utilisé pour les  mouvements Transform ne déplace pas les points qui sont "modified"
 		  
 		  if M <> nil and M.v1 <> nil then
 		    for i = 0 to npts-1

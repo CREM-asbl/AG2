@@ -89,7 +89,7 @@ Inherits SelectAndDragOperation
 		    elseif loc > 7 then
 		      loc  =(loc-9)*2
 		    end if
-		  elseif s isa polygon or s isa Bande or s isa secteur or s isa Freecircle  then
+		  elseif s isa Lacet or s isa Bande or s isa secteur or s isa Freecircle  then
 		    loc = s.PointOnSide(p)
 		  end if
 		  return s

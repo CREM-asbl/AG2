@@ -11,10 +11,7 @@ Inherits Timer
 		  else
 		    for i=0 to ncop
 		      s=copies.item(i)
-		      s.Transform(M1)
-		      if s isa circle then
-		        circle(s).coord.MoveExtreCtrl(M1)
-		      end if
+		      s.Transform(M1)              
 		      for j = 0 to ubound(s.childs)
 		        s.childs(j).modified = true
 		      next

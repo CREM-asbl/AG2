@@ -66,6 +66,7 @@ Inherits TsfTimer
 		  if pas = 0 then
 		    for i = 0 to ncop
 		      s = copies.item(i)
+		      s.ori = - s.ori
 		      s.unhighlight
 		      if s isa point and point(s).pointsur.count = 1 then
 		        point(s).puton Point(s).pointsur.item(0)

@@ -69,10 +69,11 @@ Inherits MultipleSelectOperation
 		    s1 = tempshape.item(i)
 		    if s1 isa point then
 		      s2 = s1.paste(Objects,Point(s1).bpt)
-		    else
+		    elseif not (s1 isa arc) then  
 		      p=new BasicPoint(0,0)
 		      s2 = s1.paste(Objects,p)
-		      s2.auto = 0
+		    else
+		      s2 = s1.paste(Objects,s1.points(0).bpt)
 		    end if
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i)
@@ -116,9 +117,9 @@ Inherits MultipleSelectOperation
 		      next
 		    next
 		    if tsf.type = 6 then
-		      for i = 0 to copies.count-1
-		        copies.item(i).ori =  -copies.item(i).ori
-		      next
+		      'for i = 0 to copies.count-1
+		      'copies.item(i).ori =  -copies.item(i).ori
+		      'next
 		      dret = new RetTimer(copies,self)
 		    else
 		      dret=new TsfTimer(copies,self)

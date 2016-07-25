@@ -10,17 +10,17 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  startangle = coord.startangle    'GetAngle(Points(0).bpt, Points(1).bpt)
-		  endangle = coord.endangle     'GetAngle(Points(0).bpt, Points(2).bpt)
+		  startangle = coord.startangle    
+		  endangle = coord.endangle    
 		  // startangle et endangle  sont toujours entre 0 et 2 pi
-		  if  abs(endangle-startangle)  >  0.2 then
-		    drapori = true  //on ne peut plus changer l'orientation
-		  end if
 		  if not drapori then
 		    ori = coord.orientation                         'points(0).bpt.orientation(points(1).bpt,points(2).bpt)
 		  end if
-		  arcangle = computeangle(points(2).bpt)
+		  if  abs(endangle-startangle)  >  0.4 and ori <> 0 then
+		    drapori = true  //on ne peut plus changer l'orientation
+		  end if
 		  
+		  arcangle = computeangle(points(2).bpt)
 		  
 		End Sub
 	#tag EndMethod
@@ -115,6 +115,8 @@ Inherits Lacet
 		    arcangle = 0
 		    coord.centres(1) = p
 		  case 1
+		    computeori
+		    coord.CreateExtreAndCtrlPoints(ori)
 		    computeradius
 		    startangle = coord.startangle         'GetAngle(Points(0).bpt, Points(1).bpt)
 		  case 2
@@ -167,6 +169,7 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Function Inside(p as basicPoint) As Boolean
 		  dim a as double
+		  computearcangle
 		  a = computeangle(p)
 		  return abs(a) <= abs(arcangle)
 		End Function

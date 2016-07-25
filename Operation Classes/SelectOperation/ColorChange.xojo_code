@@ -96,7 +96,7 @@ Inherits SelectOperation
 		  if bord then
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if s isa polygon  then
+		      if s isa Lacet  then
 		        index.append polygon(s).pointonside(p)
 		      else
 		        index.append -1
@@ -205,7 +205,7 @@ Inherits SelectOperation
 		  if icot <> -1 then
 		    s = tempshape.item(0)
 		    redim oldcolors(0,0)
-		    OldColors(0,0) = s.colcotes(icot)
+		    OldColors(0,0) = s.Bordercolor  's.colcotes(icot)
 		  else
 		    for i = 0 to n
 		      s = tempshape.item(i)

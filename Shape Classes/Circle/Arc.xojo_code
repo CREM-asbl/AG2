@@ -135,6 +135,8 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Ol as ObjectsList, s as Arc, p as basicPoint)
+		  dim M as Matrix
+		  
 		  shape.Constructor(ol,s)
 		  ncpts = 2
 		  narcs = 1
@@ -144,9 +146,12 @@ Inherits Circle
 		  IndexConstructedPoint = 2   '(clutch)
 		  drapori = s.drapori
 		  ori =s.ori
+		  PasteCtrlExe(s)
 		  createskull(p)
-		  nsk.updatesize(1)
+		  'nsk.updatesize(1)
 		  liberte = 5
+		  M = new TranslationMatrix (p-s.coord.tab(0))
+		  Move(M)
 		  
 		  
 		  
@@ -283,8 +288,8 @@ Inherits Circle
 		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
-		  nsk.fixecouleurs(self)
-		  nsk.fixeepaisseurs(self)
+		  'nsk.fixecouleurs(self)
+		  'nsk.fixeepaisseurs(self)
 		  
 		  for i = 0 to nsk.count-1
 		    g.drawobject nsk.item(i), nsk.x, nsk.y
@@ -426,7 +431,7 @@ Inherits Circle
 		  dim v, mid as BasicPoint
 		  dim M as Matrix
 		  
-		  mid = (Points(2).bpt+Points(1).bpt)/2
+		  mid = (Points(2).bpt+Points(1).bpt)/2.
 		  v = Points(1).bpt-Points(2).bpt
 		  v=v.VecNorPerp
 		  M = new OrthoProjectionMatrix(mid, mid+v)
@@ -486,6 +491,23 @@ Inherits Circle
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = Duplications et autres transfos
+		
+		Arcs: Attention aux copier/coller et aux images par transformation
+		L'image du centre ne doit pas être déplacée de l'ampleur de la translation (si c'en est une) 
+		VOIR dans Coller/DoOperation les lignes que l'on n'applique pas aux arcs.
+		if not (s isa point) and not (s isa arc)  then
+		p0 = p0 - s.Points(0).bpt
+		elseif s isa point then
+		p0 = p0-Point(s).bpt
+		end if
+		Même problème dans "AppliquerTsf à un arc (voir AppliquerTsf/CreerCopies)
+		Essayer d'améliorer cette situation.
+		
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h0

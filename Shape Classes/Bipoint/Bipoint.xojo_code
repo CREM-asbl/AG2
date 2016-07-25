@@ -30,13 +30,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as shape)
 		  Super.constructor(ol,s)
-		  Npts=2
-		  ncpts = 2
-		  fam = s.fam
-		  forme = s.forme
 		  points(0).moveto s.points(0).bpt
-		  points.Append new point(ol, s.points(1).bpt)
-		  setpoint points(1)
 		  
 		End Sub
 	#tag EndMethod

@@ -556,7 +556,7 @@ Inherits Liste
 		  dim o as shape
 		  
 		  'tracept = false
-		  for i=1 to count-1
+		  for i=0 to count-1
 		    o = GetPlan(i)
 		    if o <> nil then
 		      o.PaintAll(g)

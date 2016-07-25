@@ -1,6 +1,6 @@
 #tag Class
 Protected Class Intersec
-Inherits Operation
+Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
 		  dim i1, i2, j1, j2, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider

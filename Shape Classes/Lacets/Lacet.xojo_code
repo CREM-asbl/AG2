@@ -98,23 +98,7 @@ Inherits Shape
 		  dim M as Matrix
 		  
 		  Shape.constructor(ol,s)
-		  redim coord.centres(-1)
-		  redim coord.curved(-1)
-		  redim coord.centres(ubound(s.coord.centres))
-		  redim coord.curved(ubound(s.coord.curved))
-		  narcs = s.narcs
-		  for i = 0 to ubound(s.coord.centres)
-		    coord.centres(i) = s.coord.centres(i)
-		  next
-		  for i = 0 to ubound(s.coord.ctrl)
-		    coord.ctrl(i) =  s.coord.ctrl(i)
-		  next
-		  for i = 0 to ubound(s.coord.extre)
-		    coord.extre(i) = s.coord.extre(i)
-		  next
-		  for i = 0 to ubound(s.coord.curved)
-		    coord.curved(i) = s.coord.curved(i)
-		  next
+		  PasteCtrlExe(s)
 		  CreateSkull(q)
 		  InitCurvesOrders
 		  M = new TranslationMatrix(q)

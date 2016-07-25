@@ -309,6 +309,10 @@ Inherits Operation
 		  dim p as point
 		  // s est l'élément i0 de copies
 		  
+		  if tempshape.count = 1 then
+		    return
+		  end if
+		  
 		  sh = tempshape.item(i0)
 		  if not sh isa point then
 		    for i = 0 to sh.npts-1

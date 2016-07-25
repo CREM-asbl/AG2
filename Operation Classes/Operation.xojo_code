@@ -257,7 +257,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Function Mcany() As integer
-		  return can.MouseCan.y-10
+		  return can.MouseCan.y-10.
 		End Function
 	#tag EndMethod
 
