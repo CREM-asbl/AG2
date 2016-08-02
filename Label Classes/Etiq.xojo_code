@@ -278,11 +278,11 @@ Inherits Label
 		    select case type
 		    case 0
 		      if (chape isa droite and chape =currentcontent.SHUL) or (chape isa polygon and chape = currentcontent.SHUL and loc = currentcontent.IcotUL)  then
-		        dat = "Ref. " + dat
+		        dat = str(1)
 		      end if
 		    case 1
 		      if chape = currentcontent.SHUA  then
-		        dat = "Ref. " + dat
+		        dat = str(1)
 		      end if
 		    end select
 		    g.Drawstring(dat,q.x, q.y)

@@ -287,7 +287,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim Magnetism as integer
+		  dim i, Magnetism as integer
 		  dim np as basicpoint
 		  
 		  if pointmobile = nil then
@@ -310,9 +310,11 @@ Inherits SelectAndDragOperation
 		  figs.createstate("FinalState",pointmobile)
 		  figs.updateoldM
 		  figs.fx1cancel
+		  for i = 0 to figs.count-1
+		    figs.item(i).pointmobile = nil
+		  next
 		  super.endoperation
 		  pointmobile = nil
-		  'currentshape = nil
 		  endpoint = nil
 		End Sub
 	#tag EndMethod
@@ -428,7 +430,8 @@ Inherits SelectAndDragOperation
 		    return
 		  end if
 		  
-		  pointmobile = point(currentshape)
+		  pointmobile = point(currentshape)     // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
+		  //Le deuxiième est introduit dans Figure.update1
 		  currenthighlightedshape = pointmobile
 		  InitFigs
 		  figs.createstate("InitState",pointmobile)

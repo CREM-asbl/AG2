@@ -38,7 +38,7 @@ Inherits Operation
 		    return
 		  end if
 		  
-		  version = FAG.GetAttribute("Version")
+		  version = FAG.GetAttribute("Version") 
 		  v1 = val(NthField(version,".", 1))
 		  v2 = val(NthField(version,".",2))
 		  v3 = val(NthField(version,".",3))
@@ -88,6 +88,7 @@ Inherits Operation
 		  CurrentContent.AddOperation(self)
 		  can.mousecursor = System.Cursors.StandardPointer
 		  can.refreshbackground
+		  wnd.refreshtitle
 		  
 		  
 		End Sub

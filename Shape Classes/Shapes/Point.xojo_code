@@ -813,7 +813,7 @@ Inherits Shape
 		  dim s as shape
 		  dim inter as intersec
 		  
-		  if currentcontent.currentoperation isa modifier and self = fig.pointmobile then
+		  if currentcontent.currentoperation isa modifier and self = modifier(currentcontent.currentoperation).pointmobile then
 		    return
 		  end if
 		  

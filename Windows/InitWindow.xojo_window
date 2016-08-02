@@ -412,7 +412,7 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  Continuer
+		  'Continuer
 		  Quit
 		  
 		End Sub

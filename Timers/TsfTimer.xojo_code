@@ -15,7 +15,7 @@ Inherits Timer
 		      for j = 0 to ubound(s.childs)
 		        s.childs(j).modified = true
 		      next
-		      if s.Hybrid then
+		      if s.Hybrid or s isa circle then
 		        s.coord.MoveExtreCtrl(M1)
 		      end if
 		    next
