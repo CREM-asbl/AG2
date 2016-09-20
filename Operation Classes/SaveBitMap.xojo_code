@@ -22,7 +22,7 @@ Inherits Operation
 		  drx = x1
 		  dry = y1
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
-		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
+		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
 		  EndOperation
 		  
@@ -50,7 +50,7 @@ Inherits Operation
 		  end if
 		  can.RefreshBackground
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
-		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
+		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
 		  
 		End Sub

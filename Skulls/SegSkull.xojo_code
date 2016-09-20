@@ -74,17 +74,31 @@ Inherits NSkull
 		Sub update(s as shape)
 		  dim p, q as BasicPoint
 		  
-		  p =s.getgravitycenter
-		  ref = can.transform(p)
-		  x = ref.x
-		  y = ref.y
-		  
-		  q= can.dtransform(droite(s).extre1-p)
-		  item(0).x=q.x
-		  item(0).y=q.y
-		  q= can.dtransform(droite(s).extre2-p)
-		  item(0).x2=q.x
-		  item(0).y2=q.y
+		  if s isa droite then
+		    p =s.getgravitycenter
+		    ref = can.transform(p)
+		    x = ref.x
+		    y = ref.y
+		    
+		    q= can.dtransform(droite(s).extre1-p)
+		    item(0).x=q.x
+		    item(0).y=q.y
+		    q= can.dtransform(droite(s).extre2-p)
+		    item(0).x2=q.x
+		    item(0).y2=q.y
+		  elseif s isa supphom then
+		    p =s.coord.tab(0)
+		    ref = can.transform(p)
+		    x = ref.x
+		    y = ref.y
+		    
+		    q= can.dtransform(s.coord.tab(1)-p)
+		    item(0).x=q.x
+		    item(0).y=q.y
+		    q= can.dtransform(s.coord.tab(2)-p)
+		    item(0).x2=q.x
+		    item(0).y2=q.y
+		  end if
 		  
 		  fixecouleurs(s)
 		  fixeepaisseurs(s)

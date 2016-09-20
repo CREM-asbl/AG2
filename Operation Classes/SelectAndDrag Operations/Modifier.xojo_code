@@ -430,9 +430,10 @@ Inherits SelectAndDragOperation
 		    return
 		  end if
 		  
-		  pointmobile = point(currentshape)     // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
-		  //Le deuxiième est introduit dans Figure.update1
-		  currenthighlightedshape = pointmobile
+		  // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
+		  //Le deuxième est introduit dans Figure.update1
+		  currenthighlightedshape = point(currentshape)
+		  pointmobile = point(currentshape)
 		  InitFigs
 		  figs.createstate("InitState",pointmobile)
 		  if gGetSpecialkey = 4  then
@@ -627,7 +628,7 @@ Inherits SelectAndDragOperation
 		  can.Mousecursor = system.cursors.wait
 		  
 		  startpoint = p.bpt
-		  pointmobile = p
+		  pointmobile = p 
 		  currentshape = p
 		  InitFigs
 		  if cancel then

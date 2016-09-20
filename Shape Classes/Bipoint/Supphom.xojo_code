@@ -97,18 +97,6 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub UpDateSkull()
-		  'dim pt As BasicPoint
-		  '
-		  'sk.update(can.transform(Points(1).bpt))
-		  'pt = can.dtransform(points(2).bpt-Points(1).bpt)
-		  'segskull(sk).updatesommet(1,pt)
-		  
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Note, Name = Licence
 		

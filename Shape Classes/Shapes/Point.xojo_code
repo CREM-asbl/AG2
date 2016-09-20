@@ -1452,7 +1452,7 @@ Inherits Shape
 		  rsk.update(bpt,2)
 		  if   (wnd.drapshowall or not hidden)  and (not invalid)  and (not deleted)  then
 		    if highlighted or not allparentsnonpointed then
-		      if tracept and g = can.OffscreenPicture.graphics  then
+		      if tracept   then
 		        rsk.updateborderwidth(borderwidth)
 		        rsk.updatecolor(bleu,100)
 		      elseif highlighted then
@@ -1487,28 +1487,16 @@ Inherits Shape
 		    pt.EndConstruction
 		  end if
 		  
-		  if tracept and (modified or currentcontent.currentoperation isa appliquertsf)  then
-		    rsk.bordercolor = bleu
-		    rsk.fillcolor = bleu
-		    can.OffscreenPicture.Graphics.DrawOval  rsk.ref.x, rsk.ref.y, 2, 2
+		  if tracept  and (modified or currentcontent.currentoperation isa appliquertsf)  then
+		    'rsk.updatecolor(bleu,100)
+		    rsk.paint(can.OffscreenPicture.Graphics)
+		    'can.OffscreenPicture.Graphics.DrawObject rsk, rsk.ref.x, rsk.ref.y
 		    'paint(can.OffscreenPicture.Graphics,blue)
 		    currentcontent.theobjects.tracept = true
 		  end if
 		  
 		  if  (not hidden) and  Labs.count = 1 and (not invalid) and (not deleted) and (g <> can.OffscreenPicture.graphics) then
 		    Labs.item(0).Paint(g)
-		  end if
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub paint(g as graphics, c as couleur)
-		  if not invalid then
-		    rsk.updatecolor (c.col,100)
-		    g.drawobject rsk, rsk.ref.x, rsk.ref.y
 		  end if
 		  
 		  
@@ -1664,7 +1652,7 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(parents)
 		    ff0 = parents(i).getsousfigure(parents(i).fig)
-		    ff0.somm.addshape self
+		    ff0.somm.addobject self
 		    figs.addobject parents(i).fig
 		  next
 		  
@@ -2603,101 +2591,92 @@ Inherits Shape
 		  
 		  for i=0 to UBound(ConstructedShapes)
 		    s = Point(ConstructedShapes(i))
-		    select case s.constructedby.Oper
-		    case 3, 5
-		      if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
-		        M1 = Matrix(s.constructedby.data(0))
-		        s.Moveto M1*bpt
-		      end if
-		    case 6
-		      tsf = Transformation(s.constructedby.data(0))
-		      M1 = tsf.M
-		      if M1 <> nil and M1.v1 <> nil then
-		        s.Moveto M1*bpt
-		      end if
-		    case 9
-		      if s.constructedby.shape <> nil then
-		        M1 = Matrix(s.constructedby.data(0))
-		        s.MoveTo M1*bpt
-		      else
-		        for j = 0 to 2 step 2
-		          sh = Point(s.constructedby.data(j))
-		          if sh = self then
-		            M1 = Matrix(s.constructedby.data(j+1))
-		            s.MoveTo M1*bpt
-		          end if
-		        next
-		      end if
-		    case 10
-		      side = s.Numside(0)
-		      s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
-		      if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
-		        s.puton(s.pointsur.item(0),1-location(0))
-		      else
-		        s.puton(s.pointsur.item(0),location(0))
-		      end if
-		    end select
-		    
-		    s.modified = true
-		    s.updateshape
+		    if not s.modified then
+		      select case s.constructedby.Oper
+		      case 3, 5
+		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
+		          M1 = Matrix(s.constructedby.data(0))
+		          s.Moveto M1*bpt
+		        end if
+		      case 6
+		        tsf = Transformation(s.constructedby.data(0))
+		        M1 = tsf.M
+		        if M1 <> nil and M1.v1 <> nil then
+		          s.Moveto M1*bpt
+		        end if
+		      case 9
+		        if s.constructedby.shape <> nil then
+		          M1 = Matrix(s.constructedby.data(0))
+		          s.MoveTo M1*bpt
+		        else
+		          for j = 0 to 2 step 2
+		            sh = Point(s.constructedby.data(j))
+		            if sh = self then
+		              M1 = Matrix(s.constructedby.data(j+1))
+		              s.MoveTo M1*bpt
+		            end if
+		          next
+		        end if
+		      case 10
+		        side = s.Numside(0)
+		        s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
+		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
+		          s.puton(s.pointsur.item(0),1-location(0))
+		        else
+		          s.puton(s.pointsur.item(0),location(0))
+		        end if
+		      end select
+		      
+		      s.modified = true
+		      s.updateshape
+		    end if
 		  next
 		  
 		  if constructedby <> nil and not centerordivpoint then
-		    select case constructedby.Oper
-		    case 3, 5
-		      s = Point(ConstructedBy.Shape)
-		      if not s.modified then
+		    s = Point(ConstructedBy.Shape)
+		    if not s.modified then
+		      select case constructedby.Oper
+		      case 3, 5
 		        M1 = Matrix(constructedby.data(0))
 		        M1 = M1.inv
 		        s.Moveto M1*(self.bpt)
-		        s.modified = true
-		        s.updateshape
-		      end if
-		    case 10
-		      s = Point(ConstructedBy.Shape)
-		      side = s.Numside(0)
-		      if not s.modified then
+		      case 10
+		        side = s.Numside(0)
 		        s.numside(0) = (numside(0)-ConstructedBy.data(0)+s.pointsur.item(0).npts) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
 		        end if
-		        s.modified = true
-		        s.updateshape
-		      end if
-		    case 9
-		      if constructedby.shape <> nil then
-		        s = Point(ConstructedBy.Shape)
-		        if not s.modified then
+		      case 9
+		        if constructedby.shape <> nil then
 		          M1 = Matrix(constructedby.data(0))
 		          M1 = M1.inv
 		          s.Moveto M1*bpt
-		          s.modified = true
-		          s.updateshape
+		        else
+		          for i = 0 to 2 step 2
+		            s = Point(Constructedby.data(i))
+		            if not s.modified then
+		              M1 = Matrix(constructedby.data(i+1))
+		              M1= M1.inv
+		              s.Moveto M1*bpt
+		              s.modified = true
+		              s.updateshape
+		            end if
+		          next
 		        end if
-		      else
-		        for i = 0 to 2 step 2
-		          s = Point(Constructedby.data(i))
-		          if not s.modified then
-		            M1 = Matrix(constructedby.data(i+1))
-		            M1= M1.inv
-		            s.Moveto M1*bpt
-		            s.modified = true
-		            s.updateshape
-		          end if
-		        next
-		      end if
-		    end select
+		      end select
+		      s.modified = true
+		      s.updateshape
+		    end if
+		    
 		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(np as BasicPoint)
-		  dim M as Matrix
+		  'dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
 		  
@@ -2709,11 +2688,11 @@ Inherits Shape
 		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
-		  M = new TranslationMatrix(np-bpt)
+		  'M = new TranslationMatrix(np-bpt)
 		  Moveto np   'M*bpt
-		  if pointsur.count = 1 then
-		    puton pointsur.item(0)
-		  end if
+		  'if pointsur.count = 1 then
+		  'puton pointsur.item(0)
+		  'end if
 		  modified = true
 		  updateshape
 		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures

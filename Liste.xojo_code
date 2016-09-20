@@ -9,6 +9,25 @@ Protected Class Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Concat(ol as liste)
+		  dim i as integer
+		  
+		  for i = 0 to ol.count-1
+		    concat ol.element(i)
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub concat(s As Variant)
+		  if GetPosition(s)  = -1  then
+		    objects.append s
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function count() As integer
 		  return ubound(objects)+1
 		End Function

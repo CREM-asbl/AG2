@@ -651,7 +651,7 @@ Protected Class WindContent
 		  if wnd.mousedispo then
 		    wnd.refresh
 		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(can.background.graphics)
+		      curoper.paint(can.BackgroundPicture.graphics)
 		    end if
 		    isaundoredo = false
 		    can.Mousecursor = System.Cursors.StandardPointer
@@ -835,7 +835,7 @@ Protected Class WindContent
 		  
 		  if wnd.mousedispo then
 		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(can.background.graphics)
+		      curoper.paint(can.BackgroundPicture.graphics)
 		    end if
 		    isaundoredo = false
 		    can.Mousecursor = System.Cursors.StandardPointer

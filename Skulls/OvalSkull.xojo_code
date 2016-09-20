@@ -16,7 +16,7 @@ Inherits OvalShape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
-		  g.DrawObject self, ref.x,ref.y
+		  g.DrawObject self, 0, 0
 		  
 		End Sub
 	#tag EndMethod
@@ -29,8 +29,8 @@ Inherits OvalShape
 		    Update(p,Hauteur,true)
 		  end if
 		  ref = can.transform(p)
-		  'x = p.x
-		  'y = p.y
+		  x = ref.x
+		  y = ref.y
 		  
 		End Sub
 	#tag EndMethod
@@ -93,6 +93,15 @@ Inherits OvalShape
 		
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
+	#tag EndNote
+
+	#tag Note, Name = Peindre un point vec drawobject
+		
+		Placer les coordonnées-écran du point dans l'objet ref de l'ovalskull et dans les variables X et Y de ovalskull
+		Le tracé de l'ovalskull prend le centre comme point de référence (X,Y). Pour un point, on utilise donc 
+		g.drawobject rsk, 0, 0 
+		
+		
 	#tag EndNote
 
 

@@ -249,7 +249,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, EL1, Temp as XMLElement
+		  Dim Myself , EL, EL1 as XMLElement
 		  dim i,j,n as integer
 		  dim s as shape
 		  

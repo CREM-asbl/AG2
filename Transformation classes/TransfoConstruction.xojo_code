@@ -342,7 +342,7 @@ Inherits MultipleSelectOperation
 		      case 6
 		        display =  choose + asegmentoraline + orahalfline
 		      case 7
-		        display = choose + atrapezoid + orfourpoints
+		        display = choose + atrapezoid + orthreealignedpoints + orfourpoints
 		      case 8,9,10,11
 		        display = choose + aquad +  orfourpoints
 		      end select
@@ -459,13 +459,23 @@ Inherits MultipleSelectOperation
 		    return setsecond(s)
 		  case 3
 		    tp = Point(s)
+		    if type = 7 then
+		      if fp <> tp then
+		        if tp.bpt.alignes(fp.bpt,sp.bpt) then
+		          type = 71
+		          currentshape = new Supphom(objects, fp,  sp, tp)
+		          index.append 0
+		          NextItem
+		        end if
+		      end if
+		    end if
 		    return true
 		  case 4
 		    qp = Point(s)
 		    select case type
 		    case 7
 		      if fp = tp then
-		        qp.moveto qp.bpt.projection(tp.bpt, sp.bpt)
+		        qp.moveto qp.bpt.projection(fp.bpt, sp.bpt)
 		        currentshape = new Supphom(objects, fp,  sp, qp)
 		        type = 71
 		        index.append 0

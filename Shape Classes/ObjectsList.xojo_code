@@ -555,7 +555,7 @@ Inherits Liste
 		  dim i as integer
 		  dim o as shape
 		  
-		  'tracept = false
+		  tracept = false
 		  for i=0 to count-1
 		    o = GetPlan(i)
 		    if o <> nil then
@@ -576,13 +576,6 @@ Inherits Liste
 		      item(i).Childs(j).Attracting = true
 		    next
 		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub removeAll()
-		  redim objects(-1)
-		  
 		End Sub
 	#tag EndMethod
 

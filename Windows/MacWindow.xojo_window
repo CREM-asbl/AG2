@@ -31,7 +31,7 @@ Begin Window MacWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   True
       Border          =   True
       DataField       =   ""

@@ -1879,7 +1879,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function Modifier1fixe(p as point, q as point) As Matrix
-		  
+		  'Le point p doit resterfixe, le point q est déplacé plus ou moins arbitrairement, les autres points suivent.
 		End Function
 	#tag EndMethod
 
@@ -1922,6 +1922,12 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function Modifier2fixes(p as point) As Matrix
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier2fixes(p as point, q as point) As Matrix
 		  
 		End Function
 	#tag EndMethod
@@ -2340,7 +2346,7 @@ Protected Class Shape
 		  
 		  if tracept then
 		    nsk.updateborderwidth(borderwidth)
-		    nsk.updatebordercolor(bleu,border)
+		    nsk.updatebordercolor(bleu,100)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -2389,10 +2395,9 @@ Protected Class Shape
 		  
 		  if tracept then
 		    nsk.updateborderwidth(borderwidth)
-		    paint(g,blue)
-		  else
-		    nsk.paint(g)
+		    nsk.updatebordercolor(bleu,100)
 		  end if
+		  nsk.paint(g)
 		  
 		  if not hidden then
 		    for i = 0 to labs.count-1
@@ -4738,10 +4743,6 @@ Protected Class Shape
 
 	#tag Property, Flags = &h0
 		Points(-1) As Point
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		PtsofSource() As Point
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

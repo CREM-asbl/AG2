@@ -151,19 +151,7 @@ Inherits Shape
 
 
 	#tag Property, Flags = &h0
-		OldSh As Shape
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Side As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Stab1 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Stab2 As Basicpoint
 	#tag EndProperty
 
 

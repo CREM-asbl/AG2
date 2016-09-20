@@ -257,7 +257,6 @@ Inherits Application
 		Sub CheckSystem()
 		  #if TargetWin32 then
 		    sys = "win32"
-		    UseGDIPlus=true
 		  #elseif TargetLinux then
 		    sys="Linux"
 		  #elseif TargetMacOSClassic then

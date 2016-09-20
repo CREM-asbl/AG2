@@ -4,10 +4,8 @@ Protected Class BasicPoint
 		Function alignes(u2 as Basicpoint, u3 as basicpoint) As boolean
 		  dim u1 as BasicPoint
 		  dim w1,w2  as basicpoint
-		  dim r as double
 		  
 		  u1 = self
-		  
 		  w1 = u2-u1
 		  w2 = u3-u1
 		  

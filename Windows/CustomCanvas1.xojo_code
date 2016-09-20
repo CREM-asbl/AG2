@@ -235,7 +235,7 @@ Inherits Canvas
 		  case Dico.value("AutoIntersec")
 		    currentoper = new AutoIntersec(polygon(sctxt))
 		    AutoIntersec(currentoper).ComputeInterLines
-		    AutoIntersec(currentoper).Paint(Background.graphics)
+		    AutoIntersec(currentoper).Paint(BackgroundPicture.graphics)
 		  end select
 		  
 		  ctxt = false
@@ -384,14 +384,17 @@ Inherits Canvas
 		    zone.fill = 0
 		    zone.border = 100
 		  end if
-		  
+		  OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
+		  OffscreenPicture.Transparent = 1
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
-		  g.drawPicture(Background, 0, 0)
+		  BackgroundPicture.graphics.DrawPicture OffscreenPicture , 0, 0 
+		  g.drawPicture(BackgroundPicture, 0, 0)
 		  
+		  '
 		  
 		End Sub
 	#tag EndEvent
@@ -494,7 +497,7 @@ Inherits Canvas
 	#tag Method, Flags = &h0
 		Sub drawzone(bp as BasicPoint)
 		  if currentcontent.currentoperation <> nil then
-		    background.graphics.drawobject zone, bp.x, bp.y
+		    BackgroundPicture.graphics.drawobject zone, bp.x, bp.y
 		  end if
 		End Sub
 	#tag EndMethod
@@ -518,15 +521,16 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub EraseBackground()
-		  
-		  Background.graphics.ForeColor= Bkcol
-		  Background.graphics.FillRect(0,0,width,height)
-		  if FondsEcran <> nil then
-		    Background.graphics.drawpicture fondsecran,0,0,width,height,0,0,fondsecran.width,fondsecran.height
+		  if BackgroundPicture <> nil then
+		    BackgroundPicture.graphics.ForeColor= Bkcol
+		    BackgroundPicture.graphics.FillRect(0,0,width,height)
+		    if FondsEcran <> nil then
+		      BackgroundPicture.graphics.drawpicture fondsecran,0,0,width,height,0,0,fondsecran.width,fondsecran.height
+		    end if
+		    BackgroundPicture.graphics.forecolor = Config.bordercolor.col
+		    BackgroundPicture.graphics.TextSize = Config.TextSize
+		    BackgroundPicture.graphics.Bold = true
 		  end if
-		  Background.graphics.forecolor = Config.bordercolor.col
-		  Background.graphics.TextSize = Config.TextSize
-		  Background.graphics.Bold = true
 		End Sub
 	#tag EndMethod
 
@@ -548,7 +552,7 @@ Inherits Canvas
 		    s = vis.item(iobj)
 		    if s isa polygon and polygon(s).pointonside(p ) <>-1 then
 		      icot = polygon(s).pointonside(p)
-		      polygon(s).paintside(background.graphics,icot,2,Config.highlightcolor)
+		      polygon(s).paintside(BackgroundPicture.graphics,icot,2,Config.highlightcolor)
 		    else
 		      icot = -1
 		    end if
@@ -638,7 +642,7 @@ Inherits Canvas
 		  dim op As operation
 		  
 		  
-		  if Background = nil or CurrentContent = nil or CurrentContent.GetRepere = nil then
+		  if BackgroundPicture = nil or CurrentContent = nil or CurrentContent.GetRepere = nil then
 		    return
 		  end if
 		  
@@ -655,27 +659,26 @@ Inherits Canvas
 		  end if
 		  
 		  if CurrentContent.TheGrid<>nil then
-		    CurrentContent.TheGrid.Paint(Background.Graphics)
+		    CurrentContent.TheGrid.Paint(BackgroundPicture.Graphics)
 		  end if
 		  
 		  op = CurrentContent.currentoperation
 		  
-		  CurrentContent.TheObjects.paint(Background.Graphics)
+		  CurrentContent.TheObjects.paint(BackgroundPicture.Graphics)
 		  
 		  if op <> nil  then
-		    op.Paint(Background.Graphics)
+		    op.Paint(BackgroundPicture.Graphics)
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
-		    CurrentContent.curoper.paint(Background.graphics)
+		    CurrentContent.curoper.paint(BackgroundPicture.graphics)
 		  elseif currentcontent.curoper = nil then
 		    if sctxt <> nil then
-		      sctxt.paint(Background.graphics)
+		      sctxt.paint(BackgroundPicture.graphics)
 		    end if
 		    if info <> "" then
-		      Background.graphics.drawstring info, MouseCan.x, MouseCan.y
+		      BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y
 		    end if
 		  end if
-		  
-		  Background.graphics.DrawPicture (OffscreenPicture, 0, 0)  'drawobject  ObjectsTraced, 0,0                                 '
+		  '
 		  refresh
 		  
 		  
@@ -694,19 +697,20 @@ Inherits Canvas
 		  width = wnd.width - left
 		  height = wnd.height 
 		  
-		  Background=NewPicture(width,height,Screen(0).Depth)
-		  Background.graphics.ForeColor= &cFFFFFF
-		  Background.graphics.FillRect(0,0,width,height)
+		  BackgroundPicture=New Picture(width,height) 
+		  BackgroundPicture.graphics.ForeColor= &cFFFFFF
+		  BackgroundPicture.graphics.FillRect(0,0,width,height)
 		  if config <> nil then
-		    Background.graphics.forecolor = Config.bordercolor.col
-		    Background.graphics.TextSize = Config.TextSize
+		    BackgroundPicture.graphics.forecolor = Config.bordercolor.col
+		    BackgroundPicture.graphics.TextSize = Config.TextSize
 		    bkcol = Config.Fillcolor.col
 		  end if
-		  Background.graphics.Bold = true
+		  BackgroundPicture.graphics.Bold = true
 		  
-		  
-		  OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
+		  OffscreenPicture=New Picture(width,height,screen(0).depth)
 		  OffscreenPicture.Transparent = 1
+		  
+		  
 		  calculcoins
 		  
 		  
@@ -726,7 +730,7 @@ Inherits Canvas
 		    fi=GetSaveFolderItem("bmp","Sauvegarde.bmp")
 		  #endif
 		  If fi<>Nil then
-		    fi.saveAsPicture Background
+		    fi.saveAsPicture BackgroundPicture
 		  end if
 		  
 		  
@@ -798,7 +802,7 @@ Inherits Canvas
 
 
 	#tag Property, Flags = &h0
-		Background As Picture
+		BackgroundPicture As Picture
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -962,7 +966,7 @@ Inherits Canvas
 			EditorType="Picture"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Background"
+			Name="BackgroundPicture"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Picture"

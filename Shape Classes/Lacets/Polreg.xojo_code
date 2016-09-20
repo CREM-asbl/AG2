@@ -37,7 +37,7 @@ Inherits Polygon
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, d as integer, p As BasicPoint)
-		  dim i as integer
+		  
 		  
 		  shape.Constructor(ol, 2,d)
 		  
@@ -129,19 +129,6 @@ Inherits Polygon
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		aveccentre As boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected M As Matrix
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		supp As shape
-	#tag EndProperty
-
-
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="ArcAngle"
@@ -159,12 +146,6 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="aveccentre"
-			Group="Behavior"
-			InitialValue="0"
-			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"

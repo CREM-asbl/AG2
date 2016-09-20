@@ -580,7 +580,7 @@ Protected Class Operation
 		    if currentcontent.currentoperation isa duplicate and   duplicate(currentcontent.currentoperation).copyptsur and currentattractingshape isa polygon  then
 		      icot = currentattractingshape.pointonside(point(duplicate(currentcontent.currentoperation).copies.item(0)).bpt)
 		      if icot <> -1 then
-		        Polygon(currentattractingshape).Paintside(can.Background.graphics,icot,2,Config.highlightcolor)
+		        Polygon(currentattractingshape).Paintside(can.BackgroundPicture.graphics,icot,2,Config.highlightcolor)
 		      end if
 		    else
 		      CurrentAttractingShape.HighLight
