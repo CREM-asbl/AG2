@@ -31,7 +31,7 @@ Begin Window WorkWindow
       AcceptTabs      =   True
       AutoDeactivate  =   True
       Backdrop        =   0
-      Background      =   454606847
+      BackgroundPicture=   0
       Bkcol           =   &c00000000
       ctxt            =   False
       DoubleBuffer    =   True
@@ -79,7 +79,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c00FF8040
+      FillColor       =   &c8080FF00
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
@@ -1392,12 +1392,32 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function MacrosCopy2(index as Integer) As Boolean Handles MacrosCopy2.Action
+			app.themacros.item(index).CopyMacroToFile
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
 			
 			closefw
 			newcontent(true)
 			MenuMacros(true)
+			can.resize
 			wnd.refreshtitle
+			can.refreshbackground
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			currentcontent.mac = nil
 			return true
 			
@@ -2101,11 +2121,7 @@ End
 		  
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  'EraseMenuBar
-		  'CopyMenuBar
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2130,6 +2146,8 @@ End
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosDescri")
 		  CloseSousMenu(mitem)
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosErase")
+		  CloseSousMenu(mitem)
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosCopy")
 		  CloseSousMenu(mitem)
 		  
 		End Sub
@@ -2211,7 +2229,7 @@ End
 		  item.Name = mitem.Name
 		  item.KeyboardShortCut = mitem.KeyboardShortCut
 		  item.index = mitem.index
-		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2")   then '
+		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2" or item.Name="MacrosCopy2")   then '
 		    item.Text = Dico.Value(item.Name)
 		  else
 		    item.Text = mitem.Text
@@ -2284,6 +2302,8 @@ End
 		  CreateSousMenu(mitem, "MacrosDescri2")
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosErase")
 		  CreateSousMenu(mitem,"MacrosErase2")
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosCopy")
+		  CreateSousMenu(mitem,"MacrosCopy2")
 		End Sub
 	#tag EndMethod
 
@@ -2463,6 +2483,7 @@ End
 		  MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = not t
 		  MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = not t
 		  MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosCopy").checked = not t
 		  EraseMenuBar
 		  CopyMenuBar
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=not t
@@ -2916,7 +2937,7 @@ End
 		  MoveBox.Top = 60+espace
 		  StdBox.top = MoveBox.top+MoveBox.Height+espace
 		  LibBox.Top = StdBox.top+StdBox.Height+espace
-		  
+		  Tools.FillColor = bleu
 		  
 		  
 		  

@@ -547,6 +547,21 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
+      Begin MenuItem MacrosCopy
+         SpecialMenu = 0
+         Text = "Copier une macro"
+         Index = 0
+         AutoEnable = True
+         SubMenu = True
+         Visible = True
+         Begin MenuItem MacrosCopy2
+            SpecialMenu = 0
+            Text = "Sans Titre"
+            Index = 0
+            AutoEnable = True
+            Visible = True
+         End
+      End
    End
    Begin MenuItem PrefsMenu
       SpecialMenu = 0

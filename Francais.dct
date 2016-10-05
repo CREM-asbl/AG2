@@ -58,6 +58,7 @@
     <MacrosSave Name="Sauvegarder la macro" />
     <MacrosLoad Name="Charger une macro" />
     <MacrosQuit Name="Abandonner la macro en cours de création" />
+    <MacrosCopy Name="Copier une macro" />
     <MacrosFinaux Name="Choisir les objets finaux" />
     <OperaMenu Name="Opérations" />
     <OperaDivide Name="Diviser" />

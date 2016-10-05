@@ -45,11 +45,6 @@ Inherits Liste
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Points(-1)"
-			Group="Behavior"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"

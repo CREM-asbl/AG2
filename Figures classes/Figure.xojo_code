@@ -53,12 +53,12 @@ Protected Class Figure
 		  
 		  if (auto =2 or auto = 3) then
 		    for i = 0 to ubound(ListPtsModifs)
-		      p = Point(somm.item(ListPtsModifs(i)))
+		      p = somm.item(ListPtsModifs(i))
 		      getoldnewpos(p,ep,np)
 		      for j =  ubound(pfx) downto 1
-		        bq1 = point(somm.item(pfx(j))).bpt
+		        bq1 = somm.item(pfx(j)).bpt
 		        for k =  i-1 downto 0
-		          bq2 = point(somm.item(pfx(k))).bpt
+		          bq2 = somm.item(pfx(k)).bpt
 		          if ep.alignes(bq1, bq2)  then
 		            return true
 		          end if
@@ -153,7 +153,7 @@ Protected Class Figure
 		  dim i, n, m1, m2, ns as integer
 		  
 		  n = ListPtsModifs(0)
-		  p = Point(somm.item(n))
+		  p = somm.item(n)
 		  getoldnewpos(p, ep, np)
 		  
 		  
@@ -167,31 +167,31 @@ Protected Class Figure
 		    select case NbUnModif
 		    case 0
 		      ns = somm.count
-		      bp1 = Point(somm.item((n+1) mod ns)).bpt
-		      bp2 = Point(somm.item((n+2) mod ns)).bpt
+		      bp1 = somm.item((n+1) mod ns).bpt
+		      bp2 = somm.item((n+2) mod ns).bpt
 		    case 1, 2
-		      bp1 = Point(Somm.item(fx1)).bpt
-		      bp2 = Point(Somm.item(fx2)).bpt
+		      bp1 = Somm.item(fx1).bpt
+		      bp2 = Somm.item(fx2).bpt
 		    end select
 		    return new Affinitymatrix (bp1, bp2, ep,bp1, bp2, np)
 		  case 1
 		    bp1 = Point(Somm.item(fx1)).bpt
 		    if Listsommsur(0) <> fx1 then
-		      bp2 = Point(Somm.item(Listsommsur(0))).bpt
+		      bp2 = Somm.item(Listsommsur(0)).bpt
 		    elseif fx2 <> fx1 then
-		      bp2 = point(somm.item(fx2)).bpt
+		      bp2 = somm.item(fx2).bpt
 		    end if
 		    return new Affinitymatrix (bp1, bp2, ep,bp1, bp2, np)
 		  case 2
 		    if NbUnModif < 2 then
-		      bp1 = Point(Somm.item(fx1)).bpt
-		      p1 = Point(Somm.item(Listsommsur(0)))
-		      p2 = Point(Somm.item(Listsommsur(1)))
+		      bp1 = Somm.item(fx1).bpt
+		      p1 = Somm.item(Listsommsur(0))
+		      p2 = Somm.item(Listsommsur(1))
 		      return new AffinityMatrix(p1,p2,ep,bp1,np,bp1)
 		    end if
 		  case 3
 		    if NbUnModif < 2 then
-		      bp1 = Point(Somm.item(fx1)).bpt
+		      bp1 = Somm.item(fx1).bpt
 		      for i = 0 to 2
 		        if (listsommsur(i) <> n) and (listsommsur(i) <> fx1) then
 		          m1 = listsommsur(i)
@@ -202,8 +202,8 @@ Protected Class Figure
 		          m2 = listsommsur(i)
 		        end if
 		      next
-		      p1 = Point(somm.item(m1))
-		      p2 = Point(somm.item(m2))
+		      p1 = somm.item(m1)
+		      p2 = somm.item(m2)
 		      return new AffinityMatrix(p1,p2,ep,bp1,np,bp1)
 		    end if
 		  end select
@@ -534,11 +534,7 @@ Protected Class Figure
 		  
 		  select case NBSommSur(n1,n2)
 		  case 0, 2
-		    if NbUnmodif = 0 then
-		      return DefaultMatrix
-		    else
-		      return new Matrix(1)
-		    end if
+		    return DefaultMatrix
 		  case 1
 		    M = DefaultMatrix
 		    pmob = supfig.pointmobile
@@ -758,12 +754,12 @@ Protected Class Figure
 		    return s.Modifier2(n1,n2)
 		  end if
 		  
-		  p = Point(somm.item(n1))
-		  q = Point(somm.item(n2))
+		  p = somm.item(n1)
+		  q = somm.item(n2)
 		  
 		  select case  NbSommSur(n1,n2)
 		  case 0
-		    if p = supfig.pointmobile then
+		    if p.guide = supfig.pointmobile then
 		      return s.modifier1fixe(q,p)
 		    else
 		      return s.Modifier1fixe(p,q)
@@ -1127,19 +1123,6 @@ Protected Class Figure
 		    return true
 		  end if
 		  
-		  'if  (shapes.item(0).macconstructedby <> nil) then
-		  'return true
-		  'end if
-		  
-		  'for i = 0 to shapes.count-1
-		  'd = shapes.item(i).computediam
-		  'if  not shapes.item(i).std and d <= epsilon  then
-		  'shapes.item(i).invalider
-		  'return true
-		  '
-		  'end if
-		  'next
-		  
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
@@ -1452,7 +1435,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  Shapes = new ObjectsList
-		  Somm = new ObjectsList
+		  Somm = new PointsList
 		  subs = new FigsList
 		  PtsConsted = new ObjectsList
 		  PtsSur = new ObjectsList
@@ -1485,7 +1468,7 @@ Protected Class Figure
 		    sf.shapes.item(i).fig = self
 		  next
 		  for i = 0 to sf.somm.count-1
-		    somm.addShape sf.somm.item(i)
+		    somm.addObject sf.somm.item(i)
 		    sf.somm.item(i).fig = self
 		  next
 		  for i = 0 to sf.Ptsconsted.count-1
@@ -1926,25 +1909,17 @@ Protected Class Figure
 		  dim t, t1 as boolean
 		  dim p as point
 		  
-		  
-		  'if ( f1.supfig <> f2.supfig)  and (f1.somm.count >1) then
-		  'return false
-		  'end if
-		  '
-		  ' if (f1.auto <> f2.auto) and (f1.somm.count > 2) then
-		  'return false
-		  'end if
-		  
 		  if (f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3) then
 		    return false
 		  end if
 		  
 		  t = true
 		  for k = 0 to f1.somm.count-1
-		    p = point(f1.somm.item(k))
+		    p = f1.somm.item(k)
 		    t1 = (p.pointsur.count = 2) and (f2.shapes.getposition(p.pointsur.item(0)) <> -1) and (f2.shapes.getposition(p.pointsur.item(1))<> -1)
 		    t = t and((f2.somm.getposition(p)<> -1) or t1)
 		  next
+		  'On fusionne f1 et f2 si tous les sommets de f1 sont soit des sommets de f2 soit des points d'inter de  deux formes de f2
 		  
 		  if t then
 		    f2.shapes.concat f1.shapes
@@ -2103,11 +2078,11 @@ Protected Class Figure
 		  dim i as integer
 		  
 		  if s isa point then
-		    somm.addshape s
+		    somm.addobject s
 		    s.fig = self
 		  else
 		    for i = 0 to ubound(s.points)
-		      somm.addshape s.points(i)
+		      somm.addobject s.points(i)
 		      s.points(i).fig = self
 		    next
 		  end if
@@ -2733,7 +2708,7 @@ Protected Class Figure
 		  // Un point sommet de l'angle droit de deux triangles rectangles ne peut être modifiable
 		  
 		  for i = 0 to somm.count-1
-		    p = point(somm.item(i))
+		    p = somm.item(i)
 		    if p.forme = 2 and p.pointsur.item(0).modified and p.pointsur.item(1).modified then
 		      p.unmodifiable = true
 		    end if
@@ -2756,12 +2731,12 @@ Protected Class Figure
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =point(somm.item(i))
-		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
+		    p =somm.item(i)
+		    if  (p.liberte = 0 or p.unmodifiable) then ' and (p <> supfig.pointmobile ) and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
-		      if p.pointsur.count <> 2 then
-		        NbUnModif = NbUnModif+1
-		      end if
+		      'if p.pointsur.count <> 2 then
+		      NbUnModif = NbUnModif+1
+		      'end if
 		    end if
 		  next
 		  
@@ -3731,7 +3706,7 @@ Protected Class Figure
 		    return false
 		  end if
 		  
-		  pointmobile = p
+		  pointmobile = p  'p est le point guide du point sur lequel on a cliqué
 		  t = true
 		  
 		  listersubfigs(p)
@@ -4141,7 +4116,7 @@ Protected Class Figure
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Somm As ObjectsList
+		Somm As PointsList
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

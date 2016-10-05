@@ -31,7 +31,7 @@ Begin Window TextWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cE1E1E100
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -88,6 +88,7 @@ End
 		  Macs = app.TheMacros
 		  EF.height = height
 		  EF.ReadOnly = true
+		  EF.Backcolor=&cD0D0D0
 		  if can.sctxt = nil then
 		    Title = "Objets"
 		  elseif  currentcontent.Macrocreation then
@@ -164,7 +165,7 @@ End
 		          messages(ff,j)
 		        next
 		      end if
-		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)
+		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)+chr(13)
 		    next
 		  end if
 		  
@@ -227,7 +228,7 @@ End
 
 	#tag Method, Flags = &h0
 		Function mess(s As shape) As string
-		  
+		  dim i as integer
 		  dim m as string
 		  m = Type(s)
 		  if s.std then
@@ -239,7 +240,18 @@ End
 		  if s.invalid then
 		    m = m + " invalide"
 		  end if
-		  return m
+		  if s.constructedby <> nil then
+		    m = m + " construit par forme " + str(s.constructedby.shape.id)
+		  end if
+		  if s.macconstructedby <> nil then
+		    m = m+" mac-construit par formes ("
+		    for i = 0 to ubound(s.MacConstructedby.RealInit)
+		      m = m +"," + str(s.MacConstructedby.RealInit(i))
+		    next
+		    m = m+ ")"
+		  end if
+		  
+		  return m + chr(10)
 		End Function
 	#tag EndMethod
 
@@ -285,7 +297,7 @@ End
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "
 		    s = f.shapes.item(i)
-		    EF.Text = EF.Text+ messages(s)
+		    EF.Text = EF.Text+ messages(s) +chr(10)
 		  next
 		  
 		  
@@ -314,7 +326,6 @@ End
 		    for i = 0 to ubound(s.points)
 		      m = m + mess(s.points(i))+chr(10)
 		    next
-		    m = m+chr(10)
 		    if ubound(s.childs) > s.npts-1 then
 		      m = m + "Points Sur"+chr(13)
 		      for i = s.npts to ubound(s.childs)
@@ -335,7 +346,7 @@ End
 		    m = m + mess(point(s))
 		  end if
 		  
-		  return m
+		  return m+ chr(10)
 		End Function
 	#tag EndMethod
 

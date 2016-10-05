@@ -28,8 +28,7 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub ComputeMatrix(ifmac As infomac)
 		  dim  m as integer
-		  dim nbp, nbp1 as nBpoint
-		  dim bp as BasicPoint
+		  dim nbp as nBpoint
 		  dim s as shape
 		  dim ifm as infomac
 		  
@@ -200,8 +199,8 @@ Protected Class Macro
 		Sub Constructor(Doc as XMLDocument)
 		  dim List as XMLNodeList
 		  dim Temp, EL1 As  XMLElement
-		  dim i, fa, fo as integer
-		  dim drap as Boolean
+		  dim i as integer
+		  
 		  
 		  Constructor()
 		  Histo =  XMLElement(Doc.FirstChild)
@@ -222,7 +221,7 @@ Protected Class Macro
 		      FoInit.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  Histo.RemoveChild Temp
+		  'Histo.RemoveChild Temp
 		  
 		  List = Histo.XQL("Final")
 		  if List.length > 0 then
@@ -234,7 +233,7 @@ Protected Class Macro
 		      FoFinal.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  Histo.RemoveChild Temp
+		  'Histo.RemoveChild Temp
 		  
 		  List = Histo.XQL("Interm")
 		  if List.length > 0 then
@@ -246,8 +245,41 @@ Protected Class Macro
 		      FoInterm.append val(EL1.GetAttribute("Fo"))
 		    next
 		  end if
-		  Histo.RemoveChild Temp
+		  'Histo.RemoveChild Temp
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CopyMacroToFile()
+		  Dim file As FolderItem              //Sauvegarde d'une macro dans le dossier "Macros" de Mes Documents/Apprenti Geometre lors de la création de la macro
+		  Dim tos as TextOutputStream
+		  dim place as integer
+		  Dim dlg as New SaveAsDialog
+		  
+		  
+		  
+		  dlg.InitialDirectory=app.MacFolder
+		  dlg.promptText=""
+		  dlg.Title= Dico.Value("SaveMacro")
+		  dlg.filter=FileAGTypes.MACR
+		  
+		  file=dlg.ShowModal()
+		  If file <> Nil then
+		    place = Instr(file.name,".xmag")
+		    if place <> 0 then
+		      Caption=Left(file.name,place-1)
+		    else
+		      Caption = file.name
+		      file.name = Caption + ".xmag"
+		    end if
+		    tos=file.CreateTextFile
+		    if tos <> nil then
+		      tos.write  histo.tostring
+		      tos.close
+		    end if
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -302,11 +334,10 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub dupliquerpoint(ifmac as infomac, byref nbp As nBPoint)
-		  dim num0, side, m, n as integer
+		  dim num0, side, m as integer
 		  dim nb as nBPoint
 		  dim ifm0, ifm1 as infomac
 		  dim Bib as BiBPoint
-		  dim s as shape
 		  
 		  if ifmac.ptsur <> 1 then
 		    return
@@ -547,11 +578,10 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub paraperp(ifmac as infomac, byref nbp As nBPoint)
-		  dim p, q,v, w0, w, u(1)  as BasicPoint
+		  dim  q,v, w, u(1)  as BasicPoint
 		  dim n,  n1, n2, side as integer
 		  dim  ifm1, ifm2, ifm3 as infoMac
 		  dim  num, macid as integer
-		  dim c as nBPoint
 		  dim BiB1, BiB2 as BiBPoint
 		  dim r1, r2 as double
 		  
@@ -654,7 +684,6 @@ Protected Class Macro
 		  Dim file As FolderItem              //Sauvegarde d'une macro dans le dossier "Macros" de Mes Documents/Apprenti Geometre lors de la création de la macro
 		  Dim tos as TextOutputStream
 		  dim place as integer
-		  dim i as integer
 		  dim Doc as XMLDocument
 		  dim Histo as XMLElement
 		  Dim dlg as New SaveAsDialog
@@ -711,7 +740,6 @@ Protected Class Macro
 		Function ToMac(Doc as XMLDocument, n as integer) As XMLElement
 		  dim Temp, EL as XMLElement
 		  dim i as integer
-		  dim s as shape
 		  dim categorie as string
 		  dim ObCategorie(), FaCategorie(), FoCategorie() as integer
 		  

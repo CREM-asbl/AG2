@@ -278,7 +278,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  if (constructedby <> nil and constructedby.oper = 6)   or std or (macconstructedby <> nil) then
+		  if (constructedby <> nil and constructedby.oper = 6)   or std then 'or (macconstructedby <> nil) then
 		    auto = 0
 		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp) or self isa Freecircle      then 'or  (self isa Bipoint and not self.isaparaperp)
 		    auto = 1
@@ -480,7 +480,7 @@ Protected Class Shape
 		  autos
 		  
 		  if val(EL.GetAttribute("Auto")) <> 0 then 'Ne pas tenir compte des "autos enregistrés"
-		    auto = val(EL.GetAttribute("Auto"))          'Un segment ou une droite devraient avoir le même traitement que les polyqcq --> auto = 4
+		    auto = val(EL.GetAttribute("Auto"))        
 		  end if
 		  
 		  if val(EL.GetAttribute("NonPointed")) = 1 then
@@ -4371,6 +4371,7 @@ Protected Class Shape
 		    Tmp = XMLElement(Tmp.Child(0))
 		    MacInfo = new MacConstructionInfo(Mac,Tmp)
 		    SetMacConstructedBy MacInfo
+		    auto = 0
 		  end if
 		End Sub
 	#tag EndMethod

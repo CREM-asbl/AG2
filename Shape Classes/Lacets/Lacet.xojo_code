@@ -640,7 +640,16 @@ Inherits Shape
 		    b =Points((k+1) mod npts).bpt
 		    if coord.curved(k) = 0 then
 		      p.location(n) = p.bpt.location(a,b)
-		      p.putonsegment(a,b,p.location(n),n)
+		      if p.pieddeperp then                            'Pour les pieds de hauteur
+		        if p.location(n) <0 or p.location(n) >1 then
+		          p.invalider
+		        else
+		          p.valider
+		          p.putonsegment(a,b,p.location(n),n)
+		        end if
+		      else
+		        p.putonsegment(a,b,p.location(n),n)
+		      end if
 		    else
 		      angle = computeangle(k,p.bpt)
 		      p.putonarc(a,b,coord.centres(k),angle, GetArcAngle(k),GetStartAngle(k), n)

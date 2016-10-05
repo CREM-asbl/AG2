@@ -1899,12 +1899,12 @@ Inherits Shape
 		  if  PointSur.GetPosition(s) = -1 then
 		    PointSur.addshape s
 		    location.append 0
-		    numside.append -1
+		    numside.append k
 		    forme = PointSur.count
 		  end if
 		  
-		  if isextremityofarc(n, ar) then  //a placer dans le putonpolyg quand les polygones seront devenus des lacets
-		    if s isa polygon  then
+		  if isextremityofarc(n, ar) then  
+		    if s isa Lacet then
 		      k = s.getindexpoint(ar.points(0))
 		      m = polygon(s).pointonside(bpt)
 		      if m = k or k = (m+1) mod s.npts then
@@ -1913,11 +1913,10 @@ Inherits Shape
 		    end if
 		  end if
 		  
-		  
-		  if S isa Lacet then
-		    Lacet(S).Positionner(self)
-		  elseif S isa polygon then
+		  if S isa polygon then
 		    PutOnPolyg(Polygon(s))
+		  elseif S isa Lacet then                        
+		    Lacet(S).Positionner(self)
 		  elseif S isa Bipoint then
 		    PutOnBipoint (Bipoint(s))
 		  elseif  s isa bande then
@@ -2873,9 +2872,12 @@ Inherits Shape
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  
-		  updateconstructedpoints
-		  updateMacConstructedShapes
+		  if ubound(constructedshapes) > -1 then
+		    updateconstructedpoints
+		  end if
+		  if ubound(MacConstructedshapes) > -1 then
+		    updateMacConstructedShapes
+		  end if
 		  endmove
 		  
 		  

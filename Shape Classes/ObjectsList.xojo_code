@@ -1134,7 +1134,7 @@ Inherits Liste
 		      XMLLireCondi(Obj)
 		      XMLLireConstructionInfos(Obj)           //non plus
 		      XMLLireMacConstructionInfos(Obj)
-		      XMLLireIdFigs(Obj)
+		      XMLLireIdFigs(Obj)                                   //Les figures apparaissent ici
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
 		      CurrentContent.optimize
