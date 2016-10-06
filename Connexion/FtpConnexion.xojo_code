@@ -244,7 +244,7 @@ Inherits TCPSocket
 	#tag Constant, Name = portFTP, Type = Double, Dynamic = False, Default = \"21", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = Serveur, Type = String, Dynamic = False, Default = \"crem.be", Scope = Public
+	#tag Constant, Name = Serveur, Type = String, Dynamic = False, Default = \"serveur.crem.be", Scope = Public
 	#tag EndConstant
 
 

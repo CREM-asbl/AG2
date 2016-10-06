@@ -1,5 +1,5 @@
 Type=Desktop
-RBProjectVersion=2016.011
+RBProjectVersion=2016.03
 MinIDEVersion=20070100
 Folder=Connexion;Connexion;&h476F47FF;&h0;false
 Folder=Calculation classes;Calculation classes;&hBD6B81F9;&h0;false
@@ -251,3 +251,4 @@ DebuggerCommandLine=
 UseGDIPlus=True
 UseBuildsFolder=True
 IsWebProject=False
+OptimizationLevel=0
