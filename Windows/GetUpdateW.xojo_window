@@ -100,23 +100,23 @@ Begin Window GetUpdateW
       InitialParent   =   ""
       Italic          =   False
       Left            =   0
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
-      Text            =   "Recherche de mises à jour"
+      Text            =   ""
       TextAlign       =   1
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   36
+      Top             =   35
       Transparent     =   True
       Underline       =   False
       Visible         =   True
@@ -128,11 +128,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  dim refs(-1) as String
-		  
-		  refs = Split(list,"-")
-		  newVersion = refs(0)
-		  Label1.Text = newVersion+" est disponible ("+SizeUnit(val(refs(1)),0)+")"
+		  Label1.Text = "Une nouvelle version d'AG est disponible"
 		  
 		  
 		End Sub
@@ -140,33 +136,12 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub Constructor(l as string)
-		  list = l
+		Sub Constructor(v as string)
+		  version = v
 		  // Calling the overridden superclass constructor.
 		  Super.Window
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function SizeUnit(size As double, niveau as integer) As String
-		  dim t as string
-		  if size < 1024  or niveau =2 then
-		    t =format(size,"#.00")
-		    select case(niveau)
-		    case 0
-		      t = t +"o"
-		    case 1
-		      t=t+"Ko"
-		    case 2
-		      t=t+"Mo"
-		    end
-		    return t
-		  else
-		    size = size /1024.0
-		    return SizeUnit(size,niveau+1)
-		  end if
-		End Function
 	#tag EndMethod
 
 
@@ -193,19 +168,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		CurrentFolder As FolderItem
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		list As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		newVersion As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		updated As boolean
+		version As string
 	#tag EndProperty
 
 
@@ -228,7 +191,6 @@ End
 #tag Events PushButton2
 	#tag Event
 		Sub Action()
-		  updated = false
 		  Close
 		End Sub
 	#tag EndEvent
@@ -331,12 +293,6 @@ End
 		Group="ID"
 		Type="String"
 		EditorType="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="list"
-		Group="Behavior"
-		Type="string"
-		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="LiveResize"
@@ -464,6 +420,12 @@ End
 		Name="updated"
 		Group="Behavior"
 		Type="boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="version"
+		Group="Behavior"
+		Type="string"
+		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Visible"
