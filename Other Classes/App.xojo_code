@@ -272,9 +272,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
 		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
-		  '#if DebugBuild then
-		  'return
-		  '#endif
+		  #if DebugBuild then
+		    return
+		  #endif
 		  
 		  api.init
 		  api.Connect
