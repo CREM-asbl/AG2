@@ -1,19 +1,30 @@
 #tag Module
 Protected Module api
 	#tag Method, Flags = &h0
-		Sub AfficherInfo(EL as XmlNode)
-		  dim info as String
-		  dim validite, version as String
+		Sub AfficherInfo()
+		  dim doc as XmlDocument
+		  dim El as XmlNode
+		  dim info, data, validite, version as String
 		  
-		  if EL.FirstChild <> nil then
-		    info = EL.FirstChild.FirstChild.Value
-		    validite  = EL.Child(1).FirstChild.value
-		    version =app.LongVersion
+		  if http = Nil then
+		    return
+		  end if
+		  
+		  data = http.Get(url+"info.xml",timeout)
+		  
+		  try
+		    doc = new XmlDocument(DefineEncoding(data,Encodings.UTF8))
+		    El = doc.FirstChild
+		    info = El.FirstChild.FirstChild.Value
+		    validite =  El.Child(1).FirstChild.Value
+		    version = app.LongVersion
 		    if version < validite and info<>Config.LastInfo  then
-		      msgBox EL.LastChild.FirstChild.Value
+		      MsgBox  El.LastChild.FirstChild.Value
 		      Config.LastInfo = info
 		    end if
-		  end if
+		  catch err as XmlException
+		  end try
+		  
 		End Sub
 	#tag EndMethod
 
@@ -23,26 +34,19 @@ Protected Module api
 		    return
 		  end if
 		  
-		  dim EL as XmlNode
-		  dim doc as XmlDocument
-		  dim update As string
+		  dim log,info,update As string
 		  
-		  response = http.Post(url+"?method=connect&version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
+		  log = http.Post(url+"/log.php?version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
 		  
-		  try
-		    doc = new XmlDocument(DefineEncoding(response,Encodings.UTF8))
-		    EL = doc.FirstChild
-		    AfficherInfo(EL.FirstChild)
-		    if EL.LastChild.FirstChild <> nil then
-		      update = EL.LastChild.FirstChild.value
-		    end if
-		    if update <> "" then
-		      dim GuW As GetUpdateW
-		      GuW = new GetUpdateW(update)
-		      GuW.ShowModal
-		    end if
-		  catch err as XmlException
-		  end try
+		  AfficherInfo
+		  
+		  update = http.Get(url+"version.xml",timeout)
+		  if update <> app.LongVersion  then
+		    dim GuW As GetUpdateW
+		    GuW = new GetUpdateW(update)
+		    GuW.ShowModal
+		  end if
+		  
 		  
 		  
 		End Sub
@@ -53,16 +57,6 @@ Protected Module api
 		  if System.Network.IsConnected or TargetLinux then
 		    http = New HTTPSocket
 		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updateDone()
-		  if http = Nil then
-		    return
-		  end if
-		  
-		  response = http.Post(url+"?method=updateDone&os="+app.sys,timeout)
 		End Sub
 	#tag EndMethod
 
@@ -79,7 +73,7 @@ Protected Module api
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://www.crem.be/api/AG.php", Scope = Public
+	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://api.crem.be/AG/", Scope = Public
 	#tag EndConstant
 
 

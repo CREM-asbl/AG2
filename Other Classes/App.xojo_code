@@ -78,9 +78,9 @@ Inherits Application
 		    Dico = new Dictionnaire
 		    Config = new Configuration
 		    autoquit = true
+		    CheckUpdate
 		    init
 		    themacros = new macroslist
-		    CheckUpdate
 		  end if
 		  
 		End Sub
@@ -271,9 +271,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
 		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
-		  #if DebugBuild then
-		    return
-		  #endif
+		  '#if DebugBuild then
+		  'return
+		  '#endif
 		  
 		  api.init
 		  api.Connect
