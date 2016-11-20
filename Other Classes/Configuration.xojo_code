@@ -22,18 +22,38 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  fi=App.AppFolder.Child(Menu+".men")
-		  if not fi.exists then
-		    fi = app.MenusFolder.Child(Menu+".men")
-		  end if
-		  
-		  if not  fi.exists  then
-		    MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
-		    quit
+		  'fi=App.AppFolder.Child(Menu+".men")
+		  'if not fi.exists then
+		  'fi = app.MenusFolder.Child(Menu+".men")
+		  'end if
+		  '
+		  'if not  fi.exists  then
+		  'MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
+		  'quit
+		  'else
+		  'C=new XMLDocument(fi)
+		  select case Menu
+		  case "Menu_A"
+		    C=new XMLDocument(Menu_A)
+		  case "Menu_B"
+		    C = new XMLDocument(Menu_B)
+		  case "Menu_C"
+		    C=new XMLDocument(Menu_C)
+		  case "Menu_AB"
+		    C = new XMLDocument(Menu_AB)
+		  case "Menu_AC"
+		    C = new XMLDocument(Menu_AC)
 		  else
-		    C=new XMLDocument(fi)
-		    El = C.DocumentElement
-		  end if
+		    fi = app.MenusFolder.Child(Menu+".men")
+		    if not  fi.exists  then
+		      MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
+		      quit
+		    else
+		      C=new XMLDocument(fi)
+		    end if
+		  end select
+		  El = C.DocumentElement
+		  'end if
 		  
 		  ChargerMenu(El)
 		  
@@ -206,6 +226,7 @@ Protected Class Configuration
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
+		  mmenubar.Child("TransfosMenu").Child("InvCurve").checked = El.XQL("InvCurve").length > 0
 		  
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").checked =true
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").checked =true
