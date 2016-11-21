@@ -61,7 +61,7 @@ Inherits Parallelogram
 		  
 		  dim n, n1, n2, n3 as integer
 		  dim  p2, p3 As  point
-		  dim ep, np, ep1, np1, ep2, np2, ep3, np3 As Basicpoint
+		  dim ep, np, ep1, np1, ep2, np2, ep3, np3, w As Basicpoint
 		  dim M as Matrix
 		  dim ff as figure
 		  dim d as double
@@ -104,13 +104,11 @@ Inherits Parallelogram
 		    'p2.moveto np3+np-np1
 		    'p3.modified = true
 		  else
-		    d = amplitude(ep1, np, np1)
-		    M = new RotationMatrix(np,d)
-		    np2 = M*ep2
-		    if abs(n-n1) = 2 then
-		      np2 = np.projection(np1,np2)
-		    end if
-		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
+		    w = np1 - np
+		    w = w.vecnorperp
+		    d = ep1.distance(ep3)
+		    np3 = np1+w*d
+		    M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
 		  end if
 		  return M
 		  

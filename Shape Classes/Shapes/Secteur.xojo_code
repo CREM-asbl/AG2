@@ -2,44 +2,6 @@
 Protected Class Secteur
 Inherits DSect
 	#tag Method, Flags = &h0
-		Function computeangle(q as Basicpoint) As double
-		  dim e, a as double
-		  
-		  q = q-points(0).bpt
-		  e = q.anglepolaire
-		  a = e - startangle
-		  
-		  if ori >0 then
-		    if a < 0 then
-		      a = a + 2*PI
-		    end if
-		  elseif ori <0 then
-		    if a >0 then
-		      a = a -2*PI
-		    end if
-		  end if
-		  
-		  return a
-		  'a a toujours meme signe que ori
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub ComputeArcAngle()
-		  
-		  if not drapori then
-		    computeori
-		  end if
-		  if   abs(arcangle)  >  0.2 and ori <> 0 then
-		    drapori = true  //on ne peut plus changer l'orientation
-		  end if
-		  arcangle = computeangle(points(2).bpt)
-		  
-		  'arcangle a toujours meme signe que l'orientation
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Computeextre()
 		  dim p0,p1,p2 as basicPoint
 		  dim D1 as BiBPoint
@@ -67,20 +29,16 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub computeori()
-		  ori = coord.orientation
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, p as BasicPoint)
 		  
-		  super.constructor(ol,3,3)
-		  narcs = 1
-		  Points.append new Point(ol, p)
-		  setPoint(Points(0))
-		  ori = 0
-		  createskull(p)
+		  'super.constructor(ol,3,3)
+		  'narcs = 1
+		  'Points.append new Point(ol, p)
+		  'setPoint(Points(0))
+		  'ori = 0
+		  'createskull(p)
+		  super.constructor(ol,p)
+		  auto = 2
 		  
 		  
 		  
@@ -97,11 +55,14 @@ Inherits DSect
 		  
 		  super.constructor(obl,s)
 		  ncpts = 3
+		  
 		  M = new TranslationMatrix(p)
-		  nsk = new Secteurskull(can.transform(s.Points(0).bpt))
-		  ori = s.ori
+		  createskull(can.transform(s.Points(0).bpt))
 		  computeextre
 		  Move(M)
+		  
+		  
+		  
 		  
 		  
 		End Sub
@@ -111,7 +72,7 @@ Inherits DSect
 		Sub Constructor(ol as objectslist, Temp as XMLElement)
 		  Super.Constructor(ol,Temp)
 		  ncpts = 3
-		  nsk = new Secteurskull(can.transform(Points(0).bpt))
+		  nsk = new Lskull(can.transform(Points(0).bpt))
 		  
 		End Sub
 	#tag EndMethod
@@ -124,9 +85,11 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub EndConstruction()
-		  drapori = true
-		  super.endconstruction
+		Sub createskull(p as BasicPoint)
+		  'Cfr Bande
+		  
+		  nsk = new Lskull(5, p)
+		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
 
@@ -137,16 +100,17 @@ Inherits DSect
 		    Points(i).moveto(p)
 		  next
 		  
-		  updatecoord
-		  'if n > 0 then
-		  'coord.CreateExtreAndCtrlPoints(ori)
-		  'end if
+		  if n > 0 then
+		    
+		  end if
+		  'updatecoord
 		  select case n
 		  case 0
 		    arcangle = 0
 		    coord.centres(1) = p
 		    Lskull(nsk).item(0).border = 100
 		  case 1
+		    computeori
 		    startangle = coord.startangle  
 		    for i = 1 to 3
 		      Lskull(nsk).item(i).border = 0  
@@ -155,11 +119,15 @@ Inherits DSect
 		    
 		    Lskull(nsk).item(4).border = 100
 		  end select
-		  
-		  computeextre
 		  constructshape
 		  updatecoord
-		  'coord.CreateExtreAndCtrlPoints(ori)
+		  computeextre
+		  coord.CreateExtreAndCtrlPoints(ori)
+		  
+		  
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -169,26 +137,16 @@ Inherits DSect
 		  dim j as integer
 		  dim Bib as BiBPoint
 		  
-		  if i =0 then
-		    j = 1
+		  if i = 0 or i = 1 then
+		    i = i+1
 		  else
-		    i = 0
-		    j = 2
+		    return nil
 		  end if
 		  
-		  BiB = new BiBPoint(coord.tab(i), coord.tab(j) )
+		  BiB = new BiBPoint(coord.tab(0), coord.tab(j) )
 		  BiB.nextre = 1
 		  return BiB
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetEndangle() As double
-		  dim q as BasicPoint
-		  
-		  q = Points(2).bpt-Points(0).bpt
-		  return q.anglepolaire
 		End Function
 	#tag EndMethod
 
@@ -202,20 +160,83 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSide(n as integer) As Droite
-		  dim d as Droite
-		  
-		  // n vaut 0 ou 1
-		  
-		  n = n+1
-		  d = new Droite(Points(0),Points(n))
-		  d.nextre = 1
-		  return d
+		Function GetType() As string
+		  return Dico.value("Secteur")
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStartangle() As double
+		Sub Initcolcotes()
+		  dim i as integer
+		  redim colcotes(1)
+		  for i = 0 to 1
+		    colcotes(i) = Config.bordercolor
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function oldcomputeangle(q as Basicpoint) As double
+		  dim e, a as double
+		  
+		  q = q-points(0).bpt
+		  e = q.anglepolaire
+		  a = e - startangle
+		  
+		  if ori >0 then
+		    if a < 0 then
+		      a = a + 2*PI
+		    end if
+		  elseif ori <0 then
+		    if a >0 then
+		      a = a -2*PI
+		    end if
+		  end if
+		  
+		  return a
+		  'a a toujours meme signe que ori
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldComputeArcAngle()
+		  
+		  if not drapori then
+		    computeori
+		  end if
+		  if   abs(arcangle)  >  0.2 and ori <> 0 then
+		    drapori = true  //on ne peut plus changer l'orientation
+		  end if
+		  arcangle = computeangle(points(2).bpt)
+		  
+		  'arcangle a toujours meme signe que l'orientation
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldcomputeori()
+		  ori = coord.orientation
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldEndConstruction()
+		  drapori = true
+		  super.endconstruction
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function oldGetEndangle() As double
+		  dim q as BasicPoint
+		  
+		  q = Points(2).bpt-Points(0).bpt
+		  return q.anglepolaire
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function oldGetStartangle() As double
 		  
 		  dim q as BasicPoint
 		  
@@ -225,13 +246,7 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetType() As string
-		  return Dico.value("Secteur")
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Inside(p as BasicPoint) As Boolean
+		Function oldInside(p as BasicPoint) As Boolean
 		  dim q as BasicPoint
 		  dim a as double
 		  
@@ -255,32 +270,70 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Move(M as Matrix)
+		Sub oldMove(M as Matrix)
 		  super.Move(M)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Paint(g as Graphics)
-		  super.paint(g)
+		Sub oldUpdateangles()
+		  dim q as basicpoint
 		  
+		  q = Points(1).bpt - Points(0).bpt
+		  startangle = q.anglepolaire
+		  q = Points(2).bpt - Points(0).bpt
+		  endangle = q.anglepolaire
+		  computearcangle
 		  
+		  // startangle et endangle  sont toujours entre 0 et 2 pi
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Paintside(g as graphics, cot as integer, ep as double, coul as couleur)
-		  dim cs as curveshape
+		Function oldXMLPutInContainer(Doc as XMLDocument) As XMLElement
+		  dim Form, Temp as XMLElement
+		  dim i, n as integer
+		  dim col as couleur
 		  
-		  cs = Secteurskull(nsk).getcote(cot)
-		  cs.borderwidth = ep*borderwidth
-		  cs.bordercolor = coul.col
-		  g.drawobject(cs, nsk.ref.x, nsk.ref.y)
-		  cs.borderwidth = borderwidth
+		  Form = XMLPutIdInContainer(Doc)
 		  
+		  if fig <> nil and not self isa repere then
+		    Form.SetAttribute("FigId",str(fig.idfig))
+		  end if
 		  
-		End Sub
+		  for i = 0 to labs.count-1
+		    form.appendchild labs.item(i).toXML(Doc)
+		  next
+		  
+		  Form.AppendChild  XMLPutChildsInContainer(Doc)
+		  
+		  if  NbPtsConsted > 0 then
+		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
+		  end if
+		  
+		  if constructedby <> nil then
+		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
+		  end if
+		  
+		  if not currentcontent.macrocreation then
+		    Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
+		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
+		    Temp.SetAttribute("Value", str(borderwidth))
+		    Form.AppendChild Temp
+		  end if
+		  
+		  if Hidden then
+		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
+		  end if
+		  
+		  if Invalid then
+		    Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
+		  end if
+		  Form.AppendChild XMLPutTsfInContainer(Doc)
+		  
+		  return Form
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -345,24 +398,10 @@ Inherits DSect
 		    tos.writeline (  "[ "+Points(0).etiquet+" "+Points(2).etiquet+ " ]   demidroite" )
 		  end if
 		  
-		  for i = 0 to 2
-		    points(i).toeps(tos)
+		  for i = 0 to ubound(childs)
+		    childs(i).toeps(tos)
 		  next
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Updateangles()
-		  dim q as basicpoint
-		  
-		  q = Points(1).bpt - Points(0).bpt
-		  startangle = q.anglepolaire
-		  q = Points(2).bpt - Points(0).bpt
-		  endangle = q.anglepolaire
-		  computearcangle
-		  
-		  // startangle et endangle  sont toujours entre 0 et 2 pi
 		End Sub
 	#tag EndMethod
 
@@ -373,7 +412,7 @@ Inherits DSect
 		  dim b as Boolean
 		  
 		  Shape.UpdateShape
-		  updateangles
+		  'oldupdateangles
 		  computeextre
 		  
 		  for i = 0 to Ubound(ConstructedShapes)
@@ -392,52 +431,6 @@ Inherits DSect
 		  
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  dim Form, Temp as XMLElement
-		  dim i, n as integer
-		  dim col as couleur
-		  
-		  Form = XMLPutIdInContainer(Doc)
-		  
-		  if fig <> nil and not self isa repere then
-		    Form.SetAttribute("FigId",str(fig.idfig))
-		  end if
-		  
-		  for i = 0 to labs.count-1
-		    form.appendchild labs.item(i).toXML(Doc)
-		  next
-		  
-		  Form.AppendChild  XMLPutChildsInContainer(Doc)
-		  
-		  if  NbPtsConsted > 0 then
-		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
-		  end if
-		  
-		  if constructedby <> nil then
-		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
-		  end if
-		  
-		  if not currentcontent.macrocreation then
-		    Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
-		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
-		    Temp.SetAttribute("Value", str(borderwidth))
-		    Form.AppendChild Temp
-		  end if
-		  
-		  if Hidden then
-		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
-		  end if
-		  
-		  if Invalid then
-		    Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
-		  end if
-		  Form.AppendChild XMLPutTsfInContainer(Doc)
-		  
-		  return Form
-		End Function
 	#tag EndMethod
 
 
@@ -464,7 +457,7 @@ Inherits DSect
 
 
 	#tag Property, Flags = &h0
-		skullcoord As nbpoint
+		skullcoord As Tribpoint
 	#tag EndProperty
 
 

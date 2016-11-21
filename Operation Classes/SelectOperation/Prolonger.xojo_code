@@ -25,7 +25,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub deplacerperp()
+		Sub deplacerptssur()
 		  dim s as shape
 		  dim i,j, op as integer
 		  dim Bib1, Bib2 as BiBPoint
@@ -38,10 +38,19 @@ Inherits SelectOperation
 		  'if Bip isa polygon then
 		  for i =  ubound(Bip.childs) downto Bip.npts
 		    p = Bip.Childs(i)
-		    if p.numside(0) = ibip then
+		    select case p.forme
+		    case 1
+		      if p.numside(0) = ibip then
+		        p.removepointsur Bip
+		        p.puton Dr
+		      end if
+		    case 2 
+		      j = p.PointSur.GetPosition(Bip)
+		      s = p.PointSur.item(1-j)
 		      p.removepointsur Bip
 		      p.puton Dr
-		    end if
+		      p.adjustinter(s,Dr)
+		    end select
 		  next
 		  'end if
 		  
@@ -79,11 +88,11 @@ Inherits SelectOperation
 		  GetSide
 		  
 		  Dr = new Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
-		  if Bip isa polygon then
-		    Polygon(Bip).prol(ibip) = true
+		  if Bip isa Lacet then
+		    Lacet(Bip).prol(ibip) = true
 		  end if
 		  
-		  deplacerperp
+		  deplacerptssur
 		  Dr.endconstruction
 		  
 		  Dr.setconstructedby Bip, 8
@@ -132,14 +141,21 @@ Inherits SelectOperation
 		  if s = nil then
 		    return nil
 		  end if
+		  dim n as integer
 		  
-		  
-		  nobj = visible.count
+		  nobj = visible.count-1
 		  for i = visible.count-1 downto 0
 		    s = Visible.item(i)
-		    if not s.ValidSegment(p,ibip) or ( s isa polygon and polygon(s).prol(ibip) ) then  //le côté a déjà été prolongé
+		    if not s.ValidSegment(p,ibip) or ( s isa Lacet and Lacet(s).prol(ibip) ) then  //le côté a déjà été prolongé
 		      visible.removeobject(s)
 		    end if
+		    if s isa Lacet then
+		      n = s.pointonside(p)
+		      if n <> -1 and s.coord.curved(n) = 1 then
+		        visible.removeobject(s)
+		      end if
+		    end if
+		    
 		    if s isa droite and droite(s).nextre = 0 then
 		      visible.removeobject s
 		    end if
@@ -156,7 +172,7 @@ Inherits SelectOperation
 		    if s isa droite then
 		      index(i) = 0
 		    else
-		      index(i) = polygon(s).pointonside(p)
+		      index(i) = Lacet(s).pointonside(p)
 		    end if
 		  next
 		  
@@ -178,7 +194,7 @@ Inherits SelectOperation
 		  
 		  if Bip isa cube then
 		    cube(Bip).GetIbipJbip(cot,ibip,jbip)
-		  elseif Bip isa polygon then
+		  elseif Bip isa Lacet  then
 		    ibip = cot
 		    jbip = (cot+1) mod Bip.npts
 		  elseif Bip isa droite then
@@ -199,11 +215,15 @@ Inherits SelectOperation
 		    display = choose + asegment + ou + asideofpoly
 		  else
 		    super.paint(g)
-		    if sh isa polygon then
-		      sh.highlightsegment(g, cot)
+		    if sh isa Lacet then
+		      Lacet(sh).PaintSide(g,cot,2,config.highlightcolor)
 		      'end if
 		      'if currentcontent.macrocreation then
-		      display = thissideofpoly + "?"
+		      if sh.coord.curved(cot)=0 then
+		        display = thissideofpoly + "?"
+		      else
+		        display = thisarc + "?"
+		      end if
 		    else
 		      display = thissegment + "?"
 		    end if
@@ -283,12 +303,6 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Sans_titre()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
 		  
@@ -327,11 +341,6 @@ Inherits SelectOperation
 		  EL2 = XMLElement(EL1.child(0))
 		  Bip = objects.getshape(val(EL2.GetAttribute("Id")))
 		  
-		  'if Bip isa droite then
-		  'Droite(Bip).nextre = 2
-		  'Bip.forme = Bip.forme - 3
-		  'Dr = Droite(Bip)
-		  
 		  EL2 = XMLElement(EL1.child(1))
 		  Dr = droite(objects.getshape(val(EL2.GetAttribute("Id"))))
 		  if Bip isa Polygon then
@@ -340,9 +349,7 @@ Inherits SelectOperation
 		  end if
 		  replacerperp
 		  
-		  'if not (bip isa droite) then
 		  dr.delete
-		  'end if
 		  RedeleteCreatedFigures(temp)
 		  RecreateDeletedFigures(temp)
 		  
@@ -403,6 +410,11 @@ Inherits SelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="cot"
 			Group="Behavior"

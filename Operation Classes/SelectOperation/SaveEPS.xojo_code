@@ -47,7 +47,7 @@ Inherits SelectOperation
 		Sub adapterparamdessin(s as shape, tos as textoutputStream)
 		  dim col as couleur
 		  
-		  if s.hidden or (s isa point and point(s).dejaexporte) then
+		  if s.hidden or s.deleted then
 		    return
 		  end if
 		  
@@ -63,11 +63,7 @@ Inherits SelectOperation
 		  
 		  
 		  if ti then
-		    if s isa circle then
-		      if  circle(s).nsk.borderwidth <> borderwidth then
-		        borderwidth = s.nsk.borderwidth
-		      end if
-		    elseif s.nsk.borderwidth <> borderwidth then
+		    if s.nsk.borderwidth <> borderwidth then
 		      borderwidth = s.nsk.borderwidth
 		    end if
 		    tos.writeline(str(borderwidth) + " fixeepaisseurtrait")
@@ -247,6 +243,8 @@ Inherits SelectOperation
 		  dim font as string
 		  
 		  if CurrentContent.TheGrid <>  nil then
+		    borderwidth = 0.5
+		    tos.writeline(str(0.5) + " fixeepaisseurtrait")
 		    CurrentContent.TheGrid.ToEPS (tos)
 		  end if
 		  
@@ -313,10 +311,10 @@ Inherits SelectOperation
 		  dim x,y as double
 		  dim r as double
 		  
-		  xmax = -999
-		  ymax = -999
-		  xmin = 999
-		  ymin = 999
+		  xmax = -9999
+		  ymax = -9999
+		  xmin = 9999
+		  ymin = 9999
 		  
 		  s = can.rep
 		  ajustminmaxlab(s)
@@ -389,7 +387,7 @@ Inherits SelectOperation
 		      wend
 		      
 		      if t and s isa point  and not s.invalid  and not s.deleted then
-		        'adapterparamdessin(s, tos)
+		        adapterparamdessin(s, tos)
 		        if s.labs.count = 1 then
 		          adapterparametiq(s.labs.item(0),tos)
 		          s.labs.item(0).toeps(tos)
@@ -493,18 +491,16 @@ Inherits SelectOperation
 		    ymax = ymax+0.1
 		  end if
 		  
-		  
+		  if drapdroite then
+		    xmin = xmin-1 '0.05*a
+		    xmax = xmax+1 '0.05*a
+		    ymin = ymin-1 '0.05*b
+		    ymax = ymax+1 '0.05*b
+		    'a=a*1.1
+		    'b=b*1.1
+		  end if
 		  a = xmax - xmin
 		  b = ymax - ymin
-		  
-		  if drapdroite then
-		    xmin = xmin-0.05*a
-		    xmax = xmax+0.05*a
-		    ymin = ymin-0.05*b
-		    ymax = ymax+0.05*b
-		    a=a*1.1
-		    b=b*1.1
-		  end if
 		  
 		  if a > 19 then
 		    b = b*19/a
@@ -517,10 +513,11 @@ Inherits SelectOperation
 		  ury = (b+1)*28.35
 		  
 		  tos.writeline("%!PS-Adobe-3.0 EPSF-3.0")
-		  tos.writeline("%%BoundingBox: 28 28 "+ str(ceil(urx)) + " "+ str(ceil(ury)))
+		  tos.writeline("%%BoundingBox: 28 28 "+ str(urx) + " "+ str(ury))
 		  tos.writeline("%%Creator:Apprenti Geometre Version 2")
-		  readag2ps
-		  writeag2ps(tos)
+		  'readag2ps
+		  'writeag2ps(tos)
+		  tos.write ag2
 		  tos.writeline("debut")
 		  tos.writeline("[[1 cm 1 cm][" + str(a+1) + " cm " + str(b+1) + " cm]] fixecadre")
 		  tos.writeline("[[" + str(xmin) +" " + str(ymin) + "][" + str(xmax) + " " + str(ymax) +"]] fixedomaine")
@@ -781,6 +778,11 @@ Inherits SelectOperation
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Corps"
 			Group="Behavior"
 			InitialValue="0"
@@ -919,12 +921,6 @@ Inherits SelectOperation
 			Group="Behavior"
 			Type="string"
 			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Std2flag"

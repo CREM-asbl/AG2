@@ -66,16 +66,19 @@ Inherits Intersec
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Paint(g as graphics)
+		Sub Create()
 		  dim i, j as integer
-		  dim sk as OvalSkull
+		  
+		  dim p as point
 		  
 		  for i = 0 to sh1.npts-1
-		    for j = 0 to sh2.npts-1
-		      if i <> j and val(i,j) and not bezet(i,j) then
-		        sk = new Ovalskull(3,can.transform(bptinters(i,j)))
-		        sk.updatecolor(bleu,100)
-		        sk.paint(g)
+		    for j = i+1 to sh2.npts-1
+		      if  val(i,j) and  not bezet(i,j) then
+		        p = new point (bptinters(i,j))
+		        p.endconstruction
+		        'sk = new Ovalskull(3,can.transform(bptinters(i,j)))
+		        'sk.updatecolor(bleu,100)
+		        'sk.paint(g)
 		      end if
 		    next
 		  next
@@ -84,7 +87,17 @@ Inherits Intersec
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h0
+		PL As PointsList
+	#tag EndProperty
+
+
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"

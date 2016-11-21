@@ -52,7 +52,7 @@ Inherits Shape
 		  ncpts = 3
 		  
 		  M = new TranslationMatrix(p)
-		  nsk = new Lskull(can.transform(s.Points(0).bpt))
+		  createskull(can.transform(s.Points(0).bpt))
 		  computeextre
 		  Move(M)
 		  
@@ -78,7 +78,7 @@ Inherits Shape
 		  super.constructor(ol,Temp)
 		  npts = 3
 		  ncpts = 3
-		  nsk = new Lskull(can.transform(Points(0).bpt))
+		  createskull(can.transform(Points(0).bpt))
 		  computeextre
 		  
 		End Sub
@@ -164,6 +164,37 @@ Inherits Shape
 		Function GetType() As string
 		  return Dico.Value("Bande")
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InitColcotes()
+		  dim i as integer
+		  
+		  
+		  redim colcotes(1)
+		  
+		  for i = 0 to 1
+		    colcotes(i) = Config.bordercolor
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub initconstruction()
+		  super.initconstruction
+		  initcolcotes
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldUpdateShape()
+		  
+		  Super.UpdateShape
+		  
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -288,19 +319,9 @@ Inherits Shape
 		    s2 = "[ " + Points(2).etiquet+" [ " + str(p3.x) + " " + str(p3.y) + " ]  ]  droiteintercadre  decoupler exch " 
 		    tos.writeline ("[ " + s1 + s2 +"]" + " polygonerempli")
 		  end if
-		  for i = 0 to 2
-		    points(i).toeps(tos)
+		  for i = 0 to ubound(childs)
+		    childs(i).toeps(tos)
 		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpdateShape()
-		  
-		  Super.UpdateShape
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod

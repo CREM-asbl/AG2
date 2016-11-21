@@ -29,9 +29,8 @@ Inherits Polygon
 		Sub Constructor(ol as objectslist, n as integer)
 		  
 		  Shape.constructor(ol,2,n)
-		  redim prol(-1)
 		  redim prol(npts-1)
-		  Initcolcotes
+		  'Initcolcotes
 		End Sub
 	#tag EndMethod
 
@@ -39,16 +38,18 @@ Inherits Polygon
 		Sub Constructor(ol as objectslist, d as integer, p As BasicPoint)
 		  
 		  
-		  shape.Constructor(ol, 2,d)
-		  
+		  'shape.Constructor(ol, 2,d)
+		  Constructor(ol,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
-		  redim prol(-1)
-		  redim prol(npts-1)
-		  Initcolcotes
+		  'redim prol(-1)
+		  'redim prol(npts-1)
+		  'Initcolcotes
 		  liberte = 4
 		  createskull(p)
 		  ori = 1
+		  
+		  
 		End Sub
 	#tag EndMethod
 

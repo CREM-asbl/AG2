@@ -41,6 +41,9 @@ Inherits SelectOperation
 		Sub computeinter()
 		  dim i, j as integer
 		  
+		  if sh1 isa DSect or sh2 isa Dsect then
+		    return
+		  end if
 		  
 		  init
 		  drappara = false
@@ -248,6 +251,7 @@ Inherits SelectOperation
 		  sh1 = s1
 		  sh2 = s2
 		  
+		  
 		  if s1 isa circle and s2 isa circle then
 		    if s1.id > s2.id then
 		      sh1 = s2
@@ -277,13 +281,11 @@ Inherits SelectOperation
 		  else
 		    ncol = sh2.npts-1
 		  end if
-		  redim bptinters(-1,-1)
 		  redim bptinters(nlig, ncol)
-		  redim ids(-1,-1)
 		  redim ids(nlig,ncol)
-		  redim val(-1,-1)
 		  redim val(nlig,ncol)
 		  redim pts(-1)
+		  redim bezet(nlig,ncol)
 		  
 		  computeinter
 		  
@@ -700,6 +702,11 @@ Inherits SelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"

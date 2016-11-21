@@ -15,7 +15,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim loc, i, n, b, f as integer
+		  dim loc, i, n, b, f as integer 'ne sert que pour les cercles et les arcs
 		  
 		  b = s.border
 		  f= s.fill
@@ -63,22 +63,13 @@ Inherits FigureShape
 		Sub fixeepaisseurs(s as shape)
 		  dim  i as integer
 		  
-		  if s isa lacet then
-		    currentcurve = 0
-		    for i = 0 to s.npts-1
-		      if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		        updatecurvewidth(s,i,2*s.borderwidth)
-		      else
-		        updatecurvewidth(s,i,s.borderwidth)
-		      end if
-		    next
+		  
+		  if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
+		    updateborderwidth(2*s.borderwidth)
 		  else
-		    if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		      updateborderwidth(2*s.borderwidth)
-		    else
-		      updateborderwidth(s.borderwidth)
-		    end if
+		    updateborderwidth(s.borderwidth)
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -99,23 +90,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
-		  dim i as integer
 		  
-		  
-		  if self isa LSkull and not self.skullof isa Secteur then
-		    g.drawobject self, x, y
-		    for i = 0 to count-1
-		      g.drawobject item(i), x, y
-		    next
-		  end if
-		  
-		  if self.skullof isa Secteur then
-		    if fill > 0 then
-		      g.drawobject self, x, y
-		    end if
-		    g.drawobject item(0),x,y
-		    g.drawobject item(4),x,y
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -150,7 +125,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub updatebordercolor(col as color, c as double)
-		  bordercolor = col
+		  bordercolor = col 'méthode condamnée à disparaître
 		  border = c
 		End Sub
 	#tag EndMethod
@@ -163,52 +138,6 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub updatectrl(n as integer, p as BasicPoint)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatecurvecolor(s as shape, i as integer, col as color, c as double)
-		  dim lac as lacet
-		  dim n as integer
-		  
-		  if s isa lacet then
-		    lac = lacet(s)
-		    if lac.coord.curved(i) = 0 then
-		      lac.nsk.item(currentcurve).bordercolor = col
-		      lac.nsk.item(currentcurve).border = c
-		      currentcurve = currentcurve+1
-		    else
-		      for n = 0 to 2
-		        lac.nsk.item(currentcurve+n).bordercolor = col
-		        lac.nsk.item(currentcurve+n).border = c
-		      next
-		      currentcurve = currentcurve+3
-		    end if
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatecurvewidth(s as shape, i as integer, c as double)
-		  dim lac as lacet
-		  dim n as integer
-		  
-		  if s isa lacet then
-		    lac = lacet(s)
-		  end if
-		  
-		  if lac.coord.curved(i) = 0 then
-		    lac.nsk.item(currentcurve).borderwidth = c
-		    currentcurve = currentcurve+1
-		  else
-		    for n = 0 to 2
-		      lac.nsk.item(currentcurve+n).borderwidth = c
-		    next
-		    currentcurve = currentcurve+3
-		  end if
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -281,10 +210,6 @@ Inherits FigureShape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		currentcurve As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		ref As BasicPoint
 	#tag EndProperty
 
@@ -319,12 +244,6 @@ Inherits FigureShape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Count"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="currentcurve"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

@@ -1089,15 +1089,15 @@ Inherits Shape
 		    elseif s isa droite and droite(s).nextre = 1 then
 		      d= ProjectionOnAttractingDemidroite(Droite(S).firstp, droite(s).secondp)
 		    end if
-		  elseif s isa Lacet then
-		    i = Lacet(s).pointonside(bpt)
-		    if d = nil and i <> -1 then
-		      d = ProjectionOnAttractingSide(Lacet(s), i)
-		    end if
 		  elseif s isa polygon and not s isa cube then
 		    i = Polygon(S).PointOnSide(bpt)
 		    if d = nil and i <> -1 then
 		      d = ProjectionOnAttractingSide(Polygon(s),i)
+		    end if
+		  elseif s isa Lacet and not s isa secteur then
+		    i = Lacet(s).pointonside(bpt)
+		    if d = nil and i <> -1 then
+		      d = ProjectionOnAttractingSide(Lacet(s), i)
 		    end if
 		  elseif s isa Bande then
 		    i = Bande(s).pointonside(bpt)
@@ -1235,7 +1235,7 @@ Inherits Shape
 		  dim p, p1 as point
 		  
 		  liberte = 2
-		  liberte = liberte-pointsur.count
+		  liberte = liberte-forme 'pointsur.count
 		  if std then
 		    liberte = 0
 		  end if
@@ -1906,7 +1906,7 @@ Inherits Shape
 		  if isextremityofarc(n, ar) then  
 		    if s isa Lacet then
 		      k = s.getindexpoint(ar.points(0))
-		      m = polygon(s).pointonside(bpt)
+		      m = Lacet(s).pointonside(bpt)
 		      if m = k or k = (m+1) mod s.npts then
 		        surseg = true
 		      end if
@@ -2559,10 +2559,9 @@ Inherits Shape
 		  
 		  seps = SaveEps(CurrentContent.currentoperation)
 		  
-		  if not nonpointed and not hidden and not invalid  and not deleted and not dejaexporte then
+		  if not nonpointed and not hidden and not invalid  and not deleted  then
 		    seps.adapterparamdessin(self,tos)
 		    tos.writeline etiquet + " point"
-		    dejaexporte = true
 		  end if
 		  
 		  
@@ -2863,7 +2862,7 @@ Inherits Shape
 		  end if
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
-		    if parents(i) isa circle then
+		    if parents(i) isa circle  or parents(i) isa DSect then
 		      parents(i).coord.CreateExtreAndCtrlPoints(parents(i).ori)
 		    end if
 		  next
@@ -2872,9 +2871,10 @@ Inherits Shape
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  if ubound(constructedshapes) > -1 then
+		  if ubound(constructedshapes) > -1 or constructedby <> nil then
 		    updateconstructedpoints
 		  end if
+		  
 		  if ubound(MacConstructedshapes) > -1 then
 		    updateMacConstructedShapes
 		  end if
@@ -3170,6 +3170,7 @@ Inherits Shape
 		    next
 		    mobility
 		  end if
+		  forme = pointsur.count
 		  if pointsur.count = 2 then
 		    adjustinter(pointsur.item(0),pointsur.item(1))
 		  end if

@@ -8,6 +8,7 @@ Inherits Liste
 		  for i = 0 to ol.count-1
 		    concat ol.element(i)
 		  next
+		  
 		End Sub
 	#tag EndMethod
 

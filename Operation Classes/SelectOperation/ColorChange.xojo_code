@@ -30,7 +30,7 @@ Inherits SelectOperation
 		  OpId = 12
 		  Bord = B
 		  newcolor = col
-		  
+		  icot = -1
 		  
 		End Sub
 	#tag EndMethod
@@ -45,7 +45,11 @@ Inherits SelectOperation
 		  
 		  if icot <> -1 then
 		    s = tempshape.item(0)
-		    lacet(s).colcotes(icot) = newcolor
+		    if s isa Bande then
+		      Bande(s).colcotes(icot) = newcolor
+		    elseif s  isa Lacet then
+		      lacet(s).colcotes(icot) = newcolor
+		    end if
 		  else
 		    for i = 0 to n
 		      s = tempshape.item(i)
@@ -96,8 +100,8 @@ Inherits SelectOperation
 		  if bord then
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if s isa Lacet  then
-		        index.append polygon(s).pointonside(p)
+		      if s isa Lacet or s isa Bande  then
+		        index.append s.pointonside(p)
 		      else
 		        index.append -1
 		      end if
@@ -210,8 +214,12 @@ Inherits SelectOperation
 		    for i = 0 to n
 		      s = tempshape.item(i)
 		      if Bord then
-		        if  s isa polygon  then
+		        if  s isa Lacet and not s isa secteur  then
 		          for j = 0 to s.npts-1
+		            OldColors(i,j) =s.colcotes(j)
+		          next
+		        elseif s isa secteur then 
+		          for j = 0 to 1
 		            OldColors(i,j) =s.colcotes(j)
 		          next
 		        else
@@ -282,11 +290,15 @@ Inherits SelectOperation
 		      s = tempshape.item(i)
 		      EL1 = Doc.CreateElement("Objet"+str(i))
 		      if Bord then
-		        if s isa Lacet then
+		        if s isa Lacet and not s isa Secteur then
 		          for j = 0 to s.npts-1
 		            EL1.appendchild Oldcolors(i,j).XMLPutInContainer(Doc, "OldColor")
 		          next
-		        else
+		        elseif s isa secteur then 
+		          for j = 0 to 1 
+		            EL1.appendchild Oldcolors(i,j).XMLPutInContainer(Doc, "OldColor")
+		          next
+		        else 
 		          EL1.appendchild Oldcolors(i,0).XMLPutInContainer(Doc, "OldColor")
 		        end if
 		      else
@@ -416,6 +428,11 @@ Inherits SelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"

@@ -433,6 +433,8 @@ Protected Class Shape
 		    n = 11
 		  elseif s isa Lacet then
 		    n = npts-1
+		  elseif s isa bande or s isa secteur  then
+		    n = 1
 		  else
 		    n = -1
 		  end if
@@ -501,8 +503,8 @@ Protected Class Shape
 		    liberte = 2
 		  end if
 		  
-		  if self isa polygon then
-		    polygon(self).initcolcotes
+		  if self isa lacet or self isa bande then
+		    initcolcotes
 		  end if
 		  
 		  List = EL.XQL("Childs")
@@ -534,7 +536,7 @@ Protected Class Shape
 		    if XMLReadcoloritem (Dico.Value("ToolsColorBorder"),EL,c, Temp) then
 		      FixeCouleurTrait(c,Config.Border)
 		    end if
-		  elseif self isa polygon then
+		  elseif self isa lacet then
 		    if List.length = npts or List.length = 9 then
 		      for i = 0 to min(list.length-1, UBound(colcotes))
 		        EL1 =  XMLElement(List.Item(i))
@@ -894,9 +896,14 @@ Protected Class Shape
 		  Border = b
 		  
 		  if self isa Lacet then
-		    redim colcotes(-1)
 		    redim colcotes(npts-1)
 		    for i = 0 to npts-1
+		      colcotes(i) = c
+		    next
+		  end if
+		  if self isa Bande or self isa secteur then
+		    redim colcotes(1)
+		    for i = 0 to 1
 		      colcotes(i) = c
 		    next
 		  end if
@@ -935,7 +942,7 @@ Protected Class Shape
 		  end if
 		  if self isa droite then
 		    BiB.nextre = droite(self).nextre
-		  elseif self isa polygon then
+		  elseif  (self isa lacet and coord.curved(i)=0) then
 		    BiB.nextre = 2
 		  end if
 		  
@@ -1139,7 +1146,7 @@ Protected Class Shape
 		  
 		  op =CurrentContent.currentoperation
 		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
-		    if (op isa transfoconstruction and (transfoconstruction(op).type < 7))  then ' or op isa prolonger then
+		    if (op isa transfoconstruction and (transfoconstruction(op).type < 7))  or op isa prolonger then
 		      n = op.index(op.iobj)
 		    elseif  op isa  paraperpconstruction then
 		      n = op.index(op.iobj)
@@ -1409,18 +1416,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub highlightsegment(g as graphics, cot as integer)
-		  if self isa polygon and cot <> -1   then
-		    unhighlight
-		    paintside(g,cot,2,Config.highlightcolor)
-		  elseif self isa droite then
-		    highlight
-		    paintall(g)
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Hybrid() As Boolean
 		  return narcs > 0
 		End Function
@@ -1465,6 +1460,12 @@ Protected Class Shape
 		  return p
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub initcolcotes()
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1908,8 +1909,8 @@ Protected Class Shape
 		    end if
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
 		    if points(2).forme <> 1 then
-		      
-		      M = new RotationMatrix(Points(0).bpt, arcangle)
+		      arc(self).computearcangle
+		      M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
 		      points(2).moveto M*Points(1).bpt
 		      return AffiOrSimili
 		      'return new SimilarityMatrix(ep0,ep1,np0,np1)
@@ -1966,10 +1967,8 @@ Protected Class Shape
 		Function Modifier30() As Matrix
 		  //Trois sommets modifiés, aucun n'est un point "sur"
 		  
-		  if fig.pointmobile = points(2) then
-		    constructshape
-		    'points(2).modified = false
-		  end if
+		  
+		  constructshape
 		  
 		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
@@ -2410,7 +2409,10 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics, c as couleur)
-		  if noinvalidpoints then
+		  if self isa point then
+		    point(self).rsk.updatecolor(c.col,100)
+		    point(self).rsk.paint(g)
+		  elseif noinvalidpoints then
 		    nsk.updatebordercolor (c.col,100)
 		    nsk.paint(g)
 		  end if
@@ -2459,6 +2461,18 @@ Protected Class Shape
 		  end if
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PaintSegment(g as graphics, cot as integer)
+		  if self isa Lacet and cot <> -1   then
+		    unhighlight
+		    paintside(g,cot,2,Config.highlightcolor)
+		  elseif self isa droite then
+		    highlight
+		    paintall(g)
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -2757,6 +2771,10 @@ Protected Class Shape
 		    return true
 		  end if
 		  
+		  if self isa trap and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
+		    return true
+		  end if
+		  
 		  '''''''''''''''''''' Voir figurestest 1 et 2 : la méthode qui suit est un compromis pour satisfaire les deux (!?), les trois avec Varignon
 		  if not self isa point and  NbTrueSomCommuns(ff) = ubound(points)+1  and s2.auto = 4  then
 		    t = True
@@ -2817,6 +2835,9 @@ Protected Class Shape
 		        cs = Lskull(nsk).item(i)
 		        cs.bordercolor = colcotes(i).col
 		      next
+		    elseif self isa Bande then 
+		      nsk.item(0).bordercolor = colcotes(0).col
+		      nsk.item(2).bordercolor = colcotes(1).col
 		    else
 		      nsk.updatebordercolor(bordercolor.col,border)
 		    end if
@@ -3591,15 +3612,12 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
-		  dim i, k as integer   // Utilisé pour lesmodifications
+		  dim i as integer   // Utilisé pour lesmodifications
 		  dim s1, s2 As shape
 		  dim inter as intersec
 		  dim p as point
 		  dim f1, f2 as figure
-		  dim bp as BasicPoint
-		  dim M as Matrix
 		  dim a as double
-		  dim tsf as transformation
 		  
 		  updatecoord
 		  computeori
@@ -3645,9 +3663,8 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub updateshape(M as Matrix)
 		  dim i as integer    //Ici on s'occupe des points autres que les sommets
-		  dim s1, s2 As shape
-		  dim p as point
-		  dim diam as double
+		  
+		  
 		  
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
@@ -3763,8 +3780,8 @@ Protected Class Shape
 		  if self isa droite and droite(self).nextre = 2 then
 		    side = 0
 		    return true
-		  elseif self isa polygon then
-		    side = polygon(self).pointonside(p)
+		  elseif self isa Lacet then
+		    side = pointonside(p)
 		    if side <> -1 then
 		      return true
 		    end if
@@ -3941,9 +3958,11 @@ Protected Class Shape
 		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
 		  if not currentcontent.macrocreation then
-		    if self isa polygon and not self isa Lacet then
+		    if self isa Lacet then
 		      if self isa cube then
 		        n = 8
+		      elseif self isa Bande or self isa secteur  then 
+		        n = 1
 		      else
 		        n = npts-1
 		      end if
@@ -3959,10 +3978,12 @@ Protected Class Shape
 		      Temp.SetAttribute("OpacityBorder", str(border))
 		      Form.AppendChild  Temp
 		    end if
+		    
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
 		    Temp.SetAttribute("Value", str(borderwidth))
 		    Form.AppendChild Temp
 		  end if
+		  
 		  if Hidden then
 		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
 		  end if
@@ -4447,7 +4468,7 @@ Protected Class Shape
 		    for i = npts to EL.Childcount-1
 		      EL1 =  XMLElement(EL.Child(i))
 		      pt = XMLReadPoint(EL1)  //pt est un point
-		      if pt.pointsur.count = 0 then //si on a déjà lu les caractéristiques de ce pointsur, on saute
+		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit
 		        pt.XMLReadCarac(EL1)
 		      end if
 		    next
@@ -4748,6 +4769,10 @@ Protected Class Shape
 
 	#tag Property, Flags = &h0
 		selected As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

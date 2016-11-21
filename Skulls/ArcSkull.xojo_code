@@ -141,12 +141,6 @@ Inherits NSkull
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="currentcurve"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Fill"
 			Group="Behavior"
 			InitialValue="0"

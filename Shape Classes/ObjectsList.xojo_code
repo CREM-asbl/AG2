@@ -558,7 +558,7 @@ Inherits Liste
 		  tracept = false
 		  for i=0 to count-1
 		    o = GetPlan(i)
-		    if o <> nil then
+		    if o <> nil   then
 		      o.PaintAll(g)
 		    end if
 		  next

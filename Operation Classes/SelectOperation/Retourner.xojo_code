@@ -82,8 +82,8 @@ Inherits SelectOperation
 		        s.constructedshapes(j).ori = - s.constructedshapes(j).ori
 		      end if
 		    next
-		    if s isa arc then
-		      arc(s).computearcangle
+		    if s isa arc or s isa DSect  then
+		      s.computearcangle
 		    end if
 		    if s isa circle or s.Hybrid then
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
@@ -333,6 +333,11 @@ Inherits SelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"

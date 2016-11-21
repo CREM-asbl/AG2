@@ -415,7 +415,7 @@ Protected Class Transformation
 		    
 		    if not hidden then
 		      DrawTip(g, col)
-		      if supp isa bande or supp isa secteur or (supp isa polygon and type < 7 ) then
+		      if supp isa bande or supp isa secteur or (supp isa Lacet and type < 7 ) then
 		        supp.Paintside(g, index, 2, Col)
 		      else
 		        supp.paint(g,col)

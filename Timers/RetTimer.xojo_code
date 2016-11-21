@@ -80,6 +80,10 @@ Inherits TsfTimer
 		    enabled = false
 		    dret = nil
 		    if curoper isa retourner  then
+		      for i = 0 to ncop
+		        s = copies.item(i)
+		        s.ori = - s.ori
+		      next
 		      copies.inverserordre
 		      M = new SymmetryMatrix(fp, fp+sp)
 		      figs.movepoints(M)

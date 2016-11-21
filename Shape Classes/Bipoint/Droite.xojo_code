@@ -322,7 +322,7 @@ Inherits Bipoint
 		      while t = false and i <= ubound(sh)
 		        n0 = sh(i).getindexpoint(p0)
 		        n1 = sh(i).getindexpoint(p1)
-		        if sh(i) isa polygon and ( (n1 = (n0+1) mod sh(i).npts) or  (n0 = (n1+1) mod sh(i).npts))    then
+		        if sh(i) isa Lacet and ( (n1 = (n0+1) mod sh(i).npts) or  (n0 = (n1+1) mod sh(i).npts))    then
 		          m = min(n0,n1)
 		          if m = 0 and (n0 <> 1) and (n1 <> 1) then
 		            m = sh(i).npts-1
@@ -660,10 +660,15 @@ Inherits Bipoint
 		  
 		  if p.modified and q.forme = 1 then
 		    BiB1 = new BiBPoint(ep, ep+w)
-		    dr =  q.pointsur.item(0).getside(q.numside(0))
-		    Bib2 = new BiBPoint(dr.firstp,dr.secondp)
-		    M = new AffiProjectionMatrix(BiB1,Bib2)
-		    nq = M*np
+		    if q.pointsur.item(0) isa droite or q.pointsur.item(0) isa polygon then
+		      dr =  q.pointsur.item(0).getside(q.numside(0))
+		      Bib2 = new BiBPoint(dr.firstp,dr.secondp)
+		      M = new AffiProjectionMatrix(BiB1,Bib2)
+		      nq = M*np
+		    elseif q.pointsur.item(0) isa circle then
+		      nq = BiB1.ComputeFirstIntersect(1,q.pointsur.item(0),points(1))
+		    end if
+		    
 		  else
 		    if q.forme = 0 then
 		      w = w.normer
@@ -803,8 +808,8 @@ Inherits Bipoint
 		    end if
 		  end select
 		  
-		  for i = 0 to 1
-		    points(i).toeps(tos)
+		  for i = 0 to ubound(childs)
+		    childs(i).toeps(tos)
 		  next
 		  
 		End Sub

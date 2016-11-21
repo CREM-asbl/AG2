@@ -44,8 +44,8 @@ Inherits Application
 		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
 		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
 		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = (CurrentContent.Currentop > 0)
-		      wnd.pushbutton1.enabled = (CurrentContent.Currentop > 0)
+		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		      wnd.pushbutton1.enabled = true 
 		    end if
 		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
 		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
@@ -78,9 +78,9 @@ Inherits Application
 		    Dico = new Dictionnaire
 		    Config = new Configuration
 		    autoquit = true
-		    CheckUpdate
 		    init
 		    themacros = new macroslist
+		    CheckUpdate
 		  end if
 		  
 		End Sub

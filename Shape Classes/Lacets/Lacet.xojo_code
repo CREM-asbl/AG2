@@ -87,6 +87,7 @@ Inherits Shape
 		  shape.constructor(ol,d,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
+		  redim prol(d)
 		  
 		End Sub
 	#tag EndMethod
@@ -103,6 +104,7 @@ Inherits Shape
 		  InitCurvesOrders
 		  M = new TranslationMatrix(q)
 		  Move(M)
+		  redim prol(s.npts-1)
 		  
 		  
 		  
@@ -236,6 +238,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function GetSide(i as integer) As Droite
+		  'Ne pas confondre avec le "GetSide" de Lskull
 		  dim d as Droite
 		  
 		  if coord.curved(i) = 0 then
@@ -266,12 +269,13 @@ Inherits Shape
 		  dim i as integer
 		  
 		  redim colcotes(-1)
-		  redim colcotes(npts-1)
 		  
-		  for i = 0 to npts-1
-		    colcotes(i) = Config.bordercolor
-		  next
-		  
+		  if not self isa secteur then
+		    redim colcotes(npts-1)
+		    for i = 0 to npts-1
+		      colcotes(i) = Config.bordercolor
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -414,25 +418,11 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Paintside(g as graphics, cot as integer, ep as double, coul as couleur)
-		  dim i, n as integer
 		  
-		  n = 0
+		  'nsk.update(self)
 		  
-		  for i = 0 to cot-1
-		    if coord.curved(i)=0 then
-		      n=n+1
-		    else
-		      n = n+3
-		    end if
-		  next
+		  nsk.paintside(g, cot, ep, coul)
 		  
-		  nsk.paintside(g, n, ep, coul)
-		  
-		  if coord.curved(cot) = 1 then
-		    for i = 1 to 2
-		      nsk.paintside(g, n+i, ep, coul)
-		    next
-		  end if
 		  
 		  
 		  
@@ -896,6 +886,11 @@ Inherits Shape
 		
 		
 	#tag EndNote
+
+
+	#tag Property, Flags = &h0
+		prol() As Boolean
+	#tag EndProperty
 
 
 	#tag ViewBehavior

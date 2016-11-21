@@ -521,9 +521,9 @@ Inherits MultipleSelectOperation
 		  if visible  = nil or currentshape = nil then
 		    display = choose + un + " " +str
 		  else
-		    if currentshape isa polygon and side <> -1 and fa = 1 then
+		    if currentshape isa Lacet and side <> -1 and fa = 1 then
 		      currentshape.unhighlight
-		      polygon(currentshape).paintside(g,side,2,config.highlightcolor)
+		      Lacet(currentshape).paintside(g,side,2,config.highlightcolor)
 		    else
 		      currentshape.highlight
 		    end if
@@ -775,6 +775,11 @@ Inherits MultipleSelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"

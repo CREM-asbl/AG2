@@ -161,8 +161,8 @@ Inherits SelectOperation
 		  
 		  operation.paint(g)
 		  
-		  if currenthighlightedshape isa polygon and icot <> -1 then
-		    polygon(currenthighlightedshape).paintside(g,icot,2,Config.highlightcolor)
+		  if currenthighlightedshape isa Lacet and icot <> -1 then
+		    Lacet(currenthighlightedshape).paintside(g,icot,2,Config.highlightcolor)
 		  else
 		    if CurrentHighlightedShape<>nil then
 		      CurrentHighlightedShape.HighLight
@@ -325,6 +325,11 @@ Inherits SelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"

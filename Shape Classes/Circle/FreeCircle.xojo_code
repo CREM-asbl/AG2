@@ -134,7 +134,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function IsStandAlone() As Boolean
 		  
-		  dim i as Integer
+		  
 		  
 		  if Ubound(ConstructedShapes)<>-1 then
 		    return false
@@ -180,7 +180,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function Paste(Obl as ObjectsList, q as BasicPoint) As shape
-		  dim  a, b as shape
+		  
 		  dim i as integer
 		  dim s as FreeCircle
 		  
@@ -200,11 +200,12 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as TextOutputStream)
-		  dim tsf as transformation
+		  
 		  dim M as Matrix
 		  dim s as Circle
 		  dim p2, u as BasicPoint
 		  dim r as double
+		  dim i as integer
 		  
 		  
 		  if not isaellipse then
@@ -220,6 +221,9 @@ Inherits Circle
 		    
 		    tos.writeline( "[  " + points(0).etiquet + " "  + points(1).etiquet + " [ " +  str(p2.x) + " " + str(p2.y) +"]  ] ellipse")
 		  end if
+		  for i = 0 to ubound(childs)
+		    childs(i).ToEPS(tos)
+		  next
 		  
 		  
 		End Sub
@@ -228,7 +232,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  
-		  dim Form, temp As XMLElement
+		  dim Form As XMLElement
 		  
 		  
 		  Form = Shape.XMLPutInContainer(Doc)

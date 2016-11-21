@@ -2,6 +2,23 @@
 Protected Class ShapeConstruction
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
+		Sub AbortConstruction()
+		  currentcontent.drapabort = true
+		  if currentshape.isinconstruction and (currentshape.indexconstructedpoint = 0) then
+		    currentshape.points(0).delete
+		  end if
+		  currentshape.delete
+		  if currentshape.indexConstructedPoint >= 1 and  currentcontent.FigsDeleted.Childcount > 0 then
+		    currentcontent.Theobjects.XMLLoadObjects(currentcontent.FigsDeleted)
+		  end if
+		  currentcontent.drapabort = false
+		  'currentcontent.currentoperation = nil
+		  can.refreshbackground
+		  wnd.refreshtitle
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
 		  dim p as point
 		  dim magneticD as BasicPoint
@@ -20,6 +37,16 @@ Inherits MultipleSelectOperation
 		      end if
 		      curshape.mobility
 		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Annuler()
+		  if finished = false then
+		    AbortConstruction
+		  else 
+		    currentcontent.UndoLastOperation
 		  end if
 		End Sub
 	#tag EndMethod
@@ -207,6 +234,7 @@ Inherits MultipleSelectOperation
 		  currentshape.forme = forme
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
+		  
 		  wnd.setcross
 		End Sub
 	#tag EndMethod
@@ -525,6 +553,11 @@ Inherits MultipleSelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"

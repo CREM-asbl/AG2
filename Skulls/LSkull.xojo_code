@@ -55,6 +55,10 @@ Inherits NSkull
 		  dim tbp as TriBPoint
 		  dim j, ncurv, m as integer
 		  
+		  if nbp.curved(i) = 0 then
+		    return
+		  end if
+		  
 		  ncurv = 0
 		  for j = 0 to i-1
 		    if nbp.curved(j)=1 then
@@ -62,20 +66,20 @@ Inherits NSkull
 		    end if
 		  next
 		  
-		  if nbp.curved(i) > 0 then
-		    tbp = new TriBPoint(nbp.centres(i), nbp.tab(i), nbp.tab((i+1) mod nbp.taille))
-		    tbp.CreateExtreAndCtrlPoints(skullof.ori)
-		    
-		    m= 2*ncurv
-		    for j =0 to 1
-		      nbp.extre(m+j) = tbp.extre(j)
-		    next
-		    
-		    m= 6*ncurv
-		    for j = 0 to 5
-		      nbp.ctrl(m+j) = tbp.ctrl(j)
-		    next
-		  end if
+		  
+		  tbp = new TriBPoint(nbp.centres(i), nbp.tab(i), nbp.tab((i+1) mod nbp.taille))
+		  tbp.CreateExtreAndCtrlPoints(skullof.ori)
+		  
+		  m= 2*ncurv
+		  for j =0 to 1
+		    nbp.extre(m+j) = tbp.extre(j)
+		  next
+		  
+		  m= 6*ncurv
+		  for j = 0 to 5
+		    nbp.ctrl(m+j) = tbp.ctrl(j)
+		  next
+		  
 		  
 		  
 		  
@@ -107,7 +111,7 @@ Inherits NSkull
 		    append new curveshape
 		  next
 		  fill = 0
-		  'n est ici le nombre courbes, non le nombre de côtés
+		  'n est ici le nombre curveshapes, non le nombre de côtés
 		End Sub
 	#tag EndMethod
 
@@ -152,7 +156,8 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim loc, i, n, b, f as integer
+		  dim i, n, b, f as integer
+		  dim col as color
 		  
 		  b = s.border
 		  f= s.fill
@@ -160,38 +165,58 @@ Inherits NSkull
 		    b = 100
 		  end if
 		  
+		  'Concernant le fond
 		  
 		  if s.hidden or s.tsp  then
 		    updatefillcolor(s.fillcolor.col,0)
 		    updatebordercolor(s.bordercolor.col,0)
+		  elseif s.isinconstruction then
+		    updatefillcolor(s.fillcolor.col,0)
+		    updatebordercolor(config.weightlesscolor.col,0)
 		  else
 		    updatefillcolor(s.fillcolor.col,f)
 		    updatebordercolor(s.bordercolor.col,b)
 		  end if
-		  if s isa Bande then
+		  
+		  'Concernant le bord
+		  
+		  if s.hidden then
+		    col = config.HideColor.col
+		  elseif s.highlighted then
+		    col = config.HighlightColor.col
+		  elseif s.isinconstruction then
+		    col = config.weightlesscolor.col
+		    b = 100
+		  end if 
+		  
+		  if s isa Bande or s isa Secteur then
+		    updatesidecolor (s, 0, col, b)
+		    updatesidecolor (s, 2, col, b)
 		    return
 		  end if
-		  currentcurve = 0
+		  
 		  for i = 0 to s.npts-1
-		    if s.hidden Then
-		      updatecurvecolor(s,i, config.HideColor.col,b)
-		    elseif s.highlighted then
-		      n = s.getindexside
-		      if n = -1 or n = i then
-		        updatecurvecolor(s,i, config.HighlightColor.col,b)
-		      else
-		        updatecurvecolor(s,i,  lacet(s).colcotes(i).col,b)
-		      end if
-		    elseif s.isinconstruction then
-		      'updatefillcolor(config.Weightlesscolor.col,0)
-		      updatecurvecolor(s,i , config.WeightlessColor.col, 100)
-		    else
-		      updatecurvecolor(s,i, lacet(s).colcotes(i).col, b)
-		    end if
+		    updatesidecolor (s,i,col, b)
 		  next
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub fixeepaisseurs(s as shape)
+		  dim  i as integer
+		  
+		  if s isa lacet then
+		    for i = 0 to s.npts-1
+		      if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
+		        updatecurvewidth(s,i,2*s.borderwidth)
+		      else
+		        updatecurvewidth(s,i,s.borderwidth)
+		      end if
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -241,23 +266,49 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub paint(g as graphics)
+		  dim i as integer
+		  
+		  if fill > 0 then
+		    g.drawobject self, x, y
+		  end if
+		  
+		  if not self.skullof isa Secteur then
+		    for i = 0 to count-1
+		      g.drawobject item(i), x, y
+		    next
+		  else
+		    g.drawobject item(0),x,y
+		    g.drawobject item(4),x,y
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Paintside(g as graphics, i as integer, ep as double, coul as couleur)
 		  dim n, j as integer
 		  
+		  'updatesidecolor(skullof,i)
 		  n = getside(i)
 		  
 		  if skullof.coord.curved(i) = 0 then
 		    item(n).borderwidth = ep*borderwidth
-		    item(n).bordercolor = coul.col
+		    'item(n).bordercolor = coul.col
 		    g.drawobject item(n), ref.x, ref.y
 		  else
 		    for j = 0 to 2
 		      item(n+j).borderwidth = ep*borderwidth
-		      item(n+j).bordercolor = coul.col
+		      'item(n+j).bordercolor = coul.col
 		      g.drawobject item(n+j), ref.x, ref.y
 		    next
 		  end if
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Untitled()
 		  
 		End Sub
 	#tag EndMethod
@@ -319,22 +370,60 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub updatecurvecolor(s as shape, i as integer, col as color, c as double)
+		  
+		  dim  m, n as integer
+		  
+		  n = GetSide(i)
+		  if s.coord.curved(i) = 0 then
+		    s.nsk.item(n).bordercolor = col
+		    s.nsk.item(n).border = c
+		  else
+		    for m = 0 to 2
+		      s.nsk.item(n+m).bordercolor = col
+		      s.nsk.item(n+m).border = c
+		    next
+		    
+		  end if
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatecurvewidth(s as shape, i as integer, c as double)
+		  dim j, m, n as integer
+		  
+		  n = getside(i)
+		  if s.coord.curved(i) = 0 then
+		    s.nsk.item(n).borderwidth = c
+		  else
+		    for m = 0 to 2
+		      s.nsk.item(n+m).borderwidth = c
+		    next
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateSecteur(s as Secteur)
 		  dim i, j as integer
 		  dim p as BasicPoint
 		  
 		  p =s.getgravitycenter
-		  '
-		  'for i = 0 to 2
-		  'updatesideSecteur(i, s.skullcoord, p)
-		  'next
 		  
-		  for i = 0 to s.npts-1
-		    if dret = nil then
-		      ComputeExtreCtrl(i, s.skullcoord)
-		    end if
-		    updateside(i, s.skullcoord, p)
+		  for i = 0 to 2
+		    updatesideSecteur(i, s.skullcoord, p)
 		  next
+		  
+		  
+		  if dret = nil then
+		    ComputeExtreCtrl(1, s.skullcoord)
+		  end if
+		  
 		  
 		  fixecouleurs(s)
 		  fixeepaisseurs(s)
@@ -404,7 +493,7 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatesidebande(i as integer,  nbp as nbpoint, gc as basicpoint)
+		Sub updatesideBande(i as integer,  nbp as nbpoint, gc as basicpoint)
 		  dim q as BasicPoint
 		  
 		  q = can.dtransform(nbp.tab(i)-gc)
@@ -417,15 +506,52 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateSideSecteur(i as integer,  nbp as TriBpoint, gc as basicpoint)
-		  dim q(2) as BasicPoint
+		Sub updatesidecolor(s as shape, i as integer, col as color, b as integer)
+		  dim j as integer
 		  
-		  'q = can.dtransform(nbp.tab()-gc)
-		  'item(i).x = q.x
-		  'item(i).y = q.y
-		  'q = can.dtransform(nbp.tab((i+1) mod nbp.taille)-gc)
-		  'item(i).x2 = q.x
-		  'item(i).y2 = q.y
+		  if (s isa Bande or s isa Secteur) and i = 2 then
+		    j = 1
+		  else
+		    j = i
+		  end if
+		  
+		  if s.hidden  or s.isinconstruction Then
+		    updatecurvecolor(s,i, col,b)
+		  elseif s.highlighted then
+		    if s.getindexside = -1  or s.getindexside = i then  'cas des segments sélectionnés par une opération
+		      updatecurvecolor(s,i, col,b)
+		    else
+		      updatecurvecolor(s,i,s.colcotes(j).col,b)
+		    end if
+		  else
+		    updatecurvecolor(s,i, s.colcotes(j).col, b)
+		  end if
+		  
+		  
+		  '
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateSideSecteur(i as integer,  nbp as TriBpoint, gc as basicpoint)
+		  dim q as BasicPoint
+		  
+		  if i = 0 then
+		    q = can.dtransform(nbp.tab(0)-gc)
+		    item(i).x = q.x
+		    item(i).y = q.y
+		    q = can.dtransform(nbp.tab(1)-gc)
+		    item(i).x2 = q.x
+		    item(i).y2 = q.y
+		  elseif i=2 then
+		    q = can.dtransform(nbp.tab(2)-gc)
+		    item(4).x = q.x
+		    item(4).y = q.y
+		    q = can.dtransform(nbp.tab(0)-gc)
+		    item(4).x2 = q.x
+		    item(4).y2 = q.y
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -456,12 +582,6 @@ Inherits NSkull
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Count"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="currentcurve"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

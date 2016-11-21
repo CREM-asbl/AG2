@@ -290,6 +290,11 @@ Inherits Operation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="curop1"
 			Group="Behavior"
 			InitialValue="0"

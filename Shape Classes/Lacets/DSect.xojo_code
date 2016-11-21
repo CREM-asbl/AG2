@@ -45,9 +45,7 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist,  p as BasicPoint)
 		  
-		  super.constructor(ol, 3, p)
-		  fam = 5
-		  forme = 2
+		  super.constructor(ol,3, p)
 		  auto = 3
 		  narcs = 1
 		  liberte = 5
@@ -63,9 +61,6 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub constructor(ol as objectslist, s as DSect, q as BasicPoint)
-		  
-		  
-		  
 		  super.constructor(ol,s,q)
 		  Ori=s.Ori
 		  liberte = s.liberte
@@ -85,6 +80,16 @@ Inherits Lacet
 		  coord.CreateExtreAndCtrlPoints(ori)
 		  createskull(points(0).bpt)
 		  InitCurvesOrders
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConstructShape()
+		  super.ConstructShape
+		  computeradius
+		  computearcangle
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -178,7 +183,7 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Function Paste(Obl as ObjectsList, p as BasicPoint) As DSect
 		  
-		  return  new DSect(Obl, DSect(self),p)
+		  return  new DSect(Obl, self ,p)
 		  
 		End Function
 	#tag EndMethod
@@ -223,10 +228,10 @@ Inherits Lacet
 		  dim b as Boolean
 		  
 		  coord.centres(1) = coord.tab(0)
-		  Super.UpdateShape
 		  computearcangle
+		  Super.UpdateShape
 		  
-		  for i = 0 to Ubound(ConstructedShapes)   'Pourquoi pas "updateconstructedshapes ?
+		  for i = 0 to Ubound(ConstructedShapes) 
 		    s = ConstructedShapes(i)
 		    if s isa droite then
 		      s.updateshape

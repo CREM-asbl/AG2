@@ -267,7 +267,7 @@ Inherits Circle
 		Function Inside(p as BasicPoint) As Boolean
 		  dim a as double
 		  a = computeangle(p)
-		  return abs(a) <= abs(arcangle)
+		  return (abs(a) <= abs(arcangle)) 
 		End Function
 	#tag EndMethod
 
@@ -337,8 +337,12 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function PInShape(p as BasicPoint) As Boolean
-		  if  Points(0).bpt.Distance(p) >  Radius + can.MagneticDist  then
-		    return False
+		  dim d1,d2 as double
+		  
+		  if inside(p) and   Points(0).bpt.Distance(p) <  Radius + can.MagneticDist  then
+		    d1 = p.distance(coord.tab(0),coord.tab(1))
+		    d2 = p.distance(coord.tab(0),coord.tab(2))
+		    return  min(d1,d2) > can.magneticdist
 		  end if
 		  
 		  return Inside(p)
@@ -419,8 +423,8 @@ Inherits Circle
 		    end if
 		  end if
 		  
-		  for i = 0 to 2
-		    points(i).ToEPS(tos)
+		  for i = 0 to ubound(childs)
+		    childs(i).ToEPS(tos)
 		  next
 		  
 		End Sub
