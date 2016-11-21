@@ -100,23 +100,24 @@ Begin Window GetUpdateW
       InitialParent   =   ""
       Italic          =   False
       Left            =   0
-      LockBottom      =   True
+      LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
-      Text            =   ""
+      TabStop         =   True
+      Text            =   "Recherche de mises à jour"
       TextAlign       =   1
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   35
+      Top             =   36
       Transparent     =   True
       Underline       =   False
       Visible         =   True
@@ -128,7 +129,11 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Label1.Text = "Une nouvelle version d'AG est disponible"
+		  dim refs(-1) as String
+		  
+		  refs = Split(list,"-")
+		  newVersion = refs(0)
+		  Label1.Text = newVersion+" est disponible ("+SizeUnit(val(refs(1)),0)+")"
 		  
 		  
 		End Sub
@@ -136,12 +141,33 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub Constructor(v as string)
-		  version = v
+		Sub Constructor(l as string)
+		  list = l
 		  // Calling the overridden superclass constructor.
 		  Super.Window
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SizeUnit(size As double, niveau as integer) As String
+		  dim t as string
+		  if size < 1024  or niveau =2 then
+		    t =format(size,"#.00")
+		    select case(niveau)
+		    case 0
+		      t = t +"o"
+		    case 1
+		      t=t+"Ko"
+		    case 2
+		      t=t+"Mo"
+		    end
+		    return t
+		  else
+		    size = size /1024.0
+		    return SizeUnit(size,niveau+1)
+		  end if
+		End Function
 	#tag EndMethod
 
 
@@ -168,7 +194,19 @@ End
 
 
 	#tag Property, Flags = &h0
-		version As string
+		CurrentFolder As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		list As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		newVersion As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		updated As boolean
 	#tag EndProperty
 
 
@@ -177,7 +215,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/logiciels/-K0QFCVwKVLay6Bb2-Xn")
+		  showUrl("http://crem.be/#logiciels/-K0QFCVwKVLay6Bb2-Xn")
 		  close
 		  
 		End Sub
@@ -191,6 +229,7 @@ End
 #tag Events PushButton2
 	#tag Event
 		Sub Action()
+		  updated = false
 		  Close
 		End Sub
 	#tag EndEvent
@@ -293,6 +332,12 @@ End
 		Group="ID"
 		Type="String"
 		EditorType="String"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="list"
+		Group="Behavior"
+		Type="string"
+		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="LiveResize"
@@ -420,12 +465,6 @@ End
 		Name="updated"
 		Group="Behavior"
 		Type="boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="version"
-		Group="Behavior"
-		Type="string"
-		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Visible"

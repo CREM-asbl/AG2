@@ -136,7 +136,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -179,7 +179,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -222,7 +222,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -368,6 +368,27 @@ End
 	#tag Event
 		Sub Open()
 		  me.text = Dico.value("Confirmation")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events EditField1
+	#tag Event
+		Sub Open()
+		  BackColor = Blanc
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events EditField2
+	#tag Event
+		Sub Open()
+		  BackColor = Blanc
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events EditField3
+	#tag Event
+		Sub Open()
+		  BackColor = Blanc
 		End Sub
 	#tag EndEvent
 #tag EndEvents

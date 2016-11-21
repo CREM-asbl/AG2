@@ -79,7 +79,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c8080FF00
+      FillColor       =   &cFF008080
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
@@ -93,6 +93,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -1130,7 +1131,7 @@ End
 	#tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
 			if dret = nil then
-			Annuler
+			currentcontent.currentoperation.Annuler
 			end if
 			return true
 		End Function
@@ -2072,18 +2073,18 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  dim op as operation
-		  op =CurrentContent.CurrentOperation
-		  closefw
-		  if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >= 1) then
-		    if op isa AppliquerTsf then
-		      AppliquerTsf(op).tsf.highlighted = false
-		    end if
-		    CurrentContent.abortconstruction
-		  else
-		    CurrentContent.UndoLastOperation
-		  end if
-		  mycanvas1.refreshBackground
+		  'dim op as operation
+		  'op =CurrentContent.CurrentOperation
+		  'closefw
+		  'if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >= 1) then
+		  'if op isa AppliquerTsf then
+		  'AppliquerTsf(op).tsf.highlighted = false
+		  'end if
+		  'CurrentContent.abortconstruction
+		  'else
+		  'CurrentContent.UndoLastOperation
+		  'end if
+		  'mycanvas1.refreshBackground
 		  
 		End Sub
 	#tag EndMethod
@@ -2210,10 +2211,14 @@ End
 	#tag Method, Flags = &h0
 		Sub CopyMenuBar()
 		  dim i, nmen as integer
+		  dim mitem as MenuItem
 		  
 		  nmen = MenuMenus.count
 		  for i = 0 to nmen-1
-		    MenuBar.append CopyMenuItem(MenuMenus.item(i))
+		    mitem = CopyMenuItem(MenuMenus.item(i))
+		    if mitem <> nil then
+		      MenuBar.append mitem
+		    end if
 		  next
 		  CopyCFGMenu
 		End Sub
@@ -2234,7 +2239,7 @@ End
 		  else
 		    item.Text = mitem.Text
 		  end if
-		  item.icon = mitem.icon
+		  'item.icon = mitem.icon
 		  
 		  
 		  if item.name = "PrefsFreeForms" then
@@ -2642,6 +2647,7 @@ End
 		    if not draphisto then
 		      updatemenu
 		    end if
+		    updatetoolbar
 		    PushButton1.Visible = not draphisto
 		    can.RefreshBackground
 		    MoveBoxRefresh
@@ -2889,6 +2895,7 @@ End
 		      MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
 		    end if
 		  end if
+		  updateToolBar
 		  
 		End Sub
 	#tag EndMethod
@@ -2923,6 +2930,8 @@ End
 	#tag Method, Flags = &h0
 		Sub UpdateToolBar()
 		  dim espace as integer
+		  dim st as string
+		  
 		  espace = min((me.Height-me.MinHeight)/3,5)
 		  if(me.Height = me.MinHeight) then
 		    MoveBox.TextSize = 8
@@ -2937,7 +2946,18 @@ End
 		  MoveBox.Top = 60+espace
 		  StdBox.top = MoveBox.top+MoveBox.Height+espace
 		  LibBox.Top = StdBox.top+StdBox.Height+espace
-		  Tools.FillColor = bleu
+		  st = config.menu
+		  if st = "Menu_A" then
+		    Tools.FillColor = &c000088
+		  elseif st = "Menu_B" then
+		    Tools.FillColor = &c008800
+		  elseif st = "Menu_C" then
+		    Tools.FillColor = &c880000
+		  elseif st = "Menu_AB" then
+		    Tools.FillColor = &c888800
+		  elseif st = "Menu_AC" then
+		    Tools.FillColor = &c880088
+		  end if
 		  
 		  
 		  
@@ -3058,6 +3078,10 @@ End
 
 	#tag Property, Flags = &h0
 		SelectedTool As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		selshape As shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -3197,12 +3221,15 @@ End
 	#tag Event
 		Sub Action()
 		  if dret = nil then
-		    Annuler
-		    if CurrentContent.CurrentOp = 0 then
-		      me.Enabled = false
+		    if currentcontent.currentoperation <> nil then
+		      currentcontent.currentoperation.Annuler
+		      if CurrentContent.CurrentOp = 0 then
+		        me.Enabled = false
+		      end if
+		    else
+		      currentcontent.undolastoperation
 		    end if
 		  end if
-		  
 		  setfocus
 		End Sub
 	#tag EndEvent
@@ -3211,43 +3238,51 @@ End
 		  dim EL, EL1, EL2, EL3 as XMLElement
 		  dim Name, Type as string
 		  dim op, op1 as integer
+		  dim n1, n2, n3 as integer
 		  
+		  if currentcontent.currentop = 0 or currentcontent.currentoperation = nil then
+		    return
+		  end if
+		  
+		  currentcontent.currentoperation.canceling = true
 		  EL = currentcontent.OpToCancel
+		  EL1 = XMLElement(EL.firstchild)
 		  
-		  if EL = nil then
+		  if EL = nil  or EL1 = nil then
 		    return
 		  end if
 		  
 		  op = val(EL.GetAttribute("OpId"))
-		  Name = EL.GetAttribute(Dico.Value("Type"))
+		  Name = EL.GetAttribute(Dico.Value("Type")) + EL1.GetAttribute("Type")
 		  me.Helptag = Dico.Value("Cancel") + " " + lowercase(Name)
-		  EL1 = XMLElement(EL.firstchild)
+		  n1 =val(EL1.GetAttribute("Id"))
+		  selshape = currentcontent.TheObjects.GetShape(n1)
 		  
-		  if EL1= nil then
-		    return
-		  end if
 		  
 		  select case op
-		  case 0  //Construction
-		    Type = EL1.GetAttribute("Type") + " n°" + EL1.GetAttribute("Id")
-		  case 1  //ParaperpConstruction
-		    Type = EL1.GetAttribute("Type") + " n°" + EL1.GetAttribute("Id")
-		    EL2 = XMLElement(EL1.Child(1))
-		    op1 = val(EL2.GetAttribute("Oper"))
-		    if op1 = 1 then
-		      Type = Type+ " parallèle"
-		    else
-		      Type = Type + " perpendiculaire"
-		    end if
-		    Type = Type + "à l'objet n°" + EL2.GetAttribute("Id")
 		  case 19 //Dupliquer
 		    EL2 = XMLElement(EL1.firstchild)
 		    EL3 = XMLElement(EL2.firstchild)
 		    if EL3 <> nil then
-		      Type = EL3.GetAttribute("Type") + " n°" + EL3.GetAttribute("Id")
+		      Type = EL3.GetAttribute("Type") '+ " n°" + 
+		      n1 = val(EL2.GetAttribute("Id"))
+		      selshape = currentcontent.TheObjects.GetShape(n1)
 		    end if
 		  end select
+		  selshape.highlight
 		  me.Helptag = me.Helptag + " "+  lowercase(Type)
+		  can.refreshbackground
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  if selshape <> nil then
+		    currentcontent.TheObjects.unhighlightall
+		    can.refreshbackground
+		  end if
+		  if currentcontent.currentoperation <> nil then
+		    currentcontent.currentoperation.canceling = false
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents

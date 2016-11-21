@@ -174,6 +174,7 @@ Inherits Canvas
 		    else
 		      coul = negcolor
 		    end if
+		    
 		    currentcontent.currentoperation = new ColorChange(false,coul)
 		    currentoper = colorchange(currentcontent.currentoperation)
 		    EndOperMenuContext
@@ -235,7 +236,7 @@ Inherits Canvas
 		  case Dico.value("AutoIntersec")
 		    currentoper = new AutoIntersec(polygon(sctxt))
 		    AutoIntersec(currentoper).ComputeInterLines
-		    AutoIntersec(currentoper).Paint(BackgroundPicture.graphics)
+		    AutoIntersec(currentoper).Paint(OffscreenPicture.graphics)
 		  end select
 		  
 		  ctxt = false
@@ -550,9 +551,9 @@ Inherits Canvas
 		  if vis <> nil and vis.count <> 0 then
 		    nobj = vis.count
 		    s = vis.item(iobj)
-		    if s isa polygon and polygon(s).pointonside(p ) <>-1 then
-		      icot = polygon(s).pointonside(p)
-		      polygon(s).paintside(BackgroundPicture.graphics,icot,2,Config.highlightcolor)
+		    if s isa Lacet and Lacet(s).pointonside(p ) <>-1 then
+		      icot = Lacet(s).pointonside(p)
+		      Lacet(s).paintside(BackgroundPicture.graphics,icot,2,Config.highlightcolor)
 		    else
 		      icot = -1
 		    end if
@@ -662,10 +663,8 @@ Inherits Canvas
 		    CurrentContent.TheGrid.Paint(BackgroundPicture.Graphics)
 		  end if
 		  
-		  op = CurrentContent.currentoperation
-		  
 		  CurrentContent.TheObjects.paint(BackgroundPicture.Graphics)
-		  
+		  op = CurrentContent.currentoperation
 		  if op <> nil  then
 		    op.Paint(BackgroundPicture.Graphics)
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
