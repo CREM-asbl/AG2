@@ -18,7 +18,7 @@ Inherits SimilarityMatrix
 		    if s < epsilon then
 		      return
 		    end if
-		    b2 = b1+q*d/s
+		    b2 = b1+q.Mulp(d/s)
 		    q = b2-b1
 		    
 		    if  not (w.norme < epsilon) and not  (q.norme < epsilon) then
@@ -34,7 +34,7 @@ Inherits SimilarityMatrix
 		      w2 = M*a
 		      v1 = new basicPoint(w1.x, w2.x)
 		      v2 = new BasicPoint(w1.y, w2.y)
-		      v3=new BasicPoint(b1.x - w1*s1,b1.y-w2*s1)
+		      v3=new BasicPoint(b1.x - w1.Mulp(s1),b1.y-w2.Mulp(s1))
 		    end if
 		  end if
 		End Sub

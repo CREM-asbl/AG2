@@ -815,6 +815,12 @@ Protected Module Dictionnaires
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function thisarc() As string
+		  return Dico.value("thisarc")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function thisdisplacement() As string
 		  return Dico.value("thisdisplacement")
 		End Function
