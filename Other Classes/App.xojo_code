@@ -286,12 +286,9 @@ Inherits Application
 		  dim dicos(-1), nom as String
 		  dim i as integer
 		  
-		  for i=1 to AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".dct" then
-		      dicos.append(Left(nom,len(nom)-4))
-		    end if
-		  next
+		  dicos.append "Francais"
+		  dicos.append "English"
+		  dicos.append "PortuguesBr"
 		  
 		  for i=1 to DctFolder.count
 		    nom = app.DctFolder.trueItem(i).Name
@@ -348,12 +345,18 @@ Inherits Application
 		  dim menus(-1),nom as String
 		  dim i as integer
 		  
-		  for i=1 to AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".men" then
-		      menus.append(Left(nom,len(nom)-4))
-		    end if
-		  next
+		  'for i=1 to AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".men" then
+		  'menus.append(Left(nom,len(nom)-4))
+		  'end if
+		  'next
+		  
+		  menus.append "Menu_A"
+		  menus.append "Menu_B"
+		  menus.append "Menu_C"
+		  menus.append "Menu_AB"
+		  menus.append "Menu_AC"
 		  
 		  for i=1 to MenusFolder.count-1
 		    nom = app.MenusFolder.trueItem(i).Name
@@ -386,12 +389,18 @@ Inherits Application
 		  dim stdfiles(-1),nom as String
 		  dim i as integer
 		  
-		  for i=1 to AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".std" then
-		      stdfiles.append(Left(nom,len(nom)-4))
-		    end if
-		  next
+		  'for i=1 to AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".std" then
+		  'stdfiles.append(Left(nom,len(nom)-4))
+		  'end if
+		  'next
+		  
+		  stdfiles.append "jeu_de_base"
+		  stdfiles.append "cubes"
+		  stdfiles.append "pentaminos"
+		  stdfiles.append "tangram"
+		  stdfiles.append "reglettes"
 		  
 		  for i=1 to StdFolder.count
 		    nom = app.StdFolder.trueItem(i).Name

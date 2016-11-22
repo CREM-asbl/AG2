@@ -264,16 +264,16 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  fi = app.appfolder.Child(stdfile)
-		  if not fi.exists then
-		    fi = app.StdFolder.Child(stdfile)
-		  end if
-		  if not fi.exists then
-		    MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
-		    return
-		  end if
+		  'fi = app.appfolder.Child(stdfile)
+		  'if not fi.exists then
+		  'fi = app.StdFolder.Child(stdfile)
+		  'end if
+		  'if not fi.exists then
+		  'MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
+		  'return
+		  'end if
 		  
-		  Doc = new XMLDocument(fi)
+		  Doc = new XMLDocument(jeu_de_base)
 		  EL = Doc.DocumentElement
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
@@ -540,6 +540,8 @@ Protected Class Configuration
 		    'wnd.setMenus
 		    ///////
 		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
