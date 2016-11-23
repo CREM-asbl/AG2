@@ -78,9 +78,9 @@ Inherits Application
 		    Dico = new Dictionnaire
 		    Config = new Configuration
 		    autoquit = true
+		    CheckUpdate
 		    init
 		    themacros = new macroslist
-		    CheckUpdate
 		  end if
 		  
 		End Sub
