@@ -298,7 +298,7 @@ Inherits Canvas
 		  sctxt = nil
 		  curop = currentcontent.currentoperation
 		  if dret = nil and not CurrentContent.bugfound then
-		    if Curop<>nil and not curop isa ouvrir then
+		    if Curop<>nil  and not curop isa ouvrir then
 		      Curop.MouseMove(p)
 		    elseif  Curop = nil then
 		      Mousecursor = System.Cursors.StandardPointer

@@ -187,17 +187,19 @@ Inherits NSkull
 		  elseif s.isinconstruction then
 		    col = config.weightlesscolor.col
 		    b = 100
+		  elseif s.tracept then
+		    col = bleu
+		    b = 100
 		  end if 
-		  
-		  if s isa Bande or s isa Secteur then
+		  '
+		  if s isa Bande  then
 		    updatesidecolor (s, 0, col, b)
 		    updatesidecolor (s, 2, col, b)
-		    return
+		  else
+		    for i = 0 to s.npts-1
+		      updatesidecolor (s,i,col, b)
+		    next
 		  end if
-		  
-		  for i = 0 to s.npts-1
-		    updatesidecolor (s,i,col, b)
-		  next
 		  
 		  
 		  
@@ -232,16 +234,22 @@ Inherits NSkull
 		  
 		  dim j, k as integer
 		  
-		  k = 0
-		  for j = 0 to n-1
-		    if skullof.coord.curved(j) = 0 then
-		      k = k+1
-		    else
-		      k = k+3
-		    end if
-		  next
-		  
-		  return k
+		  if skullof isa Bande  then
+		    return n
+		  elseif skullof isa secteur then
+		    return 2*n
+		  else
+		    k = 0
+		    for j = 0 to n-1
+		      if skullof.coord.curved(j) = 0 then
+		        k = k+1
+		      else
+		        k = k+3
+		      end if
+		    next
+		    
+		    return k
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -303,12 +311,6 @@ Inherits NSkull
 		    next
 		  end if
 		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Untitled()
 		  
 		End Sub
 	#tag EndMethod
@@ -507,24 +509,17 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub updatesidecolor(s as shape, i as integer, col as color, b as integer)
-		  dim j as integer
 		  
-		  if (s isa Bande or s isa Secteur) and i = 2 then
-		    j = 1
-		  else
-		    j = i
-		  end if
-		  
-		  if s.hidden  or s.isinconstruction Then
+		  if s.hidden  or s.isinconstruction or s.tracept Then
 		    updatecurvecolor(s,i, col,b)
 		  elseif s.highlighted then
 		    if s.getindexside = -1  or s.getindexside = i then  'cas des segments sélectionnés par une opération
 		      updatecurvecolor(s,i, col,b)
 		    else
-		      updatecurvecolor(s,i,s.colcotes(j).col,b)
+		      updatecurvecolor(s,i,s.colcotes(i).col,b)
 		    end if
 		  else
-		    updatecurvecolor(s,i, s.colcotes(j).col, b)
+		    updatecurvecolor(s,i, s.colcotes(i).col, b)
 		  end if
 		  
 		  

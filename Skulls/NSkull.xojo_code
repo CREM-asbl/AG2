@@ -197,7 +197,7 @@ Inherits FigureShape
 		
 		2eme famille de classes de skulls 
 		
-		Object2D ----OvalShape  ---- OvalSkull ---------------------------------------------- Point
+		Object2D ----OvalShape  ---- OvalSkull ---------------------------------------------- Point, StdCircle
 	#tag EndNote
 
 

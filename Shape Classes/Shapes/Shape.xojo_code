@@ -890,23 +890,14 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub FixeCouleurtrait(c as couleur, b as integer)
-		  dim i as integer
-		  
 		  Bordercolor = c
 		  Border = b
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(i as integer, c as couleur)
 		  
-		  if self isa Lacet then
-		    redim colcotes(npts-1)
-		    for i = 0 to npts-1
-		      colcotes(i) = c
-		    next
-		  end if
-		  if self isa Bande or self isa secteur then
-		    redim colcotes(1)
-		    for i = 0 to 1
-		      colcotes(i) = c
-		    next
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -2391,11 +2382,6 @@ Protected Class Shape
 		  end if
 		  
 		  nsk.update(self)
-		  
-		  if tracept then
-		    nsk.updateborderwidth(borderwidth)
-		    nsk.updatebordercolor(bleu,100)
-		  end if
 		  nsk.paint(g)
 		  
 		  if not hidden then
@@ -2591,7 +2577,7 @@ Protected Class Shape
 		  
 		  
 		  //PointOnSide vaut 0 ou -1 pour un cercle ou une droite ou un segment
-		  //                               un numéro ou -1 pour un polygone ou un lacet
+		  //                               un numéro ou -1 pour un polygone ou un lacet ou une bande ou un secteur
 		End Function
 	#tag EndMethod
 
@@ -3464,6 +3450,8 @@ Protected Class Shape
 		      coord.tab(i) = points(i).bpt
 		    next
 		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -5004,6 +4992,11 @@ Protected Class Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

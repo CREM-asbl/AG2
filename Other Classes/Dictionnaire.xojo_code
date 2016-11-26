@@ -15,7 +15,7 @@ Inherits Dictionary
 		    C = new XMLDocument(Francais)
 		  case "English"
 		    C = new XMLDocument(English)
-		  case "Portugues Br"
+		  case "PortuguesBr"
 		    C = new XMLDocument(PortuguesBr)
 		  else
 		    Name = lang+".dct"

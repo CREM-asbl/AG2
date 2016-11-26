@@ -1107,12 +1107,11 @@ Inherits Shape
 		      else
 		        p3 = Bande(s).point3
 		      end if
-		      d =  bpt.projection(Bande(s).points(2*i).bpt, p3)
+		      d =  bpt.projection(Bande(s).points(i).bpt, p3)
 		    end if
 		  elseif s isa secteur then
-		    i = Secteur(s).pointonside(bpt)
-		    if d = nil and i <> -1 then
-		      d =  bpt.projection(Secteur(s).points(0).bpt, Secteur(s).points(i+1).bpt)
+		    if d = nil  then
+		      d =  Secteur(s).PointMagnetism2(bpt) 
 		    end if
 		  elseif s isa cube  then
 		    for i = 0 to 5
@@ -1488,10 +1487,7 @@ Inherits Shape
 		  end if
 		  
 		  if tracept  and (modified or currentcontent.currentoperation isa appliquertsf)  then
-		    'rsk.updatecolor(bleu,100)
 		    rsk.paint(can.OffscreenPicture.Graphics)
-		    'can.OffscreenPicture.Graphics.DrawObject rsk, rsk.ref.x, rsk.ref.y
-		    'paint(can.OffscreenPicture.Graphics,blue)
 		    currentcontent.theobjects.tracept = true
 		  end if
 		  
@@ -3477,6 +3473,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

@@ -45,23 +45,19 @@ Inherits SelectOperation
 		  
 		  if icot <> -1 then
 		    s = tempshape.item(0)
-		    if s isa Bande then
-		      Bande(s).colcotes(icot) = newcolor
-		    elseif s  isa Lacet then
-		      lacet(s).colcotes(icot) = newcolor
-		    end if
+		    s.Fixecouleurtrait(s.side, newcolor)
 		  else
 		    for i = 0 to n
 		      s = tempshape.item(i)
 		      if Bord then
-		        s.FixeCouleurTrait Newcolor, Config.Border
+		        s.FixeCouleurTrait (Newcolor, Config.Border)
 		      else
 		        if s.fill <> 0 then
 		          newfill = s.fill
 		        else
 		          newfill = 100
 		        end if
-		        s.FixeCouleurFond Newcolor, newfill
+		        s.FixeCouleurFond (Newcolor, newfill)
 		        s.tsp = false
 		      end if
 		    next
@@ -515,12 +511,6 @@ Inherits SelectOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="OpId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

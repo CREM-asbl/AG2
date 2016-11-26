@@ -130,7 +130,7 @@ Protected Class Transformation
 		      else
 		        v = Bande(supp).Point3
 		      end if
-		      M = new SymmetryMatrix(supp.points(2*index).bpt, v)
+		      M = new SymmetryMatrix(supp.points(index).bpt, v)
 		    elseif supp isa polygon or supp isa secteur then
 		      nbp = supp.GetBiBSide(index)
 		      M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
@@ -618,7 +618,7 @@ Protected Class Transformation
 		    fp = s.points(0).bpt
 		    sp = s.points(index+1).bpt
 		  elseif s isa Bande then
-		    fp=s.points(2*index).bpt
+		    fp=s.points(index).bpt
 		    if index =0 then
 		      sp = s.points(1).bpt
 		    else

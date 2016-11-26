@@ -1,57 +1,52 @@
 #tag Class
-Protected Class Secteur
-Inherits DSect
+Protected Class Bande
+Inherits Lacet
+	#tag CompatibilityFlags = ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub Computeextre()
-		  dim p0,p1,p2 as basicPoint
+		Sub computeextre()
+		  dim p1,p2,q1,q2 as basicPoint
 		  dim D1 as BiBPoint
 		  dim mi, ma as double
+		  dim ar(-1) as BasicPoint
 		  
+		  redim ar(-1)
+		  p1 = Points(0).bpt
+		  p2 = Points(1).bpt
+		  q1 = Points(2).bpt
+		  q2 = q1+p2-p1
 		  
-		  p0 = coord.tab(0)
-		  p1 = coord.tab(1)
-		  p2 =coord.tab(2)
-		  
-		  if p1.distance(p2) > epsilon  then
-		    D1 = new BiBPoint(p0,p1)
+		  if p1.distance(p2) < epsilon  then
+		    ar.append  p1
+		    ar.append p2
+		    ar.append q2
+		    ar.append  q1
+		  else
+		    D1 = new BiBPoint(p1,p2)
 		    D1.Interscreen(mi,ma)
-		    p1 = D1.BptOnBiBpt(ma+1)
-		    D1 = new BiBPoint(p0,p2)
+		    ar.append D1.BptOnBiBpt(mi-0.1)
+		    ar.append D1.BptOnBiBpt(ma+0.1)
+		    D1 = new BiBPoint(q1,q2)
 		    D1.Interscreen(mi,ma)
-		    p2 = D1.BptOnBiBpt(ma+1)
+		    ar.append D1.BptOnBiBpt(ma+0.2)
+		    ar.append D1.BptOnBiBpt(mi-0.1)
 		  end if
 		  
-		  skullcoord = new TriBPoint(TriBPoint(coord))
-		  skullcoord.tab(1) = p1
-		  skullcoord.tab(2) = p2
+		  'skullcoord joue pour les bandes le même rôle que coord pour les autres formes
 		  
+		  
+		  skullcoord = new nbpoint(ar)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ol as objectslist, p as BasicPoint)
-		  
-		  'super.constructor(ol,3,3)
-		  'narcs = 1
-		  'Points.append new Point(ol, p)
-		  'setPoint(Points(0))
-		  'ori = 0
-		  'createskull(p)
-		  super.constructor(ol,p)
-		  auto = 2
-		  
-		  
-		  
-		  
-		  
-		  
+		Sub Constructor(B as Bande, M as Matrix)
+		  Super.constructor(B, M)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(obl as objectslist, s as secteur, p as basicpoint)
+		Sub Constructor(obl as objectslist, s as bande, p as basicpoint)
 		  dim M as Matrix
-		  
 		  
 		  super.constructor(obl,s)
 		  ncpts = 3
@@ -63,32 +58,40 @@ Inherits DSect
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(ol as objectslist, p as BasicPoint)
+		  
+		  super.constructor(ol,3,3)
+		  Points.append new Point(ol, p)
+		  SetPoint(Points(0))
+		  createskull(p)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ol as objectslist, Temp as XMLElement)
-		  Super.Constructor(ol,Temp)
+		Sub Constructor(ol as Objectslist, temp as XMLElement)
+		  super.constructor(ol,Temp)
+		  npts = 3
 		  ncpts = 3
-		  nsk = new Lskull(can.transform(Points(0).bpt))
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(S as Secteur, M as Matrix)
-		  Super.Constructor(S,M)
+		  createskull(can.transform(Points(0).bpt))
+		  computeextre
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
-		  'Cfr Bande
+		  'Le skull d'une bande est basé sur QUATRE basic-points et 
+		  'non sur 3. Le deuxième côté de la bande est en effet une droiteparallèle au premier côté et a donc besoin de deux points. 
+		  'La méthode "Point3" calcule automatiquement les coordonnées de ce quatrième point qui n'existe que sous forme de 
+		  'basicpoint (il n'est donc pas une instance de la classe point).
 		  
-		  nsk = new Lskull(5, p)
+		  nsk = new Lskull(4, p)
 		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
@@ -96,253 +99,195 @@ Inherits DSect
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  dim i as integer
-		  for i = n to 2
-		    Points(i).moveto(p)
-		  next
 		  
-		  if n > 0 then
-		    
-		  end if
-		  'updatecoord
+		  
 		  select case n
 		  case 0
-		    arcangle = 0
-		    coord.centres(1) = p
-		    Lskull(nsk).item(0).border = 100
-		  case 1
-		    computeori
-		    startangle = coord.startangle  
-		    for i = 1 to 3
-		      Lskull(nsk).item(i).border = 0  
+		    for i = 0 to 2
+		      Points(i).moveto(p)
 		    next
+		    nsk.update(can.transform(p))
+		  case 1
+		    Points(1).moveto(p)
+		    nsk.Updatesommet(1,can.dtransform(p-Points(0).bpt))
+		    Points(2).moveto(p)
 		  case 2
-		    
-		    Lskull(nsk).item(4).border = 100
+		    Points(2).moveto(p)
 		  end select
-		  constructshape
-		  updatecoord
 		  computeextre
-		  coord.CreateExtreAndCtrlPoints(ori)
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(c as couleur, b as integer)
+		  dim i as integer
+		  
+		  Bordercolor = c
+		  Border = b
+		  
+		  redim colcotes(3)
+		  for i = 0 to 3
+		    colcotes(i) = c
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(i as integer, c as couleur)
+		  
+		  Bordercolor = c
 		  
 		  
+		  
+		  if i = 0 or i = 2 then
+		    colcotes(i) = c
+		  end if
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
-		  dim j as integer
-		  dim Bib as BiBPoint
+		  dim BiB as BiBPoint
 		  
-		  if i = 0 or i = 1 then
-		    i = i+1
+		  if i = 0 then
+		    BiB = new BiBPoint(coord.tab(i), coord.tab(i+1) )
+		  elseif i = 2 then
+		    BiB = new BiBPoint(coord.tab(2),Point3)
 		  else
-		    return nil
+		    BiB = nil
 		  end if
-		  
-		  BiB = new BiBPoint(coord.tab(0), coord.tab(j) )
-		  BiB.nextre = 1
-		  return BiB
+		  if BiB <> nil then
+		    BiB.nextre = 0
+		  end if
+		  return Bib
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetGravityCenter() As BasicPoint
-		  dim g as BasicPoint
+		Function GetGravitycenter() As BasicPoint
+		  return (Points(0).bpt+Points(2).bpt+ Points(1).bpt)/3
 		  
-		  g = coord.tab(0)+coord.tab(1)+coord.tab(2)
-		  return g/3
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetSide(n as integer) As Droite
+		  dim d as Droite
+		  dim p as point
+		  
+		  
+		  if n = 0 then
+		    d = new Droite(Points(0),Points(1))
+		  elseif n = 2 then
+		    p = new point(point3)
+		    d = new Droite(Points(2),p)
+		  else 
+		    d = nil
+		  end if
+		  if d <> nil then
+		    d.nextre = 0
+		  end if
+		  return d
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetType() As string
-		  return Dico.value("Secteur")
+		  return Dico.Value("Bande")
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Initcolcotes()
+		Sub InitColcotes()
 		  dim i as integer
-		  redim colcotes(1)
-		  for i = 0 to 1
+		  
+		  
+		  redim colcotes(3)
+		  
+		  for i = 0 to 3
 		    colcotes(i) = Config.bordercolor
 		  next
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function oldcomputeangle(q as Basicpoint) As double
-		  dim e, a as double
+		Sub initconstruction()
+		  super.initconstruction
+		  initcolcotes
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldPaint(g as Graphics)
+		  dim op as operation
+		  dim i, n as integer
 		  
-		  q = q-points(0).bpt
-		  e = q.anglepolaire
-		  a = e - startangle
+		  computeextre
+		  op =CurrentContent.currentoperation
+		  n = side
 		  
-		  if ori >0 then
-		    if a < 0 then
-		      a = a + 2*PI
+		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
+		    if op isa transfoconstruction or op isa  paraperpconstruction then
+		      n = op.index(op.iobj)
 		    end if
-		  elseif ori <0 then
-		    if a >0 then
-		      a = a -2*PI
-		    end if
 		  end if
 		  
-		  return a
-		  'a a toujours meme signe que ori
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldComputeArcAngle()
-		  
-		  if not drapori then
-		    computeori
-		  end if
-		  if   abs(arcangle)  >  0.2 and ori <> 0 then
-		    drapori = true  //on ne peut plus changer l'orientation
-		  end if
-		  arcangle = computeangle(points(2).bpt)
-		  
-		  'arcangle a toujours meme signe que l'orientation
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldcomputeori()
-		  ori = coord.orientation
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldEndConstruction()
-		  drapori = true
-		  super.endconstruction
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function oldGetEndangle() As double
-		  dim q as BasicPoint
-		  
-		  q = Points(2).bpt-Points(0).bpt
-		  return q.anglepolaire
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function oldGetStartangle() As double
-		  
-		  dim q as BasicPoint
-		  
-		  q = Points(1).bpt-Points(0).bpt
-		  return q.anglepolaire
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function oldInside(p as BasicPoint) As Boolean
-		  dim q as BasicPoint
-		  dim a as double
-		  
-		  q = p - Points(0).bpt
-		  a = q.anglepolaire
-		  
-		  if ori >0 then
-		    if  startangle <= endangle then
-		      return  startangle <= a and a <= endangle
-		    else
-		      return  startangle <= a or a <= endangle
+		  if highlighted   then
+		    if n <> -1 then
+		      for i = 0 to 2 step 2
+		        if i <> n then
+		          paintside(g, i, 1, colcotes(i/2))
+		        else
+		          paintside (g, n, 2, Config.highlightcolor)
+		        end if
+		      next
+		    else 
+		      for i = 0 to 2 step 2
+		        paintside (g, i, 2, Config.highlightcolor)
+		      next
 		    end if
 		  else
-		    if  startangle >= endangle then
-		      return  startangle >= a and a >= endangle
-		    else
-		      return startangle >= a or a >= endangle
-		    end if
+		    super.paint(g)
 		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldMove(M as Matrix)
-		  super.Move(M)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldUpdateangles()
-		  dim q as basicpoint
-		  
-		  q = Points(1).bpt - Points(0).bpt
-		  startangle = q.anglepolaire
-		  q = Points(2).bpt - Points(0).bpt
-		  endangle = q.anglepolaire
-		  computearcangle
-		  
-		  // startangle et endangle  sont toujours entre 0 et 2 pi
+		Sub paint(g as Graphics)
+		  computeextre
+		  super.paint(g)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function oldXMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  dim Form, Temp as XMLElement
-		  dim i, n as integer
-		  dim col as couleur
+		Sub Paintside(g as graphics, cot as integer, ep as double, coul as couleur)
+		  'dim cs as curveshape
+		  '
+		  'cs = Lskull(nsk).item(cot)
+		  'cs.borderwidth = ep*borderwidth
+		  'cs.bordercolor = coul.col
+		  'g.drawobject(cs, nsk.x, nsk.y)
+		  'cs.borderwidth = borderwidth
 		  
-		  Form = XMLPutIdInContainer(Doc)
-		  
-		  if fig <> nil and not self isa repere then
-		    Form.SetAttribute("FigId",str(fig.idfig))
-		  end if
-		  
-		  for i = 0 to labs.count-1
-		    form.appendchild labs.item(i).toXML(Doc)
-		  next
-		  
-		  Form.AppendChild  XMLPutChildsInContainer(Doc)
-		  
-		  if  NbPtsConsted > 0 then
-		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
-		  end if
-		  
-		  if constructedby <> nil then
-		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
-		  end if
-		  
-		  if not currentcontent.macrocreation then
-		    Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
-		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
-		    Temp.SetAttribute("Value", str(borderwidth))
-		    Form.AppendChild Temp
-		  end if
-		  
-		  if Hidden then
-		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
-		  end if
-		  
-		  if Invalid then
-		    Form.AppendChild(Doc.CreateElement(Dico.Value("Invalid")))
-		  end if
-		  Form.AppendChild XMLPutTsfInContainer(Doc)
-		  
-		  return Form
-		End Function
+		  nsk.paintside(g, cot, ep, coul)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Paste(Obl as objectslist, p as basicpoint) As Secteur
-		  dim s as Secteur
+		Function Paste(Obl as objectslist, p as basicpoint) As Bande
+		  dim s as Bande
 		  dim a, b as Point
 		  dim j as integer
 		  
-		  s = new Secteur(Obl,self,p)
+		  s = new Bande(Obl,self,p)
 		  
 		  for j = 3 to Ubound(childs)
 		    a = childs(j)
@@ -356,7 +301,21 @@ Inherits DSect
 
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
-		  return inside(p)
+		  dim d1, d2, d3 as double
+		  
+		  d1 = p.distance(Points(0).bpt, Points(1).bpt)
+		  d2= p.distance(Points(2).bpt, point3)
+		  
+		  d3= Points(2).bpt.distance(Points(0).bpt, Points(1).bpt)
+		  return abs(d1+d2-d3) < epsilon
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Point3() As basicpoint
+		  
+		  return Points(2).bpt+ Points(1).bpt-Points(0).bpt
+		  
 		End Function
 	#tag EndMethod
 
@@ -365,23 +324,19 @@ Inherits DSect
 		  dim  imin as integer
 		  dim distmin, dist as double
 		  
-		  //Pour la cohérence avec les routines d'intersection, il est préférable que les côtés d'un secteurs soient numérotés 0 et 1, plutôt que 1 et 2
-		  //Autrement dit, le coté n°0 comprend les points 0 et 1, le côté n°1 comprend les points n° 0 et 2.
-		  
 		  distmin = p.distance(Points(0).bpt,Points(1).bpt)
 		  imin = 0
-		  dist = p.distance(Points(0).bpt,Points(2).bpt)
+		  dist = p.distance(Points(2).bpt,point3)
 		  if dist < distmin then
 		    distmin = dist
-		    imin = 1
+		    imin = 2
 		  end if
-		  if distmin < can.MagneticDist  and p.audela(points(0).bpt, points(imin+1).bpt) then
+		  if distmin < can.MagneticDist  then
+		    side = imin
 		    return imin
 		  else
 		    return -1
 		  end if
-		  
-		  //PointOnSide retourne 0 ou 1 (ou -1)
 		  
 		  
 		  
@@ -392,43 +347,24 @@ Inherits DSect
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as TextOutputstream)
 		  dim i as integer
+		  dim p3 as BasicPoint
+		  dim s1, s2 as string
 		  
-		  if not hidden then
-		    tos.writeline ( "[ "+Points(0).etiquet+" "+Points(1).etiquet+ " ]  demidroite" )
-		    tos.writeline (  "[ "+Points(0).etiquet+" "+Points(2).etiquet+ " ]   demidroite" )
+		  p3 = Point3
+		  if fill < 50 then
+		    if not hidden then
+		      tos.writeline ( "[ " + Points(0).etiquet+" "+ Points(1).etiquet+ " ]  droite" )
+		      tos.writeline ( "[ " + Points(2).etiquet+" [ " + str(p3.x) + " " + str(p3.y) + " ]  ]  droite" )
+		    end if
+		  else
+		    tos.writeline( str(fill/100) + " .setopacityalpha")
+		    s1 = "[ " + Points(0).etiquet+" "+ Points(1).etiquet+ " ]  droiteintercadre decoupler "
+		    s2 = "[ " + Points(2).etiquet+" [ " + str(p3.x) + " " + str(p3.y) + " ]  ]  droiteintercadre  decoupler exch " 
+		    tos.writeline ("[ " + s1 + s2 +"]" + " polygonerempli")
 		  end if
-		  
 		  for i = 0 to ubound(childs)
 		    childs(i).toeps(tos)
 		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpdateShape()
-		  dim i,j as integer
-		  dim s,t as shape
-		  dim b as Boolean
-		  
-		  Shape.UpdateShape
-		  'oldupdateangles
-		  computeextre
-		  
-		  for i = 0 to Ubound(ConstructedShapes)
-		    s = ConstructedShapes(i)
-		    if s isa droite then
-		      s.updateshape
-		      for j = 0 to ubound(s.constructedshapes)
-		        t = s.constructedshapes(j)
-		        if t.constructedby.oper = 1 or t.constructedby.oper = 2 then
-		          t.updateshape
-		        end if
-		      next
-		    end if
-		  next
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -457,15 +393,14 @@ Inherits DSect
 
 
 	#tag Property, Flags = &h0
-		skullcoord As Tribpoint
+		skullcoord As nbpoint
 	#tag EndProperty
 
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="arcangle"
+			Name="ArcAngle"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -509,12 +444,6 @@ Inherits DSect
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="endangle"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="fam"
@@ -656,28 +585,21 @@ Inherits DSect
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="radius"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="selected"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="signaire"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="startangle"
-			Group="Behavior"
-			InitialValue="0"
-			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="std"

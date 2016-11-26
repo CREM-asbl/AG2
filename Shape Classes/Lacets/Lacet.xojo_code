@@ -162,6 +162,28 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(c as couleur, b as integer)
+		  dim i as integer
+		  
+		  redim colcotes(npts-1)
+		  
+		  Bordercolor = c
+		  Border = b
+		  
+		  for i = 0 to npts-1
+		    fixecouleurtrait(i,c)
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(i as integer, c as couleur)
+		  colcotes(i) = c
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetArcAngle(k as integer) As double
 		  dim Bib as BiBPoint
 		  dim Ag as Angle
@@ -1086,6 +1108,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

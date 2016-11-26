@@ -461,6 +461,11 @@ Inherits Polygon
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="signaire"
 			Group="Behavior"
 			InitialValue="0"
