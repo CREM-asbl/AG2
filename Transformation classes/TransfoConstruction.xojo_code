@@ -4,7 +4,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function choix1(p as basicPoint) As shape
 		  dim s as shape
-		  dim i , j , k , n as integer
+		  dim i , j , n as integer
 		  dim t as Boolean
 		  
 		  s = super.getshape(p)  //on liste les objets visibles et on ramène le premier
@@ -15,18 +15,21 @@ Inherits MultipleSelectOperation
 		  
 		  for i =  visible.count-1 downto 0
 		    s = visible.item(i)
+		    s.side = -1
 		    ExclureDoublons(s, p)
 		    select case type
 		    case  1 // translation
 		      if s isa droite and droite(s).nextre = 2  then
-		        index.insert 0, 0
+		        s.side = -1
 		      elseif  S isa Lacet then 
 		        n = s.pointonside(p)
 		        if n>-1 and s.coord.curved(n) = 0 then
-		          index.insert 0, n // index contient tous les numéros de côté
+		          s.side = n 
+		        else
+		          visremove(s)
 		        end if
 		      elseif  s isa point then
-		        index.insert 0, 0
+		        s.side = -1
 		      else
 		        Visremove(s)
 		      end if
@@ -48,14 +51,14 @@ Inherits MultipleSelectOperation
 		    case 6                                                      // symétries
 		      if s isa Circle or s isa point then
 		        Visremove(s)                          //on supprime tous les cercles
-		      elseif s isa Bande or S isa Lacet  then
+		      elseif S isa Lacet  then
 		        n = s.pointonside(p)
 		        t = false
 		        for j = s.tsfi.count-1 downto 0
 		          t = (s.tsfi.item(j).type = 6) and  (s.tsfi.item(j).index = n)
 		        next
 		        if n > -1 and (not t) and s.coord.curved(n) = 0 then
-		          index.insert 0, n // index contient tous les numéros de côté
+		          s.side = n // index contient tous les numéros de côté
 		        else
 		          visremove(s)
 		        end if 
@@ -191,7 +194,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  
-		  tsf = new transformation (currentshape, type, index(iobj) , ori)
+		  tsf = new transformation (currentshape, type, currentshape.side , ori)
 		  currentshape.tsfi.addObject tsf
 		  if currentshape isa point then
 		    currentshape.borderwidth = 2
@@ -332,6 +335,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  'super .paint(g)
+		  dim n as integer
 		  
 		  if currenthighlightedshape = nil then
 		    select  case currentitemtoset
@@ -364,16 +368,18 @@ Inherits MultipleSelectOperation
 		    select case currentitemtoset
 		    case 1
 		      if currenthighlightedshape isa Lacet and type < 7 then
-		        Lacet(currenthighlightedshape).paintside(g,index(iobj),2,Config.highlightcolor)
-		      else
-		        currenthighlightedshape.highlight
-		      end if
-		      if currenthighlightedshape isa point then
+		        n = currenthighlightedshape.side
+		        if n <> -1 then
+		          Lacet(currenthighlightedshape).paintside(g, n,2,Config.highlightcolor)
+		        else
+		          currenthighlightedshape = nil
+		        end if
+		      elseif currenthighlightedshape isa point then
 		        display = thispoint+" ?"
 		      elseif currenthighlightedshape isa arc then
 		        display = this("arc") + " ?"
-		      elseif  currenthighlightedshape isa droite then
-		        display = thissegment + "/"+this("droite")+" ?"
+		      elseif  currenthighlightedshape isa droite or currenthighlightedshape isa Lacet then
+		        display = thissegment + "/" + this ("côté") + " ?"
 		      else
 		        display = this(currenthighlightedshape.gettype)+" ?"
 		      end if
@@ -573,8 +579,8 @@ Inherits MultipleSelectOperation
 		  Temp.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  Temp.SetAttribute("TsfType", str(type))
 		  Temp.setattribute("Ori",str(ori))
-		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
-		    Temp.setattribute("Index", str(index(iobj)))
+		  if  tsf.supp isa Lacet  then
+		    Temp.setattribute("Index", str(tsf.supp.side))
 		  end if
 		  Temp.SetAttribute("NumTSF",str(tsf.GetNum))
 		  
@@ -806,9 +812,8 @@ Inherits MultipleSelectOperation
 			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

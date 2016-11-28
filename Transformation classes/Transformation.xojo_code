@@ -111,7 +111,7 @@ Protected Class Transformation
 		  
 		  select case type
 		  case 1
-		    v = supp.points((index+1)mod supp.npts).bpt- supp.points(index) .bpt
+		    v = supp.points((supp.side+1)mod supp.npts).bpt- supp.points(supp.side) .bpt
 		    M = new translationmatrix (v*ori)
 		  case 2
 		    M = supp.coord.RotationMatrix
@@ -415,11 +415,11 @@ Protected Class Transformation
 		    
 		    if not hidden then
 		      DrawTip(g, col)
-		      if supp isa bande or supp isa secteur or (supp isa Lacet and type < 7 ) then
-		        supp.Paintside(g, index, 2, Col)
-		      else
-		        supp.paint(g,col)
-		      end if
+		      'if supp isa Lacet and type < 7 then
+		      'supp.Paintside(g, index, 2, Col)
+		      'else
+		      'supp.paint(g,col)
+		      'end if
 		    end if
 		    
 		  end if
@@ -611,7 +611,7 @@ Protected Class Transformation
 		  if s isa droite then
 		    fp = droite(s).firstp
 		    sp = droite(s).secondp
-		  elseif s isa polygon and (type = 1 or type = 6)  then
+		  elseif s isa Lacet and (type = 1 or type = 6)  then
 		    fp = s.points(index).bpt
 		    sp = s.points((index+1) mod s.npts).bpt
 		  elseif s isa secteur then

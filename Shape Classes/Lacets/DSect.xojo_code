@@ -206,12 +206,13 @@ Inherits Lacet
 		  dim r as double
 		  dim i as integer
 		  
+		  tos.writeline  "[ "+points(1).etiquet + "  " + points(0).etiquet  + " " + points(2).etiquet + " ] " + "suitesegments"
 		  tos.writeline "newpath"
 		  s= "[ [ "+points(1).etiquet + "  " + points(0).etiquet  + " " + points(2).etiquet + " ] "
 		  r = points(0).bpt.distance(points(1).bpt)
 		  r = r*ori
 		  s = s +  str(r) +"]"
-		  tos.writeline s + "arcsecteur secteurdisque"
+		  tos.writeline s + "arccerclesecteur"
 		  
 		  
 		  

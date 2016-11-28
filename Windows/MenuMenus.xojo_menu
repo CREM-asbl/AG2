@@ -306,7 +306,6 @@ Begin Menu MenuMenus
                Text = "Translation"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
             Begin MenuItem DefinirRotation
@@ -314,7 +313,6 @@ Begin Menu MenuMenus
                Text = "Rotation"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
             Begin MenuItem DefinirDemiTour
@@ -322,7 +320,6 @@ Begin Menu MenuMenus
                Text = "Demi-tour"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
             Begin MenuItem DefinirQuartG
@@ -330,7 +327,6 @@ Begin Menu MenuMenus
                Text = "Quart de tour à gauche"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
             Begin MenuItem DefinirQuartD
@@ -338,7 +334,6 @@ Begin Menu MenuMenus
                Text = "Quart de tour à droite"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
             Begin MenuItem DefinirDeplacement
@@ -346,7 +341,6 @@ Begin Menu MenuMenus
                Text = "Déplacement"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
             Begin MenuItem DefinirSymetrieaxiale
@@ -354,7 +348,6 @@ Begin Menu MenuMenus
                Text = "Symétrie axiale"
                Index = -2147483648
                AutoEnable = True
-               SubMenu = True
                Visible = True
             End
          End

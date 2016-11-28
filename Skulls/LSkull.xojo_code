@@ -187,6 +187,9 @@ Inherits NSkull
 		  elseif s.isinconstruction then
 		    col = config.weightlesscolor.col
 		    b = 100
+		  elseif s.tsfi.count > 0 then
+		    col = config.transfocolor.col
+		    b = 100
 		  elseif s.tracept then
 		    col = bleu
 		    b = 100
@@ -296,17 +299,14 @@ Inherits NSkull
 		Sub Paintside(g as graphics, i as integer, ep as double, coul as couleur)
 		  dim n, j as integer
 		  
-		  'updatesidecolor(skullof,i)
 		  n = getside(i)
 		  
 		  if skullof.coord.curved(i) = 0 then
 		    item(n).borderwidth = ep*borderwidth
-		    'item(n).bordercolor = coul.col
 		    g.drawobject item(n), ref.x, ref.y
 		  else
 		    for j = 0 to 2
 		      item(n+j).borderwidth = ep*borderwidth
-		      'item(n+j).bordercolor = coul.col
 		      g.drawobject item(n+j), ref.x, ref.y
 		    next
 		  end if
@@ -509,11 +509,24 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub updatesidecolor(s as shape, i as integer, col as color, b as integer)
-		  
-		  if s.hidden  or s.isinconstruction or s.tracept Then
+		  dim j as integer
+		  if s.tsfi.count >0 then
+		    for j = 0 to s.tsfi.count -1
+		      if s.tsfi.item(j).index = i then
+		        updatecurvecolor(s,i,col,b)
+		      end if
+		    next
+		    for j = 0 to s.tsfi.count -1
+		      if s.tsfi.item(j).index = i and s.tsfi.item(j).highlighted then
+		        updatecurvecolor(s,i,config.HighlightColor.col,b)
+		      end if
+		    next
+		    
+		    
+		  elseif s.hidden  or s.isinconstruction or s.tracept Then
 		    updatecurvecolor(s,i, col,b)
 		  elseif s.highlighted then
-		    if s.getindexside = -1  or s.getindexside = i then  'cas des segments sélectionnés par une opération
+		    if s.side = -1  or s.side = i then  'cas des segments sélectionnés par une opération
 		      updatecurvecolor(s,i, col,b)
 		    else
 		      updatecurvecolor(s,i,s.colcotes(i).col,b)

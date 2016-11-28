@@ -766,10 +766,6 @@ Inherits MultipleSelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		side As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		str As string
 	#tag EndProperty
 

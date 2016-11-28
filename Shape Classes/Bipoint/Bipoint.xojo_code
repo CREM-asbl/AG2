@@ -150,11 +150,6 @@ Inherits Shape
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		Side As Integer
-	#tag EndProperty
-
-
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="ArcAngle"

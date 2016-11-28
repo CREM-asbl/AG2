@@ -416,10 +416,6 @@ Inherits MultipleSelectOperation
 		Private shapetodivide As shape
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		side As integer
-	#tag EndProperty
-
 
 	#tag ViewBehavior
 		#tag ViewProperty

@@ -504,6 +504,11 @@ Protected Class WindContent
 		  else
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
+		  if config.stdbiface then 
+		    AG.SetAttribute(Replace(Dico.value("PrefsBiface")," ","_"), str(1))
+		  else
+		    AG.SetAttribute(Replace(Dico.value("PrefsBiface")," ","_"), str(0))
+		  end if
 		  AG.SetAttribute("NbrDec", str(ndec))
 		  if app.TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")

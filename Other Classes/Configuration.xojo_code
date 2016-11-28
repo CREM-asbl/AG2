@@ -345,6 +345,16 @@ Protected Class Configuration
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ConfigElem4(m as string, sm as string, ssm as string, sssm as string, tag as string) As XMLNode
+		  if MenuMenus.Child(m).Child(sm).Child(ssm).Child(sssm).checked then
+		    return CFG.CreateElement(tag)
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  dim fi  As folderItem
 		  dim C as XMLDocument
@@ -651,15 +661,18 @@ Protected Class Configuration
 		  temp.AppendChild ConfigElem("OperaMenu","OperaIdentify","Identify")
 		  
 		  temp.AppendChild ConfigElem("TransfosMenu","TransfosAppliquer","Transformations")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirTranslation","Translation")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirRotation","Rotation")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartD","Rot90D")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartG","Rot90G")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDemitour","SymCentrale")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "Definirsymetrieaxiale","SymOrtho")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirHomothetie","Homothetie")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirSimilitude","Similitude")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDeplacement","Deplacement")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirTranslation","Translation")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirRotation","Rotation")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirQuartD","Rot90D")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso", "DefinirQuartG","Rot90G")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso", "DefinirDemitour","SymCentrale")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","Definirsymetrieaxiale","SymOrtho")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirSimi", "DefinirHomothetie","Homothetie")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirSimi","DefinirSimilitude","Similitude")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirDeplacement","Deplacement")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirAffi","DefinirEtirement","Etirement")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirAffi","DefinirCisaillement","Cisaillement")
+		  
 		  temp.AppendChild ConfigElem("TransfosMenu","TransfosFixedPoints","PtsFix")
 		  temp.AppendChild ConfigElem("TransfosMenu","TransfosHide","HideTsf")
 		  
