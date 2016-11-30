@@ -20,7 +20,7 @@ Inherits MultipleSelectOperation
 		    select case type
 		    case  1 // translation
 		      if s isa droite and droite(s).nextre = 2  then
-		        s.side = -1
+		        s.side = 0
 		      elseif  S isa Lacet then 
 		        n = s.pointonside(p)
 		        if n>-1 and s.coord.curved(n) = 0 then
@@ -29,7 +29,7 @@ Inherits MultipleSelectOperation
 		          visremove(s)
 		        end if
 		      elseif  s isa point then
-		        s.side = -1
+		        s.side = 0
 		      else
 		        Visremove(s)
 		      end if
@@ -63,7 +63,7 @@ Inherits MultipleSelectOperation
 		          visremove(s)
 		        end if 
 		      elseif s isa droite  then                                       // cas des "droites"
-		        index.insert 0, 0                          //index contient 0
+		        s.side = 0                      //index contient 0
 		      else
 		        Visremove(s)
 		      end if

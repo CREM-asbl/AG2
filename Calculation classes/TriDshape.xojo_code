@@ -22,15 +22,15 @@ Protected Class TriDshape
 		    next
 		  end if
 		  '
-		  if s isa secteur then
-		    se = secteur(s)
-		    for i = 0 to ubound(se.skullcoord.extre)
-		      TriDpts.append new TriDPoint(se.skullcoord.extre(i)-fp)
-		    next
-		    for i = 0 to ubound(se.skullcoord.ctrl)
-		      TriDPts.append new TriDPoint(se.skullcoord.Ctrl(i)-fp)
-		    next
-		  end if
+		  'if s isa secteur then
+		  'se = secteur(s)
+		  'for i = 0 to ubound(se.skullcoord.extre)
+		  'TriDpts.append new TriDPoint(se.skullcoord.extre(i)-fp)
+		  'next
+		  'for i = 0 to ubound(se.skullcoord.ctrl)
+		  'TriDPts.append new TriDPoint(se.skullcoord.Ctrl(i)-fp)
+		  'next
+		  'end if
 		End Sub
 	#tag EndMethod
 

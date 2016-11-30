@@ -110,6 +110,7 @@ Begin Window GetUpdateW
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   ""
       TextAlign       =   1
       TextColor       =   &c00000000
@@ -374,12 +375,6 @@ End
 		EditorType="String"
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="newVersion"
-		Group="Behavior"
-		Type="string"
-		EditorType="MultiLineEditor"
-	#tag EndViewProperty
-	#tag ViewProperty
 		Name="Placement"
 		Visible=true
 		Group="Behavior"
@@ -415,11 +410,6 @@ End
 		Group="Frame"
 		InitialValue="Untitled"
 		Type="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="updated"
-		Group="Behavior"
-		Type="boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="version"

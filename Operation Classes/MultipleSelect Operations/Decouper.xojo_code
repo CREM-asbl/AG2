@@ -574,6 +574,11 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Std2flag"
 			Group="Behavior"
 			InitialValue="0"

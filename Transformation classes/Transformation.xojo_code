@@ -132,8 +132,10 @@ Protected Class Transformation
 		      end if
 		      M = new SymmetryMatrix(supp.points(index).bpt, v)
 		    elseif supp isa polygon or supp isa secteur then
-		      nbp = supp.GetBiBSide(index)
-		      M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
+		      nbp = supp.GetBiBSide(supp.side)
+		      if nbp <> nil then
+		        M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
+		      end if
 		      'elseif supp isa secteur then
 		      'M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
 		    end if
@@ -611,9 +613,6 @@ Protected Class Transformation
 		  if s isa droite then
 		    fp = droite(s).firstp
 		    sp = droite(s).secondp
-		  elseif s isa Lacet and (type = 1 or type = 6)  then
-		    fp = s.points(index).bpt
-		    sp = s.points((index+1) mod s.npts).bpt
 		  elseif s isa secteur then
 		    fp = s.points(0).bpt
 		    sp = s.points(index+1).bpt
@@ -624,6 +623,9 @@ Protected Class Transformation
 		    else
 		      sp=Bande(s).Point3
 		    end if
+		  elseif s isa Lacet and (type = 1 or type = 6)  then
+		    fp = s.points(index).bpt
+		    sp = s.points((index+1) mod s.npts).bpt
 		  end if
 		End Sub
 	#tag EndMethod

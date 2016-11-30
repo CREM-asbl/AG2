@@ -43,6 +43,8 @@ Inherits NSkull
 		    updatebordercolor(s.BorderColor.col, b)
 		  elseif s.isinconstruction then
 		    updatebordercolor(config.WeightlessColor.col,b)
+		  elseif s.tsfi.count > 0 then
+		    updatebordercolor(config.transfocolor.col,b)
 		  else
 		    updatebordercolor(s.BorderColor.col,b)
 		  end if

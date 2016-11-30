@@ -513,7 +513,7 @@ Inherits MultipleSelectOperation
 			Name="side"
 			Group="Behavior"
 			InitialValue="0"
-			Type="integer"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Std2flag"

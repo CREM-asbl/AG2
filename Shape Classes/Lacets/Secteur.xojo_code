@@ -160,16 +160,13 @@ Inherits DSect
 
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
-		  dim j as integer
 		  dim Bib as BiBPoint
 		  
-		  if i = 0 or i = 1 then
-		    i = i+1
-		  else
-		    return nil
+		  if i = 0 then
+		    i = 1
 		  end if
 		  
-		  BiB = new BiBPoint(coord.tab(0), coord.tab(j) )
+		  BiB = new BiBPoint(coord.tab(0), coord.tab(i) )
 		  BiB.nextre = 1
 		  return BiB
 		  
