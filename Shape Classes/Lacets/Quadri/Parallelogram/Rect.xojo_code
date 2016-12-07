@@ -104,11 +104,19 @@ Inherits Parallelogram
 		    'p2.moveto np3+np-np1
 		    'p3.modified = true
 		  else
-		    w = np1 - np
-		    w = w.vecnorperp
-		    d = ep1.distance(ep3)
-		    np3 = np1+w*d
-		    M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
+		    if abs(n-n1) <> 2 then
+		      if n = (n1+1) mod 4 then
+		        w = np - np1  
+		      else
+		        w = np1-np
+		      end if
+		      w = w.vecnorperp
+		      d = ep1.distance(ep3)
+		      np3 = np1+w*d
+		      M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
+		    else
+		      M = new SimilarityMatrix(ep, ep1, np, np1)
+		    end if
 		  end if
 		  return M
 		  

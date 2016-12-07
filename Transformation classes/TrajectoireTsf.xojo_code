@@ -45,6 +45,10 @@ Inherits AppliquerTsf
 		MR As Matrix
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		Type As Integer
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
@@ -160,6 +164,11 @@ Inherits AppliquerTsf
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Type"
+			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior

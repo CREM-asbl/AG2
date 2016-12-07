@@ -30,7 +30,7 @@ Inherits Polygon
 		  
 		  Shape.constructor(ol,2,n)
 		  redim prol(npts-1)
-		  'Initcolcotes
+		  
 		End Sub
 	#tag EndMethod
 
@@ -44,7 +44,6 @@ Inherits Polygon
 		  setPoint(Points(0))
 		  'redim prol(-1)
 		  'redim prol(npts-1)
-		  'Initcolcotes
 		  liberte = 4
 		  createskull(p)
 		  ori = 1

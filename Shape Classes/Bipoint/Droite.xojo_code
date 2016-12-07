@@ -515,7 +515,7 @@ Inherits Bipoint
 		  if constructedby<> nil and constructedby.oper = 1 and constructedby.shape = sh then
 		    if sh isa droite then
 		      return true
-		    elseif (sh isa polygon or sh isa bande or sh isa secteur) and constructedby.data(0) = n  then
+		    elseif sh isa Lacet and constructedby.data(0) = n  then
 		      return  true
 		    end if
 		  end if

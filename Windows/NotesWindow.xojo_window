@@ -31,7 +31,7 @@ Begin Window NotesWindow
       Alignment       =   0
       AutoDeactivate  =   False
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cC000C0C0
+      BackColor       =   &c00C0C0C0
       Bold            =   False
       Border          =   True
       DataField       =   ""

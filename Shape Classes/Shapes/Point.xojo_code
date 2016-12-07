@@ -1048,6 +1048,7 @@ Inherits Shape
 		  dim  td,q as BasicPoint
 		  dim cx,cy, delta as double
 		  dim p3 as Basicpoint
+		  dim BiB as BiBPoint
 		  
 		  if not PossibleAttractionWith(s)  then
 		    return 0
@@ -1089,29 +1090,37 @@ Inherits Shape
 		    elseif s isa droite and droite(s).nextre = 1 then
 		      d= ProjectionOnAttractingDemidroite(Droite(S).firstp, droite(s).secondp)
 		    end if
+		  elseif s isa Bande then
+		    i = Bande(s).pointonside(bpt)
+		    if d = nil and i <> -1 then
+		      BiB =  s.GetBibSide(i)
+		      'if i = 0 then
+		      'p3 = Bande(s).points(1).bpt
+		      'else
+		      'p3 = Bande(s).point3
+		      'end if
+		      d =  bpt.projection(BiB) 'Bande(s).points(i).bpt, p3)
+		    end if
+		  elseif s isa secteur then
+		    i = Secteur(s).pointonside(bpt)
+		    if d = nil  and i <> -1 then
+		      BiB =  s.GetBibSide(i)
+		      'if i = 0 then
+		      'p3 = Secteur(s).points(1).bpt
+		      'else
+		      'p3 = Secteur(s).points(2).bpt
+		      'end if
+		      d = bpt.projection(BiB) 'Secteur(s).points(0).bpt, p3) '  Secteur(s).PointMagnetism2(bpt) 
+		    end if
 		  elseif s isa polygon and not s isa cube then
 		    i = Polygon(S).PointOnSide(bpt)
 		    if d = nil and i <> -1 then
 		      d = ProjectionOnAttractingSide(Polygon(s),i)
 		    end if
-		  elseif s isa Lacet and not s isa secteur then
+		  elseif s isa Lacet then
 		    i = Lacet(s).pointonside(bpt)
 		    if d = nil and i <> -1 then
 		      d = ProjectionOnAttractingSide(Lacet(s), i)
-		    end if
-		  elseif s isa Bande then
-		    i = Bande(s).pointonside(bpt)
-		    if d = nil and i <> -1 then
-		      if i = 0 then
-		        p3 = Bande(s).points(1).bpt
-		      else
-		        p3 = Bande(s).point3
-		      end if
-		      d =  bpt.projection(Bande(s).points(i).bpt, p3)
-		    end if
-		  elseif s isa secteur then
-		    if d = nil  then
-		      d =  Secteur(s).PointMagnetism2(bpt) 
 		    end if
 		  elseif s isa cube  then
 		    for i = 0 to 5
@@ -1185,7 +1194,7 @@ Inherits Shape
 		    s2 = nil
 		    currentmagnetism = 0
 		    
-		    if parents.indexof(obj) = -1  and  PossibleAttractionWith(obj) then
+		    if parents.indexof(obj) = -1   then
 		      if obj isa point then
 		        currentmagnetism = magnetism3(point(obj),t)
 		        s2 = obj
@@ -1707,6 +1716,45 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function PossibleAttractionWith(other as Shape) As Boolean
+		  
+		  dim gc1,gc2,bp as basicpoint
+		  dim dist,b1,b2 as double
+		  dim magdist as double
+		  magdist = can.MagneticDist
+		  
+		  
+		  bp = Point(self).bpt
+		  
+		  if other isa point and point(other).bpt <> nil then
+		    dist = bp.distance(point(other).bpt)
+		    if dist <= magdist then
+		      return true
+		    end if
+		  elseif  other isa droite then
+		    return Droite(other).PInshape(bp)
+		  elseif  other isa bande then
+		    return not (Bande(other).PointOnSide(bp) = -1)
+		  elseif   other isa secteur then
+		    return not (Secteur(other).PointOnSide(bp) = -1)
+		  elseif other <> nil then
+		    gc2 = other.getgravityCenter
+		    if  gc2 <> nil then
+		      dist=bp.Distance(gc2)
+		      b2=other.getBoundingRadius()
+		      if dist < b2+magdist then
+		        return true
+		      else
+		        return false
+		      end if
+		    else
+		      return false
+		    end if
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function predecesseur() As point
 		  if duplicateorcut then
 		    return point(constructedby.shape)
@@ -1895,7 +1943,7 @@ Inherits Shape
 		  if  PointSur.GetPosition(s) = -1 then
 		    PointSur.addshape s
 		    location.append 0
-		    numside.append k
+		    numside.append -1
 		    forme = PointSur.count
 		  end if
 		  
@@ -1909,16 +1957,16 @@ Inherits Shape
 		    end if
 		  end if
 		  
-		  if S isa polygon then
+		  if  s isa bande then
+		    PutOnBande(Bande(s))
+		  elseif S isa secteur then
+		    PutOnSecteur (secteur(s))
+		  elseif S isa polygon then
 		    PutOnPolyg(Polygon(s))
 		  elseif S isa Lacet then                        
 		    Lacet(S).Positionner(self)
 		  elseif S isa Bipoint then
 		    PutOnBipoint (Bipoint(s))
-		  elseif  s isa bande then
-		    PutOnBande(Bande(s))
-		  elseif S isa secteur then
-		    PutOnSecteur (secteur(s))
 		  elseif  S isa  circle and not S isa Arc then
 		    PutOnCircle(circle(s))
 		  elseif S isa Arc then
@@ -2031,23 +2079,16 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub PutOnBande(s as Bande)
 		  dim  n as integer
-		  dim a,b as BasicPoint
+		  dim BiB as BiBPoint
 		  
 		  n = Pointsur.getposition(s)
 		  
-		  
-		  if Numside(n) = -1 then
+		  if numside(n) = -1 then
 		    numside(n) = S.PointonSide(bpt)
 		  end if
-		  
-		  if numside(n) = 0 then
-		    b = S.Points(1).bpt
-		  else
-		    b = s.point3
-		  end if
-		  a = S.Points(2*numside(n)).bpt
-		  location(n) = bpt.location(a,b)
-		  Moveto(bpt.projection(a,b))
+		  BiB = s.GetBibSide(numside(n))
+		  location(n) = bpt.location(BiB)
+		  Moveto(bpt.projection(BiB))
 		  
 		  S.setpoint self
 		End Sub
@@ -2162,7 +2203,7 @@ Inherits Shape
 		    numside(n) = S.PointonSide(bpt)
 		  end if
 		  a = S.Points(0).bpt
-		  b = S.Points(numside(n)+1).bpt
+		  b = S.Points(numside(n)).bpt
 		  location(n) = bpt.location(a,b)
 		  if location(n) < 0 then
 		    location(n) = 0

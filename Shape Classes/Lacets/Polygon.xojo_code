@@ -53,12 +53,9 @@ Inherits Lacet
 		  setpoint(qp)
 		  npts = npts+1
 		  
-		  
-		  'if fp<> tp and sp <> tp  then
 		  Points.Append tp
 		  setpoint(tp)
 		  npts = npts+1
-		  'end if
 		  
 		  initcolcotes
 		  redim  prol(npts-1)

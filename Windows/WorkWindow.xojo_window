@@ -51,7 +51,7 @@ Begin Window WorkWindow
       lastclickticks  =   0
       lastclickx      =   0
       lastclicky      =   0
-      Left            =   120
+      Left            =   115
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -79,7 +79,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c008080FF
+      FillColor       =   &c8080FF00
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
@@ -93,7 +93,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -460,7 +459,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -544,7 +543,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   4
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -600,7 +599,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -628,7 +627,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -3112,7 +3111,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3154,7 +3153,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3186,14 +3185,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3210,7 +3209,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3295,7 +3294,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3307,7 +3306,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    selectedTool = index
@@ -3323,23 +3322,22 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
-		    
-		    if (me.Backdrop.Height>g.Height or me.Backdrop.Width>g.Width) then
-		      g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
-		    else
-		      g.DrawPicture(me.Backdrop,(g.Width-me.Backdrop.Width)/2,(g.height-me.Backdrop.Height)/2)
-		    end if
+		    'if (me.Backdrop.Height>g.Height or me.Backdrop.Width>g.Width) then
+		    'g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
+		    'else
+		    'g.DrawPicture(me.Backdrop, g.Width-me.Backdrop.Width,(g.height-me.Backdrop.Height)/2)
+		    'end if
 		    
 		    if index=selectedTool and Kit = "Libre"  then
 		      g.forecolor = rouge

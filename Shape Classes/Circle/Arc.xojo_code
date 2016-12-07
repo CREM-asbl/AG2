@@ -26,7 +26,7 @@ Inherits Circle
 		  end if
 		  k = p.numside(0)
 		  BiB0 =  new BiBPoint(points(0).bpt, points(1).bpt)
-		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
+		  if S isa Droite or S isa Lacet  then
 		    Bib =S.getBiBside(k)
 		    select case BiB.nextre
 		    case 0
@@ -337,15 +337,17 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function PInShape(p as BasicPoint) As Boolean
-		  dim d1,d2 as double
+		  'dim d1,d2 as double
+		  '
+		  'if inside(p) and   Points(0).bpt.Distance(p) <  Radius + can.MagneticDist  then
+		  'd1 = p.distance(coord.tab(0),coord.tab(1))
+		  'd2 = p.distance(coord.tab(0),coord.tab(2))
+		  'return  min(d1,d2) > can.magneticdist
+		  'end if
+		  '
+		  'return Inside(p)
 		  
-		  if inside(p) and   Points(0).bpt.Distance(p) <  Radius + can.MagneticDist  then
-		    d1 = p.distance(coord.tab(0),coord.tab(1))
-		    d2 = p.distance(coord.tab(0),coord.tab(2))
-		    return  min(d1,d2) > can.magneticdist
-		  end if
-		  
-		  return Inside(p)
+		  return (PointOnSide(p) = 0)
 		End Function
 	#tag EndMethod
 

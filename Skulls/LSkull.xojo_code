@@ -184,11 +184,15 @@ Inherits NSkull
 		    col = config.HideColor.col
 		  elseif s.highlighted then
 		    col = config.HighlightColor.col
+		    'elseif s.tsfi.count > 0 then
+		    'col = s.bordercolor.col
+		    'for i = 0 to s.tsfi.count -1
+		    'if s.tsfi.item(i).type > 0 then
+		    'col = config.transfocolor.col
+		    'end if
+		    'next
 		  elseif s.isinconstruction then
 		    col = config.weightlesscolor.col
-		    b = 100
-		  elseif s.tsfi.count > 0 then
-		    col = config.transfocolor.col
 		    b = 100
 		  elseif s.tracept then
 		    col = bleu
@@ -198,6 +202,9 @@ Inherits NSkull
 		  if s isa Bande  then
 		    updatesidecolor (s, 0, col, b)
 		    updatesidecolor (s, 2, col, b)
+		  elseif s isa secteur then
+		    updatesidecolorSecteur(secteur(s),0,col,b)
+		    updatesidecolorsecteur(secteur(s),2,col,b)
 		  else
 		    for i = 0 to s.npts-1
 		      updatesidecolor (s,i,col, b)
@@ -316,6 +323,12 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Untitled()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub update(s as shape)
 		  dim i, j as integer
 		  dim p as BasicPoint
@@ -327,20 +340,16 @@ Inherits NSkull
 		  
 		  if s isa Bande then
 		    updateBande(Bande(s))
-		    return 
-		  end if
-		  
-		  if s isa Secteur then
+		  elseif s isa Secteur then
 		    updateSecteur(Secteur(s))
-		    return
-		  end if
-		  
-		  for i = 0 to s.npts-1
-		    if dret = nil then
-		      ComputeExtreCtrl(i, s.coord)
-		    end if
-		    updateside(i, s.coord, p)
-		  next
+		  else
+		    for i = 0 to s.npts-1
+		      if dret = nil then
+		        ComputeExtreCtrl(i, s.coord)
+		      end if
+		      updateside(i, s.coord, p)
+		    next
+		  end if 
 		  
 		  fixecouleurs(s)
 		  fixeepaisseurs(s)
@@ -366,8 +375,7 @@ Inherits NSkull
 		    updatesideBande(i, s.skullcoord, p)
 		  next
 		  
-		  fixecouleurs(s)
-		  fixeepaisseurs(s)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -416,19 +424,18 @@ Inherits NSkull
 		  dim p as BasicPoint
 		  
 		  p =s.getgravitycenter
-		  
+		  if dret = nil then
+		    ComputeExtreCtrl(1, s.skullcoord)
+		  end if
 		  for i = 0 to 2
 		    updatesideSecteur(i, s.skullcoord, p)
 		  next
 		  
 		  
-		  if dret = nil then
-		    ComputeExtreCtrl(1, s.skullcoord)
-		  end if
 		  
 		  
-		  fixecouleurs(s)
-		  fixeepaisseurs(s)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -510,23 +517,60 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub updatesidecolor(s as shape, i as integer, col as color, b as integer)
 		  dim j as integer
-		  if s.tsfi.count >0 then
-		    for j = 0 to s.tsfi.count -1
-		      if s.tsfi.item(j).index = i then
-		        updatecurvecolor(s,i,col,b)
-		      end if
-		    next
-		    for j = 0 to s.tsfi.count -1
-		      if s.tsfi.item(j).index = i and s.tsfi.item(j).highlighted then
-		        updatecurvecolor(s,i,config.HighlightColor.col,b)
-		      end if
-		    next
-		    
-		    
-		  elseif s.hidden  or s.isinconstruction or s.tracept Then
+		  'if s.tsfi.count >0 then
+		  'for j = 0 to s.tsfi.count -1
+		  'if s.tsfi.item(j).index = i then
+		  'updatecurvecolor(s,i,col,b)
+		  'end if
+		  'next
+		  'for j = 0 to s.tsfi.count -1
+		  'if s.tsfi.item(j).index = i and s.tsfi.item(j).highlighted then
+		  'updatecurvecolor(s,i,config.HighlightColor.col,b)
+		  'end if
+		  'next
+		  
+		  
+		  if s.hidden  or s.isinconstruction or s.tracept Then
 		    updatecurvecolor(s,i, col,b)
 		  elseif s.highlighted then
 		    if s.side = -1  or s.side = i then  'cas des segments sélectionnés par une opération
+		      updatecurvecolor(s,i, col,b)
+		    else
+		      updatecurvecolor(s,i,s.colcotes(i).col,b)
+		    end if
+		  else
+		    updatecurvecolor(s,i, s.colcotes(i).col, b)
+		  end if
+		  
+		  
+		  '
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatesidecolorSecteur(s as secteur, i as integer, col as color, b as integer)
+		  dim j as integer
+		  dim op as Operation
+		  op = currentcontent.currentoperation 
+		  
+		  
+		  'if s.tsfi.count >0 then
+		  'for j = 0 to s.tsfi.count -1
+		  'if s.tsfi.item(j).index = i then 'combien vaut l'index pour côté <> 0 ?
+		  'updatecurvecolor(s,i,col,b)
+		  'end if
+		  'next
+		  'for j = 0 to s.tsfi.count -1
+		  'if s.tsfi.item(j).index = i and s.tsfi.item(j).highlighted then 'idem
+		  'updatecurvecolor(s,i,config.HighlightColor.col,b)
+		  'end if
+		  'next
+		  if s.hidden  or s.isinconstruction or s.tracept Then
+		    updatecurvecolor(s,i, col,b)
+		  elseif s.highlighted and op <> nil then
+		    
+		    if s.side = -1  or (i = op.side ) then  'cas des segments sélectionnés par une opération
 		      updatecurvecolor(s,i, col,b)
 		    else
 		      updatecurvecolor(s,i,s.colcotes(i).col,b)

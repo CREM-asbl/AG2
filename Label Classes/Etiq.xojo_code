@@ -394,9 +394,6 @@ Inherits Label
 		    case 2
 		      sp = chape.points(7).bpt
 		    end select
-		  elseif chape isa Lacet and loc <> -1 then
-		    fp = chape.points(loc).bpt
-		    sp = chape.points((loc+1) mod chape.npts).bpt
 		  elseif  chape isa Bande and loc <> -1 then
 		    fp = chape.points(0+2*loc).bpt
 		    if loc = 0 then
@@ -407,11 +404,14 @@ Inherits Label
 		  elseif chape isa Secteur and loc <> -1 then
 		    fp = chape.points(0).bpt
 		    sp = chape.points(loc).bpt
+		  elseif chape isa Lacet and loc <> -1 then
+		    fp = chape.points(loc).bpt
+		    sp = chape.points((loc+1) mod chape.npts).bpt
 		  end if
 		  
 		  if chape isa repere or (LockRight and LockBottom) then
 		    Position = new BasicPoint(0,0)
-		  elseif (chape isa Lacet or chape isa bande or chape isa secteur) and loc <> -1 then
+		  elseif (chape isa Lacet ) and loc <> -1 then
 		    Position = (fp+sp) /2
 		  elseif chape isa Freecircle and loc <> -1 then
 		    position = chape.points(1).bpt

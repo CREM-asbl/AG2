@@ -575,10 +575,6 @@ Inherits Operation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		side As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		tempshape As objectslist
 	#tag EndProperty
 

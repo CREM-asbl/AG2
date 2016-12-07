@@ -124,14 +124,14 @@ Protected Class Transformation
 		  case 6
 		    if  supp isa droite then
 		      M = supp.coord.SymmetryMatrix        '(droite(supp).firstp, droite(supp).secondp)
-		    elseif supp isa bande then
-		      if index = 0 then
-		        v = supp.points(1).bpt
-		      else
-		        v = Bande(supp).Point3
-		      end if
-		      M = new SymmetryMatrix(supp.points(index).bpt, v)
-		    elseif supp isa polygon or supp isa secteur then
+		      'elseif supp isa bande then
+		      'if index = 0 then
+		      'v = supp.points(1).bpt
+		      'else
+		      'v = Bande(supp).Point3
+		      'end if
+		      'M = new SymmetryMatrix(supp.points(index).bpt, v)
+		    elseif (supp isa Lacet) and (supp.side <> -1) then
 		      nbp = supp.GetBiBSide(supp.side)
 		      if nbp <> nil then
 		        M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
@@ -192,6 +192,8 @@ Protected Class Transformation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape, n as integer, i as integer, ori as integer)
+		  dim j as integer
+		  
 		  Constructor()
 		  supp = s                       'support de la tsf
 		  type = n                        'type de transformation (translation, rotation etc) ATTENTION: type = 0 pour les paraperp
@@ -205,9 +207,22 @@ Protected Class Transformation
 		  if type <> 0 and  (type < 3 or type > 6 ) then
 		    T = new Tip
 		  end if
-		  
+		  'supp.side = index
 		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddObject(self)
+		  
+		  if type > 0 then 
+		    supp.bordercolor = green
+		    if  s isa Lacet then
+		      if i <> -1 then
+		        supp.colcotes(i) = green
+		      else
+		        for j = 0 to supp.npts-1
+		          supp.colcotes(j) = green
+		        next
+		      end if
+		    end if
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -416,12 +431,12 @@ Protected Class Transformation
 		    end if
 		    
 		    if not hidden then
+		      if supp isa Lacet and type < 7 then
+		        supp.Paintside(g, index, 2, Col)
+		      else
+		        supp.paint(g,col)
+		      end if
 		      DrawTip(g, col)
-		      'if supp isa Lacet and type < 7 then
-		      'supp.Paintside(g, index, 2, Col)
-		      'else
-		      'supp.paint(g,col)
-		      'end if
 		    end if
 		    
 		  end if
@@ -777,7 +792,7 @@ Protected Class Transformation
 		    Temp.SetAttribute("Hid",str(1))
 		  end if
 		  Temp.appendchild  supp.XMLPutIdInContainer(Doc)
-		  if supp isa polygon or supp isa Bande or supp isa secteur then
+		  if supp isa Lacet then
 		    Temp.SetAttribute("Index", str(index))
 		  end if
 		  
@@ -893,7 +908,7 @@ Protected Class Transformation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Type As Integer
+		type As Integer
 	#tag EndProperty
 
 

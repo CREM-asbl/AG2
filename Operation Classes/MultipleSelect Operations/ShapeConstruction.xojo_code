@@ -21,8 +21,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
 		  dim p as point
-		  dim magneticD as BasicPoint
-		  dim magnetism as integer
+		  
 		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
@@ -326,6 +325,9 @@ Inherits MultipleSelectOperation
 		      CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
 		      TraitementIntersec()
+		    end if
+		    if not currentattractingshape isa point then
+		      side = currentattractingshape.pointonside(p)
 		    end if
 		  end if
 		  can.refreshbackground

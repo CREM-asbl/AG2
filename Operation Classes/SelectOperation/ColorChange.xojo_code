@@ -96,13 +96,11 @@ Inherits SelectOperation
 		  if bord then
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if s isa Lacet or s isa Bande  then
-		        index.append s.pointonside(p)
-		      else
-		        index.append -1
+		      if s isa Lacet  then
+		        s.side  = s.pointonside(p)
 		      end if
 		    next
-		    icot = index(iobj)
+		    icot = Visible.item(iobj).side
 		  else
 		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)

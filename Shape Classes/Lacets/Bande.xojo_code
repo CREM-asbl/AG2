@@ -1,6 +1,6 @@
 #tag Class
 Protected Class Bande
-Inherits Lacet
+Inherits Polygon
 	#tag CompatibilityFlags = ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub computeextre()
@@ -155,8 +155,8 @@ Inherits Lacet
 		  dim BiB as BiBPoint
 		  
 		  if i = 0 then
-		    BiB = new BiBPoint(coord.tab(i), coord.tab(i+1) )
-		  elseif i = 2 then
+		    BiB = new BiBPoint(coord.tab(0), coord.tab(1) )
+		  elseif i = 1 then
 		    BiB = new BiBPoint(coord.tab(2),Point3)
 		  else
 		    BiB = nil
@@ -184,7 +184,7 @@ Inherits Lacet
 		  
 		  if n = 0 then
 		    d = new Droite(Points(0),Points(1))
-		  elseif n = 2 then
+		  elseif n = 1 or n = 2 then
 		    p = new point(point3)
 		    d = new Droite(Points(2),p)
 		  else 
@@ -329,7 +329,7 @@ Inherits Lacet
 		  dist = p.distance(Points(2).bpt,point3)
 		  if dist < distmin then
 		    distmin = dist
-		    imin = 2
+		    imin = 1
 		  end if
 		  if distmin < can.MagneticDist  then
 		    side = imin

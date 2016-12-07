@@ -385,7 +385,7 @@ Inherits Canvas
 		    zone.fill = 0
 		    zone.border = 100
 		  end if
-		  OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
+		  OffscreenPicture=New Picture(width,height,Screen(0).Depth)
 		  OffscreenPicture.Transparent = 1
 		End Sub
 	#tag EndEvent

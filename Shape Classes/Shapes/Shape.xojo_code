@@ -1129,29 +1129,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetIndexSide() As integer
-		  dim op as operation
-		  dim i, n as integer
-		  
-		  n=-1
-		  
-		  op =CurrentContent.currentoperation
-		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
-		    if (op isa transfoconstruction and (transfoconstruction(op).type < 7))  or op isa prolonger then
-		      n = op.index(op.iobj)
-		    elseif  op isa  paraperpconstruction then
-		      n = op.index(op.iobj)
-		    elseif op isa colorchange and colorchange(op).bord then
-		      n = op.index(op.iobj)
-		    elseif op isa Divide then
-		      n = Divide(op).side
-		    end if
-		  end if
-		  return n
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetIndexTsf(tsf as transformation) As integer
 		  dim i as integer
 		  
@@ -2342,6 +2319,29 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function oldGetIndexSide() As integer
+		  dim op as operation
+		  dim i, n as integer
+		  
+		  n=-1
+		  
+		  op =CurrentContent.currentoperation
+		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
+		    if (op isa transfoconstruction and (transfoconstruction(op).type < 7))  or op isa prolonger then
+		      n = op.index(op.iobj)
+		    elseif  op isa  paraperpconstruction then
+		      n = op.index(op.iobj)
+		    elseif op isa colorchange and colorchange(op).bord then
+		      n = op.index(op.iobj)
+		    elseif op isa Divide then
+		      n = Divide(op).side
+		    end if
+		  end if
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Ordonner(Byref p as point, byref q as point, byref r as point)
 		  dim m, n(3) ,i,j as integer
 		  
@@ -2589,38 +2589,25 @@ Protected Class Shape
 		  dim magdist as double
 		  magdist = can.MagneticDist
 		  
-		  
-		  if self isa point then
-		    bp = Point(self).bpt
+		  if other = nil then
+		    return false
 		  end if
+		  gc1 = getGravityCenter
+		  gc2 = other.getgravityCenter
 		  
-		  if self isa point and other isa point and point(other).bpt <> nil then
-		    dist = bp.distance(point(other).bpt)
-		    if dist <= magdist then
+		  if gc1 <> nil and gc2 <> nil then
+		    dist=gc1.Distance(gc2)
+		    b1=getBoundingRadius()
+		    b2=other.getBoundingRadius()
+		    if dist < b1+b2+magdist then
 		      return true
-		    end if
-		  elseif self isa point and other isa droite then
-		    return Droite(other).PInshape(bp)
-		  elseif  self isa point and other isa bande then
-		    return not (Bande(other).PointOnSide(bp) = -1)
-		  elseif  self isa point and other isa secteur then
-		    return not (Secteur(other).PointOnSide(bp) = -1)
-		  elseif other <> nil then
-		    gc1 = getGravityCenter
-		    gc2 = other.getgravityCenter
-		    if gc1 <> nil and gc2 <> nil then
-		      dist=gc1.Distance(gc2)
-		      b1=getBoundingRadius()
-		      b2=other.getBoundingRadius()
-		      if dist < b1+b2+magdist then
-		        return true
-		      else
-		        return false
-		      end if
 		    else
 		      return false
 		    end if
+		  else
+		    return false
 		  end if
+		  
 		End Function
 	#tag EndMethod
 

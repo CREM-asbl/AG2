@@ -23,6 +23,7 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
 		  dim loc, i, n, b, f as integer
+		  dim col as color
 		  
 		  b = s.border
 		  f= s.fill
@@ -44,7 +45,13 @@ Inherits NSkull
 		  elseif s.isinconstruction then
 		    updatebordercolor(config.WeightlessColor.col,b)
 		  elseif s.tsfi.count > 0 then
-		    updatebordercolor(config.transfocolor.col,b)
+		    col = s.bordercolor.col
+		    for i = 0 to s.tsfi.count -1
+		      if s.tsfi.item(i).type > 0 then
+		        col = config.transfocolor.col
+		      end if
+		    next
+		    updatebordercolor(col,b)
 		  else
 		    updatebordercolor(s.BorderColor.col,b)
 		  end if

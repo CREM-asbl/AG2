@@ -193,7 +193,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
+		  currentshape.unhighlight
 		  tsf = new transformation (currentshape, type, currentshape.side , ori)
 		  currentshape.tsfi.addObject tsf
 		  if currentshape isa point then
@@ -223,6 +223,8 @@ Inherits MultipleSelectOperation
 		  qp = nil
 		  
 		  ori = 1
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -558,7 +560,7 @@ Inherits MultipleSelectOperation
 		  EL.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  EL.SetAttribute("TsfType", str(type))
 		  EL.setattribute("TsfOri",str(ori))
-		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
+		  if   tsf.supp isa Lacet  then
 		    EL.setattribute("TsfSide", str(index(iobj)))
 		  end if
 		  EL.SetAttribute("TsfNum",str(tsf.GetNum))

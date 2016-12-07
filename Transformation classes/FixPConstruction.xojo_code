@@ -206,7 +206,7 @@ Inherits SelectOperation
 		  
 		  EL.setattribute("TsfType", str(tsf.type))
 		  EL.SetAttribute("Ori",str(tsf.ori))
-		  if tsf.supp isa polygon or tsf.supp isa Bande or tsf.supp isa bande then
+		  if tsf.supp isa Lacet then
 		    EL.SetAttribute("Index", str(tsf.index))
 		  end if
 		  Num = tsf.supp.GetIndexTsf(tsf)

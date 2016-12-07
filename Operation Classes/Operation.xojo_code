@@ -103,7 +103,7 @@ Protected Class Operation
 		  
 		  for i = visible.count-1  downto 0
 		    s = Visible.item(i)
-		    if s isa Bande or S isa Lacet or S isa secteur or s isa droite then
+		    if S isa Lacet or s isa droite then 'isa Bande or S isa Lacet or S isa secteur or s isa droite then
 		      ind = s.pointonside(p)
 		      if ind = -1 or (s isa lacet and s.coord.curved(ind) = 1) then
 		        Visible.removeobject(s)
@@ -564,14 +564,14 @@ Protected Class Operation
 		    s = Objects.Getshape(n)
 		    ty = val(EL.GetAttribute("TsfType"))
 		    orien =  val(EL.GetAttribute("Ori"))
-		    if s isa polygon or s isa bande or s isa secteur then
+		    if s isa Lacet then 'polygon or s isa bande or s isa secteur then
 		      ind = val(EL.GetAttribute("Index"))
 		    end if
 		    for i = 0 to s.tsfi.count-1
 		      t = true
 		      t = t and ty = s.tsfi.item(i).type
 		      t = t and  orien = s.tsfi.item(i).ori
-		      if s isa polygon or s isa bande or s isa secteur then
+		      if s isa Lacet then 'polygon or s isa bande or s isa secteur then
 		        t = t and ind = s.tsfi.item(i).index
 		      end if
 		      if t then
@@ -815,6 +815,10 @@ Protected Class Operation
 
 	#tag Property, Flags = &h0
 		selshape As shape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

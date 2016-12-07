@@ -122,7 +122,7 @@ Inherits ShapeConstruction
 		  dim u, v as BasicPoint
 		  
 		  currentshape.setconstructedby(Refe,op)
-		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0
+		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0 pourquoi pas -1?
 		  tsf = refe.gettsf(0,index(iobj))
 		  if tsf = nil then
 		    tsf = new Transformation(Refe,0,index(iobj), 0)

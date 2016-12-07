@@ -406,23 +406,26 @@ Inherits DSect
 		  dim  imin as integer
 		  dim distmin, dist as double
 		  
-		  //Pour la cohérence avec les routines d'intersection, il est préférable que les côtés d'un secteurs soient numérotés 0 et 1, plutôt que 1 et 2
-		  //Autrement dit, le coté n°0 comprend les points 0 et 1, le côté n°1 comprend les points n° 0 et 2.
-		  
-		  distmin = p.distance(Points(0).bpt,Points(1).bpt)
-		  imin = 0
-		  dist = p.distance(Points(0).bpt,Points(2).bpt)
-		  if dist < distmin then
-		    distmin = dist
-		    imin = 2
-		  end if
-		  if distmin < can.MagneticDist  and p.audela(points(0).bpt, points(imin/2+1).bpt) then
-		    return imin
+		  if p.audela(points(0).bpt, points(1).bpt) and p.audela(points(0).bpt, points(2).bpt) then
+		    distmin = p.distance(Points(0).bpt,Points(1).bpt)
+		    imin = 0
+		    dist = p.distance(Points(0).bpt,Points(2).bpt)
+		    if dist < distmin then
+		      distmin = dist
+		      imin = 2
+		    end if
+		    if distmin < can.MagneticDist  then
+		      return imin
+		    else
+		      return -1
+		    end if
 		  else
 		    return -1
 		  end if
 		  
-		  //PointOnSide retourne 0 ou 1 (ou -1)
+		  
+		  
+		  //PointOnSide retourne 0 ou 2 (ou -1)
 		  
 		  
 		  

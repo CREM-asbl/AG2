@@ -41,7 +41,7 @@ Inherits SelectOperation
 		Sub computeinter()
 		  dim i, j as integer
 		  
-		  if sh1 isa DSect or sh2 isa Dsect then
+		  if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
 		    return
 		  end if
 		  
