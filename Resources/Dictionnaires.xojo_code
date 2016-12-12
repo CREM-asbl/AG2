@@ -580,6 +580,12 @@ Protected Module Dictionnaires
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function orthreealignedpoints() As string
+		  return dico.value("orthreealignedpoints")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ou() As string
 		  return Dico.value("ou")
 		End Function
@@ -805,6 +811,12 @@ Protected Module Dictionnaires
 		  else
 		    return Dico.value("this") +" "+ dico.value(st)
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function thisarc() As string
+		  return Dico.value("thisarc")
 		End Function
 	#tag EndMethod
 

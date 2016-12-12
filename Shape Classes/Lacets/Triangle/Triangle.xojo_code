@@ -32,11 +32,11 @@ Inherits Polygon
 		  end if
 		  
 		  initcolcotes
-		  
+		  redim prol(-1)
+		  redim  prol(npts-1)
 		  
 		  endconstruction
-		  nsk = new Lskull(can.transform(Points(0).bpt))
-		  updateskull
+		  createskull(Points(0).bpt)
 		  ol.optimize
 		End Sub
 	#tag EndMethod
@@ -101,6 +101,11 @@ Inherits Polygon
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -171,11 +176,6 @@ Inherits Polygon
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -293,6 +293,11 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

@@ -63,7 +63,7 @@ Inherits AffinityMatrix
 		  if ep <> nil and np <> nil and p1 <> nil and p2 <> nil then
 		    ep1 = p1.bpt
 		    
-		    s2 = p2.pointsur.element(0)
+		    s2 = p2.pointsur.item(0)
 		    ep2 = p2.bpt
 		    
 		    M = new SimilarityMatrix(ep1,ep,ep1, np)
@@ -73,7 +73,7 @@ Inherits AffinityMatrix
 		      if s2 isa Bipoint then
 		        np2 = np2.projection(Bipoint(s2).firstp, Bipoint(s2).secondp)
 		      elseif s2 isa circle then
-		        np2 = np2.projection(s2.getgravitycenter, circle(s2).getradius)
+		        np2 = np2.projection(circle(s2).getgravitycenter, circle(s2).getradius)
 		      end if
 		      M = new SimilarityMatrix(ep1,ep2,ep1,np2)
 		      v1 = M.v1
@@ -118,7 +118,7 @@ Inherits AffinityMatrix
 		    t = true
 		    q = nil
 		    
-		    s2 = p2.pointsur.element(0)
+		    s2 = p2.pointsur.item(0)
 		    bp1= p1.bpt
 		    bp2 = p2.bpt
 		    bip1 = p1.GetBiBPoint

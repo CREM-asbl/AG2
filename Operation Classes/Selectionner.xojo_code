@@ -54,7 +54,6 @@ Inherits Operation
 		  end if
 		  
 		  Finished = true
-		  'can.invalidate
 		  can.mousecursor =System.Cursors.StandardPointer
 		  
 		  
@@ -98,7 +97,7 @@ Inherits Operation
 		    
 		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
-		    'can.invalidate
+		    can.refreshbackground
 		    
 		  end if
 		  
@@ -200,6 +199,11 @@ Inherits Operation
 			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -269,12 +273,6 @@ Inherits Operation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="OpId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

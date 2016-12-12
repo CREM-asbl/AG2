@@ -25,7 +25,7 @@ Inherits Matrix
 		      w2 = M*a
 		      v1 = new basicPoint(w1.x, w2.x)
 		      v2 = new BasicPoint(w1.y, w2.y)
-		      v3=new BasicPoint(p1.x - w1*u1,p1.y-w2*u1)
+		      v3=new BasicPoint(p1.x - w1.Mulp(u1),p1.y-w2.Mulp(u1))
 		    else
 		      M = new Matrix(1)
 		      v1 = M.v1
@@ -52,8 +52,8 @@ Inherits Matrix
 		  dim u, v, bp1, bp2, bp3, q as Basicpoint
 		  dim r1, r2 as double
 		  
-		  s1 = p1.pointsur.element(0)
-		  s2 = p2.pointsur.element(0)
+		  s1 = p1.pointsur.item(0)
+		  s2 = p2.pointsur.item(0)
 		  bp1= p1.bpt
 		  bp2 = p2.bpt
 		  bib1 = p1.GetBiBPoint
@@ -87,8 +87,8 @@ Inherits Matrix
 		      
 		    end if
 		    
-		    s1 = p1.pointsur.element(0)
-		    s2 = p2.pointsur.element(0)
+		    s1 = p1.pointsur.item(0)
+		    s2 = p2.pointsur.item(0)
 		    if s1 = s2 and M2 isa TranslationMatrix then
 		      v = M2*p1.bpt
 		    else

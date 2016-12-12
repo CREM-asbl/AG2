@@ -1,6 +1,6 @@
 #tag Class
 Protected Class Intersec
-Inherits Operation
+Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
 		  dim i1, i2, j1, j2, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
@@ -41,6 +41,9 @@ Inherits Operation
 		Sub computeinter()
 		  dim i, j as integer
 		  
+		  if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
+		    return
+		  end if
 		  
 		  init
 		  drappara = false
@@ -105,24 +108,32 @@ Inherits Operation
 		  
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
-		    for j = 0 to ncol
-		      bp = nil
-		      d2 = sh2.getside(j)
-		      if not(sh1 isa droite and droite(sh1).parallelto(sh2,j)) and not (sh2 isa droite and droite(sh2).parallelto(sh1,i)) then
-		        k = d1.inter(d2,bp,r1,r2)
-		        if bp <> nil then
-		          bptinters(i,j) = bp
-		        end if
-		        if k = 0 or r1 > 998 then
+		    if d1 <> nil then
+		      for j = 0 to ncol
+		        d2 = sh2.getside(j)
+		        if d2 <> nil then
+		          if not(sh1 isa droite and droite(sh1).parallelto(sh2,j)) and not (sh2 isa droite and droite(sh2).parallelto(sh1,i)) then
+		            bp = nil
+		            k = d1.inter(d2,bp,r1,r2)
+		            if bp <> nil then
+		              bptinters(i,j) = bp
+		            end if
+		            if k = 0 or r1 > 998 then
+		              val(i,j) = false
+		            end if
+		            if r1 > 998 then
+		              drappara = true
+		            end if
+		          else
+		            val(i,j) = false
+		          end if
+		        else
 		          val(i,j) = false
 		        end if
-		        if r1 > 998 then
-		          drappara = true
-		        end if
-		      else
-		        val(i,j) = false
-		      end if
-		    next
+		      next
+		    else
+		      val(i,j) =false
+		    end if
 		  next
 		End Sub
 	#tag EndMethod
@@ -240,6 +251,7 @@ Inherits Operation
 		  sh1 = s1
 		  sh2 = s2
 		  
+		  
 		  if s1 isa circle and s2 isa circle then
 		    if s1.id > s2.id then
 		      sh1 = s2
@@ -269,13 +281,11 @@ Inherits Operation
 		  else
 		    ncol = sh2.npts-1
 		  end if
-		  redim bptinters(-1,-1)
 		  redim bptinters(nlig, ncol)
-		  redim ids(-1,-1)
 		  redim ids(nlig,ncol)
-		  redim val(-1,-1)
 		  redim val(nlig,ncol)
 		  redim pts(-1)
+		  redim bezet(nlig,ncol)
 		  
 		  computeinter
 		  
@@ -693,6 +703,11 @@ Inherits Operation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -791,9 +806,8 @@ Inherits Operation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -10,28 +10,40 @@ Inherits Dictionary
 		  dim  Txt, Name as string
 		  dim i, j as integer
 		  
-		  Name = lang+".dct"
-		  fi = App.AppFolder.Child(Name)
-		  if not fi.exists then
-		    fi = app.DctFolder.Child(Name)
-		  end if
-		  if not fi.exists then
-		    MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
-		    return
+		  select case lang
+		  case "Francais"
+		    C = new XMLDocument(Francais)
+		  case "English"
+		    C = new XMLDocument(English)
+		  case "PortuguesBr"
+		    C = new XMLDocument(PortuguesBr)
 		  else
-		    C=new XMLDocument(fi)
-		    EL = C.DocumentElement
-		    
-		    for i = 0 to EL.Childcount -1
-		      EL1 = XMLElement(EL.Child(i))
-		      for j = 0 to EL1.Childcount -1
-		        EL2 = XMLElement(EL1.Child(j))
-		        Key = EL2.Name
-		        Txt = EL2.GetAttribute("Name")
-		        Dico.Value(Key)=Txt
-		      next j
-		    next i
-		  end if
+		    Name = lang+".dct"
+		    'fi = App.AppFolder.Child(Name)
+		    'if not fi.exists then
+		    fi = app.DctFolder.Child(Name)
+		    ''end if
+		    if not fi.exists then
+		      MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
+		      return
+		    else
+		      C=new XMLDocument(fi)
+		    end if
+		  end select
+		  
+		  
+		  EL = C.DocumentElement
+		  
+		  for i = 0 to EL.Childcount -1
+		    EL1 = XMLElement(EL.Child(i))
+		    for j = 0 to EL1.Childcount -1
+		      EL2 = XMLElement(EL1.Child(j))
+		      Key = EL2.Name
+		      Txt = EL2.GetAttribute("Name")
+		      Dico.Value(Key)=Txt
+		    next j
+		  next i
+		  
 		  
 		End Sub
 	#tag EndMethod

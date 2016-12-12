@@ -28,9 +28,7 @@ Begin Window PrefsSaveWindow
    Width           =   408
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -68,11 +66,9 @@ Begin Window PrefsSaveWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   1
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "1"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -91,13 +87,9 @@ Begin Window PrefsSaveWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "True"
-      Styled          =   "False"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -114,12 +106,10 @@ Begin Window PrefsSaveWindow
    End
    Begin PushButton ButtonOk
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Ok"
-      ControlOrder    =   "2"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -147,12 +137,10 @@ Begin Window PrefsSaveWindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28

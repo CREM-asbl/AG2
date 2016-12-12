@@ -110,7 +110,7 @@ Inherits Operation
 		    currentop = 1
 		  end if
 		  curop1 = currentop
-		  
+		  can.refreshbackground
 		End Sub
 	#tag EndMethod
 
@@ -152,7 +152,7 @@ Inherits Operation
 		    CurOper.RedoOperation(EL)
 		  end if
 		  
-		  'can.invalidate
+		  can.refreshbackground
 		End Sub
 	#tag EndMethod
 
@@ -181,7 +181,7 @@ Inherits Operation
 		  curoper= CurrentContent.CreerOperation(EL)
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
-		  'can.invalidate
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod
@@ -289,6 +289,11 @@ Inherits Operation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="curop1"
 			Group="Behavior"
@@ -407,12 +412,6 @@ Inherits Operation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="OpId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

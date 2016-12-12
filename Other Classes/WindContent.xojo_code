@@ -2,18 +2,17 @@
 Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub abortConstruction()
-		  dim s as shape
 		  
 		  if currentoperation isa shapeconstruction then
-		    drapabort = true
-		    s = currentoperation.currentshape
-		    if s.isinconstruction and (s.indexconstructedpoint = 0) then
-		      s.points(0).delete
-		    end if
-		    s.delete
-		    if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
-		      Theobjects.XMLLoadObjects(FigsDeleted)
-		    end if
+		    'drapabort = true
+		    's = currentoperation.currentshape
+		    'if s.isinconstruction and (s.indexconstructedpoint = 0) then
+		    's.points(0).delete
+		    'end if
+		    's.delete
+		    'if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
+		    'Theobjects.XMLLoadObjects(FigsDeleted)
+		    'end if
 		  elseif currentoperation isa macroexe and macroexe(currentoperation).mac.mw <> nil  then
 		    macroexe(currentoperation).mac.mw.close
 		  end if
@@ -505,6 +504,11 @@ Protected Class WindContent
 		  else
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
+		  if config.stdbiface then 
+		    AG.SetAttribute(Replace(Dico.value("PrefsBiface")," ","_"), str(1))
+		  else
+		    AG.SetAttribute(Replace(Dico.value("PrefsBiface")," ","_"), str(0))
+		  end if
 		  AG.SetAttribute("NbrDec", str(ndec))
 		  if app.TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")
@@ -566,7 +570,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub openOpList()
-		  dim d as new Date
 		  CurrentOp = -1
 		  totaloperation = 0
 		  OpList = new XMLDocument
@@ -651,7 +654,7 @@ Protected Class WindContent
 		  if wnd.mousedispo then
 		    wnd.refresh
 		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(can.graphics)
+		      curoper.paint(can.BackgroundPicture.graphics)
 		    end if
 		    isaundoredo = false
 		    can.Mousecursor = System.Cursors.StandardPointer
@@ -750,7 +753,7 @@ Protected Class WindContent
 		    CreateHisto
 		  end if
 		  
-		  if FiHisto <> nil then
+		  if FiHisto <> nil and TotalOperation >1 then
 		    fileStream=FiHisto.createTextFile
 		    if fileStream=nil then
 		      MsgBox Dico.Value("ErrorOnSave")
@@ -835,11 +838,12 @@ Protected Class WindContent
 		  
 		  if wnd.mousedispo then
 		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(can.graphics)
+		      curoper.paint(can.BackgroundPicture.graphics)
 		    end if
 		    isaundoredo = false
 		    can.Mousecursor = System.Cursors.StandardPointer
 		  end if
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod

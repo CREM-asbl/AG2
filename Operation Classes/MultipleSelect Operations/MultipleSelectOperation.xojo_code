@@ -113,6 +113,11 @@ Inherits SelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -193,9 +198,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

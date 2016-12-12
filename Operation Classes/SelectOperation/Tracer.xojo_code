@@ -12,7 +12,9 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  currenthighlightedshape.tracept = not currenthighlightedshape.tracept
-		  
+		  if currenthighlightedshape.tracept then
+		    currentcontent.theobjects.tracept = true
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -63,6 +65,11 @@ Inherits SelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
@@ -138,9 +145,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

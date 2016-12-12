@@ -2,22 +2,6 @@
 Protected Class StandardPolygon
 Inherits Polygon
 	#tag Method, Flags = &h0
-		Sub Constructor(ol as Objectslist, p as BasicPoint)
-		  '//N'intervient que dans fusion et decouper
-		  '
-		  'Shape.constructor(ol)
-		  'Points(0).MoveTo(p)
-		  'npts = 1
-		  'ncpts = 1
-		  'fam = 6
-		  'createskull
-		  'figskull(Sk).addpoint(new BasicPoint(0,0))
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList, fam as integer, form as integer, p as BasicPoint)
 		  dim i as integer
 		  
@@ -67,11 +51,8 @@ Inherits Polygon
 		  super.constructor(obl, other, p)
 		  ncpts = 1
 		  file = other.file
-		  updateskull
-		  
 		  stdsize=other.getStdsize
 		  nonpointed = other.nonpointed
-		  
 		  autos
 		  
 		  
@@ -102,13 +83,13 @@ Inherits Polygon
 		  
 		  p = coord.tab(1) - coord.tab(0) 
 		  Angles(0)= p.anglepolaire
-		  nsk = new Lskull(points(0).bpt)
-		  redim coord.curved(-1)
-		  redim coord.curved(npts-1)
-		  redim prol(-1)
-		  redim prol(npts-1)
+		  'nsk = new Lskull(points(0).bpt)
+		  'redim coord.curved(-1)
+		  'redim coord.curved(npts-1)
+		  'redim prol(-1)
+		  'redim prol(npts-1)
 		  std = true
-		  autos
+		  'autos
 		End Sub
 	#tag EndMethod
 
@@ -281,6 +262,11 @@ Inherits Polygon
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -356,11 +342,6 @@ Inherits Polygon
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -478,6 +459,11 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

@@ -405,7 +405,9 @@ Inherits nBpoint
 		  
 		  
 		  if S isa Polygon then
-		    Bib = new BiBPoint(S.Points(P.Numside(0)).bpt,S.Points((P.Numside(0)+1) mod S.npts).bpt)
+		    i = S.PointOnSide(P.bpt)
+		    BiB = S.GetBibSide(i)
+		    'Bib = new BiBPoint(S.Points(P.Numside(0)).bpt,S.Points((P.Numside(0)+1) mod S.npts).bpt)
 		    q.append BibInterdroites(Bib,0,2,r1,r2)
 		    if r1 = 1000 then
 		      q(0) = P.bpt
@@ -414,16 +416,12 @@ Inherits nBpoint
 		  
 		  //idem
 		  if S isa Bande then
-		    i = P.PointSur.GetPosition(S)
-		    i = P.Numside(i)
+		    i = S.PointOnSide(P.bpt) 'P.PointSur.GetPosition(S)
+		    'i = P.Numside(i)
 		    if i = -1 then
 		      q.append nil
 		    else
-		      if i = 0 then
-		        Bib = new BibPoint(S.Points(0).bpt,S.Points(1).bpt)
-		      else
-		        Bib = new BibPoint(S.Points(2).bpt,Bande(S).Point3)
-		      end if
+		      BiB = S.GetBibSide(i)
 		      q.append BiBInterdroites(Bib,0,0,r1,r2)
 		      if r1 = 1000 then
 		        q(0)= P.bpt
@@ -433,12 +431,12 @@ Inherits nBpoint
 		  
 		  //idem
 		  if S isa Secteur then
-		    i = P.PointSur.GetPosition(S)
-		    i = P.Numside(i)
+		    i = S.PointOnSide(P.bpt) 'P.PointSur.GetPosition(S)
+		    'i = P.Numside(i)
 		    if i = -1 then
 		      q.append nil
 		    else
-		      Bib = new BibPoint(S.Points(0).bpt,S.Points(i).bpt)
+		      Bib = s.GetBiBSide(i)
 		      q.append BiBInterdroites(Bib,0,1,r1,r2)
 		      if r = 1000 then
 		        q(0) = P.bpt
@@ -483,11 +481,23 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
-		  super.constructor(s)
+		  dim i as integer
+		  
+		  if s.npts <> 2 then
+		    return
+		  end if
+		  
+		  for i = 0 to 1
+		    append s.points(i).bpt
+		  next
 		  redim extre(-1)
 		  redim ctrl(-1)
 		  redim extre(1)
 		  redim ctrl(5)
+		  redim curved(-1)
+		  redim curved(0)
+		  redim centres(-1)
+		  redim centres(0)
 		  
 		  
 		End Sub
@@ -524,7 +534,6 @@ Inherits nBpoint
 		      ctrl(i) = M*ctrl(i-2)
 		    next
 		  end if
-		  'end if
 		  
 		  
 		End Sub

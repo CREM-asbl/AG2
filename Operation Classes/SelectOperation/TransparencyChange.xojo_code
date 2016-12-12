@@ -17,9 +17,10 @@ Inherits SelectOperation
 		  dim i, n as integer
 		  
 		  n = tempshape.count -1
+		  redim oldfill(n)
 		  for i = 0 to n
 		    s = tempshape.item(i)
-		    oldfill = s.fill
+		    oldfill(i) = s.fill
 		    if not (s.std and f = 50) then
 		      s.fill = f
 		    end if
@@ -56,16 +57,68 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  UndoOperation(Temp)
+		  dim i, n as integer
+		  dim s as shape
+		  dim EL, EL1 as XMLElement
+		  
+		  
+		  EL = XMLElement(Temp.Child(0))
+		  SelectIdForms(EL)
+		  n = tempshape.count-1
+		  f = val(EL.GetAttribute("NewFill"))
+		  for i = 0 to n
+		    s = tempshape.element(i)
+		    s.fill = f
+		  next
+		  objects.unselectall
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ToXml(Doc as XMLDocument) As XMLElement
+		  Dim Myself , EL, Temp as XMLElement
+		  dim i,j,n as integer
+		  dim s as shape
+		  
+		  
+		  
+		  n = tempshape.count
+		  if n>0 then
+		    Myself= Doc.CreateElement(GetName)
+		    Myself.appendchild tempshape.XMLPutIdInContainer(Doc)
+		    Myself.setattribute("NewFill", str(f))
+		    
+		    
+		    EL = Doc.CreateElement("OldFills")
+		    for i = 0 to n-1
+		      EL.SetAttribute("OldFill"+str(i), str(oldfill(i)))
+		    next
+		    Myself.appendchild EL
+		    return Myself
+		  end if
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp As XMLElement)
-		  objects.unselectall
-		  SelectIdForms(Temp)
-		  f = oldfill
-		  DoOperation
+		  dim i, n as integer
+		  dim s as shape
+		  dim EL, EL1 as XMLElement
+		  
+		  EL1 = XMLElement(Temp.child(0))
+		  SelectIdForms(EL1)
+		  
+		  n = tempshape.count
+		  EL = XMLElement(EL1.child(1))
+		  for i = 0 to n-1
+		    s = tempshape.element(i)
+		    s.fill= val(EL.GetAttribute("OldFill"+str(i)))
+		  next
 		  objects.unselectall
 		  
 		  
@@ -100,11 +153,16 @@ Inherits SelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		OldFill As Integer = 100
+		OldFill(-1) As Integer
 	#tag EndProperty
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
@@ -179,21 +237,14 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="OldFill"
-			Group="Behavior"
-			InitialValue="100"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="OpId"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

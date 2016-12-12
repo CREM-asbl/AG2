@@ -35,7 +35,6 @@ Inherits AppliquerTsf
 		      MR.appliquer(s1,s2)
 		      tempshape.objects(i) = s2
 		    next
-		    'can.invalidate
 		  next
 		  endoperation
 		End Sub
@@ -46,8 +45,17 @@ Inherits AppliquerTsf
 		MR As Matrix
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		Type As Integer
+	#tag EndProperty
+
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
@@ -135,9 +143,8 @@ Inherits AppliquerTsf
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -157,6 +164,11 @@ Inherits AppliquerTsf
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Type"
+			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior

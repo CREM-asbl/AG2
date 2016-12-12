@@ -43,7 +43,7 @@ Inherits SimilarityMatrix
 		    
 		    v1 = new BasicPoint(k,0)
 		    v2 = new BasicPoint(0,k)
-		    v3 = c*(1-k)
+		    v3 = c.Mulp(1-k)
 		    
 		  end if
 		End Sub

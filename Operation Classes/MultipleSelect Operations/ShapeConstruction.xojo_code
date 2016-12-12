@@ -2,10 +2,26 @@
 Protected Class ShapeConstruction
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
+		Sub AbortConstruction()
+		  currentcontent.drapabort = true
+		  if currentshape.isinconstruction and (currentshape.indexconstructedpoint = 0) then
+		    currentshape.points(0).delete
+		  end if
+		  currentshape.delete
+		  if currentshape.indexConstructedPoint >= 1 and  currentcontent.FigsDeleted.Childcount > 0 then
+		    currentcontent.Theobjects.XMLLoadObjects(currentcontent.FigsDeleted)
+		  end if
+		  currentcontent.drapabort = false
+		  'currentcontent.currentoperation = nil
+		  can.refreshbackground
+		  wnd.refreshtitle
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
 		  dim p as point
-		  dim magneticD as BasicPoint
-		  dim magnetism as integer
+		  
 		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
@@ -20,6 +36,16 @@ Inherits MultipleSelectOperation
 		      end if
 		      curshape.mobility
 		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Annuler()
+		  if finished = false then
+		    AbortConstruction
+		  else 
+		    currentcontent.UndoLastOperation
 		  end if
 		End Sub
 	#tag EndMethod
@@ -207,6 +233,7 @@ Inherits MultipleSelectOperation
 		  currentshape.forme = forme
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
+		  
 		  wnd.setcross
 		End Sub
 	#tag EndMethod
@@ -215,7 +242,6 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  'Le fixecoord se trouve dans MouseMove
 		  currentshape.constructshape
-		  'can.invalidate
 		  currentshape.endconstruction  //insère la forme dans currentcontent.TheObjects et crée la figure
 		  finished = true
 		  
@@ -241,7 +267,6 @@ Inherits MultipleSelectOperation
 		  else
 		    super.EndOperation
 		  end if
-		  currentshape = nil
 		  CreateShape  //On relance la construction suivante
 		End Sub
 	#tag EndMethod
@@ -301,9 +326,12 @@ Inherits MultipleSelectOperation
 		    elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
 		      TraitementIntersec()
 		    end if
+		    if not currentattractingshape isa point then
+		      side = currentattractingshape.pointonside(p)
+		    end if
 		  end if
 		  can.refreshbackground
-		  can.refresh
+		  
 		  
 		  
 		  
@@ -528,6 +556,11 @@ Inherits MultipleSelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -620,9 +653,8 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

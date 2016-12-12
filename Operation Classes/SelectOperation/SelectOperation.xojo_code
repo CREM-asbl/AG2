@@ -209,9 +209,8 @@ Inherits Operation
 		  else
 		    Objects.Unselectall
 		  end if
-		  can.RefreshBackground
-		  can.refresh
 		  currentshape = nil
+		  can.RefreshBackground
 		  super.EndOperation  // Recréation des figures
 		  Figs = new FigsList
 		  Finished = true   //Ceci ne devrait-il pas être la dernière instruction du "DoOperation"?
@@ -310,6 +309,10 @@ Inherits Operation
 		  dim p as point
 		  // s est l'élément i0 de copies
 		  
+		  if tempshape.count = 1 then
+		    return
+		  end if
+		  
 		  sh = tempshape.item(i0)
 		  if not sh isa point then
 		    for i = 0 to sh.npts-1
@@ -405,6 +408,7 @@ Inherits Operation
 		      CurrentHighlightedTsf = ListTsf.item(itsf)
 		      CurrentHighlightedTsf.highlight
 		      ntsf = ListTsf.count
+		      can.refreshbackground
 		    end if
 		  end if
 		  
@@ -425,7 +429,7 @@ Inherits Operation
 		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
 		    currentshape = currenthighlightedshape
-		    'can.invalidate
+		    can.refreshBackground
 		  end if
 		  
 		  
@@ -439,7 +443,7 @@ Inherits Operation
 		    itsf = (itsf+1) mod ntsf
 		    ListTsf.item(itsf).Highlighted = true
 		    currenthighlightedtsf = ListTsf.item(itsf)
-		    'can.invalidate
+		    can.refreshbackground
 		  end if
 		  
 		End Sub
@@ -577,6 +581,11 @@ Inherits Operation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -651,9 +660,8 @@ Inherits Operation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

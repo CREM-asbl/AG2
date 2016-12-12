@@ -16,7 +16,7 @@ Inherits Timer
 		    restart
 		  end if
 		  
-		  can.invalidate
+		  can.RefreshBackground
 		  
 		End Sub
 	#tag EndEvent
@@ -87,10 +87,6 @@ Inherits Timer
 
 	#tag Property, Flags = &h0
 		BPInter As basicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		can As CustomCanvas1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

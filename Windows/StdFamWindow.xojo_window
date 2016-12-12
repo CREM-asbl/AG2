@@ -28,9 +28,7 @@ Begin Window StdFamWindow
    Width           =   263
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -65,9 +63,7 @@ Begin Window StdFamWindow
    End
    Begin Label StaticText2
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
-      ControlOrder    =   "1"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -102,12 +98,10 @@ Begin Window StdFamWindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
-      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   22
@@ -135,12 +129,10 @@ Begin Window StdFamWindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   22
@@ -171,11 +163,9 @@ Begin Window StdFamWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   4
+      BackColor       =   &cFF00FFFF
       Bold            =   True
       Border          =   True
-      ControlOrder    =   "4"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -194,13 +184,9 @@ Begin Window StdFamWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "True"
-      Styled          =   "False"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -217,12 +203,10 @@ Begin Window StdFamWindow
    End
    Begin PushButton ChooseColButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   5
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Pousser ici"
-      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   22

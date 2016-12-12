@@ -233,7 +233,7 @@ Inherits Label
 		    Type = 2
 		  end if
 		  ////////////////////// Longueurs
-		  if (chape isa droite)  or (chape isa arc) or ((chape isa polygon  or chape isa freecircle) and loc <>-1 ) then
+		  if (chape isa droite)  or (chape isa arc) or ((chape isa Lacet  or chape isa freecircle) and loc <>-1 ) then
 		    Type = 0
 		    if chape isa droite then
 		      if droite(chape).nextre = 2 then
@@ -265,7 +265,7 @@ Inherits Label
 		  
 		  ////////////  Aires
 		  
-		  if ( (chape isa polygon)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
+		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
 		    if chape = currentcontent.SHUA then
 		      dat = arrondi2(chape.Aire)
 		    elseif currentcontent.UA <> 0 then
@@ -278,11 +278,11 @@ Inherits Label
 		    select case type
 		    case 0
 		      if (chape isa droite and chape =currentcontent.SHUL) or (chape isa polygon and chape = currentcontent.SHUL and loc = currentcontent.IcotUL)  then
-		        dat = "Ref. " + dat
+		        dat = str(1)
 		      end if
 		    case 1
 		      if chape = currentcontent.SHUA  then
-		        dat = "Ref. " + dat
+		        dat = str(1)
 		      end if
 		    end select
 		    g.Drawstring(dat,q.x, q.y)
@@ -394,9 +394,6 @@ Inherits Label
 		    case 2
 		      sp = chape.points(7).bpt
 		    end select
-		  elseif chape isa polygon and loc <> -1 then
-		    fp = chape.points(loc).bpt
-		    sp = chape.points((loc+1) mod chape.npts).bpt
 		  elseif  chape isa Bande and loc <> -1 then
 		    fp = chape.points(0+2*loc).bpt
 		    if loc = 0 then
@@ -407,11 +404,14 @@ Inherits Label
 		  elseif chape isa Secteur and loc <> -1 then
 		    fp = chape.points(0).bpt
 		    sp = chape.points(loc).bpt
+		  elseif chape isa Lacet and loc <> -1 then
+		    fp = chape.points(loc).bpt
+		    sp = chape.points((loc+1) mod chape.npts).bpt
 		  end if
 		  
 		  if chape isa repere or (LockRight and LockBottom) then
 		    Position = new BasicPoint(0,0)
-		  elseif (chape isa polygon or chape isa bande or chape isa secteur) and loc <> -1 then
+		  elseif (chape isa Lacet ) and loc <> -1 then
 		    Position = (fp+sp) /2
 		  elseif chape isa Freecircle and loc <> -1 then
 		    position = chape.points(1).bpt

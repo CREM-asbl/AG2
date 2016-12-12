@@ -15,92 +15,61 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim loc, i, n, b, f as integer
+		  dim loc, i, n, b, f as integer 'ne sert que pour les cercles et les arcs
 		  
 		  b = s.border
 		  f= s.fill
-		  
-		  if s isa lacet then
-		    if s.hidden or s.tsp  then
-		      updatefillcolor(s.fillcolor.col,0)
-		      updatebordercolor(s.bordercolor.col,0)
-		    else
-		      updatefillcolor(s.fillcolor.col,f)
-		      'updatebordercolor(s.bordercolor.col,b)
-		    end if
-		    currentcurve = 0
-		    for i = 0 to s.npts-1
-		      'if s.hidden and s.highlighted then
-		      'updatecurvecolor(s,i,config.HighlightColor.col, b)
-		      if s.hidden Then
-		        updatecurvecolor(s,i, config.HideColor.col,b)
-		      elseif s.highlighted then
-		        n = s.getindexside
-		        if n = -1 or n = i then
-		          updatecurvecolor(s,i, config.HighlightColor.col,b)
-		        else
-		          updatecurvecolor(s,i,  lacet(s).colcotes(i).col,b)
-		        end if
-		      elseif s.isinconstruction then
-		        'updatefillcolor(config.Weightlesscolor.col,0)
-		        updatecurvecolor(s,i , config.WeightlessColor.col, 100)
-		      else
-		        updatecurvecolor(s,i, lacet(s).colcotes(i).col, b)
-		      end if
-		    next
-		  else
-		    if s.tracept then
-		      updatebordercolor (bleu,b)
-		    elseif s.hidden and s.highlighted Then
-		      updatebordercolor(config.HighlightColor.col, b)
-		      updatefillcolor(s.fillcolor.col,0)
-		    elseif s.hidden Then
-		      updatebordercolor(cyan, b)
-		      updatefillcolor(s.fillcolor.col,0)
-		    elseif s.tsp and s.Highlighted then
-		      updatefillcolor(s.fillColor.col,0)
-		      updatebordercolor(config.HighlightColor.col,b)
-		    elseif s.tsp then
-		      updatefillcolor(s.fillColor.col,0)
-		      updatebordercolor(s.BorderColor.col,b)
-		    elseif s.highlighted and s.selected then
-		      updatebordercolor(config.HighlightColor.col,b)
-		    elseif s.highlighted  then
-		      updatefillcolor(s.fillColor.col,f)
-		      updatebordercolor(config.HighlightColor.col,b)
-		    elseif s.selected and s.fillcolor.equal(white) then
-		      updatebordercolor(s.BorderColor.col, b)
-		    elseif s.isinconstruction then
-		      updatefillcolor(config.Weightlesscolor.col,0)
-		      updatebordercolor(config.WeightlessColor.col,b)
-		    else
-		      updatefillcolor(s.Fillcolor.col,f)
-		      updatebordercolor(s.BorderColor.col,b)
-		    end if
+		  if b = 0 then
+		    b = 100
 		  end if
+		  
+		  
+		  if s.tracept then
+		    updatebordercolor (bleu,b)
+		  elseif s.hidden and s.highlighted Then
+		    updatebordercolor(config.HighlightColor.col, b)
+		    updatefillcolor(s.fillcolor.col,0)
+		  elseif s.hidden Then
+		    updatebordercolor(cyan, b)
+		    updatefillcolor(s.fillcolor.col,0)
+		  elseif s.tsp and s.Highlighted then
+		    updatefillcolor(s.fillColor.col,0)
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.tsp then
+		    updatefillcolor(s.fillColor.col,0)
+		    updatebordercolor(s.BorderColor.col,b)
+		  elseif s.highlighted and s.selected then
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.highlighted  then
+		    updatefillcolor(s.fillColor.col,f)
+		    updatebordercolor(config.HighlightColor.col,b)
+		  elseif s.selected and s.fillcolor.equal(white) then
+		    updatebordercolor(s.BorderColor.col, b)
+		  elseif s.isinconstruction then
+		    updatefillcolor(config.Weightlesscolor.col,0)
+		    updatebordercolor(config.WeightlessColor.col,b)
+		  else
+		    updatefillcolor(s.Fillcolor.col,f)
+		    updatebordercolor(s.BorderColor.col,b)
+		  end if
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub fixeepaisseurs(s as shape)
-		  dim loc, i, n as integer
+		  dim  i as integer
 		  
-		  if s isa lacet then
-		    currentcurve = 0
-		    for i = 0 to s.npts-1
-		      if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		        updatecurvewidth(s,i,2*s.borderwidth)
-		      else
-		        updatecurvewidth(s,i,s.borderwidth)
-		      end if
-		    next
+		  
+		  if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
+		    updateborderwidth(2*s.borderwidth)
 		  else
-		    if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		      updateborderwidth(2*s.borderwidth)
-		    else
-		      updateborderwidth(s.borderwidth)
-		    end if
+		    updateborderwidth(s.borderwidth)
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -121,15 +90,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
-		  dim i as integer
 		  
-		  
-		  if self isa LSkull then
-		    g.drawobject self, x, y
-		    for i = 0 to count-1
-		      g.drawobject item(i), x, y
-		    next
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -164,7 +125,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub updatebordercolor(col as color, c as double)
-		  bordercolor = col
+		  bordercolor = col 'méthode condamnée à disparaître
 		  border = c
 		End Sub
 	#tag EndMethod
@@ -177,54 +138,6 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub updatectrl(n as integer, p as BasicPoint)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatecurvecolor(s as shape, i as integer, col as color, c as double)
-		  dim lac as lacet
-		  dim n as integer
-		  
-		  if s isa lacet then
-		    lac = lacet(s)
-		  end if
-		  
-		  if lac.coord.curved(i) = 0 then
-		    lac.nsk.item(currentcurve).bordercolor = col
-		    lac.nsk.item(currentcurve).border = c
-		    currentcurve = currentcurve+1
-		  else
-		    for n = 0 to 2
-		      lac.nsk.item(currentcurve+n).bordercolor = col
-		      lac.nsk.item(currentcurve+n).border = c
-		    next
-		    currentcurve = currentcurve+3
-		  end if
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatecurvewidth(s as shape, i as integer, c as double)
-		  dim lac as lacet
-		  dim n as integer
-		  
-		  if s isa lacet then
-		    lac = lacet(s)
-		  end if
-		  
-		  if lac.coord.curved(i) = 0 then
-		    lac.nsk.item(currentcurve).borderwidth = c
-		    currentcurve = currentcurve+1
-		  else
-		    for n = 0 to 2
-		      lac.nsk.item(currentcurve+n).borderwidth = c
-		    next
-		    currentcurve = currentcurve+3
-		  end if
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -263,16 +176,37 @@ Inherits FigureShape
 	#tag EndMethod
 
 
+	#tag Note, Name = Explications
+		
+		Les "skulls" sont les "squelettes" des différentes formes géométriques, c'est-à-dire les objets informatiques de bas niveau qui sont 
+		réellement dessinés.
+		Lors de chaque exécution d'une routine "paint", les skulls doivent être mis à jour du point de vue des coordonnées de chacun des sommets,
+		(ou autres points significatifs), des couleurs et de l'épaisseur de chaque côté.  Les informations nécessaires sont extraites des objets de haut niveau correspondants.
+		Tous les côtés d'une forme ont même épaisseur mais pas nécessairement même épaisseur.
+		
+		Il y a deux de classes de skulls. Toutes sont des sous-classes de la classe Object2D du langage RealBasic.
+		
+		1ere famille de classes de skulls
+		
+		Object2D --- FigureShape --- NSkull ---- ArcSkull  ------- Utilisé pour les classes ---- Arc, FreeCircle, StdCircle
+		                                                                ---- CubeSkull ----------------------------------  Cube
+		                                                                ---- Lskull     ------------------------------------- Bande,  DSect, Lacet, Polreg, Polygon (et sous-classes,
+		                                                                                                                                                     Polyqcq, Standardpölygon, etc, sauf Cube)                                                                                                                                                  
+		                                                                ---- SecteurSkull --------------------------------  Secteur
+		                                                                ---- SegSkull ------------------------------------  Droite
+		
+		2eme famille de classes de skulls 
+		
+		Object2D ----OvalShape  ---- OvalSkull ---------------------------------------------- Point, StdCircle
+	#tag EndNote
+
+
 	#tag Property, Flags = &h0
 		angle As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		BB As BiBPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		currentcurve As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -310,12 +244,6 @@ Inherits FigureShape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Count"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="currentcurve"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

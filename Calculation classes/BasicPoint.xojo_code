@@ -4,10 +4,8 @@ Protected Class BasicPoint
 		Function alignes(u2 as Basicpoint, u3 as basicpoint) As boolean
 		  dim u1 as BasicPoint
 		  dim w1,w2  as basicpoint
-		  dim r as double
 		  
 		  u1 = self
-		  
 		  w1 = u2-u1
 		  w2 = u3-u1
 		  
@@ -221,12 +219,12 @@ Protected Class BasicPoint
 		  elseif d isa secteur then
 		    a = d.points(0).bpt
 		    b = d.points(k+1).bpt
-		  elseif d isa polygon then
+		  elseif d isa Lacet then
 		    a = d.points(k).bpt
 		    b = d.points((k+1) mod d.npts).bpt
 		  end if
 		  
-		  if d isa droite or d isa bande or d isa secteur or d isa polygon  then
+		  if d isa droite or  d isa secteur or d isa polygon  then
 		    return location(a,b)
 		  elseif d isa circle then
 		    return location(circle(d))

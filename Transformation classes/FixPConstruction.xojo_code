@@ -114,7 +114,7 @@ Inherits SelectOperation
 		    CurrentContent.TheTransfos.HideAll
 		    CurTsf(itsf).Hidden = false
 		    CurTsf(itsf).Highlighted = true
-		    'can.invalidate
+		    can.refreshbackground
 		  end if
 		  
 		End Sub
@@ -206,7 +206,7 @@ Inherits SelectOperation
 		  
 		  EL.setattribute("TsfType", str(tsf.type))
 		  EL.SetAttribute("Ori",str(tsf.ori))
-		  if tsf.supp isa polygon or tsf.supp isa Bande or tsf.supp isa bande then
+		  if tsf.supp isa Lacet then
 		    EL.SetAttribute("Index", str(tsf.index))
 		  end if
 		  Num = tsf.supp.GetIndexTsf(tsf)
@@ -283,6 +283,11 @@ Inherits SelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -357,9 +362,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

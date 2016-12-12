@@ -155,10 +155,24 @@ Inherits MultipleSelectOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s = visible.item(i)
-		    if not ((s isa bipoint) or (s isa polygon) or (s isa circle) or (s isa arc) or (s isa point)) or (s isa droite and droite(s).nextre <> 2) or (s isa polygon and s.PointOnSide(p) = -1)   then
+		    if s isa bande or s isa secteur then
 		      visible.removeobject visible.item(i)
 		    end if
+		    if  (s isa droite and droite(s).nextre <> 2)   then
+		      visible.removeobject visible.item(i)
+		    end if
+		    if s isa lacet then
+		      side = s.pointonside(p)
+		      if side = -1 then
+		        visible.removeobject visible.item(i)
+		      end if
+		      s.side = side
+		    end if
 		  next
+		  
+		  if visible.count = 0 then
+		    return nil
+		  end if
 		  
 		  s = visible.item(iobj)
 		  if s = nil or  (currentitemtoset = 2 and s = firstpoint) then
@@ -167,7 +181,6 @@ Inherits MultipleSelectOperation
 		  
 		  select case CurrentItemToSet
 		  case 1
-		    side = s.PointOnSide(p)
 		    return s
 		  case 2
 		    if s isa Point   then
@@ -187,8 +200,8 @@ Inherits MultipleSelectOperation
 		  
 		  operation.paint(g)
 		  
-		  if currenthighlightedshape isa polygon  and side <> -1 then
-		    polygon(currenthighlightedshape).paintside(g,side,2,config.highlightcolor)
+		  if currenthighlightedshape isa Lacet  and side <> -1 then
+		    Lacet(currenthighlightedshape).paintside(g,side,2,config.highlightcolor)
 		  else
 		    if CurrentHighlightedShape<>nil then
 		      CurrentHighlightedShape.HighLight
@@ -287,7 +300,7 @@ Inherits MultipleSelectOperation
 		        d = cube(s).getside(side)
 		        firstpoint = d.points(0)
 		        secondpoint= d.points(1)
-		      elseif s isa polygon and side <> -1 then
+		      elseif s isa lacet and side <> -1 then
 		        firstpoint = s.points(side)
 		        secondpoint = s.points((side +1) mod s.npts)
 		      end if
@@ -403,12 +416,13 @@ Inherits MultipleSelectOperation
 		Private shapetodivide As shape
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		side As integer
-	#tag EndProperty
-
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
@@ -497,12 +511,6 @@ Inherits MultipleSelectOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="side"
-			Group="Behavior"
-			InitialValue="0"
-			Type="integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

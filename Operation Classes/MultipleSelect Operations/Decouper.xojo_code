@@ -191,16 +191,18 @@ Inherits MultipleSelectOperation
 		  s.fixecouleurfond(currentshape.fillcolor,currentshape.fill)
 		  s.forme = s.npts-2
 		  s.initconstruction
-		  if s isa Lacet then
+		  if s.Hybrid then
 		    s.coord.centres = centres
 		    s.coord.curved = curved
 		    for i = 0 to ubound(curved)
 		      Lacet(s).narcs = Lacet(s).narcs+curved(i)
 		    next
-		    Lacet(s).prepareskull(s.points(0).bpt)
-		    Lacet(s).CreateExtreAndCtrlPoints
 		  end if
-		  s.updateskull
+		  Lacet(s).prepareskull(s.points(0).bpt)
+		  if s.hybrid then
+		    Lacet(s).coord.CreateExtreAndCtrlPoints(s.ori)
+		  end if
+		  
 		  recopiercouleurs (s)
 		  s.Move(M)
 		  s.endconstruction
@@ -481,6 +483,11 @@ Inherits MultipleSelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -567,9 +574,8 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

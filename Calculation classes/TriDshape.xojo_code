@@ -3,6 +3,7 @@ Protected Class TriDshape
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape, fp as BasicPoint)
 		  dim i,j as integer
+		  dim se as secteur
 		  
 		  if s isa point then
 		    TriDpts.append new TriDPoint(point(s).bpt-fp)
@@ -12,23 +13,24 @@ Protected Class TriDshape
 		    next
 		  end if
 		  
-		  if s isa circle then
-		    for i = 0 to 1
-		      TriDpts.append new TriDPoint(Circle(s).coord.extre(i)-fp)
+		  if (s isa circle or s.narcs > 0) and not s isa secteur then
+		    for i = 0 to ubound(s.coord.extre)
+		      TriDpts.append new TriDPoint(s.coord.extre(i)-fp)
 		    next
-		    for i = 0 to 5
-		      TriDPts.append new TriDPoint(Circle(s).coord.Ctrl(i)-fp)
-		    next
-		  end if
-		  
-		  if s.Hybrid then
-		    for j = 0 to ubound(lacet(s).coord.extre)
-		      TriDpts.append new TriDpoint(Lacet(s).coord.extre(j)-fp)
-		    next
-		    for j = 0 to ubound(lacet(s).coord.ctrl)
-		      TriDpts.append new TriDpoint(Lacet(s).coord.ctrl(j)-fp)
+		    for i = 0 to ubound(s.coord.ctrl)
+		      TriDPts.append new TriDPoint(s.coord.Ctrl(i)-fp)
 		    next
 		  end if
+		  '
+		  'if s isa secteur then
+		  'se = secteur(s)
+		  'for i = 0 to ubound(se.skullcoord.extre)
+		  'TriDpts.append new TriDPoint(se.skullcoord.extre(i)-fp)
+		  'next
+		  'for i = 0 to ubound(se.skullcoord.ctrl)
+		  'TriDPts.append new TriDPoint(se.skullcoord.Ctrl(i)-fp)
+		  'next
+		  'end if
 		End Sub
 	#tag EndMethod
 

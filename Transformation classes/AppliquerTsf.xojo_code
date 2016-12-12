@@ -69,10 +69,11 @@ Inherits MultipleSelectOperation
 		    s1 = tempshape.item(i)
 		    if s1 isa point then
 		      s2 = s1.paste(Objects,Point(s1).bpt)
-		    else
+		    elseif not (s1 isa arc) then  
 		      p=new BasicPoint(0,0)
 		      s2 = s1.paste(Objects,p)
-		      s2.auto = 0
+		    else
+		      s2 = s1.paste(Objects,s1.points(0).bpt)
 		    end if
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i)
@@ -116,9 +117,9 @@ Inherits MultipleSelectOperation
 		      next
 		    next
 		    if tsf.type = 6 then
-		      for i = 0 to copies.count-1
-		        copies.item(i).ori =  -copies.item(i).ori
-		      next
+		      'for i = 0 to copies.count-1
+		      'copies.item(i).ori =  -copies.item(i).ori
+		      'next
 		      dret = new RetTimer(copies,self)
 		    else
 		      dret=new TsfTimer(copies,self)
@@ -169,9 +170,9 @@ Inherits MultipleSelectOperation
 		  case 2
 		    for i =  visible.count-1 downto 0
 		      s = visible.item(i)
-		      if s <> nil and  s.isaellipse then
-		        visible.removeobject s
-		      end if
+		      'if s <> nil and  s.isaellipse then
+		      'visible.removeobject s
+		      'end if
 		      if self isa TrajectoireTsf and not s isa point then
 		        visible.removeobject s
 		      end if
@@ -233,6 +234,7 @@ Inherits MultipleSelectOperation
 		  case 2
 		    super.MouseMove(p)
 		  end select
+		  can.refreshbackground
 		  
 		  
 		  
@@ -249,7 +251,7 @@ Inherits MultipleSelectOperation
 		    if ListTsf.count >0 then
 		      ListTsf.item(itsf).Hidden = false
 		    end if
-		    'can.invalidate
+		    can.refreshbackground
 		  case 2
 		    super.MouseWheel
 		  end select
@@ -286,9 +288,9 @@ Inherits MultipleSelectOperation
 		      str = choose+aform
 		    end if
 		    Help g, str
-		    'else
-		    'can.mousecursor = system.cursors.wait
-		    'Help g, wait
+		  else
+		    can.mousecursor = system.cursors.wait
+		    Help g, wait
 		  end select
 		  
 		  
@@ -351,7 +353,6 @@ Inherits MultipleSelectOperation
 		      tsf = ListTsf.item(itsf)
 		      CurrentContent.TheTransfos.HideAll
 		      tsf.Hidden = false
-		      'can.invalidate
 		      return true
 		    else
 		      return false
@@ -503,6 +504,11 @@ Inherits MultipleSelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -589,9 +595,8 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -29,7 +29,7 @@ Protected Class Transformation
 		      s2.drapori = true
 		    end if
 		    if s2.Hybrid then
-		      Lacet(s2).coord.MoveExtreCtrl(M)
+		      AppliquerExtreCtrl (s1,s2)'coord.MoveExtreCtrl(M)
 		    end if
 		  else
 		    Point(s2).moveto M*Point(s1).bpt
@@ -45,7 +45,7 @@ Protected Class Transformation
 		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 		  
-		  if s1.Hybrid then
+		  if s1.Hybrid or s1 isa circle then
 		    for i = 0 to ubound(s2.coord.extre)
 		      s2.coord.extre(i) = M*s1.coord.extre(i)
 		    next
@@ -111,7 +111,7 @@ Protected Class Transformation
 		  
 		  select case type
 		  case 1
-		    v = supp.points((index+1)mod supp.npts).bpt- supp.points(index) .bpt
+		    v = supp.points((supp.side+1)mod supp.npts).bpt- supp.points(supp.side) .bpt
 		    M = new translationmatrix (v*ori)
 		  case 2
 		    M = supp.coord.RotationMatrix
@@ -124,16 +124,18 @@ Protected Class Transformation
 		  case 6
 		    if  supp isa droite then
 		      M = supp.coord.SymmetryMatrix        '(droite(supp).firstp, droite(supp).secondp)
-		    elseif supp isa bande then
-		      if index = 0 then
-		        v = supp.points(1).bpt
-		      else
-		        v = Bande(supp).Point3
+		      'elseif supp isa bande then
+		      'if index = 0 then
+		      'v = supp.points(1).bpt
+		      'else
+		      'v = Bande(supp).Point3
+		      'end if
+		      'M = new SymmetryMatrix(supp.points(index).bpt, v)
+		    elseif (supp isa Lacet) and (supp.side <> -1) then
+		      nbp = supp.GetBiBSide(supp.side)
+		      if nbp <> nil then
+		        M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
 		      end if
-		      M = new SymmetryMatrix(supp.points(2*index).bpt, v)
-		    elseif supp isa polygon or supp isa secteur then
-		      nbp = supp.GetBiBSide(index)
-		      M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
 		      'elseif supp isa secteur then
 		      'M = new SymmetryMatrix(supp.points(0).bpt, supp.points(index).bpt)
 		    end if
@@ -190,6 +192,8 @@ Protected Class Transformation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape, n as integer, i as integer, ori as integer)
+		  dim j as integer
+		  
 		  Constructor()
 		  supp = s                       'support de la tsf
 		  type = n                        'type de transformation (translation, rotation etc) ATTENTION: type = 0 pour les paraperp
@@ -203,9 +207,22 @@ Protected Class Transformation
 		  if type <> 0 and  (type < 3 or type > 6 ) then
 		    T = new Tip
 		  end if
-		  
+		  'supp.side = index
 		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddObject(self)
+		  
+		  if type > 0 then 
+		    supp.bordercolor = green
+		    if  s isa Lacet then
+		      if i <> -1 then
+		        supp.colcotes(i) = green
+		      else
+		        for j = 0 to supp.npts-1
+		          supp.colcotes(j) = green
+		        next
+		      end if
+		    end if
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -363,7 +380,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Highlight()
 		  highlighted = true
-		  can.invalidate
+		  
 		End Sub
 	#tag EndMethod
 
@@ -383,7 +400,6 @@ Protected Class Transformation
 		      Appliquer(s1,s2)
 		      if s1 isa circle  or s1 isa lacet then
 		        AppliquerExtreCtrl(s1,s2)
-		        s2.updateskull
 		      end if
 		    next
 		    'constructedfigs.updatematrixduplicatedshapes(M)
@@ -415,12 +431,12 @@ Protected Class Transformation
 		    end if
 		    
 		    if not hidden then
-		      DrawTip(g, col)
-		      if supp isa bande or supp isa secteur or (supp isa polygon and type < 7 ) then
+		      if supp isa Lacet and type < 7 then
 		        supp.Paintside(g, index, 2, Col)
 		      else
 		        supp.paint(g,col)
 		      end if
+		      DrawTip(g, col)
 		    end if
 		    
 		  end if
@@ -612,19 +628,19 @@ Protected Class Transformation
 		  if s isa droite then
 		    fp = droite(s).firstp
 		    sp = droite(s).secondp
-		  elseif s isa polygon and (type = 1 or type = 6)  then
-		    fp = s.points(index).bpt
-		    sp = s.points((index+1) mod s.npts).bpt
 		  elseif s isa secteur then
 		    fp = s.points(0).bpt
 		    sp = s.points(index+1).bpt
 		  elseif s isa Bande then
-		    fp=s.points(2*index).bpt
+		    fp=s.points(index).bpt
 		    if index =0 then
 		      sp = s.points(1).bpt
 		    else
 		      sp=Bande(s).Point3
 		    end if
+		  elseif s isa Lacet and (type = 1 or type = 6)  then
+		    fp = s.points(index).bpt
+		    sp = s.points((index+1) mod s.npts).bpt
 		  end if
 		End Sub
 	#tag EndMethod
@@ -714,7 +730,7 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Unhighlight()
 		  highlighted = False
-		  can.invalidate
+		  
 		End Sub
 	#tag EndMethod
 
@@ -776,7 +792,7 @@ Protected Class Transformation
 		    Temp.SetAttribute("Hid",str(1))
 		  end if
 		  Temp.appendchild  supp.XMLPutIdInContainer(Doc)
-		  if supp isa polygon or supp isa Bande or supp isa secteur then
+		  if supp isa Lacet then
 		    Temp.SetAttribute("Index", str(index))
 		  end if
 		  
@@ -892,7 +908,7 @@ Protected Class Transformation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Type As Integer
+		type As Integer
 	#tag EndProperty
 
 

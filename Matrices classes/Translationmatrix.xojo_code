@@ -7,7 +7,7 @@ Inherits SimilarityMatrix
 		    
 		    v1 = new BasicPoint(1,0)
 		    v2 = new BasicPoint(0,1)
-		    v3 = new BasicPoint(v)
+		    v3 = new BasicPoint(v.x, v.y)
 		    
 		  end if
 		End Sub

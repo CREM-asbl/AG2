@@ -28,9 +28,7 @@ Begin Window PasswordWindow
    Width           =   307
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -65,12 +63,10 @@ Begin Window PasswordWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Ok"
-      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -101,11 +97,9 @@ Begin Window PasswordWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
-      BehaviorIndex   =   2
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
-      ControlOrder    =   "2"
       CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
@@ -124,13 +118,9 @@ Begin Window PasswordWindow
       LockRight       =   False
       LockTop         =   False
       Mask            =   ""
-      Multiline       =   "False"
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   "False"
-      ScrollbarVertical=   "True"
-      Styled          =   "False"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -147,12 +137,10 @@ Begin Window PasswordWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28

@@ -20,11 +20,11 @@ Inherits MultipleSelectOperation
 		  if (Fus1.Hybrid) or (Fus2.Hybrid) then
 		    
 		  elseif  dir = -1  then
-		    if Fus1.std or Fus2.std then
-		      Fus = new StandardPolygon(Objects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
-		    else
-		      Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
-		    end if
+		    'if Fus1.std or Fus2.std then
+		    ''Fus = new StandardPolygon(Objects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
+		    'else
+		    Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
+		    'end if
 		    for i = 2 to Fus1.npts-1
 		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
 		    next
@@ -47,19 +47,16 @@ Inherits MultipleSelectOperation
 		  if Fus1.std or Fus2.std then
 		    Fus.std = true
 		    Fus.fam = 14
-		    alpha = 0
-		    for i = 0 to Fus.npts-2
-		      Bib = Fus.GetBiBside(i)
-		      StandardPolygon(Fus).Distances.append BiB.longueur
-		      beta = BiB.anglepolaire*180/PI
-		      StandardPolygon(Fus).Angles.Append beta-alpha
-		      alpha = beta
-		    next
-		  end if
-		  if not Fus.std then
+		    'alpha = 0
+		    'for i = 0 to Fus.npts-2
+		    'Bib = Fus.GetBiBside(i)
+		    'StandardPolygon(Fus).Distances.append BiB.longueur
+		    'beta = BiB.anglepolaire*180/PI
+		    'StandardPolygon(Fus).Angles.Append beta-alpha
+		    'alpha = beta
+		    'next
+		  else
 		    Fus.autos
-		    redim fus.coord.curved(-1)
-		    redim fus.coord.curved(fus.npts-1)
 		  end if
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
@@ -347,6 +344,11 @@ Inherits MultipleSelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -433,9 +435,8 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

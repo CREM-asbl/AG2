@@ -30,13 +30,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as shape)
 		  Super.constructor(ol,s)
-		  Npts=2
-		  ncpts = 2
-		  fam = s.fam
-		  forme = s.forme
 		  points(0).moveto s.points(0).bpt
-		  points.Append new point(ol, s.points(1).bpt)
-		  setpoint points(1)
 		  
 		End Sub
 	#tag EndMethod
@@ -133,12 +127,6 @@ Inherits Shape
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub UpdateSkull()
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Note, Name = Licence
 		
@@ -162,24 +150,12 @@ Inherits Shape
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		OldSh As Shape
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Side As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Stab1 As BasicPoint
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Stab2 As Basicpoint
-	#tag EndProperty
-
-
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -253,11 +229,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -324,6 +295,11 @@ Inherits Shape
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"

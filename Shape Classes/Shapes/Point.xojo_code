@@ -190,9 +190,8 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function authorisedputon(s as shape) As boolean
-		  dim i, j ,  h as integer
+		  dim i, j  as integer
 		  dim par  as shape
-		  dim t1, t2 as Boolean
 		  
 		  if pointsur.getposition(s) <> -1 then
 		    return true
@@ -298,7 +297,6 @@ Inherits Shape
 		  pointsur = new objectslist
 		  conditioned = new objectslist
 		  createskull(can.transform(Bpt))
-		  'updateskull
 		  
 		End Sub
 	#tag EndMethod
@@ -813,10 +811,9 @@ Inherits Shape
 		Sub Invalider()
 		  dim i,j as integer
 		  dim s as shape
-		  dim   s2  as shape
 		  dim inter as intersec
 		  
-		  if currentcontent.currentoperation isa modifier and self = fig.pointmobile then
+		  if currentcontent.currentoperation isa modifier and self = modifier(currentcontent.currentoperation).pointmobile then
 		    return
 		  end if
 		  
@@ -852,6 +849,20 @@ Inherits Shape
 		    
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsCenterOfACircle() As Circle
+		  dim i as integer
+		  
+		  for i = 0 to ubound(parents)
+		    if parents(i) isa Circle and parents(i).getindex(self) = 0 then
+		      return Circle(parents(i))
+		    end if
+		  next
+		  return nil
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1034,11 +1045,10 @@ Inherits Shape
 		  dim i, j as integer
 		  dim CurrentMagnetism  as Integer
 		  dim StrongestMagnetism as Integer
-		  dim p2, td,q,c as BasicPoint
+		  dim  td,q as BasicPoint
 		  dim cx,cy, delta as double
-		  dim Dist as double
-		  dim s2 as Shape
 		  dim p3 as Basicpoint
+		  dim BiB as BiBPoint
 		  
 		  if not PossibleAttractionWith(s)  then
 		    return 0
@@ -1080,30 +1090,37 @@ Inherits Shape
 		    elseif s isa droite and droite(s).nextre = 1 then
 		      d= ProjectionOnAttractingDemidroite(Droite(S).firstp, droite(s).secondp)
 		    end if
-		  elseif s isa Lacet then
-		    i = Lacet(s).pointonside(bpt)
+		  elseif s isa Bande then
+		    i = Bande(s).pointonside(bpt)
 		    if d = nil and i <> -1 then
-		      d = ProjectionOnAttractingSide(Lacet(s), i)
+		      BiB =  s.GetBibSide(i)
+		      'if i = 0 then
+		      'p3 = Bande(s).points(1).bpt
+		      'else
+		      'p3 = Bande(s).point3
+		      'end if
+		      d =  bpt.projection(BiB) 'Bande(s).points(i).bpt, p3)
+		    end if
+		  elseif s isa secteur then
+		    i = Secteur(s).pointonside(bpt)
+		    if d = nil  and i <> -1 then
+		      BiB =  s.GetBibSide(i)
+		      'if i = 0 then
+		      'p3 = Secteur(s).points(1).bpt
+		      'else
+		      'p3 = Secteur(s).points(2).bpt
+		      'end if
+		      d = bpt.projection(BiB) 'Secteur(s).points(0).bpt, p3) '  Secteur(s).PointMagnetism2(bpt) 
 		    end if
 		  elseif s isa polygon and not s isa cube then
 		    i = Polygon(S).PointOnSide(bpt)
 		    if d = nil and i <> -1 then
 		      d = ProjectionOnAttractingSide(Polygon(s),i)
 		    end if
-		  elseif s isa Bande then
-		    i = Bande(s).pointonside(bpt)
+		  elseif s isa Lacet then
+		    i = Lacet(s).pointonside(bpt)
 		    if d = nil and i <> -1 then
-		      if i = 0 then
-		        p3 = Bande(s).points(1).bpt
-		      else
-		        p3 = Bande(s).point3
-		      end if
-		      d =  bpt.projection(Bande(s).points(2*i).bpt, p3)
-		    end if
-		  elseif s isa secteur then
-		    i = Secteur(s).pointonside(bpt)
-		    if d = nil and i <> -1 then
-		      d =  bpt.projection(Secteur(s).points(0).bpt, Secteur(s).points(i+1).bpt)
+		      d = ProjectionOnAttractingSide(Lacet(s), i)
 		    end if
 		  elseif s isa cube  then
 		    for i = 0 to 5
@@ -1177,7 +1194,7 @@ Inherits Shape
 		    s2 = nil
 		    currentmagnetism = 0
 		    
-		    if parents.indexof(obj) = -1  and  PossibleAttractionWith(obj) then
+		    if parents.indexof(obj) = -1   then
 		      if obj isa point then
 		        currentmagnetism = magnetism3(point(obj),t)
 		        s2 = obj
@@ -1223,11 +1240,10 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Mobility()
 		  dim i as integer
-		  dim sh as Shape
 		  dim p, p1 as point
 		  
 		  liberte = 2
-		  liberte = liberte-pointsur.count
+		  liberte = liberte-forme 'pointsur.count
 		  if std then
 		    liberte = 0
 		  end if
@@ -1302,17 +1318,29 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub MoveTo(d as BasicPoint)
-		  
-		  
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
 		  if d <> nil then
 		    bpt = d                       'On déplace même les points modifiés
 		    if labs.count = 1 and not(labs.item(0).LockRight and labs.item(0).LockBottom) then
 		      labs.item(0).SetPosition
 		    end if
-		    if tracept then
-		      Trace.append d
-		    end if
+		    'if tracept then
+		    'if can.ObjectsTraced = nil then
+		    'can.ObjectsTraced = new Group2D
+		    'can.ObjectsTraced.border = 100
+		    'can.objectsTraced.bordercolor = bleu
+		    'can.objectstraced.x = can.rep.origine.x
+		    'can.objectstraced.y = can.rep.origine.y
+		    'end if
+		    'rsk.Border = 100
+		    'rsk.Bordercolor = bleu
+		    'rsk.fillcolor = bleu
+		    'rsk.fill = 100
+		    'rsk.x = 0
+		    'rsk.y = 0
+		    'can.ObjectsTraced.append rsk
+		    ''Trace.append d
+		    'end if
 		  end if
 		  
 		End Sub
@@ -1333,7 +1361,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function OnSameShape(Q as Point, Byref s as shape) As boolean
-		  dim i,j, m,n as integer
+		  dim i,j,n as integer
 		  dim num1,num2 as double
 		  dim sh(-1) as shape
 		  dim t as Boolean
@@ -1432,7 +1460,7 @@ Inherits Shape
 		  rsk.update(bpt,2)
 		  if   (wnd.drapshowall or not hidden)  and (not invalid)  and (not deleted)  then
 		    if highlighted or not allparentsnonpointed then
-		      if tracept and g = can.OffscreenPicture.graphics  then
+		      if tracept   then
 		        rsk.updateborderwidth(borderwidth)
 		        rsk.updatecolor(bleu,100)
 		      elseif highlighted then
@@ -1467,25 +1495,13 @@ Inherits Shape
 		    pt.EndConstruction
 		  end if
 		  
-		  if tracept and (modified or currentcontent.currentoperation isa appliquertsf)  then
-		    paint(can.OffscreenPicture.Graphics,blue)
+		  if tracept  and (modified or currentcontent.currentoperation isa appliquertsf)  then
+		    rsk.paint(can.OffscreenPicture.Graphics)
 		    currentcontent.theobjects.tracept = true
 		  end if
 		  
 		  if  (not hidden) and  Labs.count = 1 and (not invalid) and (not deleted) and (g <> can.OffscreenPicture.graphics) then
 		    Labs.item(0).Paint(g)
-		  end if
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub paint(g as graphics, c as couleur)
-		  if not invalid then
-		    rsk.updatecolor (c.col,100)
-		    rsk.paint(g)
 		  end if
 		  
 		  
@@ -1641,7 +1657,7 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(parents)
 		    ff0 = parents(i).getsousfigure(parents(i).fig)
-		    ff0.somm.addshape self
+		    ff0.somm.addobject self
 		    figs.addobject parents(i).fig
 		  next
 		  
@@ -1695,6 +1711,45 @@ Inherits Shape
 		    return 0
 		  else
 		    return -1
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PossibleAttractionWith(other as Shape) As Boolean
+		  
+		  dim gc1,gc2,bp as basicpoint
+		  dim dist,b1,b2 as double
+		  dim magdist as double
+		  magdist = can.MagneticDist
+		  
+		  
+		  bp = Point(self).bpt
+		  
+		  if other isa point and point(other).bpt <> nil then
+		    dist = bp.distance(point(other).bpt)
+		    if dist <= magdist then
+		      return true
+		    end if
+		  elseif  other isa droite then
+		    return Droite(other).PInshape(bp)
+		  elseif  other isa bande then
+		    return not (Bande(other).PointOnSide(bp) = -1)
+		  elseif   other isa secteur then
+		    return not (Secteur(other).PointOnSide(bp) = -1)
+		  elseif other <> nil then
+		    gc2 = other.getgravityCenter
+		    if  gc2 <> nil then
+		      dist=bp.Distance(gc2)
+		      b2=other.getBoundingRadius()
+		      if dist < b2+magdist then
+		        return true
+		      else
+		        return false
+		      end if
+		    else
+		      return false
+		    end if
 		  end if
 		End Function
 	#tag EndMethod
@@ -1892,27 +1947,26 @@ Inherits Shape
 		    forme = PointSur.count
 		  end if
 		  
-		  if isextremityofarc(n, ar) then  //a placer dans le putonpolyg quand les polygones seront devenus des lacets
-		    if s isa polygon  then
+		  if isextremityofarc(n, ar) then  
+		    if s isa Lacet then
 		      k = s.getindexpoint(ar.points(0))
-		      m = polygon(s).pointonside(bpt)
+		      m = Lacet(s).pointonside(bpt)
 		      if m = k or k = (m+1) mod s.npts then
 		        surseg = true
 		      end if
 		    end if
 		  end if
 		  
-		  
-		  if S isa Lacet then
-		    Lacet(S).Positionner(self)
-		  elseif S isa polygon then
-		    PutOnPolyg(Polygon(s))
-		  elseif S isa Bipoint then
-		    PutOnBipoint (Bipoint(s))
-		  elseif  s isa bande then
+		  if  s isa bande then
 		    PutOnBande(Bande(s))
 		  elseif S isa secteur then
 		    PutOnSecteur (secteur(s))
+		  elseif S isa polygon then
+		    PutOnPolyg(Polygon(s))
+		  elseif S isa Lacet then                        
+		    Lacet(S).Positionner(self)
+		  elseif S isa Bipoint then
+		    PutOnBipoint (Bipoint(s))
 		  elseif  S isa  circle and not S isa Arc then
 		    PutOnCircle(circle(s))
 		  elseif S isa Arc then
@@ -1977,7 +2031,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PutOnArc(s as arc)
-		  dim alpha,  e as double
+		  dim alpha as double
 		  dim n as integer
 		  dim a as BasicPoint
 		  
@@ -2025,23 +2079,16 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub PutOnBande(s as Bande)
 		  dim  n as integer
-		  dim a,b as BasicPoint
+		  dim BiB as BiBPoint
 		  
 		  n = Pointsur.getposition(s)
 		  
-		  
-		  if Numside(n) = -1 then
+		  if numside(n) = -1 then
 		    numside(n) = S.PointonSide(bpt)
 		  end if
-		  
-		  if numside(n) = 0 then
-		    b = S.Points(1).bpt
-		  else
-		    b = s.point3
-		  end if
-		  a = S.Points(2*numside(n)).bpt
-		  location(n) = bpt.location(a,b)
-		  Moveto(bpt.projection(a,b))
+		  BiB = s.GetBibSide(numside(n))
+		  location(n) = bpt.location(BiB)
+		  Moveto(bpt.projection(BiB))
 		  
 		  S.setpoint self
 		End Sub
@@ -2156,7 +2203,7 @@ Inherits Shape
 		    numside(n) = S.PointonSide(bpt)
 		  end if
 		  a = S.Points(0).bpt
-		  b = S.Points(numside(n)+1).bpt
+		  b = S.Points(numside(n)).bpt
 		  location(n) = bpt.location(a,b)
 		  if location(n) < 0 then
 		    location(n) = 0
@@ -2286,6 +2333,7 @@ Inherits Shape
 		  dim a, b,bp as BasicPoint
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
+		  dim side as integer
 		  
 		  s = constructedby.shape
 		  select case ConstructedBy.oper
@@ -2297,6 +2345,15 @@ Inherits Shape
 		    if s isa circle then
 		      Trib = new TriBPoint(s.getgravitycenter,a,b)
 		      bp = Trib.subdiv(s.ori,ConstructedBy.data(2), ConstructedBy.data(3))
+		    elseif s isa lacet then
+		      side = constructedby.data(4)
+		      if lacet(s).coord.curved(side) = 0 then
+		        Bib = new BiBpoint(a,b)
+		        bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
+		      else
+		        Trib = new TribPoint(lacet(s).getcentre(side),a,b)
+		        bp = Trib.subdiv(s.ori,ConstructedBy.data(2), ConstructedBy.data(3))
+		      end if
 		    else
 		      BiB = new BiBPoint(a,b)
 		      bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
@@ -2440,7 +2497,7 @@ Inherits Shape
 		Sub SpecialPuton(sh as shape, n as integer, s as shape, k as integer)
 		  // n est le numéro du point de sh à placer sur s
 		  
-		  dim p, q, u, v as basicpoint
+		  dim p, q as basicpoint
 		  dim Bib1 as BiBPoint
 		  dim bp As BasicPoint
 		  
@@ -2539,10 +2596,9 @@ Inherits Shape
 		  
 		  seps = SaveEps(CurrentContent.currentoperation)
 		  
-		  if not nonpointed and not hidden and not invalid  and not deleted and not dejaexporte then
+		  if not nonpointed and not hidden and not invalid  and not deleted  then
 		    seps.adapterparamdessin(self,tos)
 		    tos.writeline etiquet + " point"
-		    dejaexporte = true
 		  end if
 		  
 		  
@@ -2570,104 +2626,94 @@ Inherits Shape
 		  
 		  for i=0 to UBound(ConstructedShapes)
 		    s = Point(ConstructedShapes(i))
-		    select case s.constructedby.Oper
-		    case 3, 5
-		      if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
-		        M1 = Matrix(s.constructedby.data(0))
-		        s.Moveto M1*bpt
-		      end if
-		    case 6
-		      tsf = Transformation(s.constructedby.data(0))
-		      M1 = tsf.M
-		      if M1 <> nil and M1.v1 <> nil then
-		        s.Moveto M1*bpt
-		      end if
-		    case 9
-		      if s.constructedby.shape <> nil then
-		        M1 = Matrix(s.constructedby.data(0))
-		        s.MoveTo M1*bpt
-		      else
-		        for j = 0 to 2 step 2
-		          sh = Point(s.constructedby.data(j))
-		          if sh = self then
-		            M1 = Matrix(s.constructedby.data(j+1))
-		            s.MoveTo M1*bpt
-		          end if
-		        next
-		      end if
-		    case 10
-		      side = s.Numside(0)
-		      s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
-		      if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
-		        s.puton(s.pointsur.item(0),1-location(0))
-		      else
-		        s.puton(s.pointsur.item(0),location(0))
-		      end if
-		    end select
-		    
-		    s.modified = true
-		    s.updateshape
+		    if not s.modified then
+		      select case s.constructedby.Oper
+		      case 3, 5
+		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
+		          M1 = Matrix(s.constructedby.data(0))
+		          s.Moveto M1*bpt
+		        end if
+		      case 6
+		        tsf = Transformation(s.constructedby.data(0))
+		        M1 = tsf.M
+		        if M1 <> nil and M1.v1 <> nil then
+		          s.Moveto M1*bpt
+		        end if
+		      case 9
+		        if s.constructedby.shape <> nil then
+		          M1 = Matrix(s.constructedby.data(0))
+		          s.MoveTo M1*bpt
+		        else
+		          for j = 0 to 2 step 2
+		            sh = Point(s.constructedby.data(j))
+		            if sh = self then
+		              M1 = Matrix(s.constructedby.data(j+1))
+		              s.MoveTo M1*bpt
+		            end if
+		          next
+		        end if
+		      case 10
+		        side = s.Numside(0)
+		        s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
+		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
+		          s.puton(s.pointsur.item(0),1-location(0))
+		        else
+		          s.puton(s.pointsur.item(0),location(0))
+		        end if
+		      end select
+		      
+		      s.modified = true
+		      s.updateshape
+		    end if
 		  next
 		  
 		  if constructedby <> nil and not centerordivpoint then
-		    select case constructedby.Oper
-		    case 3, 5
-		      s = Point(ConstructedBy.Shape)
-		      if not s.modified then
+		    s = Point(ConstructedBy.Shape)
+		    if not s.modified then
+		      select case constructedby.Oper
+		      case 3, 5
 		        M1 = Matrix(constructedby.data(0))
 		        M1 = M1.inv
 		        s.Moveto M1*(self.bpt)
-		        s.modified = true
-		        s.updateshape
-		      end if
-		    case 10
-		      s = Point(ConstructedBy.Shape)
-		      side = s.Numside(0)
-		      if not s.modified then
+		      case 10
+		        side = s.Numside(0)
 		        s.numside(0) = (numside(0)-ConstructedBy.data(0)+s.pointsur.item(0).npts) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
 		        end if
-		        s.modified = true
-		        s.updateshape
-		      end if
-		    case 9
-		      if constructedby.shape <> nil then
-		        s = Point(ConstructedBy.Shape)
-		        if not s.modified then
+		      case 9
+		        if constructedby.shape <> nil then
 		          M1 = Matrix(constructedby.data(0))
 		          M1 = M1.inv
 		          s.Moveto M1*bpt
-		          s.modified = true
-		          s.updateshape
+		        else
+		          for i = 0 to 2 step 2
+		            s = Point(Constructedby.data(i))
+		            if not s.modified then
+		              M1 = Matrix(constructedby.data(i+1))
+		              M1= M1.inv
+		              s.Moveto M1*bpt
+		              s.modified = true
+		              s.updateshape
+		            end if
+		          next
 		        end if
-		      else
-		        for i = 0 to 2 step 2
-		          s = Point(Constructedby.data(i))
-		          if not s.modified then
-		            M1 = Matrix(constructedby.data(i+1))
-		            M1= M1.inv
-		            s.Moveto M1*bpt
-		            s.modified = true
-		            s.updateshape
-		          end if
-		        next
-		      end if
-		    end select
+		      end select
+		      s.modified = true
+		      s.updateshape
+		    end if
+		    
 		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(np as BasicPoint)
-		  dim M as Matrix
+		  'dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
-		  dim  n as integer
 		  
 		  
 		  delta = np-bpt
@@ -2677,11 +2723,11 @@ Inherits Shape
 		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
-		  M = new TranslationMatrix(np-bpt)
+		  'M = new TranslationMatrix(np-bpt)
 		  Moveto np   'M*bpt
-		  if pointsur.count = 1 then
-		    puton pointsur.item(0)
-		  end if
+		  'if pointsur.count = 1 then
+		  'puton pointsur.item(0)
+		  'end if
 		  modified = true
 		  updateshape
 		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
@@ -2724,7 +2770,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateInter()
-		  dim  s2 as shape
 		  dim inter as intersec
 		  
 		  if forme = 2 then
@@ -2854,9 +2899,8 @@ Inherits Shape
 		  end if
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
-		    if parents(i) isa circle then
+		    if parents(i) isa circle  or parents(i) isa DSect then
 		      parents(i).coord.CreateExtreAndCtrlPoints(parents(i).ori)
-		      parents(i).updateskull
 		    end if
 		  next
 		  if ifmac <>nil and forme = 1 then
@@ -2864,9 +2908,13 @@ Inherits Shape
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
+		  if ubound(constructedshapes) > -1 or constructedby <> nil then
+		    updateconstructedpoints
+		  end if
 		  
-		  updateconstructedpoints
-		  updateMacConstructedShapes
+		  if ubound(MacConstructedshapes) > -1 then
+		    updateMacConstructedShapes
+		  end if
 		  endmove
 		  
 		  
@@ -3037,7 +3085,6 @@ Inherits Shape
 		Function XMLPutIdINContainer(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  //Utilisé uniquement dans le cadre des macros
 		  dim Form, Temp as XMLElement
-		  dim n as integer
 		  
 		  if currentcontent.macrocreation  then
 		    Form = XMLPutIdInContainer(Doc)
@@ -3067,7 +3114,6 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  dim Form, Temp as XMLElement
-		  dim  n as integer
 		  
 		  Form = XMLPutIdInContainer(Doc)
 		  
@@ -3161,6 +3207,7 @@ Inherits Shape
 		    next
 		    mobility
 		  end if
+		  forme = pointsur.count
 		  if pointsur.count = 2 then
 		    adjustinter(pointsur.item(0),pointsur.item(1))
 		  end if
@@ -3253,6 +3300,11 @@ Inherits Shape
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -3343,11 +3395,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -3416,6 +3463,11 @@ Inherits Shape
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ncpts"
 			Group="Behavior"
 			InitialValue="0"
@@ -3462,6 +3514,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

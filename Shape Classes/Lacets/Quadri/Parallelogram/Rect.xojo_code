@@ -61,14 +61,14 @@ Inherits Parallelogram
 		  
 		  dim n, n1, n2, n3 as integer
 		  dim  p2, p3 As  point
-		  dim ep, np, ep1, np1, ep2, np2, ep3, np3 As Basicpoint
+		  dim ep, np, ep1, np1, ep2, np2, ep3, np3, w As Basicpoint
 		  dim M as Matrix
 		  dim ff as figure
 		  dim d as double
 		  dim s as shape
 		  dim dr as droite
 		  
-		  n = getindexpoint(p)
+		  n = getindexpoint(p) 'numero du point qui doit rester fixe
 		  n1 = getindexpoint(p1)
 		  ff = getsousfigure(fig)
 		  ff.getoldnewpos(p1,ep1,np1)
@@ -104,13 +104,19 @@ Inherits Parallelogram
 		    'p2.moveto np3+np-np1
 		    'p3.modified = true
 		  else
-		    d = amplitude(ep1, np, np1)
-		    M = new RotationMatrix(np,d)
-		    np2 = M*ep2
-		    if abs(n-n1) = 2 then
-		      np2 = np.projection(np1,np2)
+		    if abs(n-n1) <> 2 then
+		      if n = (n1+1) mod 4 then
+		        w = np - np1  
+		      else
+		        w = np1-np
+		      end if
+		      w = w.vecnorperp
+		      d = ep1.distance(ep3)
+		      np3 = np1+w*d
+		      M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
+		    else
+		      M = new SimilarityMatrix(ep, ep1, np, np1)
 		    end if
-		    M = new AffinityMatrix(ep,ep1,ep2,np,np1,np2)
 		  end if
 		  return M
 		  
@@ -118,15 +124,14 @@ Inherits Parallelogram
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier2fixes(p as point, q as point) As Matrix
+		Function Modifier2fixes(p as point) As Matrix
 		  // Routine qui modifie le rectangle  dans le cas où deux points sont fixes et le point n peut  être déplacé (pas arbitrairement)
 		  // Deux cas selon la position des points fixes
 		  
-		  dim k, n, n1, n2 as integer
+		  dim  n as integer
 		  dim p1, p2,  p0 as point
-		  dim ep, np, ep1, np1, ep2, np2,np0, u, v as BasicPoint
+		  dim ep, np,  np1, np2,np0, u as BasicPoint
 		  dim ff as figure
-		  dim Bib1, Bib2 As  BiBPoint
 		  dim d as double
 		  
 		  
@@ -176,35 +181,42 @@ Inherits Parallelogram
 
 	#tag Method, Flags = &h0
 		Function Modifier3(p as point, q as point, r as point) As Matrix
-		  dim  p1, p2, p3 As point
-		  dim ep1,ep2,ep3,np1,np2,np3, u, v as BasicPoint
+		  dim  p1, p2, p3 As point 'Dans bcp de cas, p et q doivent rester fixes, r est modifiable
+		  dim ep1,ep2,ep3,np1,np2,np3, u, v, pp as BasicPoint
 		  dim ep, eq, er , np, nq, nr as BasicPoint
-		  dim i, k, n, n1, n2, n3, n4, ns as integer
+		  dim i, k, n, n1, n2, n3 as integer
 		  dim t as boolean
 		  dim ff as figure
 		  dim Bib as BiBpoint
-		  dim ar as arc
+		  
+		  dim dist as double
 		  
 		  ff= GetSousFigure(fig)
-		  n =ff. NbSommSur
 		  ff.getoldnewpos(p,ep,np)
 		  ff.getoldnewpos(q,eq,nq)
 		  ff.getoldnewpos(r,er,nr)
+		  n =ff. NbSommSur
+		  n1 = getindexpoint(p)
+		  n2 = getindexpoint(q)
+		  n3 = getindexpoint(r)
 		  
 		  select case n
-		  case 0
-		    return new affinitymatrix(ep,eq,er,np,nq,nr)
-		    
-		    'if getindexpoint(fig.pointmobile) <> -1 then
-		    'return Modifier2fixes(fig.pointmobile)
-		    'elseif  ubound(p.parents) = 0 then
-		    'return Modifier2fixes(p)
-		    'elseif ubound(q.parents) = 0 then
-		    'return Modifier2fixes(q)
-		    'else
-		    'return Modifier2fixes(r)
-		    'end if
-		    
+		  case 0   'convient pour deux points fixes p et q et un point mobile r
+		    if abs(n1-n2) = 1 then
+		      u = np-nq
+		      v = u.VecNorPerp
+		      if abs(n1-n3) = 1 or abs(n1-n3) = 3 then 
+		        nr = nr.projection(np,np+v)
+		      else
+		        nr = nr.projection(nq,nq+v)
+		      end if
+		      r.moveto nr
+		    else
+		      pp = (np+nq)/2
+		      dist = pp.distance(np)
+		      nr = nr.projection(pp,dist)
+		    end if
+		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  case 1
 		    p1 =point(ff.somm.item(ff.ListSommSur(0)))
 		    'if p1 <> ff.supfig.pointmobile and not (p1.isextremityofarc(n, ar) and (n = 2) and (ar.fig = ff.supfig)) then
@@ -334,6 +346,11 @@ Inherits Parallelogram
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -403,11 +420,6 @@ Inherits Parallelogram
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -525,6 +537,11 @@ Inherits Parallelogram
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

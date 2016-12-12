@@ -217,6 +217,11 @@ Inherits Operation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -313,12 +318,6 @@ Inherits Operation
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Std2flag"

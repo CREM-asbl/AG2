@@ -1,6 +1,45 @@
 #tag Class
 Protected Class Matrix
 	#tag Method, Flags = &h0
+		Sub Appliquer(s1 as shape, s2 as shape)
+		  dim i as integer
+		  dim oldpt as BasicPoint
+		  dim t as boolean
+		  dim M as Matrix
+		  
+		  t = true
+		  M = self
+		  
+		  if not  S2 isa Point then
+		    for i= 0 to s1.npts-1
+		      s2.childs(i).bpt = M*(s1.childs(i).bpt)   //Avant 19/9/12: point(s2.childs(i)).moveto M*Point(s1.childs(i)).bpt
+		      point(s2.childs(i)).modified = true
+		    next
+		    'if s2 isa standardpolygon then
+		    'standardpolygon(s2).updateangle
+		    'end if
+		    'if s1 isa circle then
+		    'AppliquerExtreCtrl(Circle(s1),Circle(s2))
+		    'circle(s2).computeradius
+		    'end if
+		    'if s2 isa arc  or s2 isa secteur then
+		    's2.computearcangle
+		    's2.drapori = true
+		    'end if
+		    'if s2.Hybrid then
+		    'Lacet(s2).coord.MoveExtreCtrl(M)
+		    'end if
+		  else
+		    Point(s2).moveto M*Point(s1).bpt
+		    s2.Modified = true
+		  end if
+		  s2.endmove
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Conjugate(M as Matrix) As Matrix
 		  // Calcul de M*self*M^-1
 		  
@@ -34,9 +73,14 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Sub Constructor(M as Matrix)
-		  v1 = new BasicPoint(M.v1)
-		  v2 = new BasicPoint (M.v2)
-		  v3 = new BasicPoint(M.v3)
+		  dim u1,u2,u3 as BasicPoint
+		  
+		  v1 = M.v1
+		  v2 = M.v2
+		  v3 = M.v3
+		  'v1 = new BasicPoint(M.v1)
+		  'v2 = new BasicPoint (M.v2)
+		  'v3 = new BasicPoint(M.v3)
 		End Sub
 	#tag EndMethod
 
@@ -114,19 +158,19 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Function inv() As Matrix
-		  dim u1,u2,u3 as BasicPoint
+		  dim u1,u2,u3, w1, w2, w3 as BasicPoint
 		  dim delta as double
 		  
 		  delta = det
 		  if delta <>0 then
 		    delta = 1/delta
 		    u1 = new BasicPoint(v2.y, -v1.y)
-		    u1 = u1*delta
+		    w1 = u1.Mulp(delta)
 		    u2 = new BasicPoint(-v2.x,v1.x)
-		    u2 = u2*Delta
+		    w2 = u2.Mulp(delta)
 		    u3 = new BasicPoint(v2.x*v3.y-v2.y*v3.x,v1.y*v3.x-v1.x*v3.y)
-		    u3 = u3*delta
-		    return new Matrix(u1,u2,u3)
+		    w3 = u3.Mulp(delta)
+		    return new Matrix(w1,w2,w3)
 		  else
 		    return nil
 		  end if
@@ -174,9 +218,9 @@ Protected Class Matrix
 		  
 		  dim u1, u2, u3 as basicPoint
 		  
-		  u1 = v1*r
-		  u2 = v2*r
-		  u3 = v3*r
+		  u1 = v1.Mulp(r)
+		  u2 = v2.Mulp(r)
+		  u3 = v3.Mulp(r)
 		  
 		  return new Matrix(u1, u2, u3)
 		  

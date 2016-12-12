@@ -12,7 +12,6 @@ Inherits SelectAndDragOperation
 		  copies.removeall
 		  Finished = true
 		  CurrentContent.TheObjects.unselectall
-		  can.invalidate
 		  can.mousecursor =System.Cursors.StandardPointer
 		  copyptsur = false
 		End Sub
@@ -691,6 +690,11 @@ Inherits SelectAndDragOperation
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CopyPtSur"
 			Group="Behavior"
 			InitialValue="0"
@@ -795,9 +799,8 @@ Inherits SelectAndDragOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -22,18 +22,38 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  fi=App.AppFolder.Child(Menu+".men")
-		  if not fi.exists then
-		    fi = app.MenusFolder.Child(Menu+".men")
-		  end if
-		  
-		  if not  fi.exists  then
-		    MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
-		    quit
+		  'fi=App.AppFolder.Child(Menu+".men")
+		  'if not fi.exists then
+		  'fi = app.MenusFolder.Child(Menu+".men")
+		  'end if
+		  '
+		  'if not  fi.exists  then
+		  'MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
+		  'quit
+		  'else
+		  'C=new XMLDocument(fi)
+		  select case Menu
+		  case "Menu_A"
+		    C=new XMLDocument(Menu_A)
+		  case "Menu_B"
+		    C = new XMLDocument(Menu_B)
+		  case "Menu_C"
+		    C=new XMLDocument(Menu_C)
+		  case "Menu_AB"
+		    C = new XMLDocument(Menu_AB)
+		  case "Menu_AC"
+		    C = new XMLDocument(Menu_AC)
 		  else
-		    C=new XMLDocument(fi)
-		    El = C.DocumentElement
-		  end if
+		    fi = app.MenusFolder.Child(Menu+".men")
+		    if not  fi.exists  then
+		      MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
+		      quit
+		    else
+		      C=new XMLDocument(fi)
+		    end if
+		  end select
+		  El = C.DocumentElement
+		  'end if
 		  
 		  ChargerMenu(El)
 		  
@@ -168,6 +188,9 @@ Protected Class Configuration
 		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorFill").checked = El.XQL("ColFill").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorStdFam").checked = El.XQL("ColStdFam").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").checked = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsTsp").checked = El.XQL("ColTsp").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = El.XQL("Thickness").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = El.XQL("Thickness").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsHide").checked = El.XQL("Hide").length > 0
@@ -190,19 +213,20 @@ Protected Class Configuration
 		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").checked = El.XQL("CreateCenter").length > 0
 		  
 		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").checked = El.XQL("Transformations").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirTranslation").checked = El.XQL("Translation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirTranslation").checked = El.XQL("Translation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimi").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimi").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
+		  mmenubar.Child("TransfosMenu").Child("InvCurve").checked = El.XQL("InvCurve").length > 0
 		  
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").checked =true
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").checked =true
@@ -240,16 +264,16 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  fi = app.appfolder.Child(stdfile)
-		  if not fi.exists then
-		    fi = app.StdFolder.Child(stdfile)
-		  end if
-		  if not fi.exists then
-		    MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
-		    return
-		  end if
+		  'fi = app.appfolder.Child(stdfile)
+		  'if not fi.exists then
+		  'fi = app.StdFolder.Child(stdfile)
+		  'end if
+		  'if not fi.exists then
+		  'MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
+		  'return
+		  'end if
 		  
-		  Doc = new XMLDocument(fi)
+		  Doc = new XMLDocument(jeu_de_base)
 		  EL = Doc.DocumentElement
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
@@ -313,6 +337,16 @@ Protected Class Configuration
 	#tag Method, Flags = &h0
 		Function ConfigElem3(m as string, sm as string, ssm as string, tag as string) As XMLNode
 		  if MenuMenus.Child(m).Child(sm).Child(ssm).checked then
+		    return CFG.CreateElement(tag)
+		  else
+		    return nil
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ConfigElem4(m as string, sm as string, ssm as string, sssm as string, tag as string) As XMLNode
+		  if MenuMenus.Child(m).Child(sm).Child(ssm).Child(sssm).checked then
 		    return CFG.CreateElement(tag)
 		  else
 		    return nil
@@ -516,6 +550,8 @@ Protected Class Configuration
 		    'wnd.setMenus
 		    ///////
 		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -625,15 +661,18 @@ Protected Class Configuration
 		  temp.AppendChild ConfigElem("OperaMenu","OperaIdentify","Identify")
 		  
 		  temp.AppendChild ConfigElem("TransfosMenu","TransfosAppliquer","Transformations")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirTranslation","Translation")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirRotation","Rotation")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartD","Rot90D")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartG","Rot90G")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDemitour","SymCentrale")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "Definirsymetrieaxiale","SymOrtho")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirHomothetie","Homothetie")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirSimilitude","Similitude")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDeplacement","Deplacement")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirTranslation","Translation")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirRotation","Rotation")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirQuartD","Rot90D")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso", "DefinirQuartG","Rot90G")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso", "DefinirDemitour","SymCentrale")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","Definirsymetrieaxiale","SymOrtho")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirSimi", "DefinirHomothetie","Homothetie")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirSimi","DefinirSimilitude","Similitude")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirIso","DefinirDeplacement","Deplacement")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirAffi","DefinirEtirement","Etirement")
+		  temp.AppendChild ConfigElem4("TransfosMenu","TransfosDefine", "DefinirAffi","DefinirCisaillement","Cisaillement")
+		  
 		  temp.AppendChild ConfigElem("TransfosMenu","TransfosFixedPoints","PtsFix")
 		  temp.AppendChild ConfigElem("TransfosMenu","TransfosHide","HideTsf")
 		  

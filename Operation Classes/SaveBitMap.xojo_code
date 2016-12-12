@@ -22,7 +22,7 @@ Inherits Operation
 		  drx = x1
 		  dry = y1
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
-		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
+		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
 		  EndOperation
 		  
@@ -50,7 +50,7 @@ Inherits Operation
 		  end if
 		  can.RefreshBackground
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
-		  pic.graphics.drawpicture can.Background, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
+		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
 		  drap = not exportpicture(Pic)
 		  
 		End Sub
@@ -101,7 +101,7 @@ Inherits Operation
 		    end if
 		  end if
 		  can.refreshbackground
-		  can.refresh
+		  
 		End Sub
 	#tag EndMethod
 
@@ -179,6 +179,11 @@ Inherits Operation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
@@ -279,12 +284,6 @@ Inherits Operation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="OpId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

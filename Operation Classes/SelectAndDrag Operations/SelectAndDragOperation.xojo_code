@@ -96,7 +96,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(NewPoint as BasicPoint)
 		  can.refreshBackGround
-		  can.refresh
+		  
 		End Sub
 	#tag EndMethod
 
@@ -382,6 +382,11 @@ Inherits SelectOperation
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -474,9 +479,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

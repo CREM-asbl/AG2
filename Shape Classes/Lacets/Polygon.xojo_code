@@ -53,20 +53,15 @@ Inherits Lacet
 		  setpoint(qp)
 		  npts = npts+1
 		  
-		  
-		  'if fp<> tp and sp <> tp  then
 		  Points.Append tp
 		  setpoint(tp)
 		  npts = npts+1
-		  'end if
 		  
 		  initcolcotes
-		  redim prol(-1)
 		  redim  prol(npts-1)
 		  
 		  endconstruction
 		  createskull(Points(0).bpt)
-		  'updateskull
 		  ol.optimize
 		End Sub
 	#tag EndMethod
@@ -152,16 +147,6 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSide(i as integer) As Droite
-		  dim d as Droite
-		  
-		  d = new Droite(Points(i),Points((i+1) mod npts))
-		  d.nextre = 2
-		  return d
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetType() As string
 		  select case  Npts
 		  case 2
@@ -190,16 +175,6 @@ Inherits Lacet
 		    return Dico.Value("GrandPol")
 		  end select
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub InitConstruction()
-		  Super.InitConstruction
-		  
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -407,32 +382,10 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub paint(g as graphics)
-		  dim i as integer
+		Sub OldInitConstruction()
+		  Super.InitConstruction
 		  
-		  shape.paint(g)
 		  
-		  if not hidden and not isinconstruction and Ti <> nil then
-		    for i = 0 to npts-1
-		      PaintTipOnSide g, i
-		    next
-		    if constructedby <> nil and constructedby.oper = 9 and constructedby.data(4) = 1 then
-		      PaintTipOnSide g, 0
-		    end if
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Paintside(g as graphics, cot as integer, ep as double, coul as couleur)
-		  dim cs as curveshape
-		  
-		  cs = Lskull(nsk).item(cot)
-		  if cs <> nil then
-		    cs.borderwidth = ep*borderwidth
-		    cs.bordercolor = coul.col
-		    g.drawobject(cs, nsk.x, nsk.y)
-		  end if
 		  
 		  
 		End Sub
@@ -483,7 +436,6 @@ Inherits Lacet
 		  
 		  d = new droite(ob, self, icot)
 		  d.ComputeExtre
-		  'd.updateskull
 		  
 		  return d
 		End Function
@@ -665,10 +617,13 @@ Inherits Lacet
 		    end if
 		    
 		    if not nonpointed then
-		      for j = 0 to ubound(childs)
+		      for j = 0 to ubound(points)
 		        childs(j).ToEps(tos)
 		      next
 		    end if
+		    for j = ubound(points) +1 to ubound(childs)
+		      childs(j).ToEps(tos)
+		    next
 		    
 		  end if
 		  
@@ -701,11 +656,16 @@ Inherits Lacet
 
 
 	#tag Property, Flags = &h0
-		prol() As Boolean
+		autointer As autointersec
 	#tag EndProperty
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -776,11 +736,6 @@ Inherits Lacet
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -898,6 +853,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

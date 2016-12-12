@@ -29,26 +29,26 @@ Inherits Polygon
 		Sub Constructor(ol as objectslist, n as integer)
 		  
 		  Shape.constructor(ol,2,n)
-		  redim prol(-1)
 		  redim prol(npts-1)
-		  Initcolcotes
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, d as integer, p As BasicPoint)
-		  dim i as integer
 		  
-		  shape.Constructor(ol, 2,d)
 		  
+		  'shape.Constructor(ol, 2,d)
+		  Constructor(ol,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
-		  redim prol(-1)
-		  redim prol(npts-1)
-		  Initcolcotes
+		  'redim prol(-1)
+		  'redim prol(npts-1)
 		  liberte = 4
 		  createskull(p)
 		  ori = 1
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -129,20 +129,12 @@ Inherits Polygon
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		aveccentre As boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected M As Matrix
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		supp As shape
-	#tag EndProperty
-
-
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -154,12 +146,6 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="aveccentre"
-			Group="Behavior"
-			InitialValue="0"
-			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -219,11 +205,6 @@ Inherits Polygon
 			Name="Highlighted"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -341,6 +322,11 @@ Inherits Polygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

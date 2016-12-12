@@ -28,6 +28,22 @@ Protected Class Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Annuler()
+		  wnd.closefw
+		  if finished = true then
+		    'if self isa AppliquerTsf then
+		    'AppliquerTsf(self).tsf.highlighted = false
+		    'end if
+		    'CurrentContent.abortconstruction
+		    'else
+		    CurrentContent.UndoLastOperation
+		  end if
+		  can.refreshBackground
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  Wnd.drapshowall = false
 		  Objects = CurrentContent.theobjects
@@ -54,7 +70,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim i as integer
+		  
 		  
 		  display = ""
 		  if oldvisible <> nil then
@@ -87,9 +103,9 @@ Protected Class Operation
 		  
 		  for i = visible.count-1  downto 0
 		    s = Visible.item(i)
-		    if s isa Bande or S isa Polygon or S isa secteur or s isa droite then
+		    if S isa Lacet or s isa droite then 'isa Bande or S isa Lacet or S isa secteur or s isa droite then
 		      ind = s.pointonside(p)
-		      if ind = -1 then
+		      if ind = -1 or (s isa lacet and s.coord.curved(ind) = 1) then
 		        Visible.removeobject(s)
 		      else
 		        index.insert 0, ind
@@ -153,10 +169,9 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub Help(g as graphics, s1 as string)
 		  'todo : à placer dans canvas ?
-		  if Config.ShowHelp then
+		  if Config.ShowHelp and not canceling then
 		    g.forecolor = Config.bordercolor.col
 		    g.DrawString  lowercase(s1+info) ,Mcanx+8,Mcany+3
-		    'can.invalidate
 		  end if
 		End Sub
 	#tag EndMethod
@@ -258,7 +273,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Function Mcany() As integer
-		  return can.MouseCan.y-10
+		  return can.MouseCan.y-10.
 		End Function
 	#tag EndMethod
 
@@ -290,7 +305,6 @@ Protected Class Operation
 		        CurrentHighlightedShape.HighLight
 		      end if
 		      can.refreshBackground
-		      can.refresh
 		    end if
 		  end if
 		  
@@ -550,14 +564,14 @@ Protected Class Operation
 		    s = Objects.Getshape(n)
 		    ty = val(EL.GetAttribute("TsfType"))
 		    orien =  val(EL.GetAttribute("Ori"))
-		    if s isa polygon or s isa bande or s isa secteur then
+		    if s isa Lacet then 'polygon or s isa bande or s isa secteur then
 		      ind = val(EL.GetAttribute("Index"))
 		    end if
 		    for i = 0 to s.tsfi.count-1
 		      t = true
 		      t = t and ty = s.tsfi.item(i).type
 		      t = t and  orien = s.tsfi.item(i).ori
-		      if s isa polygon or s isa bande or s isa secteur then
+		      if s isa Lacet then 'polygon or s isa bande or s isa secteur then
 		        t = t and ind = s.tsfi.item(i).index
 		      end if
 		      if t then
@@ -582,7 +596,7 @@ Protected Class Operation
 		    if currentcontent.currentoperation isa duplicate and   duplicate(currentcontent.currentoperation).copyptsur and currentattractingshape isa polygon  then
 		      icot = currentattractingshape.pointonside(point(duplicate(currentcontent.currentoperation).copies.item(0)).bpt)
 		      if icot <> -1 then
-		        Polygon(currentattractingshape).Paintside(can.graphics,icot,2,Config.highlightcolor)
+		        Lacet(currentattractingshape).Paintside(can.BackgroundPicture.graphics,icot,2,Config.highlightcolor)
 		      end if
 		    else
 		      CurrentAttractingShape.HighLight
@@ -712,6 +726,10 @@ Protected Class Operation
 
 
 	#tag Property, Flags = &h0
+		canceling As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		CurrentAttractedShape As Shape
 	#tag EndProperty
 
@@ -796,7 +814,11 @@ Protected Class Operation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		SidetoPaint As Integer
+		selshape As shape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -809,6 +831,11 @@ Protected Class Operation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
@@ -879,12 +906,6 @@ Protected Class Operation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="OpId"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SidetoPaint"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

@@ -167,6 +167,29 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function AffiOrSimili() As Matrix
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  if  (ep2.alignes(ep1,ep0)) or (np2.alignes(np0,np1)) then
+		    if abs(amplitude(ep1,ep0,ep2) - PI) < epsilon or abs(amplitude(np1,np0,np2) - PI) < epsilon then
+		      return new similaritymatrix(ep1,ep2,np1,np2)  // cas des demi-cercles
+		    elseif abs(amplitude(ep1,ep0,ep2)) < 0.2*epsilon or abs(amplitude(np1,np0,np2)) < 0.2*epsilon or abs(amplitude(ep1,ep0,ep2) -2*PI) <0.2* epsilon or abs(amplitude(np1,np0,np2) - 2*PI) < 0.2*epsilon then
+		      np2 = np1
+		      ep2 = ep1
+		      points(2).moveto np2
+		      points(2).modified = true
+		      computearcangle
+		      return new similaritymatrix(ep1,ep0,np1,np0)  // cas des secteurs nuls
+		    end if
+		  else
+		    return  new  affinitymatrix(ep0,ep1,ep2,np0,np1,np2)  // ne convient pas pour les demi-cercles à cause des points alignés
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function aire() As double
 		  
 		End Function
@@ -187,8 +210,75 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ArcComputeFirstIntersect(s as shape) As BasicPoint
+		  dim q() as BasicPoint
+		  dim Bib, BiB0 As  BiBPoint
+		  dim i,n, k as integer
+		  dim bq, v as BasicPoint
+		  dim p as point
+		  redim q(-1)
+		  redim q(1)
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  p = points(2)  ' ce point est "sur" s
+		  if p.forme <> 1 then
+		    return nil
+		  end if
+		  k = p.numside(0)
+		  BiB0 =  new BiBPoint(points(0).bpt, points(1).bpt)
+		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
+		    Bib =S.getBiBside(k)
+		    select case BiB.nextre
+		    case 0
+		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)
+		    case 1
+		      n = Bib.BiBDemiDroiteInterCercle(Bib0,q(), bq, v)
+		    case 2
+		      n = Bib.BiBSegmentInterCercle(Bib0,q(), bq, v)
+		    end select
+		    n = ubound(q)+1
+		  end if
+		  
+		  if S isa Circle then
+		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
+		    n = BiB0.BiBInterCercles(Bib,q(),bq,v)
+		    if n = 0 then
+		      q.append p.bpt
+		    end if
+		  end if
+		  
+		  for i = 1 downto 0
+		    if q(i) = nil then
+		      q.remove i
+		    end if
+		  next
+		  n = ubound(q)+1
+		  
+		  if n=2 then
+		    if points(1) = fig.pointmobile then
+		      if   (amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1)))    then
+		        q(0) = q(1)
+		      end if
+		    else
+		      if ep2.distance(q(0)) > ep2.distance(q(1)) then
+		        q(0)=q(1)
+		      end if
+		    end if
+		  end if
+		  if n>0 and ubound(q) > -1 then
+		    return q(0)
+		  else
+		    return nil
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Autos()
-		  if (constructedby <> nil and constructedby.oper = 6)   or std or (macconstructedby <> nil) then
+		  if (constructedby <> nil and constructedby.oper = 6)   or std then 'or (macconstructedby <> nil) then
 		    auto = 0
 		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp) or self isa Freecircle      then 'or  (self isa Bipoint and not self.isaparaperp)
 		    auto = 1
@@ -335,13 +425,16 @@ Protected Class Shape
 		  Ncpts = s.Ncpts
 		  fam =s.fam
 		  forme = s.forme
+		  narcs = s.narcs
 		  auto = s.auto
 		  labs = new Lablist
 		  InitConstruction
 		  if s isa cube then
 		    n = 11
-		  elseif s isa polygon then
+		  elseif s isa Lacet then
 		    n = npts-1
+		  elseif s isa bande or s isa secteur  then
+		    n = 1
 		  else
 		    n = -1
 		  end if
@@ -389,7 +482,7 @@ Protected Class Shape
 		  autos
 		  
 		  if val(EL.GetAttribute("Auto")) <> 0 then 'Ne pas tenir compte des "autos enregistrés"
-		    auto = val(EL.GetAttribute("Auto"))          'Un segment ou une droite devraient avoir le même traitement que les polyqcq --> auto = 4
+		    auto = val(EL.GetAttribute("Auto"))        
 		  end if
 		  
 		  if val(EL.GetAttribute("NonPointed")) = 1 then
@@ -410,8 +503,8 @@ Protected Class Shape
 		    liberte = 2
 		  end if
 		  
-		  if self isa polygon then
-		    polygon(self).initcolcotes
+		  if self isa lacet or self isa bande then
+		    initcolcotes
 		  end if
 		  
 		  List = EL.XQL("Childs")
@@ -443,7 +536,7 @@ Protected Class Shape
 		    if XMLReadcoloritem (Dico.Value("ToolsColorBorder"),EL,c, Temp) then
 		      FixeCouleurTrait(c,Config.Border)
 		    end if
-		  elseif self isa polygon then
+		  elseif self isa lacet then
 		    if List.length = npts or List.length = 9 then
 		      for i = 0 to min(list.length-1, UBound(colcotes))
 		        EL1 =  XMLElement(List.Item(i))
@@ -462,6 +555,7 @@ Protected Class Shape
 		  
 		  if XMLReadcoloritem (Dico.Value("ToolsColorFill"),EL,c,Temp) then
 		    fill = Val(Temp.GetAttribute("Opacity"))
+		    border=Val(Temp.GetAttribute("OpacityBorder"))
 		  end if
 		  FixeCouleurFond(c,Fill)
 		  
@@ -518,6 +612,19 @@ Protected Class Shape
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createcoord()
+		  select case npts
+		  case 2
+		    coord = new BiBPoint(self)
+		  case 3
+		    coord = new TriBPoint(self)
+		  else
+		    coord = new nBPoint(self)
+		  end select
 		End Sub
 	#tag EndMethod
 
@@ -633,7 +740,7 @@ Protected Class Shape
 		Sub doSelect()
 		  
 		  selected = true
-		  can.refreshbackground
+		  
 		End Sub
 	#tag EndMethod
 
@@ -732,8 +839,19 @@ Protected Class Shape
 		    next
 		  end  if
 		  updatelab
-		  'updateskull
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub epnp(byref ep0 as Basicpoint, byref ep1 as BasicPoint, byref ep2 as Basicpoint, byref np0 as BasicPoint, byref np1 as BasicPoint, byref np2 As BasicPoint)
+		  dim ff as figure
+		  
+		  ff = getsousfigure(fig)
+		  ff.getoldnewpos(points(0),ep0,np0)
+		  ff.getoldnewpos(points(1),ep1,np1)
+		  ff.getoldnewpos(points(2),ep2,np2)
 		End Sub
 	#tag EndMethod
 
@@ -772,18 +890,14 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub FixeCouleurtrait(c as couleur, b as integer)
-		  dim i as integer
-		  
 		  Bordercolor = c
 		  Border = b
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(i as integer, c as couleur)
 		  
-		  if self isa Lacet then
-		    redim colcotes(-1)
-		    redim colcotes(npts-1)
-		    for i = 0 to npts-1
-		      colcotes(i) = c
-		    next
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -800,6 +914,13 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetArcAngle() As double
+		  computearcangle
+		  return arcangle
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  dim Bib as BiBPoint
 		  
@@ -812,7 +933,7 @@ Protected Class Shape
 		  end if
 		  if self isa droite then
 		    BiB.nextre = droite(self).nextre
-		  elseif self isa polygon then
+		  elseif  (self isa lacet and coord.curved(i)=0) then
 		    BiB.nextre = 2
 		  end if
 		  
@@ -1008,29 +1129,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetIndexSide() As integer
-		  dim op as operation
-		  dim i, n as integer
-		  
-		  n=-1
-		  
-		  op =CurrentContent.currentoperation
-		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
-		    if (op isa transfoconstruction and (transfoconstruction(op).type < 7))  then ' or op isa prolonger then
-		      n = op.index(op.iobj)
-		    elseif  op isa  paraperpconstruction then
-		      n = op.index(op.iobj)
-		    elseif op isa colorchange and colorchange(op).bord then
-		      n = op.index(op.iobj)
-		    elseif op isa Divide then
-		      n = Divide(op).side
-		    end if
-		  end if
-		  return n
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetIndexTsf(tsf as transformation) As integer
 		  dim i as integer
 		  
@@ -1100,6 +1198,15 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Function GetPositionInObjectsList() As integer
 		  return Objects.getPosition(self)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetRadius() As double
+		  if ubound(points) > 0 then
+		    return coord.distance01
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -1277,15 +1384,9 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub highlightsegment(g as graphics, cot as integer)
-		  if self isa polygon and cot <> -1   then
-		    unhighlight
-		    paintside(g,cot,2,Config.highlightcolor)
-		  elseif self isa droite then
-		    highlight
-		    paintall(g)
-		  end if
-		End Sub
+		Function Hybrid() As Boolean
+		  return narcs > 0
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1330,6 +1431,12 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub initcolcotes()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  dim i as integer
 		  dim p as BasicPoint
@@ -1347,20 +1454,19 @@ Protected Class Shape
 		      points(i).isinconstruction = true
 		    next
 		  end
-		  if currentcontent.PolygFleches and  self isa Lacet then
+		  if currentcontent.PolygFleches  then
 		    Ti = new Tip
 		  end if
 		  
 		  isinconstruction = true
+		  createcoord
 		  
-		  select case npts
-		  case 2
-		    coord = new BiBPoint(self)
-		  case 3
-		    coord = new TriBPoint(self)
-		  else
-		    coord = new nBPoint(self)
-		  end select
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub InitCurvesOrders()
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1646,14 +1752,339 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifier1fixe(p as point, q as point) As Matrix
+		Function Modifier1(n as integer) As Matrix
+		  'Méthode utilisée uniquement pour des formes autospe : Arc et DSect
 		  
+		  dim  m as integer
+		  dim ff as Figure
+		  
+		  ff = getsousfigure(fig)
+		  
+		  m = ff.NbSommsur(n)
+		  
+		  select case m
+		  case 0
+		    return Modifier10(n)
+		  case 1
+		    return Modifier11(n)
+		  case 2
+		    return Modifier12(n)
+		  end select
+		  
+		  //Les deux derniers cas ne peuvent normalement pas se présenter (il y aurait plus d'un point modifié)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier10(n as integer) As Matrix
+		  'Le point n° n est le seul point modifié. Il y a 0 points "sur"
+		  dim  r as double
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  select case n
+		  case 0, 1
+		    return new SimilarityMatrix(ep0,ep1,np0,np1)
+		  case 2
+		    if self isa arc then
+		      r = arc(self).getradius
+		    elseif self isa DSect then
+		      r = DSect(self).getradius(1)
+		    end if
+		    points(2).moveto np2.projection(np0,r)
+		    return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
+		  end select
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier11(n as integer) As Matrix
+		  dim s as shape
+		  dim bp as BasicPoint
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  
+		  if points(2).forme <> 1 then
+		    return new Matrix(1)
+		  end if
+		  
+		  s = points(2).pointsur.item(0)
+		  
+		  if self isa arc or self isa DSect then
+		    bp =arc(self).ArcComputeFirstIntersect(s)
+		  end if
+		  
+		  
+		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier12(n as integer) As Matrix
+		  dim s as shape
+		  dim bp as BasicPoint
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  
+		  if points(2).forme <> 1 then
+		    return new Matrix(1)
+		  end if
+		  
+		  s = points(2).pointsur.item(0)
+		  
+		  if self isa arc or self isa DSect  then
+		    bp = arc(self).ArcComputeFirstIntersect(s)
+		  end if
+		  
+		  
+		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier1fixe(p as point, q as point) As Matrix
+		  'Le point p doit resterfixe, le point q est déplacé plus ou moins arbitrairement, les autres points suivent.
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier2(n1 as integer, n2 as integer) As Matrix
+		  dim n0 as integer
+		  dim r as double
+		  dim M as Matrix
+		  dim arcangle As double
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
+		  
+		  select case n0
+		  case 0   'On rétablit la figure en déplaçant le centre de l'arc points(0)
+		    if points(0).forme  <> 1 then
+		      return new SimilarityMatrix(ep1,ep2,np1,np2)
+		    end if
+		  case 1 'On modifie l'amplitude de l'arc
+		    if points(1).forme <> 1 then
+		      r = getradius
+		      points(2).moveto np2.projection(np0,r)
+		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
+		    end if
+		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
+		    if points(2).forme <> 1 then
+		      arc(self).computearcangle
+		      M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
+		      points(2).moveto M*Points(1).bpt
+		      return AffiOrSimili
+		      'return new SimilarityMatrix(ep0,ep1,np0,np1)
+		    end if
+		  end select
+		  
+		  return new Matrix(1)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Modifier2fixes(p as point) As Matrix
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier2fixes(p as point, q as point) As Matrix
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier3() As Matrix
+		  dim n as integer
+		  dim ff as figure
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  
+		  ff = getsousfigure(fig)
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  n = ff.NbSommSur
+		  
+		  select case n
+		  case 0
+		    return Modifier30
+		  case 1
+		    return Modifier31(ff.listsommsur(0))
+		  case 2
+		    return modifier32(ff.listsommsur(0),ff.listsommsur(1))
+		  case 3
+		    return modifier33
+		  end select
+		  
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier30() As Matrix
+		  //Trois sommets modifiés, aucun n'est un point "sur"
+		  
+		  
+		  constructshape
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  if abs(np0.distance(np1) - np0.distance(np2)) < epsilon then
+		    return AffiOrSimili
+		  else
+		    return new Matrix(1)
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier31(n as integer) As Matrix
+		  // Trois sommets modifiés Un seul est un point "sur". C'est le sommet de n° n.
+		  dim k, i,  n1, n2 as integer
+		  dim ep, np, u, v as BasicPoint
+		  dim Bib, Bib2 As  BiBPoint
+		  dim sh As shape
+		  dim p As point
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  dim ff as figure
+		  
+		  ff = getsousfigure(fig)
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  
+		  p = points(n)
+		  sh = p.pointsur.item(0)
+		  
+		  select case n
+		  case 0
+		    u = np1-np2
+		    u = u.VecNorPerp
+		    v = (np1+np2)/2
+		    Bib = new BiBPoint(v, u+v)
+		    np0 = Bib.computefirstintersect(0,sh,p)
+		    points(0).moveto np0
+		  case 1
+		    if ff.supfig.pointmobile = points(2) then
+		      np2 = np2.projection(np0,np0.distance(np1))
+		      points(2).moveto np2
+		    else
+		      Bib = new BiBPoint(np0, np2)
+		      np1 = Bib.computefirstintersect(1,sh,p)
+		      points(1).moveto np1
+		    end if
+		  case 2
+		    Bib = new BiBPoint(np0,np1)
+		    np2 = Bib.computefirstintersect(1,sh,p)
+		    if np2 <> nil and abs (np0.distance(np2) - np0.distance(np1)) < epsilon then
+		      points(2).moveto np2
+		      points(2).valider
+		    else
+		      points(2).invalider
+		    end if
+		  end select
+		  
+		  
+		  
+		  if not points(n).invalid  then
+		    return AffiOrSimili 'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		  else
+		    return new Matrix(1)
+		  end if
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier32(n as integer, m as integer) As Matrix
+		  // Trois sommets modifiés Deux sont "sur". Ce sont les sommets de n° n0 et n1.
+		  dim k as integer
+		  dim p, p0, p1, p2 as point
+		  dim shn, shm as shape
+		  dim Bib as BiBPoint
+		  
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  shn = points(n).pointsur.item(0)
+		  shm = points(m).pointsur.item(0)
+		  k = TroisiemeIndex(n,m)  'Ce troisième sommet n'est pas "sur"
+		  
+		  select case k
+		  case 0, 1                 'on adapte points(2)
+		    if n = 1-k  then   'alors m = 2
+		      np2  =Arccomputefirstintersect(shm)
+		    else                  'n = 2, m = 1
+		      np2  = Arccomputefirstintersect(shn)
+		    end if
+		    if np2 <> nil then
+		      points(2).bpt  = np2
+		    end if
+		    
+		  case 2
+		    Bib = new BiBPoint(np0,np2)
+		    if n = 1 then   'alors m = 0
+		      np1  = Bib.computefirstintersect(1,shn,points(1))
+		    else                  'n = 0, m = 1
+		      np1  = Bib.computefirstintersect(1,shm,points(1))
+		    end if
+		    if np1 <> nil then
+		      points(1).bpt = np1
+		    end if
+		  end select
+		  
+		  if k = 2 then
+		    p = points(1)
+		  else
+		    p = points(2)
+		  end if
+		  if np1 <> nil and np2 <> nil then
+		    p.valider
+		    return  AffiOrSimili  'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		  else
+		    p.invalider
+		    return new Matrix(1)
+		  end if
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier33() As Matrix
+		  dim M as Matrix
+		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  M = new SimilarityMatrix(points(1), points(2),ep0,np0)
+		  if M <> nil and M.v1 <> nil then
+		    np1 = M*ep1
+		    points(1).moveto np1
+		    np2 = M*ep2
+		    points(2).moveto np2
+		    
+		    if np1 <> nil and np2 <> nil then
+		      return  AffiOrSimili 'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		    else
+		      return new Matrix(1)
+		    end if
+		  else
+		    return new Matrix(1)
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -1691,9 +2122,6 @@ Protected Class Shape
 		  for i = 0 to Ubound(Childs)
 		    Childs(i). Move(M)
 		  next
-		  if (self isa circle) or Hybrid then
-		    coord.MoveExtreCtrl(M)
-		  end if
 		  Mmove = M
 		  EndMove
 		End Sub
@@ -1880,101 +2308,37 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldfixecouleurs()
-		  'dim i, n as integer
-		  'dim cs as curveshape
-		  '
-		  'if (self isa  polygon or self isa bande ) and not self.hybrid then
-		  'if hidden or tsp or (self.std and self.isinconstruction and wnd.stdflag) then
-		  'nsk.updatefillcolor(fillcolor.col,0)
-		  'else
-		  'nsk.updatefillcolor(fillcolor.col,fill)
-		  'end if
-		  '
-		  'for i = 0 to LSkull(nsk).count-1
-		  'cs = Lskull(nsk).item(i)
-		  'if not hidden and currentcontent.currentoperation isa imprimer then
-		  'if self isa polygon  then
-		  'cs.bordercolor = colcotes(i).col
-		  'else
-		  'cs.bordercolor = self.bordercolor.col
-		  'end if
-		  'elseif hidden and highlighted then
-		  'cs.bordercolor = Config.highlightcolor.col
-		  'cs.border = 100
-		  'elseif hidden Then
-		  'cs.bordercolor = Config.HideColor.col
-		  'cs.border = 100
-		  'elseif highlighted then
-		  'n = getindexside
-		  'if n = -1 or n = i then
-		  'cs.bordercolor = Config.highlightcolor.col
-		  'cs.border = 100
-		  'else
-		  'cs.bordercolor = colcotes(i).col
-		  'cs.border = 100
-		  'end if
-		  'cs.fill = 0
-		  'elseif isinconstruction  then
-		  'cs.bordercolor = Config.Weightlesscolor.col
-		  'cs.border = 100
-		  'elseif selected then
-		  'cs.bordercolor = Config.bordercolor.col
-		  'cs.border = 100
-		  'else
-		  'if self isa polygon  then
-		  'cs.bordercolor = colcotes(i).col
-		  'elseif self isa bande then
-		  'cs.bordercolor = self.bordercolor.col
-		  'else
-		  'cs.bordercolor = Config.bordercolor.col
-		  'end if
-		  'cs.border = 100
-		  'end if
-		  'next
-		  '
-		  'else
-		  'if hidden and highlighted Then
-		  'nsk.updatebordercolor(Config.highlightcolor.col, 100)
-		  'nsk.updatefillcolor(fillcolor.col,0)
-		  'elseif hidden Then
-		  'nsk.updatebordercolor(cyan, 100)
-		  'nsk.updatefillcolor(fillcolor.col,0)
-		  'elseif tsp and Highlighted then
-		  'nsk.updatefillcolor(fillColor.col,0)
-		  'nsk.updatebordercolor(Config.highlightcolor.col,100)
-		  'elseif tsp then
-		  'nsk.updatefillcolor(fillColor.col,0)
-		  'nsk.updatebordercolor(BorderColor.col,100)
-		  'elseif highlighted and selected then
-		  'nsk.updatebordercolor(Config.highlightcolor.col,100)
-		  'elseif highlighted  then
-		  'nsk.updatefillcolor(fillColor.col,fill)
-		  'nsk.updatebordercolor(Config.highlightcolor.col,100)
-		  'elseif selected and fillcolor.equal(white) then
-		  'nsk.updatebordercolor(BorderColor.col, 100)
-		  'elseif isinconstruction then
-		  'nsk.updatefillcolor(Config.Weightlesscolor.col,0)
-		  'nsk.updatebordercolor(Config.Weightlesscolor.col,100)
-		  'else
-		  'nsk.updatefillcolor(Fillcolor.col,fill)
-		  'nsk.updatebordercolor(BorderColor.col,border)
-		  'end if
-		  'end if
+		Sub nskupdate()
+		  nsk.update(self)
+		  
+		  if tracept then
+		    nsk.updateborderwidth(borderwidth)
+		    nsk.updatebordercolor(bleu,100)
+		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldfixeepaisseurs()
-		  '
-		  'if highlighted or isinconstruction  or selected then
-		  'nsk.updateborderwidth(2*borderwidth)
-		  'else
-		  'nsk.updateborderwidth(borderwidth)
-		  'end if
+		Function oldGetIndexSide() As integer
+		  dim op as operation
+		  dim i, n as integer
 		  
+		  n=-1
 		  
-		End Sub
+		  op =CurrentContent.currentoperation
+		  if op <> nil and op.nobj > 0 and op.visible.item(op.iobj) = self then
+		    if (op isa transfoconstruction and (transfoconstruction(op).type < 7))  or op isa prolonger then
+		      n = op.index(op.iobj)
+		    elseif  op isa  paraperpconstruction then
+		      n = op.index(op.iobj)
+		    elseif op isa colorchange and colorchange(op).bord then
+		      n = op.index(op.iobj)
+		    elseif op isa Divide then
+		      n = Divide(op).side
+		    end if
+		  end if
+		  return n
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -2018,13 +2382,7 @@ Protected Class Shape
 		  end if
 		  
 		  nsk.update(self)
-		  
-		  if tracept then
-		    nsk.updateborderwidth(borderwidth)
-		    paint(g,blue)
-		  else
-		    nsk.paint(g)
-		  end if
+		  nsk.paint(g)
 		  
 		  if not hidden then
 		    for i = 0 to labs.count-1
@@ -2037,7 +2395,10 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics, c as couleur)
-		  if noinvalidpoints then
+		  if self isa point then
+		    point(self).rsk.updatecolor(c.col,100)
+		    point(self).rsk.paint(g)
+		  elseif noinvalidpoints then
 		    nsk.updatebordercolor (c.col,100)
 		    nsk.paint(g)
 		  end if
@@ -2057,11 +2418,11 @@ Protected Class Shape
 		        tsfi.item(i).paint(g)
 		      end if
 		    next
-		    for i = 0 to ubound(constructedshapes)
-		      if constructedshapes(i).centerordivpoint then
-		        point(constructedshapes(i)).paintall(g)
-		      end if
-		    next
+		    'for i = 0 to ubound(constructedshapes)
+		    'if constructedshapes(i).centerordivpoint then
+		    'point(constructedshapes(i)).paintall(g)
+		    'end if
+		    'next
 		  end if
 		  
 		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
@@ -2086,6 +2447,18 @@ Protected Class Shape
 		  end if
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PaintSegment(g as graphics, cot as integer)
+		  if self isa Lacet and cot <> -1   then
+		    unhighlight
+		    paintside(g,cot,2,Config.highlightcolor)
+		  elseif self isa droite then
+		    highlight
+		    paintall(g)
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -2145,6 +2518,28 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub PasteCtrlExe(s as shape)
+		  dim i as integer
+		  
+		  redim coord.centres(ubound(s.coord.centres))
+		  redim coord.curved(ubound(s.coord.curved))
+		  narcs = s.narcs
+		  for i = 0 to ubound(s.coord.centres)
+		    coord.centres(i) = s.coord.centres(i)
+		  next
+		  for i = 0 to ubound(s.coord.ctrl)
+		    coord.ctrl(i) =  s.coord.ctrl(i)
+		  next
+		  for i = 0 to ubound(s.coord.extre)
+		    coord.extre(i) = s.coord.extre(i)
+		  next
+		  for i = 0 to ubound(s.coord.curved)
+		    coord.curved(i) = s.coord.curved(i)
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub pastelabs(s as shape)
 		  dim i as integer
 		  
@@ -2182,7 +2577,7 @@ Protected Class Shape
 		  
 		  
 		  //PointOnSide vaut 0 ou -1 pour un cercle ou une droite ou un segment
-		  //                               un numéro ou -1 pour un polygone ou un lacet
+		  //                               un numéro ou -1 pour un polygone ou un lacet ou une bande ou un secteur
 		End Function
 	#tag EndMethod
 
@@ -2194,38 +2589,25 @@ Protected Class Shape
 		  dim magdist as double
 		  magdist = can.MagneticDist
 		  
-		  
-		  if self isa point then
-		    bp = Point(self).bpt
+		  if other = nil then
+		    return false
 		  end if
+		  gc1 = getGravityCenter
+		  gc2 = other.getgravityCenter
 		  
-		  if self isa point and other isa point and point(other).bpt <> nil then
-		    dist = bp.distance(point(other).bpt)
-		    if dist <= magdist then
+		  if gc1 <> nil and gc2 <> nil then
+		    dist=gc1.Distance(gc2)
+		    b1=getBoundingRadius()
+		    b2=other.getBoundingRadius()
+		    if dist < b1+b2+magdist then
 		      return true
-		    end if
-		  elseif self isa point and other isa droite then
-		    return Droite(other).PInshape(bp)
-		  elseif  self isa point and other isa bande then
-		    return not (Bande(other).PointOnSide(bp) = -1)
-		  elseif  self isa point and other isa secteur then
-		    return not (Secteur(other).PointOnSide(bp) = -1)
-		  elseif other <> nil then
-		    gc1 = getGravityCenter
-		    gc2 = other.getgravityCenter
-		    if gc1 <> nil and gc2 <> nil then
-		      dist=gc1.Distance(gc2)
-		      b1=getBoundingRadius()
-		      b2=other.getBoundingRadius()
-		      if dist < b1+b2+magdist then
-		        return true
-		      else
-		        return false
-		      end if
 		    else
 		      return false
 		    end if
+		  else
+		    return false
 		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -2362,6 +2744,10 @@ Protected Class Shape
 		    return true
 		  end if
 		  
+		  if self isa trap and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
+		    return true
+		  end if
+		  
 		  '''''''''''''''''''' Voir figurestest 1 et 2 : la méthode qui suit est un compromis pour satisfaire les deux (!?), les trois avec Varignon
 		  if not self isa point and  NbTrueSomCommuns(ff) = ubound(points)+1  and s2.auto = 4  then
 		    t = True
@@ -2422,6 +2808,9 @@ Protected Class Shape
 		        cs = Lskull(nsk).item(i)
 		        cs.bordercolor = colcotes(i).col
 		      next
+		    elseif self isa Bande then 
+		      nsk.item(0).bordercolor = colcotes(0).col
+		      nsk.item(2).bordercolor = colcotes(1).col
 		    else
 		      nsk.updatebordercolor(bordercolor.col,border)
 		    end if
@@ -2921,7 +3310,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Transform(M as Matrix)
-		  dim i As  Integer      // Utilisé pour les  mouvements
+		  dim i As  Integer      // Utilisé pour les  mouvements Transform ne déplace pas les points qui sont "modified"
 		  
 		  if M <> nil and M.v1 <> nil then
 		    for i = 0 to npts-1
@@ -2931,6 +3320,19 @@ Protected Class Shape
 		  end if
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function TroisiemeIndex(n1 as integer, n2 as integer) As integer
+		  dim i, n as integer
+		  
+		  for i = 0 to 2
+		    if i <> n1 and i <> n2 then
+		      n = i
+		    end if
+		  next
+		  return n
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -2993,12 +3395,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Untitled()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub updateconstructedpoints()
 		  dim i, j as integer
 		  dim s as shape
@@ -3041,6 +3437,8 @@ Protected Class Shape
 		      coord.tab(i) = points(i).bpt
 		    next
 		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3189,15 +3587,12 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
-		  dim i, k as integer   // Utilisé pour lesmodifications
+		  dim i as integer   // Utilisé pour lesmodifications
 		  dim s1, s2 As shape
 		  dim inter as intersec
 		  dim p as point
 		  dim f1, f2 as figure
-		  dim bp as BasicPoint
-		  dim M as Matrix
 		  dim a as double
-		  dim tsf as transformation
 		  
 		  updatecoord
 		  computeori
@@ -3232,53 +3627,19 @@ Protected Class Shape
 		    next
 		  end if
 		  
-		  if self isa Lacet and constructedby <> nil  then
-		    s1 = constructedby.shape
-		    select case constructedby.oper
-		    case 5
-		      M = Matrix(ConstructedBy.Data(0))
-		      for i = 0 to npts-1
-		        if Lacet(self).coord.curved(i) = 1 then
-		          if s1 isa circle then
-		            coord.centres(i) = M*s1.points(0).bpt
-		          else
-		            p = point(points(i).constructedby.shape)
-		            k = s1.getindexpoint(p)
-		            if k = -1 then
-		              k = Lacet(s1).PointOnCurvedSide(p.bpt)
-		            end if
-		            coord.centres(i) = M*Lacet(s1).Getcentre(k)
-		          end if
-		        end if
-		      next
-		    case 6
-		      M = Transformation(ConstructedBy.Data(0)).M
-		      for i = 0 to npts-1
-		        if s1.coord.centres(i) <> nil then
-		          coord.centres(i) = M*s1.coord.centres(i)
-		        end if
-		      next
-		    end select
+		  if not self isa lacet then
+		    modified = true
+		    endmove
+		    updateMacConstructedShapes
 		  end if
-		  
-		  if self isa Lacet then
-		    Lacet(self).CreateExtreAndCtrlPoints
-		  elseif not self isa bipoint then
-		    coord.CreateExtreAndCtrlPoints(ori)
-		  end if
-		  modified = true
-		  endmove
-		  updateMacConstructedShapes
-		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub updateshape(M as Matrix)
 		  dim i as integer    //Ici on s'occupe des points autres que les sommets
-		  dim s1, s2 As shape
-		  dim p as point
-		  dim diam as double
+		  
+		  
 		  
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
@@ -3287,37 +3648,6 @@ Protected Class Shape
 		  end if
 		  updateshape
 		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpDateSkull()
-		  'dim i as integer
-		  '
-		  'if self isa circle or self isa Lacet then
-		  'nsk.update(can.transform(Points(0).bpt))
-		  'else
-		  'sk.update(can.transform(Points(0).bpt))
-		  'end if
-		  '
-		  'for i=1 to npts-1
-		  'UpdateSkull(i,can.dtransform(Points(i).bpt-Points(0).bpt))
-		  'next
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpDateSkull(p as BasicPoint)
-		  nsk.x = p.x
-		  nsk.y = p.y
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpdateSkull(n as integer, p as Basicpoint)
 		  
 		End Sub
 	#tag EndMethod
@@ -3336,7 +3666,7 @@ Protected Class Shape
 		  elseif self isa secteur then
 		    secteur(self).computeextre
 		  end if
-		  Updateskull
+		  
 		  
 		  
 		  
@@ -3425,8 +3755,8 @@ Protected Class Shape
 		  if self isa droite and droite(self).nextre = 2 then
 		    side = 0
 		    return true
-		  elseif self isa polygon then
-		    side = polygon(self).pointonside(p)
+		  elseif self isa Lacet then
+		    side = pointonside(p)
 		    if side <> -1 then
 		      return true
 		    end if
@@ -3603,9 +3933,11 @@ Protected Class Shape
 		    form.appendchild XMLPutMacConstructionInfoInContainer(Doc)
 		  end if
 		  if not currentcontent.macrocreation then
-		    if self isa polygon and not self isa Lacet then
+		    if self isa Lacet then
 		      if self isa cube then
 		        n = 8
+		      elseif self isa Bande or self isa secteur  then 
+		        n = 1
 		      else
 		        n = npts-1
 		      end if
@@ -3618,12 +3950,15 @@ Protected Class Shape
 		    if not self isa bipoint  then
 		      Temp = fillcolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorFill"))
 		      Temp.SetAttribute("Opacity", str(fill))
+		      Temp.SetAttribute("OpacityBorder", str(border))
 		      Form.AppendChild  Temp
 		    end if
+		    
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
 		    Temp.SetAttribute("Value", str(borderwidth))
 		    Form.AppendChild Temp
 		  end if
+		  
 		  if Hidden then
 		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
 		  end if
@@ -3744,7 +4079,7 @@ Protected Class Shape
 		    case 3
 		      XMLReadConstructionInfoDuplicate(Tmp)
 		    case 4
-		      XMLReadConstructionInfoDivPoint(Tmp)
+		      XMLReadConstructionInfoDivPoint(Tmp, s)
 		    case 5
 		      XMLReadConstructionInfoCutPoints(Tmp)
 		    case 6
@@ -3798,8 +4133,7 @@ Protected Class Shape
 		  end if
 		  
 		  if self isa Lacet then
-		    Lacet(self).CreateExtreAndCtrlPoints
-		    Lacet(self).updateskull
+		    Lacet(self).coord.CreateExtreAndCtrlPoints(ori)
 		  else
 		    List3 = Tmp.XQL("SourcePoints")
 		    if List3.length > 0 then
@@ -3829,7 +4163,7 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub XMLReadConstructionInfoDivPoint(Tmp as XMLElement)
+		Sub XMLReadConstructionInfoDivPoint(Tmp as XMLElement, s as shape)
 		  dim n as integer
 		  
 		  n = Val(Tmp.GetAttribute("Id0"))
@@ -3838,6 +4172,10 @@ Protected Class Shape
 		  constructedBy.data.append Point(objects.getshape(n))
 		  constructedBy.data.append Val(Tmp.GetAttribute("NDivP"))
 		  constructedBy.data.append Val(Tmp.GetAttribute("DivP"))
+		  if s isa Lacet then
+		    constructedBy.data.append val(Tmp.GetAttribute("Side"))
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -4029,6 +4367,7 @@ Protected Class Shape
 		    Tmp = XMLElement(Tmp.Child(0))
 		    MacInfo = new MacConstructionInfo(Mac,Tmp)
 		    SetMacConstructedBy MacInfo
+		    auto = 0
 		  end if
 		End Sub
 	#tag EndMethod
@@ -4104,7 +4443,7 @@ Protected Class Shape
 		    for i = npts to EL.Childcount-1
 		      EL1 =  XMLElement(EL.Child(i))
 		      pt = XMLReadPoint(EL1)  //pt est un point
-		      if pt.pointsur.count = 0 then //si on a déjà lu les caractéristiques de ce pointsur, on saute
+		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit
 		        pt.XMLReadCarac(EL1)
 		      end if
 		    next
@@ -4208,6 +4547,10 @@ Protected Class Shape
 
 
 	#tag Property, Flags = &h0
+		ArcAngle As Double
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Attracting As boolean = True
 	#tag EndProperty
 
@@ -4300,10 +4643,6 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Hybrid As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		id As Integer
 	#tag EndProperty
 
@@ -4360,6 +4699,10 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		narcs As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		ncpts As integer
 	#tag EndProperty
 
@@ -4400,11 +4743,11 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		PtsofSource() As Point
+		selected As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		selected As Boolean
+		side As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -4445,6 +4788,11 @@ Protected Class Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -4518,11 +4866,6 @@ Protected Class Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -4591,6 +4934,11 @@ Protected Class Shape
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ncpts"
 			Group="Behavior"
 			InitialValue="0"
@@ -4631,6 +4979,11 @@ Protected Class Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

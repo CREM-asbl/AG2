@@ -56,7 +56,7 @@ Inherits SelectOperation
 		        currentcontent.IcotUL = icot
 		      end if
 		    case 1
-		      if ( (sh isa polygon and icot = -1) or sh isa circle) and  abs(sh.aire) > epsilon then
+		      if ( (sh isa Lacet and icot = -1) or sh isa circle) and  abs(sh.aire) > epsilon then
 		        currentcontent.UA = sh.aire
 		        currentcontent.SHUA = sh
 		      end if
@@ -116,10 +116,9 @@ Inherits SelectOperation
 		  
 		  select case Type
 		  case 0
-		    
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if not ( s isa droite and droite(s).nextre = 2) and not (s isa polygon and polygon(s).pointonside(p) <> -1) then
+		      if not ( s isa droite and droite(s).nextre = 2) and not (s isa Lacet and Lacet(s).pointonside(p) <> -1) then
 		        visible.removeobject s
 		      end if
 		    next
@@ -128,7 +127,7 @@ Inherits SelectOperation
 		    
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if not (( s isa polygon or s isa Stdcircle or s isa freecircle)  and abs(s.aire) > epsilon)  then
+		      if not (( s isa Lacet or s isa Stdcircle or s isa freecircle)  and abs(s.aire) > epsilon)  then
 		        visible.removeobject s
 		      end if
 		    next
@@ -150,6 +149,7 @@ Inherits SelectOperation
 		  else
 		    icot = -1
 		  end if
+		  can.RefreshBackground
 		  
 		  
 		  
@@ -161,8 +161,8 @@ Inherits SelectOperation
 		  
 		  operation.paint(g)
 		  
-		  if currenthighlightedshape isa polygon and icot <> -1 then
-		    polygon(currenthighlightedshape).paintside(g,icot,2,Config.highlightcolor)
+		  if currenthighlightedshape isa Lacet and icot <> -1 then
+		    Lacet(currenthighlightedshape).paintside(g,icot,2,Config.highlightcolor)
 		  else
 		    if CurrentHighlightedShape<>nil then
 		      CurrentHighlightedShape.HighLight
@@ -326,6 +326,11 @@ Inherits SelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -418,9 +423,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

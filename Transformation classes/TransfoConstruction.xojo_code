@@ -4,8 +4,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function choix1(p as basicPoint) As shape
 		  dim s as shape
-		  dim i , j , k as integer
-		  dim sf as figure
+		  dim i , j , n as integer
 		  dim t as Boolean
 		  
 		  s = super.getshape(p)  //on liste les objets visibles et on ramène le premier
@@ -16,15 +15,21 @@ Inherits MultipleSelectOperation
 		  
 		  for i =  visible.count-1 downto 0
 		    s = visible.item(i)
+		    s.side = -1
 		    ExclureDoublons(s, p)
 		    select case type
 		    case  1 // translation
 		      if s isa droite and droite(s).nextre = 2  then
-		        index.insert 0, 0
-		      elseif  S isa Polygon and polygon(s).pointonside(p) >-1 then
-		        index.insert 0, s.pointonside(p) // index contient tous les numéros de côté
+		        s.side = 0
+		      elseif  S isa Lacet then 
+		        n = s.pointonside(p)
+		        if n>-1 and s.coord.curved(n) = 0 then
+		          s.side = n 
+		        else
+		          visremove(s)
+		        end if
 		      elseif  s isa point then
-		        index.insert 0, 0
+		        s.side = 0
 		      else
 		        Visremove(s)
 		      end if
@@ -46,20 +51,23 @@ Inherits MultipleSelectOperation
 		    case 6                                                      // symétries
 		      if s isa Circle or s isa point then
 		        Visremove(s)                          //on supprime tous les cercles
-		      elseif s isa Bande or S isa Polygon or s isa secteur then
-		        k = s.pointonside(p)
+		      elseif S isa Lacet  then
+		        n = s.pointonside(p)
 		        t = false
 		        for j = s.tsfi.count-1 downto 0
-		          t = (s.tsfi.item(j).type = 6) and  (s.tsfi.item(j).index = k)
+		          t = (s.tsfi.item(j).type = 6) and  (s.tsfi.item(j).index = n)
 		        next
-		        if k > -1 and not t then
-		          index.insert 0, s.pointonside(p)         // index contient les numéros de côtés
+		        if n > -1 and (not t) and s.coord.curved(n) = 0 then
+		          s.side = n // index contient tous les numéros de côté
 		        else
-		          Visremove(s)
-		        end if
-		      else                                                   // cas des "droites"
-		        index.insert 0, 0                          //index contient 0
+		          visremove(s)
+		        end if 
+		      elseif s isa droite  then                                       // cas des "droites"
+		        s.side = 0                      //index contient 0
+		      else
+		        Visremove(s)
 		      end if
+		      
 		      
 		    case 7 // Homothétie
 		      
@@ -109,7 +117,6 @@ Inherits MultipleSelectOperation
 		  // on doit choisir un deuxième point
 		  
 		  dim s as shape
-		  dim  i as integer
 		  
 		  
 		  visible = Objects.FindPoint(p)
@@ -186,8 +193,8 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
-		  tsf = new transformation (currentshape, type, index(iobj) , ori)
+		  currentshape.unhighlight
+		  tsf = new transformation (currentshape, type, currentshape.side , ori)
 		  currentshape.tsfi.addObject tsf
 		  if currentshape isa point then
 		    currentshape.borderwidth = 2
@@ -216,6 +223,8 @@ Inherits MultipleSelectOperation
 		  qp = nil
 		  
 		  ori = 1
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -327,7 +336,8 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  super .paint(g)
+		  'super .paint(g)
+		  dim n as integer
 		  
 		  if currenthighlightedshape = nil then
 		    select  case currentitemtoset
@@ -342,7 +352,7 @@ Inherits MultipleSelectOperation
 		      case 6
 		        display =  choose + asegmentoraline + orahalfline
 		      case 7
-		        display = choose + atrapezoid + orfourpoints
+		        display = choose + atrapezoid + orthreealignedpoints + orfourpoints
 		      case 8,9,10,11
 		        display = choose + aquad +  orfourpoints
 		      end select
@@ -359,17 +369,19 @@ Inherits MultipleSelectOperation
 		  else
 		    select case currentitemtoset
 		    case 1
-		      if currenthighlightedshape isa polygon and type < 7 then
-		        polygon(currenthighlightedshape).paintside(g,index(iobj),2,Config.highlightcolor)
-		      else
-		        currenthighlightedshape.highlight
-		      end if
-		      if currenthighlightedshape isa point then
+		      if currenthighlightedshape isa Lacet and type < 7 then
+		        n = currenthighlightedshape.side
+		        if n <> -1 then
+		          Lacet(currenthighlightedshape).paintside(g, n,2,Config.highlightcolor)
+		        else
+		          currenthighlightedshape = nil
+		        end if
+		      elseif currenthighlightedshape isa point then
 		        display = thispoint+" ?"
 		      elseif currenthighlightedshape isa arc then
 		        display = this("arc") + " ?"
-		      elseif  currenthighlightedshape isa droite then
-		        display = thissegment + "/"+this("droite")+" ?"
+		      elseif  currenthighlightedshape isa droite or currenthighlightedshape isa Lacet then
+		        display = thissegment + "/" + this ("côté") + " ?"
 		      else
 		        display = this(currenthighlightedshape.gettype)+" ?"
 		      end if
@@ -441,9 +453,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function setitem(s as shape) As Boolean
-		  dim d, d2 as double
 		  dim bp1, bp2 as BasicPoint
-		  dim i, i0 as integer
 		  dim qp2 as point
 		  
 		  
@@ -459,13 +469,23 @@ Inherits MultipleSelectOperation
 		    return setsecond(s)
 		  case 3
 		    tp = Point(s)
+		    if type = 7 then
+		      if fp <> tp then
+		        if tp.bpt.alignes(fp.bpt,sp.bpt) then
+		          type = 71
+		          currentshape = new Supphom(objects, fp,  sp, tp)
+		          index.append 0
+		          NextItem
+		        end if
+		      end if
+		    end if
 		    return true
 		  case 4
 		    qp = Point(s)
 		    select case type
 		    case 7
 		      if fp = tp then
-		        qp.moveto qp.bpt.projection(tp.bpt, sp.bpt)
+		        qp.moveto qp.bpt.projection(fp.bpt, sp.bpt)
 		        currentshape = new Supphom(objects, fp,  sp, qp)
 		        type = 71
 		        index.append 0
@@ -540,7 +560,7 @@ Inherits MultipleSelectOperation
 		  EL.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  EL.SetAttribute("TsfType", str(type))
 		  EL.setattribute("TsfOri",str(ori))
-		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
+		  if   tsf.supp isa Lacet  then
 		    EL.setattribute("TsfSide", str(index(iobj)))
 		  end if
 		  EL.SetAttribute("TsfNum",str(tsf.GetNum))
@@ -561,8 +581,8 @@ Inherits MultipleSelectOperation
 		  Temp.appendchild tsf.supp.XMLPutIdINContainer(Doc)
 		  Temp.SetAttribute("TsfType", str(type))
 		  Temp.setattribute("Ori",str(ori))
-		  if   tsf.supp isa Bande or tsf.supp isa polygon or tsf.supp isa secteur  then
-		    Temp.setattribute("Index", str(index(iobj)))
+		  if  tsf.supp isa Lacet  then
+		    Temp.setattribute("Index", str(tsf.supp.side))
 		  end if
 		  Temp.SetAttribute("NumTSF",str(tsf.GetNum))
 		  
@@ -697,6 +717,11 @@ Inherits MultipleSelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -789,9 +814,8 @@ Inherits MultipleSelectOperation
 			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

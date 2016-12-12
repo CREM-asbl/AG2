@@ -122,7 +122,7 @@ Inherits ShapeConstruction
 		  dim u, v as BasicPoint
 		  
 		  currentshape.setconstructedby(Refe,op)
-		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0
+		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0 pourquoi pas -1?
 		  tsf = refe.gettsf(0,index(iobj))
 		  if tsf = nil then
 		    tsf = new Transformation(Refe,0,index(iobj), 0)
@@ -130,7 +130,7 @@ Inherits ShapeConstruction
 		  currentshape.constructedby.data.append tsf
 		  tsf.constructedshapes.addshape currentshape
 		  refe.tsfi.addObject tsf
-		  BiB2 = droite(currentshape).coord.GetBiB(0)
+		  BiB2 = BiBPoint(currentshape.coord.GetBiBSide(0))
 		  u = BiB1.second-BiB1.first
 		  v = BiB2.second-BiB2.first
 		  if op = 1 then
@@ -184,7 +184,7 @@ Inherits ShapeConstruction
 		    if magnetism>0  then
 		      currentattractedshape = currentshape.points(currentshape.IndexConstructedPoint)
 		      ShowAttraction
-		      'can.invalidate
+		      
 		      if nextcurrentattractingshape = nil then
 		        CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
 		      elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
@@ -193,6 +193,7 @@ Inherits ShapeConstruction
 		    end if
 		  end select
 		  showattraction
+		  can.refreshbackground
 		  
 		  
 		End Sub
@@ -210,7 +211,7 @@ Inherits ShapeConstruction
 		    end if
 		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
-		    'can.invalidate
+		    can.refreshbackground
 		  end if
 		  
 		End Sub
@@ -235,7 +236,7 @@ Inherits ShapeConstruction
 		      end if
 		    end if
 		    showattraction
-		    if constructed then
+		    if currentshape <> nil and constructed then
 		      currentshape.paintall(g)
 		    end if
 		  end select
@@ -267,7 +268,7 @@ Inherits ShapeConstruction
 		    end if
 		    currentshape.setconstructedby(Refe,op)
 		    currentshape.constructedby.data.append index(iobj)
-		    BiB1=Refe.coord.GetBiB(index(iobj))
+		    BiB1=BiBPoint(Refe.coord.GetBiBSide(index(iobj)))
 		  case 2
 		    curshape = currentshape.points(0)
 		    AdjustMagnetism(curshape)
@@ -386,6 +387,11 @@ Inherits ShapeConstruction
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="constructed"
 			Group="Behavior"
 			InitialValue="0"
@@ -496,9 +502,8 @@ Inherits ShapeConstruction
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

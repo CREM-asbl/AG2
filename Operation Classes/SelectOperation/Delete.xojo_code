@@ -169,14 +169,13 @@ Inherits SelectOperation
 		  dim dr as droite
 		  
 		  objects.unhighlightall
-		  
+		  can.refreshbackground
 		  s = Getshape(p)
 		  if s <> nil then
 		    highlight(s)
-		    'can.refreshbackground
 		    currenthighlightedshape = s
 		  end if
-		  
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod
@@ -206,7 +205,7 @@ Inherits SelectOperation
 		    next
 		  end if
 		  
-		  'can.invalidate
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod
@@ -259,7 +258,7 @@ Inherits SelectOperation
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
 		  can.RefreshBackground
-		  can.Refresh
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -293,6 +292,11 @@ Inherits SelectOperation
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
@@ -368,9 +372,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

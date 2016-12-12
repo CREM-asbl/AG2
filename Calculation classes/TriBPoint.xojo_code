@@ -38,10 +38,27 @@ Inherits nBpoint
 		  ori = orientation
 		  redim extre(-1)
 		  redim ctrl(-1)
-		  redim extre(5)
-		  redim ctrl(17)
+		  redim extre(1)
+		  redim ctrl(5)
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(tbp as TriBPoint)
+		  dim i as integer   'Utilisé exclusivement pour le skullcoord de Secteur ( nécessaire du fait que le skull d'un Secteur
+		  ' ne repose pas sur les points de ce secteur, mais sur les extrémtés des demi-droites
+		  redim tab(2)
+		  for i = 0 to 2
+		    tab(i) = tbp.tab(i)
+		  next
+		  redim centres(2)
+		  redim curved(2)
+		  redim extre(1)
+		  redim ctrl(5)
+		  centres(1) = tab(0)
+		  curved(1)=1
 		End Sub
 	#tag EndMethod
 

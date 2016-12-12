@@ -287,7 +287,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim Magnetism as integer
+		  dim i, Magnetism as integer
 		  dim np as basicpoint
 		  
 		  if pointmobile = nil then
@@ -310,9 +310,11 @@ Inherits SelectAndDragOperation
 		  figs.createstate("FinalState",pointmobile)
 		  figs.updateoldM
 		  figs.fx1cancel
+		  for i = 0 to figs.count-1
+		    figs.item(i).pointmobile = nil
+		  next
 		  super.endoperation
 		  pointmobile = nil
-		  'currentshape = nil
 		  endpoint = nil
 		End Sub
 	#tag EndMethod
@@ -428,8 +430,10 @@ Inherits SelectAndDragOperation
 		    return
 		  end if
 		  
+		  // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
+		  //Le deuxième est introduit dans Figure.update1
+		  currenthighlightedshape = point(currentshape)
 		  pointmobile = point(currentshape)
-		  currenthighlightedshape = pointmobile
 		  InitFigs
 		  figs.createstate("InitState",pointmobile)
 		  if gGetSpecialkey = 4  then
@@ -527,8 +531,7 @@ Inherits SelectAndDragOperation
 		      end if
 		    end if
 		    
-		    can.invalidate
-		    
+		    can.refreshbackground
 		    
 		  end if
 		End Sub
@@ -625,7 +628,7 @@ Inherits SelectAndDragOperation
 		  can.Mousecursor = system.cursors.wait
 		  
 		  startpoint = p.bpt
-		  pointmobile = p
+		  pointmobile = p 
 		  currentshape = p
 		  InitFigs
 		  if cancel then
@@ -640,7 +643,6 @@ Inherits SelectAndDragOperation
 		    figs.EnableModifyall
 		    wnd.setcross
 		    testfinished = true
-		    can.invalidate
 		    pointmobile = nil
 		    currentshape = nil
 		    return t
@@ -889,6 +891,11 @@ Inherits SelectAndDragOperation
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -999,9 +1006,8 @@ Inherits SelectAndDragOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -31,9 +31,8 @@ Begin Window WorkWindow
       AcceptTabs      =   True
       AutoDeactivate  =   True
       Backdrop        =   0
-      Background      =   0
+      BackgroundPicture=   0
       Bkcol           =   &c00000000
-      cnt             =   0
       ctxt            =   False
       DoubleBuffer    =   True
       Doubleclicktime =   0
@@ -52,7 +51,7 @@ Begin Window WorkWindow
       lastclickticks  =   0
       lastclickx      =   0
       lastclicky      =   0
-      Left            =   119
+      Left            =   115
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -69,25 +68,25 @@ Begin Window WorkWindow
       TabPanelIndex   =   0
       TabStop         =   True
       tit             =   ""
-      Top             =   7
+      Top             =   0
       Transparent     =   False
       UseFocusRing    =   True
       Visible         =   True
       Width           =   673
    End
    Begin Rectangle Tools
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cDCD9A500
+      FillColor       =   &c8080FF00
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -160,7 +159,7 @@ Begin Window WorkWindow
          Begin PushButton MouvBut
             AutoDeactivate  =   True
             Bold            =   True
-            ButtonStyle     =   "0"
+            ButtonStyle     =   "1"
             Cancel          =   False
             Caption         =   "Retourner"
             Default         =   False
@@ -461,7 +460,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -545,7 +544,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   4
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -601,7 +600,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -629,7 +628,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
-            Left            =   8
+            Left            =   15
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -880,9 +879,18 @@ End
 	#tag EndEvent
 
 	#tag Event
+		Sub Resized()
+		  can.resize
+		  can.RefreshBackground
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Resizing()
 		  
 		  can.resize
+		  can.RefreshBackground
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -1123,7 +1131,7 @@ End
 	#tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
 			if dret = nil then
-			Annuler
+			currentcontent.currentoperation.Annuler
 			end if
 			return true
 		End Function
@@ -1355,7 +1363,7 @@ End
 			if f=nil then
 			return true
 			else
-			mycanvas1.FondsEcran = f.OpenAsPicture()
+			mycanvas1.FondsEcran = Picture.Open(f)
 			end if
 			end if
 			
@@ -1385,12 +1393,32 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function MacrosCopy2(index as Integer) As Boolean Handles MacrosCopy2.Action
+			app.themacros.item(index).CopyMacroToFile
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
 			
 			closefw
 			newcontent(true)
 			MenuMacros(true)
+			can.resize
 			wnd.refreshtitle
+			can.refreshbackground
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			currentcontent.mac = nil
 			return true
 			
@@ -1798,12 +1826,6 @@ End
 
 	#tag MenuHandler
 		Function ToolsColorTransparent() As Boolean Handles ToolsColorTransparent.Action
-			if mousedispo then
-			closefw
-			CurrentContent.CurrentOperation=new TransparencyChange
-			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
 			return true
 		End Function
 	#tag EndMenuHandler
@@ -1877,6 +1899,20 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function ToolsOpq() As Boolean Handles ToolsOpq.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation=new TransparencyChange(100)
+			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+			refreshtitle
+			end if
+			return true
+			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function ToolsRigid() As Boolean Handles ToolsRigid.Action
 			if mousedispo then
 			closefw
@@ -1885,6 +1921,19 @@ End
 			refreshtitle
 			end if
 			return true
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ToolsSTsp() As Boolean Handles ToolsSTsp.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation=new TransparencyChange(50)
+			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+			refreshtitle
+			end if
+			Return True
+			
 		End Function
 	#tag EndMenuHandler
 
@@ -1925,6 +1974,19 @@ End
 			end if
 			return true
 			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ToolsTsp() As Boolean Handles ToolsTsp.Action
+			if mousedispo then
+			closefw
+			CurrentContent.CurrentOperation=new TransparencyChange(0)
+			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+			refreshtitle
+			end if
+			Return True
 			
 		End Function
 	#tag EndMenuHandler
@@ -2011,18 +2073,18 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  dim op as operation
-		  op =CurrentContent.CurrentOperation
-		  closefw
-		  if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >1) then
-		    if op isa AppliquerTsf then
-		      AppliquerTsf(op).tsf.highlighted = false
-		    end if
-		    CurrentContent.abortconstruction
-		  else
-		    CurrentContent.UndoLastOperation
-		  end if
-		  mycanvas1.refreshBackground
+		  'dim op as operation
+		  'op =CurrentContent.CurrentOperation
+		  'closefw
+		  'if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >= 1) then
+		  'if op isa AppliquerTsf then
+		  'AppliquerTsf(op).tsf.highlighted = false
+		  'end if
+		  'CurrentContent.abortconstruction
+		  'else
+		  'CurrentContent.UndoLastOperation
+		  'end if
+		  'mycanvas1.refreshBackground
 		  
 		End Sub
 	#tag EndMethod
@@ -2060,11 +2122,7 @@ End
 		  
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = false
-		  'MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  'EraseMenuBar
-		  'CopyMenuBar
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2089,6 +2147,8 @@ End
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosDescri")
 		  CloseSousMenu(mitem)
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosErase")
+		  CloseSousMenu(mitem)
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosCopy")
 		  CloseSousMenu(mitem)
 		  
 		End Sub
@@ -2151,10 +2211,14 @@ End
 	#tag Method, Flags = &h0
 		Sub CopyMenuBar()
 		  dim i, nmen as integer
+		  dim mitem as MenuItem
 		  
 		  nmen = MenuMenus.count
 		  for i = 0 to nmen-1
-		    MenuBar.append CopyMenuItem(MenuMenus.item(i))
+		    mitem = CopyMenuItem(MenuMenus.item(i))
+		    if mitem <> nil then
+		      MenuBar.append mitem
+		    end if
 		  next
 		  CopyCFGMenu
 		End Sub
@@ -2170,12 +2234,12 @@ End
 		  item.Name = mitem.Name
 		  item.KeyboardShortCut = mitem.KeyboardShortCut
 		  item.index = mitem.index
-		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2")   then '
+		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2" or item.Name="MacrosCopy2")   then '
 		    item.Text = Dico.Value(item.Name)
 		  else
 		    item.Text = mitem.Text
 		  end if
-		  item.icon = mitem.icon
+		  'item.icon = mitem.icon
 		  
 		  
 		  if item.name = "PrefsFreeForms" then
@@ -2243,6 +2307,8 @@ End
 		  CreateSousMenu(mitem, "MacrosDescri2")
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosErase")
 		  CreateSousMenu(mitem,"MacrosErase2")
+		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosCopy")
+		  CreateSousMenu(mitem,"MacrosCopy2")
 		End Sub
 	#tag EndMethod
 
@@ -2422,6 +2488,7 @@ End
 		  MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = not t
 		  MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = not t
 		  MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosCopy").checked = not t
 		  EraseMenuBar
 		  CopyMenuBar
 		  MenuBar.Child("FileMenu").Child("FileOpen").visible=not t
@@ -2580,8 +2647,9 @@ End
 		    if not draphisto then
 		      updatemenu
 		    end if
+		    updatetoolbar
 		    PushButton1.Visible = not draphisto
-		    Mycanvas1.RefreshBackground
+		    can.RefreshBackground
 		    MoveBoxRefresh
 		    StdBoxRefresh
 		    LibBoxRefresh
@@ -2622,9 +2690,9 @@ End
 	#tag Method, Flags = &h0
 		Sub setcross()
 		  if backcolor = blanc then
-		    mycanvas1.mousecursor = cross
+		    can.mousecursor = cross
 		  else
-		    mycanvas1.mousecursor = whitecross
+		    can.mousecursor = whitecross
 		  end if
 		End Sub
 	#tag EndMethod
@@ -2788,7 +2856,7 @@ End
 		    config.stdcolor(i) = config.stdcolor(i).comp
 		    ico(i).updatefillcolor(config.stdcolor(i).col,100)
 		  next
-		  Mycanvas1.RefreshBackground
+		  can.RefreshBackground
 		End Sub
 	#tag EndMethod
 
@@ -2827,6 +2895,7 @@ End
 		      MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
 		    end if
 		  end if
+		  updateToolBar
 		  
 		End Sub
 	#tag EndMethod
@@ -2861,6 +2930,8 @@ End
 	#tag Method, Flags = &h0
 		Sub UpdateToolBar()
 		  dim espace as integer
+		  dim st as string
+		  
 		  espace = min((me.Height-me.MinHeight)/3,5)
 		  if(me.Height = me.MinHeight) then
 		    MoveBox.TextSize = 8
@@ -2875,7 +2946,18 @@ End
 		  MoveBox.Top = 60+espace
 		  StdBox.top = MoveBox.top+MoveBox.Height+espace
 		  LibBox.Top = StdBox.top+StdBox.Height+espace
-		  
+		  st = config.menu
+		  if st = "Menu_A" then
+		    Tools.FillColor = &c000088
+		  elseif st = "Menu_B" then
+		    Tools.FillColor = &c008800
+		  elseif st = "Menu_C" then
+		    Tools.FillColor = &c880000
+		  elseif st = "Menu_AB" then
+		    Tools.FillColor = &c888800
+		  elseif st = "Menu_AC" then
+		    Tools.FillColor = &c880088
+		  end if
 		  
 		  
 		  
@@ -2999,6 +3081,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		selshape As shape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		stdflag As boolean
 	#tag EndProperty
 
@@ -3050,7 +3136,7 @@ End
 		    end select
 		    refreshtitle
 		    if index <> 0 then
-		      mycanvas1.mousecursor = System.Cursors.StandardPointer
+		      can.mousecursor = System.Cursors.StandardPointer
 		    else
 		      wnd.setcross
 		    end if
@@ -3135,12 +3221,15 @@ End
 	#tag Event
 		Sub Action()
 		  if dret = nil then
-		    Annuler
-		    if CurrentContent.CurrentOp = 0 then
-		      me.Enabled = false
+		    if currentcontent.currentoperation <> nil then
+		      currentcontent.currentoperation.Annuler
+		      if CurrentContent.CurrentOp = 0 then
+		        me.Enabled = false
+		      end if
+		    else
+		      currentcontent.undolastoperation
 		    end if
 		  end if
-		  
 		  setfocus
 		End Sub
 	#tag EndEvent
@@ -3149,43 +3238,51 @@ End
 		  dim EL, EL1, EL2, EL3 as XMLElement
 		  dim Name, Type as string
 		  dim op, op1 as integer
+		  dim n1, n2, n3 as integer
 		  
+		  if currentcontent.currentop = 0 or currentcontent.currentoperation = nil then
+		    return
+		  end if
+		  
+		  currentcontent.currentoperation.canceling = true
 		  EL = currentcontent.OpToCancel
+		  EL1 = XMLElement(EL.firstchild)
 		  
-		  if EL = nil then
+		  if EL = nil  or EL1 = nil then
 		    return
 		  end if
 		  
 		  op = val(EL.GetAttribute("OpId"))
-		  Name = EL.GetAttribute(Dico.Value("Type"))
+		  Name = EL.GetAttribute(Dico.Value("Type")) + EL1.GetAttribute("Type")
 		  me.Helptag = Dico.Value("Cancel") + " " + lowercase(Name)
-		  EL1 = XMLElement(EL.firstchild)
+		  n1 =val(EL1.GetAttribute("Id"))
+		  selshape = currentcontent.TheObjects.GetShape(n1)
 		  
-		  if EL1= nil then
-		    return
-		  end if
 		  
 		  select case op
-		  case 0  //Construction
-		    Type = EL1.GetAttribute("Type") + " n°" + EL1.GetAttribute("Id")
-		  case 1  //ParaperpConstruction
-		    Type = EL1.GetAttribute("Type") + " n°" + EL1.GetAttribute("Id")
-		    EL2 = XMLElement(EL1.Child(1))
-		    op1 = val(EL2.GetAttribute("Oper"))
-		    if op1 = 1 then
-		      Type = Type+ " parallèle"
-		    else
-		      Type = Type + " perpendiculaire"
-		    end if
-		    Type = Type + "à l'objet n°" + EL2.GetAttribute("Id")
 		  case 19 //Dupliquer
 		    EL2 = XMLElement(EL1.firstchild)
 		    EL3 = XMLElement(EL2.firstchild)
 		    if EL3 <> nil then
-		      Type = EL3.GetAttribute("Type") + " n°" + EL3.GetAttribute("Id")
+		      Type = EL3.GetAttribute("Type") '+ " n°" + 
+		      n1 = val(EL2.GetAttribute("Id"))
+		      selshape = currentcontent.TheObjects.GetShape(n1)
 		    end if
 		  end select
+		  selshape.highlight
 		  me.Helptag = me.Helptag + " "+  lowercase(Type)
+		  can.refreshbackground
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  if selshape <> nil then
+		    currentcontent.TheObjects.unhighlightall
+		    can.refreshbackground
+		  end if
+		  if currentcontent.currentoperation <> nil then
+		    currentcontent.currentoperation.canceling = false
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -3237,12 +3334,11 @@ End
 		  if  me.Visible then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
-		    
-		    if (me.Backdrop.Height>g.Height or me.Backdrop.Width>g.Width) then
-		      g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
-		    else
-		      g.DrawPicture(me.Backdrop,(g.Width-me.Backdrop.Width)/2,(g.height-me.Backdrop.Height)/2)
-		    end if
+		    'if (me.Backdrop.Height>g.Height or me.Backdrop.Width>g.Width) then
+		    'g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
+		    'else
+		    'g.DrawPicture(me.Backdrop, g.Width-me.Backdrop.Width,(g.height-me.Backdrop.Height)/2)
+		    'end if
 		    
 		    if index=selectedTool and Kit = "Libre"  then
 		      g.forecolor = rouge

@@ -108,7 +108,6 @@ Inherits MultipleSelectOperation
 		      fixecouleurs(s)
 		    end if
 		  next
-		  'can.invalidate
 		  showattraction
 		  
 		  
@@ -192,7 +191,6 @@ Inherits MultipleSelectOperation
 		    s.borderwidth = 2
 		    if s isa point then
 		      s.fixecouleurfond(red,100)
-		      s.nsk.scale=2
 		    end if
 		  case 1
 		    s.fixecouleurtrait(black,100)
@@ -477,6 +475,11 @@ Inherits MultipleSelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"
@@ -563,9 +566,8 @@ Inherits MultipleSelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -5,12 +5,13 @@ Inherits TsfTimer
 		Sub agir()
 		  dim i,j , j0, ntdbp as integer
 		  dim s as shape
+		  dim se as secteur
 		  dim t as TriDShape
 		  dim  p as BasicPoint
 		  dim v as TriDPoint
 		  dim M as Matrix
 		  
-		  can.invalidate
+		  
 		  
 		  for i = 0 to ncop
 		    s = copies.item(i)
@@ -26,23 +27,35 @@ Inherits TsfTimer
 		        s.childs(j).moveto  t.TriDPts(j).ProjPlan + fp
 		      next j
 		    end if
-		    if s isa Circle  then
-		      for j = 0 to 1
-		        Circle(s).coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
-		      next
-		      for j = 0 to 5
-		        Circle(s).coord.ctrl(j) =  t.TriDPts(ntdbp+3+j).ProjPlan + fp
-		      next
-		    end if
-		    if s.Hybrid then
-		      for j = 0 to ubound(lacet(s).coord.extre)
-		        Lacet(s).coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
-		      next
-		      for j = 0 to ubound(lacet(s).coord.ctrl)
-		        Lacet(s).coord.ctrl(j) =  t.TriDPts(ntdbp+2*Lacet(s).narcs+1+j).ProjPlan + fp
-		      next
-		    end if
 		    s.updatecoord
+		    
+		    if s isa secteur then
+		      secteur(s).computeextre
+		    end if
+		    
+		    if (s isa circle or s.narcs >0) and not s isa secteur then
+		      for j = 0 to ubound(s.coord.extre)
+		        s.coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
+		      next
+		      for j = 0 to ubound(s.coord.ctrl)
+		        if not s isa circle then
+		          s.coord.ctrl(j) =  t.TriDPts(ntdbp+2*s.narcs+1+j).ProjPlan + fp
+		        else
+		          s.coord.ctrl(j) =  t.TriDPts(ntdbp+3+j).ProjPlan + fp
+		        end if
+		      next
+		    end if
+		    
+		    'if s isa secteur then
+		    'se = secteur(s)
+		    'for j = 0 to ubound(se.skullcoord.extre)
+		    'se.skullcoord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
+		    'next
+		    'for j = 0 to ubound(se.skullcoord.ctrl)
+		    'se.skullcoord.ctrl(j) =  t.TriDPts(ntdbp+2*se.narcs+1+j).ProjPlan + fp
+		    'next
+		    'end if
+		    
 		    if pas = niter/2  then
 		      if Config.stdbiface or (s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
 		        s.fixecouleurfond(s.fillcolor.comp, s.fill)
@@ -58,6 +71,7 @@ Inherits TsfTimer
 		  if pas = 0 then
 		    for i = 0 to ncop
 		      s = copies.item(i)
+		      s.ori = - s.ori
 		      s.unhighlight
 		      if s isa point and point(s).pointsur.count = 1 then
 		        point(s).puton Point(s).pointsur.item(0)
@@ -71,6 +85,10 @@ Inherits TsfTimer
 		    enabled = false
 		    dret = nil
 		    if curoper isa retourner  then
+		      for i = 0 to ncop
+		        s = copies.item(i)
+		        s.ori = - s.ori
+		      next
 		      copies.inverserordre
 		      M = new SymmetryMatrix(fp, fp+sp)
 		      figs.movepoints(M)
@@ -85,7 +103,7 @@ Inherits TsfTimer
 		    can.Mousecursor =System.Cursors.StandardPointer
 		  end if
 		  can.refreshbackground
-		  can.refresh
+		  
 		End Sub
 	#tag EndMethod
 
@@ -142,7 +160,7 @@ Inherits TsfTimer
 		  Initialisation
 		  enabled = true
 		  tempshape.unhighlightall
-		  pas = niter
+		  
 		  
 		  
 		End Sub
@@ -157,7 +175,7 @@ Inherits TsfTimer
 		  dim q as BasicPoint
 		  
 		  M3D = new Matrix3D(beta,alpha)
-		  
+		  pas = niter
 		  for i = 0 to ncop
 		    s = copies.item(i)
 		    s.tsp = false
@@ -204,10 +222,6 @@ Inherits TsfTimer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		curtsf As transformation
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		dp As BasicPoint
 	#tag EndProperty
 
@@ -233,10 +247,6 @@ Inherits TsfTimer
 
 	#tag Property, Flags = &h0
 		TriDcopies(-1) As Tridshape
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		type As Integer
 	#tag EndProperty
 
 

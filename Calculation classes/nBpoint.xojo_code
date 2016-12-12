@@ -123,12 +123,24 @@ Protected Class nBpoint
 		    curved(i) = 0
 		  next
 		  
+		  'Le tableau indique quels sont les côtés de la forme qui sont curvilignes.
+		  'Il doit y en avoir exactement narcs.
+		  'Pour les  ("arc"), narcs vaut 1 et le côté courbe est toujours le côté n°1.
+		  'Pour les stdcircle et freecircle, narcs vaut 0 sinon ils seraient considérés comme hybrides
+		  'Pour simplifier la lecture des centres des côtés courbes, on en crée également narcs même si certains ne seront pas utilisés. 
+		  'Le centre du côté n°i est le basicpoint centres(i).
+		  
 		  redim centres(-1)
 		  redim centres(taille-1)
-		  redim extre(-1)
-		  redim extre(2*taille-1)
-		  redim ctrl(-1)
-		  redim ctrl(6*taille-1)
+		  
+		  'Les extrémités et points de contrôles des sous-arcs ne seront, par contre, crées qu'exactement dans le nombre nécessaire 
+		  'soit 2*narcs-1 pour les extre et 6*narcs-1 pour les ctrl
+		  if s.narcs > 0 then
+		    redim extre(-1)
+		    redim extre(2*s.narcs-1)
+		    redim ctrl(-1)
+		    redim ctrl(6*s.narcs-1) 
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -269,8 +281,6 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Sub CreateExtreAndCtrlPoints(orien as integer)
-		  
-		  
 		  dim Mat as RotationMatrix
 		  dim BiB as BiBPoint
 		  dim m, n ,i as integer
@@ -329,7 +339,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetBib(i as integer) As BiBPoint
+		Function GetBibSide(i as integer) As nBPoint
 		  
 		  if i > -1 and i < taille then
 		    return new BiBPoint (tab(i),tab((i+1) mod taille))

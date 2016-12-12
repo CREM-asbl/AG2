@@ -11,6 +11,8 @@ Inherits NSkull
 		    append new CurveShape
 		    item(i).order = 2
 		  next
+		  
+		  '3 curveshapes sont nécessaires pour réaliser un arc allant jusqu'à 360°
 		End Sub
 	#tag EndMethod
 
@@ -18,11 +20,12 @@ Inherits NSkull
 		Sub paint(g as graphics)
 		  dim i as integer
 		  
-		  if skullof isa stdcircle then
-		    g.drawobject self, x, y
-		  end if
 		  
-		  update(skullof)
+		  if not (currentcontent.currentoperation isa retourner and dret <>nil) then
+		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
+		    update(skullof)
+		  end if
+		  g.drawobject self, x, y
 		  for i = 0 to count-1
 		    g.drawobject item(i), x, y
 		  next
@@ -33,8 +36,6 @@ Inherits NSkull
 		Sub update(s as shape)
 		  dim i as integer
 		  dim p, q as BasicPoint
-		  
-		  skullof.coord.CreateExtreAndCtrlPoints(skullof.ori)
 		  
 		  p =s.getgravitycenter
 		  ref = can.transform(p)
@@ -65,6 +66,9 @@ Inherits NSkull
 		  for i = 0 to 5
 		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p))
 		  next
+		  
+		  fixecouleurs(s)
+		  fixeepaisseurs(s)
 		  
 		  
 		  
@@ -132,12 +136,6 @@ Inherits NSkull
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Count"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="currentcurve"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"

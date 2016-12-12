@@ -68,9 +68,9 @@ Inherits SelectOperation
 		  
 		  p0 = can.MouseUser
 		  s = tempshape.item(0)
-		  if not (s isa point) then
+		  if not (s isa point) and not (s isa arc)  then
 		    p0 = p0 - s.Points(0).bpt
-		  else
+		  elseif s isa point then
 		    p0 = p0-Point(s).bpt
 		  end if
 		  n = tempshape.count
@@ -92,13 +92,20 @@ Inherits SelectOperation
 		      s2.endconstruction
 		    next
 		    LierGroupes
-		    for i = 0 to n-1
-		      tempshape.objects(i) = copies.item(i)
-		    next
+		    'for i = 0 to n-1
+		    'tempshape.objects(i) = copies.item(i)
+		    'next
 		    copies.removeall
 		  end if
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EndOperation()
+		  super.endoperation
+		  tempshape = app.tampon
 		End Sub
 	#tag EndMethod
 
@@ -175,6 +182,11 @@ Inherits SelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -249,9 +261,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

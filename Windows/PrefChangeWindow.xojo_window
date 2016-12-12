@@ -28,9 +28,7 @@ Begin Window PrefChangeWindow
    Width           =   366
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -65,9 +63,7 @@ Begin Window PrefChangeWindow
    End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
-      ControlOrder    =   "1"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -98,12 +94,10 @@ Begin Window PrefChangeWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "2"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -131,12 +125,10 @@ Begin Window PrefChangeWindow
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "3"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -179,6 +171,7 @@ End
 		  
 		  Config.ChargerConfig
 		  wnd.refresh
+		  
 		End Sub
 	#tag EndMethod
 

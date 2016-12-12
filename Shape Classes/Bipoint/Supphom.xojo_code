@@ -92,18 +92,6 @@ Inherits Shape
 		Sub Updateshape()
 		  super.UpdateShape
 		  
-		  updateskull
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpDateSkull()
-		  'dim pt As BasicPoint
-		  '
-		  'sk.update(can.transform(Points(1).bpt))
-		  'pt = can.dtransform(points(2).bpt-Points(1).bpt)
-		  'segskull(sk).updatesommet(1,pt)
 		  
 		  
 		End Sub
@@ -133,6 +121,11 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ArcAngle"
+			Group="Behavior"
+			Type="Double"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
@@ -206,11 +199,6 @@ Inherits Shape
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -279,6 +267,11 @@ Inherits Shape
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ncpts"
 			Group="Behavior"
 			InitialValue="0"
@@ -319,6 +312,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

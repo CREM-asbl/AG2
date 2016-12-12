@@ -21,8 +21,6 @@ Inherits SelectAndDragOperation
 		    M = new Rotationmatrix(new BasicPoint(0,0),a)
 		    tempshape.item(0).Transform(M)
 		    endpoint = newpoint
-		    CurrentContent.theobjects.updateskull
-		    'can.invalidate
 		    super.CompleteOperation(NewPoint)
 		    return
 		  end if
@@ -204,7 +202,6 @@ Inherits SelectAndDragOperation
 		      M = new Rotationmatrix(new BasicPoint(0,0),a)
 		      currentshape.Transform(M)
 		    end if
-		    CurrentContent.theobjects.updateskull
 		  else
 		    for i = 0 to tempshape.count-1
 		      figs.addobject tempshape.item(i).fig
@@ -260,7 +257,6 @@ Inherits SelectAndDragOperation
 		    Repere(tempshape.item(0)).Origine = M*Repere(tempshape.item(0)).Origine
 		    M = new Rotationmatrix(new BasicPoint(0,0),a)
 		    tempshape.item(0).Transform(M)
-		    CurrentContent.theobjects.updateskull
 		  else
 		    super.UndoOperation(Temp)
 		    Updateangles(a)
@@ -302,6 +298,11 @@ Inherits SelectAndDragOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
@@ -396,9 +397,8 @@ Inherits SelectAndDragOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

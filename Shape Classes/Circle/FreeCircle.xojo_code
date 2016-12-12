@@ -21,7 +21,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Constructor(ol As ObjectsList, p As BasicPoint)
 		  Super.Constructor(ol,2,p)
-		  Npts=2
+		  
 		  Ori=1
 		  createskull(p)
 		End Sub
@@ -77,7 +77,6 @@ Inherits Circle
 		  nsk = new ArcSkull(p)
 		  if ubound(points) > 0 then
 		    computeradius
-		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  nsk.skullof = self
 		End Sub
@@ -91,11 +90,13 @@ Inherits Circle
 		    for i = 0 to 1
 		      Points(i).MoveTo(p)
 		    next
+		    
 		  else
 		    Points(1).moveto p
 		    updatecoord
+		    coord.centres(0) = points(0).bpt
+		    coord.curved(0) = 1
 		    coord.CreateExtreAndCtrlPoints(ori)
-		    'updateskull
 		  end if
 		  
 		End Sub
@@ -120,7 +121,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
 		  super.InitConstruction
-		  coord.CreateExtreAndCtrlPoints(ori)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -133,7 +134,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function IsStandAlone() As Boolean
 		  
-		  dim i as Integer
+		  
 		  
 		  if Ubound(ConstructedShapes)<>-1 then
 		    return false
@@ -159,9 +160,11 @@ Inherits Circle
 		Sub Paint(g as Graphics)
 		  dim a,b,e as BasicPoint
 		  
+		  
+		  
 		  super.Paint(g)
 		  
-		  if not hidden and Ti <> nil and not dret isa rettimer then
+		  if not Isinconstruction and  not hidden and Ti <> nil and not dret isa rettimer then
 		    b = points(0).bpt * 2 - points(1).bpt
 		    e = b - points(0).bpt
 		    e = (e.vecnorperp)*ori
@@ -177,11 +180,17 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function Paste(Obl as ObjectsList, q as BasicPoint) As shape
-		  dim  a, b as shape
-		  dim j as integer
+		  
+		  dim i as integer
 		  dim s as FreeCircle
 		  
 		  s = new FreeCircle(Obl,self,q)
+		  for i = 0 to 1
+		    s.coord.extre(i) = coord.extre(i)
+		  next
+		  for i = 0 to 5
+		    s.coord.ctrl(i) = coord.ctrl(i)
+		  next
 		  s.ori = ori
 		  return s
 		  
@@ -191,11 +200,12 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as TextOutputStream)
-		  dim tsf as transformation
+		  
 		  dim M as Matrix
 		  dim s as Circle
 		  dim p2, u as BasicPoint
 		  dim r as double
+		  dim i as integer
 		  
 		  
 		  if not isaellipse then
@@ -211,6 +221,9 @@ Inherits Circle
 		    
 		    tos.writeline( "[  " + points(0).etiquet + " "  + points(1).etiquet + " [ " +  str(p2.x) + " " + str(p2.y) +"]  ] ellipse")
 		  end if
+		  for i = 0 to ubound(childs)
+		    childs(i).ToEPS(tos)
+		  next
 		  
 		  
 		End Sub
@@ -219,7 +232,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  
-		  dim Form, temp As XMLElement
+		  dim Form As XMLElement
 		  
 		  
 		  Form = Shape.XMLPutInContainer(Doc)
@@ -263,7 +276,7 @@ Inherits Circle
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -338,11 +351,6 @@ Inherits Circle
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -411,6 +419,11 @@ Inherits Circle
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ncpts"
 			Group="Behavior"
 			InitialValue="0"
@@ -457,6 +470,11 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"

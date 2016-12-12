@@ -26,42 +26,42 @@ Inherits Application
 
 	#tag Event
 		Sub EnableMenuItems()
-		  dim B, B1, B2 as boolean
-		  dim item as MenuItem
-		  dim i as integer
-		  
-		  
-		  if currentcontent <> nil  then
-		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		  end if
-		  
-		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
-		    B =  CurrentContent.TheObjects.count > 1
-		    B1 = CurrentContent.TheGrid <> nil
-		    B2 = can.rep.labs.count > 0
-		    B = (B or B1 or B2) and not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
-		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = (CurrentContent.Currentop > 0)
-		      wnd.pushbutton1.enabled = (CurrentContent.Currentop > 0)
-		    end if
-		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
-		    end if
-		  else
-		    B = false
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
-		  end if
-		  
-		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
-		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		  'dim B, B1, B2 as boolean
+		  'dim item as MenuItem
+		  'dim i as integer
+		  '
+		  '
+		  'if currentcontent <> nil  then
+		  'MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		  'MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  'end if
+		  '
+		  'if wnd<>nil and can.rep <> nil and currentcontent <> nil then
+		  'B =  CurrentContent.TheObjects.count > 1
+		  'B1 = CurrentContent.TheGrid <> nil
+		  'B2 = can.rep.labs.count > 0
+		  'B = (B or B1 or B2) and not currentcontent.macrocreation
+		  'MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		  'MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		  'if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
+		  'MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		  'wnd.pushbutton1.enabled = true 
+		  'end if
+		  'if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
+		  'MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		  'end if
+		  'else
+		  'B = false
+		  'MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		  'MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		  'end if
+		  '
+		  'MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
+		  'MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		  'MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  'MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		  'MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		  'MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
 		End Sub
 	#tag EndEvent
@@ -79,8 +79,7 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate
-		    init
-		    themacros = new macroslist
+		    
 		  end if
 		  
 		End Sub
@@ -257,7 +256,6 @@ Inherits Application
 		Sub CheckSystem()
 		  #if TargetWin32 then
 		    sys = "win32"
-		    UseGDIPlus=true
 		  #elseif TargetLinux then
 		    sys="Linux"
 		  #elseif TargetMacOSClassic then
@@ -283,16 +281,26 @@ Inherits Application
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Continuer()
+		  dim ww as WorkWindow
+		  
+		  Config.ChargerConfig
+		  themacros = new macroslist
+		  Tampon = new ObjectsList
+		  ww = new WorkWindow
+		  ww.ShowModal
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function DicoDispo() As string()
 		  dim dicos(-1), nom as String
 		  dim i as integer
 		  
-		  for i=1 to AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".dct" then
-		      dicos.append(Left(nom,len(nom)-4))
-		    end if
-		  next
+		  dicos.append "Francais"
+		  dicos.append "English"
+		  dicos.append "PortuguesBr"
 		  
 		  for i=1 to DctFolder.count
 		    nom = app.DctFolder.trueItem(i).Name
@@ -309,7 +317,7 @@ Inherits Application
 		Sub init()
 		  iw=new initWindow
 		  iw.ShowModal
-		  Tampon = new ObjectsList
+		  
 		  
 		  
 		End Sub
@@ -349,12 +357,18 @@ Inherits Application
 		  dim menus(-1),nom as String
 		  dim i as integer
 		  
-		  for i=1 to AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".men" then
-		      menus.append(Left(nom,len(nom)-4))
-		    end if
-		  next
+		  'for i=1 to AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".men" then
+		  'menus.append(Left(nom,len(nom)-4))
+		  'end if
+		  'next
+		  
+		  menus.append "Menu_A"
+		  menus.append "Menu_B"
+		  menus.append "Menu_C"
+		  menus.append "Menu_AB"
+		  menus.append "Menu_AC"
 		  
 		  for i=1 to MenusFolder.count-1
 		    nom = app.MenusFolder.trueItem(i).Name
@@ -387,12 +401,18 @@ Inherits Application
 		  dim stdfiles(-1),nom as String
 		  dim i as integer
 		  
-		  for i=1 to AppFolder.count
-		    nom = app.AppFolder.trueItem(i).Name
-		    if right(nom,4)=".std" then
-		      stdfiles.append(Left(nom,len(nom)-4))
-		    end if
-		  next
+		  'for i=1 to AppFolder.count
+		  'nom = app.AppFolder.trueItem(i).Name
+		  'if right(nom,4)=".std" then
+		  'stdfiles.append(Left(nom,len(nom)-4))
+		  'end if
+		  'next
+		  
+		  stdfiles.append "jeu_de_base"
+		  stdfiles.append "cubes"
+		  stdfiles.append "pentaminos"
+		  stdfiles.append "tangram"
+		  stdfiles.append "reglettes"
 		  
 		  for i=1 to StdFolder.count
 		    nom = app.StdFolder.trueItem(i).Name

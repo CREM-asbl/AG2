@@ -197,8 +197,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim i as integer
-		  dim s as shape
-		  dim p as BasicPoint
+		  
 		  
 		  if CurrentContent.currentoperation = self then
 		    display = choose + aform + alier
@@ -355,6 +354,11 @@ Inherits SelectOperation
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -453,9 +457,8 @@ Inherits SelectOperation
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -5,7 +5,7 @@ Inherits AffinityMatrix
 		Sub Constructor(Bib1 as BibPoint, Bib2 as BibPoint)
 		  //Projection affine sur Bib2 parallèlement à Bib1
 		  
-		  dim p, u, a as BasicPoint
+		  dim p, u, v, a as BasicPoint
 		  dim IdX, IdY as BasicPoint
 		  dim r1 as double
 		  
@@ -13,17 +13,19 @@ Inherits AffinityMatrix
 		  p = Bib2.Second-Bib2.first
 		  p = new BasicPoint(p.y,-p.x)
 		  u = bib1.second - bib1.first
-		  r1= p*u
+		  r1= p.Mulp(u)
 		  
 		  Idx = new BasicPoint (1,0)
 		  Idy = new BasicPoint(0,1)
 		  
 		  if abs (r1) > epsilon*p.norme*u.norme then   // Bibpoints parallèles ou alignés
-		    r1 = -(p*IdX)/(p*u)
-		    v1= IdX*(1-r1)+(IdX+u)*r1
-		    r1 =- (p*IdY)/(p*u)
-		    v2= IdY*(1-r1)+(IdY+u)*r1
-		    v3= a-v1*a.x -v2*a.y
+		    r1 = -(p.Mulp(IdX))/(p.Mulp(u))
+		    v = IdX+u
+		    v1= IdX.Mulp(1-r1)+v.Mulp(r1)
+		    r1 = -(p.Mulp(IdY))/(p.Mulp(u))
+		    v = IdY+u
+		    v2=IdY.Mulp(1-r1)+v.Mulp(r1)
+		    v3= a-v1.Mulp(a.x) -v2.Mulp(a.y)
 		  else
 		    v1 = nil
 		  end if

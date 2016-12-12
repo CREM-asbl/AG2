@@ -2,12 +2,35 @@
 Protected Class ColorChange
 Inherits SelectOperation
 	#tag Method, Flags = &h0
+		Function ComputeNSideMax() As integer
+		  dim i, n as integer
+		  dim s as shape
+		  
+		  n = 0
+		  
+		  if icot <> -1 then   'dans ce cas l'opération ne porte que sur un seul objet qui est un lacet et c'est la bordercolor qui est modifiée
+		    s = tempshape.item(0)
+		    n = 0
+		  else
+		    for i = 0 to tempshape.count -1
+		      if tempshape.element(i) isa Lacet then
+		        n = max(n, tempshape.item(i).npts-1)
+		      else 
+		        n = max(n,1)
+		      end if
+		    next
+		  end if
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(B as boolean, col as couleur)
 		  super.constructor
 		  OpId = 12
 		  Bord = B
 		  newcolor = col
-		  
+		  icot = -1
 		  
 		End Sub
 	#tag EndMethod
@@ -17,23 +40,28 @@ Inherits SelectOperation
 		  dim s as shape
 		  dim i, n as integer
 		  
+		  n = tempshape.count-1
 		  setoldcolors
-		  n = tempshape.count -1
 		  
-		  for i = 0 to n
-		    s = tempshape.item(i)
-		    if Bord then
-		      if s isa polygon and icot <> -1 then
-		        polygon(s).colcotes(icot) = newcolor
+		  if icot <> -1 then
+		    s = tempshape.item(0)
+		    s.Fixecouleurtrait(s.side, newcolor)
+		  else
+		    for i = 0 to n
+		      s = tempshape.item(i)
+		      if Bord then
+		        s.FixeCouleurTrait (Newcolor, Config.Border)
 		      else
-		        s.FixeCouleurTrait Newcolor, Config.Border
+		        if s.fill <> 0 then
+		          newfill = s.fill
+		        else
+		          newfill = 100
+		        end if
+		        s.FixeCouleurFond (Newcolor, newfill)
+		        s.tsp = false
 		      end if
-		    else
-		      s.FixeCouleurFond Newcolor, 100
-		      s.tsp = false
-		    end if
-		  next
-		  
+		    next
+		  end if
 		  
 		  
 		End Sub
@@ -43,7 +71,7 @@ Inherits SelectOperation
 		Sub EndOperation()
 		  super.EndOperation
 		  currentcontent.remettreTsfAvantPlan
-		  Redim Oldcolor(-1)
+		  Redim Oldcolors(-1,-1)
 		End Sub
 	#tag EndMethod
 
@@ -68,13 +96,11 @@ Inherits SelectOperation
 		  if bord then
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if s isa polygon  then
-		        index.append polygon(s).pointonside(p)
-		      else
-		        index.append -1
+		      if s isa Lacet  then
+		        s.side  = s.pointonside(p)
 		      end if
 		    next
-		    icot = index(iobj)
+		    icot = Visible.item(iobj).side
 		  else
 		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
@@ -94,8 +120,6 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as Basicpoint)
-		  dim i, j as integer
-		  dim s as shape
 		  
 		  if currenthighlightedshape = nil then
 		    Objects.unselectall
@@ -143,10 +167,8 @@ Inherits SelectOperation
 		  SelectIdForms(EL)
 		  n = tempshape.count-1
 		  EL1 = XMLElement(EL.child(1))
-		  r = Val(EL1.GetAttribute(Dico.Value("Rouge")))
-		  g = Val(EL1.GetAttribute(Dico.Value("Vert")))
-		  b = Val(EL1.GetAttribute(Dico.Value("Bleu")))
-		  newcolor = new couleur(r,g,b)
+		  newcolor = new couleur(EL1)
+		  newfill = val(EL.GetAttribute("Newfill"))
 		  icot = Val(EL.getattribute("Icot"))
 		  
 		  for i = 0 to n
@@ -158,8 +180,7 @@ Inherits SelectOperation
 		        s.FixeCouleurTrait Newcolor, Config.Border
 		      end if
 		    else
-		      s.fill = 100
-		      s.FixeCouleurFond newcolor, s.fill
+		      s.FixeCouleurFond newcolor,newfill
 		      s.tsp = false
 		    end if
 		  next
@@ -170,28 +191,40 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub SetOldColors()
-		  dim i, j, n as integer
+		  dim i, j, n, nmax as integer
 		  dim s as shape
-		  n = tempshape.count-1
 		  
-		  for i = 0 to n
-		    s = tempshape.item(i)
-		    if Bord then
-		      if  s isa polygon  then
-		        if icot <> -1 then
-		          OldColor.append s.colcotes(icot)
-		        else
+		  n = tempshape.count-1
+		  nmax = computensidemax
+		  
+		  redim OldColors(n,nmax)
+		  redim oldfills(n)
+		  
+		  if icot <> -1 then
+		    s = tempshape.item(0)
+		    redim oldcolors(0,0)
+		    OldColors(0,0) = s.Bordercolor  's.colcotes(icot)
+		  else
+		    for i = 0 to n
+		      s = tempshape.item(i)
+		      if Bord then
+		        if  s isa Lacet and not s isa secteur  then
 		          for j = 0 to s.npts-1
-		            OldColor.append s.colcotes(j)
+		            OldColors(i,j) =s.colcotes(j)
 		          next
+		        elseif s isa secteur then 
+		          for j = 0 to 1
+		            OldColors(i,j) =s.colcotes(j)
+		          next
+		        else
+		          OldColors(i,0) = s.getBorderColor
 		        end if
 		      else
-		        OldColor.append s.getBorderColor
+		        OldColors (i,0) = s.GetFillColor
+		        OldFills(i) = s.Fill
 		      end if
-		    else
-		      OldColor.append s.GetFillColor
-		    end if
-		  next
+		    next
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -218,32 +251,60 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, Temp as XMLElement
+		  Dim Myself , EL, EL1 as XMLElement
 		  dim i,j,n as integer
 		  dim s as shape
 		  
 		  
 		  
 		  n = tempshape.count
-		  if n>0 then
-		    Myself= Doc.CreateElement(GetName)
-		    if Bord then
-		      Myself.SetAttribute("Bord", "true")
-		    else
-		      Myself.SetAttribute("Bord", "false")
-		    end if
-		    
-		    Myself.appendchild tempshape.XMLPutIdInContainer(Doc)
-		    Myself.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
-		    Myself.setattribute("Icot", str(icot))
-		    
-		    EL = Doc.CreateElement("OldColors")
-		    for i = 0 to n-1
-		      EL.appendchild Oldcolor(i).XMLPutInContainer(Doc, "OldColor")
-		    next
-		    Myself.appendchild EL
-		    return Myself
+		  if n=0 then
+		    return nil
 		  end if
+		  
+		  Myself= Doc.CreateElement(GetName)
+		  if Bord then
+		    Myself.SetAttribute("Bord", "true")
+		  else
+		    Myself.SetAttribute("Bord", "false")
+		  end if
+		  
+		  Myself.appendchild tempshape.XMLPutIdInContainer(Doc)
+		  Myself.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
+		  Myself.setattribute("Icot", str(icot))
+		  if not Bord then
+		    Myself.SetAttribute("Newfill",str(newfill))
+		  end if
+		  
+		  EL = Doc.CreateElement("OldColors")
+		  if icot <> -1 then
+		    EL.AppendChild Oldcolors(0,0).XMLPutInContainer(Doc, "OldColor")
+		  else
+		    for i = 0 to n-1
+		      s = tempshape.item(i)
+		      EL1 = Doc.CreateElement("Objet"+str(i))
+		      if Bord then
+		        if s isa Lacet and not s isa Secteur then
+		          for j = 0 to s.npts-1
+		            EL1.appendchild Oldcolors(i,j).XMLPutInContainer(Doc, "OldColor")
+		          next
+		        elseif s isa secteur then 
+		          for j = 0 to 1 
+		            EL1.appendchild Oldcolors(i,j).XMLPutInContainer(Doc, "OldColor")
+		          next
+		        else 
+		          EL1.appendchild Oldcolors(i,0).XMLPutInContainer(Doc, "OldColor")
+		        end if
+		      else
+		        EL1.appendchild Oldcolors(i,0).XMLPutInContainer(Doc, "OldColor")
+		        EL1.SetAttribute("Fill", str(OldFills(i)))
+		      end if
+		      EL.appendchild EL1
+		    next
+		  end if
+		  Myself.appendchild EL
+		  return Myself
+		  
 		  
 		  
 		  
@@ -254,10 +315,10 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim i, n as integer
+		  dim i, j, n, f as integer
 		  dim s as shape
 		  dim bd as string
-		  dim EL, EL1, EL2 as XMLElement
+		  dim EL, EL1, EL2, EL3 as XMLElement
 		  dim r, g, b as double
 		  dim c as couleur
 		  
@@ -270,24 +331,37 @@ Inherits SelectOperation
 		    Bord = false
 		  end if
 		  
+		  icot = val(EL.GetAttribute("Icot"))
 		  SelectIdForms(EL)
 		  n = tempshape.count-1
-		  EL1 = XMLElement(EL.child(2))
 		  
-		  for i = 0 to n
-		    s = tempshape.item(i)
-		    EL2 = XMLElement(EL1.child(i))
-		    r = Val(EL2.GetAttribute(Dico.Value("Rouge")))
-		    g = Val(EL2.GetAttribute(Dico.Value("Vert")))
-		    b = Val(EL2.GetAttribute(Dico.Value("Bleu")))
-		    c = new Couleur(r,g,b)
-		    if Bord then
-		      s.FixeCouleurTrait c, s.border
-		    else
-		      s.FixeCouleurFond c, s.fill
-		      s.tsp = false
-		    end if
-		  next
+		  EL1 = XMLElement(EL.child(2))
+		  if icot <> -1 then 
+		    s = tempshape.item(0)
+		    EL2 = XMLElement(EL1.child(0))
+		    s.colcotes(icot) = new Couleur(EL2)
+		  else
+		    for i = 0 to n
+		      s = tempshape.item(i)
+		      EL2 = XMLElement(EL1.child(i))
+		      if Bord then
+		        if s isa Lacet then
+		          for j = 0 to s.npts-1
+		            EL3 = XMLElement(EL2.child(j))
+		            lacet(s).colcotes(j) =new Couleur(EL2)
+		          next
+		        else
+		          s.FixeCouleurTrait new couleur(EL2), s.border
+		        end if
+		      else
+		        EL3 = XMLElement(EL2.child(j))
+		        c = new Couleur(EL2)
+		        f = Val(EL2.GetAttribute("Fill"))
+		        s.FixeCouleurFond c, f
+		        s.tsp = false
+		      end if
+		    next
+		  end if
 		  objects.unselectall
 		  
 		  
@@ -330,7 +404,15 @@ Inherits SelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Oldcolor(-1) As couleur
+		newfill As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		OldColors(-1,-1) As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		OldFills(-1) As Integer
 	#tag EndProperty
 
 
@@ -340,6 +422,11 @@ Inherits SelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
@@ -404,6 +491,11 @@ Inherits SelectOperation
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="newfill"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="nobj"
 			Group="Behavior"
 			InitialValue="0"
@@ -422,9 +514,8 @@ Inherits SelectOperation
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SidetoPaint"
+			Name="side"
 			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty

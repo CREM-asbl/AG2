@@ -4,6 +4,7 @@ Protected Class MatrixnD
 		Sub Constructor(n As integer)
 		  nc = n
 		  
+		  redim col(-1,-1)
 		  redim col(nc-1,nc-1)
 		  
 		  

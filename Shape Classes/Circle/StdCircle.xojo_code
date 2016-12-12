@@ -96,7 +96,7 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  points(0).moveto p
-		  
+		  'coord.centres(1) = p
 		  updatecoord
 		  
 		End Sub
@@ -162,7 +162,7 @@ Inherits Circle
 			Name="arcangle"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
@@ -237,11 +237,6 @@ Inherits Circle
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hybrid"
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="id"
 			Group="Behavior"
 			InitialValue="0"
@@ -310,6 +305,11 @@ Inherits Circle
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="narcs"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="ncpts"
 			Group="Behavior"
 			InitialValue="0"
@@ -356,6 +356,11 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"
