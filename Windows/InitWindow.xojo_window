@@ -32,7 +32,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -83,7 +83,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   454
+      Top             =   464
       Underline       =   False
       Visible         =   False
       Width           =   71
@@ -206,7 +206,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   576
+      Left            =   572
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -219,7 +219,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   454
+      Top             =   464
       Underline       =   False
       Visible         =   True
       Width           =   108
@@ -230,7 +230,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -250,7 +250,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   428
+      Top             =   432
       Underline       =   False
       Visible         =   True
       Width           =   180
