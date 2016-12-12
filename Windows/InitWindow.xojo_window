@@ -32,7 +32,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -83,7 +83,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   454
+      Top             =   464
       Underline       =   False
       Visible         =   False
       Width           =   71
@@ -219,7 +219,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   454
+      Top             =   464
       Underline       =   False
       Visible         =   True
       Width           =   108
@@ -230,7 +230,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -250,7 +250,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   428
+      Top             =   432
       Underline       =   False
       Visible         =   True
       Width           =   180
@@ -259,14 +259,6 @@ End
 #tag EndWindow
 
 #tag WindowCode
-	#tag Method, Flags = &h0
-		Sub Continuer()
-		  Config.Menu = PopupMenu1.Text
-		  Config.ChargerConfig
-		  Close
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub Refresh()
 		  PushButton2.Caption = Dico.Value("Enseignant")
@@ -327,7 +319,9 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Continuer
+		  Config.Menu = PopupMenu1.Text
+		  App.Continuer
+		  Close
 		  
 		  
 		End Sub
@@ -338,7 +332,7 @@ End
 		Function KeyDown(Key As String) As Boolean
 		  if Key = chr(13) then
 		    if me.text <> "" then
-		      Continuer
+		      app.Continuer
 		    end if
 		  end if
 		End Function
@@ -412,7 +406,6 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  'Continuer
 		  Quit
 		  
 		End Sub
