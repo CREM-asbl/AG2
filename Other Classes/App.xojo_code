@@ -26,42 +26,42 @@ Inherits Application
 
 	#tag Event
 		Sub EnableMenuItems()
-		  dim B, B1, B2 as boolean
-		  dim item as MenuItem
-		  dim i as integer
-		  
-		  
-		  if currentcontent <> nil  then
-		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		  end if
-		  
-		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
-		    B =  CurrentContent.TheObjects.count > 1
-		    B1 = CurrentContent.TheGrid <> nil
-		    B2 = can.rep.labs.count > 0
-		    B = (B or B1 or B2) and not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
-		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
-		      wnd.pushbutton1.enabled = true 
-		    end if
-		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
-		    end if
-		  else
-		    B = false
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
-		  end if
-		  
-		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
-		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		  'dim B, B1, B2 as boolean
+		  'dim item as MenuItem
+		  'dim i as integer
+		  '
+		  '
+		  'if currentcontent <> nil  then
+		  'MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		  'MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  'end if
+		  '
+		  'if wnd<>nil and can.rep <> nil and currentcontent <> nil then
+		  'B =  CurrentContent.TheObjects.count > 1
+		  'B1 = CurrentContent.TheGrid <> nil
+		  'B2 = can.rep.labs.count > 0
+		  'B = (B or B1 or B2) and not currentcontent.macrocreation
+		  'MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		  'MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		  'if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
+		  'MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		  'wnd.pushbutton1.enabled = true 
+		  'end if
+		  'if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
+		  'MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		  'end if
+		  'else
+		  'B = false
+		  'MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		  'MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		  'end if
+		  '
+		  'MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
+		  'MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		  'MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  'MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		  'MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		  'MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
 		End Sub
 	#tag EndEvent
@@ -79,8 +79,7 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate
-		    init
-		    themacros = new macroslist
+		    
 		  end if
 		  
 		End Sub
@@ -282,6 +281,19 @@ Inherits Application
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Continuer()
+		  dim ww as WorkWindow
+		  
+		  Config.ChargerConfig
+		  themacros = new macroslist
+		  Tampon = new ObjectsList
+		  ww = new WorkWindow
+		  ww.ShowModal
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function DicoDispo() As string()
 		  dim dicos(-1), nom as String
 		  dim i as integer
@@ -305,7 +317,7 @@ Inherits Application
 		Sub init()
 		  iw=new initWindow
 		  iw.ShowModal
-		  Tampon = new ObjectsList
+		  
 		  
 		  
 		End Sub

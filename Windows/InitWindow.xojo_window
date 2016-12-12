@@ -206,7 +206,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   572
+      Left            =   576
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -259,14 +259,6 @@ End
 #tag EndWindow
 
 #tag WindowCode
-	#tag Method, Flags = &h0
-		Sub Continuer()
-		  Config.Menu = PopupMenu1.Text
-		  Config.ChargerConfig
-		  Close
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub Refresh()
 		  PushButton2.Caption = Dico.Value("Enseignant")
@@ -327,7 +319,9 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Continuer
+		  Config.Menu = PopupMenu1.Text
+		  App.Continuer
+		  Close
 		  
 		  
 		End Sub
@@ -338,7 +332,7 @@ End
 		Function KeyDown(Key As String) As Boolean
 		  if Key = chr(13) then
 		    if me.text <> "" then
-		      Continuer
+		      app.Continuer
 		    end if
 		  end if
 		End Function
@@ -412,7 +406,6 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  'Continuer
 		  Quit
 		  
 		End Sub
