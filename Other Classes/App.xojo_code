@@ -79,7 +79,8 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate
-		    
+		    iw=new initWindow
+		    iw.ShowModal
 		  end if
 		  
 		End Sub
@@ -315,8 +316,7 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub init()
-		  iw=new initWindow
-		  iw.ShowModal
+		  
 		  
 		  
 		  
