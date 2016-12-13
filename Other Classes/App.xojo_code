@@ -79,8 +79,9 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate
+		    dim iw As InitWindow
 		    iw=new initWindow
-		    iw.ShowModal
+		    iw.Show
 		  end if
 		  
 		End Sub
@@ -289,7 +290,7 @@ Inherits Application
 		  themacros = new macroslist
 		  Tampon = new ObjectsList
 		  ww = new WorkWindow
-		  ww.ShowModal
+		  ww.Show
 		  
 		End Sub
 	#tag EndMethod
@@ -312,15 +313,6 @@ Inherits Application
 		  
 		  return dicos
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub init()
-		  
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -478,10 +470,6 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		ipctransfert As boolean = false
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		iw As InitWindow
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
