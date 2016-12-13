@@ -83,4 +83,18 @@
 		Imported=True
 	#tag EndFileType
 
+	#tag FileType
+		CodeName=RTF
+		Extension=rtf
+		Flags=&h0
+		MacCreator=
+		MacType=RTF
+		Name=RTF
+		UTI=
+		UTIConformsTo=
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
 #tag EndFileTypeSet
