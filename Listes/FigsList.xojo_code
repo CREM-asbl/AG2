@@ -779,7 +779,7 @@ Inherits Liste
 		      end if
 		    next
 		  elseif f.idfig <> -1 and CurrentContent.ForHisto  then
-		    if (self = CurrentContent.TheFigs ) and (not wnd.dblclic  or (CurrentContent.currentoperation.currentshape.indexconstructedpoint > 1)) then
+		    if (self = CurrentContent.TheFigs ) and (CurrentContent.currentoperation.currentshape.indexconstructedpoint > 1) then
 		      f.XMLPutInContainer(0,CurrentContent.Oplist)
 		    end if
 		  end if

@@ -35,7 +35,6 @@ Begin Window WorkWindow
       Bkcol           =   &c00000000
       ctxt            =   False
       DoubleBuffer    =   True
-      Doubleclicktime =   0
       drapzone        =   False
       Enabled         =   True
       EraseBackground =   False
@@ -48,9 +47,6 @@ Begin Window WorkWindow
       info            =   ""
       InitialParent   =   ""
       iobj            =   0
-      lastclickticks  =   0
-      lastclickx      =   0
-      lastclicky      =   0
       Left            =   115
       LockBottom      =   False
       LockedInPosition=   False
@@ -93,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -720,11 +717,50 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
+		  'pourquoi la gestion du curseur se trouve ici ? Cela devrait se trouver dans MyCanvas1
 		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
 		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
 		    setcross
 		  end if
+		  
+		  dim B, B1, B2 as boolean
+		  dim item as MenuItem
+		  dim i as integer
+		  
+		  
+		  if currentcontent <> nil  then
+		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  end if
+		  
+		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
+		    B =  CurrentContent.TheObjects.count > 1
+		    B1 = CurrentContent.TheGrid <> nil
+		    B2 = can.rep.labs.count > 0
+		    B = (B or B1 or B2) and not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
+		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		      wnd.pushbutton1.enabled = true 
+		    end if
+		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
+		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		    end if
+		  else
+		    B = false
+		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		  end if
+		  
+		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
+		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		  
 		  
 		  
 		End Sub
@@ -2190,16 +2226,7 @@ End
 		    mitem.append sm
 		    MenuBar.append mitem
 		  end if
-		  if app.StageCode = 2 then
-		    mitem = new MenuItem
-		    mitem.Name = "Beta"
-		    mitem.Text = Dico.Value("Beta")
-		    sm = new MenuItem 'sous-menu nécessaire pour fonctionner sur Mac
-		    sm.Name = "BetaRapport"
-		    sm.Text = Dico.Value("Rapport")
-		    mitem.append sm
-		    MenuBar.append mitem
-		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -2235,8 +2262,6 @@ End
 		  else
 		    item.Text = mitem.Text
 		  end if
-		  'item.icon = mitem.icon
-		  
 		  
 		  if item.name = "PrefsFreeForms" then
 		    return nil
@@ -2993,10 +3018,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		dblclic As boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		drapdim As boolean
 	#tag EndProperty
 
@@ -3108,7 +3129,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3150,7 +3171,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3182,14 +3203,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3206,7 +3227,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -3291,7 +3312,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3303,7 +3324,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    selectedTool = index
@@ -3319,12 +3340,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
@@ -3377,11 +3398,6 @@ End
 		Group="OS X (Carbon)"
 		InitialValue="False"
 		Type="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="dblclic"
-		Group="Behavior"
-		Type="boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="drapdim"
