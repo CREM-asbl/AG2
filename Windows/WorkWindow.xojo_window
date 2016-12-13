@@ -720,11 +720,50 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
+		  'pourquoi la gestion du curseur se trouve ici ? Cela devrait se trouver dans MyCanvas1
 		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
 		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
 		    setcross
 		  end if
+		  
+		  dim B, B1, B2 as boolean
+		  dim item as MenuItem
+		  dim i as integer
+		  
+		  
+		  if currentcontent <> nil  then
+		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  end if
+		  
+		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
+		    B =  CurrentContent.TheObjects.count > 1
+		    B1 = CurrentContent.TheGrid <> nil
+		    B2 = can.rep.labs.count > 0
+		    B = (B or B1 or B2) and not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
+		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		      wnd.pushbutton1.enabled = true 
+		    end if
+		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
+		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		    end if
+		  else
+		    B = false
+		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		  end if
+		  
+		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
+		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		  
 		  
 		  
 		End Sub
@@ -2190,16 +2229,7 @@ End
 		    mitem.append sm
 		    MenuBar.append mitem
 		  end if
-		  if app.StageCode = 2 then
-		    mitem = new MenuItem
-		    mitem.Name = "Beta"
-		    mitem.Text = Dico.Value("Beta")
-		    sm = new MenuItem 'sous-menu nécessaire pour fonctionner sur Mac
-		    sm.Name = "BetaRapport"
-		    sm.Text = Dico.Value("Rapport")
-		    mitem.append sm
-		    MenuBar.append mitem
-		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -2235,8 +2265,6 @@ End
 		  else
 		    item.Text = mitem.Text
 		  end if
-		  'item.icon = mitem.icon
-		  
 		  
 		  if item.name = "PrefsFreeForms" then
 		    return nil
