@@ -249,6 +249,23 @@ Inherits Canvas
 	#tag EndEvent
 
 	#tag Event
+		Sub DoubleClick(X As Integer, Y As Integer)
+		  dim s as shape
+		  
+		  if  CurrentContent.currentoperation isa shapeconstruction then
+		    s =  CurrentContent.CurrentOperation.currentshape
+		    if (s.fam > 10 and s.IndexConstructedPoint = 0)  then
+		      CurrentContent.undolastoperation
+		      wnd.refreshtitle
+		    elseif  (s.fam <=10 and s.IndexConstructedpoint >= 1) then
+		      CurrentContent.abortconstruction
+		    end if
+		  end if
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Function KeyDown(Key As String) As Boolean
 		  if asc(key)  = 32 then
 		    choixcontextmenu
@@ -335,27 +352,9 @@ Inherits Canvas
 
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
-		  // Le mouseup attend que les opérations lancées par le mousedown soient terminées avant de s'exécuter
-		  
-		  Dim  currentClickTicks as Integer
-		  
-		  wnd.dblclic = false
-		  
-		  currentClickTicks = ticks
-		  
-		  //if the two clicks happened close enough together in time and the two clicks occured close enough together in space
-		  if (currentClickTicks - lastClickTicks) <= 0.02*doubleClickTime and Abs(X - lastClickX) <= 5 And Abs(Y - LastClickY) <= 5 then
-		    if  CurrentContent.currentoperation isa shapeconstruction then
-		      MsgBox Dico.Value("Doubleclick")
-		      DoubleClick //a double click has occured so call the event
-		      return
-		    end if
-		  elseif CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
+		  if CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
 		    CurrentContent.CurrentOperation.MouseUp(itransform(new BasicPoint(x,y)))
 		  end if
-		  lastClickTicks =currentclickticks
-		  lastClickX = X
-		  lastClickY = Y
 		  
 		  
 		  
@@ -376,7 +375,7 @@ Inherits Canvas
 
 	#tag Event
 		Sub Open()
-		  Readdblclicktime
+		  'Readdblclicktime
 		  if config <> nil then
 		    zone = new ovalshape
 		    zone.width = 2*config.magneticdist
@@ -471,27 +470,6 @@ Inherits Canvas
 	#tag Method, Flags = &h0
 		Sub DeleteRepere()
 		  rep.delete
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Doubleclick()
-		  dim s as shape
-		  
-		  wnd.dblclic = true
-		  s =  CurrentContent.CurrentOperation.currentshape
-		  if (s.fam > 10 and s.IndexConstructedPoint = 0)  then
-		    CurrentContent.undolastoperation
-		    wnd.refreshtitle
-		  elseif  (s.fam <=10 and s.IndexConstructedpoint >= 1) then
-		    CurrentContent.abortconstruction
-		  end if
-		  CurrentContent.currentoperation = nil
-		  lastClickTicks = 0
-		  lastClickX = 0
-		  lastClickY = 0
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -602,39 +580,6 @@ Inherits Canvas
 		Function MouseUser() As basicpoint
 		  return itransform (MouseCan)
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Readdblclicktime()
-		  
-		  #If TargetMacOS then
-		    #if TargetCarbon then
-		      Declare Function GetDblTime Lib "Carbon" () as Integer
-		    #endif
-		    DoubleClickTime = GetDblTime()
-		  #endif
-		  
-		  #if TargetWin32 then
-		    Declare Function GetDoubleClickTime Lib "User32.DLL" () as Integer
-		    doubleClickTime = GetDoubleClickTime()
-		  #endif
-		  
-		  #if TargetLinux then
-		    Declare Function gtk_settings_get_default lib "libgtk-x11-2.0.so" as Ptr
-		    Declare Sub g_object_get lib "libgtk-x11-2.0.so" (Obj as Ptr, _
-		    first_property_name as CString, byref doubleClicktime as Integer, _
-		    Null as Integer)
-		    
-		    Dim gtkSettings as MemoryBlock
-		    
-		    gtkSettings = gtk_settings_get_default()
-		    
-		    g_object_get(gtkSettings,"gtk-double-click-time",doubleClickTime, 0)
-		    // DoubleClickTime now holds the number of milliseconds
-		    DoubleClickTime = DoubleClickTime / 1000.0 * 60
-		  #endif
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -841,10 +786,6 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Doubleclicktime As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		drapzone As Boolean
 	#tag EndProperty
 
@@ -870,18 +811,6 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		iobj As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		lastclickticks As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		lastclickx As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		lastclicky As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -990,12 +919,6 @@ Inherits Canvas
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Doubleclicktime"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="drapzone"
 			Group="Behavior"
 			InitialValue="0"
@@ -1066,24 +989,6 @@ Inherits Canvas
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="iobj"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="lastclickticks"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="lastclickx"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="lastclicky"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
