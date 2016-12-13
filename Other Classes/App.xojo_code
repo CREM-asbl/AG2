@@ -316,15 +316,6 @@ Inherits Application
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub init()
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub InitFolders()
 		  AppFolder=GetFolderItem("")
 		  #if DebugBuild then
