@@ -260,7 +260,6 @@ Inherits Canvas
 		    elseif  (s.fam <=10 and s.IndexConstructedpoint >= 1) then
 		      CurrentContent.abortconstruction
 		    end if
-		    CurrentContent.currentoperation = nil
 		  end if
 		  
 		End Sub
@@ -356,7 +355,6 @@ Inherits Canvas
 		  if CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
 		    CurrentContent.CurrentOperation.MouseUp(itransform(new BasicPoint(x,y)))
 		  end if
-		  MsgBox "mouseup"
 		  
 		  
 		  
