@@ -35,7 +35,6 @@ Begin Window WorkWindow
       Bkcol           =   &c00000000
       ctxt            =   False
       DoubleBuffer    =   True
-      Doubleclicktime =   0
       drapzone        =   False
       Enabled         =   True
       EraseBackground =   False
@@ -48,9 +47,6 @@ Begin Window WorkWindow
       info            =   ""
       InitialParent   =   ""
       iobj            =   0
-      lastclickticks  =   0
-      lastclickx      =   0
-      lastclicky      =   0
       Left            =   115
       LockBottom      =   False
       LockedInPosition=   False
@@ -3018,10 +3014,6 @@ End
 
 	#tag Property, Flags = &h1
 		Protected Cerc As OvalSkull
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		dblclic As boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
