@@ -84,7 +84,7 @@ Inherits Application
 		  curoper = CurrentContent.CurrentOperation
 		  
 		  if (System.Network.IsConnected or TargetLinux) and tos <> nil then
-		    NWI = System.GetNetworkInterface
+		    NWI = System.GetNetworkInterface(0)
 		    st = error.Stack
 		    tos.WriteLine "BuildDate : "+str(self.BuildDate)
 		    tos.WriteLine ""

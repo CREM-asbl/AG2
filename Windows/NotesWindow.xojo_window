@@ -352,9 +352,9 @@ End
 		  
 		  Dim f as FolderItem=GetSaveFolderItem(FileAGTypes.RTF,nomfich)
 		  If f <> nil then
-		      Dim s as TextOutputStream=TextOutputStream.Create(f)
-		      s.Write EF.StyledText.RTFData
-		      s = nil
+		    Dim s as TextOutputStream=TextOutputStream.Create(f)
+		    s.Write EF.StyledText.RTFData
+		    s = nil
 		  End if
 		End Sub
 	#tag EndMethod
