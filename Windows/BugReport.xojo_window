@@ -424,7 +424,6 @@ End
 		  
 		  code = val( NthField(msg," ",1))
 		  
-		  
 		  select case code
 		  case 220
 		    me.Commande("USER",me.login)
