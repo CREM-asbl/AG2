@@ -3465,11 +3465,6 @@ End
 		Type="Boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="dblclic"
-		Group="Behavior"
-		Type="boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
 		Name="drapdim"
 		Group="Behavior"
 		Type="boolean"
