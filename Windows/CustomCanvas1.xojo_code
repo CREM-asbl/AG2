@@ -247,8 +247,6 @@ Inherits Canvas
 		Sub DoubleClick(X As Integer, Y As Integer)
 		  dim s as shape
 		  
-		  MsgBox "Double click"
-		  
 		  if  CurrentContent.currentoperation isa shapeconstruction then
 		    s =  CurrentContent.CurrentOperation.currentshape
 		    if (s.fam > 10 and s.IndexConstructedPoint = 0)  then
@@ -257,12 +255,6 @@ Inherits Canvas
 		      CurrentContent.abortconstruction
 		    end if
 		  end if
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub EnableMenuItems()
 		  
 		End Sub
 	#tag EndEvent
@@ -350,11 +342,6 @@ Inherits Canvas
 
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
-		  // Le mouseup attend que les opérations lancées par le mousedown soient terminées avant de s'exécuter
-		  
-		  
-		  
-		  
 		  if CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
 		    CurrentContent.CurrentOperation.MouseUp(itransform(new BasicPoint(x,y)))
 		  end if

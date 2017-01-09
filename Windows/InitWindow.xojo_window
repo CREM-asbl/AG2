@@ -260,16 +260,6 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Sub Continuer()
-		  config.Menu = PopupMenu1.Text
-		  Config.ChargerConfig
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Refresh()
 		  PushButton2.Caption = Dico.Value("Enseignant")
 		  PushButton3.Caption = Dico.value("Pupil")
@@ -329,8 +319,9 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Continuer
-		  close
+		  Config.Menu = PopupMenu1.Text
+		  App.Continuer
+		  Close
 		  
 		  
 		  
@@ -341,7 +332,7 @@ End
 	#tag Event
 		Function KeyDown(Key As String) As Boolean
 		  if Key = chr(13) and  me.text <> "" then
-		    Continuer
+		    app.Continuer
 		  end if
 		  
 		End Function
@@ -415,9 +406,7 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  continuer
-		  quit
-		  'close
+		  Quit
 		  
 		End Sub
 	#tag EndEvent
