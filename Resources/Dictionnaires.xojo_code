@@ -989,6 +989,12 @@ Protected Module Dictionnaires
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function unselect() As string
+		  return dico.value("unselect")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function wait() As string
 		  return dico.value("wait")
 		End Function

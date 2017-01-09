@@ -91,7 +91,11 @@ Inherits Timer
 		  curtsf = curop.tsf
 		  can.MouseCursor = system.Cursors.wait
 		  niter = 60
-		  M1 = curop.tsf.RacN(niter)
+		  if curop.tsf.type <> 9 and curop.tsf.type <> 11 then
+		    M1 = curop.tsf.M.RacN(niter)
+		  else
+		    M1 = curop.tsf.RacN(niter)
+		  end if
 		  Mode = 2'ModeMultiple
 		  period= 50
 		  pas = niter

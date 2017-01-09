@@ -7,7 +7,9 @@ Inherits Application
 		    ipc.send(FileName)
 		    ipctransfert = false
 		  end if
+		  
 		  Config.Save
+		  return false
 		  
 		End Function
 	#tag EndEvent
@@ -25,11 +27,49 @@ Inherits Application
 	#tag EndEvent
 
 	#tag Event
+		Sub EnableMenuItems()
+		  
+		  dim B, B1, B2 as boolean
+		  dim item as MenuItem
+		  dim i as integer
+		  
+		  
+		  if currentcontent <> nil  then
+		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		  end if
+		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
+		    B =  CurrentContent.TheObjects.count > 1
+		    B1 = CurrentContent.TheGrid <> nil
+		    B2 = can.rep.labs.count > 0
+		    B = (B or B1 or B2) and not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
+		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		      wnd.pushbutton1.enabled = true 
+		    end if
+		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
+		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		    end if
+		  else
+		    B = false
+		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		  end if
+		  
+		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
+		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Open()
 		  CheckProcess
-		  #if TargetWin32 then
-		    UseGDIPlus=true
-		  #endif
 		  if not ipctransfert then
 		    CheckSystem
 		    InitFolders
@@ -37,9 +77,8 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate
-		    dim iw As InitWindow
-		    iw=new initWindow
-		    iw.Show
+		    init
+		    themacros = new macroslist
 		  end if
 		  
 		End Sub
@@ -70,7 +109,7 @@ Inherits Application
 		  dim i as integer
 		  dim curoper as Operation
 		  dim tos as TextOutputStream
-		  dim NWI As  NetworkInterface
+		  'dim NWI As  NetworkInterface
 		  dim Log as FolderItem
 		  
 		  
@@ -83,76 +122,76 @@ Inherits Application
 		  tos = Log.CreateTextFile
 		  curoper = CurrentContent.CurrentOperation
 		  
-		  if (System.Network.IsConnected or TargetLinux) and tos <> nil then
-		    NWI = System.GetNetworkInterface(0)
-		    st = error.Stack
-		    tos.WriteLine "BuildDate : "+str(self.BuildDate)
+		  'if (System.Network.IsConnected or TargetLinux) and tos <> nil then
+		  'NWI = System.GetNetworkInterface
+		  st = error.Stack
+		  tos.WriteLine "BuildDate : "+str(self.BuildDate)
+		  tos.WriteLine ""
+		  tos.WriteLine "**** Runtime - Error Type****"
+		  tos.WriteLine ""
+		  tos.WriteLine str(Runtime.ObjectCount)+" éléments actifs"
+		  tos.WriteLine str(Runtime.MemoryUsed/1000000)+" Mo en mémoire"
+		  if Config<>nil then
 		    tos.WriteLine ""
-		    tos.WriteLine "**** Runtime - Error Type****"
+		    tos.WriteLine "**** Configuration ****"
 		    tos.WriteLine ""
-		    tos.WriteLine str(Runtime.ObjectCount)+" éléments actifs"
-		    tos.WriteLine str(Runtime.MemoryUsed/1000000)+" Mo en mémoire"
-		    if Config<>nil then
-		      tos.WriteLine ""
-		      tos.WriteLine "**** Configuration ****"
-		      tos.WriteLine ""
-		      tos.WriteLine "Formes standards : "+Config.stdfile
-		      tos.WriteLine ""
-		      tos.WriteLine "**** Operation ****"
-		      tos.WriteLine ""
-		    end if
-		    
-		    if curoper <>nil then
-		      tos.WriteLine "Opération active : "+curoper.GetName
-		      if not curoper isa ReadHisto then
-		        if curoper.CurrentShape <> nil then
-		          tos.WriteLine "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id)
-		        else
-		          tos.WriteLine "Curoper.CurrentShape = nil"
-		        end if
-		      end if
-		    else
-		      tos.WriteLine "Ouverture de Fichier ou Operation Nil"
-		    end if
-		    
+		    tos.WriteLine "Formes standards : "+Config.stdfile
 		    tos.WriteLine ""
-		    tos.WriteLine "**** Debug message ****"
-		    if error isa OutOfMemoryException then
-		      tos.WriteLine "OutOfMemoryException"
-		    elseif error isa FunctionNotFoundException then
-		      tos.WriteLine "FunctionNotFoundException"
-		    elseif error isa IllegalCastException then
-		      tos.WriteLine "IllegalCastException"
-		    elseif error isa NilObjectException then
-		      tos.WriteLine "NilObjectException"
-		    elseif error isa OutOfBoundsException then
-		      tos.WriteLine "OutOfBoundsException"
-		    elseif error isa StackOverflowException then
-		      tos.WriteLine "StackOverflowException"
-		    elseif error isa XmlException then
-		      tos.WriteLine "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node
-		    else
-		      tos.WriteLine "Autre erreur"
-		    end if
-		    tos.Write error.message
+		    tos.WriteLine "**** Operation ****"
 		    tos.WriteLine ""
-		    tos.WriteLine "**** fin Debug message ****"
-		    tos.WriteLine ""
-		    tos.WriteLine "**** Error Stack ****"
-		    tos.WriteLine ""
-		    tos.WriteLine str(error.ErrorNumber)
-		    for i = 0 to UBound(St)
-		      tos.WriteLine st(i)
-		    next
-		    
-		    Log = SpecialFolder.Documents.Parent
-		    if Log <> nil then
-		      cre = Log.Name
-		    end if
-		    tos.writeline "Createur :" + cre
-		    tos.WriteLine NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress
-		    tos.Close
 		  end if
+		  
+		  if curoper <>nil then
+		    tos.WriteLine "Opération active : "+curoper.GetName
+		    if not curoper isa ReadHisto then
+		      if curoper.CurrentShape <> nil then
+		        tos.WriteLine "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id)
+		      else
+		        tos.WriteLine "Curoper.CurrentShape = nil"
+		      end if
+		    end if
+		  else
+		    tos.WriteLine "Ouverture de Fichier ou Operation Nil"
+		  end if
+		  
+		  tos.WriteLine ""
+		  tos.WriteLine "**** Debug message ****"
+		  if error isa OutOfMemoryException then
+		    tos.WriteLine "OutOfMemoryException"
+		  elseif error isa FunctionNotFoundException then
+		    tos.WriteLine "FunctionNotFoundException"
+		  elseif error isa IllegalCastException then
+		    tos.WriteLine "IllegalCastException"
+		  elseif error isa NilObjectException then
+		    tos.WriteLine "NilObjectException"
+		  elseif error isa OutOfBoundsException then
+		    tos.WriteLine "OutOfBoundsException"
+		  elseif error isa StackOverflowException then
+		    tos.WriteLine "StackOverflowException"
+		  elseif error isa XmlException then
+		    tos.WriteLine "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node
+		  else
+		    tos.WriteLine "Autre erreur"
+		  end if
+		  tos.Write error.message
+		  tos.WriteLine ""
+		  tos.WriteLine "**** fin Debug message ****"
+		  tos.WriteLine ""
+		  tos.WriteLine "**** Error Stack ****"
+		  tos.WriteLine ""
+		  tos.WriteLine str(error.ErrorNumber)
+		  for i = 0 to UBound(St)
+		    tos.WriteLine st(i)
+		  next
+		  
+		  Log = SpecialFolder.Documents.Parent
+		  if Log <> nil then
+		    cre = Log.Name
+		  end if
+		  tos.writeline "Createur :" + cre
+		  'tos.WriteLine NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress
+		  tos.Close
+		  
 		  
 		  if not curoper isa ReadHisto then
 		    CurrentContent.currentfile = App.DocFolder.Child("Bug.fag")
@@ -241,19 +280,6 @@ Inherits Application
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Continuer()
-		  dim ww as WorkWindow
-		  
-		  Config.ChargerConfig
-		  themacros = new macroslist
-		  Tampon = new ObjectsList
-		  ww = new WorkWindow
-		  ww.Show
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function DicoDispo() As string()
 		  dim dicos(-1), nom as String
 		  dim i as integer
@@ -271,6 +297,14 @@ Inherits Application
 		  
 		  return dicos
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub init()
+		  iw=new initWindow
+		  iw.ShowModal
+		  Tampon = new ObjectsList
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -351,18 +385,13 @@ Inherits Application
 		  dim stdfiles(-1),nom as String
 		  dim i as integer
 		  
-		  'for i=1 to AppFolder.count
-		  'nom = app.AppFolder.trueItem(i).Name
-		  'if right(nom,4)=".std" then
-		  'stdfiles.append(Left(nom,len(nom)-4))
-		  'end if
-		  'next
-		  
 		  stdfiles.append "jeu_de_base"
+		  stdfiles.append "jeu_reduit"
 		  stdfiles.append "cubes"
-		  stdfiles.append "pentaminos"
+		  stdfiles.append "polyminos"
 		  stdfiles.append "tangram"
 		  stdfiles.append "reglettes"
+		  stdfiles.append "etoiles"
 		  
 		  for i=1 to StdFolder.count
 		    nom = app.StdFolder.trueItem(i).Name
@@ -431,6 +460,10 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		iw As Initwindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		MacFolder As FolderItem
 	#tag EndProperty
 
@@ -444,6 +477,10 @@ Inherits Application
 
 	#tag Property, Flags = &h1
 		Protected mut As Mutex
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		prtsettings As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -499,6 +536,12 @@ Inherits Application
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="prtsettings"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="quiet"

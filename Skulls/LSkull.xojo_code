@@ -102,7 +102,7 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(n as integer, p as basicPoint)
+		Sub Constructor(n as integer, p as BasicPoint)
 		  // Calling the overridden superclass constructor.
 		  dim i as integer
 		  
@@ -110,8 +110,6 @@ Inherits NSkull
 		  for i = 0 to n-1
 		    append new curveshape
 		  next
-		  fill = 0
-		  'n est ici le nombre curveshapes, non le nombre de côtés
 		End Sub
 	#tag EndMethod
 
@@ -184,13 +182,6 @@ Inherits NSkull
 		    col = config.HideColor.col
 		  elseif s.highlighted then
 		    col = config.HighlightColor.col
-		    'elseif s.tsfi.count > 0 then
-		    'col = s.bordercolor.col
-		    'for i = 0 to s.tsfi.count -1
-		    'if s.tsfi.item(i).type > 0 then
-		    'col = config.transfocolor.col
-		    'end if
-		    'next
 		  elseif s.isinconstruction then
 		    col = config.weightlesscolor.col
 		    b = 100
@@ -203,8 +194,8 @@ Inherits NSkull
 		    updatesidecolor (s, 0, col, b)
 		    updatesidecolor (s, 2, col, b)
 		  elseif s isa secteur then
-		    updatesidecolorSecteur(secteur(s),0,col,b)
-		    updatesidecolorsecteur(secteur(s),2,col,b)
+		    updatesidecolor(s,0,col,b)
+		    updatesidecolor(s,2,col,b)
 		  else
 		    for i = 0 to s.npts-1
 		      updatesidecolor (s,i,col, b)
@@ -219,16 +210,36 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub fixeepaisseurs(s as shape)
 		  dim  i as integer
+		  dim c as double
+		  c = s.borderwidth
 		  
-		  if s isa lacet then
-		    for i = 0 to s.npts-1
-		      if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		        updatecurvewidth(s,i,2*s.borderwidth)
-		      else
-		        updatecurvewidth(s,i,s.borderwidth)
-		      end if
-		    next
+		  if (s.isinconstruction  or s.selected ) and not s.tracept then
+		    if s isa Bande  then
+		      updatecurvewidth (s, 0,1.5*c)
+		      updatecurvewidth (s, 2,1.5*c)
+		    elseif s isa Secteur then
+		      s.nsk.item(0).borderwidth =1.5*c
+		      s.nsk.item(4).borderwidth =1.5*c 
+		    else
+		      for i = 0 to s.npts-1
+		        updatecurvewidth(s,i,1.5*c)
+		      next
+		    end if
+		  else
+		    if s isa Bande  then
+		      updatecurvewidth (s, 0, c)
+		      updatecurvewidth (s, 2, c)
+		    elseif s  isa Secteur then
+		      s.nsk.item(0).borderwidth = c
+		      s.nsk.item(4).borderwidth = c 
+		    else
+		      for i = 0 to s.npts-1
+		        updatecurvewidth(s,i,c)
+		      next
+		    end if
 		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -284,10 +295,37 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub oldConstructor(n as integer, p as basicPoint, sh as shape)
+		  // Calling the overridden superclass constructor.
+		  dim i, j, k as integer
+		  
+		  Super.Constructor(p)
+		  for i = 0 to n-1
+		    append new curveshape
+		  next
+		  i = 0
+		  for j = 0 to sh.npts-1
+		    if sh.coord.curved(j) = 0 then
+		      item(i).order = 0
+		      i = i+1
+		    else
+		      for k = 0 to 2
+		        item(i+k).order = 2
+		      next
+		      i = i+3
+		    end if
+		  next
+		  fill = 0
+		  'n est ici le nombre de curveshapes, non le nombre de côtés
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
 		  
 		  if fill > 0 then
+		    border = 0
 		    g.drawobject self, x, y
 		  end if
 		  
@@ -299,6 +337,7 @@ Inherits NSkull
 		    g.drawobject item(0),x,y
 		    g.drawobject item(4),x,y
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -323,7 +362,18 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Untitled()
+		Sub PositionnerCotesCourbes()
+		  dim n, k as integer
+		  
+		  
+		  for n = 0 to skullof.npts-1
+		    if skullof.coord.curved(n) = 1 then
+		      k = GetSide(n)
+		      item(k).order = 2
+		      item(k+1).order = 2
+		      item(k+2).order = 2
+		    end if
+		  next
 		  
 		End Sub
 	#tag EndMethod
@@ -406,6 +456,7 @@ Inherits NSkull
 		  dim j, m, n as integer
 		  
 		  n = getside(i)
+		  
 		  if s.coord.curved(i) = 0 then
 		    s.nsk.item(n).borderwidth = c
 		  else
@@ -516,61 +567,14 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub updatesidecolor(s as shape, i as integer, col as color, b as integer)
-		  dim j as integer
-		  'if s.tsfi.count >0 then
-		  'for j = 0 to s.tsfi.count -1
-		  'if s.tsfi.item(j).index = i then
-		  'updatecurvecolor(s,i,col,b)
-		  'end if
-		  'next
-		  'for j = 0 to s.tsfi.count -1
-		  'if s.tsfi.item(j).index = i and s.tsfi.item(j).highlighted then
-		  'updatecurvecolor(s,i,config.HighlightColor.col,b)
-		  'end if
-		  'next
 		  
 		  
 		  if s.hidden  or s.isinconstruction or s.tracept Then
+		    updatecurvecolor(s,i, col,b)
+		  elseif s.highlighted and currentcontent.currentoperation <> nil and not currentcontent.currentoperation.colsep then
 		    updatecurvecolor(s,i, col,b)
 		  elseif s.highlighted then
 		    if s.side = -1  or s.side = i then  'cas des segments sélectionnés par une opération
-		      updatecurvecolor(s,i, col,b)
-		    else
-		      updatecurvecolor(s,i,s.colcotes(i).col,b)
-		    end if
-		  else
-		    updatecurvecolor(s,i, s.colcotes(i).col, b)
-		  end if
-		  
-		  
-		  '
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub updatesidecolorSecteur(s as secteur, i as integer, col as color, b as integer)
-		  dim j as integer
-		  dim op as Operation
-		  op = currentcontent.currentoperation 
-		  
-		  
-		  'if s.tsfi.count >0 then
-		  'for j = 0 to s.tsfi.count -1
-		  'if s.tsfi.item(j).index = i then 'combien vaut l'index pour côté <> 0 ?
-		  'updatecurvecolor(s,i,col,b)
-		  'end if
-		  'next
-		  'for j = 0 to s.tsfi.count -1
-		  'if s.tsfi.item(j).index = i and s.tsfi.item(j).highlighted then 'idem
-		  'updatecurvecolor(s,i,config.HighlightColor.col,b)
-		  'end if
-		  'next
-		  if s.hidden  or s.isinconstruction or s.tracept Then
-		    updatecurvecolor(s,i, col,b)
-		  elseif s.highlighted and op <> nil then
-		    
-		    if s.side = -1  or (i = op.side ) then  'cas des segments sélectionnés par une opération
 		      updatecurvecolor(s,i, col,b)
 		    else
 		      updatecurvecolor(s,i,s.colcotes(i).col,b)
@@ -591,11 +595,47 @@ Inherits NSkull
 		  
 		  if i = 0 then
 		    q = can.dtransform(nbp.tab(0)-gc)
-		    item(i).x = q.x
-		    item(i).y = q.y
+		    item(0).x = q.x
+		    item(0).y = q.y
 		    q = can.dtransform(nbp.tab(1)-gc)
-		    item(i).x2 = q.x
-		    item(i).y2 = q.y
+		    item(0).x2 = q.x
+		    item(0).y2 = q.y
+		  elseif i = 1 then
+		    q = can.dtransform(nbp.tab(1)-gc)
+		    item(1).x = q.x
+		    item(1).y = q.y
+		    q = can.dtransform(nbp.extre(0)-gc)
+		    item(1).X2=q.x
+		    item(1).y2=q.y
+		    item(2).x = q.x
+		    item(2).y = q.y
+		    q = can.dtransform(nbp.extre(1)-gc)
+		    item(2).x2 = q.x
+		    item(2).y2= q.y
+		    item(3).x = q.x
+		    item(3).y= q.y
+		    q = can.dtransform(nbp.tab(2) -gc)
+		    item(4).x2 = q.x
+		    item(4).y2 = q.y
+		    
+		    q = can.dtransform(nbp.ctrl(0) -gc)
+		    item(1).controlx(0) = q.x
+		    item(1).controly(0) = q.y
+		    q = can.dtransform(nbp.ctrl(1) -gc)
+		    item(1).controlx(1) = q.x
+		    item(1).controly(1) = q.y
+		    q = can.dtransform(nbp.ctrl(2) -gc)
+		    item(2).controlx(0) = q.x
+		    item(2).controly(0) = q.y
+		    q = can.dtransform(nbp.ctrl(3) -gc)
+		    item(3).controlx(1) = q.x
+		    item(3).controly(1) = q.y
+		    q = can.dtransform(nbp.ctrl(4) -gc)
+		    item(4).controlx(0) = q.x
+		    item(4).controly(0) = q.y
+		    q = can.dtransform(nbp.ctrl(5) -gc)
+		    item(4).controlx(1) = q.x
+		    item(4).controly(1) = q.y
 		  elseif i=2 then
 		    q = can.dtransform(nbp.tab(2)-gc)
 		    item(4).x = q.x
@@ -604,6 +644,7 @@ Inherits NSkull
 		    item(4).x2 = q.x
 		    item(4).y2 = q.y
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 

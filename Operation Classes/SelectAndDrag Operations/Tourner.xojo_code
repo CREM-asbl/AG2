@@ -151,7 +151,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  
-		  selectAndDragOperation.Paint(g)
+		  super.Paint(g)
 		  
 		  
 		  
@@ -301,6 +301,11 @@ Inherits SelectAndDragOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

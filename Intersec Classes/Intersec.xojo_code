@@ -322,18 +322,13 @@ Inherits SelectOperation
 		Sub init()
 		  dim i, j as integer
 		  
-		  redim reset(-1,-1)
-		  redim bezet(-1,-1)
-		  redim ids(-1,-1)
 		  redim reset(nlig,ncol)
-		  redim bezet(nlig,ncol)
 		  redim ids(nlig, ncol)
 		  
 		  for i = 0 to nlig
 		    for j = 0 to ncol
 		      bptinters(i,j) = nil
 		      val(i,j) = true
-		      bezet(i,j) = false
 		      reset(i,j) = false
 		    next
 		  next
@@ -418,9 +413,6 @@ Inherits SelectOperation
 		      end if
 		    next
 		  next
-		  
-		  
-		  
 		  return r1
 		  
 		End Function
@@ -429,7 +421,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h1
 		Protected Sub positionfalseinterpoints()
 		  //Les faux points d'intersection sont les  sommets communs aux deux formes sh1 ou sh2
-		  // ou les sommets de l'un qui sont pointsur sur l'autre. Ces points n'ont pas le statut de pointinter mais occupent la place
+		  // ou les sommets de l'un qui sont pointsur sur l'autre. (Exemple: point de tangence d'un cercle inscrit à un polygone.) Ces points n'ont pas le statut de pointinter mais occupent la place
 		  //d'un point inter. Celle-ci doit être mentionnée comme occupée. On les calcule en premier lieu.
 		  //Idem pour les points de subdivision
 		  
@@ -439,13 +431,15 @@ Inherits SelectOperation
 		  for h = 0 to nlig
 		    for k = 0 to ncol
 		      if bptinters(h,k) <> nil then
-		        for i = 0 to ubound(sh1.points)
-		          if   sh2.getindex(sh1.points(i)) <> -1 and sh1.points(i).forme < 2  and  sh1.points(i).bpt.distance(bptinters(h,k)) < epsilon then
+		        for i = 0 to ubound(sh1.childs)
+		          p = sh1.childs(i)
+		          if   sh2.getindex(p) <> -1 and p.forme < 2  and  p.bpt.distance(bptinters(h,k)) < epsilon then
 		            bezet(h, k) = true      ' on ne peut placer aucun vrai pt d'inter ici
 		          end if
 		        next
-		        for i = 0 to ubound(sh2.points)
-		          if   sh1.getindex(sh2.points(i)) <> -1 and sh2.points(i).pointsur.count < 2  and  sh2.points(i).bpt.distance(bptinters(h,k)) < epsilon then
+		        for i = 0 to ubound(sh2.childs)
+		          p = sh2.childs(i)
+		          if   sh1.getindex(p) <> -1 and p.pointsur.count < 2  and  p.bpt.distance(bptinters(h,k)) < epsilon then
 		            bezet(h, k) = true      ' ici non plus
 		          end if
 		        next
@@ -524,6 +518,11 @@ Inherits SelectOperation
 		  k = pt.numside(1)
 		  
 		  d =nearest(pt,i1,j1)
+		  
+		  if d > epsilon then
+		    pt.invalider
+		    return
+		  end if
 		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		    // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
 		    // peut être en défaut si A// B et B//C et que A inter C est calculé // prévoir la transitivité
@@ -704,6 +703,11 @@ Inherits SelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

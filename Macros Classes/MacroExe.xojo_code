@@ -38,6 +38,7 @@ Inherits MultipleSelectOperation
 		  MacInfo = new MacConstructionInfo(Mac)
 		  Mac.MacInf = MacInfo
 		  codesoper = Array(0,1,14,16,19,28,35,37,39,24,25,26,27,43,45,46)  //codes des opérations
+		  colsep = true
 		  Mac.codesoper = codesoper
 		  
 		End Sub
@@ -231,10 +232,8 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub CreateObject(EL as XMLElement, oper as integer)
 		  dim Curop as Operation
-		  dim Inter as Intersec
 		  dim i, n, rid, side as integer
 		  dim EL0, EL1, EL01, EL02 as XMLElement
-		  dim p as point
 		  dim createdshape as shape
 		  
 		  EL0 = XMLElement(EL.Child(0))
@@ -380,9 +379,12 @@ Inherits MultipleSelectOperation
 		    CurrentContent.CurrentFileUpToDate=false
 		    wnd.refreshtitle
 		    objects.unselectall
+		    objects.unhighlightall
 		    CurrentItemToSet=1
 		    Finished = true
+		    can.refreshbackground
 		  else
+		    currenthighlightedshape = nil
 		    super.EndOperation
 		  end if
 		  MacInfo = new MacConstructionInfo(Mac)
@@ -441,26 +443,40 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
-		  dim n,i as integer
+		  dim i as integer
 		  dim  sh as shape
-		  dim b as boolean
 		  
 		  sh = operation.getshape(p)
 		  str = lowercase(identifier(fa, fo))
 		  nobj = visible.count-1
 		  redim index(-1)
 		  redim index(nobj)
-		  selectionnerobjetini(p)
-		  for i = 0 to visible.count-1
+		  
+		  if visible.count = 0 then
+		    return nil
+		  end if
+		  
+		  for i =  visible.count-1 downto 0
 		    sh = visible.item(i)
+		    if not SelectionnerObjetIni(sh,p) then
+		      visremove(sh)
+		    end if
 		    index(i) =sh.pointonside(p)
 		  next
 		  sh = visible.item(iobj)
-		  if sh = nil then
-		    return nil
-		  end if
-		  side = index(iobj)     '-1 si p n'est pas sur le bord de sh
+		  side = index(iobj)
+		  
 		  return sh
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -497,35 +513,36 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  dim MacId, PId,  ninstruc as integer
-		  dim EL, EL1 as XMLElement
+		  dim MacId as integer
+		  dim sh as shape
 		  
 		  if ubound(Mac.ObInit) = -1 then
 		    return
 		  end if
-		  
+		  currenthighlightedshape = nil
 		  if fa = -1 and CurrentItemToSet > 0 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
 		    fa = Mac.FaInit(CurrentItemToSet-1)
 		    fo = Mac.FoInit(CurrentItemToSet-1)
 		  end if
-		  super.mousemove(p)  //appelle getshape
+		  currenthighlightedshape =getshape(p)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  
-		  currentshape = currenthighlightedshape
+		  'currentshape = currenthighlightedshape
 		  
-		  if visible  = nil or currentshape = nil then
+		  if visible  = nil or currenthighlightedshape = nil then
 		    display = choose + un + " " +str
 		  else
-		    if currentshape isa Lacet and side <> -1 and fa = 1 then
-		      currentshape.unhighlight
-		      Lacet(currentshape).paintside(g,side,2,config.highlightcolor)
-		    else
-		      currentshape.highlight
+		    if currenthighlightedshape isa Lacet and side <> -1 and fa = 1 then
+		      Lacet(currenthighlightedshape).paintside(g,side,2,config.highlightcolor)
+		    elseif side = -1 then
+		      currenthighlightedshape.highlight
 		    end if
 		    operation.paint(g)
 		    display = this(str) + " ?"
@@ -576,63 +593,57 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SelectionnerObjetIni(p as BasicPoint)
-		  dim i as integer
+		Function SelectionnerObjetIni(sh as shape, p as BasicPoint) As Boolean
 		  dim b as Boolean
-		  dim sh as shape
 		  
+		  b = (sh.fam = fa)
 		  
-		  for i = visible.count-1 downto 0
-		    sh = visible.item(i)
-		    b = (sh.fam = fa)
-		    
-		    select case fa                        //une macro valable pour (par ex) un Triangle doit pouvoir être appliquée à un triangiso ou un triangrect ou...
-		    case 1               //une macro valable pour un segment  (fa = 1, fo < 3) doit pouvoir être appliquée à un côté de polygone
-		      select case fo
-		      case 0
-		        b = (b and sh.forme <3) or  sh.validsegment(p, side)
-		      case 1, 2, 4, 5, 6, 7, 8
-		        b = b and (sh.forme = fo)
-		      case 3
-		        b = b and ((sh.forme >2)  and  (sh.forme < 6))
-		      end select
-		    case 2
-		      select case fo
-		      case 0
-		        b = b or (sh isa polreg and sh.npts = 3)
-		      case 1
-		        b =( b and ((sh.forme =1) or (sh.forme = 2)or (sh.forme = 4))) or (sh isa polreg and sh.npts = 3)
-		      case 2
-		        b = (b and  (sh.forme = 2)) or ( sh isa polreg and sh.npts = 3)
-		      case 3, 4
-		        b = b and  (sh.forme = fo)
-		      end select
+		  select case fa     //une macro valable pour (par ex) un Triangle doit pouvoir être appliquée à un triangiso ou un triangrect ou...
+		  case 1               //une macro valable pour un segment  (fa = 1, fo < 3) doit pouvoir être appliquée à un côté de polygone
+		    select case fo
+		    case 0
+		      b = (b and sh.forme <3) or  sh.validsegment(p, side)
+		    case 1, 2, 4, 5, 6, 7, 8
+		      b = b and (sh.forme = fo)
 		    case 3
-		      select case fo
-		      case 0
-		        b = b or  (sh isa polreg and sh.npts = 4)
-		      case 1
-		        b = b and (sh.forme > 0) 'and (sh.forme < 4)
-		      case 2
-		        b = ( b and (sh.forme  =2 or sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
-		      case 3
-		        b = (b and (sh.forme > 2)) or  (sh isa polreg and sh.npts = 4)
-		      case 4
-		        b = b and (sh.forme >= 4)
-		      case 5
-		        b = (b and (sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
-		      case 6, 7
-		        b = (b and sh.forme = fo) or (sh isa polreg and sh.npts = 4)
-		      end select
-		    case 4, 5, 6
-		      b = b and sh.forme = fo
+		      b = b and ((sh.forme >2)  and  (sh.forme < 6))
 		    end select
-		    
-		    if not b then
-		      visremove(sh)
-		    end if
-		  next
-		End Sub
+		  case 2
+		    select case fo
+		    case 0
+		      b = b or (sh isa polreg and sh.npts = 3)
+		    case 1
+		      b =( b and ((sh.forme =1) or (sh.forme = 2)or (sh.forme = 4))) or (sh isa polreg and sh.npts = 3)
+		    case 2
+		      b = (b and  (sh.forme = 2)) or ( sh isa polreg and sh.npts = 3)
+		    case 3, 4
+		      b = b and  (sh.forme = fo)
+		    end select
+		  case 3
+		    select case fo
+		    case 0
+		      b = b or  (sh isa polreg and sh.npts = 4)
+		    case 1
+		      b = b and (sh.forme > 0) 'and (sh.forme < 4)
+		    case 2
+		      b = ( b and (sh.forme  =2 or sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
+		    case 3
+		      b = (b and (sh.forme > 2)) or  (sh isa polreg and sh.npts = 4)
+		    case 4
+		      b = b and (sh.forme >= 4)
+		    case 5
+		      b = (b and (sh.forme = 5 or sh.forme = 7)) or  (sh isa polreg and sh.npts = 4)
+		    case 6, 7
+		      b = (b and sh.forme = fo) or (sh isa polreg and sh.npts = 4)
+		    end select
+		  case 4, 5, 6
+		    b = b and sh.forme = fo
+		  end select
+		  
+		  return b
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -773,6 +784,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

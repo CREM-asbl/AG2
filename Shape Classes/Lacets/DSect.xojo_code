@@ -20,7 +20,7 @@ Inherits Lacet
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
 		  
-		  arcangle = computeangle(points(2).bpt)
+		  arcangle = computeangle(1,points(2).bpt)
 		  
 		End Sub
 	#tag EndMethod
@@ -459,12 +459,6 @@ Inherits Lacet
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

@@ -689,6 +689,7 @@ Inherits Bipoint
 		  dim  ep, np, eq, nq, w as Basicpoint
 		  dim t as Boolean
 		  dim n as integer
+		  dim d as double
 		  
 		  sf = getsousfigure(fig)
 		  p = points(0)
@@ -697,10 +698,10 @@ Inherits Bipoint
 		  sf.getoldnewpos(q,eq,nq)
 		  
 		  n = sf.NbSommSur
+		  w = constructbasis
 		  
 		  select case n
 		  case 0
-		    w = constructbasis
 		    nq = nq.Projection(np,np+w)
 		    q.moveto nq
 		    return new SimilarityMatrix(ep,eq,np,nq)
@@ -708,7 +709,13 @@ Inherits Bipoint
 		    n = sf.ListSommSur(0)
 		    t = sf.replacerpoint(points(n))
 		    if n = 0 then
-		      return prpupdate11(p,eq,ep,nq,np)
+		      if  q.forme = 0 then
+		        nq = nq.Projection(np,np+w)
+		        q.moveto nq
+		        return new SimilarityMatrix(ep,eq,np,nq)
+		      else
+		        return prpupdate11(p,eq,ep,nq,np)
+		      end if
 		    else
 		      return prpupdate11(q,ep,eq,np,nq)
 		    end if

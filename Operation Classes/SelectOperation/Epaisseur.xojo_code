@@ -11,7 +11,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ep as integer)
+		Sub Constructor(ep as double)
 		  
 		  super.constructor
 		  OpId = 13
@@ -178,17 +178,22 @@ Inherits SelectOperation
 
 
 	#tag Property, Flags = &h0
-		Oldthicknesses(-1) As Integer
+		Oldthicknesses(-1) As double
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Thickness As Integer
+		Thickness As double
 	#tag EndProperty
 
 
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
@@ -287,7 +292,7 @@ Inherits SelectOperation
 			Name="Thickness"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Integer"
+			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"

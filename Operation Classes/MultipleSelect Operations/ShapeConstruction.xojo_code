@@ -212,18 +212,14 @@ Inherits MultipleSelectOperation
 		        currentshape = new DSect(objects,p)
 		      end select
 		    case 6
-		      if forme = 0 then
-		        currentshape = new Triangle(objects,3,p)
-		      else
-		        currentshape = new Polyqcq(objects, forme+3, p)
-		      end if
+		      currentshape = new Polyqcq(objects, forme+3, p)
 		    end select
 		  else
 		    fam = famille-10
 		    specs =  Config.StdFamilies(Fam,Forme)
 		    if specs.family = "Cubes" or specs.family = "Rods" then
 		      currentshape = new Cube(objects, p, forme)
-		    elseif  specs.family = "Segments" or ubound(specs.angles) > 0  then
+		    elseif   ubound(specs.angles) > 0  then
 		      currentShape=new StandardPolygon(objects, famille, forme, p)
 		    else
 		      currentshape = new StdCircle(objects,famille, forme, p)
@@ -358,8 +354,11 @@ Inherits MultipleSelectOperation
 		    else
 		      curshape = point(currentshape)
 		    end if
-		    if currentattractingshape <> nil then
-		      currentattractingshape.paint(g)
+		    if currentattractingshape <> nil  then
+		      CurrentAttractingshape.highlight
+		      currenthighlightedshape = currentattractingshape
+		      side = currentattractingshape.pointonside(curshape.bpt)
+		      super.paint(g)
 		      if currentattractingshape isa point or currentattractingshape isa repere then
 		        display  = thispoint + "?"
 		      elseif nextcurrentattractingshape <> nil then
@@ -388,11 +387,11 @@ Inherits MultipleSelectOperation
 		      CurrentAttractedShape.paint(g)
 		    end if
 		    
+		    
+		    'super.paint(g)
+		    
+		    
 		  end if
-		  super.paint(g)
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -557,6 +556,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

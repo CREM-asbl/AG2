@@ -222,6 +222,11 @@ Inherits Operation
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="colsep"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="display"
 			Group="Behavior"
 			Type="string"
@@ -318,6 +323,11 @@ Inherits Operation
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Group="Behavior"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Std2flag"

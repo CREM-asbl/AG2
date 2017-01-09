@@ -480,6 +480,11 @@ Inherits MultipleSelectOperation
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="colsep"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="CurrentItemToSet"
 			Group="Behavior"
 			InitialValue="0"

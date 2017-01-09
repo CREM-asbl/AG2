@@ -173,9 +173,9 @@ Inherits SelectOperation
 		  s = Getshape(p)
 		  if s <> nil then
 		    highlight(s)
-		    currenthighlightedshape = s
+		    'currenthighlightedshape = s
 		  end if
-		  can.refreshbackground
+		  'can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod
@@ -294,6 +294,11 @@ Inherits SelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

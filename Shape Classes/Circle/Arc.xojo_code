@@ -12,12 +12,14 @@ Inherits Circle
 		  dim q() as BasicPoint
 		  dim Bib, BiB0 As  BiBPoint
 		  dim i,n, k as integer
-		  dim bq, v as BasicPoint
+		  dim bq, v, w as BasicPoint
 		  dim p as point
 		  redim q(-1)
 		  redim q(1)
+		  dim a1, b1, b2 as double
 		  
 		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  p = points(2)  ' ce point est "sur" s
@@ -53,18 +55,30 @@ Inherits Circle
 		    end if
 		  next
 		  n = ubound(q)+1
-		  
-		  if n=2 then
-		    if points(1) = fig.pointmobile then
-		      if   (amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1)))    then
-		        q(0) = q(1)
+		  a1 = amplitude(ep1,ep0,ep2)
+		  b1 = amplitude(np1,np0,q(0))
+		  b2 = amplitude(np1,np0,q(1))
+		  if points(1) = fig.pointmobile then
+		    if n=2  then
+		      if a1 < PI and b1 < PI then 
+		        return q(0)
+		      elseif a1 < PI and b1 > PI then
+		        return q(1)
+		      elseif  a1 > PI and b1 < PI then 
+		        return q(1)
+		      elseif a1 > PI and b1 > PI then
+		        return q(0)
 		      end if
-		    else
-		      if ep2.distance(q(0)) > ep2.distance(q(1)) then
-		        q(0)=q(1)
-		      end if
+		      return np2
+		    end if
+		  else
+		    if ep2.distance(q(0)) > ep2.distance(q(1)) then
+		      q(0)=q(1)
 		    end if
 		  end if
+		  
+		  
+		  
 		  if n>0 and ubound(q) > -1 then
 		    return q(0)
 		  else
@@ -148,9 +162,8 @@ Inherits Circle
 		  ori =s.ori
 		  PasteCtrlExe(s)
 		  createskull(p)
-		  'nsk.updatesize(1)
 		  liberte = 5
-		  M = new TranslationMatrix (p-s.coord.tab(0))
+		  M = new TranslationMatrix (p)
 		  Move(M)
 		  
 		  
@@ -697,12 +710,6 @@ Inherits Circle
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

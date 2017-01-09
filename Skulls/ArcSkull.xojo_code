@@ -29,6 +29,7 @@ Inherits NSkull
 		  for i = 0 to count-1
 		    g.drawobject item(i), x, y
 		  next
+		  
 		End Sub
 	#tag EndMethod
 

@@ -292,9 +292,7 @@ Protected Class BasicPoint
 		Function Operator_Add(v as basicpoint) As basicpoint
 		  return new BasicPoint(x+v.x, y+v.y)
 		  
-		  'ret.x = self.x+v.x
-		  'ret.y = self.y+v.y
-		  'return ret
+		  
 		End Function
 	#tag EndMethod
 

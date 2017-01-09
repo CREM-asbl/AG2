@@ -12,7 +12,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub addShape(s as Shape)
-		  dim i As integer
+		  dim i As integer 'On ne met que des shapes dans "objectsList"
 		  dim t as shape
 		  dim pt as point
 		  if s = nil   then
@@ -73,6 +73,16 @@ Inherits Liste
 		      g.DrawString("Groupe "+str(n),p.x-20, p.y+5)
 		    next
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AugmenteFont()
+		  dim i as integer
+		  
+		  for i = 0 to count -1
+		    item(i).augmentefont
+		  next
 		End Sub
 	#tag EndMethod
 

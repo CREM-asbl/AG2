@@ -9,7 +9,7 @@ Begin Window WorkWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   True
-   Height          =   695
+   Height          =   768
    ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
@@ -24,12 +24,12 @@ Begin Window WorkWindow
    Placement       =   0
    Resizeable      =   True
    Title           =   "Sans Titre"
-   Visible         =   False
-   Width           =   800
+   Visible         =   True
+   Width           =   1402
    Begin CustomCanvas1 MyCanvas1
       AcceptFocus     =   True
       AcceptTabs      =   True
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Backdrop        =   0
       BackgroundPicture=   0
       Bkcol           =   &c00000000
@@ -39,7 +39,7 @@ Begin Window WorkWindow
       Enabled         =   True
       EraseBackground =   False
       FondsEcran      =   0
-      Height          =   595
+      Height          =   735
       HelpTag         =   ""
       icot            =   0
       IdContent       =   0
@@ -47,7 +47,7 @@ Begin Window WorkWindow
       info            =   ""
       InitialParent   =   ""
       iobj            =   0
-      Left            =   115
+      Left            =   120
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -68,14 +68,14 @@ Begin Window WorkWindow
       Transparent     =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   673
+      Width           =   1124
    End
    Begin Rectangle Tools
       AutoDeactivate  =   False
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c8080FF00
+      FillColor       =   &c008080FF
       Height          =   695
       HelpTag         =   ""
       Index           =   -2147483648
@@ -391,7 +391,7 @@ Begin Window WorkWindow
          Bold            =   True
          ButtonStyle     =   "0"
          Cancel          =   False
-         Caption         =   ""
+         Caption         =   "Annuler"
          Default         =   False
          Enabled         =   True
          Height          =   30
@@ -681,14 +681,16 @@ End
 		Function CancelClose(appQuitting as Boolean) As Boolean
 		  dim i as integer
 		  
+		  'if appQuitting then
 		  for i = ubound(wcontent) downto 0
 		    deletecontent
 		    if ubound(wcontent) = i then
 		      return true
 		    end if
 		  next
+		  'end if
+		  appquitting = true
 		  
-		  app.quitting = true
 		  return false
 		  
 		  
@@ -717,50 +719,11 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
-		  'pourquoi la gestion du curseur se trouve ici ? Cela devrait se trouver dans MyCanvas1
 		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
 		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
 		    setcross
 		  end if
-		  
-		  dim B, B1, B2 as boolean
-		  dim item as MenuItem
-		  dim i as integer
-		  
-		  
-		  if currentcontent <> nil  then
-		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		  end if
-		  
-		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
-		    B =  CurrentContent.TheObjects.count > 1
-		    B1 = CurrentContent.TheGrid <> nil
-		    B2 = can.rep.labs.count > 0
-		    B = (B or B1 or B2) and not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
-		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
-		      wnd.pushbutton1.enabled = true 
-		    end if
-		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
-		    end if
-		  else
-		    B = false
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
-		  end if
-		  
-		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
-		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
-		  
 		  
 		  
 		End Sub
@@ -849,9 +812,11 @@ End
 		    end if
 		  case 45 'touche -
 		    DiminueFont
-		  case 43,61 'touche +
+		    refresh
+		  case 43, 61 'touche +
 		    AugmenteFont
-		  case 48,224 'touche 0
+		    refresh
+		  case 48, 224 'touche 0
 		    ResetFont
 		  end select
 		  
@@ -865,7 +830,8 @@ End
 		Sub Maximize()
 		  
 		  UpdateToolBar
-		  can.resize
+		  'width = screen(0).width -120
+		  'height = screen(0).height
 		End Sub
 	#tag EndEvent
 
@@ -902,7 +868,9 @@ End
 		    app.FileName = ""
 		  end if
 		  
-		  Maximize
+		  maximize
+		  
+		  
 		  
 		  
 		  
@@ -1730,6 +1698,23 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function PrefsThickness() As Boolean Handles PrefsThickness.Action
+			dim mw as ThickWindow
+			dim d as double
+			
+			mw = new ThickWindow
+			mw.ShowModal
+			if mw.result=1 then
+			d = val(mw.TF.text)
+			Config.Thickness = d
+			mw.close
+			end if
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function PrefsTrace() As Boolean Handles PrefsTrace.Action
 			
 			MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked = not MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
@@ -1795,7 +1780,7 @@ End
 			if mousedispo then
 			closefw
 			app.prtsetup = New PrinterSetup
-			If app.prtsetup.PageSetupDialog then
+			If  app.prtsetup.PageSetupDialog then
 			return true
 			end if
 			end if
@@ -1973,9 +1958,10 @@ End
 		Function ToolsThick1() As Boolean Handles ToolsThick1.Action
 			if mousedispo then
 			closefw
-			Config.Thickness = 1
-			CurrentContent.CurrentOperation = new Epaisseur(1)
+			CurrentContent.CurrentOperation = new Epaisseur(Config.Thickness)
 			Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
+			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = true
+			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = false
 			refreshtitle
 			end if
 			return true
@@ -1986,9 +1972,10 @@ End
 		Function ToolsThick2() As Boolean Handles ToolsThick2.Action
 			if mousedispo then
 			closefw
-			Config.Thickness = 2
-			CurrentContent.CurrentOperation = new Epaisseur(2)
+			CurrentContent.CurrentOperation = new Epaisseur(1.5*Config.Thickness)
 			Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
+			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = false
+			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = true
 			refreshtitle
 			end if
 			return true
@@ -2123,8 +2110,15 @@ End
 
 	#tag Method, Flags = &h0
 		Sub AugmenteFont()
+		  dim obj as ObjectsList
+		  dim i as integer
+		  
 		  Config.TextSize = Config.TextSize +1
 		  updateTextSize
+		  obj = currentcontent.Theobjects
+		  for i = 0 to obj.count -1
+		    obj.item(i).augmentefont
+		  next
 		  
 		End Sub
 	#tag EndMethod
@@ -2226,7 +2220,16 @@ End
 		    mitem.append sm
 		    MenuBar.append mitem
 		  end if
-		  
+		  if app.StageCode = 2 then
+		    mitem = new MenuItem
+		    mitem.Name = "Beta"
+		    mitem.Text = Dico.Value("Beta")
+		    sm = new MenuItem 'sous-menu nécessaire pour fonctionner sur Mac
+		    sm.Name = "BetaRapport"
+		    sm.Text = Dico.Value("Rapport")
+		    mitem.append sm
+		    MenuBar.append mitem
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -2262,6 +2265,8 @@ End
 		  else
 		    item.Text = mitem.Text
 		  end if
+		  'item.icon = mitem.icon
+		  
 		  
 		  if item.name = "PrefsFreeForms" then
 		    return nil
@@ -2382,8 +2387,15 @@ End
 
 	#tag Method, Flags = &h0
 		Sub DiminueFont()
+		  dim obj as ObjectsList
+		  dim i as integer
+		  
 		  Config.TextSize = Config.TextSize -1
 		  updateTextSize
+		  obj = currentcontent.Theobjects
+		  for i = 0 to obj.count -1
+		    obj.item(i).diminuefont
+		  next
 		  
 		End Sub
 	#tag EndMethod
@@ -2454,11 +2466,15 @@ End
 
 	#tag Method, Flags = &h0
 		Sub InitParams()
+		  wnd = self
+		  can = wnd.mycanvas1
+		  
+		  width = screen(0).width -120
+		  height = screen(0).height
+		  
 		  title = Config.username
 		  AcceptFileDrop(FileAGTypes.SAVE)
 		  AcceptFileDrop(FileAGTypes.HIST)
-		  wnd = self
-		  can = wnd.mycanvas1
 		  
 		End Sub
 	#tag EndMethod
@@ -2576,7 +2592,7 @@ End
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
 		  MenuBar.Child("Fenetres").append mitem
 		  MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
-		  MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
+		  'MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
 		  
 		End Sub
 	#tag EndMethod
@@ -2734,44 +2750,61 @@ End
 		  specs = config.stdfamilies(fam,form)
 		  
 		  if specs.family = "Cubes"  then
-		    'ico(fam) = new Cubeskull(new BasicPoint(3,h-8), form,1)
+		    ico(fam) = new Cubeskull(new BasicPoint(3, 0.5*h-6), form,1)
 		    taille = 0.5*h
+		    ico(fam).x = 3
+		    ico(fam).y = h-taille-3
+		    Cubeskull(ico(fam)).updatesize(taille)
+		    ico(fam).fillcolor = config.stdcolor(fam).col
 		    if form = 1 then
-		      'ico(Fam).Update new BasicPoint (h/2,h-6)
+		      cubeskull(ico(Fam)).Update( new BasicPoint (0.5*h-4,0.5*h-4), 1)
 		      taille = 0.4*h
+		      Cubeskull(ico(fam)).updatesize(taille)
+		    end if
+		    if form = 2 then
+		      ico(fam).fill = 0
 		    end if
 		  elseif specs.family = "Rods" then
-		    'ico(fam) = new Cubeskull(new BasicPoint(3,h-8), 0, 1)
+		    ico(fam) = new Cubeskull(new BasicPoint(3,0.5*h-6), 0, 1)
 		    taille = 0.5*h
-		  elseif specs.family="Segments" or ubound(specs.angles) > 0 then
+		    Cubeskull(ico(fam)).updatesize(taille)
+		    cubeskull(ico(fam)).updatefillcolor(specs.coul.col,100)
+		  elseif  ubound(specs.angles) > 0 then                 'cas des polygonestd
 		    ico(Fam) = new LSkull(config.stdfamilies(fam,form))
-		    dlx = ico(Fam).BB.First.x
-		    dly = ico(Fam).BB.first.y
-		    urx = ico(Fam).BB.second.x
-		    ury = ico(Fam).BB.second.y
+		    dlx =  LSkull(ico(Fam)).BB.First.x
+		    dly =  LSkull(ico(Fam)).BB.first.y
+		    urx =  LSkull(ico(Fam)).BB.second.x
+		    ury =  LSkull(ico(Fam)).BB.second.y
 		    larg = urx - dlx
 		    haut = ury-dly
 		    taille = 0.8*h/max(larg,haut)
-		    ico(fam).UpdateSize(taille)
+		    LSkull(ico(fam)).UpdateSize(taille)
 		    ico(fam).x =  (h-larg*taille)/4
 		    if dlx < 0 then
 		      ico(fam).x = ico(fam).x-dlx*taille/2
 		    end if
 		    ico(fam).y =  (h+haut*taille)/4
 		    ico(fam).borderwidth = 0.02
-		  else
-		    'ico(fam) = new oldcircleskull(1,new BasicPoint(h/2,h/2))
-		    'taille = 0.4*h*specs.distances(0)
+		  else                                                    'cas des cerclesstd
+		    taille = 0.4*h*specs.distances(0)
+		    ico(fam) = new OvalShape
+		    ico(fam).borderwidth = 1
+		    OvalShape(ico(fam)).width = 2*taille '3*h/4
+		    OvalShape(ico(fam)).height = 2*taille ' 3*h/4
+		    ico(fam).x = (h -larg*taille)/4
+		    ico(fam).y = (h+haut*taille)/4
+		  end if                                                         'partie  commune
+		  ico(fam).bordercolor = Config.Bordercolor.col
+		  ico(fam).border = 100
+		  ico(fam).fill = 100
+		  if specs.family <> "Rods" then              'la couleur de fond d'une réglette varie avec la longueur, non la famille
+		    ico(fam).fillcolor=config.stdcolor(fam).col
+		    ico(fam).fill =100
 		  end if
-		  ico(fam).updatebordercolor(Config.Bordercolor.col,100)
-		  if specs.family = "Rods" then
-		    ico(fam).updatefillcolor(specs.coul.col,100)
-		  else
-		    ico(fam).updatefillcolor(config.stdcolor(fam).col,100)
-		  end if
-		  if specs.family = "Cubes" and form = 2 then
-		    ico(fam).updatefillcolor(config.stdcolor(fam).col,0)
-		  end if
+		  ico(fam).borderwidth= 1/h
+		  
+		  
+		  
 		  
 		  
 		End Sub
@@ -2875,7 +2908,7 @@ End
 		  next
 		  for i = 0 to config.nstdfam-1
 		    config.stdcolor(i) = config.stdcolor(i).comp
-		    ico(i).updatefillcolor(config.stdcolor(i).col,100)
+		    'ico(i).updatefillcolor(config.stdcolor(i).col,100)
 		  next
 		  can.RefreshBackground
 		End Sub
@@ -2916,6 +2949,7 @@ End
 		      MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
 		    end if
 		  end if
+		  MenuBar.Child("ToolsMenu").Child("ToolsThickness").child("ToolsThick1").checked = true
 		  updateToolBar
 		  
 		End Sub
@@ -3018,6 +3052,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		dblclic As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		drapdim As boolean
 	#tag EndProperty
 
@@ -3058,7 +3096,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected Ico(4) As Nskull
+		Protected Ico(4) As Object2D
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -3165,7 +3203,7 @@ End
 #tag Events StdBox
 	#tag Event
 		Sub Open()
-		  'StdBoxRefresh
+		  StdBoxRefresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -3211,18 +3249,22 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		  dim fs as figureshape
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
-		    g.drawobject ico(index), ico(index).x, ico(index).y
-		    
-		    if index=selectedTool and Kit = "Standard"  then
-		      g.forecolor = rouge
-		      g.penwidth = 2.5
-		      g.DrawRect(0,0,g.Width,g.Height)
+		    if  ico(index) isa cubeskull  then
+		      cubeskull(ico(index)).paint(g)
+		    else
+		      g.drawobject ico(index), ico(index).x, ico(index).y
+		      
+		      if index=selectedTool and Kit = "Standard"  then
+		        g.forecolor = rouge
+		        g.penwidth = 2.5
+		        g.DrawRect(0,0,g.Width,g.Height)
+		      end if
 		    end if
 		  end if
-		  
 		  
 		End Sub
 	#tag EndEvent
@@ -3398,6 +3440,11 @@ End
 		Group="OS X (Carbon)"
 		InitialValue="False"
 		Type="Boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="dblclic"
+		Group="Behavior"
+		Type="boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="drapdim"

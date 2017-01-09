@@ -26,7 +26,7 @@ Begin Window LabelWindow
    Title           =   "Nommer"
    Visible         =   True
    Width           =   614
-   Begin TextField Text
+   Begin TextField Texte
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
@@ -240,7 +240,7 @@ Begin Window LabelWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFF00FFFF
+      FillColor       =   &cFFFF00FF
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -383,7 +383,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   60
+      Left            =   54
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -695,7 +695,7 @@ End
 		  Lab = addlab.lab
 		  Title = Dico.value("Nommer")
 		  Txt.Text = Dico.value("Name")+" : "
-		  Text.Text = lab.Text
+		  Texte.Text = lab.Text
 		  Pol.Text = Dico.value("Font")+ " :"
 		  TxtSize.Text = Dico.value("Size")+" : "
 		  size.Text = str(lab.Textsize)
@@ -707,6 +707,9 @@ End
 		  corr = can.dtransform(lab.correction)
 		  CoordX.text =str(corr.X)
 		  CoordY.text = str(- corr.y)
+		  CoordX.Backcolor = blanc
+		  CoordY.Backcolor = blanc
+		  Texte.Backcolor = blanc
 		  if drapnew then
 		    Delete.visible = false
 		    for i = 0 to Polices.ListCount-1
@@ -772,7 +775,7 @@ End
 
 #tag EndWindowCode
 
-#tag Events Text
+#tag Events Texte
 	#tag Event
 		Sub TextChange()
 		  dim n as integer
@@ -789,7 +792,7 @@ End
 		  
 		  
 		  Lab.Text = me.Text
-		  Wnd.Refresh
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndEvent
@@ -808,8 +811,7 @@ End
 		  
 		  n = val(me.text)
 		  lab.SetSize(n)
-		  'lab.taille = n
-		  Wnd.Refresh
+		  can.refreshbackground
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -827,7 +829,7 @@ End
 	#tag Event
 		Sub Action()
 		  lab.SetItalic(me.Value)
-		  Wnd.Refresh
+		  can.refreshBackground
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -939,7 +941,7 @@ End
 	#tag Event
 		Sub Change()
 		  Lab.Textfont = me.text
-		  wnd.refresh
+		  can.refreshBackground
 		End Sub
 	#tag EndEvent
 #tag EndEvents

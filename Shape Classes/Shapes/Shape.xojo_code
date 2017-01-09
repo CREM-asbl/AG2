@@ -277,6 +277,22 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AugmenteFont()
+		  dim i, j as integer
+		  
+		  for i = 0 to labs.count-1
+		    labs.item(i).augmentefont
+		  next
+		  
+		  for i = 0 to ubound(childs)
+		    for j = 0 to childs(i).labs.count-1
+		      childs(i).labs.item(j).augmentefont
+		    next
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Autos()
 		  if (constructedby <> nil and constructedby.oper = 6)   or std then 'or (macconstructedby <> nil) then
 		    auto = 0
@@ -380,7 +396,7 @@ Protected Class Shape
 		  Autos
 		  Fixecouleurtrait(Config.bordercolor,Config.Border)
 		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
-		  Borderwidth = 1
+		  Borderwidth = config.thickness
 		  Border = 100
 		  Fill = 0
 		  Points.append new Point(ol, new Basicpoint(0,0))
@@ -733,6 +749,22 @@ Protected Class Shape
 		  currentcontent.removeobject self
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DiminueFont()
+		  dim i, j as integer
+		  
+		  for i = 0 to labs.count-1
+		    labs.item(i).diminuefont
+		  next
+		  
+		  for i = 0 to ubound(childs)
+		    for j = 0 to childs(i).labs.count-1
+		      childs(i).labs.item(j).diminuefont
+		    next
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -1879,9 +1911,8 @@ Protected Class Shape
 		    if points(2).forme <> 1 then
 		      arc(self).computearcangle
 		      M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
-		      points(2).moveto M*Points(1).bpt
+		      points(2).moveto points(2).bpt.projection(Points(1).bpt, M*Points(1).bpt)
 		      return AffiOrSimili
-		      'return new SimilarityMatrix(ep0,ep1,np0,np1)
 		    end if
 		  end select
 		  
@@ -2474,7 +2505,7 @@ Protected Class Shape
 		  
 		  a = can.transform(u)
 		  b = can.transform(v)
-		  Ti.updatetip(a,b,col)
+		  Ti.updatetip(a,b,col.col)
 		  Ti.scale = sc
 		  g.DrawObject Ti, b.x, b.y
 		End Sub
@@ -3200,6 +3231,11 @@ Protected Class Shape
 		  dim s as shape
 		  
 		  MacConstructedBy = MacInfo
+		  for i = 0 to ubound(childs)
+		    if childs(i).forme = 2 then
+		      childs(i).forme = 0
+		    end if
+		  next
 		  for i = 0 to ubound(MacInfo.RealInit)
 		    s = currentcontent.TheObjects.getshape(macinfo.RealInit(i))
 		    s.AddMacConstructedShape self
@@ -3218,12 +3254,9 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub Show()
 		  
-		  dim i as integer
 		  
 		  Hidden = false
-		  'for i = 0 to Ubound(childs)
-		  'childs(i).Show
-		  'next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3391,6 +3424,12 @@ Protected Class Shape
 		      end if
 		    next
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Untitled()
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3712,7 +3751,7 @@ Protected Class Shape
 		  'end if
 		  
 		  
-		  if self isa circle or self isa lacet then
+		  if self isa circle or self.hybrid then
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  invalid = false
@@ -4711,10 +4750,6 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NotPossibleCut As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		npts As integer
 	#tag EndProperty
 
@@ -4946,12 +4981,6 @@ Protected Class Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

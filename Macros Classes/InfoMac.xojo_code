@@ -45,6 +45,9 @@ Protected Class InfoMac
 		    CopyParam (EL0, EL1, oper)
 		  end if
 		  if fa = 0 then
+		    if fo = 2 then
+		      fo = 0
+		    end if
 		    ptsur = fo
 		    if ptsur = 1 then
 		      ifm = MacInfo.GetInfoMac(forme0, m)

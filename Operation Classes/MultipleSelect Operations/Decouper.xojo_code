@@ -129,6 +129,9 @@ Inherits MultipleSelectOperation
 		    next
 		  end if
 		  
+		  redim centres(-1)
+		  redim curved(-1)
+		  
 		  for i = 0 to s.npts-2
 		    centres.append nil
 		    curved.append 0
@@ -172,6 +175,11 @@ Inherits MultipleSelectOperation
 		    end if
 		  wend
 		  
+		  s.narcs = 0
+		  for i = 0 to ubound(curved)
+		    s.narcs = s.narcs + curved(i)
+		  next
+		  
 		  if s.std then
 		    s.constructedby = nil
 		    currentshape.constructedshapes.remove currentshape.constructedshapes.indexof(s)
@@ -191,12 +199,9 @@ Inherits MultipleSelectOperation
 		  s.fixecouleurfond(currentshape.fillcolor,currentshape.fill)
 		  s.forme = s.npts-2
 		  s.initconstruction
-		  if s.Hybrid then
+		  if s.Hybrid  then
 		    s.coord.centres = centres
 		    s.coord.curved = curved
-		    for i = 0 to ubound(curved)
-		      Lacet(s).narcs = Lacet(s).narcs+curved(i)
-		    next
 		  end if
 		  Lacet(s).prepareskull(s.points(0).bpt)
 		  if s.hybrid then
@@ -226,7 +231,7 @@ Inherits MultipleSelectOperation
 		  
 		  if CurrentItemToSet = 1 then
 		    S = Operation.GetShape(p)
-		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc) or S.NotPossibleCut or s.isaellipse ) then
+		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc)  or s.isaellipse ) then
 		      S = nil
 		    end if
 		    return s
@@ -484,6 +489,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

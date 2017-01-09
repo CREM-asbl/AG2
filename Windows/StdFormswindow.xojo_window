@@ -28,9 +28,7 @@ Begin Window StdFormswindow
    Width           =   277
    Begin Label StaticText1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -65,9 +63,7 @@ Begin Window StdFormswindow
    End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
-      ControlOrder    =   "1"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -98,9 +94,7 @@ Begin Window StdFormswindow
    End
    Begin Label StaticText2
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
-      ControlOrder    =   "2"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -135,9 +129,7 @@ Begin Window StdFormswindow
    End
    Begin PopupMenu PopupMenu2
       AutoDeactivate  =   True
-      BehaviorIndex   =   3
       Bold            =   False
-      ControlOrder    =   "3"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -168,12 +160,10 @@ Begin Window StdFormswindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   4
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "4"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -201,12 +191,10 @@ Begin Window StdFormswindow
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   5
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Cancel"
-      ControlOrder    =   "5"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -325,8 +313,8 @@ End
 		  Config.setStdFile(popupmenu1.text+".std")
 		  Config.stdsize = val(popupmenu2.text)
 		  
-		  'todo : à améliorer
-		  wnd.StdBoxRefresh
+		  
+		  'wnd.StdBoxRefresh
 		  for i=0 to 3
 		    wnd.SetIco(i,0)
 		    wnd.StdOutil(i).refresh

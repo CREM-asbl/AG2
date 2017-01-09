@@ -8,8 +8,10 @@ Protected Module Globals
 		  dim bp as BasicPoint
 		  
 		  bp = c-a
+		  bp= bp.normer
 		  alpha1 = bp.anglepolaire
 		  bp = b-a
+		  bp= bp.normer
 		  alpha1 = alpha1 - bp.anglepolaire
 		  return gnormalize(alpha1)
 		  

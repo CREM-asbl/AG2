@@ -7,7 +7,7 @@ Inherits MultipleSelectOperation
 		  OpId = 24
 		  NumberOfItemsToSelect=2
 		  copies = new objectslist
-		  
+		  objects.unhighlightall
 		  MId = new Matrix(1)
 		  
 		  
@@ -353,6 +353,7 @@ Inherits MultipleSelectOperation
 		      tsf = ListTsf.item(itsf)
 		      CurrentContent.TheTransfos.HideAll
 		      tsf.Hidden = false
+		      tsf.highlight
 		      return true
 		    else
 		      return false
@@ -505,6 +506,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

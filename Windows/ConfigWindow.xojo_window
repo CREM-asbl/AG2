@@ -1039,6 +1039,14 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function PrefsThickness() As Boolean Handles PrefsThickness.Action
+			PrefsThickness.checked = not PrefsThickness.checked
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function PrefsTrace() As Boolean Handles PrefsTrace.Action
 			PrefsTrace.checked = not PrefsTrace.checked
 			

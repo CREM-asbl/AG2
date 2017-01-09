@@ -21,7 +21,7 @@ Inherits MultipleSelectOperation
 		    case  1 // translation
 		      if s isa droite and droite(s).nextre = 2  then
 		        s.side = 0
-		      elseif  S isa Lacet then 
+		      elseif  S isa Lacet and (not s isa bande) and (not s isa secteur) then 
 		        n = s.pointonside(p)
 		        if n>-1 and s.coord.curved(n) = 0 then
 		          s.side = n 
@@ -35,12 +35,16 @@ Inherits MultipleSelectOperation
 		      end if
 		      
 		    case 2          // rotations
-		      if not  s isa Arc then
-		        Visremove(s)                             // on ne garde que les cercles (ou arcs)
-		      else
-		        index.Append 0                         // index ne contient que des -1 Dans ce cas, index = -1 signifie que le support est une forme complète
+		      if s isa arc then
+		        s.side = 0
+		      elseif s.hybrid and not s isa bande and not s isa secteur then
+		        n = s.pointonside(p)
+		        if n > -1 and s.coord.curved(n) = 1 then
+		          s.side = n
+		        else
+		          visremove(s)                         // index ne contient que des -1 Dans ce cas, index = -1 signifie que le support est une forme complète
+		        end if
 		      end if
-		      
 		    case 3 to 5                                               // demi-tour et quarts de tour
 		      if not s isa point then
 		        visremove(s)
@@ -197,7 +201,7 @@ Inherits MultipleSelectOperation
 		  tsf = new transformation (currentshape, type, currentshape.side , ori)
 		  currentshape.tsfi.addObject tsf
 		  if currentshape isa point then
-		    currentshape.borderwidth = 2
+		    currentshape.borderwidth = 2.5
 		  end if
 		  
 		  // ori est destiné aux translations
@@ -415,7 +419,7 @@ Inherits MultipleSelectOperation
 		  tsf = new Transformation(supp,EL)
 		  supp.tsfi.addObject tsf
 		  if supp isa point then
-		    supp.borderwidth = 2
+		    supp.borderwidth = 2.5
 		  end if
 		  
 		  
@@ -629,7 +633,7 @@ Inherits MultipleSelectOperation
 		    'end if
 		    supp.bordercolor = Config.bordercolor
 		    if supp isa point then
-		      supp.borderwidth = 1
+		      supp.borderwidth = 1.5
 		    end if
 		  end if
 		  ReDeleteCreatedFigures (Temp)
@@ -718,6 +722,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

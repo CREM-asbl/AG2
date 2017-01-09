@@ -22,16 +22,7 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  'fi=App.AppFolder.Child(Menu+".men")
-		  'if not fi.exists then
-		  'fi = app.MenusFolder.Child(Menu+".men")
-		  'end if
-		  '
-		  'if not  fi.exists  then
-		  'MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
-		  'quit
-		  'else
-		  'C=new XMLDocument(fi)
+		  
 		  select case Menu
 		  case "Menu_A"
 		    C=new XMLDocument(Menu_A)
@@ -53,10 +44,8 @@ Protected Class Configuration
 		    end if
 		  end select
 		  El = C.DocumentElement
-		  'end if
 		  
 		  ChargerMenu(El)
-		  
 		  ChargerBoutons(El)
 		  
 		  ShowTools = EL.XQL("FreeForms").length > 0
@@ -213,17 +202,17 @@ Protected Class Configuration
 		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").checked = El.XQL("CreateCenter").length > 0
 		  
 		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").checked = El.XQL("Transformations").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirTranslation").checked = El.XQL("Translation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimi").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimi").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirIso").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirAffi").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").child("DefinirTranslation").checked = El.XQL("Translation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
 		  mmenubar.Child("TransfosMenu").Child("InvCurve").checked = El.XQL("InvCurve").length > 0
@@ -233,6 +222,7 @@ Protected Class Configuration
 		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").checked = El.XQL("StdForms").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").checked = El.XQL("Traj").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").checked = El.XQL("DistanceMagnetisme").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsThickness").checked = El.XQL("Thickness").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsPolyg").checked  = El.XQL("Pointer").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsBiface").checked =  El.XQL("Biface").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsAjust").checked =  El.XQL("Ajuster").length > 0
@@ -264,16 +254,30 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  'fi = app.appfolder.Child(stdfile)
-		  'if not fi.exists then
-		  'fi = app.StdFolder.Child(stdfile)
-		  'end if
-		  'if not fi.exists then
-		  'MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
-		  'return
-		  'end if
+		  select case stdfile
+		  case "Jeu_de_base.std"
+		    Doc=new XMLDocument(jeu_de_base)
+		  case "Jeu_reduit.std"
+		    Doc = new XMLDocument(jeu_reduit)
+		  case "Polyminos.std"
+		    Doc=new XMLDocument(polyminos)
+		  case "Reglettes.std"
+		    Doc = new XMLDocument(reglettes)
+		  case "Tangram.std"
+		    Doc = new XMLDocument(tangram)
+		  case "Cubes.std"
+		    Doc = new XMLDocument(cubes)
+		  case "Etoiles.std"
+		    Doc = new XMLDocument(etoiles)
+		  else
+		    fi = app.StdFolder.Child(stdfile+"std")
+		    if not fi.exists then
+		      MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
+		      return
+		    end if
+		    Doc=new XMLDocument(fi)
+		  end select
 		  
-		  Doc = new XMLDocument(jeu_de_base)
 		  EL = Doc.DocumentElement
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
@@ -469,7 +473,7 @@ Protected Class Configuration
 		  TransfoColor = Green
 		  Border = 100
 		  Fill = 0
-		  Thickness = 1
+		  Thickness = 1.5
 		  ShowHelp = true
 		  trace = true
 		  ajust = true
@@ -925,7 +929,7 @@ Protected Class Configuration
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Thickness As Integer
+		Thickness As Double
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1108,7 +1112,7 @@ Protected Class Configuration
 			Name="Thickness"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Integer"
+			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"

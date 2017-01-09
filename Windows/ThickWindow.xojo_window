@@ -1,5 +1,5 @@
 #tag Window
-Begin Window NewLanguageWindow
+Begin Window ThickWindow
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
    CloseButton     =   False
@@ -9,23 +9,23 @@ Begin Window NewLanguageWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   84
-   ImplicitInstance=   True
+   Height          =   133
+   ImplicitInstance=   False
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000
    MaximizeButton  =   False
    MaxWidth        =   32000
    MenuBar         =   0
-   MenuBarVisible  =   False
+   MenuBarVisible  =   True
    MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   False
-   Title           =   "Créer un dictionnaire"
+   Title           =   "ThickMag"
    Visible         =   True
-   Width           =   232
+   Width           =   281
    Begin Label StaticText1
       AutoDeactivate  =   True
       Bold            =   False
@@ -37,7 +37,7 @@ Begin Window NewLanguageWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   8
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -49,55 +49,24 @@ Begin Window NewLanguageWindow
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Langue :"
+      Text            =   "Epaisseur par défaut"
       TextAlign       =   0
       TextColor       =   &c00000000
-      TextFont        =   "System"
+      TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   14
+      Top             =   22
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   137
+      Width           =   127
    End
-   Begin PushButton PushButton1
-      AutoDeactivate  =   True
-      Bold            =   False
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "OK"
-      Default         =   True
-      Enabled         =   True
-      Height          =   28
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   153
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   1
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   45
-      Underline       =   False
-      Visible         =   True
-      Width           =   69
-   End
-   Begin TextField EditField1
+   Begin TextField TF
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -105,12 +74,12 @@ Begin Window NewLanguageWindow
       DataSource      =   ""
       Enabled         =   True
       Format          =   ""
-      Height          =   20
+      Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   101
+      Left            =   157
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -121,26 +90,26 @@ Begin Window NewLanguageWindow
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   2
+      TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
       TextColor       =   &c00000000
-      TextFont        =   "System"
+      TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   13
+      Top             =   21
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   121
+      Width           =   80
    End
-   Begin PushButton PushButton2
+   Begin PushButton OKButton
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
-      Caption         =   "Annuler"
+      Caption         =   "OK"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -148,7 +117,38 @@ Begin Window NewLanguageWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   168
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   78
+      Underline       =   False
+      Visible         =   True
+      Width           =   69
+   End
+   Begin PushButton CancelButton
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Cancel"
+      Default         =   False
+      Enabled         =   True
+      Height          =   28
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   29
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -158,10 +158,10 @@ Begin Window NewLanguageWindow
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
+      TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   46
+      Top             =   78
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -172,9 +172,13 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Title= Dico.value("CreateDict")
-		  StaticText1.text  = Dico.value("NewLanguage") + ":"
-		  EditField1.setfocus
+		  
+		  Title = " "
+		  StaticText1.Text = Dico.Value("Thickness")
+		  CancelButton.Caption = Dico.Value("Cancel")
+		  OKButton.Caption = Dico.Value("OK")
+		  TF.text = str(Config.thickness)
+		  TF.Backcolor = Blanc
 		End Sub
 	#tag EndEvent
 
@@ -208,29 +212,19 @@ End
 
 #tag EndWindowCode
 
-#tag Events PushButton1
-	#tag Event
-		Sub Open()
-		  me.caption = Dico.value("OK")
-		End Sub
-	#tag EndEvent
+#tag Events OKButton
 	#tag Event
 		Sub Action()
-		  result=1
+		  Result = 1
 		  Hide
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events PushButton2
-	#tag Event
-		Sub Open()
-		  me.caption = Dico.value("Cancel")
-		End Sub
-	#tag EndEvent
+#tag Events CancelButton
 	#tag Event
 		Sub Action()
-		  result=-1
-		  Hide
+		  result = -1
+		  Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents

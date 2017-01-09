@@ -4,6 +4,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  super.constructor
+		  colsep = true
 		  OpId = 33
 		  finished = true
 		  loc = -1
@@ -150,10 +151,11 @@ Inherits SelectAndDragOperation
 		    currenthighlightedshape.dounselect
 		  end if
 		  Currentshape = GetShape(p)                            //retourne par priorité les points, ensuite les formes
-		  if loc = -1 or currentshape isa circle then
+		  if loc = -1 or currentshape isa circle then 
 		    currenthighlightedshape = currentshape   'on n'a pas choisi un cote de polygone, ni de bande, ni de secteur
 		  end if
 		  can.refreshbackground
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -463,6 +465,11 @@ Inherits SelectAndDragOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

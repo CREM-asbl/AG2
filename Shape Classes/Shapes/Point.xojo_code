@@ -64,7 +64,8 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  inter = GetInter 'CurrentContent.TheIntersecs.find(s1, s2)
+		  
+		  inter = CurrentContent.TheIntersecs.find(s1, s2)
 		  
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
@@ -1117,11 +1118,6 @@ Inherits Shape
 		    if d = nil and i <> -1 then
 		      d = ProjectionOnAttractingSide(Polygon(s),i)
 		    end if
-		  elseif s isa Lacet then
-		    i = Lacet(s).pointonside(bpt)
-		    if d = nil and i <> -1 then
-		      d = ProjectionOnAttractingSide(Lacet(s), i)
-		    end if
 		  elseif s isa cube  then
 		    for i = 0 to 5
 		      if d = nil and bpt.distance (s.Points(i).bpt,s.Points((i+1) mod 6).bpt) < delta  then
@@ -1137,6 +1133,11 @@ Inherits Shape
 		        d = ProjectionOnAttractingSegment(s.Points(6).bpt,s.Points(i-j).bpt)
 		      end if
 		    next
+		  elseif s isa Lacet then
+		    i = Lacet(s).pointonside(bpt)
+		    if d = nil and i <> -1 then
+		      d = ProjectionOnAttractingSide(Lacet(s), i)
+		    end if
 		  end if
 		  if d <> nil and d.distance(bpt) < delta then
 		    attractingShape=s
@@ -1197,7 +1198,9 @@ Inherits Shape
 		    if parents.indexof(obj) = -1   then
 		      if obj isa point then
 		        currentmagnetism = magnetism3(point(obj),t)
-		        s2 = obj
+		        if currentmagnetism > 0 then
+		          s2 = obj
+		        end if
 		      else
 		        CurrentMagnetism = Magnetism2(obj,t,s2)
 		      end if
@@ -1457,7 +1460,11 @@ Inherits Shape
 		    can.drawzone(can.transform(bpt))
 		  end
 		  
-		  rsk.update(bpt,2)
+		  if ubound(parents) = 0 and parents(0).std then
+		    rsk.update(bpt,1)
+		  else
+		    rsk.update(bpt,2)
+		  end if
 		  if   (wnd.drapshowall or not hidden)  and (not invalid)  and (not deleted)  then
 		    if highlighted or not allparentsnonpointed then
 		      if tracept   then
@@ -1473,10 +1480,9 @@ Inherits Shape
 		        rsk.updateborderwidth(2)
 		      elseif selected then
 		        rsk.updatecolor(BorderColor.col,100)
-		        rsk.updateborderwidth(2*borderwidth)
 		      elseif isinconstruction then
 		        rsk.updatecolor(Config.Weightlesscolor.col,100)
-		        rsk.updateborderwidth(2)
+		        rsk.updateborderwidth(2.25)
 		      elseif hidden then
 		        rsk.updatecolor(cyan,100)
 		        rsk.updateborderwidth(2)
@@ -1838,7 +1844,7 @@ Inherits Shape
 		Function ProjectionOnAttractingSide(s as Lacet, i as integer) As basicpoint
 		  
 		  
-		  if s.coord.curved(i) = 1 then
+		  if not s isa cube and  s.coord.curved(i) = 1 then
 		    return bpt.projection(s.coord.centres(i), s.getradius(i))
 		  else
 		    return ProjectionOnAttractingSegment(s.Points(i).bpt,s.Points((i+1) mod s.npts).bpt)
@@ -2203,7 +2209,7 @@ Inherits Shape
 		    numside(n) = S.PointonSide(bpt)
 		  end if
 		  a = S.Points(0).bpt
-		  b = S.Points(numside(n)).bpt
+		  b = S.Points(numside(n)/2+1).bpt
 		  location(n) = bpt.location(a,b)
 		  if location(n) < 0 then
 		    location(n) = 0
@@ -2667,7 +2673,8 @@ Inherits Shape
 		    end if
 		  next
 		  
-		  if constructedby <> nil and not centerordivpoint then
+		  
+		  if constructedby <> nil and not centerordivpoint and constructedby.oper <> 9  then
 		    s = Point(ConstructedBy.Shape)
 		    if not s.modified then
 		      select case constructedby.Oper
@@ -2683,28 +2690,30 @@ Inherits Shape
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
 		        end if
-		      case 9
-		        if constructedby.shape <> nil then
-		          M1 = Matrix(constructedby.data(0))
-		          M1 = M1.inv
-		          s.Moveto M1*bpt
-		        else
-		          for i = 0 to 2 step 2
-		            s = Point(Constructedby.data(i))
-		            if not s.modified then
-		              M1 = Matrix(constructedby.data(i+1))
-		              M1= M1.inv
-		              s.Moveto M1*bpt
-		              s.modified = true
-		              s.updateshape
-		            end if
-		          next
-		        end if
 		      end select
 		      s.modified = true
 		      s.updateshape
+		    elseif constructedby <> nil and constructedby.oper = 9 then
+		      if constructedby.shape <> nil then
+		        s = Point(ConstructedBy.Shape)
+		        M1 = Matrix(constructedby.data(0))
+		        M1 = M1.inv
+		        s.Moveto M1*bpt
+		        s.modified = true
+		        s.updateshape
+		      else
+		        for i = 0 to 2 step 2
+		          s = Point(Constructedby.data(i))
+		          if not s.modified then
+		            M1 = Matrix(constructedby.data(i+1))
+		            M1= M1.inv
+		            s.Moveto M1*bpt
+		            s.modified = true
+		            s.updateshape
+		          end if
+		        next
+		      end if
 		    end if
-		    
 		  end if
 		End Sub
 	#tag EndMethod
@@ -2892,7 +2901,7 @@ Inherits Shape
 		  if  forme =1  then
 		    sh = pointsur.item(0)
 		    if not sh isa arc then
-		      puton pointsur.item(0)
+		      puton sh
 		    else
 		      putonarc (arc(sh))  //Voir remarque dans Figure.updatePtssur
 		    end if
@@ -3187,7 +3196,7 @@ Inherits Shape
 		  dim List as  XMLNodeList
 		  dim EL2 as XMLElement
 		  dim j, old as integer
-		  dim loc as double
+		  dim loc, r as double
 		  dim sh as shape
 		  
 		  List = EL1.XQL("PointSur")
@@ -3202,7 +3211,12 @@ Inherits Shape
 		      pointsur.addshape sh
 		      loc = Val(El2.Child(j).GetAttribute("Location"))
 		      location.append loc
-		      numside.append Val(EL2.Child(j).GetAttribute("NrCote"))
+		      r = Val(EL2.Child(j).GetAttribute("NrCote"))
+		      if r = -1 then
+		        numside.append sh.pointonside(bpt)
+		      else
+		        numside.append r
+		      end if
 		      sh.setpoint(self)
 		    next
 		    mobility
@@ -3481,12 +3495,6 @@ Inherits Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="notest"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

@@ -2,6 +2,21 @@
 Protected Class Secteur
 Inherits DSect
 	#tag Method, Flags = &h0
+		Sub ComputeArcAngle()
+		  
+		  if not drapori then
+		    computeori
+		  end if
+		  if   abs(arcangle)  >  0.2 and ori <> 0 then
+		    drapori = true  //on ne peut plus changer l'orientation
+		  end if
+		  arcangle = computeangle(points(2).bpt)
+		  
+		  'arcangle a toujours meme signe que l'orientation
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Computeextre()
 		  dim p0,p1,p2 as basicPoint
 		  dim D1 as BiBPoint
@@ -113,7 +128,7 @@ Inherits DSect
 		    computeori
 		    startangle = coord.startangle  
 		    for i = 1 to 3
-		      Lskull(nsk).item(i).border = 0  
+		      Lskull(nsk).item(i).border = 100  
 		    next
 		  case 2
 		    
@@ -219,21 +234,6 @@ Inherits DSect
 		  return a
 		  'a a toujours meme signe que ori
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub oldComputeArcAngle()
-		  
-		  if not drapori then
-		    computeori
-		  end if
-		  if   abs(arcangle)  >  0.2 and ori <> 0 then
-		    drapori = true  //on ne peut plus changer l'orientation
-		  end if
-		  arcangle = computeangle(points(2).bpt)
-		  
-		  'arcangle a toujours meme signe que l'orientation
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -455,6 +455,7 @@ Inherits DSect
 		  dim s,t as shape
 		  dim b as Boolean
 		  
+		  
 		  Shape.UpdateShape
 		  'oldupdateangles
 		  computeextre
@@ -671,12 +672,6 @@ Inherits DSect
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

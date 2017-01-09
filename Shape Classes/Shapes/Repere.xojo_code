@@ -79,9 +79,12 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
+		  dim unit as integer
+		  
+		  unit = 50
 		  origine = new BasicPoint(can.width/2,can.height/2)
-		  Idx=new BasicPoint(50,0)
-		  Idy=new BasicPoint(0,-50)
+		  Idx=new BasicPoint(unit,0)
+		  Idy=new BasicPoint(0,-unit)
 		  Hidden = true
 		  can.setrepere(self)
 		  

@@ -523,41 +523,6 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function PossibleFusionWith(S as Polygon, byref i0 as integer, byref j0 as integer, byref dir as integer) As boolean
-		  dim i, j,k,l as integer
-		  dim delta as double
-		  dim dr1, dr2 as BiBPoint
-		  
-		  delta = can.MagneticDist
-		  
-		  for i = 0  to npts-1
-		    if coord.curved(i) = 0  then
-		      dr1 = getBiBside(i)
-		      for j = 0 to S.npts-1
-		        if s.coord.curved(j) = 0 then
-		          dr2 = s.getBiBside(j)
-		          if dr1.sufficientlynear(dr2) then
-		            i0 = i
-		            j0 = j
-		            dir = 1                          //les deux côtés ont même direction
-		            return true
-		          end if
-		          if dr1.sufficientlynear(dr2.returned) then
-		            i0 = i
-		            j0 = j
-		            dir = -1                      //les deux côtés sont opposés
-		            return true
-		          end if
-		        end if
-		      next
-		    end if
-		  next
-		  return false
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function PrecPoint(P as Point) As Point
 		  if GetIndexPoint(p) > 0 then
 		    return Points(GetIndexPoint(p) - 1)
@@ -820,12 +785,6 @@ Inherits Lacet
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
