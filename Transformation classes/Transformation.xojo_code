@@ -219,18 +219,18 @@ Protected Class Transformation
 		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddObject(self)
 		  
-		  if type > 0 then 
-		    supp.bordercolor = green
-		    if  s isa Lacet then
-		      if i <> -1 then
-		        supp.colcotes(i) = green
-		      else
-		        for j = 0 to supp.npts-1
-		          supp.colcotes(j) = green
-		        next
-		      end if
-		    end if
-		  end if
+		  'if type > 0 then 
+		  'supp.bordercolor = green
+		  'if  s isa Lacet then
+		  'if i <> -1 then
+		  'supp.colcotes(i) = green
+		  'else
+		  'for j = 0 to supp.npts-1
+		  'supp.colcotes(j) = green
+		  'next
+		  'end if
+		  'end if
+		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -259,9 +259,11 @@ Protected Class Transformation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DrawTip(g as graphics, col as color)
-		  
+		Sub DrawTip(g as graphics, coul as couleur)
 		  dim a,b as BasicPoint
+		  dim col as color
+		  
+		  col = coul.col
 		  
 		  if type < 3 or type > 6 then
 		    select case type
@@ -419,38 +421,34 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  
-		  dim col as Color
+		  dim coul as couleur
 		  
-		  
-		  
-		  if type = 0 then
+		  if type = 0 or hidden or not supp.noinvalidpoints then
 		    return
 		  end if
 		  
 		  if (not Hidden2 or CurrentContent.TheTransfos.DrapShowALL)  and not supp.invalid and not supp.deleted  then
 		    if Highlighted then
-		      col = Config.highlightcolor.col
+		      coul = config.highlightcolor
 		    else
 		      if Hidden2 then
-		        col = Config.Hidecolor.col
+		        coul = Config.Hidecolor
 		      else
-		        col = Config.Transfocolor.col
+		        coul = Config.Transfocolor
 		      end if
 		    end if
 		    
-		    if not hidden then
-		      if supp isa Lacet and type < 7 then
-		        Lskull(supp.nsk).updatecurvecolor(supp, index, Col, supp.border)
-		        g.drawobject supp.nsk.item(index), supp.nsk.x, supp.nsk.y 
-		      elseif supp isa point then
-		        point(supp).paint(g)
-		      else
-		        supp.nsk.updatebordercolor(col, supp.border)
-		        g.drawobject supp.nsk.item(0), supp.nsk.x, supp.nsk.y 
-		      end if
+		    supp.nsk.update(supp)
+		    
+		    if supp isa Lacet then
+		      Lskull(supp.nsk).paint(g, index, coul, type)
+		    else
+		      supp.nsk.paint(g,coul)
 		    end if
-		    DrawTip(g, col)
+		    DrawTip(g, coul)
+		    
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -627,6 +625,14 @@ Protected Class Transformation
 		    sp = s.points((index+1) mod s.npts).bpt
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function supportonside(i as integer) As boolean
+		  if index = i then
+		    return true
+		  end if
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

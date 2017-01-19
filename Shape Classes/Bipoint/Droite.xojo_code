@@ -355,6 +355,13 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub FixeCouleurTrait(i as integer, coul as couleur)
+		  
+		  BorderColor = coul
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetSide(n as integer) As droite
 		  return self
 		End Function
@@ -850,6 +857,11 @@ Inherits Bipoint
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
+	#tag Note, Name = Suggestion
+		
+		Créer une sous-classe de roite our les paraperp 
+	#tag EndNote
+
 
 	#tag Property, Flags = &h0
 		Extre1 As BasicPoint
@@ -1041,12 +1053,6 @@ Inherits Bipoint
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

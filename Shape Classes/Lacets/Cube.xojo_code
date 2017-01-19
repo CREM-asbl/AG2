@@ -687,12 +687,6 @@ Inherits StandardPolygon
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="NotPossibleCut"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="np"
 			Group="Behavior"
 			InitialValue="0"

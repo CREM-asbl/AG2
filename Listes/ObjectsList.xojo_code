@@ -36,7 +36,7 @@ Inherits Liste
 		Sub addtofigure()
 		  //Cette méthode ne sert que lors de la création de points de subdivision
 		  
-		  dim i, j as integer
+		  dim i as integer
 		  dim  ff, ff1 as figure
 		  dim s as shape
 		  
@@ -154,8 +154,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function CreateShape(fa as integer, fo as integer) As Shape
-		  dim i as integer
-		  dim specs as StdPolygonSpecifications
+		  
 		  dim currentshape as shape
 		  
 		  if Fa <10 then
@@ -314,7 +313,7 @@ Inherits Liste
 		Function findObject(p as BasicPoint) As ObjectsList
 		  
 		  dim i As Integer
-		  dim S1, s2 as Shape
+		  dim S1 as Shape
 		  dim Visible as ObjectsList
 		  
 		  Visible = new objectslist
@@ -373,9 +372,8 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function FindSegment(p as BasicPoint) As objectslist
-		  dim i, j As Integer
+		  dim i As Integer
 		  dim S as Shape
-		  dim pt as point
 		  dim Visible as ObjectsList
 		  
 		  Visible = new objectslist

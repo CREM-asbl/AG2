@@ -21,18 +21,6 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub fixeepaisseurs(s as shape)
-		  '
-		  if (s.isinconstruction  or s.selected ) and not s.tracept then
-		    item(0).borderwidth = 1.5*s.borderwidth
-		  else
-		    item(0).borderwidth = s.borderwidth
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub paint(g As graphics)
 		  g.drawobject item(0), x, y
 		End Sub
@@ -61,7 +49,6 @@ Inherits NSkull
 		    ref = can.transform(p)
 		    x = ref.x
 		    y = ref.y
-		    
 		    q= can.dtransform(s.coord.tab(1)-p)
 		    item(0).x=q.x
 		    item(0).y=q.y

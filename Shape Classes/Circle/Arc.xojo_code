@@ -16,8 +16,8 @@ Inherits Circle
 		  dim p as point
 		  redim q(-1)
 		  redim q(1)
-		  dim a1, b1, b2 as double
-		  
+		  dim  b1, b2 as double
+		  dim ff as figure
 		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
 		  
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
@@ -27,6 +27,8 @@ Inherits Circle
 		    return nil
 		  end if
 		  k = p.numside(0)
+		  ff = p.GetSousFigure(fig)
+		  
 		  BiB0 =  new BiBPoint(points(0).bpt, points(1).bpt)
 		  if S isa Droite or S isa Lacet  then
 		    Bib =S.getBiBside(k)
@@ -45,7 +47,7 @@ Inherits Circle
 		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
 		    n = BiB0.BiBInterCercles(Bib,q(),bq,v)
 		    if n = 0 then
-		      q.append p.bpt
+		      return p.bpt
 		    end if
 		  end if
 		  
@@ -55,35 +57,50 @@ Inherits Circle
 		    end if
 		  next
 		  n = ubound(q)+1
-		  a1 = amplitude(ep1,ep0,ep2)
-		  b1 = amplitude(np1,np0,q(0))
-		  b2 = amplitude(np1,np0,q(1))
-		  if points(1) = fig.pointmobile then
-		    if n=2  then
-		      if a1 < PI and b1 < PI then 
-		        return q(0)
-		      elseif a1 < PI and b1 > PI then
-		        return q(1)
-		      elseif  a1 > PI and b1 < PI then 
-		        return q(1)
-		      elseif a1 > PI and b1 > PI then
-		        return q(0)
+		  
+		  if n = 1 then
+		    return q(0)
+		  end if
+		  
+		  if n = 2 then
+		    
+		    if ff.replacerpoint(p) then
+		      b1 = amplitude(np1,np0,q(0))
+		      b2 = amplitude(np1,np0,q(1))
+		      'if ep2.distance(q(0)) <= ep2.distance(q(1)) then 'moins efficace que ci-dessous mais moins général
+		      'return q(0)
+		      'else
+		      'return q(1)
+		      'end if
+		      if ori > 0 then
+		        if b1 <= b2 then
+		          np2 = q(0)
+		        else 
+		          np2 = q(1)
+		        end if
+		      else
+		        if b1 <= b2 then
+		          np2 = q(1)
+		        else 
+		          np2 = q(0)
+		        end if
 		      end if
 		      return np2
-		    end if
-		  else
-		    if ep2.distance(q(0)) > ep2.distance(q(1)) then
-		      q(0)=q(1)
+		    else
+		      if ep2.distance(q(0)) > ep2.distance(q(1)) then
+		        q(0)=q(1)
+		        return q(0)
+		      else
+		        return nil
+		      end if
 		    end if
 		  end if
+		  return p.bpt
 		  
 		  
 		  
-		  if n>0 and ubound(q) > -1 then
-		    return q(0)
-		  else
-		    return nil
-		  end if
+		  
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -195,8 +212,9 @@ Inherits Circle
 		  liberte = 5
 		  drapori = true
 		  createskull(points(0).bpt)
-		  arcangle = computeangle(points(0).bpt)
+		  arcangle = computeangle(points(2).bpt)
 		  nsk.updatesize(1)
+		  coord.CreateExtreAndCtrlPoints(ori)
 		  
 		  
 		  
@@ -271,6 +289,12 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Fixecouleurtrait(i as integer, c as couleur)
+		  BorderColor = c
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetType() As string
 		  return Dico.value("Arc")
 		End Function
@@ -301,8 +325,8 @@ Inherits Circle
 		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return
 		  end if
-		  'nsk.fixecouleurs(self)
-		  'nsk.fixeepaisseurs(self)
+		  nsk.fixecouleurs(self)
+		  nsk.fixeepaisseurs(self)
 		  
 		  for i = 0 to nsk.count-1
 		    g.drawobject nsk.item(i), nsk.x, nsk.y

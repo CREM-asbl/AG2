@@ -119,11 +119,7 @@ Inherits Shape
 		  dim ncurv, n as integer
 		  
 		  ncurv = 2*narcs + npts  'Chaque arc (côté incurvé) comporte trois sous-arcs
-		  'if narcs = 0 then
 		  nsk = new LSkull(ncurv,p)
-		  'else
-		  'nsk = new LSkull(ncurv, p, self)
-		  'end if
 		  nsk.skullof = self
 		  
 		  
@@ -484,6 +480,8 @@ Inherits Shape
 		    a = b-e
 		  end if
 		  PaintTip(a, b, bordercolor, 0.5, g)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -526,7 +524,6 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As Lacet
 		  dim s as Lacet
-		  dim M as Matrix
 		  
 		  s= new Lacet(Obl,self,p)
 		  

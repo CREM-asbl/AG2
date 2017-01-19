@@ -4,6 +4,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  Super.constructor
+		  
 		  OpId = 24
 		  NumberOfItemsToSelect=2
 		  copies = new objectslist
@@ -69,11 +70,9 @@ Inherits MultipleSelectOperation
 		    s1 = tempshape.item(i)
 		    if s1 isa point then
 		      s2 = s1.paste(Objects,Point(s1).bpt)
-		    elseif not (s1 isa arc) then  
+		    else 
 		      p=new BasicPoint(0,0)
 		      s2 = s1.paste(Objects,p)
-		    else
-		      s2 = s1.paste(Objects,s1.points(0).bpt)
 		    end if
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i)
@@ -230,11 +229,16 @@ Inherits MultipleSelectOperation
 		Sub MouseMove(p as BasicPoint)
 		  select case currentitemtoset
 		  case 1
+		    colsep = true
 		    MouseMoveTsf(p)
+		    if currenthighlightedshape <> nil then
+		      can.refreshbackground
+		    end if
 		  case 2
+		    colsep = false
 		    super.MouseMove(p)
 		  end select
-		  can.refreshbackground
+		  'can.refreshbackground
 		  
 		  
 		  
@@ -251,7 +255,7 @@ Inherits MultipleSelectOperation
 		    if ListTsf.count >0 then
 		      ListTsf.item(itsf).Hidden = false
 		    end if
-		    can.refreshbackground
+		    'can.refreshbackground
 		  case 2
 		    super.MouseWheel
 		  end select
@@ -354,6 +358,7 @@ Inherits MultipleSelectOperation
 		      CurrentContent.TheTransfos.HideAll
 		      tsf.Hidden = false
 		      tsf.highlight
+		      tsf.supp.highlight
 		      return true
 		    else
 		      return false

@@ -163,7 +163,7 @@ Begin Window StdFamWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &c00FFFFFF
       Bold            =   True
       Border          =   True
       CueText         =   ""

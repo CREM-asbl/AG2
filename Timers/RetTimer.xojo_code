@@ -33,7 +33,7 @@ Inherits TsfTimer
 		      secteur(s).computeextre
 		    end if
 		    
-		    if (s isa circle or s.narcs >0) and not s isa secteur then
+		    if (s isa circle or s.narcs >0)  then 
 		      for j = 0 to ubound(s.coord.extre)
 		        s.coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
 		      next
@@ -46,15 +46,15 @@ Inherits TsfTimer
 		      next
 		    end if
 		    
-		    'if s isa secteur then
-		    'se = secteur(s)
-		    'for j = 0 to ubound(se.skullcoord.extre)
-		    'se.skullcoord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
-		    'next
-		    'for j = 0 to ubound(se.skullcoord.ctrl)
-		    'se.skullcoord.ctrl(j) =  t.TriDPts(ntdbp+2*se.narcs+1+j).ProjPlan + fp
-		    'next
-		    'end if
+		    if s isa secteur then
+		      se = secteur(s)
+		      for j = 0 to ubound(se.skullcoord.extre)
+		        se.skullcoord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
+		      next
+		      for j = 0 to ubound(se.skullcoord.ctrl)
+		        se.skullcoord.ctrl(j) =  t.TriDPts(ntdbp+2*se.narcs+1+j).ProjPlan + fp
+		      next
+		    end if
 		    
 		    if pas = niter/2  then
 		      if Config.stdbiface or (s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then

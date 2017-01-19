@@ -392,25 +392,6 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub PaintTipOnSide(g as graphics, i as integer)
-		  
-		  dim Bib as BiBPoint
-		  dim Trib as TribPoint
-		  dim m, a, b, e as BasicPoint
-		  
-		  a = coord.tab(i)
-		  b = coord.tab((i+1)mod npts)
-		  
-		  Bib = new BibPoint(a,b)
-		  m = BiB.Subdiv(2,1)
-		  e = (b-a)*0.1
-		  a = m-e
-		  b = m+e
-		  PaintTip(a, b, bordercolor, 0.5, g)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function parametre(p as point) As double
 		  dim k as integer
 		  dim r as double

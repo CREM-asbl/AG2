@@ -24,20 +24,30 @@ Inherits FigureShape
 		    b = 100
 		  end if
 		  
-		  if s.hidden then
-		    col = config.HideColor.col
-		  elseif s.highlighted then
-		    col = config.HighlightColor.col
-		  elseif s.isinconstruction then
-		    col = config.weightlesscolor.col
-		    b = 100
-		  elseif s.tracept then
-		    col = bleu
-		    b = 100
+		  if s.tsfi.count > 0 then
+		    for i = 0 to s.tsfi.count-1
+		      if s.tsfi.item(i).highlighted then
+		        col = config.HighlightColor.col
+		      else
+		        col = config.transfocolor.col
+		      end if
+		    next
+		    
 		  else
-		    col = s.bordercolor.col
-		  end if 
-		  
+		    if s.hidden then
+		      col = config.HideColor.col
+		    elseif s.highlighted then
+		      col = config.HighlightColor.col
+		    elseif s.isinconstruction then
+		      col = config.weightlesscolor.col
+		      b = 100
+		    elseif s.tracept then
+		      col = bleu
+		      b = 100
+		    else
+		      col = s.bordercolor.col
+		    end if 
+		  end if
 		  updatecurvecolor(s, col)
 		  updatefillcolor(s.fillcolor.col, s.fill)
 		  
@@ -53,7 +63,6 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixeepaisseurs(s as shape)
-		  dim  i as integer
 		  
 		  
 		  if (s.isinconstruction  or s.selected ) and not s.tracept then
@@ -82,6 +91,23 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub paint(g as graphics, coul as couleur)
+		  dim i as integer
+		  
+		  if not (currentcontent.currentoperation isa retourner and dret <>nil) then
+		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
+		    update(skullof)
+		  end if
+		  
+		  for i = 0 to count-1
+		    item(i).bordercolor = coul.col
+		    g.drawobject item(i), x, y
+		  next
 		  
 		End Sub
 	#tag EndMethod

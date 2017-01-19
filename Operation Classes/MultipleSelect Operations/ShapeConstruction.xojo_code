@@ -326,7 +326,7 @@ Inherits MultipleSelectOperation
 		      side = currentattractingshape.pointonside(p)
 		    end if
 		  end if
-		  can.refreshbackground
+		  'can.refreshbackground
 		  
 		  
 		  

@@ -389,10 +389,6 @@ Inherits MultipleSelectOperation
 		CreatedShapes As objectslist
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		currentshape As shape
-	#tag EndProperty
-
 	#tag Property, Flags = &h1
 		Protected Firstpoint As point
 	#tag EndProperty

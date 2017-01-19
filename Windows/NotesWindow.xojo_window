@@ -31,7 +31,7 @@ Begin Window NotesWindow
       Alignment       =   0
       AutoDeactivate  =   False
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &cFFFF00FF
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -351,13 +351,12 @@ End
 		      nomfich = title+".rtf"
 		    end if
 		  end if
-		  
-		  Dim f as FolderItem=GetSaveFolderItem(FileAGTypes.RTF,nomfich)
-		  If f <> nil then
+		  dim f as FolderItem= GetSaveFolderItem(FileAGTypes.RTF, nomfich)
+		  if f <> nil then
 		    Dim s as TextOutputStream=TextOutputStream.Create(f)
 		    s.Write EF.StyledText.RTFData
 		    s = nil
-		  End if
+		  end if
 		End Sub
 	#tag EndMethod
 

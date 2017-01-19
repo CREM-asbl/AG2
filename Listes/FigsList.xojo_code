@@ -70,7 +70,6 @@ Inherits Liste
 		  dim f, sf as figure
 		  dim i, j as integer
 		  dim tsf as Transformation
-		  dim pt as point
 		  
 		  for j =  count-1 downto 0
 		    sf = item(j)

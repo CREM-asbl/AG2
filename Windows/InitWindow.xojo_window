@@ -93,7 +93,7 @@ Begin Window InitWindow
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   True
       Border          =   True
       CueText         =   ""
@@ -321,7 +321,7 @@ End
 		Sub Action()
 		  Config.Menu = PopupMenu1.Text
 		  App.Continuer
-		  Close
+		  close
 		  
 		  
 		  
@@ -406,7 +406,7 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  Quit
+		  quit
 		  
 		End Sub
 	#tag EndEvent

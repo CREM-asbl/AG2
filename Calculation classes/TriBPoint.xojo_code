@@ -36,10 +36,8 @@ Inherits nBpoint
 		Sub Constructor(s as shape)
 		  super.constructor(s) 'renvoie  à new nBPoint lequel tient compte du nombre d'arcs
 		  ori = orientation
-		  'redim extre(-1)
-		  'redim ctrl(-1)
-		  'redim extre(1)  'ceci correspond à un trigone comportant un et un seul arc donc contrarie le "super.constructor"
-		  'redim ctrl(5)
+		  redim extre(1)  'ceci correspond à un trigone comportant un et un seul arc donc contrarie le "super.constructor"
+		  redim ctrl(5)
 		  
 		  
 		End Sub

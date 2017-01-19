@@ -7,7 +7,9 @@ Inherits Application
 		    ipc.send(FileName)
 		    ipctransfert = false
 		  end if
+		  
 		  Config.Save
+		  
 		  
 		End Function
 	#tag EndEvent
@@ -239,13 +241,14 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub Continuer()
-		  dim ww as WorkWindow
-		  
 		  Config.ChargerConfig
 		  themacros = new macroslist
 		  Tampon = new ObjectsList
-		  ww = new WorkWindow
-		  ww.Show
+		  wnd = new WorkWindow
+		  wnd.Show
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

@@ -25,7 +25,7 @@ Inherits NSkull
 		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
 		    update(skullof)
 		  end if
-		  g.drawobject self, x, y
+		  'g.drawobject self, x, y
 		  for i = 0 to count-1
 		    g.drawobject item(i), x, y
 		  next
@@ -68,8 +68,8 @@ Inherits NSkull
 		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p))
 		  next
 		  
-		  fixecouleurs(s)
-		  fixeepaisseurs(s)
+		  'fixecouleurs(s)
+		  'fixeepaisseurs(s)
 		  
 		  
 		  

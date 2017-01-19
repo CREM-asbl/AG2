@@ -154,8 +154,9 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim i, n, b, f as integer
+		  dim i, j, n, b, f as integer
 		  dim col as color
+		  dim sideinsupport as boolean
 		  
 		  b = s.border
 		  f= s.fill
@@ -167,13 +168,13 @@ Inherits NSkull
 		  
 		  if s.hidden or s.tsp  then
 		    updatefillcolor(s.fillcolor.col,0)
-		    updatebordercolor(s.bordercolor.col,0)
+		    'updatebordercolor(s.bordercolor.col,0)
 		  elseif s.isinconstruction then
 		    updatefillcolor(s.fillcolor.col,0)
-		    updatebordercolor(config.weightlesscolor.col,0)
+		    'updatebordercolor(config.weightlesscolor.col,0)
 		  else
 		    updatefillcolor(s.fillcolor.col,f)
-		    updatebordercolor(s.bordercolor.col,b)
+		    'updatebordercolor(s.bordercolor.col,b)
 		  end if
 		  
 		  'Concernant le bord
@@ -189,7 +190,11 @@ Inherits NSkull
 		    col = bleu
 		    b = 100
 		  end if 
-		  '
+		  ''
+		  'if ubound(s.tsfi) > -1 then
+		  'sideissupport = true
+		  'end if
+		  
 		  if s isa Bande  then
 		    updatesidecolor (s, 0, col, b)
 		    updatesidecolor (s, 2, col, b)
@@ -342,6 +347,40 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub paint(g as graphics, i as integer, c as couleur, t as integer)
+		  'Utilisé exclusivement pour afficher les transformations
+		  
+		  dim j as integer
+		  
+		  
+		  if count > 1 then  '1 Translations 6 symétries sur coté lacet 2 Rotations sur Hybrid, 
+		    if  t < 7  then
+		      if i <> -1 then
+		        item(i).bordercolor = c.col 'updatecurvecolor(supp, i, coul.Col, supp.border)
+		        g.DrawObject item(i), ref.x, ref.y 'Lskull(supp.nsk).paintside(g,index,1.5,coul)
+		      end if
+		    else
+		      for i = 0 to count -1
+		        item(i).borderwidth = 1.5*borderwidth
+		        item(i).bordercolor = c.col
+		        g.drawobject item(i), ref.x, ref.y
+		      next
+		    end if
+		  end if
+		  
+		  
+		  
+		  
+		  'if self isa point then
+		  'point(self).rsk.updatecolor(c.col,100)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Paintside(g as graphics, i as integer, ep as double, coul as couleur)
 		  dim n, j as integer
 		  
@@ -401,8 +440,8 @@ Inherits NSkull
 		    next
 		  end if 
 		  
-		  fixecouleurs(s)
-		  fixeepaisseurs(s)
+		  'fixecouleurs(s)
+		  'fixeepaisseurs(s)
 		  
 		  
 		  

@@ -330,10 +330,10 @@ Inherits Canvas
 		        info = Dico.value("click") + Dico.value("onabuttonoramenu")+EndOfLine+Dico.value("chgTextSize")
 		        ctxt = false
 		      end if
-		      refreshbackground
+		      
 		    end if
 		  end if
-		  
+		  refreshbackground
 		  
 		  
 		  
@@ -342,6 +342,8 @@ Inherits Canvas
 
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
+		  // Le mouseup attend que les opérations lancées par le mousedown soient terminées avant de s'exécuter
+		  
 		  if CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
 		    CurrentContent.CurrentOperation.MouseUp(itransform(new BasicPoint(x,y)))
 		  end if
@@ -575,7 +577,7 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub RefreshBackground()
-		  dim  j as Integer
+		  'dim  j as Integer
 		  dim op As operation
 		  
 		  

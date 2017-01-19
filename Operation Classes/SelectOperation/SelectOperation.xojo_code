@@ -404,12 +404,14 @@ Inherits Operation
 		    if currenthighlightedtsf <> nil then
 		      CurrenthighlightedTsf.unhighlight
 		      currenthighlightedtsf = nil
+		      currenthighlightedshape = nil
 		    end if
 		    'CurrentContent.TheObjects.unhighlightall
 		    CurrentContent.TheTransfos.GetTsf(p, ListTsf)
 		    if ListTsf.count  > 0 then
 		      CurrentHighlightedTsf = ListTsf.item(itsf)
 		      currenthighlightedTsf.highlight
+		      currenthighlightedshape = currenthighlightedtsf.supp
 		      ntsf = ListTsf.count
 		    end if
 		  end if
@@ -453,13 +455,18 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
-		  if  currentcontent.currentoperation.colsep and currenthighlightedshape isa Lacet  and side <> -1 then
-		    Lacet(currenthighlightedshape).nsk.paintside(g, side, 2.5, config.highlightcolor)  
-		  elseif CurrentHighlightedShape<>nil then
+		  if currenthighlightedshape = nil then
+		    return
+		  end if
+		  
+		  if  currenthighlightedshape isa Lacet and currentcontent.currentoperation.colsep   and side <> -1 then
+		    Lacet(currenthighlightedshape).nsk.paintside(g, side, 1.5*Lacet(currenthighlightedshape).nsk.borderwidth, config.highlightcolor)  
+		  else
 		    CurrentHighlightedShape.HighLight
 		    CurrentHighlightedShape.PaintAll(g)
 		    CurrentHighlightedShape.UnHighLight
 		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod

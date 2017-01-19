@@ -31,7 +31,7 @@ Begin Window MacWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFF00FFFF
       Bold            =   True
       Border          =   True
       DataField       =   ""
@@ -170,6 +170,7 @@ End
 		    EF.Text = EF.Text+ chr(10)+  "Commentaires"+chr(10)
 		  else
 		    EF.ReadOnly = true
+		    EF.BackColor = blanc
 		    EF.text = Mac.expli
 		    PushButton2.Visible=false
 		  end if

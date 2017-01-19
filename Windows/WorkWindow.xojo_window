@@ -9,7 +9,7 @@ Begin Window WorkWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   True
-   Height          =   695
+   Height          =   595
    ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
@@ -39,7 +39,7 @@ Begin Window WorkWindow
       Enabled         =   True
       EraseBackground =   False
       FondsEcran      =   0
-      Height          =   735
+      Height          =   595
       HelpTag         =   ""
       icot            =   0
       IdContent       =   0
@@ -68,15 +68,15 @@ Begin Window WorkWindow
       Transparent     =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   1124
+      Width           =   780
    End
    Begin Rectangle Tools
       AutoDeactivate  =   False
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c008080FF
-      Height          =   695
+      FillColor       =   &c80FF0080
+      Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -719,7 +718,6 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
-		  'pourquoi la gestion du curseur se trouve ici ? Cela devrait se trouver dans MyCanvas1
 		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
 		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
@@ -735,7 +733,6 @@ End
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
 		  end if
-		  
 		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
 		    B =  CurrentContent.TheObjects.count > 1
 		    B1 = CurrentContent.TheGrid <> nil
@@ -762,9 +759,6 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
@@ -827,7 +821,7 @@ End
 		    app.quiet = not app.quiet
 		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
 		    MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
-		    s = u(0)
+		    's = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info
@@ -2295,6 +2289,7 @@ End
 		  else
 		    item.Text = mitem.Text
 		  end if
+		  
 		  
 		  if item.name = "PrefsFreeForms" then
 		    return nil
