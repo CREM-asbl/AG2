@@ -21,59 +21,6 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub fixecouleurs(s as shape)
-		  dim loc, i, n, b, f as integer
-		  dim col as color
-		  
-		  b = s.border
-		  f= s.fill
-		  if b = 0 then
-		    b = 100
-		  end if
-		  
-		  
-		  if s.tracept then
-		    updatebordercolor (bleu,b)
-		  elseif s.hidden and s.highlighted Then
-		    updatebordercolor(config.HighlightColor.col, b)
-		  elseif s.hidden Then
-		    updatebordercolor(cyan, b)
-		  elseif s.highlighted  then
-		    updatebordercolor(config.HighlightColor.col,b)
-		  elseif s.selected  then
-		    updatebordercolor(s.BorderColor.col, b)
-		  elseif s.isinconstruction then
-		    updatebordercolor(config.WeightlessColor.col,b)
-		  elseif s.tsfi.count > 0 then
-		    col = s.bordercolor.col
-		    for i = 0 to s.tsfi.count -1
-		      if s.tsfi.item(i).type > 0 then
-		        col = config.transfocolor.col
-		      end if
-		    next
-		    updatebordercolor(col,b)
-		  else
-		    updatebordercolor(s.BorderColor.col,b)
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub fixeepaisseurs(s as shape)
-		  '
-		  if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		    'updateborderwidth(2*s.borderwidth)
-		    item(0).borderwidth = 2*s.borderwidth
-		  else
-		    'updateborderwidth(s.borderwidth)
-		    item(0).borderwidth = s.borderwidth
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub paint(g As graphics)
 		  g.drawobject item(0), x, y
 		End Sub
@@ -83,6 +30,8 @@ Inherits NSkull
 		Sub update(s as shape)
 		  dim p, q as BasicPoint
 		  
+		  fixecouleurs(s)
+		  fixeepaisseurs(s)
 		  if s isa droite then
 		    p =s.getgravitycenter
 		    ref = can.transform(p)
@@ -100,7 +49,6 @@ Inherits NSkull
 		    ref = can.transform(p)
 		    x = ref.x
 		    y = ref.y
-		    
 		    q= can.dtransform(s.coord.tab(1)-p)
 		    item(0).x=q.x
 		    item(0).y=q.y
@@ -109,8 +57,7 @@ Inherits NSkull
 		    item(0).y2=q.y
 		  end if
 		  
-		  fixecouleurs(s)
-		  fixeepaisseurs(s)
+		  
 		End Sub
 	#tag EndMethod
 

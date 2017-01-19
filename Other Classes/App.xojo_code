@@ -7,7 +7,9 @@ Inherits Application
 		    ipc.send(FileName)
 		    ipctransfert = false
 		  end if
+		  
 		  Config.Save
+		  
 		  
 		End Function
 	#tag EndEvent
@@ -27,9 +29,6 @@ Inherits Application
 	#tag Event
 		Sub Open()
 		  CheckProcess
-		  #if TargetWin32 then
-		    UseGDIPlus=true
-		  #endif
 		  if not ipctransfert then
 		    CheckSystem
 		    InitFolders
@@ -242,13 +241,14 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub Continuer()
-		  dim ww as WorkWindow
-		  
 		  Config.ChargerConfig
 		  themacros = new macroslist
 		  Tampon = new ObjectsList
-		  ww = new WorkWindow
-		  ww.Show
+		  wnd = new WorkWindow
+		  wnd.Show
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -351,18 +351,13 @@ Inherits Application
 		  dim stdfiles(-1),nom as String
 		  dim i as integer
 		  
-		  'for i=1 to AppFolder.count
-		  'nom = app.AppFolder.trueItem(i).Name
-		  'if right(nom,4)=".std" then
-		  'stdfiles.append(Left(nom,len(nom)-4))
-		  'end if
-		  'next
-		  
 		  stdfiles.append "jeu_de_base"
+		  stdfiles.append "jeu_reduit"
 		  stdfiles.append "cubes"
-		  stdfiles.append "pentaminos"
+		  stdfiles.append "polyminos"
 		  stdfiles.append "tangram"
 		  stdfiles.append "reglettes"
+		  stdfiles.append "etoiles"
 		  
 		  for i=1 to StdFolder.count
 		    nom = app.StdFolder.trueItem(i).Name
@@ -431,6 +426,10 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		iw As Initwindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		MacFolder As FolderItem
 	#tag EndProperty
 
@@ -444,6 +443,10 @@ Inherits Application
 
 	#tag Property, Flags = &h1
 		Protected mut As Mutex
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		prtsettings As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -499,6 +502,12 @@ Inherits Application
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="prtsettings"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="quiet"

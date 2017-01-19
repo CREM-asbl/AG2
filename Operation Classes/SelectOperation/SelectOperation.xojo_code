@@ -118,15 +118,15 @@ Inherits Operation
 		  figsimges = new figslist
 		  Objects.ReattractingAll
 		  
-		  Exception err
-		    dim d As Debug
-		    d = new Debug
-		    d.setMethod(getString,getString)
-		    err.message = err.message+d.getString
-		    
-		    Raise err
-		    
-		    
+		  'Exception err
+		  'dim d As Debug
+		  'd = new Debug
+		  'd.setMethod(getString,getString)
+		  'err.message = err.message+d.getString
+		  '
+		  'Raise err
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -401,14 +401,18 @@ Inherits Operation
 		  
 		  if not (self isa readhisto) then
 		    itsf = 0
-		    CurrenthighlightedTsf = nil
-		    CurrentContent.TheTransfos.unhighlightall
+		    if currenthighlightedtsf <> nil then
+		      CurrenthighlightedTsf.unhighlight
+		      currenthighlightedtsf = nil
+		      currenthighlightedshape = nil
+		    end if
+		    'CurrentContent.TheObjects.unhighlightall
 		    CurrentContent.TheTransfos.GetTsf(p, ListTsf)
 		    if ListTsf.count  > 0 then
 		      CurrentHighlightedTsf = ListTsf.item(itsf)
-		      CurrentHighlightedTsf.highlight
+		      currenthighlightedTsf.highlight
+		      currenthighlightedshape = currenthighlightedtsf.supp
 		      ntsf = ListTsf.count
-		      can.refreshbackground
 		    end if
 		  end if
 		  
@@ -445,6 +449,24 @@ Inherits Operation
 		    currenthighlightedtsf = ListTsf.item(itsf)
 		    can.refreshbackground
 		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub paint(g as graphics)
+		  if currenthighlightedshape = nil then
+		    return
+		  end if
+		  
+		  if  currenthighlightedshape isa Lacet and currentcontent.currentoperation.colsep   and side <> -1 then
+		    Lacet(currenthighlightedshape).nsk.paintside(g, side, 1.5*Lacet(currenthighlightedshape).nsk.borderwidth, config.highlightcolor)  
+		  else
+		    CurrentHighlightedShape.HighLight
+		    CurrentHighlightedShape.PaintAll(g)
+		    CurrentHighlightedShape.UnHighLight
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -582,6 +604,11 @@ Inherits Operation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

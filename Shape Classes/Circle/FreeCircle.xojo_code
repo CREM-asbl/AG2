@@ -171,7 +171,7 @@ Inherits Circle
 		    e = e*0.1
 		    a = can.transform(b-e)
 		    b = can.transform(b)
-		    Ti.updatetip(a,b,bordercolor)
+		    Ti.updatetip(a,b,bordercolor.col)
 		    Ti.scale = 0.5
 		    g.DrawObject Ti, b.x, b.y
 		  end if
@@ -431,12 +431,6 @@ Inherits Circle
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

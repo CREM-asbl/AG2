@@ -21,7 +21,7 @@ Inherits MultipleSelectOperation
 		    case  1 // translation
 		      if s isa droite and droite(s).nextre = 2  then
 		        s.side = 0
-		      elseif  S isa Lacet then 
+		      elseif  S isa Lacet and (not s isa bande) and (not s isa secteur) then 
 		        n = s.pointonside(p)
 		        if n>-1 and s.coord.curved(n) = 0 then
 		          s.side = n 
@@ -35,19 +35,22 @@ Inherits MultipleSelectOperation
 		      end if
 		      
 		    case 2          // rotations
-		      if not  s isa Arc then
-		        Visremove(s)                             // on ne garde que les cercles (ou arcs)
-		      else
-		        index.Append 0                         // index ne contient que des -1 Dans ce cas, index = -1 signifie que le support est une forme complète
+		      if s isa arc then
+		        s.side = 0
+		      elseif s.hybrid and not s isa bande and not s isa secteur then
+		        n = s.pointonside(p)
+		        if n > -1 and s.coord.curved(n) = 1 then
+		          s.side = n
+		        else
+		          visremove(s)                         // index ne contient que des -1 Dans ce cas, index = -1 signifie que le support est une forme complète
+		        end if
 		      end if
-		      
 		    case 3 to 5                                               // demi-tour et quarts de tour
 		      if not s isa point then
 		        visremove(s)
 		      else
-		        index.Append 0
+		        s.side = 0
 		      end if
-		      
 		    case 6                                                      // symétries
 		      if s isa Circle or s isa point then
 		        Visremove(s)                          //on supprime tous les cercles
@@ -58,12 +61,12 @@ Inherits MultipleSelectOperation
 		          t = (s.tsfi.item(j).type = 6) and  (s.tsfi.item(j).index = n)
 		        next
 		        if n > -1 and (not t) and s.coord.curved(n) = 0 then
-		          s.side = n // index contient tous les numéros de côté
+		          s.side = n // 
 		        else
 		          visremove(s)
 		        end if 
 		      elseif s isa droite  then                                       // cas des "droites"
-		        s.side = 0                      //index contient 0
+		        s.side = 0                      
 		      else
 		        Visremove(s)
 		      end if
@@ -74,26 +77,25 @@ Inherits MultipleSelectOperation
 		      if not s isa point and (( s.npts <> 4) or (not s isa Trap))  then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
-		        index.append -1
+		        s.side = -1
 		      end if
-		      
 		    case  8, 10 //  Similitude,  Déplacement
 		      if not s isa point and  not( (s isa Polygon) and (s.npts = 4) )  then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
-		        index.append -1
+		        s.side = -1
 		      end if
 		    case 9 //Etirement
 		      if (not s isa point and( s isa quadri or  (s.npts <> 4) )) or (s.npts = 4 and s.coord.pseudoTrap)     then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
-		        index.append -1
+		        s.side = -1
 		      end if
 		    case 11 //Cisaillement
 		      if not s isa point and not s isa Trap and not s isa parallelogram and not s isa rect then
 		        visremove(s)
 		      else
-		        index.append -1
+		        s.side = -1
 		      end if
 		    end select
 		  next
@@ -150,6 +152,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  super.constructor
+		  colsep = true
 		  wnd.pointerpolyg
 		  OPId = 17
 		End Sub
@@ -158,6 +161,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor(n as integer)
 		  Super.Constructor
+		  colsep = true
 		  OPId = 17
 		  type = n
 		  select case Type
@@ -178,6 +182,7 @@ Inherits MultipleSelectOperation
 		Sub Constructor(EL as XMLElement)
 		  dim EL1 as XMLElement
 		  dim num as integer
+		  colsep = true
 		  
 		  Constructor(val(EL.GetAttribute("TsfType")))
 		  ori = val(EL.GetAttribute("Ori"))
@@ -197,7 +202,7 @@ Inherits MultipleSelectOperation
 		  tsf = new transformation (currentshape, type, currentshape.side , ori)
 		  currentshape.tsfi.addObject tsf
 		  if currentshape isa point then
-		    currentshape.borderwidth = 2
+		    currentshape.borderwidth = 2.5
 		  end if
 		  
 		  // ori est destiné aux translations
@@ -352,7 +357,7 @@ Inherits MultipleSelectOperation
 		      case 6
 		        display =  choose + asegmentoraline + orahalfline
 		      case 7
-		        display = choose + atrapezoid + orthreealignedpoints + orfourpoints
+		        display = choose + atrapezoid + orfourpoints
 		      case 8,9,10,11
 		        display = choose + aquad +  orfourpoints
 		      end select
@@ -380,7 +385,7 @@ Inherits MultipleSelectOperation
 		        display = thispoint+" ?"
 		      elseif currenthighlightedshape isa arc then
 		        display = this("arc") + " ?"
-		      elseif  currenthighlightedshape isa droite or currenthighlightedshape isa Lacet then
+		      elseif  currenthighlightedshape isa droite or currenthighlightedshape isa Lacet and side <> -1 then
 		        display = thissegment + "/" + this ("côté") + " ?"
 		      else
 		        display = this(currenthighlightedshape.gettype)+" ?"
@@ -415,7 +420,7 @@ Inherits MultipleSelectOperation
 		  tsf = new Transformation(supp,EL)
 		  supp.tsfi.addObject tsf
 		  if supp isa point then
-		    supp.borderwidth = 2
+		    supp.borderwidth = 2.5
 		  end if
 		  
 		  
@@ -629,7 +634,7 @@ Inherits MultipleSelectOperation
 		    'end if
 		    supp.bordercolor = Config.bordercolor
 		    if supp isa point then
-		      supp.borderwidth = 1
+		      supp.borderwidth = 1.5
 		    end if
 		  end if
 		  ReDeleteCreatedFigures (Temp)
@@ -718,6 +723,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

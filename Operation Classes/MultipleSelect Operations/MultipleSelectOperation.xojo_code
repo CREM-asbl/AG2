@@ -29,7 +29,10 @@ Inherits SelectOperation
 		  
 		  if SetItem(CurrentHighlightedShape) then
 		    NextItem
-		    CurrentHighlightedShape=nil
+		    if currenthighlightedshape <> nil then
+		      currenthighlightedshape.UnHighLight
+		      CurrentHighlightedShape=nil
+		    end if
 		    if FinishedSelecting then
 		      Finished = false
 		      can.Mousecursor = System.Cursors.Wait
@@ -57,11 +60,12 @@ Inherits SelectOperation
 		Sub Paint(g as graphics)
 		  super.Paint(g)
 		  
-		  if CurrentHighlightedShape<>nil then
-		    CurrentHighlightedShape.HighLight
-		    CurrentHighlightedShape.PaintAll(g)
-		    CurrentHighlightedShape.UnHighLight
-		  end if
+		  'if CurrentHighlightedShape<>nil then
+		  'CurrentHighlightedShape.HighLight
+		  'CurrentHighlightedShape.PaintAll(g)
+		  'CurrentHighlightedShape.UnHighLight
+		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -114,6 +118,11 @@ Inherits SelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

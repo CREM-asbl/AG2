@@ -4,6 +4,7 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub Constructor(fam as integer, form As integer)
 		  super.constructor(fam,form)
+		  colsep = true
 		  OpId = 1
 		  
 		  NumberOfItemsToSelect = 3
@@ -177,6 +178,9 @@ Inherits ShapeConstruction
 		  case 1
 		    Refe = GetBiPoint(p)
 		    currentattractingshape = Refe
+		    if Refe <> nil then
+		      Refe.side = Refe.PointOnSide(p)
+		    end if
 		  else
 		    CurrentShape.Fixecoord(p, currentshape.IndexConstructedPoint)
 		    constructed = true
@@ -388,6 +392,11 @@ Inherits ShapeConstruction
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

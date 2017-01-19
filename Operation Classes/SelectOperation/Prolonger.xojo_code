@@ -5,6 +5,7 @@ Inherits SelectOperation
 		Sub Constructor()
 		  
 		  super.Constructor
+		  colsep = true
 		  OpId = 28
 		  wnd.PointerPolyg
 		  
@@ -412,6 +413,11 @@ Inherits SelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

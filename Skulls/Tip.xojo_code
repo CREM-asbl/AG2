@@ -8,21 +8,19 @@ Inherits FigureShape
 		  Addline  -8,0,-20,10
 		  Addline -20,10,0,0
 		  Border = 100
-		  Bordercolor = Config.Transfocolor.col
 		  Fill = 100
-		  Fillcolor = Config.Transfocolor.col
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub updatetip(a as basicPoint, b as Basicpoint, C as Couleur)
+		Sub updatetip(a as basicPoint, b as Basicpoint, C as Color)
 		  dim q as BasicPoint
 		  
 		  q = b-a
 		  rotation = q.anglepolaire
-		  Bordercolor = c.Col
-		  Fillcolor = c.Col
-		  
+		  Bordercolor = C
+		  Fillcolor = C
 		End Sub
 	#tag EndMethod
 

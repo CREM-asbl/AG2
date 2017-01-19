@@ -116,11 +116,14 @@ Inherits Shape
 		Sub createskull(p as BasicPoint)
 		  
 		  dim i as integer
-		  dim ncurv as integer
+		  dim ncurv, n as integer
 		  
-		  ncurv = 2*narcs + npts  'Chaque côté incurvé comporte trois sous-arcs
-		  nsk = new LSkull(ncurv, p)
+		  ncurv = 2*narcs + npts  'Chaque arc (côté incurvé) comporte trois sous-arcs
+		  nsk = new LSkull(ncurv,p)
 		  nsk.skullof = self
+		  
+		  
+		  
 		  'Il faut préciser la position des côtés incurvés, via le tableau curved, voir "InitConstruction"
 		  'createskull peut être placé dès que narcs et npts ont été définis
 		  
@@ -477,6 +480,8 @@ Inherits Shape
 		    a = b-e
 		  end if
 		  PaintTip(a, b, bordercolor, 0.5, g)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -519,7 +524,6 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function Paste(Obl as Objectslist, p as Basicpoint) As Lacet
 		  dim s as Lacet
-		  dim M as Matrix
 		  
 		  s= new Lacet(Obl,self,p)
 		  
@@ -673,12 +677,50 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function PossibleFusionWith(S as Lacet, byref i0 as integer, byref j0 as integer, byref dir as integer) As boolean
+		  dim i, j,k,l as integer
+		  dim delta as double
+		  dim dr1, dr2 as BiBPoint
+		  
+		  delta = can.MagneticDist
+		  
+		  for i = 0  to npts-1
+		    if coord.curved(i) = 0  then
+		      dr1 = getBiBside(i)
+		      for j = 0 to S.npts-1
+		        if s.coord.curved(j) = 0 then
+		          dr2 = s.getBiBside(j)
+		          if dr1.sufficientlynear(dr2) then
+		            i0 = i
+		            j0 = j
+		            dir = 1                          //les deux côtés ont même direction
+		            return true
+		          end if
+		          if dr1.sufficientlynear(dr2.returned) then
+		            i0 = i
+		            j0 = j
+		            dir = -1                      //les deux côtés sont opposés
+		            return true
+		          end if
+		        end if
+		      next
+		    end if
+		  next
+		  return false
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub PrepareSkull(p as BasicPoint)
+		  dim i, n as integer
+		  
 		  redim coord.extre(-1)
 		  redim coord.ctrl(-1)
 		  redim coord.extre(2*narcs-1)
 		  redim coord.ctrl(6*narcs-1)
 		  Createskull(p)
+		  Lskull(nsk).PositionnerCotesCourbes
 		  
 		End Sub
 	#tag EndMethod
@@ -1075,12 +1117,6 @@ Inherits Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

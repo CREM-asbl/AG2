@@ -156,7 +156,7 @@ Inherits Polygon
 		  
 		  if i = 0 then
 		    BiB = new BiBPoint(coord.tab(0), coord.tab(1) )
-		  elseif i = 1 then
+		  elseif (i = 1) or ( i = 2) then
 		    BiB = new BiBPoint(coord.tab(2),Point3)
 		  else
 		    BiB = nil
@@ -329,7 +329,7 @@ Inherits Polygon
 		  dist = p.distance(Points(2).bpt,point3)
 		  if dist < distmin then
 		    distmin = dist
-		    imin = 1
+		    imin = 2
 		  end if
 		  if distmin < can.MagneticDist  then
 		    side = imin
@@ -556,12 +556,6 @@ Inherits Polygon
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

@@ -670,7 +670,12 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function sufficientlynear(d2 as BiBPoint) As Boolean
-		  return ( first.distance(d2.first) <=epsilon) and (second.distance(d2.second) <= epsilon)
+		  dim a, b as double
+		  
+		  a = first.distance(d2.first)
+		  b = second.distance(d2.second)
+		  
+		  return  (a <= 0.015) and (b <= 0.015)
 		  
 		  
 		  

@@ -10,16 +10,16 @@ Begin Window InitWindow
    FullScreenButton=   False
    HasBackColor    =   False
    Height          =   584
-   ImplicitInstance=   True
+   ImplicitInstance=   False
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000
-   MaximizeButton  =   True
+   MaximizeButton  =   False
    MaxWidth        =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
    MinHeight       =   64
-   MinimizeButton  =   True
+   MinimizeButton  =   False
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   False
@@ -93,7 +93,7 @@ Begin Window InitWindow
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   True
       Border          =   True
       CueText         =   ""
@@ -321,7 +321,8 @@ End
 		Sub Action()
 		  Config.Menu = PopupMenu1.Text
 		  App.Continuer
-		  Close
+		  close
+		  
 		  
 		  
 		End Sub
@@ -330,11 +331,10 @@ End
 #tag Events User
 	#tag Event
 		Function KeyDown(Key As String) As Boolean
-		  if Key = chr(13) then
-		    if me.text <> "" then
-		      app.Continuer
-		    end if
+		  if Key = chr(13) and  me.text <> "" then
+		    app.Continuer
 		  end if
+		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -406,7 +406,7 @@ End
 #tag Events PushButton4
 	#tag Event
 		Sub Action()
-		  Quit
+		  quit
 		  
 		End Sub
 	#tag EndEvent

@@ -15,43 +15,45 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim loc, i, n, b, f as integer 'ne sert que pour les cercles et les arcs
-		  
+		  dim loc, i, n, b as integer 'ne sert que pour les cercles et les arcs
+		  dim col as color
 		  b = s.border
-		  f= s.fill
+		  
+		  
 		  if b = 0 then
 		    b = 100
 		  end if
 		  
-		  
-		  if s.tracept then
-		    updatebordercolor (bleu,b)
-		  elseif s.hidden and s.highlighted Then
-		    updatebordercolor(config.HighlightColor.col, b)
-		    updatefillcolor(s.fillcolor.col,0)
-		  elseif s.hidden Then
-		    updatebordercolor(cyan, b)
-		    updatefillcolor(s.fillcolor.col,0)
-		  elseif s.tsp and s.Highlighted then
-		    updatefillcolor(s.fillColor.col,0)
-		    updatebordercolor(config.HighlightColor.col,b)
-		  elseif s.tsp then
-		    updatefillcolor(s.fillColor.col,0)
-		    updatebordercolor(s.BorderColor.col,b)
-		  elseif s.highlighted and s.selected then
-		    updatebordercolor(config.HighlightColor.col,b)
-		  elseif s.highlighted  then
-		    updatefillcolor(s.fillColor.col,f)
-		    updatebordercolor(config.HighlightColor.col,b)
-		  elseif s.selected and s.fillcolor.equal(white) then
-		    updatebordercolor(s.BorderColor.col, b)
-		  elseif s.isinconstruction then
-		    updatefillcolor(config.Weightlesscolor.col,0)
-		    updatebordercolor(config.WeightlessColor.col,b)
+		  if s.tsfi.count > 0 then
+		    for i = 0 to s.tsfi.count-1
+		      if s.tsfi.item(i).highlighted then
+		        col = config.HighlightColor.col
+		      else
+		        col = config.transfocolor.col
+		      end if
+		    next
+		    
 		  else
-		    updatefillcolor(s.Fillcolor.col,f)
-		    updatebordercolor(s.BorderColor.col,b)
+		    if s.hidden then
+		      col = config.HideColor.col
+		    elseif s.highlighted then
+		      col = config.HighlightColor.col
+		    elseif s.isinconstruction then
+		      col = config.weightlesscolor.col
+		      b = 100
+		    elseif s.tracept then
+		      col = bleu
+		      b = 100
+		    else
+		      col = s.bordercolor.col
+		    end if 
 		  end if
+		  updatecurvecolor(s, col)
+		  updatefillcolor(s.fillcolor.col, s.fill)
+		  
+		  
+		  
+		  
 		  
 		  
 		  
@@ -61,11 +63,10 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixeepaisseurs(s as shape)
-		  dim  i as integer
 		  
 		  
-		  if (s.highlighted or s.isinconstruction  or s.selected ) and not s.tracept then
-		    updateborderwidth(2*s.borderwidth)
+		  if (s.isinconstruction  or s.selected ) and not s.tracept then
+		    updateborderwidth(1.5*s.borderwidth)
 		  else
 		    updateborderwidth(s.borderwidth)
 		  end if
@@ -90,6 +91,23 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub paint(g as graphics, coul as couleur)
+		  dim i as integer
+		  
+		  if not (currentcontent.currentoperation isa retourner and dret <>nil) then
+		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
+		    update(skullof)
+		  end if
+		  
+		  for i = 0 to count-1
+		    item(i).bordercolor = coul.col
+		    g.drawobject item(i), x, y
+		  next
 		  
 		End Sub
 	#tag EndMethod
@@ -125,7 +143,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub updatebordercolor(col as color, c as double)
-		  bordercolor = col 'méthode condamnée à disparaître
+		  bordercolor = col 
 		  border = c
 		End Sub
 	#tag EndMethod
@@ -138,6 +156,21 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub updatectrl(n as integer, p as BasicPoint)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatecurvecolor(s as shape, col as color)
+		  dim i as integer
+		  
+		  if self isa arcskull then
+		    for i = 0 to 2
+		      item(i).bordercolor = col
+		    next
+		  elseif self isa segskull then
+		    item(0).bordercolor = col
+		  end if
 		  
 		End Sub
 	#tag EndMethod

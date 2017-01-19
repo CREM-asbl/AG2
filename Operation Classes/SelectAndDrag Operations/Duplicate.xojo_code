@@ -483,8 +483,6 @@ Inherits SelectAndDragOperation
 		  dim ffigs as Figslist
 		  dim ff as figure
 		  
-		  Vect = p
-		  
 		  p = new BasicPoint(0,0)
 		  
 		  if copyPtSur then
@@ -691,6 +689,11 @@ Inherits SelectAndDragOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

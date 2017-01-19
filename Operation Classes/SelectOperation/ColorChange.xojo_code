@@ -31,6 +31,11 @@ Inherits SelectOperation
 		  Bord = B
 		  newcolor = col
 		  icot = -1
+		  if B then
+		    colsep = true
+		  else
+		    colsep = false
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -43,7 +48,9 @@ Inherits SelectOperation
 		  n = tempshape.count-1
 		  setoldcolors
 		  
-		  if icot <> -1 then
+		  s = currenthighlightedshape
+		  
+		  if s.side <> -1 then
 		    s = tempshape.item(0)
 		    s.Fixecouleurtrait(s.side, newcolor)
 		  else
@@ -98,6 +105,7 @@ Inherits SelectOperation
 		      s = Visible.item(i)
 		      if s isa Lacet  then
 		        s.side  = s.pointonside(p)
+		        side = s.side
 		      end if
 		    next
 		    icot = Visible.item(iobj).side
@@ -425,6 +433,11 @@ Inherits SelectOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

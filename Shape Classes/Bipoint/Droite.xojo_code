@@ -355,6 +355,13 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub FixeCouleurTrait(i as integer, coul as couleur)
+		  
+		  BorderColor = coul
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetSide(n as integer) As droite
 		  return self
 		End Function
@@ -689,6 +696,7 @@ Inherits Bipoint
 		  dim  ep, np, eq, nq, w as Basicpoint
 		  dim t as Boolean
 		  dim n as integer
+		  dim d as double
 		  
 		  sf = getsousfigure(fig)
 		  p = points(0)
@@ -697,10 +705,10 @@ Inherits Bipoint
 		  sf.getoldnewpos(q,eq,nq)
 		  
 		  n = sf.NbSommSur
+		  w = constructbasis
 		  
 		  select case n
 		  case 0
-		    w = constructbasis
 		    nq = nq.Projection(np,np+w)
 		    q.moveto nq
 		    return new SimilarityMatrix(ep,eq,np,nq)
@@ -708,7 +716,13 @@ Inherits Bipoint
 		    n = sf.ListSommSur(0)
 		    t = sf.replacerpoint(points(n))
 		    if n = 0 then
-		      return prpupdate11(p,eq,ep,nq,np)
+		      if  q.forme = 0 then
+		        nq = nq.Projection(np,np+w)
+		        q.moveto nq
+		        return new SimilarityMatrix(ep,eq,np,nq)
+		      else
+		        return prpupdate11(p,eq,ep,nq,np)
+		      end if
 		    else
 		      return prpupdate11(q,ep,eq,np,nq)
 		    end if
@@ -841,6 +855,11 @@ Inherits Bipoint
 		
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
+	#tag EndNote
+
+	#tag Note, Name = Suggestion
+		
+		Créer une sous-classe de roite our les paraperp 
 	#tag EndNote
 
 
@@ -1034,12 +1053,6 @@ Inherits Bipoint
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

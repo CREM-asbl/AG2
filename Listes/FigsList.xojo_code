@@ -70,7 +70,6 @@ Inherits Liste
 		  dim f, sf as figure
 		  dim i, j as integer
 		  dim tsf as Transformation
-		  dim pt as point
 		  
 		  for j =  count-1 downto 0
 		    sf = item(j)
@@ -779,7 +778,7 @@ Inherits Liste
 		      end if
 		    next
 		  elseif f.idfig <> -1 and CurrentContent.ForHisto  then
-		    if (self = CurrentContent.TheFigs ) and (CurrentContent.currentoperation.currentshape.indexconstructedpoint > 1) then
+		    if (self = CurrentContent.TheFigs ) then 'and (CurrentContent.currentoperation.currentshape.indexconstructedpoint > 1) then
 		      f.XMLPutInContainer(0,CurrentContent.Oplist)
 		    end if
 		  end if

@@ -49,7 +49,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Function item(n as integer) As Etiq
 		  if n >= 0 and n <= Ubound(objects) then
-		    return  objects(n)
+		    return  Etiq(objects(n))
 		  end if
 		End Function
 	#tag EndMethod

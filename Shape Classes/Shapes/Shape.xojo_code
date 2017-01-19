@@ -1,5 +1,6 @@
 #tag Class
 Protected Class Shape
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddConstructedShape(s as Shape)
 		  dim i as Integer
@@ -277,6 +278,22 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AugmenteFont()
+		  dim i, j as integer
+		  
+		  for i = 0 to labs.count-1
+		    labs.item(i).augmentefont
+		  next
+		  
+		  for i = 0 to ubound(childs)
+		    for j = 0 to childs(i).labs.count-1
+		      childs(i).labs.item(j).augmentefont
+		    next
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Autos()
 		  if (constructedby <> nil and constructedby.oper = 6)   or std then 'or (macconstructedby <> nil) then
 		    auto = 0
@@ -380,7 +397,7 @@ Protected Class Shape
 		  Autos
 		  Fixecouleurtrait(Config.bordercolor,Config.Border)
 		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
-		  Borderwidth = 1
+		  Borderwidth = config.thickness
 		  Border = 100
 		  Fill = 0
 		  Points.append new Point(ol, new Basicpoint(0,0))
@@ -733,6 +750,22 @@ Protected Class Shape
 		  currentcontent.removeobject self
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DiminueFont()
+		  dim i, j as integer
+		  
+		  for i = 0 to labs.count-1
+		    labs.item(i).diminuefont
+		  next
+		  
+		  for i = 0 to ubound(childs)
+		    for j = 0 to childs(i).labs.count-1
+		      childs(i).labs.item(j).diminuefont
+		    next
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -1218,7 +1251,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function GetSousFigure(Figu as Figure) As Figure
-		  dim i,j as integer
+		  dim i as integer
 		  dim ff as figure
 		  
 		  for i = 0 to Figu.subs.count-1
@@ -1879,9 +1912,8 @@ Protected Class Shape
 		    if points(2).forme <> 1 then
 		      arc(self).computearcangle
 		      M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
-		      points(2).moveto M*Points(1).bpt
+		      points(2).moveto points(2).bpt.projection(Points(1).bpt, M*Points(1).bpt)
 		      return AffiOrSimili
-		      'return new SimilarityMatrix(ep0,ep1,np0,np1)
 		    end if
 		  end select
 		  
@@ -2032,6 +2064,7 @@ Protected Class Shape
 		    end if
 		    if np2 <> nil then
 		      points(2).bpt  = np2
+		      points(2).modified = true
 		    end if
 		    
 		  case 2
@@ -2043,6 +2076,7 @@ Protected Class Shape
 		    end if
 		    if np1 <> nil then
 		      points(1).bpt = np1
+		      points(1).modified = true
 		    end if
 		  end select
 		  
@@ -2382,6 +2416,8 @@ Protected Class Shape
 		  end if
 		  
 		  nsk.update(self)
+		  nsk.fixecouleurs(self)
+		  nsk.fixeepaisseurs(self)
 		  nsk.paint(g)
 		  
 		  if not hidden then
@@ -2394,36 +2430,22 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub paint(g as graphics, c as couleur)
-		  if self isa point then
-		    point(self).rsk.updatecolor(c.col,100)
-		    point(self).rsk.paint(g)
-		  elseif noinvalidpoints then
-		    nsk.updatebordercolor (c.col,100)
-		    nsk.paint(g)
-		  end if
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub PaintAll(g as Graphics)
 		  dim i,j as Integer
 		  
 		  if not invalid and not deleted  then
 		    Paint(g)
-		    for i = 0 to tsfi.count-1
-		      if not hidden then
-		        tsfi.item(i).paint(g)
-		      end if
-		    next
-		    'for i = 0 to ubound(constructedshapes)
-		    'if constructedshapes(i).centerordivpoint then
-		    'point(constructedshapes(i)).paintall(g)
-		    'end if
-		    'next
 		  end if
+		  if not hidden and tsfi.count > 0 then
+		    for i = 0 to tsfi.count-1
+		      tsfi.item(i).paint(g)
+		    next
+		  end if
+		  'for i = 0 to ubound(constructedshapes)
+		  'if constructedshapes(i).centerordivpoint then
+		  'point(constructedshapes(i)).paintall(g)
+		  'end if
+		  'next 
 		  
 		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
 		    paint(can.offscreenpicture.graphics)
@@ -2474,7 +2496,7 @@ Protected Class Shape
 		  
 		  a = can.transform(u)
 		  b = can.transform(v)
-		  Ti.updatetip(a,b,col)
+		  Ti.updatetip(a,b,col.col)
 		  Ti.scale = sc
 		  g.DrawObject Ti, b.x, b.y
 		End Sub
@@ -3144,10 +3166,11 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub SetConstructedBy(S as shape, Op as integer)
-		  if constructedby <> nil and constructedby.shape <> nil then
+		  if constructedby <> nil and constructedby.shape <> nil then  'Inséré à cause des doites paraperp 
 		    constructedby.shape.RemoveConstructedShape self
 		  end if
 		  Constructedby = new ConstructionInfo(S, Op)
+		  
 		  if op <> 9 or s isa point then
 		    S.AddConstructedShape self
 		  end if
@@ -3200,6 +3223,11 @@ Protected Class Shape
 		  dim s as shape
 		  
 		  MacConstructedBy = MacInfo
+		  for i = 0 to ubound(childs)
+		    if childs(i).forme = 2 then
+		      childs(i).forme = 0
+		    end if
+		  next
 		  for i = 0 to ubound(MacInfo.RealInit)
 		    s = currentcontent.TheObjects.getshape(macinfo.RealInit(i))
 		    s.AddMacConstructedShape self
@@ -3218,12 +3246,9 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub Show()
 		  
-		  dim i as integer
 		  
 		  Hidden = false
-		  'for i = 0 to Ubound(childs)
-		  'childs(i).Show
-		  'next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3395,15 +3420,14 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Untitled()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub updateconstructedpoints()
-		  dim i, j as integer
-		  dim s as shape
-		  dim p as BasicPoint
-		  dim M as Matrix
-		  dim tsf as Transformation
-		  dim t as Boolean
-		  
-		  
+		  dim i as integer
 		  
 		  for i = 0 to npts-1
 		    points(i).updateconstructedpoints
@@ -3712,7 +3736,7 @@ Protected Class Shape
 		  'end if
 		  
 		  
-		  if self isa circle or self isa lacet then
+		  if self isa circle or self.hybrid then
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  invalid = false
@@ -4166,16 +4190,17 @@ Protected Class Shape
 		Sub XMLReadConstructionInfoDivPoint(Tmp as XMLElement, s as shape)
 		  dim n as integer
 		  
-		  n = Val(Tmp.GetAttribute("Id0"))
-		  constructedBy.data.append Point(objects.getshape(n))
-		  n = Val(Tmp.GetAttribute("Id1"))
-		  constructedBy.data.append Point(objects.getshape(n))
-		  constructedBy.data.append Val(Tmp.GetAttribute("NDivP"))
-		  constructedBy.data.append Val(Tmp.GetAttribute("DivP"))
-		  if s isa Lacet then
-		    constructedBy.data.append val(Tmp.GetAttribute("Side"))
+		  if ubound(constructedby.data) = -1 then
+		    n = Val(Tmp.GetAttribute("Id0"))
+		    constructedBy.data.append Point(objects.getshape(n))
+		    n = Val(Tmp.GetAttribute("Id1"))
+		    constructedBy.data.append Point(objects.getshape(n))
+		    constructedBy.data.append Val(Tmp.GetAttribute("NDivP"))
+		    constructedBy.data.append Val(Tmp.GetAttribute("DivP"))
+		    if s isa Lacet then
+		      constructedBy.data.append val(Tmp.GetAttribute("Side"))
+		    end if
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -4188,14 +4213,14 @@ Protected Class Shape
 		  Mat = new Matrix(Tmp)
 		  
 		  constructedby.data.append Mat
-		  if not self isa point then
-		    for j = 0 to npts-1
-		      points(j).setconstructedby constructedby.shape.points(j), 3
-		      points(j).constructedby.data.append Mat
-		      points(j).mobility
-		      points(j).updateguides
-		    next
-		  end if
+		  'if not self isa point then
+		  'for j = 0 to npts-1
+		  'points(j).setconstructedby constructedby.shape.points(j), 3
+		  'points(j).constructedby.data.append Mat
+		  'points(j).mobility
+		  'points(j).updateguides
+		  'next
+		  'end if
 		  if self isa droite then
 		    if forme = 1 or forme = 2 then
 		      forme = 0
@@ -4711,10 +4736,6 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NotPossibleCut As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		npts As integer
 	#tag EndProperty
 
@@ -4946,12 +4967,6 @@ Protected Class Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

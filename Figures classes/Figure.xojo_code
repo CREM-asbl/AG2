@@ -340,7 +340,7 @@ Protected Class Figure
 		  
 		  Choixpointsfixes
 		  if NbUnModif > 0 then
-		    return new Matrix(1)
+		    return DefaultMatrix
 		  end if
 		  
 		  
@@ -2062,11 +2062,11 @@ Protected Class Figure
 		  dim i as integer
 		  dim p as point
 		  
-		  t = false
+		  t = true
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
-		    if p.forme = 1 and p.pointsur.item(0).constructedby <> nil and  f.shapes.getposition(p.pointsur.item(0).constructedby.shape ) <> -1 then
-		      t = true
+		    if p.forme = 1 and p.pointsur.item(0).constructedby <> nil and  f.shapes.getposition(p.pointsur.item(0).constructedby.shape ) = -1 then
+		      t = false
 		    end if
 		  next
 		  return t
@@ -2956,6 +2956,7 @@ Protected Class Figure
 		  end if
 		  
 		  if auto = 3 and f.auto = 1 and NbTrueSommCommuns(f) >= 2  then
+		    
 		    return not HasPointOnConstructedshape (f)
 		  end if
 		  
@@ -3809,7 +3810,7 @@ Protected Class Figure
 		  'Les pointssur doivent être considérés comme modifiés même si le déplacement est faible,(pour la mise à jour des formes dont ils sont sommets).
 		  for i = 0 to ptssur.count-1
 		    p = point(ptssur.item(i))
-		    select case  p.pointsur.count
+		    select case  p.forme
 		    case 1
 		      if not p.pointsur.item(0) isa arc then
 		        p.transform(M)                                  //Pas bon pour les arcs: les affinités ne conservent pas ls angles

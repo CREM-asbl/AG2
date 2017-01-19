@@ -45,6 +45,15 @@ Inherits Label
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Augmentefont()
+		  dim n as single
+		  n = TextSize
+		  
+		  SetSize(n+2)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(Lab as Etiq)
 		  super.constructor
 		  setcolor(lab.Textcolor)
@@ -131,6 +140,17 @@ Inherits Label
 		  L.LockBottom = LockBottom
 		  return L
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DiminueFont()
+		  dim n as single
+		  n = TextSize
+		  
+		  if n > 10 then
+		    SetSize(n-2)
+		  end if
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -425,8 +445,9 @@ Inherits Label
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetSize(s as integer)
-		  Textsize = s
+		Sub SetSize(s as single)
+		  me.Textsize = s
+		  me.refresh
 		End Sub
 	#tag EndMethod
 

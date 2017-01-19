@@ -159,6 +159,12 @@ Inherits AffinityMatrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function RacN(n as integer) As SimilarityMatrix
+		  return new SimilarityMatrix(centre, rapport^(1/n), angle/n)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function rapport() As double
 		  return sqrt(det)
 		End Function

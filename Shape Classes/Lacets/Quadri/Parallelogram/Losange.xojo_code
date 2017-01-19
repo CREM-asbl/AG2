@@ -348,12 +348,6 @@ Inherits Parallelogram
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="NotPossibleCut"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"

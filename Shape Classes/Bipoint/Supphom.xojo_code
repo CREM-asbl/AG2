@@ -14,6 +14,7 @@ Inherits Shape
 		  SetPoint qp
 		  points(0).borderwidth = 2
 		  nsk = new SegSkull(can.transform(fp.bpt))
+		  nsk.skullof = self
 		  updateshape
 		  endconstruction
 		  ol.optimize
@@ -27,6 +28,7 @@ Inherits Shape
 		  
 		  Super.Constructor(ol,Temp)
 		  nsk = new SegSkull(can.transform(points(1).bpt))
+		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
 
@@ -50,8 +52,8 @@ Inherits Shape
 		Sub paint(g as graphics, col as couleur)
 		  
 		  
-		  super.paint(g,col)
-		  points(0).paint(g,col)
+		  'super.paint(g,col)
+		  'points(0).paint(g,col)
 		End Sub
 	#tag EndMethod
 
@@ -279,12 +281,6 @@ Inherits Shape
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

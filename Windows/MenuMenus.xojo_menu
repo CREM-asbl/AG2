@@ -294,110 +294,86 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem DefinirIso
+         Begin MenuItem DefinirTranslation
             SpecialMenu = 0
-            Text = "Isometries"
+            Text = "Translation"
             Index = -2147483648
             AutoEnable = True
-            SubMenu = True
             Visible = True
-            Begin MenuItem DefinirTranslation
-               SpecialMenu = 0
-               Text = "Translation"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
-            Begin MenuItem DefinirRotation
-               SpecialMenu = 0
-               Text = "Rotation"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
-            Begin MenuItem DefinirDemiTour
-               SpecialMenu = 0
-               Text = "Demi-tour"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
-            Begin MenuItem DefinirQuartG
-               SpecialMenu = 0
-               Text = "Quart de tour à gauche"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
-            Begin MenuItem DefinirQuartD
-               SpecialMenu = 0
-               Text = "Quart de tour à droite"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
-            Begin MenuItem DefinirDeplacement
-               SpecialMenu = 0
-               Text = "Déplacement"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
-            Begin MenuItem DefinirSymetrieaxiale
-               SpecialMenu = 0
-               Text = "Symétrie axiale"
-               Index = -2147483648
-               AutoEnable = True
-               Visible = True
-            End
          End
-         Begin MenuItem DefinirSimi
+         Begin MenuItem DefinirRotation
             SpecialMenu = 0
-            Text = "Similitudes"
+            Text = "Rotation"
             Index = -2147483648
             AutoEnable = True
-            SubMenu = True
             Visible = True
-            Begin MenuItem DefinirHomothetie
-               SpecialMenu = 0
-               Text = "Homothétie"
-               Index = -2147483648
-               AutoEnable = True
-               SubMenu = True
-               Visible = True
-            End
-            Begin MenuItem DefinirSimilitude
-               SpecialMenu = 0
-               Text = "Similitude directe"
-               Index = -2147483648
-               AutoEnable = True
-               SubMenu = True
-               Visible = True
-            End
          End
-         Begin MenuItem DefinirAffi
+         Begin MenuItem DefinirDemiTour
             SpecialMenu = 0
-            Text = "Affinités"
+            Text = "Demi-tour"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem DefinirQuartG
+            SpecialMenu = 0
+            Text = "Quart de tour à gauche"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem DefinirQuartD
+            SpecialMenu = 0
+            Text = "Quart de tour à droite"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem DefinirDeplacement
+            SpecialMenu = 0
+            Text = "Déplacement"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem DefinirSymetrieaxiale
+            SpecialMenu = 0
+            Text = "Symétrie axiale"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem DefinirHomothetie
+            SpecialMenu = 0
+            Text = "Homothétie"
             Index = -2147483648
             AutoEnable = True
             SubMenu = True
             Visible = True
-            Begin MenuItem DefinirEtirement
-               SpecialMenu = 0
-               Text = "Etirement"
-               Index = -2147483648
-               AutoEnable = True
-               SubMenu = True
-               Visible = True
-            End
-            Begin MenuItem DefinirCisaillement
-               SpecialMenu = 0
-               Text = "Cisaillement"
-               Index = -2147483648
-               AutoEnable = True
-               SubMenu = True
-               Visible = True
-            End
+         End
+         Begin MenuItem DefinirSimilitude
+            SpecialMenu = 0
+            Text = "Similitude directe"
+            Index = -2147483648
+            AutoEnable = True
+            SubMenu = True
+            Visible = True
+         End
+         Begin MenuItem DefinirEtirement
+            SpecialMenu = 0
+            Text = "Etirement"
+            Index = -2147483648
+            AutoEnable = True
+            SubMenu = True
+            Visible = True
+         End
+         Begin MenuItem DefinirCisaillement
+            SpecialMenu = 0
+            Text = "Cisaillement"
+            Index = -2147483648
+            AutoEnable = True
+            SubMenu = True
+            Visible = True
          End
       End
       Begin MenuItem TransfosAppliquer
@@ -596,6 +572,13 @@ Begin Menu MenuMenus
       Begin MenuItem PrefsMagDist
          SpecialMenu = 0
          Text = "Mag Dist"
+         Index = -2147483648
+         AutoEnable = True
+         Visible = True
+      End
+      Begin MenuItem PrefsThickness
+         SpecialMenu = 0
+         Text = "Epaisseur des traits"
          Index = -2147483648
          AutoEnable = True
          Visible = True

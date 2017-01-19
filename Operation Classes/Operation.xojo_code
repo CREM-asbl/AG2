@@ -158,6 +158,7 @@ Protected Class Operation
 		  else
 		    for i=0 to nobj-1
 		      visible.item(i).tsp = true
+		      visible.item(i).side = visible.item(i).pointonside(p)
 		    next
 		    return Visible.item(iobj)
 		  end if
@@ -303,8 +304,10 @@ Protected Class Operation
 		      CurrentHighlightedShape = GetShape(p)
 		      if CurrentHighlightedShape<>nil   then
 		        CurrentHighlightedShape.HighLight
+		        side = currenthighlightedshape.pointonside(p)
+		        can.refreshBackground
 		      end if
-		      can.refreshBackground
+		      
 		    end if
 		  end if
 		  
@@ -730,6 +733,10 @@ Protected Class Operation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		colsep As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		CurrentAttractedShape As Shape
 	#tag EndProperty
 
@@ -833,6 +840,11 @@ Protected Class Operation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

@@ -108,13 +108,21 @@ Protected Class Transformation
 		  dim k as double
 		  dim u,v,w as BasicPoint
 		  dim nbp as nBPoint
+		  dim n as integer
+		  dim Ls as Lacet
 		  
 		  select case type
 		  case 1
-		    v = supp.points((supp.side+1)mod supp.npts).bpt- supp.points(supp.side) .bpt
+		    v = supp.points((index+1)mod supp.npts).bpt- supp.points(index) .bpt
 		    M = new translationmatrix (v*ori)
 		  case 2
-		    M = supp.coord.RotationMatrix
+		    if supp isa arc then
+		      M = supp.coord.RotationMatrix
+		    elseif supp.hybrid then
+		      n = self.index
+		      ls = Lacet(supp)
+		      M = new RotationMatrix(supp.coord.centres(n), Ls.computeangle(n, Ls.coord.tab(n+1)))
+		    end if
 		  case 3
 		    M = new rotationmatrix(point(supp).bpt, PI)
 		  case 4
@@ -131,8 +139,8 @@ Protected Class Transformation
 		      'v = Bande(supp).Point3
 		      'end if
 		      'M = new SymmetryMatrix(supp.points(index).bpt, v)
-		    elseif (supp isa Lacet) and (supp.side <> -1) then
-		      nbp = supp.GetBiBSide(supp.side)
+		    elseif (supp isa Lacet) then
+		      nbp = supp.GetBiBSide(index)
 		      if nbp <> nil then
 		        M = nbp.SymmetryMatrix  'new SymmetryMatrix(supp.points(index).bpt, supp.points((index+1) mod supp.npts).bpt)
 		      end if
@@ -211,18 +219,18 @@ Protected Class Transformation
 		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddObject(self)
 		  
-		  if type > 0 then 
-		    supp.bordercolor = green
-		    if  s isa Lacet then
-		      if i <> -1 then
-		        supp.colcotes(i) = green
-		      else
-		        for j = 0 to supp.npts-1
-		          supp.colcotes(j) = green
-		        next
-		      end if
-		    end if
-		  end if
+		  'if type > 0 then 
+		  'supp.bordercolor = green
+		  'if  s isa Lacet then
+		  'if i <> -1 then
+		  'supp.colcotes(i) = green
+		  'else
+		  'for j = 0 to supp.npts-1
+		  'supp.colcotes(j) = green
+		  'next
+		  'end if
+		  'end if
+		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -251,10 +259,11 @@ Protected Class Transformation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DrawTip(g as graphics, col as couleur)
-		  
+		Sub DrawTip(g as graphics, coul as couleur)
 		  dim a,b as BasicPoint
-		  dim i as integer
+		  dim col as color
+		  
+		  col = coul.col
 		  
 		  if type < 3 or type > 6 then
 		    select case type
@@ -412,34 +421,34 @@ Protected Class Transformation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  
-		  dim col as Couleur
+		  dim coul as couleur
 		  
-		  
-		  if type = 0 then
+		  if type = 0 or hidden or not supp.noinvalidpoints then
 		    return
 		  end if
 		  
 		  if (not Hidden2 or CurrentContent.TheTransfos.DrapShowALL)  and not supp.invalid and not supp.deleted  then
 		    if Highlighted then
-		      col = Config.highlightcolor
+		      coul = config.highlightcolor
 		    else
 		      if Hidden2 then
-		        col = Config.Hidecolor
+		        coul = Config.Hidecolor
 		      else
-		        col = Config.Transfocolor
+		        coul = Config.Transfocolor
 		      end if
 		    end if
 		    
-		    if not hidden then
-		      if supp isa Lacet and type < 7 then
-		        supp.Paintside(g, index, 2, Col)
-		      else
-		        supp.paint(g,col)
-		      end if
-		      DrawTip(g, col)
+		    supp.nsk.update(supp)
+		    
+		    if supp isa Lacet then
+		      Lskull(supp.nsk).paint(g, index, coul, type)
+		    else
+		      supp.nsk.paint(g,coul)
 		    end if
+		    DrawTip(g, coul)
 		    
 		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -455,28 +464,8 @@ Protected Class Transformation
 		  dim s as shape
 		  
 		  select case type
-		  case 1
-		    v =sp -fp
-		    v = v/niter
-		    M1 = new TranslationMatrix(v*ori)
-		  case 2
-		    M1 = new rotationmatrix (supp.points(0).bpt, arc(supp).arcangle/niter)
-		  case 3
-		    M1 = new rotationmatrix(point(supp).bpt, PI/niter)
-		  case 4
-		    M1 = new rotationmatrix(point(supp).bpt,PIDEMI/niter)
-		  case 5
-		    M1 = new rotationmatrix(point(supp).bpt, -PIDEMI/niter)
-		  case 7,71,72
-		    Mat = SimilarityMatrix(M)
-		    M1 = new HomothetyMatrix(Mat.centre,  (Mat.rapport)^(1/niter))
-		  case 8, 81, 82
-		    Mat = SimilarityMatrix(M)
-		    if abs(Mat.angle) < epsilon and abs(Mat.rapport-1) < epsilon then
-		      M1 = new TranslationMatrix(Mat.v3/niter)
-		    else
-		      M1 = new Similaritymatrix (Mat.centre, (Mat.rapport)^(1/niter), Mat.angle/niter)
-		    end if
+		  case 1, 2,3,4,5,7,71,72,8,81,82, 10
+		    M1 = M.RacN(niter)
 		  case 9
 		    u1= supp.points(0).bpt
 		    u2= supp.points(1).bpt
@@ -487,13 +476,6 @@ Protected Class Transformation
 		    q = Bib2.BibInterdroites(bib1,0,0,r1,r2)
 		    u4 = q + (u3 -q)*(((r1-1)/r1)^(1/niter))
 		    M1 = new AffinityMatrix(u1,u2,u3,u1,u2,u4)
-		  case 10
-		    Mat = SimilarityMatrix(M)
-		    if Mat.angle <> 0 then
-		      M1 = new Similaritymatrix (Mat.centre, 1, Mat.angle/niter)
-		    else
-		      M1 = new Matrix(Mat.v1, Mat.v2, Mat.v3/niter)
-		    end if
 		  case 11
 		    u1= supp.points(0).bpt
 		    u2= supp.points(1).bpt
@@ -630,7 +612,7 @@ Protected Class Transformation
 		    sp = droite(s).secondp
 		  elseif s isa secteur then
 		    fp = s.points(0).bpt
-		    sp = s.points(index+1).bpt
+		    sp = s.points(index/2+1).bpt
 		  elseif s isa Bande then
 		    fp=s.points(index).bpt
 		    if index =0 then
@@ -643,6 +625,14 @@ Protected Class Transformation
 		    sp = s.points((index+1) mod s.npts).bpt
 		  end if
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function supportonside(i as integer) As boolean
+		  if index = i then
+		    return true
+		  end if
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

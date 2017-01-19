@@ -170,6 +170,7 @@ End
 		    EF.Text = EF.Text+ chr(10)+  "Commentaires"+chr(10)
 		  else
 		    EF.ReadOnly = true
+		    EF.BackColor = blanc
 		    EF.text = Mac.expli
 		    PushButton2.Visible=false
 		  end if

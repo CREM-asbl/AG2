@@ -109,8 +109,10 @@ Inherits Operation
 		  
 		  Super.Paint(g)
 		  
-		  if CurrentHighLightedShape <> nil then
+		  if CurrentHighLightedShape <> nil and not currenthighlightedshape.selected then
 		    display = click+pour+selectionner
+		  elseif CurrentHighLightedShape <> nil and currenthighlightedshape.selected then
+		    display = click + pour + " "+ unselect
 		  else
 		    display =  choose + aform
 		  end if
@@ -200,6 +202,11 @@ Inherits Operation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

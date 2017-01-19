@@ -27,18 +27,16 @@ Inherits nBpoint
 		  ori = orientation
 		  redim extre(-1)
 		  redim ctrl(-1)
-		  redim extre(1)
+		  redim extre(1) 'prévu pour le cas d'un seul arc
 		  redim ctrl(5)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
-		  super.constructor(s)
+		  super.constructor(s) 'renvoie  à new nBPoint lequel tient compte du nombre d'arcs
 		  ori = orientation
-		  redim extre(-1)
-		  redim ctrl(-1)
-		  redim extre(1)
+		  redim extre(1)  'ceci correspond à un trigone comportant un et un seul arc donc contrarie le "super.constructor"
 		  redim ctrl(5)
 		  
 		  
@@ -161,6 +159,11 @@ Inherits nBpoint
 		L'angle du triplet, c-à-d l'angle tab(1)-tab(0)-tab(2) doit toujours avoir le même signe que l'orientation. D'où la méthode Normalize
 		
 		On n'utilise guère l'orientation du triplet qui ne coincide pas nécessairement avec celle de l'arc. D'où le paramètre orien dans Normalize
+	#tag EndNote
+
+	#tag Note, Name = A user prudemment
+		
+		Les tribpoints ne sont conçus que pour des trigones n'ayant qu'un seul côté courbe
 	#tag EndNote
 
 

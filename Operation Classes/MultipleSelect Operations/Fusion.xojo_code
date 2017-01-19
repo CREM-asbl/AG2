@@ -44,20 +44,15 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  Fus.coord= new nBPoint(Fus)
-		  if Fus1.std or Fus2.std then
-		    Fus.std = true
-		    Fus.fam = 14
-		    'alpha = 0
-		    'for i = 0 to Fus.npts-2
-		    'Bib = Fus.GetBiBside(i)
-		    'StandardPolygon(Fus).Distances.append BiB.longueur
-		    'beta = BiB.anglepolaire*180/PI
-		    'StandardPolygon(Fus).Angles.Append beta-alpha
-		    'alpha = beta
-		    'next
-		  else
-		    Fus.autos
-		  end if
+		  'if Fus1.std or Fus2.std then
+		  'Fus.std = true
+		  Fus.fam = 14
+		  'else
+		  'Fus.autos
+		  'end if
+		  Fus1.std = true
+		  Fus2.std = true
+		  Fus.std = true
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
 		  Fus.Fill = (Fus1.fill+Fus2.fill)/2
@@ -108,11 +103,11 @@ Inherits MultipleSelectOperation
 		  
 		  select case CurrentItemToSet
 		  case 1
-		    if S isa polygon then
+		    if S isa Lacet then
 		      return s
 		    end if
 		  case 2
-		    if S isa polygon and S<>Fus1 and Polygon(Fus1).PossibleFusionWith(Polygon(s), start1, start2, dir) then
+		    if S isa Lacet and S<>Fus1 and Lacet(Fus1).PossibleFusionWith(Lacet(s), start1, start2, dir) then
 		      return s
 		    end if
 		  end select
@@ -345,6 +340,11 @@ Inherits MultipleSelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

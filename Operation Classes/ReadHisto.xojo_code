@@ -295,6 +295,11 @@ Inherits Operation
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="colsep"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="curop1"
 			Group="Behavior"
 			InitialValue="0"

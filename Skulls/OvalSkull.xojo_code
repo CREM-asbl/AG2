@@ -37,7 +37,7 @@ Inherits OvalShape
 
 	#tag Method, Flags = &h0
 		Sub Update(p as basicPoint, h as double, ret as Boolean)
-		  width = 2*radius
+		  width = 2*h
 		  height = 2*h
 		  Hauteur = h
 		  trace = ret

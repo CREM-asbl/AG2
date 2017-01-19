@@ -7,12 +7,6 @@ Inherits Canvas
 		  dim s as shape
 		  dim m as MenuItem
 		  
-		  ctxt = false
-		  
-		  if currentcontent.currentoperation isa readhisto   then
-		    return false
-		  end if
-		  
 		  wnd.closefw
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
 		  CurrentContent.TheTransfos.ShowAll                     //On montre les autres
@@ -28,26 +22,25 @@ Inherits Canvas
 		      currentcontent.currentoperation.endoperation
 		    end if
 		  end if
+		  if currentcontent.currentoperation isa readhisto or currentcontent.macrocreation   then
+		    return false
+		  end if
+		  
 		  currentcontent.currentoperation = nil
 		  wnd.refreshtitle
 		  
-		  if currentcontent.macrocreation then
-		    sctxt = nil
+		  
+		  sctxt = currenthighlightedshape
+		  
+		  if sctxt = nil then
 		    return false
 		  end if
-		  
-		  sctxt = CurrentHighLightedshape
-		  currenthighlightedshape = nil
-		  
-		  if sctxt = nil  then
-		    return false
-		  end if
-		  
 		  icot = -1
-		  p = new Basicpoint(x,y)
-		  if  sctxt isa Polygon  then
+		  p = MouseUser
+		  if  sctxt isa Lacet  then
 		    icot = sctxt.pointonside(p)
 		  end if
+		  
 		  
 		  base.Name= sctxt.GetType
 		  tit = sctxt.identifiant
@@ -56,14 +49,10 @@ Inherits Canvas
 		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
-		  
-		  
 		  if icot = -1 then
 		    if sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc) then
 		      base.append(New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
 		    end if
-		    
-		    
 		  end if
 		  
 		  if icot = -1 and  (not sctxt isa point) and (not sctxt isa droite) and (not sctxt isa arc) then
@@ -80,7 +69,7 @@ Inherits Canvas
 		    base.append(New MenuItem(Dico.Value("ToolsARPlan")))
 		  end if
 		  
-		  if sctxt.borderwidth = 1 then
+		  if sctxt.borderwidth = config.thickness then
 		    base.append( New MenuItem(Dico.Value("Epais")))
 		  else
 		    base.append(New MenuItem(Dico.Value("Mince")))
@@ -129,9 +118,11 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  if sctxt isa polygon then
-		    base.append (New MenuItem(dico.value("AutoIntersec")))
-		  end if
+		  'if sctxt isa polygon then
+		  'base.append (New MenuItem(dico.value("AutoIntersec")))
+		  'end if
+		  
+		  
 		  Return True//display the contextual menu
 		  
 		End Function
@@ -153,10 +144,13 @@ Inherits Canvas
 		    currentcontent.currentoperation = currentoper
 		    currentoper.MouseDown(MouseUser)
 		    currentoper.MouseUp(MouseUser)
-		  case Dico.Value("Epais"), Dico.Value("Mince")
-		    currentcontent.currentoperation = new Epaisseur(3-sctxt.Borderwidth)
-		    currentoper = SelectOperation(currentcontent.currentoperation)
-		    EndOperMenuContext
+		  case Dico.Value("Epais")
+		    sctxt.borderwidth = 1.5*config.thickness
+		  case  Dico.Value("Mince")
+		    sctxt.borderwidth = config.thickness
+		    'currentcontent.currentoperation = new Epaisseur(3.75*config.Thickness-sctxt.Borderwidth)
+		    'currentoper = SelectOperation(currentcontent.currentoperation)
+		    'EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(true,new couleur(col))
@@ -241,10 +235,11 @@ Inherits Canvas
 		  
 		  ctxt = false
 		  sctxt = nil
-		  if not currentoper isa Conditionner and not currentoper isa modifier then
+		  if currentcontent.currentoperation <> nil and not (currentoper isa Conditionner) and not (currentoper isa modifier) then
 		    currentcontent.currentoperation = nil
 		  end if
 		  wnd.refreshtitle
+		  return true
 		End Function
 	#tag EndEvent
 
@@ -287,7 +282,6 @@ Inherits Canvas
 		  else
 		    oldp = new BasicPoint(x,y)
 		    info = ""
-		    refreshbackground
 		  end if
 		  
 		  
@@ -310,14 +304,15 @@ Inherits Canvas
 		  dim p as BasicPoint
 		  dim curop as operation
 		  
+		  
 		  p =mouseuser
 		  sctxt = nil
-		  curop = currentcontent.currentoperation
-		  if dret = nil and not CurrentContent.bugfound then
-		    if Curop<>nil  and not curop isa ouvrir then
-		      Curop.MouseMove(p)
-		    elseif  Curop = nil then
-		      Mousecursor = System.Cursors.StandardPointer
+		  
+		  if dret = nil and CurrentContent <> nil and not CurrentContent.bugfound then
+		    if CurrentContent.CurrentOperation<>nil then
+		      currentcontent.currentoperation.mousemove(p)
+		    elseif  CurrentContent.curoper = nil then 'Retrouver la difference entre curoper et currentoperation
+		      Mousecursor =   System.Cursors.StandardPointer
 		      if oldp <> nil and p.distance(oldp) >magneticdist  then
 		        oldp = p
 		        if currenthighlightedshape<> nil then
@@ -327,7 +322,6 @@ Inherits Canvas
 		        if currenthighlightedshape <> nil then
 		          currenthighlightedshape.highlight
 		        end if
-		        can.refreshbackground
 		      end if
 		      if currenthighlightedshape <> nil and not currentcontent.macrocreation then
 		        AfficherChoixContext
@@ -336,13 +330,10 @@ Inherits Canvas
 		        info = Dico.value("click") + Dico.value("onabuttonoramenu")+EndOfLine+Dico.value("chgTextSize")
 		        ctxt = false
 		      end if
+		      
 		    end if
 		  end if
-		  
-		  
-		  if curop <> nil or curop isa conditionner then
-		    ctxt = false
-		  end if
+		  refreshbackground
 		  
 		  
 		  
@@ -351,6 +342,8 @@ Inherits Canvas
 
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
+		  // Le mouseup attend que les opérations lancées par le mousedown soient terminées avant de s'exécuter
+		  
 		  if CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
 		    CurrentContent.CurrentOperation.MouseUp(itransform(new BasicPoint(x,y)))
 		  end if
@@ -374,7 +367,6 @@ Inherits Canvas
 
 	#tag Event
 		Sub Open()
-		  'Readdblclicktime
 		  if config <> nil then
 		    zone = new ovalshape
 		    zone.width = 2*config.magneticdist
@@ -383,6 +375,7 @@ Inherits Canvas
 		    zone.fill = 0
 		    zone.border = 100
 		  end if
+		  
 		  OffscreenPicture=New Picture(width,height,Screen(0).Depth)
 		  OffscreenPicture.Transparent = 1
 		End Sub
@@ -390,10 +383,11 @@ Inherits Canvas
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
-		  BackgroundPicture.graphics.DrawPicture OffscreenPicture , 0, 0 
-		  g.drawPicture(BackgroundPicture, 0, 0)
+		  if OffscreenPicture <> nil and BackgroundPicture <> nil  then
+		    BackgroundPicture.graphics.DrawPicture OffscreenPicture , 0, 0 
+		    g.drawPicture(BackgroundPicture, 0, 0)
+		  end if
 		  
-		  '
 		  
 		End Sub
 	#tag EndEvent
@@ -528,11 +522,11 @@ Inherits Canvas
 		  if vis <> nil and vis.count <> 0 then
 		    nobj = vis.count
 		    s = vis.item(iobj)
-		    if s isa Lacet and Lacet(s).pointonside(p ) <>-1 then
-		      icot = Lacet(s).pointonside(p)
-		      Lacet(s).paintside(BackgroundPicture.graphics,icot,2,Config.highlightcolor)
+		    if s isa Lacet  or s isa Bande or s isa secteur then
+		      icot = s.pointonside(p)
+		      s.highlight 'nsk. Lacet(s).paintside(BackgroundPicture.graphics,icot,2,Config.highlightcolor)
 		    else
-		      icot = -1
+		      icot = -2
 		    end if
 		  else
 		    s = nil
@@ -583,7 +577,7 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub RefreshBackground()
-		  dim  j as Integer
+		  'dim  j as Integer
 		  dim op As operation
 		  
 		  
@@ -615,13 +609,14 @@ Inherits Canvas
 		    CurrentContent.curoper.paint(BackgroundPicture.graphics)
 		  elseif currentcontent.curoper = nil then
 		    if sctxt <> nil then
-		      sctxt.paint(BackgroundPicture.graphics)
+		      sctxt.side = -1
+		      sctxt.paintall(BackgroundPicture.graphics)
 		    end if
 		    if info <> "" then
-		      BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y
+		      BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		    end if
 		  end if
-		  '
+		  
 		  refresh
 		  
 		  
@@ -635,12 +630,12 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub Resize()
-		  left = 122
-		  top = 0
-		  width = wnd.width - left
-		  height = wnd.height 
+		  me.left = 122
+		  me.top = 0
+		  me.width = wnd.width - me.left
+		  me.height = wnd.height 
 		  
-		  BackgroundPicture=New Picture(width,height) 
+		  BackgroundPicture=New Picture(width,height,screen(0).depth) 
 		  BackgroundPicture.graphics.ForeColor= &cFFFFFF
 		  BackgroundPicture.graphics.FillRect(0,0,width,height)
 		  if config <> nil then

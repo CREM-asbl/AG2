@@ -4,10 +4,9 @@ Inherits StandardPolygon
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as Objectslist, p as BasicPoint, m as integer)
 		  dim sc, size as double
-		  dim k as integer
+		  dim k as integer   'k est la taille de la réglette. Pour les cubes : 1, pour les réglettes forme+1
 		  
 		  Polygon.constructor(ol,1,p)
-		  redim prol(-1)
 		  redim prol(11)
 		  file = Config.stdfile
 		  fam = 10
@@ -19,7 +18,7 @@ Inherits StandardPolygon
 		  angles.append 0
 		  Myspecs = Config.StdFamilies(0,forme)
 		  if Config.NamesStdFamilies(0) = "Rods" then
-		    k = forme+1
+		    k = forme+1                        'k est la taille de la réglette
 		    FixeCouleurFond  (MySpecs.Coul,  100)
 		    mode = 0
 		    rod = true
@@ -27,7 +26,7 @@ Inherits StandardPolygon
 		    k = 1
 		    FixeCouleurFond  (Config.StdColor(0),  100)
 		  end if
-		  
+		  narcs = 0
 		  if mode = 2 then
 		    npts = 8
 		    fill = 0
@@ -35,11 +34,10 @@ Inherits StandardPolygon
 		    npts = 7
 		  end if
 		  
-		  nsk = new Cubeskull(can.transform(p),mode,k)
-		  nsk.updatesize(sc*stdsize)
+		  createskull(p,mode,k, self)
 		  Borderwidth = 1/(sc*stdsize)
 		  FixeCouleurTrait   (Config.bordercolor,  Config.Border)
-		  nsk.updatefillcolor(fillcolor.col,fill)
+		  Fixecouleurfond(fillcolor,fill)
 		  std = true
 		  autos
 		  
@@ -62,12 +60,13 @@ Inherits StandardPolygon
 		  file = Config.stdfile
 		  Borderwidth = 1/(sc*stdsize)
 		  if rod then
-		    nsk = new Cubeskull(can.transform(p),0,other.forme+1)
+		    csk = new Cubeskull(can.transform(p),0,other.forme+1)
 		  else
-		    nsk = new Cubeskull(can.transform(p),other.forme,1)
+		    csk = new Cubeskull(can.transform(p),other.forme,1)
 		  end if
-		  nsk.updatesize(sc*stdsize)
-		  nsk.updatefillcolor(fillcolor.col,fill)
+		  csk.skullof = self
+		  csk.updatesize(sc*stdsize)
+		  csk.updatefillcolor(fillcolor.col,fill)
 		  
 		  Move(M)
 		  
@@ -98,8 +97,9 @@ Inherits StandardPolygon
 		  
 		  sc = can.scaling
 		  std = true
-		  nsk = new Cubeskull(can.transform(points(0).bpt),mode, k)
-		  nsk.updatesize(sc*stdsize)
+		  csk = new Cubeskull(can.transform(points(0).bpt),mode, k)
+		  csk.skullof = self
+		  csk.updatesize(sc*stdsize)
 		  Borderwidth = 1/(sc*stdsize)
 		  Border = 100
 		  updateskull
@@ -110,23 +110,32 @@ Inherits StandardPolygon
 		Sub ConstructShape()
 		  dim q as BasicPoint
 		  dim i as integer
-		  dim cs as curveshape
 		  dim fs as figureshape
+		  dim cs as curveshape
 		  
-		  fs = figureshape(nsk.item(0))
+		  fs = figureshape(csk.item(0))
 		  for i = 1 to 5
 		    cs = fs.item(i)
 		    q = new basicpoint(cs.X,cs.Y)
 		    Points(i).moveto(Points(0).bpt + can.idtransform(q))
 		  next
-		  cs = curveshape(nsk.item(1))
+		  cs = curveshape(csk.item(1))
 		  q = new BasicPoint (cs.X,cs.Y)
 		  Points(6).moveto(Points(0).bpt + can.idtransform(q))
 		  if npts = 8 then
-		    cs = curveshape(nsk.item(4))
+		    cs =curveshape( csk.item(4))
 		    q = new BasicPoint (cs.X,cs.Y)
 		    Points(7).moveto(Points(0).bpt + can.idtransform(q))
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint, mode as integer, k as integer, s as shape)
+		  csk = new Cubeskull(can.transform(p),mode,k)
+		  csk.skullof = s
+		  csk.updatesize(can.scaling*stdsize)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -141,7 +150,7 @@ Inherits StandardPolygon
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  If n = 0 then
 		    Points(0).Moveto(p)
-		    'sk.update(can.transform(p))
+		    csk.update(can.transform(p), n)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -212,7 +221,6 @@ Inherits StandardPolygon
 		Sub InitColcotes()
 		  dim i as integer
 		  
-		  redim colcotes(-1)
 		  redim colcotes(11)
 		  
 		  for i = 0 to 8
@@ -233,25 +241,25 @@ Inherits StandardPolygon
 		  
 		  
 		  if hidden  Then
-		    nsk.updateborderwidth(borderwidth)
-		    nsk.updatebordercolor(cyan, 100)
-		    nsk.updatefillcolor(fillcolor.col,0)
+		    csk.updateborderwidth(borderwidth)
+		    csk.updatebordercolor(config.HideColor.col, 100)
+		    csk.updatefillcolor(fillcolor.col,0)
 		  elseif highlighted then
-		    nsk.updateborderwidth(2*borderwidth)
-		    nsk.updatebordercolor(Config.highlightcolor.col,100)
+		    csk.updateborderwidth(borderwidth)
+		    csk.updatebordercolor(Config.highlightcolor.col,100)
 		  elseif isinconstruction then
-		    nsk.updateborderwidth(2*borderwidth)
-		    nsk.updatebordercolor(Config.Weightlesscolor.col,100)
+		    csk.updateborderwidth(1.5*borderwidth)
+		    csk.updatebordercolor(Config.Weightlesscolor.col,100)
 		  elseif selected then
-		    nsk.updateborderwidth(2*borderwidth)
-		    nsk.updatebordercolor(BorderColor.col, 100)
+		    csk.updateborderwidth(borderwidth)
+		    csk.updatebordercolor(BorderColor.col, 100)
 		  else
-		    nsk.updateborderwidth(Borderwidth)
-		    nsk.UpdateFillColor(FillColor.col,Fill)
-		    cubeskull(nsk).updatebordercolors(colcotes)
+		    csk.updateborderwidth(Borderwidth)
+		    csk.UpdateFillColor(FillColor.col,Fill)
+		    csk.updatebordercolors(colcotes,100)
 		  end if
 		  
-		  nsk.paint(g)
+		  csk.paint(g)
 		End Sub
 	#tag EndMethod
 
@@ -427,12 +435,12 @@ Inherits StandardPolygon
 		Sub Updateskull()
 		  dim i as integer
 		  dim cs as curveshape
-		  nsk.updatesize(can.scaling)
+		  csk.updatesize(can.scaling)
 		  for i=0 to 6
 		    if i=0 then
-		      nsk.ref =can.transform(Points(0).bpt)
+		      csk.ref =can.transform(Points(0).bpt)
 		      if forme = 1 and not rod  then
-		        cs = Curveshape(nsk.item(1))
+		        cs = curveshape(csk.item(1))
 		        cs.X2 = 0
 		        cs.Y2 = 0
 		      end if
@@ -449,10 +457,10 @@ Inherits StandardPolygon
 
 	#tag Method, Flags = &h0
 		Sub UpdateSkull(n as integer, p as BasicPoint)
-		  if rod then
-		    cubeskull(nsk).updatesommet(n,p,0)
+		  if rod then 
+		    cubeskull(csk).updatesommet(n,p,0)
 		  else
-		    cubeskull(nsk).updatesommet(n,p,forme)
+		    cubeskull(csk).updatesommet(n,p,forme)
 		  end if
 		  
 		End Sub
@@ -480,6 +488,10 @@ Inherits StandardPolygon
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
+
+	#tag Property, Flags = &h0
+		csk As Cubeskull
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		mode As Integer
@@ -670,12 +682,6 @@ Inherits StandardPolygon
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="NotPossibleCut"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

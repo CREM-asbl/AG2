@@ -783,6 +783,11 @@ Inherits SelectOperation
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="colsep"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Corps"
 			Group="Behavior"
 			InitialValue="0"

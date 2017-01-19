@@ -35,6 +35,7 @@ Inherits MultipleSelectOperation
 		  NumberOfItemsToSelect=2
 		  NumberofDivisions = ntemp
 		  createdshapes = new objectslist
+		  colsep = true
 		  OpId = 26
 		  
 		  
@@ -50,7 +51,7 @@ Inherits MultipleSelectOperation
 		  Divide.constructor()
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = Mexe.GetRealId( n)
-		  shapetodivide = objects.getshape(rid)
+		  currentshape = objects.getshape(rid)
 		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
 		  divp = val(EL1.GetAttribute("DivP"))
 		  Id0 = val(EL1.GetAttribute("Id0"))
@@ -77,7 +78,7 @@ Inherits MultipleSelectOperation
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
 		  
-		  S = ShapeToDivide
+		  S = currentshape
 		  
 		  if S isa StdCircle then
 		    Firstpoint.show
@@ -124,7 +125,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  
-		  CurrentContent.TheFigs.Removefigure shapetodivide.fig
+		  CurrentContent.TheFigs.Removefigure currentshape.fig
 		  createshapes
 		  createdshapes.endconstruction
 		  
@@ -163,10 +164,10 @@ Inherits MultipleSelectOperation
 		    end if
 		    if s isa lacet then
 		      side = s.pointonside(p)
+		      s.side = side
 		      if side = -1 then
 		        visible.removeobject visible.item(i)
 		      end if
-		      s.side = side
 		    end if
 		  next
 		  
@@ -188,7 +189,6 @@ Inherits MultipleSelectOperation
 		    else
 		      return nil
 		    end if
-		    
 		  end select
 		  
 		  
@@ -198,18 +198,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
 		  
-		  operation.paint(g)
-		  
-		  if currenthighlightedshape isa Lacet  and side <> -1 then
-		    Lacet(currenthighlightedshape).paintside(g,side,2,config.highlightcolor)
-		  else
-		    if CurrentHighlightedShape<>nil then
-		      CurrentHighlightedShape.HighLight
-		      CurrentHighlightedShape.PaintAll(g)
-		      CurrentHighlightedShape.UnHighLight
-		    end if
-		  end if
-		  
+		  super.paint(g)
 		  
 		  Select case CurrentItemToSet
 		  case 1
@@ -241,19 +230,19 @@ Inherits MultipleSelectOperation
 		  fam = val(EL0.Getattribute(Dico.Value("NrFam")))
 		  form = val(EL0.GetAttribute(Dico.value("NrForm")))
 		  if fam <> 1 or form <> -1 then
-		    ShapeToDivide = selectform(EL)
+		    currentshape = selectform(EL)
 		  else
 		    firstpoint = Point(Objects.Getshape( val(EL1.GetAttribute("Id"))))
 		    secondpoint  = Point(Objects.Getshape( val(EL2.GetAttribute("Id"))))
-		    shapetodivide = new Bipoint(objects, firstpoint, secondpoint)
-		    shapetodivide.id = val (EL0.GetAttribute("Id"))
+		    currentshape = new Bipoint(objects, firstpoint, secondpoint)
+		    currentshape.id = val (EL0.GetAttribute("Id"))
 		  end if
 		  
-		  if not Shapetodivide isa StdCircle then
+		  if not currentshape isa StdCircle then
 		    firstpoint = Point(Objects.Getshape( val(EL1.GetAttribute("Id"))))
 		    secondpoint  = Point(Objects.Getshape( val(EL2.GetAttribute("Id"))))
 		  else
-		    s = shapetodivide
+		    s = currentshape
 		    firstpoint = new Point(Objects,new BasicPoint(s.GetGravitycenter.x+Circle(s).Radius,s.GetGravitycenter.y))
 		    firstpoint.id = val(EL1.GetAttribute("Id"))
 		    secondpoint = firstpoint
@@ -286,7 +275,7 @@ Inherits MultipleSelectOperation
 		    if s isa point then
 		      firstpoint = point(s)
 		    else
-		      Shapetodivide = s
+		      currentshape = s
 		      if s isa droite then
 		        firstpoint=droite(s).points(0)
 		        secondpoint = droite(s).points(1)
@@ -311,9 +300,9 @@ Inherits MultipleSelectOperation
 		    secondpoint = point(s)
 		    ar = array(firstpoint, secondpoint)
 		    if firstpoint.onsameshape(secondpoint, sh)  and ((sh isa droite) or  (sh isa circle)) and sh.PassePar(ar) then
-		      shapetodivide = sh
+		      currentshape = sh
 		    else
-		      Shapetodivide = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
+		      currentshape = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
 		    end if
 		  end select
 		  return true
@@ -341,7 +330,7 @@ Inherits MultipleSelectOperation
 		  Myself= Doc.CreateElement(GetName)
 		  Myself.setattribute("NumberOfDivisions",str(Numberofdivisions))
 		  Myself.SetAttribute("Side", str(side))
-		  Myself.appendchild shapetodivide.XMLPutIdInContainer(Doc)
+		  Myself.appendchild currentshape.XMLPutIdInContainer(Doc)
 		  Myself.appendchild firstpoint.XMLPutInContainer(Doc)
 		  Myself.appendchild secondpoint.XMLPutInContainer(Doc)
 		  Myself.appendchild createdshapes.XMLPutIdInContainer(Doc)
@@ -412,14 +401,15 @@ Inherits MultipleSelectOperation
 		Protected secondpoint As point
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		Private shapetodivide As shape
-	#tag EndProperty
-
 
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty

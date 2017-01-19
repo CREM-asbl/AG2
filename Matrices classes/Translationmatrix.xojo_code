@@ -13,6 +13,12 @@ Inherits SimilarityMatrix
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function RacN(n as integer) As TranslationMatrix
+		  return new TranslationMatrix(v3/n)
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		

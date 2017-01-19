@@ -8,14 +8,14 @@ Inherits SelectOperation
 		  
 		  
 		  if tempshape.count  = 0 then
-		    objects.selectobject objects.item(0)
+		    objects.selectobject objects.element(0)
 		    objects.selectall
 		  end if
 		  
 		  if app.prtsetup = nil then
 		    app.prtsetup = New PrinterSetup
-		    If not app.prtsetup.PageSetupDialog then
-		      app.prtsetup = nil
+		    If  app.prtsetup.PageSetupDialog then
+		      app.prtsettings = app.prtsetup.SetupString
 		    end if
 		  end if
 		  
@@ -68,9 +68,9 @@ Inherits SelectOperation
 		      end if
 		      
 		      d = new date
-		      gprint.DrawPicture Pict,0,0,can.width*sc, can.height*sc,0,0,can.width,can.height
-		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year) , 0,  -2
-		      gprint.drawrect 0,0,can.width*sc, (can.height-1)*sc
+		      gprint.DrawPicture Pict,20,20,can.width*sc, can.height*sc,0,0,can.width,can.height
+		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year) , 20, 18
+		      gprint.drawrect 20,20,can.width*sc, (can.height-1)*sc
 		      if copies<gprint.Copies then
 		        gprint.NextPage
 		      end if
@@ -118,6 +118,10 @@ Inherits SelectOperation
 
 
 	#tag Property, Flags = &h0
+		prtsettings As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		switch As boolean
 	#tag EndProperty
 
@@ -125,6 +129,11 @@ Inherits SelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="canceling"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="colsep"
 			Group="Behavior"
 			Type="Boolean"
 		#tag EndViewProperty
@@ -201,6 +210,12 @@ Inherits SelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="prtsettings"
+			Group="Behavior"
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="side"

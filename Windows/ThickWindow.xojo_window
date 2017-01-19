@@ -1,16 +1,16 @@
 #tag Window
-Begin Window HistCmd
+Begin Window ThickWindow
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
    CloseButton     =   False
    Compatibility   =   ""
    Composite       =   False
-   Frame           =   3
+   Frame           =   1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   22
-   ImplicitInstance=   True
+   Height          =   133
+   ImplicitInstance=   False
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000
@@ -18,46 +18,153 @@ Begin Window HistCmd
    MaxWidth        =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   22
+   MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   False
-   Title           =   ""
+   Title           =   "ThickMag"
    Visible         =   True
-   Width           =   600
-   Begin ContainerControl1 HistCtrl
-      AcceptFocus     =   False
-      AcceptTabs      =   False
+   Width           =   281
+   Begin Label StaticText1
       AutoDeactivate  =   True
-      BackColor       =   &c00FFFFFF
-      Backdrop        =   0
-      BehaviorIndex   =   0
-      ControlOrder    =   "0"
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
       Enabled         =   True
-      EraseBackground =   True
-      HasBackColor    =   False
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   8
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Epaisseur par défaut"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   22
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   127
+   End
+   Begin TextField TF
+      AcceptTabs      =   False
+      Alignment       =   0
+      AutoDeactivate  =   True
+      AutomaticallyCheckSpelling=   False
+      BackColor       =   &cFFFFFF00
+      Bold            =   False
+      Border          =   True
+      CueText         =   ""
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Format          =   ""
       Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   0
+      Italic          =   False
+      Left            =   157
+      LimitText       =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Mask            =   ""
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextColor       =   &c00000000
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   21
+      Underline       =   False
+      UseFocusRing    =   True
+      Visible         =   True
+      Width           =   80
+   End
+   Begin PushButton OKButton
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "OK"
+      Default         =   False
+      Enabled         =   True
+      Height          =   28
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   168
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
       Scope           =   0
-      TabIndex        =   0
+      TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
-      Top             =   0
-      Transparent     =   True
-      UseFocusRing    =   False
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   78
+      Underline       =   False
       Visible         =   True
-      Width           =   600
+      Width           =   69
+   End
+   Begin PushButton CancelButton
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Cancel"
+      Default         =   False
+      Enabled         =   True
+      Height          =   28
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   29
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "Arial"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   78
+      Underline       =   False
+      Visible         =   True
+      Width           =   69
    End
 End
 #tag EndWindow
@@ -65,9 +172,13 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Left = (Wnd.Width-HistCtrl.Width)/2
-		  Top = Wnd.Height-20
 		  
+		  Title = " "
+		  StaticText1.Text = Dico.Value("Thickness")
+		  CancelButton.Caption = Dico.Value("Cancel")
+		  OKButton.Caption = Dico.Value("OK")
+		  TF.text = str(Config.thickness)
+		  TF.Backcolor = Blanc
 		End Sub
 	#tag EndEvent
 
@@ -95,42 +206,26 @@ End
 
 
 	#tag Property, Flags = &h0
-		rh As ReadHisto
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		tw As TextWindow
+		result As integer
 	#tag EndProperty
 
 
 #tag EndWindowCode
 
-#tag Events HistCtrl
+#tag Events OKButton
 	#tag Event
-		Sub BAction(msg as string)
-		  select case msg
-		  case "First"
-		    ReadHisto(CurrentContent.CurrentOperation).FirstOper
-		  case "Prec"
-		    ReadHisto(CurrentContent.CurrentOperation).PrecOper
-		  case "BNext"
-		    ReadHisto(CurrentContent.CurrentOperation).NextOper
-		  case "Last"
-		    ReadHisto(CurrentContent.CurrentOperation).LastOper
-		  case "Stop"
-		    ReadHisto(CurrentContent.CurrentOperation).Endoperation
-		    self.close
-		  end select
-		  
+		Sub Action()
+		  Result = 1
+		  Hide
 		End Sub
 	#tag EndEvent
+#tag EndEvents
+#tag Events CancelButton
 	#tag Event
-		Function KeyDown(Key As String) As Boolean
-		  if asc(key) = 20 then
-		    tw = new TextWindow
-		    tw.visible = true
-		  end if
-		End Function
+		Sub Action()
+		  result = -1
+		  Close
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
@@ -328,6 +423,11 @@ End
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="result"
+		Group="Behavior"
+		Type="integer"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Super"
