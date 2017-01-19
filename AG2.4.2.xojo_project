@@ -268,4 +268,5 @@ UseBuildsFolder=True
 HiDPI=True
 CopyRedistNextToWindowsEXE=False
 IsWebProject=False
+WindowsBuildArchitecture=1
 OptimizationLevel=0
