@@ -32,8 +32,7 @@ Inherits FigureShape
 		  'col = config.transfocolor.col
 		  'end if
 		  'next
-		  '
-		  'else
+		  
 		  if s.hidden then
 		    col = config.HideColor.col
 		  elseif s.highlighted then
