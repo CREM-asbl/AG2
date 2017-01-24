@@ -405,7 +405,7 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuBar MacrosMenu
+   Begin MenuItem MacrosMenu
       SpecialMenu = 0
       Text = "Macros"
       Index = -2147483648
