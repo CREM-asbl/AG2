@@ -3410,13 +3410,8 @@ End
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
-		    g.ForeColor = RGB(255,255,255)
-		    g.FillRect(0,0,g.Width,g.Height)
-		    'if (me.Backdrop.Height>g.Height or me.Backdrop.Width>g.Width) then
-		    'g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
-		    'else
-		    'g.DrawPicture(me.Backdrop, g.Width-me.Backdrop.Width,(g.height-me.Backdrop.Height)/2)
-		    'end if
+		    
+		    g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
 		    
 		    if index=selectedTool and Kit = "Libre"  then
 		      g.forecolor = rouge
