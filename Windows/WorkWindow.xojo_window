@@ -447,7 +447,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   8007679
+            Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -475,7 +475,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   115009535
+            Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -503,35 +503,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   1344944127
-            DoubleBuffer    =   False
-            Enabled         =   True
-            EraseBackground =   True
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   0
-            InitialParent   =   "LibBox"
-            Left            =   8
-            LockBottom      =   False
-            LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   0
-            TabIndex        =   5
-            TabPanelIndex   =   0
-            TabStop         =   True
-            Top             =   381
-            Transparent     =   True
-            UseFocusRing    =   True
-            Visible         =   True
-            Width           =   50
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
-            Backdrop        =   454606847
+            Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -559,7 +531,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   1584048127
+            Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -567,7 +539,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "LibBox"
-            Left            =   64
+            Left            =   66
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -587,7 +559,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   952131583
+            Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -595,7 +567,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "LibBox"
-            Left            =   64
+            Left            =   66
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -615,7 +587,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   623656959
+            Backdrop        =   0
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -623,17 +595,45 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   6
             InitialParent   =   "LibBox"
-            Left            =   64
+            Left            =   66
+            LockBottom      =   True
+            LockedInPosition=   False
+            LockLeft        =   True
+            LockRight       =   True
+            LockTop         =   True
+            Scope           =   0
+            TabIndex        =   4
+            TabPanelIndex   =   0
+            TabStop         =   True
+            Top             =   485
+            Transparent     =   True
+            UseFocusRing    =   True
+            Visible         =   True
+            Width           =   50
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   True
+            AcceptTabs      =   False
+            AutoDeactivate  =   True
+            Backdrop        =   0
+            DoubleBuffer    =   False
+            Enabled         =   True
+            EraseBackground =   True
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   0
+            InitialParent   =   "LibBox"
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
             Scope           =   0
-            TabIndex        =   4
+            TabIndex        =   5
             TabPanelIndex   =   0
             TabStop         =   True
-            Top             =   485
+            Top             =   381
             Transparent     =   True
             UseFocusRing    =   True
             Visible         =   True
@@ -3411,7 +3411,7 @@ End
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  if  me.Visible then
 		    
-		    g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
+		    'g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
 		    
 		    if index=selectedTool and Kit = "Libre"  then
 		      g.forecolor = rouge
@@ -3423,6 +3423,26 @@ End
 		  
 		  
 		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Open(index as Integer)
+		  select case index
+		  case 0
+		    me.Backdrop = Point2
+		  case 1
+		    me.Backdrop = Ligne1
+		  case 2
+		    me.Backdrop = TriangleQuelconque1
+		  case 3
+		    me.Backdrop = QuadriQuelconque1
+		  case 4
+		    me.Backdrop = PolyRegulier1
+		  case 5
+		    me.Backdrop = Cercle1
+		  case 6
+		    me.Backdrop = Polyqcq1
+		  end select
 		End Sub
 	#tag EndEvent
 #tag EndEvents
