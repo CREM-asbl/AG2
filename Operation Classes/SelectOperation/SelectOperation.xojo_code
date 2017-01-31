@@ -455,6 +455,9 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
+		  
+		  super.paint(g)
+		  
 		  if currenthighlightedshape = nil then
 		    return
 		  end if

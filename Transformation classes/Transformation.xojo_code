@@ -438,17 +438,20 @@ Protected Class Transformation
 		      end if
 		    end if
 		    
-		    supp.nsk.update(supp)
-		    
-		    if supp isa Lacet then
-		      Lskull(supp.nsk).paint(g, index, coul, type)
+		    if supp isa point then
+		      point(supp).rsk.update(point(supp).bpt,supp.borderwidth)
+		      point(supp).rsk.updatecolor(coul.col,100)
+		      point(supp).rsk.paint(g)
 		    else
-		      supp.nsk.paint(g,coul)
+		      supp.nsk.update(supp)
+		      if supp isa Lacet then
+		        Lskull(supp.nsk).paint(g, index, coul, type)
+		      else
+		        supp.nsk.paint(g,coul)
+		      end if
+		      DrawTip(g, coul)
 		    end if
-		    DrawTip(g, coul)
-		    
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 

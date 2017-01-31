@@ -33,7 +33,6 @@ Inherits FigureShape
 		  'end if
 		  'next
 		  
-		  
 		  if s.hidden then
 		    col = config.HideColor.col
 		  elseif s.highlighted then

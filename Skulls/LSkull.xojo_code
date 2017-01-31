@@ -166,7 +166,7 @@ Inherits NSkull
 		  
 		  'Concernant le fond
 		  
-		  if s.hidden or s.tsp or s.isinconstruction then
+		  if s.hidden or s.tsp  or  s.isinconstruction then
 		    updatefillcolor(s.fillcolor.col,0)
 		  else
 		    updatefillcolor(s.fillcolor.col,f)

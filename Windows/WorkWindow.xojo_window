@@ -47,12 +47,12 @@ Begin Window WorkWindow
       info            =   ""
       InitialParent   =   ""
       iobj            =   0
-      Left            =   120
-      LockBottom      =   False
+      Left            =   122
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
       MagneticDist    =   0.0
       n               =   0
       NeedsRefresh    =   False
@@ -68,7 +68,7 @@ Begin Window WorkWindow
       Transparent     =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   780
+      Width           =   678
    End
    Begin Rectangle Tools
       AutoDeactivate  =   False
@@ -503,34 +503,6 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   1333702655
-            DoubleBuffer    =   False
-            Enabled         =   True
-            EraseBackground =   True
-            Height          =   50
-            HelpTag         =   ""
-            Index           =   0
-            InitialParent   =   "LibBox"
-            Left            =   8
-            LockBottom      =   False
-            LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   0
-            TabIndex        =   5
-            TabPanelIndex   =   0
-            TabStop         =   True
-            Top             =   381
-            Transparent     =   True
-            UseFocusRing    =   True
-            Visible         =   True
-            Width           =   50
-         End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
             Backdrop        =   1273780223
             DoubleBuffer    =   False
             Enabled         =   True
@@ -624,16 +596,44 @@ Begin Window WorkWindow
             Index           =   6
             InitialParent   =   "LibBox"
             Left            =   64
+            LockBottom      =   True
+            LockedInPosition=   False
+            LockLeft        =   True
+            LockRight       =   True
+            LockTop         =   True
+            Scope           =   0
+            TabIndex        =   4
+            TabPanelIndex   =   0
+            TabStop         =   True
+            Top             =   485
+            Transparent     =   True
+            UseFocusRing    =   True
+            Visible         =   True
+            Width           =   50
+         End
+         Begin Canvas LibOutils
+            AcceptFocus     =   True
+            AcceptTabs      =   False
+            AutoDeactivate  =   True
+            Backdrop        =   1333702655
+            DoubleBuffer    =   False
+            Enabled         =   True
+            EraseBackground =   True
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   0
+            InitialParent   =   "LibBox"
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
             Scope           =   0
-            TabIndex        =   4
+            TabIndex        =   5
             TabPanelIndex   =   0
             TabStop         =   True
-            Top             =   485
+            Top             =   381
             Transparent     =   True
             UseFocusRing    =   True
             Visible         =   True
@@ -3403,11 +3403,6 @@ End
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
