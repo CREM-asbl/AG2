@@ -27,7 +27,7 @@ Begin Window WorkWindow
    Visible         =   True
    Width           =   800
    Begin CustomCanvas1 MyCanvas1
-      AcceptFocus     =   True
+      AcceptFocus     =   False
       AcceptTabs      =   True
       AutoDeactivate  =   False
       Backdrop        =   0
@@ -273,13 +273,13 @@ Begin Window WorkWindow
          Visible         =   True
          Width           =   112
          Begin Canvas StdOutil
-            AcceptFocus     =   False
+            AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
             Backdrop        =   0
-            DoubleBuffer    =   False
+            DoubleBuffer    =   True
             Enabled         =   True
-            EraseBackground =   False
+            EraseBackground =   True
             Height          =   50
             HelpTag         =   ""
             Index           =   1
@@ -295,17 +295,17 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TabStop         =   True
             Top             =   240
-            Transparent     =   False
+            Transparent     =   True
             UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
          Begin Canvas StdOutil
-            AcceptFocus     =   False
+            AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
             Backdrop        =   0
-            DoubleBuffer    =   False
+            DoubleBuffer    =   True
             Enabled         =   True
             EraseBackground =   True
             Height          =   50
@@ -330,10 +330,10 @@ Begin Window WorkWindow
          End
          Begin Canvas StdOutil
             AcceptFocus     =   True
-            AcceptTabs      =   True
+            AcceptTabs      =   False
             AutoDeactivate  =   False
             Backdrop        =   0
-            DoubleBuffer    =   False
+            DoubleBuffer    =   True
             Enabled         =   True
             EraseBackground =   True
             Height          =   50
@@ -351,7 +351,7 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TabStop         =   True
             Top             =   240
-            Transparent     =   False
+            Transparent     =   True
             UseFocusRing    =   True
             Visible         =   True
             Width           =   50
@@ -447,7 +447,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   8007679
+            Backdrop        =   326336511
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -475,7 +475,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   115009535
+            Backdrop        =   419098623
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -503,7 +503,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   1344944127
+            Backdrop        =   1333702655
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -531,7 +531,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   454606847
+            Backdrop        =   1273780223
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -559,7 +559,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   1584048127
+            Backdrop        =   2141171711
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -587,7 +587,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   952131583
+            Backdrop        =   834662399
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -615,7 +615,7 @@ Begin Window WorkWindow
             AcceptFocus     =   True
             AcceptTabs      =   False
             AutoDeactivate  =   True
-            Backdrop        =   623656959
+            Backdrop        =   680357887
             DoubleBuffer    =   False
             Enabled         =   True
             EraseBackground =   True
@@ -3242,6 +3242,8 @@ End
 		  
 		  Kit = "Standard"
 		  
+		  me.SetFocus
+		  
 		  if drapstdcolor then
 		    c = Config.stdcolor(index).col
 		    if selectcolor(c, "Choisis une  couleur") then
@@ -3252,7 +3254,6 @@ End
 		    drapstdcolor = false
 		  else
 		    selectedTool = index
-		    'stdoutil(index).invalidate
 		    drapico = true
 		    openformswindow(0,SelectedTool)
 		  end if
@@ -3276,12 +3277,6 @@ End
 		      cubeskull(ico(index)).paint(g)
 		    else
 		      g.drawobject ico(index), ico(index).x, ico(index).y
-		      
-		      if index=selectedTool and Kit = "Standard"  then
-		        g.forecolor = rouge
-		        g.penwidth = 2.5
-		        g.DrawRect(0,0,g.Width,g.Height)
-		      end if
 		    end if
 		  end if
 		  
@@ -3388,10 +3383,9 @@ End
 		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  
 		  if mousedispo then
+		    Me.SetFocus
 		    selectedTool = index
 		    Kit = "Libre"
-		    Tools.refresh
-		    
 		    if selectedtool <> 0 then
 		      openformswindow(1, selectedtool)
 		    else
@@ -3409,16 +3403,7 @@ End
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
-		  if  me.Visible then
-		    
-		    g.DrawPicture(me.Backdrop,0,0,g.Width,g.Height,0,0,me.Backdrop.Width,me.Backdrop.Height)
-		    
-		    if index=selectedTool and Kit = "Libre"  then
-		      g.forecolor = rouge
-		      g.penwidth = 2.5
-		      g.DrawRect(0,0,g.Width,g.Height)
-		    end if
-		  end if
+		  
 		  
 		  
 		  
