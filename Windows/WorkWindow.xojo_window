@@ -1342,14 +1342,14 @@ End
 		Function HelpUG() As Boolean Handles HelpUG.Action
 			dim fi as Folderitem
 			
-			fi = getfolderitem(Dico.Value("UserGuide"))
-			
+			fi = GetOpenFolderItem(FileAGTypes.pdf) 
 			if fi.exists then
-			fi.launch "25" '? : pourquoi 25 ?
+			fi.launch '"25" '? : pourquoi 25 ?
 			else
 			MsgBox Dico.Value("MsgUnfoundable")
 			end if
 			Return True
+			
 			
 		End Function
 	#tag EndMenuHandler

@@ -98,4 +98,18 @@
 		Imported=True
 	#tag EndFileType
 
+	#tag FileType
+		CodeName=Pdf
+		Extension=.pdf
+		Flags=&h0
+		MacCreator=prvw
+		MacType=PDF 
+		Name=application/pdf
+		UTI=com.adobe.pdf
+		UTIConformsTo=public.data, public.composite-content
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
 #tag EndFileTypeSet
