@@ -759,6 +759,11 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		  
+		  if currentcontent <> nil then
+		    PushButton1.enabled = currentcontent.currentop > 0
+		  end if
+		  
 		End Sub
 	#tag EndEvent
 
@@ -3303,7 +3308,7 @@ End
 		      currentcontent.undolastoperation
 		    end if
 		  end if
-		  setfocus
+		  'setfocus
 		End Sub
 	#tag EndEvent
 	#tag Event

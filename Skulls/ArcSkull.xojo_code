@@ -25,7 +25,7 @@ Inherits NSkull
 		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
 		    update(skullof)
 		  end if
-		  if skullof isa freecircle then
+		  if skullof isa freecircle or skullof isa stdcircle then
 		    g.drawobject self, x, y
 		  end if
 		  for i = 0 to count-1
