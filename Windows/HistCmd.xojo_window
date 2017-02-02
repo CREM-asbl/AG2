@@ -30,7 +30,7 @@ Begin Window HistCmd
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFFFF00
       Backdrop        =   0
       BehaviorIndex   =   0
       ControlOrder    =   "0"

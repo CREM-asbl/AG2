@@ -93,7 +93,7 @@ Begin Window InitWindow
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFF00FFFF
       Bold            =   True
       Border          =   True
       CueText         =   ""
