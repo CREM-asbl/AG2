@@ -45,7 +45,7 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  init
+		  
 		  drappara = false
 		  if not sh1 isa circle then
 		    if not sh2 isa circle then
@@ -66,7 +66,7 @@ Inherits SelectOperation
 		    computeintercercles
 		  end if
 		  
-		  positionfalseinterpoints
+		  'positionfalseinterpoints  suppression provisoire?
 		  
 		  
 		End Sub
@@ -85,16 +85,14 @@ Inherits SelectOperation
 		  if  k = 0 then
 		    bq.append nil
 		    bq.append nil
+		    val(0,0) = false
+		    val(0,1) = false
 		  end if
 		  
 		  bptinters(0,0) = bq(0)
 		  bptinters(0,1) = bq(1)
 		  
-		  select case k
-		  case 0
-		    val(0,0) = false
-		    val(0,1) = false
-		  end select
+		  
 		End Sub
 	#tag EndMethod
 
@@ -157,8 +155,8 @@ Inherits SelectOperation
 		    
 		    select case k
 		    case 0
-		      bptinters(i,0) = p(0)
-		      bptinters(i,1) = p(1)
+		      bptinters(i,0) = nil
+		      bptinters(i,1) = nil
 		      val(i,0) = false
 		      val(i,1) = false
 		    case 1
@@ -170,7 +168,6 @@ Inherits SelectOperation
 		      else
 		        bptinters(i,0) = b
 		        bptinters(i,1) = b
-		        'val(i,1) = false
 		      end if
 		    case 2
 		      bptinters(i,0) = p(0)
@@ -281,12 +278,8 @@ Inherits SelectOperation
 		  else
 		    ncol = sh2.npts-1
 		  end if
-		  redim bptinters(nlig, ncol)
-		  redim ids(nlig,ncol)
-		  redim val(nlig,ncol)
-		  redim pts(-1)
-		  redim bezet(nlig,ncol)
 		  
+		  init
 		  computeinter
 		  
 		  ' bptsinter est la liste de tous les points d'inter possibles des droites supports des cotés de sh1 et de sh2
@@ -322,14 +315,16 @@ Inherits SelectOperation
 		Sub init()
 		  dim i, j as integer
 		  
-		  redim reset(nlig,ncol)
-		  redim ids(nlig, ncol)
+		  redim bptinters(nlig, ncol)
+		  redim ids(nlig,ncol)
+		  redim val(nlig,ncol)
+		  redim bezet(nlig,ncol)
 		  
 		  for i = 0 to nlig
 		    for j = 0 to ncol
 		      bptinters(i,j) = nil
 		      val(i,j) = true
-		      reset(i,j) = false
+		      ids(i,j) = 0
 		    next
 		  next
 		  
@@ -389,21 +384,21 @@ Inherits SelectOperation
 		  
 		  r1 = 10000
 		  
-		  if pt.pointsur.count = 2 then
-		    h = pt.numside(0)
-		    k = pt.numside(1)
-		    if  val(h,k) and (not bezet(h,k) ) and pt.bpt.distance(bptinters(h,k))  < epsilon then
-		      i1 = h
-		      j1 = k
-		      return 0
-		    end if
-		  end if
+		  'if pt.pointsur.count = 2 then
+		  'h = pt.numside(0)
+		  'k = pt.numside(1)
+		  'if  val(h,k) and (not bezet(h,k) ) and pt.bpt.distance(bptinters(h,k))  < epsilon then
+		  'i1 = h
+		  'j1 = k
+		  'return 0
+		  'end if
+		  'end if
 		  
 		  i1 = h
 		  j1 = k
 		  for i = 0 to nlig
 		    for j = 0 to ncol
-		      if val(i,j) and (not bezet(i,j))  then
+		      if val(i,j) then 'and (not bezet(i,j))  then
 		        s = pt.bpt.distance(bptinters(i,j))
 		        if abs(s) < r1 then
 		          r1 = s
@@ -425,43 +420,53 @@ Inherits SelectOperation
 		  //d'un point inter. Celle-ci doit être mentionnée comme occupée. On les calcule en premier lieu.
 		  //Idem pour les points de subdivision
 		  
-		  dim i,h,k as integer
+		  dim i,h,k, i1, j1 as integer
 		  dim p as point
+		  dim d as double
 		  
-		  for h = 0 to nlig
-		    for k = 0 to ncol
-		      if bptinters(h,k) <> nil then
-		        for i = 0 to ubound(sh1.childs)
-		          p = sh1.childs(i)
-		          if   sh2.getindex(p) <> -1 and p.forme < 2  and  p.bpt.distance(bptinters(h,k)) < epsilon then
-		            bezet(h, k) = true      ' on ne peut placer aucun vrai pt d'inter ici
-		          end if
-		        next
-		        for i = 0 to ubound(sh2.childs)
-		          p = sh2.childs(i)
-		          if   sh1.getindex(p) <> -1 and p.pointsur.count < 2  and  p.bpt.distance(bptinters(h,k)) < epsilon then
-		            bezet(h, k) = true      ' ici non plus
-		          end if
-		        next
-		        for i = 0 to ubound(sh1.constructedshapes)
-		          if sh1.constructedshapes(i) isa point  then
-		            p = point(sh1.constructedshapes(i))
-		            if p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4) = h
-		              bezet(h,k) = true
-		            end if
-		          end if
-		        next
-		        for i = 0 to ubound(sh2.constructedshapes)
-		          if sh2.constructedshapes(i) isa point  then
-		            p = point(sh2.constructedshapes(i))
-		            if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
-		              bezet(h,k) = true
-		            end if
-		          end if
-		        next
+		  for i = 0 to ubound(sh1.points)
+		    p = sh1.points(i)
+		    if   sh2.getindex(p) <> -1 and p.forme < 2 then
+		      d = nearest(p, i1,j1) 
+		      if d < epsilon then
+		        bezet(i1, j1) = true 
+		        ids(i1, j1) = p.id     ' on ne peut placer aucun vrai pt d'inter ici
 		      end if
-		    next
+		    end if
 		  next
+		  for i = 0 to ubound(sh2.points)
+		    p = sh2.points(i)
+		    if   sh1.getindex(p) <> -1 and p.forme < 2 then
+		      d = nearest(p, i1,j1) 
+		      if d < epsilon then
+		        bezet(i1, j1) = true 
+		        ids(i1, j1) = p.id     ' on ne peut placer aucun vrai pt d'inter ici
+		      end if
+		    end if
+		  next
+		  
+		  
+		  'for i = 0 to ubound(sh1.constructedshapes)
+		  'if sh1.constructedshapes(i) isa point  then
+		  'p = point(sh1.constructedshapes(i))
+		  'if p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4) = h
+		  'bezet(h,k) = true
+		  'ids(h,k) = p.id 
+		  'end if
+		  'end if
+		  'next
+		  'for i = 0 to ubound(sh2.constructedshapes)
+		  'if sh2.constructedshapes(i) isa point  then
+		  'p = point(sh2.constructedshapes(i))
+		  'if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
+		  'bezet(h,k) = true
+		  'ids(h,k) = p.id 
+		  'end if
+		  'end if
+		  'next
+		  'end if
+		  'next
+		  'next
 		  
 		  
 		  
@@ -489,9 +494,8 @@ Inherits SelectOperation
 		  k = pt.numside(1)
 		  bezet(h,k) = false
 		  
-		  if val(h,k) and not bezet(h,k) then
+		  if val(h,k) and not bezet(h,k)   then
 		    validerpoint(pt,h,k)
-		    reset(h,k) = true
 		  else
 		    replacerphase2(pt)
 		  end if
@@ -521,6 +525,8 @@ Inherits SelectOperation
 		  
 		  if d > epsilon then
 		    pt.invalider
+		    bezet(h,k) = false
+		    ids(h,k) = 0
 		    return
 		  end if
 		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
@@ -544,6 +550,8 @@ Inherits SelectOperation
 		    validerpoint(pt,i1,j1)
 		  else
 		    pt.invalider
+		    bezet(h,k) = false
+		    ids(h,k) = 0
 		  end if
 		  
 		  
@@ -593,6 +601,7 @@ Inherits SelectOperation
 		  dim i,j as integer
 		  dim p as shape
 		  
+		  init
 		  computeinter
 		  
 		  for i = 0 to nlig
@@ -624,6 +633,7 @@ Inherits SelectOperation
 		Sub update(p as point)
 		  
 		  //Utilisé (notamment) par figure.restoreinit
+		  init
 		  computeinter
 		  replacerphase1(p)
 		  
@@ -634,17 +644,17 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub validerpoint(pt as point, i as integer, j As integer)
-		  if bezet(i,j) = false then
-		    bezet(i,j) = true
-		    reset(i,j) = true
-		    pt.moveto bptinters(i,j)
-		    setlocation(pt,i,j)
-		    pt.modified = true
-		    pt.updateshape
-		    if val(i,j) and (bptinters(i,j) <> nil) and ((pt.conditionedby = nil) or (not pt.conditionedby.invalid)) and  not sh1.invalid and not sh2.invalid then
-		      pt.valider
-		    end if
+		  'if bezet(i,j) = false then
+		  bezet(i,j) = true
+		  pt.moveto bptinters(i,j)
+		  ids(i,j) = pt.id
+		  setlocation(pt,i,j)
+		  pt.modified = true
+		  pt.updateshape
+		  if val(i,j) and (bptinters(i,j) <> nil) and ((pt.conditionedby = nil) or (not pt.conditionedby.invalid)) and  not sh1.invalid and not sh2.invalid then
+		    pt.valider
 		  end if
+		  'end if
 		  
 		  
 		End Sub
@@ -681,10 +691,6 @@ Inherits SelectOperation
 
 	#tag Property, Flags = &h0
 		pts(-1) As point
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		reset(-1,-1) As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

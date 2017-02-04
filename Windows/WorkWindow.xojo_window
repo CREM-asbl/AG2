@@ -1349,7 +1349,7 @@ End
 			dim fi as Folderitem
 			
 			fi = GetOpenFolderItem(FileAGTypes.pdf) 
-			if fi.exists then
+			if fi <> nil and  fi.exists then
 			fi.launch '"25" '? : pourquoi 25 ?
 			else
 			MsgBox Dico.Value("MsgUnfoundable")

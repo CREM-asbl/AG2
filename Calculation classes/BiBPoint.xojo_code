@@ -65,7 +65,7 @@ Inherits nBpoint
 		  
 		  q = D.second - D.First                       // D est le cercle
 		  ray = q.norme
-		  dist = D.first.Distance(First,Second)
+		  dist = D.first.Distance(First,Second) //distance du centre du cercle à la droite 
 		  q = D.First.Projection(First,Second)  // q est le milieu de la corde
 		  redim p(-1)
 		  
@@ -73,16 +73,15 @@ Inherits nBpoint
 		  v = Second-first
 		  v = v.normer
 		  v = v*cot                                            // L'orientation de v est celle de self (de first vers second)
-		  if abs(ray-dist) < epsilon then
+		  if cot < epsilon then 'abs(ray-dist) < epsilon then
 		    p.append q
 		    p.append q
-		    v = new BasicPoint(0,0)
 		    return 1
-		  elseif ray> dist + epsilon then
+		  elseif ray> dist  then
 		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
 		    p.append q+v
 		    return 2
-		  elseif ray < dist - epsilon then
+		  elseif ray < dist  then
 		    p.append nil
 		    p.append nil
 		    return 0
