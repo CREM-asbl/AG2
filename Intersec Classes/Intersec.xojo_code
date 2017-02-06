@@ -40,12 +40,11 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub computeinter()
 		  dim i, j as integer
-		  
 		  if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
 		    return
 		  end if
 		  
-		  
+		  init
 		  drappara = false
 		  if not sh1 isa circle then
 		    if not sh2 isa circle then
@@ -66,7 +65,7 @@ Inherits SelectOperation
 		    computeintercercles
 		  end if
 		  
-		  'positionfalseinterpoints  suppression provisoire?
+		  positionfalseinterpoints  
 		  
 		  
 		End Sub
@@ -108,10 +107,10 @@ Inherits SelectOperation
 		    d1 = sh1.getside(i)
 		    if d1 <> nil then
 		      for j = 0 to ncol
+		        bp = nil
 		        d2 = sh2.getside(j)
 		        if d2 <> nil then
 		          if not(sh1 isa droite and droite(sh1).parallelto(sh2,j)) and not (sh2 isa droite and droite(sh2).parallelto(sh1,i)) then
-		            bp = nil
 		            k = d1.inter(d2,bp,r1,r2)
 		            if bp <> nil then
 		              bptinters(i,j) = bp
@@ -279,8 +278,10 @@ Inherits SelectOperation
 		    ncol = sh2.npts-1
 		  end if
 		  
-		  init
-		  computeinter
+		  redim bptinters(nlig, ncol)
+		  redim ids(nlig,ncol)
+		  redim val(nlig,ncol)
+		  redim bezet(nlig,ncol)
 		  
 		  ' bptsinter est la liste de tous les points d'inter possibles des droites supports des cotés de sh1 et de sh2
 		  ' val indique si ces points appartiennent aux cotes eux-memes et que les points peuvent donc etre validés
@@ -315,8 +316,9 @@ Inherits SelectOperation
 		Sub init()
 		  dim i, j as integer
 		  
+		  
+		  
 		  redim bptinters(nlig, ncol)
-		  redim ids(nlig,ncol)
 		  redim val(nlig,ncol)
 		  redim bezet(nlig,ncol)
 		  
@@ -324,7 +326,6 @@ Inherits SelectOperation
 		    for j = 0 to ncol
 		      bptinters(i,j) = nil
 		      val(i,j) = true
-		      ids(i,j) = 0
 		    next
 		  next
 		  
@@ -384,21 +385,21 @@ Inherits SelectOperation
 		  
 		  r1 = 10000
 		  
-		  'if pt.pointsur.count = 2 then
-		  'h = pt.numside(0)
-		  'k = pt.numside(1)
-		  'if  val(h,k) and (not bezet(h,k) ) and pt.bpt.distance(bptinters(h,k))  < epsilon then
-		  'i1 = h
-		  'j1 = k
-		  'return 0
-		  'end if
-		  'end if
+		  if pt.forme = 2 then
+		    h = pt.numside(0)
+		    k = pt.numside(1)
+		    if  val(h,k) and (not bezet(h,k) ) and pt.bpt.distance(bptinters(h,k))  < epsilon then
+		      i1 = h
+		      j1 = k
+		      return 0
+		    end if
+		  end if
 		  
 		  i1 = h
 		  j1 = k
 		  for i = 0 to nlig
 		    for j = 0 to ncol
-		      if val(i,j) then 'and (not bezet(i,j))  then
+		      if val(i,j)  and (not bezet(i,j))  then
 		        s = pt.bpt.distance(bptinters(i,j))
 		        if abs(s) < r1 then
 		          r1 = s
@@ -446,27 +447,25 @@ Inherits SelectOperation
 		  next
 		  
 		  
-		  'for i = 0 to ubound(sh1.constructedshapes)
-		  'if sh1.constructedshapes(i) isa point  then
-		  'p = point(sh1.constructedshapes(i))
-		  'if p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4) = h
-		  'bezet(h,k) = true
-		  'ids(h,k) = p.id 
-		  'end if
-		  'end if
-		  'next
-		  'for i = 0 to ubound(sh2.constructedshapes)
-		  'if sh2.constructedshapes(i) isa point  then
-		  'p = point(sh2.constructedshapes(i))
-		  'if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
-		  'bezet(h,k) = true
-		  'ids(h,k) = p.id 
-		  'end if
-		  'end if
-		  'next
-		  'end if
-		  'next
-		  'next
+		  for i = 0 to ubound(sh1.constructedshapes)
+		    if sh1.constructedshapes(i) isa point  then
+		      p = point(sh1.constructedshapes(i))
+		      if p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4) = h
+		        bezet(h,k) = true
+		        ids(h,k) = p.id 
+		      end if
+		    end if
+		  next
+		  for i = 0 to ubound(sh2.constructedshapes)
+		    if sh2.constructedshapes(i) isa point  then
+		      p = point(sh2.constructedshapes(i))
+		      if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
+		        bezet(h,k) = true
+		        ids(h,k) = p.id 
+		      end if
+		    end if
+		  next
+		  
 		  
 		  
 		  
@@ -492,9 +491,9 @@ Inherits SelectOperation
 		  
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
-		  bezet(h,k) = false
 		  
-		  if val(h,k) and not bezet(h,k)   then
+		  
+		  if val(h,k) and ids(h,k) = pt.id   then 'valide ou non, le point est replacé là où il était et revalidé
 		    validerpoint(pt,h,k)
 		  else
 		    replacerphase2(pt)
@@ -515,46 +514,43 @@ Inherits SelectOperation
 		  dim   i1, j1, h, k as integer
 		  dim d as double
 		  dim s as shape
-		  dim changed as Boolean
 		  
-		  changed = false
+		  
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
 		  
 		  d =nearest(pt,i1,j1)
 		  
-		  if d > epsilon then
-		    pt.invalider
-		    bezet(h,k) = false
-		    ids(h,k) = 0
-		    return
-		  end if
-		  if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
-		    // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
-		    // peut être en défaut si A// B et B//C et que A inter C est calculé // prévoir la transitivité
-		    if  ((i1 <> h  or  j1 <> k) and not bezet(h,k)  and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2)  or drappara then
-		      i1 = h
-		      j1 = k
-		    else
-		      changed = true
+		  if pt.invalid then          'cas des points invalides
+		    if val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
+		      'Que se passe-t-il quand un point valide est assez proche d'une place vacante qui n'est pas la sienne (sinon il aurait été replacé à la phase 1)
+		      if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
+		        // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
+		        // peut être en défaut si A// B et B//C et que A inter C est calculé // prévoir la transitivité
+		        if  ((i1 <> h  or  j1 <> k) and not bezet(h,k)  and nbnear(pt) > 0) or (sh1.isaparaperp(s) and s = sh2)  or drappara then
+		          i1 = h
+		          j1 = k
+		        end if
+		      end if
+		      validerpoint(pt,i1,j1)
 		    end if
-		  else
-		    changed = true
+		    return
+		  else                               'cas des points valides
+		    if d > epsilon  then  'un pt valide trop loin de toute place vacante est invalidé
+		      pt.invalider
+		      bezet(h,k) = false
+		      ids(h,k) = 0
+		      return
+		    else               'sinon on envisage de le changer de place
+		      if val(i1,j1) then
+		        validerpoint(pt,i1,j1)
+		      else
+		        pt.invalider
+		        bezet(h,k) = false
+		        ids(h,k) = 0
+		      end if
+		    end if
 		  end if
-		  
-		  if changed then
-		    ids(h,k)=0
-		    ids(i1,j1) = pt.id
-		  end if
-		  if val(i1,j1) then
-		    validerpoint(pt,i1,j1)
-		  else
-		    pt.invalider
-		    bezet(h,k) = false
-		    ids(h,k) = 0
-		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -585,6 +581,7 @@ Inherits SelectOperation
 		    err.message = err.message+d.getString
 		    
 		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
@@ -597,43 +594,11 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub update()
-		  dim i,j as integer
-		  dim p as shape
-		  
-		  init
-		  computeinter
-		  
-		  for i = 0 to nlig
-		    for j = 0 to ncol
-		      p = currentcontent.TheObjects.getshape(ids(i,j))
-		      if p isa point then
-		        replacerphase1(point(p))
-		      end if
-		    next
-		  next
-		  
-		  if nlig >0 or ncol > 0 then   'Phase où on change éventuellement un pt inter de côté
-		    for i = 0 to nlig
-		      for j = 0 to ncol
-		        p = currentcontent.TheObjects.getshape(ids(i,j))
-		        if p isa point then
-		          replacerphase2(point(p))
-		        end if
-		      next
-		    next
-		  end if
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub update(p as point)
 		  
 		  //Utilisé (notamment) par figure.restoreinit
-		  init
+		  //On ne passe ici que pour replacer un point d'inter qui a été modifié. Donc pas quand on le crée
+		  
 		  computeinter
 		  replacerphase1(p)
 		  
@@ -645,6 +610,10 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub validerpoint(pt as point, i as integer, j As integer)
 		  'if bezet(i,j) = false then
+		  
+		  if ids(i,j) <> 0 and ids(i,j) <> pt.id then
+		    return
+		  end if
 		  bezet(i,j) = true
 		  pt.moveto bptinters(i,j)
 		  ids(i,j) = pt.id

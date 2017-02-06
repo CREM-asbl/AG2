@@ -70,6 +70,7 @@ Inherits Shape
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
 		    CurrentContent.TheIntersecs.AddObject(inter)
+		    inter.computeinter
 		  end if
 		  
 		  inter.addpoint self
@@ -2493,6 +2494,7 @@ Inherits Shape
 		    inter = new Intersec(s1,s2)
 		  end if
 		  
+		  inter.computeinter
 		  return inter.locatepoint(bpt)
 		  
 		  
