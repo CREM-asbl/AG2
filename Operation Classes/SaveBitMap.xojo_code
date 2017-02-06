@@ -51,7 +51,7 @@ Inherits Operation
 		  can.RefreshBackground
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
 		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
-		  drap = not exportpicture(Pic)
+		  finished = exportpicture(Pic)
 		  
 		End Sub
 	#tag EndMethod
@@ -63,7 +63,7 @@ Inherits Operation
 		  drx = 0
 		  dry = 0
 		  can.Mousecursor = System.Cursors.StandardPointer
-		  finished = true
+		  drap = false
 		  
 		End Sub
 	#tag EndMethod
@@ -78,12 +78,15 @@ Inherits Operation
 		Sub MouseDown(p as BasicPoint)
 		  dim q as basicpoint
 		  
-		  drap = true
-		  q = can.transform(p)
-		  drx = q.x
-		  dry = q.y
-		  lux = q.x
-		  luy = q.y
+		  if not drap then
+		    drap = true
+		    
+		    q = can.transform(p)
+		    drx = q.x
+		    dry = q.y
+		    lux = q.x
+		    luy = q.y
+		  end if
 		  
 		  
 		End Sub
@@ -91,6 +94,39 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub MouseDrag(p as BasicPoint)
+		  RectLimit(p)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MouseMove(p as BasicPoint)
+		  RectLimit(p)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MouseUp(p as BasicPoint)
+		  if drap and (drx <> lux) and (dry <> luy) then
+		    can.Mousecursor = System.Cursors.Wait
+		    DoOperation
+		    EndOperation
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Paint(g as graphics)
+		  Help g, cutawindow
+		  g.drawrect lux, luy, drx-lux, dry - luy
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RectLimit(p as BasicPoint)
 		  dim q as BasicPoint
 		  
 		  if drap then
@@ -101,36 +137,6 @@ Inherits Operation
 		    end if
 		  end if
 		  can.refreshbackground
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MouseUp(p as BasicPoint)
-		  if drap and (drx <> lux) and (dry <> luy) then
-		    can.Mousecursor = System.Cursors.Wait
-		    DoOperation
-		    EndOperation
-		  else
-		    finished = false
-		  end if
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Paint(g as graphics)
-		  if not finished  then
-		    if not drap then
-		      Help g, cutawindow
-		    else
-		      Help g,  wait
-		    end if
-		  else
-		  end if
-		  g.drawrect lux, luy, drx-lux, dry - luy
-		  
 		End Sub
 	#tag EndMethod
 
