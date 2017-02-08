@@ -483,6 +483,13 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub fixcouleurtrait(c as couleur, b as integer)
+		  bordercolor = c
+		  border = 100
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Fixecoord(p as basicpoint, n as integer)
 		  if n = 0 then
 		    Moveto(p)

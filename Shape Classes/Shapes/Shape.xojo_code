@@ -3373,6 +3373,7 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub UnHighLight()
 		  dim i as integer
+		  dim gr as ObjectsList
 		  
 		  if  self isa point then
 		    highlighted = false
@@ -3388,8 +3389,9 @@ Protected Class Shape
 		    end if
 		  next
 		  if IdGroupe <> -1  then
-		    for i = 0 to objects.groupes(idgroupe).count -1
-		      objects.groupes(idgroupe).item(i).highlighted = false
+		    gr = objects.groupes(0)
+		    for i = 0 to gr.count-1
+		      gr.item(i).highlighted = false
 		    next
 		  end if
 		  

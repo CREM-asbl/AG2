@@ -106,6 +106,8 @@ Inherits SelectOperation
 		      if s isa Lacet  then
 		        s.side  = s.pointonside(p)
 		        side = s.side
+		      elseif s isa point then
+		        s.side = -1
 		      end if
 		    next
 		    icot = Visible.item(iobj).side

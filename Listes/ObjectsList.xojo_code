@@ -593,16 +593,21 @@ Inherits Liste
 		  
 		  super.removeobject s
 		  
-		  i = ubound(groupes)
-		  while i > -1 and groupes(i).getposition(s) = -1
-		    i = i-1
-		  wend
-		  
-		  if i >-1 then
-		    groupes(i).removeobject s
-		    optimizegroups
+		  'i = ubound(groupes)
+		  'while i > -1 and groupes(i).getposition(s) = -1
+		  'i = i-1
+		  'wend
+		  if self = Currentcontent.TheObjects then
+		    
+		    i = shape(s).idgroupe
+		    if i>-1 then
+		      groupes(i).removeobject s
+		      if groupes(i).count=0 then
+		        optimizegroups
+		      end if
+		    end if
+		    
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -1106,7 +1111,6 @@ Inherits Liste
 		  If Val(Temp.GetAttribute("IdGroupe")) <> -1 then
 		    s.IdGroupe = val(Temp.GetAttribute("IdGroupe"))
 		    if Ubound(Groupes) < s.IdGroupe then
-		      Redim Groupes(-1)
 		      Redim Groupes(s.idGroupe)
 		    end if
 		    if Groupes(s.IdGroupe) = nil then

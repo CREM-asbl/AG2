@@ -48,7 +48,6 @@ Begin Window StdFormswindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "StdFile: "
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -114,7 +113,6 @@ Begin Window StdFormswindow
       Selectable      =   False
       TabIndex        =   2
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Label:"
       TextAlign       =   0
       TextColor       =   &c00000000

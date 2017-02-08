@@ -30,10 +30,12 @@ Inherits Parallelogram
 		  // Routine qui modifie le losange  dans le cas où deux points sont fixes et le point n peut  être déplacé (pas arbitrairement)
 		  // Trois cas selon la position des points fixes
 		  
-		  dim  n0, n1, n2 as integer
+		  dim  n0, n1, n2, n3 as integer
 		  dim p1, p2 as point
 		  dim ff as figure
-		  dim pp(2) as point
+		  dim pp(3) as point
+		  dim M as Matrix
+		  dim ep3, np3 as BasicPoint
 		  
 		  ff=GetSousFigure(fig)
 		  
@@ -42,12 +44,17 @@ Inherits Parallelogram
 		  p2 = point(ff.somm.item(ff.fx2))
 		  n1 = getindexpoint(p1)
 		  n2 = getindexpoint(p2)
+		  n3 = quatriemepoint(n0,n1,n2)
 		  
 		  if (n0+1) mod 4 <> n1 and (n0+1) mod 4 <> n2 then
 		    pp(0) = p
 		    pp(1) = points((n0+2) mod 4)
 		    pp(2) = points((n0+3) mod 4)
-		    return ModifierTriIso2fixes(pp(), 2)
+		    M= ModifierTriIso2fixes(pp(), 2)
+		    pp(3) = points((n0+1) mod 4)
+		    ff.getoldnewpos(pp(3),ep3,np3)
+		    pp(3).moveto ep3
+		    return M
 		  elseif (n0+3) mod 4 <> n1 and (n0+3) mod 4 <> n2 then
 		    pp(0) = p
 		    pp(1) = points((n0+1) mod 4)
