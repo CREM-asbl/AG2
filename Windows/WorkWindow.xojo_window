@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -729,6 +728,9 @@ End
 		  dim item as MenuItem
 		  dim i as integer
 		  
+		  if (MenuBar = HistMenu) then
+		    return
+		  end if 
 		  
 		  if currentcontent <> nil  then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
