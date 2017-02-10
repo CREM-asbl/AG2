@@ -3192,7 +3192,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3234,7 +3234,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3267,14 +3267,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  dim fs as figureshape
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
@@ -3289,7 +3289,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -3374,7 +3374,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3386,7 +3386,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    Me.SetFocus
@@ -3401,12 +3401,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		End Sub

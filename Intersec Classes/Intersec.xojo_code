@@ -369,7 +369,7 @@ Inherits SelectOperation
 		  
 		  
 		  for i = 0 to ubound(pts)
-		    if (q <> pts(i)) and (q.bpt.distance(pts(i).bpt) < epsilon) then
+		    if (q <> pts(i)) and (q.bpt.distance(pts(i).bpt) < can.magneticdist) then
 		      m = m+1
 		    end if
 		  next
