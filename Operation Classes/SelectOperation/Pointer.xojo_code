@@ -24,6 +24,7 @@ Inherits SelectOperation
 		      currenthighlightedshape.childs(i).nonpointed = true
 		    next
 		    if currenthighlightedshape isa arc then
+		      currenthighlightedshape.childs(0).nonpointed = false
 		    end if
 		  end if
 		  
