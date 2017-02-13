@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -1348,7 +1349,7 @@ End
 			fi = getfolderitem(Dico.Value("UserGuide"))
 			
 			if fi.exists then
-			fi.launch "25" '? : pourquoi 25 ?
+			fi.launch
 			else
 			MsgBox Dico.Value("MsgUnfoundable")
 			end if
