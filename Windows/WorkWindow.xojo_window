@@ -731,12 +731,12 @@ End
 		  
 		  if (MenuBar = HistMenu) then
 		    return
-		  end if 
-		  
-		  if currentcontent <> nil  then
+		  end if
+		  if currentcontent <> nil then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
 		  end if
+		  
 		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
 		    B =  CurrentContent.TheObjects.count > 1
 		    B1 = CurrentContent.TheGrid <> nil
@@ -763,6 +763,11 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		  
+		  if currentcontent <> nil then
+		    PushButton1.enabled = currentcontent.currentop > 0
+		  end if
+		  
 		End Sub
 	#tag EndEvent
 
@@ -1445,17 +1450,8 @@ End
 			MenuMacros(true)
 			can.resize
 			wnd.refreshtitle
+			config.trace = false
 			can.refreshbackground
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			currentcontent.mac = nil
 			return true
 			
@@ -2185,7 +2181,7 @@ End
 		  
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  
+		  Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
 		End Sub
 	#tag EndMethod
 
@@ -2569,6 +2565,11 @@ End
 		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("PrefsMenu").visible = not t
+		  for i =0 to MenuBar.Child("PrefsMenu").count-1
+		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
+		  next
+		  MenuBar.Child("Cfg").visible = not t
+		  
 		  for i =0 to MenuBar.Child("EditMenu").count-2
 		    MenuBar.Child("EditMenu").Item(i).visible = not t
 		  next

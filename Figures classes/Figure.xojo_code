@@ -1666,15 +1666,15 @@ Protected Class Figure
 		    n3 = ListPtsModifs(2)
 		    r = Point(somm.item(n3))
 		    getoldnewpos(r,er,nr)
-		    for i = 0 to 3
-		      if i <> n1 and i <> n2 and i <> n3 then
-		        n4 = i
-		      end if
-		    next
-		    s = Point(somm.item(n4))
-		    getoldnewpos(s,es,ns)
-		    s.moveto es
-		    s.modified = false
+		    'for i = 0 to 3
+		    'if i <> n1 and i <> n2 and i <> n3 then
+		    'n4 = i
+		    'end if
+		    'next
+		    's = Point(somm.item(n4))
+		    'getoldnewpos(s,es,ns)
+		    's.moveto es
+		    's.modified = false
 		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  end select
 		End Function

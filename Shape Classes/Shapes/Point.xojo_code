@@ -2643,18 +2643,18 @@ Inherits Shape
 		    s = Point(ConstructedShapes(i))
 		    if not s.modified then
 		      select case s.constructedby.Oper
-		      case 3, 5
+		      case 3, 5 'duplication et découpage
 		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.Moveto M1*bpt
 		        end if
-		      case 6
+		      case 6 'image par transfo
 		        tsf = Transformation(s.constructedby.data(0))
 		        M1 = tsf.M
 		        if M1 <> nil and M1.v1 <> nil then
 		          s.Moveto M1*bpt
 		        end if
-		      case 9
+		      case 9  ' fusion
 		        if s.constructedby.shape <> nil then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.MoveTo M1*bpt
@@ -2667,7 +2667,7 @@ Inherits Shape
 		            end if
 		          next
 		        end if
-		      case 10
+		      case 10 'duplication de pointsur
 		        side = s.Numside(0)
 		        s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
@@ -2702,26 +2702,26 @@ Inherits Shape
 		      end select
 		      s.modified = true
 		      s.updateshape
-		    elseif constructedby <> nil and constructedby.oper = 9 then
-		      if constructedby.shape <> nil then
-		        s = Point(ConstructedBy.Shape)
-		        M1 = Matrix(constructedby.data(0))
-		        M1 = M1.inv
-		        s.Moveto M1*bpt
-		        s.modified = true
-		        s.updateshape
-		      else
-		        for i = 0 to 2 step 2
-		          s = Point(Constructedby.data(i))
-		          if not s.modified then
-		            M1 = Matrix(constructedby.data(i+1))
-		            M1= M1.inv
-		            s.Moveto M1*bpt
-		            s.modified = true
-		            s.updateshape
-		          end if
-		        next
-		      end if
+		    end if
+		  elseif constructedby <> nil and constructedby.oper = 9 then
+		    if constructedby.shape <> nil then
+		      s = Point(ConstructedBy.Shape)
+		      M1 = Matrix(constructedby.data(0))
+		      M1 = M1.inv
+		      s.Moveto M1*bpt
+		      s.modified = true
+		      s.updateshape
+		    else
+		      for i = 0 to 2 step 2
+		        s = Point(Constructedby.data(i))
+		        if not s.modified then
+		          M1 = Matrix(constructedby.data(i+1))
+		          M1= M1.inv
+		          s.Moveto M1*bpt
+		          s.modified = true
+		          s.updateshape
+		        end if
+		      next
 		    end if
 		  end if
 		End Sub

@@ -38,7 +38,7 @@ Protected Class ConstructionInfo
 		6:  Transformation
 		7: Transformation   
 		8: si côté de polygone prolongé: data(0) = numéro du côté
-		9:  0: 1ere forme fusionnée 1: matrice correspondante 2: 2eme forme fusionnée 3: matrice correspondante 
+		9:  0: 1ere forme fusionnée 1: matrice correspondante 2: 2eme forme fusionnée 3: matrice correspondante 4: concordance d'orientation
 		10 : difference entre les  numéros de côté sur l'original et la copie (voir point.putduplicateon)
 	#tag EndNote
 
