@@ -14,9 +14,7 @@ Inherits SelectOperation
 		  
 		  if app.prtsetup = nil then
 		    app.prtsetup = New PrinterSetup
-		    If  app.prtsetup.PageSetupDialog then
-		      app.prtsettings = app.prtsetup.SetupString
-		    end if
+		    dim PS as Boolean = app.prtsetup.PageSetupDialog 
 		  end if
 		  
 		  
@@ -26,8 +24,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim sc,sw,sh as double
-		  dim i,copies as integer
+		  dim printWidth, printHeight, sc, sw, sh as double
+		  dim printLeft, printTop, i, copies as integer
 		  dim o as shape
 		  dim p as BasicPoint
 		  dim d as date
@@ -38,10 +36,17 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  sw = app.prtsetup.width/can.width
-		  sh = app.prtsetup.height/can.height
+		  sw = app.prtsetup.Width/can.width
+		  sh = app.prtsetup.Height/can.height
 		  sc = min(sw,sh)
+		  printLeft =  -app.prtsetup.PageLeft
+		  printTop =  -app.prtsetup.PageTop
+		  printWidth =  can.width*sc
+		  printHeight =  can.height*sc
+		  
 		  Pict = new Picture(can.width,can.height,Screen(0).Depth)
+		  
+		  'je pense que la qualité se perd en passant par un image mise à l'échelle
 		  
 		  gprint = OpenPrinterDialog(app.prtsetup)
 		  
@@ -51,6 +56,8 @@ Inherits SelectOperation
 		      wnd.switchcolors
 		    end if
 		    can.mousecursor = system.Cursors.Wait
+		    
+		    'le gprint.copies est-il nécessaire étant donné que l'on dessine que dans l'espace d'une page ?(prtsetup.width, prtsetup.height)
 		    for copies=1 to gprint.Copies
 		      for i=0 to tempshape.count-1
 		        o = tempshape.item(i)
@@ -68,9 +75,11 @@ Inherits SelectOperation
 		      end if
 		      
 		      d = new date
-		      gprint.DrawPicture Pict,20,20,can.width*sc, can.height*sc,0,0,can.width,can.height
-		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year) , 20, 18
-		      gprint.drawrect 20,20,can.width*sc, (can.height-1)*sc
+		      
+		      gprint.DrawPicture Pict, printLeft, printTop, printWidth, printHeight, 0, 0, Pict.width, Pict.height
+		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year), printLeft, printTop 
+		      gprint.drawrect printLeft, printTop+2, printWidth, printHeight-2
+		      
 		      if copies<gprint.Copies then
 		        gprint.NextPage
 		      end if

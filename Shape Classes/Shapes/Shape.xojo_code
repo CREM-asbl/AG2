@@ -2837,10 +2837,6 @@ Protected Class Shape
 		      nsk.updatebordercolor(bordercolor.col,border)
 		    end if
 		    nsk.paint(g)
-		  elseif nsk <> nil then
-		    nsk.updatefillcolor(fillcolor.col,fill)
-		    nsk.updatebordercolor(bordercolor.col,border)
-		    nsk.paint(g)
 		  end if
 		  
 		  for i = 0 to labs.count-1

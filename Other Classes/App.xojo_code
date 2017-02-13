@@ -446,10 +446,6 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		prtsettings As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		prtsetup As printerSetup
 	#tag EndProperty
 
