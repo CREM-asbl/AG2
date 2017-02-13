@@ -11,7 +11,21 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  currenthighlightedshape.nonpointed = not currenthighlightedshape.nonpointed
+		  dim i as integer
+		  
+		  if currenthighlightedshape.nonpointed then
+		    currenthighlightedshape.nonpointed = false
+		    for i = 0 to ubound(currenthighlightedshape.childs) 
+		      currenthighlightedshape.childs(i).nonpointed = false
+		    next
+		  else
+		    currenthighlightedshape.nonpointed = true
+		    for i = 0 to ubound(currenthighlightedshape.childs) 
+		      currenthighlightedshape.childs(i).nonpointed = true
+		    next
+		    if currenthighlightedshape isa arc then
+		    end if
+		  end if
 		  
 		End Sub
 	#tag EndMethod

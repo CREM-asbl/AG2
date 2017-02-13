@@ -2451,11 +2451,6 @@ Protected Class Shape
 		      tsfi.item(i).paint(g)
 		    next
 		  end if
-		  'for i = 0 to ubound(constructedshapes)
-		  'if constructedshapes(i).centerordivpoint then
-		  'point(constructedshapes(i)).paintall(g)
-		  'end if
-		  'next 
 		  
 		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
 		    paint(can.offscreenpicture.graphics)

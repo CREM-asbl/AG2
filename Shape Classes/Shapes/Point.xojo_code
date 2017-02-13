@@ -1468,6 +1468,10 @@ Inherits Shape
 		    can.drawzone(can.transform(bpt))
 		  end
 		  
+		  if nonpointed then
+		    return
+		  end if
+		  
 		  if ubound(parents) = 0 and parents(0).std then
 		    rsk.update(bpt,1)
 		  else
