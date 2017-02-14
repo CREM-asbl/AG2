@@ -863,20 +863,27 @@ Protected Class Figure
 		Function autospeupdate4() As Matrix
 		  dim p As point
 		  
-		  dim i, k, n as integer
+		  dim i0, i, k, n as integer
 		  dim t as boolean
+		  dim s as shape
 		  
 		  
 		  choixpointsfixes
 		  'if NbUnModif > 2 then
 		  'return new Matrix(1)
 		  'end if
-		  
+		  s = shapes.item(0)
 		  n = NbSommSur
 		  
 		  select case n
 		  case 0, 1
-		    return DefaultMatrix
+		    for i = 0 to 3
+		      if s.points(i).forme = 0 and s.points(i) <> s.fig.pointmobile then
+		        i0 = i
+		      end if
+		      s.points(i0).modified = false
+		    next
+		    return autospeupdate3
 		  case 2
 		    t =replacerpoint (point(somm.item(Listsommsur(0))))
 		    t = replacerpoint (point(somm.item(Listsommsur(1))))
@@ -1638,9 +1645,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function DefaultMatrix() As Matrix
-		  dim ep, eq, er, np, nq, nr as BasicPoint
-		  dim p, q, r as point
-		  dim   n1, n2, n3 as integer
+		  dim ep, eq, er, np, nq, nr, es, ns as BasicPoint
+		  dim p, q, r, s as point
+		  dim i,  n1, n2, n3, n4 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)
@@ -1650,6 +1657,8 @@ Protected Class Figure
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
 		  
+		  
+		  
 		  select case auto
 		  case 0,1
 		    return new SimilarityMatrix(ep,eq,np,nq)
@@ -1657,6 +1666,15 @@ Protected Class Figure
 		    n3 = ListPtsModifs(2)
 		    r = Point(somm.item(n3))
 		    getoldnewpos(r,er,nr)
+		    'for i = 0 to 3
+		    'if i <> n1 and i <> n2 and i <> n3 then
+		    'n4 = i
+		    'end if
+		    'next
+		    's = Point(somm.item(n4))
+		    'getoldnewpos(s,es,ns)
+		    's.moveto es
+		    's.modified = false
 		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  end select
 		End Function
@@ -1798,6 +1816,8 @@ Protected Class Figure
 		      f2 = subs.item(j)
 		      if fusionsubfigs(f2,f1) then
 		        subs.removefigure f2
+		      elseif fusionsubfigs(f1,f2) then
+		        subs.removefigure f1
 		      end if
 		    next
 		  next
@@ -1909,7 +1929,7 @@ Protected Class Figure
 		  dim t, t1 as boolean
 		  dim p as point
 		  
-		  if (f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3) then
+		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
 		    return false
 		  end if
 		  

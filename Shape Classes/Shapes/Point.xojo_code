@@ -70,6 +70,7 @@ Inherits Shape
 		  if inter = nil then
 		    inter = new Intersec(s1,s2)
 		    CurrentContent.TheIntersecs.AddObject(inter)
+		    inter.computeinter
 		  end if
 		  
 		  inter.addpoint self
@@ -479,6 +480,13 @@ Inherits Shape
 		  end if
 		  return et
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub fixcouleurtrait(c as couleur, b as integer)
+		  bordercolor = c
+		  border = 100
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1459,6 +1467,10 @@ Inherits Shape
 		  if  op <> nil and (op  isa shapeconstruction) and (op.currentattractedshape = self) and (not op.currentattractingshape isa repere ) then
 		    can.drawzone(can.transform(bpt))
 		  end
+		  
+		  if nonpointed then
+		    return
+		  end if
 		  
 		  if ubound(parents) = 0 and parents(0).std then
 		    rsk.update(bpt,1)
@@ -2493,6 +2505,7 @@ Inherits Shape
 		    inter = new Intersec(s1,s2)
 		  end if
 		  
+		  inter.computeinter
 		  return inter.locatepoint(bpt)
 		  
 		  
@@ -2634,18 +2647,18 @@ Inherits Shape
 		    s = Point(ConstructedShapes(i))
 		    if not s.modified then
 		      select case s.constructedby.Oper
-		      case 3, 5
+		      case 3, 5 'duplication et découpage
 		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.Moveto M1*bpt
 		        end if
-		      case 6
+		      case 6 'image par transfo
 		        tsf = Transformation(s.constructedby.data(0))
 		        M1 = tsf.M
 		        if M1 <> nil and M1.v1 <> nil then
 		          s.Moveto M1*bpt
 		        end if
-		      case 9
+		      case 9  ' fusion
 		        if s.constructedby.shape <> nil then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.MoveTo M1*bpt
@@ -2658,7 +2671,7 @@ Inherits Shape
 		            end if
 		          next
 		        end if
-		      case 10
+		      case 10 'duplication de pointsur
 		        side = s.Numside(0)
 		        s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
@@ -2693,26 +2706,26 @@ Inherits Shape
 		      end select
 		      s.modified = true
 		      s.updateshape
-		    elseif constructedby <> nil and constructedby.oper = 9 then
-		      if constructedby.shape <> nil then
-		        s = Point(ConstructedBy.Shape)
-		        M1 = Matrix(constructedby.data(0))
-		        M1 = M1.inv
-		        s.Moveto M1*bpt
-		        s.modified = true
-		        s.updateshape
-		      else
-		        for i = 0 to 2 step 2
-		          s = Point(Constructedby.data(i))
-		          if not s.modified then
-		            M1 = Matrix(constructedby.data(i+1))
-		            M1= M1.inv
-		            s.Moveto M1*bpt
-		            s.modified = true
-		            s.updateshape
-		          end if
-		        next
-		      end if
+		    end if
+		  elseif constructedby <> nil and constructedby.oper = 9 then
+		    if constructedby.shape <> nil then
+		      s = Point(ConstructedBy.Shape)
+		      M1 = Matrix(constructedby.data(0))
+		      M1 = M1.inv
+		      s.Moveto M1*bpt
+		      s.modified = true
+		      s.updateshape
+		    else
+		      for i = 0 to 2 step 2
+		        s = Point(Constructedby.data(i))
+		        if not s.modified then
+		          M1 = Matrix(constructedby.data(i+1))
+		          M1= M1.inv
+		          s.Moveto M1*bpt
+		          s.modified = true
+		          s.updateshape
+		        end if
+		      next
 		    end if
 		  end if
 		End Sub

@@ -136,7 +136,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -179,7 +179,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -222,7 +222,7 @@ Begin Window PassChangeWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   False
       Border          =   True
       CueText         =   ""

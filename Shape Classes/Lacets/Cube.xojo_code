@@ -4,7 +4,7 @@ Inherits StandardPolygon
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as Objectslist, p as BasicPoint, m as integer)
 		  dim sc, size as double
-		  dim k as integer   'k est la taille de la réglette. Pour les cubes : 1, pour les réglettes forme+1
+		  dim i, k as integer   'k est la taille de la réglette. Pour les cubes : 1, pour les réglettes forme+1
 		  
 		  Polygon.constructor(ol,1,p)
 		  redim prol(11)
@@ -37,6 +37,9 @@ Inherits StandardPolygon
 		  createskull(p,mode,k, self)
 		  Borderwidth = 1/(sc*stdsize)
 		  FixeCouleurTrait   (Config.bordercolor,  Config.Border)
+		  for i = 0 to 5 
+		    colcotes(i) = config.bordercolor
+		  next
 		  Fixecouleurfond(fillcolor,fill)
 		  std = true
 		  autos

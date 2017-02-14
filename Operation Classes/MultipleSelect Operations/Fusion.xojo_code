@@ -14,17 +14,12 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  dim i,n as integer
 		  dim Tr as BasicPoint
-		  dim alpha, beta as double
-		  dim BiB as BiBPoint
+		  
 		  
 		  if (Fus1.Hybrid) or (Fus2.Hybrid) then
 		    
 		  elseif  dir = -1  then
-		    'if Fus1.std or Fus2.std then
-		    ''Fus = new StandardPolygon(Objects,Fus1.Points((start1+1) mod Fus1.npts).bpt)
-		    'else
 		    Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
-		    'end if
 		    for i = 2 to Fus1.npts-1
 		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
 		    next
@@ -44,15 +39,13 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  Fus.coord= new nBPoint(Fus)
-		  'if Fus1.std or Fus2.std then
-		  'Fus.std = true
-		  Fus.fam = 14
-		  'else
-		  'Fus.autos
-		  'end if
-		  Fus1.std = true
-		  Fus2.std = true
-		  Fus.std = true
+		  if Fus1.std or Fus2.std then
+		    Fus.std = true
+		    Fus.fam = 14
+		  else
+		    Fus.autos
+		  end if
+		  
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
 		  Fus.Fill = (Fus1.fill+Fus2.fill)/2

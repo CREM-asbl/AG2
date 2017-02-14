@@ -67,21 +67,20 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub Create()
-		  dim i, j as integer
-		  
-		  dim p as point
-		  
-		  for i = 0 to sh1.npts-1
-		    for j = i+1 to sh2.npts-1
-		      if  val(i,j) and  not bezet(i,j) then
-		        p = new point (bptinters(i,j))
-		        p.endconstruction
-		        'sk = new Ovalskull(3,can.transform(bptinters(i,j)))
-		        'sk.updatecolor(bleu,100)
-		        'sk.paint(g)
-		      end if
-		    next
-		  next
+		  'dim i, j as integer
+		  '
+		  'dim p as point
+		  '
+		  'for i = 0 to sh1.npts-1
+		  'for j = i+1 to sh2.npts-1
+		  'if  val(i,j) and  not bezet(i,j) then
+		  'p = new point (bptinters(i,j))
+		  'p.endconstruction
+		  'p.rsk = new Ovalskull(3,can.transform(bptinters(i,j)))
+		  'p.rsk.updatecolor(bleu,100)
+		  'end if
+		  'next
+		  'next
 		  
 		End Sub
 	#tag EndMethod

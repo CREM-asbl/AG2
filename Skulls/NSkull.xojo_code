@@ -24,15 +24,6 @@ Inherits FigureShape
 		    b = 100
 		  end if
 		  
-		  'if s.tsfi.count > 0 then
-		  'for i = 0 to s.tsfi.count-1
-		  'if s.tsfi.item(i).highlighted then
-		  'col = config.HighlightColor.col
-		  'else
-		  'col = config.transfocolor.col
-		  'end if
-		  'next
-		  
 		  if s.hidden then
 		    col = config.HideColor.col
 		  elseif s.highlighted then
@@ -46,7 +37,7 @@ Inherits FigureShape
 		  else
 		    col = s.bordercolor.col
 		  end if 
-		  'end if
+		  
 		  updatecurvecolor(s, col)
 		  updatefillcolor(s.fillcolor.col, s.fill)
 		  

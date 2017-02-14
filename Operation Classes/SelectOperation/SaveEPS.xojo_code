@@ -12,7 +12,7 @@ Inherits SelectOperation
 		      col = new couleur(s.nsk.bordercolor)
 		    end if
 		  else
-		    col = s.bordercolor
+		    col = couleur(s.bordercolor)
 		  end if
 		  
 		  if not col.equal(Bordercolor) then

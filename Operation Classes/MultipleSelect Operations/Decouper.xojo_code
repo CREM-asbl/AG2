@@ -199,6 +199,7 @@ Inherits MultipleSelectOperation
 		  s.fixecouleurfond(currentshape.fillcolor,currentshape.fill)
 		  s.forme = s.npts-2
 		  s.initconstruction
+		  recopiercouleurs (s)
 		  if s.Hybrid  then
 		    s.coord.centres = centres
 		    s.coord.curved = curved
@@ -206,9 +207,8 @@ Inherits MultipleSelectOperation
 		  Lacet(s).prepareskull(s.points(0).bpt)
 		  if s.hybrid then
 		    Lacet(s).coord.CreateExtreAndCtrlPoints(s.ori)
+		    s.coord.MoveExtreCtrl(M)
 		  end if
-		  
-		  recopiercouleurs (s)
 		  s.Move(M)
 		  s.endconstruction
 		  return s

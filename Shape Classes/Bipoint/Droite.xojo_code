@@ -386,9 +386,9 @@ Inherits Bipoint
 		  dim k as integer
 		  
 		  if  ubound(p) = 1 then
-		    B1 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
-		    B2 = new BiBPoint(coord.tab(0), coord.tab(1))
-		    k = B2.BiBDroiteInterCercle(B1,p(), bq, w)
+		    B1 = new BiBPoint(coord.tab(0), coord.tab(1))
+		    B2 = new BiBpoint(s.coord.tab(0),s.coord.tab(1))
+		    k = B1.BiBDroiteInterCercle(B2,p(), bq, w)
 		  else
 		    k = 0
 		  end if

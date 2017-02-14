@@ -1909,10 +1909,14 @@ Protected Class Shape
 		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
 		    end if
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
+		    arc(self).computearcangle
+		    M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
 		    if points(2).forme <> 1 then
-		      arc(self).computearcangle
-		      M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
 		      points(2).moveto points(2).bpt.projection(Points(1).bpt, M*Points(1).bpt)
+		      return AffiOrSimili
+		    else
+		      points(2).moveto M*Points(1).bpt
+		      points(2).modified = true
 		      return AffiOrSimili
 		    end if
 		  end select
@@ -2103,6 +2107,7 @@ Protected Class Shape
 		  dim M as Matrix
 		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  dim ff as Figure
 		  
 		  M = new SimilarityMatrix(points(1), points(2),ep0,np0)
 		  if M <> nil and M.v1 <> nil then
@@ -2117,7 +2122,12 @@ Protected Class Shape
 		      return new Matrix(1)
 		    end if
 		  else
-		    return new Matrix(1)
+		    ff =  Getsousfigure(fig)
+		    if ff.replacerpoint(points(2)) then
+		      return ff.autospeupdate
+		    else
+		      return new Matrix(1)
+		    end if
 		  end if
 		End Function
 	#tag EndMethod
@@ -2441,11 +2451,6 @@ Protected Class Shape
 		      tsfi.item(i).paint(g)
 		    next
 		  end if
-		  'for i = 0 to ubound(constructedshapes)
-		  'if constructedshapes(i).centerordivpoint then
-		  'point(constructedshapes(i)).paintall(g)
-		  'end if
-		  'next 
 		  
 		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
 		    paint(can.offscreenpicture.graphics)
@@ -3359,6 +3364,7 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub UnHighLight()
 		  dim i as integer
+		  dim gr as ObjectsList
 		  
 		  if  self isa point then
 		    highlighted = false
@@ -3374,8 +3380,9 @@ Protected Class Shape
 		    end if
 		  next
 		  if IdGroupe <> -1  then
-		    for i = 0 to objects.groupes(idgroupe).count -1
-		      objects.groupes(idgroupe).item(i).highlighted = false
+		    gr = objects.groupes(0)
+		    for i = 0 to gr.count-1
+		      gr.item(i).highlighted = false
 		    next
 		  end if
 		  

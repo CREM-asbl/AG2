@@ -254,6 +254,7 @@ Protected Class Configuration
 		    return
 		  end if
 		  
+		  
 		  select case stdfile
 		  case "Jeu_de_base.std"
 		    Doc=new XMLDocument(jeu_de_base)
@@ -270,7 +271,7 @@ Protected Class Configuration
 		  case "Etoiles.std"
 		    Doc = new XMLDocument(etoiles)
 		  else
-		    fi = app.StdFolder.Child(stdfile+"std")
+		    fi = app.StdFolder.Child(stdfile)
 		    if not fi.exists then
 		      MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
 		      return

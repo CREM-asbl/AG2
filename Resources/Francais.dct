@@ -408,7 +408,7 @@
     <AGInitNotUpdatable Name="Le fichier  AG_Init.xml ne peut être mis à jour" />
     <Doubleclick Name="Double click" />
     <Toomanystdf Name="Trop de familles standard" />
-    <UserGuide Name="Guide Utilisateur AG2.pdf" />
+    <UserGuide Name="GuideUtilisateurAG2.pdf" />
     <ErrorOnSave Name="Erreur à la sauvegarde" />
     <Nowritingpermission Name="AG2 n' a pas les droits en écriture" />
     <MacroDescription Name="Description de la macro" />

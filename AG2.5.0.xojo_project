@@ -267,4 +267,5 @@ UseGDIPlus=True
 UseBuildsFolder=True
 CopyRedistNextToWindowsEXE=False
 IsWebProject=False
+LinuxBuildArchitecture=1
 OptimizationLevel=0
