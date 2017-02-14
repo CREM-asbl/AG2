@@ -216,11 +216,11 @@ Begin Window ConfigWindow
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   1344944127
+      Backdrop        =   1333702655
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   0
       InitialParent   =   ""
@@ -234,21 +234,21 @@ Begin Window ConfigWindow
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin Canvas Canvas1
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   1584048127
+      Backdrop        =   2141171711
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   1
       InitialParent   =   ""
@@ -262,21 +262,21 @@ Begin Window ConfigWindow
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin Canvas Canvas1
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   8007679
+      Backdrop        =   326336511
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   2
       InitialParent   =   ""
@@ -290,21 +290,21 @@ Begin Window ConfigWindow
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin Canvas Canvas1
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   952131583
+      Backdrop        =   834662399
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   3
       InitialParent   =   ""
@@ -318,21 +318,21 @@ Begin Window ConfigWindow
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin Canvas Canvas1
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   115009535
+      Backdrop        =   419098623
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   4
       InitialParent   =   ""
@@ -346,21 +346,21 @@ Begin Window ConfigWindow
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin Canvas Canvas1
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   454606847
+      Backdrop        =   1273780223
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   5
       InitialParent   =   ""
@@ -374,21 +374,21 @@ Begin Window ConfigWindow
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin Canvas Canvas1
       AcceptFocus     =   True
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      Backdrop        =   623656959
+      Backdrop        =   680357887
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   36
+      Height          =   50
       HelpTag         =   ""
       Index           =   6
       InitialParent   =   ""
@@ -402,11 +402,11 @@ Begin Window ConfigWindow
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   39
+      Top             =   25
       Transparent     =   True
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   36
+      Width           =   50
    End
    Begin PushButton MouvBut
       AutoDeactivate  =   True
@@ -1261,6 +1261,10 @@ End
 		    next
 		  next
 		  
+		  if not TargetWindows then
+		    wnd.MenuBar = MenuBar
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1326,6 +1330,9 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
+		  if not TargetWindows then
+		    wnd.MenuBar = Menu
+		  end if
 		  wnd.updatemenu
 		  close
 		End Sub
@@ -1381,7 +1388,7 @@ End
 #tag EndEvents
 #tag Events Canvas1
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
 		    Config.nlibvis(0) = not config.nlibvis(0)
 		    wnd.LibBoxRefresh
@@ -1398,7 +1405,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  if not Config.nlibvis(index) then
 		    g.ForeColor = &c000000
 		    g.DrawLine 0,0,me.width,me.height
@@ -1411,7 +1418,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  wnd.MouvBut(index).visible = not wnd.MouvBut(index).visible
 		  Config.MvBt(index) = wnd.MouvBut(Index).visible
 		  

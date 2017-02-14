@@ -732,6 +732,7 @@ End
 		  if (MenuBar = HistMenu) then
 		    return
 		  end if
+
 		  if currentcontent <> nil then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
@@ -1351,9 +1352,10 @@ End
 		Function HelpUG() As Boolean Handles HelpUG.Action
 			dim fi as Folderitem
 			
-			fi = GetOpenFolderItem(FileAGTypes.pdf) 
-			if fi <> nil and  fi.exists then
-			fi.launch '"25" '? : pourquoi 25 ?
+			fi = getfolderitem(Dico.Value("UserGuide"))
+			
+			if fi.exists then
+			fi.launch
 			else
 			MsgBox Dico.Value("MsgUnfoundable")
 			end if
