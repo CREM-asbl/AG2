@@ -831,7 +831,7 @@ End
 		    app.quiet = not app.quiet
 		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
 		    MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
-		    's = u(0)
+		    s = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info
@@ -2378,7 +2378,7 @@ End
 		      conf.close
 		    end if
 		    select case val
-		    case -1             '-1: annuler
+		    case -1             
 		      return
 		    case  1
 		      CurrentContent.Save
@@ -3195,7 +3195,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3237,7 +3237,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3270,14 +3270,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  dim fs as figureshape
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
@@ -3292,7 +3292,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3377,7 +3377,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3389,7 +3389,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    Me.SetFocus
@@ -3404,12 +3404,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		End Sub

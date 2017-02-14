@@ -11,8 +11,9 @@ Inherits MultipleSelectOperation
 		  if currentshape.indexConstructedPoint >= 1 and  currentcontent.FigsDeleted.Childcount > 0 then
 		    currentcontent.Theobjects.XMLLoadObjects(currentcontent.FigsDeleted)
 		  end if
+		  currentshape = nil
+		  EndOperation
 		  currentcontent.drapabort = false
-		  'currentcontent.currentoperation = nil
 		  can.refreshbackground
 		  wnd.refreshtitle
 		End Sub
@@ -459,8 +460,8 @@ Inherits MultipleSelectOperation
 		      return false
 		    end if
 		    ReinitAttraction
+		    s.IndexConstructedPoint = s.IndexConstructedPoint+1
 		  end if
-		  s.IndexConstructedPoint = s.IndexConstructedPoint+1
 		  return true
 		End Function
 	#tag EndMethod

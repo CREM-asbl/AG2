@@ -960,6 +960,9 @@ Inherits Liste
 		  
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
+		    if i = 54 then 
+		      MsgBox("Brol")
+		    end if
 		    s = XMLLoadObject(Temp)
 		  next
 		  OptimizeGroups
