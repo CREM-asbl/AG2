@@ -40,8 +40,9 @@ Protected Module api
 		  
 		  AfficherInfo
 		  
-		  update = http.Get(url+"version.xml",timeout)
-		  if update <> app.LongVersion  then
+		  
+		  update = http.Get(url+"version.xml", timeout)
+		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
 		    dim GuW As GetUpdateW
 		    GuW = new GetUpdateW(update)
 		    GuW.ShowModal

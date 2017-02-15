@@ -500,12 +500,6 @@ Inherits Application
 			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="prtsettings"
-			Group="Behavior"
-			Type="string"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="quiet"
 			Group="Behavior"
 			InitialValue="0"
