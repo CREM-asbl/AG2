@@ -44,6 +44,8 @@ Inherits SelectOperation
 		  printWidth =  can.width*sc
 		  printHeight =  can.height*sc
 		  
+		  Pict = new Picture(printWidth,printHeight,Screen(0).Depth)
+		  
 		  gprint = OpenPrinterDialog(app.prtsetup)
 		  
 		  if gprint <> nil then
@@ -58,14 +60,13 @@ Inherits SelectOperation
 		      for i=0 to tempshape.count-1
 		        o = tempshape.item(i)
 		        if (not o.invalid  and not o.hidden and not o.deleted) or o isa repere then
-		          o.print(gprint, sc, printLeft/2, printTop/2)
+		          o.print(Pict.Graphics, sc)
 		        end if
 		      next
 		      
-		      'faire une fonction print pour grid
-		      'if CurrentContent.thegrid <> nil then
-		      'CurrentContent.thegrid.paint(Pict.Graphics)
-		      'end if
+		      if CurrentContent.thegrid <> nil then
+		        CurrentContent.thegrid.print(Pict.Graphics, sc)
+		      end if
 		      
 		      'if CurrentContent.TheObjects.tracept then
 		      'Pict.Graphics.DrawPicture can.OffscreenPicture, 0, 0
@@ -73,6 +74,7 @@ Inherits SelectOperation
 		      
 		      d = new date
 		      
+		      gprint.DrawPicture Pict, printLeft, printTop+2, printWidth, printHeight, 0, 0, Pict.width, Pict.height
 		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year), printLeft, printTop 
 		      gprint.drawrect printLeft, printTop+2, printWidth, printHeight-2
 		      
