@@ -1388,7 +1388,7 @@ End
 #tag EndEvents
 #tag Events Canvas1
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
 		    Config.nlibvis(0) = not config.nlibvis(0)
 		    wnd.LibBoxRefresh
@@ -1405,7 +1405,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  if not Config.nlibvis(index) then
 		    g.ForeColor = &c000000
 		    g.DrawLine 0,0,me.width,me.height
@@ -1418,7 +1418,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  wnd.MouvBut(index).visible = not wnd.MouvBut(index).visible
 		  Config.MvBt(index) = wnd.MouvBut(Index).visible
 		  

@@ -75,13 +75,13 @@ Inherits Canvas
 		    base.append(New MenuItem(Dico.Value("Mince")))
 		  end if
 		  
-		  if sctxt isa point and  point(sctxt).pointsur.count = 0 then
-		    if not Point(sctxt).std  then
-		      base.append(New MenuItem(Dico.Value("Rigidifier")))
-		    else
-		      base.append(New MenuItem(Dico.Value("Derigidifier")))
-		    end if
+		  
+		  if not sctxt.std and sctxt.fam < 10  then
+		    base.append(New MenuItem(Dico.Value("Rigidifier")))
+		  else
+		    base.append(New MenuItem(Dico.Value("Derigidifier")))
 		  end if
+		  
 		  
 		  if not sctxt isa point then
 		    if sctxt.nonpointed then

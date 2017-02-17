@@ -578,7 +578,7 @@ Protected Class Shape
 		  
 		  List = EL.XQL(Dico.Value("Thickness"))
 		  if list.length = 0 then
-		    Borderwidth = 1
+		    Borderwidth = config.thickness
 		  else
 		    Borderwidth = val(XMLElement(List.Item(0)).GetAttribute("Value"))
 		  end if

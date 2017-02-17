@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFF008080
+      FillColor       =   &c008080FF
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -732,7 +732,7 @@ End
 		  if (MenuBar = HistMenu) then
 		    return
 		  end if
-
+		  
 		  if currentcontent <> nil then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
@@ -831,7 +831,7 @@ End
 		    app.quiet = not app.quiet
 		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
 		    MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
-		    s = u(0)
+		    's = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info
