@@ -2976,7 +2976,6 @@ Protected Class Figure
 		  end if
 		  
 		  if auto = 3 and f.auto = 1 and NbTrueSommCommuns(f) >= 2  then
-		    
 		    return not HasPointOnConstructedshape (f)
 		  end if
 		  

@@ -2804,7 +2804,7 @@ Protected Class Shape
 		    for i = 0 to ubound(s2.macconstructedby.RealInit)
 		      h = s2.macconstructedby.RealInit(i)
 		      sh = Objects.GetShape(h)
-		      if self = sh or (sh isa point and getindex(point(sh)) <> -1) then
+		      if self = sh or (sh isa point and (getindex(point(sh)) <> -1) and (sh.id > id)) then
 		        return true
 		      end if
 		    next
@@ -3647,7 +3647,10 @@ Protected Class Shape
 		        s2 = p.pointsur.item(1)
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
-		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
+		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap 
+		          if (s1.id = 1 and s2.id = 31) or(s1.id=31 and s2.id = 1) then
+		            MsgBox ("ici")
+		          end if
 		          inter = p.GetInter
 		          inter.update(p)
 		          p.updateconstructedpoints
@@ -4474,7 +4477,7 @@ Protected Class Shape
 		    for i = npts to EL.Childcount-1
 		      EL1 =  XMLElement(EL.Child(i))
 		      pt = XMLReadPoint(EL1)  //pt est un point
-		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit
+		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit; NE PAS REMPLACER par pt.forme
 		        pt.XMLReadCarac(EL1)
 		      end if
 		    next

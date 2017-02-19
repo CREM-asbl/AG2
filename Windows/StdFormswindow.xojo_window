@@ -48,7 +48,6 @@ Begin Window StdFormswindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "StdFile: "
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -114,7 +113,6 @@ Begin Window StdFormswindow
       Selectable      =   False
       TabIndex        =   2
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Label:"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -314,7 +312,7 @@ End
 		  Config.stdsize = val(popupmenu2.text)
 		  
 		  
-		  'wnd.StdBoxRefresh
+		  wnd.StdBoxRefresh
 		  for i=0 to 3
 		    wnd.SetIco(i,0)
 		    wnd.StdOutil(i).refresh

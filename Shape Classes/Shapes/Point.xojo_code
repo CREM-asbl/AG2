@@ -3235,7 +3235,7 @@ Inherits Shape
 		    mobility
 		  end if
 		  forme = pointsur.count
-		  if pointsur.count = 2 then
+		  if forme = 2 then
 		    adjustinter(pointsur.item(0),pointsur.item(1))
 		  end if
 		End Sub

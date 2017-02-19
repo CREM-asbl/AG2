@@ -187,7 +187,7 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Function CreerOperation(Temp as XMLElement) As Operation
 		  dim nop as integer
-		  'dim curoper as Operation
+		  dim curoper as Operation
 		  dim EL as XMLElement
 		  dim n as integer
 		  dim mac as Macro

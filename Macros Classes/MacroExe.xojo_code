@@ -379,14 +379,15 @@ Inherits MultipleSelectOperation
 		    CurrentContent.CurrentFileUpToDate=false
 		    wnd.refreshtitle
 		    objects.unselectall
-		    objects.unhighlightall
 		    CurrentItemToSet=1
 		    Finished = true
-		    can.refreshbackground
 		  else
 		    currenthighlightedshape = nil
 		    super.EndOperation
 		  end if
+		  
+		  objects.unhighlightall
+		  can.refreshbackground
 		  MacInfo = new MacConstructionInfo(Mac)
 		  Mac.MacInf = MacInfo
 		  Redim MacId(-1)
@@ -526,6 +527,9 @@ Inherits MultipleSelectOperation
 		    fo = Mac.FoInit(CurrentItemToSet-1)
 		  end if
 		  currenthighlightedshape =getshape(p)
+		  if currenthighlightedshape <> nil then
+		    currenthighlightedshape.highlight
+		  end if
 		  
 		  
 		End Sub
