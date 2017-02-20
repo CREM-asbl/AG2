@@ -241,7 +241,6 @@ Inherits nBpoint
 		  dim i,n, k as integer
 		  dim r as double
 		  dim bq, v as BasicPoint
-		  dim dr as droite
 		  redim q(-1)
 		  redim q(1)
 		  
@@ -295,7 +294,6 @@ Inherits nBpoint
 		Sub ComputeCtrlPoints(c as basicpoint, ori as integer, byref ctrl() as BasicPoint)
 		  dim A  As Angle
 		  dim alpha as double
-		  dim M as Matrix
 		  dim d, k, r1, r2 as double
 		  dim Bib1, BiB2 as BiBPoint
 		  dim q,bp1,bp2 as BasicPoint
@@ -378,7 +376,6 @@ Inherits nBpoint
 		  dim i,n as integer
 		  dim r, r1, r2 as double
 		  dim bq, v as Basicpoint
-		  dim inter as intersec
 		  
 		  if S isa Droite then
 		    Bib = new BiBpoint(S.Points(0).bpt,  S.Points(1).bpt)
@@ -510,8 +507,6 @@ Inherits nBpoint
 		  dim BiB1, Bib2 as BiBPoint
 		  dim r1,r2 as double
 		  dim i as integer
-		  dim s2 as shape
-		  dim tsf as transformation
 		  
 		  M = new RotationMatrix(tab(0),2*Pi/3)
 		  

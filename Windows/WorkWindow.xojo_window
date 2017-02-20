@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c008080FF
+      FillColor       =   &c8080FF00
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -3194,7 +3195,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3236,7 +3237,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3269,15 +3270,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
-		    me.refresh
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  dim fs as figureshape
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
@@ -3292,7 +3292,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  setIco(index,0)
 		  
 		  
@@ -3377,21 +3377,19 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
-		      liboutils(0).refresh
 		    end if
 		    closefw
-		    liboutils(index).refresh
 		    return true
 		  end if
 		  
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    Me.SetFocus
@@ -3402,24 +3400,26 @@ End
 		    else
 		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
 		    end if
+		    me.invalidate
 		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit(index as Integer)
+		Sub MouseExit()
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  
-		  dim fs as figureshape
-		  
-		  g.ForeColor = RGB(255,255,255)
-		  g.FillRect(0,0,g.Width,g.Height)
-		  
+		  'g.ForeColor = RGB(255,255,255)
+		  'g.FillRect(0,0,g.Width,g.Height)
+		  if index = selectedtool then
+		    g.ForeColor = RGB(255,0,0)
+		    g.DrawRect(0,0,g.Width,g.Height)
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents

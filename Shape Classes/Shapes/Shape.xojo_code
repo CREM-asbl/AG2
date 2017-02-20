@@ -3959,7 +3959,7 @@ Protected Class Shape
 		  if  NbPtsConsted > 0 then
 		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
 		  end if
-		  if self isa Lacet then
+		  if self.hybrid then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
 		  end if
 		  if constructedby <> nil then

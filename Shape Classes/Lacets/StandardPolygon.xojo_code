@@ -11,24 +11,26 @@ Inherits Polygon
 		  self.fam = fam
 		  self.forme = form
 		  ncpts = 1
-		  Myspecs = wnd.GetStdSpecs(fam-10,Forme)
-		  npts = Ubound(Myspecs.angles)+2
-		  for i=0 to npts-2
-		    Angles.Append Myspecs.Angles(i)
-		    Distances.Append Myspecs.Distances(i)
-		  next
-		  
-		  If MySpecs.NonPointed = 1 then
-		    nonpointed = true
+		  if fam < 14 then 'fam = 14 pour la fusion de deux stdpolyg
+		    Myspecs = wnd.GetStdSpecs(fam-10,Forme)
+		    npts = Ubound(Myspecs.angles)+2
+		    for i=0 to npts-2
+		      Angles.Append Myspecs.Angles(i)
+		      Distances.Append Myspecs.Distances(i)
+		    next
+		    If MySpecs.NonPointed = 1 then
+		      nonpointed = true
+		    end if
+		    stdsize = config.stdsize
+		    Fixecouleurfond(Myspecs.Coul,100)
+		  else 
+		    points(0).moveto p
+		    nsk = new LSkull(1,p)
+		    nsk.skullof = self
 		  end if
 		  
-		  redim colcotes(-1)
 		  redim colcotes(npts-1)
-		  redim prol(-1)
 		  redim prol(npts-1)
-		  
-		  stdsize = Config.stdsize
-		  Fixecouleurfond(Myspecs.Coul,100)
 		  ori = 1
 		  
 		  
@@ -162,7 +164,6 @@ Inherits Polygon
 	#tag Method, Flags = &h0
 		Sub InverserOri()
 		  dim n, m as integer
-		  dim bp as BasicPoint
 		  dim p as point
 		  
 		  n = 1
@@ -188,6 +189,33 @@ Inherits Polygon
 		  dim s as new StandardPolygon(Obl,self,p)
 		  Obl.addshape(s)
 		  return s
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PossibleFusionWith(S as Lacet, byref i0 as integer, byref j0 as integer, byref dir as integer) As boolean
+		  dim i, j as integer
+		  dim delta as double
+		  dim dr1, dr2 as BiBPoint
+		  
+		  delta = can.MagneticDist
+		  
+		  for i = 0  to npts-1
+		    dr1 = getBiBside(i)
+		    for j = 0 to S.npts-1
+		      if s.coord.curved(j) = 0 then
+		        dr2 = s.getBiBside(j)
+		        if dr1.sufficientlynear(dr2) or dr1.sufficientlynear(dr2.returned) then
+		          i0 = i
+		          j0 = j
+		          dir = -1
+		          return true                     
+		        end if
+		      end if
+		    next
+		  next
+		  return false
+		  
 		End Function
 	#tag EndMethod
 

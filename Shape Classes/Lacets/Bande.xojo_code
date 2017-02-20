@@ -91,7 +91,7 @@ Inherits Polygon
 		  'La méthode "Point3" calcule automatiquement les coordonnées de ce quatrième point qui n'existe que sous forme de 
 		  'basicpoint (il n'est donc pas une instance de la classe point).
 		  
-		  nsk = new Lskull(4, p)
+		  nsk = new Lskull(4,p)
 		  nsk.skullof = self
 		End Sub
 	#tag EndMethod

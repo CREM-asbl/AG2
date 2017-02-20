@@ -103,7 +103,7 @@ Inherits DSect
 		Sub createskull(p as BasicPoint)
 		  'Cfr Bande
 		  
-		  nsk = new Lskull(5, p)
+		  nsk = new Lskull(5,p)
 		  nsk.skullof = self
 		End Sub
 	#tag EndMethod
