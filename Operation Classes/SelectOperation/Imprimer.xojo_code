@@ -15,6 +15,10 @@ Inherits SelectOperation
 		  if app.prtsetup = nil then
 		    app.prtsetup = New PrinterSetup
 		    dim PS as Boolean = app.prtsetup.PageSetupDialog 
+		  else
+		    dim settings As String = app.prtsetup.SetupString
+		    app.prtsetup = New PrinterSetup
+		    app.prtsetup.SetupString = settings
 		  end if
 		  
 		  
