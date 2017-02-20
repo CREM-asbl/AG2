@@ -184,29 +184,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub print(g as Graphics)
-		  'dim i as integer
-		  'dim cs as CurveShape
-		  '
-		  'if nsk <> nil then
-		  'nsk.updatefillcolor(fillcolor.col,fill)
-		  'nsk.updatebordercolor(bordercolor.col,border)
-		  'end if
-		  'nsk.paint(g)
-		  '
-		  'for i = 0 to labs.count-1
-		  'Labs.item(i).paint(g)
-		  'next
-		  '
-		  'for i = 0 to ubound(childs)
-		  'childs(i).print(g)
-		  'next
-		  
-		  paint(g)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SetRadius(r as double)
 		  dim v as BasicPoint
 		  

@@ -2824,7 +2824,7 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub print(g as Graphics, sc As Double, marginLeft as Integer, MarginTop as Integer)
+		Sub print(g as Graphics, sc As Double)
 		  dim i as integer
 		  dim cs as CurveShape
 		  
@@ -2841,10 +2841,13 @@ Protected Class Shape
 		    else
 		      nsk.updatebordercolor(bordercolor.col,border)
 		    end if
-		    nsk.Scale = sc
-		    nsk.X = nsk.X * sc + marginLeft
-		    nsk.Y = nsk.Y * sc + marginTop
+		    nsk.Scale = nsk.Scale*sc
+		    nsk.X = nsk.X * sc
+		    nsk.Y = nsk.Y * sc
 		    nsk.paint(g)
+		    nsk.Scale = nsk.Scale/sc
+		    nsk.X = nsk.X/sc
+		    nsk.Y = nsk.Y/sc
 		  end if
 		  
 		  for i = 0 to labs.count-1
@@ -2852,7 +2855,7 @@ Protected Class Shape
 		  next
 		  
 		  for i = 0 to ubound(childs)
-		    childs(i).print(g, sc, marginLeft, marginTop)
+		    childs(i).print(g, sc)
 		  next
 		  
 		  
