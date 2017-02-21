@@ -3231,8 +3231,8 @@ Protected Class Shape
 		  
 		  MacConstructedBy = MacInfo
 		  for i = 0 to ubound(childs)
-		    if childs(i).forme = 2 then
-		      childs(i).forme = 0
+		    if childs(i).forme = 2 and childs(i).macconstructedby <> nil then
+		      childs(i).forme = 3
 		    end if
 		  next
 		  for i = 0 to ubound(MacInfo.RealInit)
@@ -3651,9 +3651,9 @@ Protected Class Shape
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap 
-		          if (s1.id = 1 and s2.id = 31) or(s1.id=31 and s2.id = 1) then
-		            MsgBox ("ici")
-		          end if
+		          'if (s1.id = 1 and s2.id = 31) or(s1.id=31 and s2.id = 1) then
+		          'MsgBox ("ici")
+		          'end if
 		          inter = p.GetInter
 		          inter.update(p)
 		          p.updateconstructedpoints
@@ -3959,7 +3959,7 @@ Protected Class Shape
 		  if  NbPtsConsted > 0 then
 		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
 		  end if
-		  if self.hybrid then
+		  if self.hybrid and not self isa arc then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
 		  end if
 		  if constructedby <> nil then
