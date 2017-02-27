@@ -474,6 +474,10 @@ Protected Class Shape
 		  next
 		  updatecoord
 		  plan = -1
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 

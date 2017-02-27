@@ -5,6 +5,7 @@ Inherits StandardPolygon
 		Sub Constructor(ol as Objectslist, p as BasicPoint, m as integer)
 		  dim sc, size as double
 		  dim i, k as integer   'k est la taille de la réglette. Pour les cubes : 1, pour les réglettes forme+1
+		  dim specs as StdPolygonSpecifications
 		  
 		  Polygon.constructor(ol,1,p)
 		  redim prol(11)
@@ -16,10 +17,10 @@ Inherits StandardPolygon
 		  stdsize=Config.StdSize
 		  
 		  angles.append 0
-		  Myspecs = Config.StdFamilies(0,forme)
+		  specs = Config.StdFamilies(0,forme)
 		  if Config.NamesStdFamilies(0) = "Rods" then
 		    k = forme+1                        'k est la taille de la réglette
-		    FixeCouleurFond  (MySpecs.Coul,  100)
+		    FixeCouleurFond  (Specs.Coul,  100)
 		    mode = 0
 		    rod = true
 		  else

@@ -163,7 +163,7 @@ Begin Window StdFamWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   True
       Border          =   True
       CueText         =   ""
@@ -245,6 +245,7 @@ End
 		    StaticText1.Text = Dico.Value("Family Name")
 		    StaticText2.Text = Dico.Value("Family Color")
 		  end if
+		  EditField1.backcolor = blanc
 		  curop = SaveStd(currentcontent.currentoperation)
 		End Sub
 	#tag EndEvent

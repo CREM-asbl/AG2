@@ -450,7 +450,7 @@ Inherits SelectOperation
 		  for i = 0 to ubound(sh1.constructedshapes)
 		    if sh1.constructedshapes(i) isa point  then
 		      p = point(sh1.constructedshapes(i))
-		      if p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4) = h
+		      if bptinters(h,k) = nil or (p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon) then 'p.constructedby.data(4) = h
 		        bezet(h,k) = true
 		        ids(h,k) = p.id 
 		      end if
@@ -610,7 +610,9 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub validerpoint(pt as point, i as integer, j As integer)
 		  'if bezet(i,j) = false then
-		  
+		  if bptinters(i,j) = nil then
+		    return
+		  end if
 		  if ids(i,j) <> 0 and ids(i,j) <> pt.id then
 		    return
 		  end if

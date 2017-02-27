@@ -17,40 +17,21 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  if (Fus1.Hybrid) or (Fus2.Hybrid) then
-		    
-		  elseif  dir = -1  then
-		    if Fus1.std or Fus2.std then
-		      Fus = new StandardPolygon(Objects, 14, Fus1.npts+fus2.npts-5, Fus1.Points((start1+1)mod Fus1.npts).bpt)
-		      Fus.npts = 1
-		    else
-		      Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
-		    end if
-		    for i = 2 to Fus1.npts-1
-		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
-		    next
-		    for  i = 1 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
-		    next
-		  elseif dir = 1 then
-		    Fus = new Polyqcq(Objects,Fus1.Points(start1).bpt)
-		    for i = 1 to Fus1.npts-1
-		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
-		    next
-		    for i = 0 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+i) mod Fus2.npts).bpt
-		    next
-		    Fus.Points(0).Identify1(Fus.Points(Fus1.npts))
-		    Fus.Points(1).Identify1(Fus.Points(Fus1.npts+1))
+		    return
 		  end if
 		  
-		  Fus.coord= new nBPoint(Fus)
-		  if Fus1.std or Fus2.std then
-		    Fus.std = true
-		    Fus.fam = 14
+		  if Fus1.std then 
+		    Fus = StandardPolygon(Fus1).Fusionner(Fus2,start1,start2,dir)
 		  else
-		    Fus.autos
+		    Fus = Polygon(Fus1).Fusionner(Fus2,start1,start2,dir)
 		  end if
 		  
+		  if fus = nil then
+		    return
+		  end if
+		  
+		  
+		  Fus.autos
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
 		  Fus.Fill = (Fus1.fill+Fus2.fill)/2
@@ -61,10 +42,7 @@ Inherits MultipleSelectOperation
 		  M1 = new Translationmatrix(Tr*0.2)
 		  M2 = new Translationmatrix(Tr*0.2)
 		  Fus.Move(M1)
-		  if dir = 1 and not Fus.std then
-		    Fus.Points(0).Move(M1.inv)
-		    Fus.Points(1).Move(M1.inv)
-		  end if
+		  
 		  Fus.EndConstruction
 		  if not fus.std then
 		    SetConstructionInfo(dir)
@@ -163,7 +141,7 @@ Inherits MultipleSelectOperation
 		    if List.length > 0 then
 		      EL1 = XMLElement(List.Item(0))
 		    end if
-		     M1 = new Matrix(XMLElement(EL1.Child(0)))
+		    M1 = new Matrix(XMLElement(EL1.Child(0)))
 		    M2 = new Matrix(XMLElement(EL1.Child(1)))
 		    SetConstructionInfo(dir)
 		  end if
@@ -238,12 +216,16 @@ Inherits MultipleSelectOperation
 		  case 1
 		    if s.Hybrid then
 		      Fus1 = lacet(s)
+		    elseif s.std then
+		      Fus1 = StandardPolygon(s)
 		    else
 		      Fus1 = Polygon(s)
 		    end if
 		  case 2
 		    if s.Hybrid then
 		      Fus2 = Lacet(s)
+		    elseif s.std then
+		      Fus2 = StandardPolygon(s)
 		    else
 		      Fus2 =Polygon(s)
 		    end if

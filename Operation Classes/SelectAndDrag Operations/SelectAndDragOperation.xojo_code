@@ -40,7 +40,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  q = magneticD
-		  if q.distance(Pt.bpt) <= 4*epsilon then
+		  if q.distance(Pt.bpt) <= can.magneticdist then '4*epsilon then
 		    q = Pt.bpt
 		  end if
 		  M = new SimilarityMatrix(FirstAttractedPoint.bpt,SecondAttractedPoint.bpt, Firstattractedpoint.bpt,q)
@@ -50,7 +50,7 @@ Inherits SelectOperation
 		  if M <> nil and M.v1 <> nil then
 		    figs.Bouger(M)
 		    RotationPoint=FirstAttractedPoint
-		    updateangles(M.angle)
+		    'updateangles(M.angle)
 		    return M
 		  end if
 		  

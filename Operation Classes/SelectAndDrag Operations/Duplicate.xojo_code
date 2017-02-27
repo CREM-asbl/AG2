@@ -273,6 +273,9 @@ Inherits SelectAndDragOperation
 		  if  tempshape.count = 0 then
 		    return
 		  end if
+		  if endpoint.distance(startpoint) < epsilon then
+		    abort
+		  end if
 		  if currentattractingshape <> nil and MagneticD <> nil then
 		    if copyptsur then
 		      M = new TranslationMatrix(magneticD-p)

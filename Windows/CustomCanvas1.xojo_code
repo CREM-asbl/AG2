@@ -148,9 +148,6 @@ Inherits Canvas
 		    sctxt.borderwidth = 1.5*config.thickness
 		  case  Dico.Value("Mince")
 		    sctxt.borderwidth = config.thickness
-		    'currentcontent.currentoperation = new Epaisseur(3.75*config.Thickness-sctxt.Borderwidth)
-		    'currentoper = SelectOperation(currentcontent.currentoperation)
-		    'EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(true,new couleur(col))
@@ -168,7 +165,6 @@ Inherits Canvas
 		    else
 		      coul = negcolor
 		    end if
-		    
 		    currentcontent.currentoperation = new ColorChange(false,coul)
 		    currentoper = colorchange(currentcontent.currentoperation)
 		    EndOperMenuContext

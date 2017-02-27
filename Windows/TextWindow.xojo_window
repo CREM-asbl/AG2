@@ -31,7 +31,7 @@ Begin Window TextWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cE100E1E1
+      BackColor       =   &cE1E1E100
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -240,7 +240,7 @@ End
 		  if s.invalid then
 		    m = m + " invalide"
 		  end if
-		  if s.constructedby <> nil then
+		  if s.constructedby <> nil and s.constructedby.shape <> nil then
 		    m = m + " construit par forme " + str(s.constructedby.shape.id)
 		  end if
 		  if s.macconstructedby <> nil then
