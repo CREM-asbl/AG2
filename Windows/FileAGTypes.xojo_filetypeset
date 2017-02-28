@@ -3,7 +3,7 @@
 		CodeName=SAVE
 		DocIcon=AG2.xojo_resources;&h0
 		Extension=fag
-		Flags=&h1
+		Flags=&h2
 		MacCreator=CREM
 		MacType=FAG
 		Name=SAVE
@@ -17,7 +17,7 @@
 	#tag FileType
 		CodeName=MACR
 		Extension=xmag;xml
-		Flags=&h1
+		Flags=&h9
 		MacCreator=CREM
 		MacType=MAG
 		Name=MACR
@@ -31,7 +31,7 @@
 	#tag FileType
 		CodeName=HIST
 		Extension=hag;xml
-		Flags=&h1
+		Flags=&h9
 		MacCreator=CREM
 		MacType=HAG
 		Name=HIST
@@ -45,7 +45,7 @@
 	#tag FileType
 		CodeName=EPS
 		Extension=eps
-		Flags=&h0
+		Flags=&h9
 		MacCreator=CREM
 		MacType=EPS
 		Name=EPS
@@ -59,7 +59,7 @@
 	#tag FileType
 		CodeName=STD
 		Extension=std;xml
-		Flags=&h0
+		Flags=&h9
 		MacCreator=CREM
 		MacType=STD
 		Name=STD
@@ -73,7 +73,7 @@
 	#tag FileType
 		CodeName=Image
 		Extension=jpg;jpeg
-		Flags=&h0
+		Flags=&h2
 		MacCreator=CREM
 		MacType=JPEG
 		Name=jpegType
@@ -87,7 +87,7 @@
 	#tag FileType
 		CodeName=Rtf
 		Extension=rtf
-		Flags=&h0
+		Flags=&h9
 		MacCreator=MSWD
 		MacType=TEXT
 		Name=application/rtf
@@ -101,7 +101,7 @@
 	#tag FileType
 		CodeName=Pdf
 		Extension=.pdf
-		Flags=&h0
+		Flags=&h9
 		MacCreator=prvw
 		MacType=PDF 
 		Name=application/pdf
