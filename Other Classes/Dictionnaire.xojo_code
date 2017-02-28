@@ -19,10 +19,7 @@ Inherits Dictionary
 		    C = new XMLDocument(PortuguesBr)
 		  else
 		    Name = lang+".dct"
-		    'fi = App.AppFolder.Child(Name)
-		    'if not fi.exists then
 		    fi = app.DctFolder.Child(Name)
-		    ''end if
 		    if not fi.exists then
 		      MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
 		      return

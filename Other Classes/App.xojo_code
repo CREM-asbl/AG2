@@ -36,9 +36,7 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate
-		    dim iw As InitWindow
-		    iw=new initWindow
-		    iw.Show
+		    initWindow.show
 		  end if
 		  
 		End Sub
@@ -244,7 +242,7 @@ Inherits Application
 		  Config.ChargerConfig
 		  themacros = new macroslist
 		  Tampon = new ObjectsList
-		  wnd = new WorkWindow
+		  wnd = WorkWindow
 		  wnd.Show
 		  
 		  

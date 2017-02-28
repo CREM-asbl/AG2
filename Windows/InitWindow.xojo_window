@@ -10,7 +10,7 @@ Begin Window InitWindow
    FullScreenButton=   False
    HasBackColor    =   False
    Height          =   584
-   ImplicitInstance=   False
+   ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000

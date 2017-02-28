@@ -5,7 +5,7 @@ Begin Window ConfigWindow
    CloseButton     =   False
    Compatibility   =   ""
    Composite       =   True
-   Frame           =   3
+   Frame           =   1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
@@ -21,7 +21,7 @@ Begin Window ConfigWindow
    MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   False
    Title           =   "Configuration"
    Visible         =   True
@@ -568,12 +568,6 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Activate()
-		  closeFw
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub EnableMenuItems()
 		  EditCopy.Enable
 		  EditDelete.Enable
@@ -669,9 +663,10 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Open()
 		  ReadNomsBut
 		  setMenuBar
+		  
 		End Sub
 	#tag EndEvent
 
@@ -1214,14 +1209,6 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub closeFw()
-		  if fw <> nil then
-		    fw.close
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub ReadNomsBut()
 		  MouvBut(0).Caption = Dico.Value("Modify")
 		  MouvBut(1).Caption = Dico.Value("Slide")
@@ -1261,9 +1248,6 @@ End
 		    next
 		  next
 		  
-		  if not TargetWindows then
-		    wnd.MenuBar = MenuBar
-		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -1330,9 +1314,6 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-		  if not TargetWindows then
-		    wnd.MenuBar = Menu
-		  end if
 		  wnd.updatemenu
 		  close
 		End Sub
