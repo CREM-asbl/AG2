@@ -21,16 +21,14 @@ Begin Window Languagewindow
    MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   False
    Title           =   "Choix de la langue"
    Visible         =   True
    Width           =   251
    Begin PopupMenu LanguagePopup
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -61,12 +59,10 @@ Begin Window Languagewindow
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "1"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -104,16 +100,6 @@ End
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
-		Sub Constructor(w as Window)
-		  // Calling the overridden superclass constructor.
-		  Parent  = w
-		  Super.Window
-		  
-		End Sub
-	#tag EndMethod
-
-
 	#tag Note, Name = Licence
 		
 		Copyright © 2010 CREM
@@ -137,7 +123,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		Parent As Window
+		langue As String
 	#tag EndProperty
 
 
@@ -159,31 +145,12 @@ End
 		  
 		End Sub
 	#tag EndEvent
-	#tag Event
-		Sub Change()
-		  if parent isa configwindow then
-		    Config.SetLangue(LanguagePopup.Text)
-		    refresh
-		    Parent.refresh
-		    wnd.updatemenu
-		  elseif parent isa dictwindow then
-		    dictwindow(parent).lang = Languagepopup.text
-		  end if
-		End Sub
-	#tag EndEvent
 #tag EndEvents
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-		  if parent isa configwindow then
-		    Config.SetLangue(LanguagePopup.Text)
-		    refresh
-		    Parent.refresh
-		    wnd.updatemenu
-		  elseif parent isa dictwindow then
-		    DictWindow(Parent).Lang = LanguagePopup.Text
-		  end if
-		  self.close
+		  langue = LanguagePopup.Text
+		  Hide
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -282,6 +249,11 @@ End
 		EditorType="String"
 	#tag EndViewProperty
 	#tag ViewProperty
+		Name="langue"
+		Group="Behavior"
+		Type="Window"
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="LiveResize"
 		Visible=true
 		Group="Behavior"
@@ -359,11 +331,6 @@ End
 		Group="ID"
 		Type="String"
 		EditorType="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Parent"
-		Group="Behavior"
-		Type="Window"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Placement"

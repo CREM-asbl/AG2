@@ -5,7 +5,7 @@ Begin Window DictWindow
    CloseButton     =   True
    Compatibility   =   ""
    Composite       =   True
-   Frame           =   3
+   Frame           =   1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   True
@@ -21,7 +21,7 @@ Begin Window DictWindow
    MinHeight       =   64
    MinimizeButton  =   True
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   True
    Title           =   "Créer ou modifier un dictionnaire"
    Visible         =   True
@@ -125,14 +125,13 @@ End
 	#tag MenuHandler
 		Function ChargerDict() As Boolean Handles ChargerDict.Action
 			
-			dim lanw As LanguageWindow
 			dim n as integer
 			
-			lanw = new LanguageWindow(self)
-			lanw.showmodal
+			LanguageWindow.showmodal
+			Lang = Languagewindow.langue
+			LanguageWindow.Close
 			
 			if language.indexof(lang)= -1 then  //on ne recharge pas un dictionnaire déjà chargé
-			'Dict.Append new Dictionnaire
 			ndict = ndict+1
 			Language.append Lang
 			ListBox1.ColumnCount = ListBox1.ColumnCount + 1
@@ -240,24 +239,18 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ChargerLang(lang as string)
-		  dim Doc as XMLDocument
 		  dim List as XmlNodeList
 		  dim EL, EL1 as XMLNode
 		  dim EL2 as XMLElement
 		  dim Key as variant
 		  dim  Txt as string
 		  dim i,j,k as integer
-		  dim f as folderitem
 		  
-		  f = TrouverDico(lang)
-		  
-		  if not f.exists then
-		    MsgBox Dico.Value("FileMenu") + " " + lang + ".dct" + " " + Dico.Value("Introuvable")
+		  EL = Dico.getXML(lang)
+		  if EL = nil then
 		    return
 		  end if
 		  
-		  Doc=new XMLDocument(f)
-		  EL = Doc.DocumentElement
 		  j = 0
 		  for i = 0 to  EL.ChildCount -1
 		    j = j+1
@@ -277,30 +270,6 @@ End
 		    wend
 		    
 		  next
-		  'j=0
-		  'EL1 = EL.FirstChild
-		  '
-		  ''if ndict = 1 then
-		  ''listbox1.addfolder(EL1.name)
-		  ''ListBox1.cellalignment(j,0)=ListBox.AlignCenter
-		  ''end if
-		  'j = j+1
-		  'EL2 = XMLElement(EL1.FirstChild)
-		  'for k = 0 to EL1.Childcount -1
-		  'Key = EL2.Name
-		  'Txt = EL2.GetAttribute("Name")
-		  'if txt = "---" then
-		  'txt = ""
-		  'end if
-		  'if ndict = 1 then
-		  'listbox1.addrow Key
-		  'end if
-		  'listbox1.cell(j,ndict) = Txt
-		  'j = j+1
-		  'EL2= XMLElement(EL2.NextSibling)
-		  'next
-		  'EL1 = XMLElement(EL1.NextSibling)
-		  'next
 		  refresh
 		  
 		End Sub
@@ -308,21 +277,22 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ChargerLangRef(lang as string)
-		  dim Doc as XMLDocument
 		  dim EL, EL1 as XMLNode
 		  dim EL2 as XMLElement
-		  dim Key as String
+		  dim Name,Key as String
 		  dim  Txt as string
 		  dim i,j,k as integer
-		  dim f as folderitem
 		  
-		  f = GetFolderItem(Lang+".dct")
+		  
+		  EL = Dico.getXML(lang)
+		  
+		  if EL = nil then
+		    return
+		  end if
+		  
+		  Language.Append  EL.Name
 		  ListBox1.ColumnCount = ListBox1.ColumnCount + 1
 		  ndict = ndict+1
-		  'Dict.Append new Dictionnaire
-		  Doc=new XMLDocument(f)
-		  EL = Doc.DocumentElement
-		  Language.Append  EL.Name
 		  Listbox1.heading(ndict) = Language(ndict-1)
 		  
 		  j=0
@@ -391,21 +361,6 @@ End
 		  else
 		    return  -1
 		  end if
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function TrouverDico(lang as string) As folderitem
-		  dim Name as string
-		  dim f as folderitem
-		  
-		  Name = lang+".dct"
-		  f = getfolderitem(Name)
-		  if not f.exists then
-		    f = app.DctFolder.Child(Name)
-		  end if
-		  return f
 		  
 		End Function
 	#tag EndMethod
