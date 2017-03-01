@@ -2,15 +2,13 @@
 Protected Class Dictionnaire
 Inherits Dictionary
 	#tag Method, Flags = &h0
-		Sub load(lang as string)
-		  dim C as XMLDocument
-		  dim fi as FolderItem
-		  dim EL, EL1, EL2 as XMLElement
-		  dim Key as variant
-		  dim  Txt, Name as string
-		  dim i, j as integer
+		Function getXML(langue as String) As XmlElement
+		  dim Name as string
+		  dim f as folderitem
+		  dim C as XmlDocument
 		  
-		  select case lang
+		  'redondance avec dico.load
+		  select case Langue
 		  case "Francais"
 		    C = new XMLDocument(Francais)
 		  case "English"
@@ -18,18 +16,29 @@ Inherits Dictionary
 		  case "PortuguesBr"
 		    C = new XMLDocument(PortuguesBr)
 		  else
-		    Name = lang+".dct"
-		    fi = app.DctFolder.Child(Name)
-		    if not fi.exists then
-		      MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
-		      return
+		    Name = langue+".dct"
+		    f = app.DctFolder.Child(Name)
+		    if f.exists then
+		      C=new XMLDocument(f)
 		    else
-		      C=new XMLDocument(fi)
+		      MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
+		      return nil
 		    end if
 		  end select
 		  
+		  return C.DocumentElement
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub load(lang as string)
+		  dim C as XMLDocument
+		  dim EL, EL1, EL2 as XMLElement
+		  dim Key as variant
+		  dim  Txt, Name as string
+		  dim i, j as integer
 		  
-		  EL = C.DocumentElement
+		  EL = getXML(lang)
 		  
 		  for i = 0 to EL.Childcount -1
 		    EL1 = XMLElement(EL.Child(i))

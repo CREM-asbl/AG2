@@ -123,7 +123,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		Parent As Window
+		langue As String
 	#tag EndProperty
 
 
@@ -145,27 +145,12 @@ End
 		  
 		End Sub
 	#tag EndEvent
-	#tag Event
-		Sub Change()
-		  
-		  Config.SetLangue(LanguagePopup.Text)
-		  refresh
-		  'elseif parent isa dictwindow then
-		  'dictwindow(parent).lang = Languagepopup.text
-		  'end if
-		End Sub
-	#tag EndEvent
 #tag EndEvents
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-		  
-		  Config.SetLangue(LanguagePopup.Text)
-		  refresh
-		  'elseif parent isa dictwindow then
-		  'DictWindow(Parent).Lang = LanguagePopup.Text
-		  'end if
-		  close
+		  langue = LanguagePopup.Text
+		  Hide
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -264,6 +249,11 @@ End
 		EditorType="String"
 	#tag EndViewProperty
 	#tag ViewProperty
+		Name="langue"
+		Group="Behavior"
+		Type="Window"
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="LiveResize"
 		Visible=true
 		Group="Behavior"
@@ -341,11 +331,6 @@ End
 		Group="ID"
 		Type="String"
 		EditorType="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Parent"
-		Group="Behavior"
-		Type="Window"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Placement"
