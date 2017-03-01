@@ -663,10 +663,9 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Open()
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  ReadNomsBut
 		  setMenuBar
-		  
 		End Sub
 	#tag EndEvent
 
@@ -1350,9 +1349,9 @@ End
 #tag Events LangChangeButton
 	#tag Event
 		Sub Action()
-		  dim lanw As LanguageWindow
-		  
-		  lanw = new LanguageWindow(self)
+		  LanguageWindow.ShowModal
+		  refresh
+		  WorkWindow.updatemenu
 		  
 		  
 		End Sub
@@ -1361,7 +1360,7 @@ End
 #tag Events CreateDictButton
 	#tag Event
 		Sub Action()
-		  dw = new DictWindow
+		  DictWindow.ShowModal
 		  close
 		  
 		End Sub

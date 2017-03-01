@@ -5,7 +5,7 @@ Begin Window DictWindow
    CloseButton     =   True
    Compatibility   =   ""
    Composite       =   True
-   Frame           =   3
+   Frame           =   1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   True
@@ -21,7 +21,7 @@ Begin Window DictWindow
    MinHeight       =   64
    MinimizeButton  =   True
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   True
    Title           =   "Créer ou modifier un dictionnaire"
    Visible         =   True
@@ -125,11 +125,9 @@ End
 	#tag MenuHandler
 		Function ChargerDict() As Boolean Handles ChargerDict.Action
 			
-			dim lanw As LanguageWindow
 			dim n as integer
 			
-			lanw = new LanguageWindow(self)
-			lanw.showmodal
+			LanguageWindow.showmodal
 			
 			if language.indexof(lang)= -1 then  //on ne recharge pas un dictionnaire déjà chargé
 			'Dict.Append new Dictionnaire
@@ -308,20 +306,36 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ChargerLangRef(lang as string)
-		  dim Doc as XMLDocument
+		  dim C as XMLDocument
 		  dim EL, EL1 as XMLNode
 		  dim EL2 as XMLElement
-		  dim Key as String
+		  dim Name,Key as String
 		  dim  Txt as string
 		  dim i,j,k as integer
-		  dim f as folderitem
+		  dim fi as folderitem
 		  
-		  f = GetFolderItem(Lang+".dct")
+		  'redondance avec dico.load
+		  select case lang
+		  case "Francais"
+		    C = new XMLDocument(Francais)
+		  case "English"
+		    C = new XMLDocument(English)
+		  case "PortuguesBr"
+		    C = new XMLDocument(PortuguesBr)
+		  else
+		    Name = lang+".dct"
+		    fi = app.DctFolder.Child(Name)
+		    if not fi.exists then
+		      MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
+		      return
+		    else
+		      C=new XMLDocument(fi)
+		    end if
+		  end select
+		  
 		  ListBox1.ColumnCount = ListBox1.ColumnCount + 1
 		  ndict = ndict+1
-		  'Dict.Append new Dictionnaire
-		  Doc=new XMLDocument(f)
-		  EL = Doc.DocumentElement
+		  EL = C.DocumentElement
 		  Language.Append  EL.Name
 		  Listbox1.heading(ndict) = Language(ndict-1)
 		  
