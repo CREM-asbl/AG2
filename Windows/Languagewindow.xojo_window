@@ -32,7 +32,7 @@ Begin Window Languagewindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   30
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -52,7 +52,7 @@ Begin Window Languagewindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   16
+      Top             =   17
       Underline       =   False
       Visible         =   True
       Width           =   130
@@ -65,7 +65,7 @@ Begin Window Languagewindow
       Caption         =   "OK"
       Default         =   True
       Enabled         =   True
-      Height          =   30
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
