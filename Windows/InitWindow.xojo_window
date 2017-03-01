@@ -55,7 +55,7 @@ Begin Window InitWindow
       Top             =   400
       Underline       =   False
       Visible         =   True
-      Width           =   135
+      Width           =   180
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
