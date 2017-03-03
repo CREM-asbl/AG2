@@ -289,6 +289,9 @@ Inherits MultipleSelectOperation
 		      createdshape = curop.currentshape
 		    end select
 		    
+		    if Mac.ObFinal.IndexOf(n) = -1 then
+		      createdshape.hidden = true
+		    end if
 		    MacId.Append n
 		    Real.Append createdshape.id
 		    RealSide.Append 0

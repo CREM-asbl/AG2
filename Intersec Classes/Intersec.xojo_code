@@ -202,29 +202,30 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor(MExe as MacroExe, EL1 as XMLElement)
 		  
-		  
+		  dim ob as objectslist
 		  dim EL2 as XMLElement
 		  dim n, rid, side, num0, num1 as integer
 		  dim s1, s2 as shape
 		  dim p as point
 		  
 		  
-		  
+		  ob = currentcontent.theobjects
 		  EL2 = XMLElement(EL1.FirstChild)
-		  n =CDbl(EL2.GetAttribute("Id"))
+		  n = CDBl(EL2.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
-		  s1 = objects.Getshape(rid)
+		  s1 = ob.Getshape(rid)
 		  EL2 = XMLElement(EL1.Child(1))
 		  n = CDbl(EL2.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
-		  s2 = objects.Getshape(rid)
+		  s2 = ob.Getshape(rid)
 		  
 		  constructor(s1,s2)
+		  computeinter
 		  
 		  num0 = CDbl(EL1.GetAttribute("NumSide0"))
 		  num1 = CDbl(EL1.GetAttribute("NumSide1"))
 		  
-		  currentshape = new point(currentcontent.theobjects, bptinters(num0,num1))
+		  currentshape = new point(ob, bptinters(num0,num1))
 		  currentshape.forme = 2
 		  p = point(currentshape)
 		  s1.setpoint(p)
