@@ -10,7 +10,7 @@ Begin Window LabelWindow
    FullScreenButton=   False
    HasBackColor    =   True
    Height          =   131
-   ImplicitInstance=   False
+   ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000
@@ -160,7 +160,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   77
+      Top             =   82
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -187,7 +187,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   4
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Texte :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -222,7 +221,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Taille :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -254,7 +252,6 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   49
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -282,7 +279,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   7
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Couleur :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -317,7 +313,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   8
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Axe X :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -352,7 +347,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   9
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Axe Y :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -548,7 +542,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   15
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Police :"
       TextAlign       =   0
       TextColor       =   &c00000000

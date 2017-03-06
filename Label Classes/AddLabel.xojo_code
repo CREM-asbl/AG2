@@ -18,8 +18,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
-		  
 		  Correction = new BasicPoint(lab.Correction.X,  lab.Correction.Y)
 		  Etiquette = asc(Lab.Text)
 		  if Lab.text = "*" then
@@ -167,8 +165,7 @@ Inherits SelectAndDragOperation
 		  if lab <> nil then
 		    lab.MouseCorrection(p)
 		  end if
-		  Lw = new LabelWindow
-		  Lw.ShowModal
+		  LabelWindow.ShowModal
 		  
 		  if lab.LockRight and lab.LockBottom then
 		    pos = lab.position +lab.correction

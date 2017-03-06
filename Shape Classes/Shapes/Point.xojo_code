@@ -1790,6 +1790,27 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub print(g as Graphics, sc As Double)
+		  dim i as integer
+		  
+		  rsk.Scale = rsk.Scale*sc
+		  rsk.X = rsk.X * sc
+		  rsk.Y = rsk.Y * sc
+		  rsk.paint(g)
+		  rsk.Scale = rsk.Scale/sc
+		  rsk.X = rsk.X/sc
+		  rsk.Y = rsk.Y/sc
+		  
+		  for i = 0 to labs.count-1
+		    Labs.item(i).print(g, sc)
+		  next
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ProjectionOnAttractingDemidroite(p1 as BasicPoint, p2 as BasicPoint) As BasicPoint
 		  dim td As BasicPoint
 		  
