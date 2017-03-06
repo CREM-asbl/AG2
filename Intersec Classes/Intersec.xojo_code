@@ -46,6 +46,7 @@ Inherits SelectOperation
 		  
 		  init
 		  drappara = false
+		  somevalidpoint = false
 		  if not sh1 isa circle then
 		    if not sh2 isa circle then
 		      computeinterlines
@@ -65,7 +66,17 @@ Inherits SelectOperation
 		    computeintercercles
 		  end if
 		  
-		  positionfalseinterpoints  
+		  for i = 0 to nlig
+		    for j = 0 to ncol
+		      somevalidpoint = somevalidpoint or val(i,j)
+		    next
+		  next
+		  
+		  if not somevalidpoint then
+		    return
+		  else
+		    positionfalseinterpoints
+		  end if  
 		  
 		  
 		End Sub
@@ -671,6 +682,10 @@ Inherits SelectOperation
 
 	#tag Property, Flags = &h0
 		sh2 As shape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		somevalidpoint As boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

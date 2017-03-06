@@ -2527,8 +2527,11 @@ Inherits Shape
 		  end if
 		  
 		  inter.computeinter
-		  return inter.locatepoint(bpt)
-		  
+		  if not inter.somevalidpoint then
+		    return nil
+		  else
+		    return inter.locatepoint(bpt)
+		  end if
 		  
 		End Function
 	#tag EndMethod

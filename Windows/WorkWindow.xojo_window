@@ -896,6 +896,9 @@ End
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
 		  end if
+		  if Config.username = "Tutoriel" then
+		    NotesWindow.visible = true
+		  end if
 		  
 		  if app.fileName <> "" then
 		    dim f as FolderItem
