@@ -48,6 +48,7 @@ Begin Window PasswordWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Mot de passe:"
       TextAlign       =   0
       TextColor       =   &c00000000

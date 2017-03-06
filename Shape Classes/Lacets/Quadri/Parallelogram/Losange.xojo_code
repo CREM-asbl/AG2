@@ -93,6 +93,12 @@ Inherits Parallelogram
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Modifier2fixes(p as point, q as point)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Modifier3(p as point, q as point, r as point) As Matrix
 		  dim  ps, p2, p3 As point
 		  dim eps,ep2,ep3,nps,np2,np3, u, v as BasicPoint

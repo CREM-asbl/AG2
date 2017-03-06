@@ -546,7 +546,7 @@ End
 
 #tag Events Bouton
 	#tag Event
-		Sub MouseEnter(index as Integer)
+		Sub MouseEnter()
 		  if selection then
 		    return
 		  end if
@@ -559,7 +559,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Action()
 		  if  selection then
 		    if index =0 then
 		      Config.ToggleFLib(fam)
@@ -596,7 +596,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Open()
 		  select case kit
 		  case 0
 		    if index < config.nstdf(fam) then
@@ -637,12 +637,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseUp(X As Integer, Y As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent

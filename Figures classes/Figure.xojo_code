@@ -743,7 +743,8 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
-		  dim p, q as point
+		  dim p, q, r as point
+		  dim ep, eq, er, np, nq, nr As BasicPoint
 		  dim n1, n2 as integer
 		  dim s as shape
 		  
@@ -756,6 +757,8 @@ Protected Class Figure
 		  
 		  p = somm.item(n1)
 		  q = somm.item(n2)
+		  getoldnewpos(p,ep,np)
+		  getoldnewpos(q,eq,nq)
 		  
 		  select case  NbSommSur(n1,n2)
 		  case 0
@@ -767,8 +770,12 @@ Protected Class Figure
 		  case 1
 		    if  (replacerpoint(p) or replacerpoint(q))  then
 		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
-		    else
+		    elseif s isa rect then
 		      return rect(s).modifier2fixes(p,q)
+		    elseif s isa losange then
+		      r = somm.item(Listsommsur(0))
+		      getoldnewpos(r,er,nr)
+		      return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		    end if
 		  else
 		    return s.Modify2(p,q)
@@ -1666,15 +1673,6 @@ Protected Class Figure
 		    n3 = ListPtsModifs(2)
 		    r = Point(somm.item(n3))
 		    getoldnewpos(r,er,nr)
-		    'for i = 0 to 3
-		    'if i <> n1 and i <> n2 and i <> n3 then
-		    'n4 = i
-		    'end if
-		    'next
-		    's = Point(somm.item(n4))
-		    'getoldnewpos(s,es,ns)
-		    's.moveto es
-		    's.modified = false
 		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  end select
 		End Function
