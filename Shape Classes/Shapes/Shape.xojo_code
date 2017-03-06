@@ -2855,7 +2855,7 @@ Protected Class Shape
 		  end if
 		  
 		  for i = 0 to labs.count-1
-		    Labs.item(i).paint(g)
+		    Labs.item(i).print(g, sc)
 		  next
 		  
 		  for i = 0 to ubound(childs)

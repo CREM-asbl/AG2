@@ -40,11 +40,11 @@ Begin Window InitWindow
       Italic          =   False
       Left            =   572
       ListIndex       =   0
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
       Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
@@ -55,7 +55,7 @@ Begin Window InitWindow
       Top             =   400
       Underline       =   False
       Visible         =   True
-      Width           =   135
+      Width           =   180
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
@@ -238,11 +238,11 @@ Begin Window InitWindow
       Italic          =   False
       Left            =   572
       ListIndex       =   0
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0

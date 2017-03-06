@@ -9,7 +9,7 @@ Begin Window Languagewindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   55
+   Height          =   70
    ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
@@ -18,27 +18,27 @@ Begin Window Languagewindow
    MaxWidth        =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
+   MinHeight       =   70
    MinimizeButton  =   False
-   MinWidth        =   64
+   MinWidth        =   250
    Placement       =   1
    Resizeable      =   False
    Title           =   "Choix de la langue"
    Visible         =   True
-   Width           =   251
+   Width           =   250
    Begin PopupMenu LanguagePopup
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   21
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   15
+      Left            =   20
       ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -52,10 +52,10 @@ Begin Window Languagewindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   14
+      Top             =   17
       Underline       =   False
       Visible         =   True
-      Width           =   126
+      Width           =   130
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
@@ -65,12 +65,12 @@ Begin Window Languagewindow
       Caption         =   "OK"
       Default         =   True
       Enabled         =   True
-      Height          =   28
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   159
+      Left            =   162
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -83,10 +83,10 @@ Begin Window Languagewindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   15
+      Top             =   16
       Underline       =   False
       Visible         =   True
-      Width           =   69
+      Width           =   70
    End
 End
 #tag EndWindow
@@ -251,7 +251,8 @@ End
 	#tag ViewProperty
 		Name="langue"
 		Group="Behavior"
-		Type="Window"
+		Type="String"
+		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="LiveResize"

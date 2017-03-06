@@ -9,8 +9,8 @@ Begin Window ThickWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   133
-   ImplicitInstance=   False
+   Height          =   120
+   ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000
@@ -21,23 +21,23 @@ Begin Window ThickWindow
    MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   False
    Title           =   "ThickMag"
    Visible         =   True
-   Width           =   281
+   Width           =   250
    Begin Label StaticText1
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   22
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   8
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -48,14 +48,13 @@ Begin Window ThickWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Epaisseur par défaut"
-      TextAlign       =   0
+      Text            =   "Epaisseur"
+      TextAlign       =   1
       TextColor       =   &c00000000
       TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   22
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -63,7 +62,7 @@ Begin Window ThickWindow
    End
    Begin TextField TF
       AcceptTabs      =   False
-      Alignment       =   0
+      Alignment       =   2
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
       BackColor       =   &cFF00FFFF
@@ -79,7 +78,7 @@ Begin Window ThickWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   157
+      Left            =   150
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -98,11 +97,11 @@ Begin Window ThickWindow
       TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   21
+      Top             =   20
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   80
+      Width           =   70
    End
    Begin PushButton OKButton
       AutoDeactivate  =   True
@@ -112,12 +111,12 @@ Begin Window ThickWindow
       Caption         =   "OK"
       Default         =   False
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   168
+      Left            =   150
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -130,10 +129,10 @@ Begin Window ThickWindow
       TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   78
+      Top             =   65
       Underline       =   False
       Visible         =   True
-      Width           =   69
+      Width           =   70
    End
    Begin PushButton CancelButton
       AutoDeactivate  =   True
@@ -143,12 +142,12 @@ Begin Window ThickWindow
       Caption         =   "Cancel"
       Default         =   False
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   29
+      Left            =   40
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -161,10 +160,10 @@ Begin Window ThickWindow
       TextFont        =   "Arial"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   78
+      Top             =   65
       Underline       =   False
       Visible         =   True
-      Width           =   69
+      Width           =   70
    End
 End
 #tag EndWindow

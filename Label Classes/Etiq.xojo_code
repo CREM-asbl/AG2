@@ -312,6 +312,27 @@ Inherits Label
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Print(g as Graphics, sc as Double)
+		  dim  q as BasicPoint
+		  
+		  if correction = nil then
+		    correction = new BasicPoint(0,0)
+		  end if
+		  
+		  q = position + correction
+		  q = can.transform(q)
+		  q = q*sc
+		  if text = "%"  then
+		    g.DrawString(str(chape.id),q.x, q.y)
+		  end if
+		  if text <> "*"   then
+		    g.DrawString(Text,q.x, q.y)
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub pssize()
 		  dim i, n as integer
 		  dim w, h, p as double
