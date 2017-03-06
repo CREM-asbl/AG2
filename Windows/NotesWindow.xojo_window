@@ -616,11 +616,6 @@ End
 		Type="String"
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Tutor"
-		Group="Behavior"
-		Type="Integer"
-	#tag EndViewProperty
-	#tag ViewProperty
 		Name="Visible"
 		Visible=true
 		Group="Behavior"

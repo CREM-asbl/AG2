@@ -444,10 +444,6 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		prtsetup As printerSetup
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		quiet As boolean
 	#tag EndProperty
 

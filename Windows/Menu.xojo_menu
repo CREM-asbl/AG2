@@ -62,13 +62,6 @@ Begin Menu Menu
          AutoEnable = False
          Visible = True
       End
-      Begin MenuItem PrintSetUp
-         SpecialMenu = 0
-         Text = "PrintSetUp"
-         Index = -2147483648
-         AutoEnable = True
-         Visible = True
-      End
       Begin MenuItem FilePrint
          SpecialMenu = 0
          Text = "Imprimer "

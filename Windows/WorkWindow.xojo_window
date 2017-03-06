@@ -757,7 +757,6 @@ End
 		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
 		  end if
 		  
-		  MenuBar.Child("FileMenu").Child("PrintSetUp").Enabled = true
 		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
 		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
@@ -1803,19 +1802,6 @@ End
 			
 			
 			
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function PrintSetUp() As Boolean Handles PrintSetUp.Action
-			if mousedispo then
-			closefw
-			app.prtsetup = New PrinterSetup
-			If  app.prtsetup.PageSetupDialog then
-			return true
-			end if
-			end if
-			return true
 		End Function
 	#tag EndMenuHandler
 
@@ -2946,7 +2932,6 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").Text = Dico.Value("FileSaveAs")
 		  MenuBar.Child("FileMenu").Child("FileSaveEps").Text = Dico.Value("FileSaveEps")
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Text = Dico.Value("FileSaveBitmap")
-		  MenuBar.Child("FileMenu").Child("PrintSetUp").Text = Dico.Value("PrintSetUp")
 		  MenuBar.Child("FileMenu").Child("FilePrint").Text = Dico.Value("FilePrint")
 		  MenuBar.Child("FileMenu").Child("FileQuit").Text = Dico.Value("FileQuit")
 		  MenuBar.Child("Fenetres").Text = Dico.Value("Windows")
