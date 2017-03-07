@@ -30,13 +30,24 @@ Protected Module api
 
 	#tag Method, Flags = &h0
 		Sub Connect()
+		  dim log,info,update As string
+		  Dim form As Dictionary
+		  dim NWI as NetworkInterface
+		  
 		  if http = Nil then
 		    return
 		  end if
 		  
-		  dim log,info,update As string
+		  NWI = System.GetNetworkInterface(0)
 		  
-		  log = http.Post(url+"/log.php?version="+app.LongVersion+"&os="+app.sys+"&stageCode="+str(app.StageCode),timeout)
+		  form = New Dictionary
+		  form.Value("version") = app.LongVersion+" "+str(app.StageCodeToString)
+		  form.Value("os") = app.sys
+		  form.Value("mac") = NWI.MACAddress
+		  
+		  http.SetFormData(form)
+		  log = http.Post(url+"/log.php",timeout)
+		  
 		  
 		  AfficherInfo
 		  
@@ -61,13 +72,44 @@ Protected Module api
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SendBug()
+		  dim request, directory, file,date as String
+		  Dim form As Dictionary
+		  
+		  if http = Nil then
+		    return
+		  end if
+		  
+		  date = app.bugtime.LongDate+" "+str(app.bugtime.Hour)+"h"+str(app.bugtime.Minute)
+		  directory="bugs/"+str(app.LongVersion)+"."+app.StageCodeToString+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
+		  
+		  form = New Dictionary
+		  form.Value("dir") = directory
+		  form.Value("file") = "log.txt"
+		  form.Value("txt") = app.log
+		  
+		  http.SetFormData(form)
+		  request = http.post(url+"/bug.php",timeout)
+		  
+		  
+		  form.Value("file") = "bug.hag"
+		  form.Value("txt") = currentContent.Oplist.toString
+		  
+		  http.SetFormData(form)
+		  request = http.post(url+"/bug.php",timeout)
+		  
+		  form.Value("file") = "bug.fag"
+		  form.Value("txt") = currentContent.MakeXML.toString
+		  
+		  http.SetFormData(form)
+		  request = http.post(url+"/bug.php",timeout)
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		http As HTTPSocket
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		response As string
 	#tag EndProperty
 
 
@@ -98,12 +140,6 @@ Protected Module api
 			Visible=true
 			Group="ID"
 			Type="String"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="response"
-			Group="Behavior"
-			Type="string"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

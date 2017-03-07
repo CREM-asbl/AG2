@@ -12,15 +12,6 @@ Inherits SelectOperation
 		    objects.selectall
 		  end if
 		  
-		  if app.prtsetup = nil then
-		    app.prtsetup = New PrinterSetup
-		    dim PS as Boolean = app.prtsetup.PageSetupDialog 
-		  else
-		    dim settings As String = app.prtsetup.SetupString
-		    app.prtsetup = New PrinterSetup
-		    app.prtsetup.SetupString = settings
-		  end if
-		  
 		  
 		  
 		End Sub
@@ -35,22 +26,22 @@ Inherits SelectOperation
 		  dim d as date
 		  dim gprint as graphics
 		  dim Pict As Picture
+		  dim prtsetup As PrinterSetup
 		  
-		  if app.prtsetup = nil then
-		    return
-		  end if
+		  prtsetup = new PrinterSetup
+		  dim PS as Boolean = prtsetup.PageSetupDialog 
 		  
-		  sw = app.prtsetup.Width/can.width
-		  sh = app.prtsetup.Height/can.height
+		  sw = prtsetup.Width/can.width
+		  sh = prtsetup.Height/can.height
 		  sc = min(sw,sh)
-		  printLeft =  -app.prtsetup.PageLeft
-		  printTop =  -app.prtsetup.PageTop
+		  printLeft =  -prtsetup.PageLeft
+		  printTop =  -prtsetup.PageTop
 		  printWidth =  can.width*sc
 		  printHeight =  can.height*sc
 		  
 		  Pict = new Picture(printWidth,printHeight,Screen(0).Depth)
 		  
-		  gprint = OpenPrinterDialog(app.prtsetup)
+		  gprint = OpenPrinterDialog(prtsetup)
 		  
 		  if gprint <> nil then
 		    if wnd.backcolor = noir then
