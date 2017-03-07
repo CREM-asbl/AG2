@@ -28,13 +28,11 @@ Begin Window BugFindW
    Width           =   421
    Begin Label StaticText2
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   True
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   110
+      Height          =   59
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -50,14 +48,13 @@ Begin Window BugFindW
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Cette figure a provoqué une erreur et va être fermée.\r\nNous nous excusons de ce désagrément.\r\n"
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "SmallSystem"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   0
+      Top             =   28
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -65,12 +62,10 @@ Begin Window BugFindW
    End
    Begin PushButton Accepter
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -78,7 +73,7 @@ Begin Window BugFindW
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   251
+      Left            =   321
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -91,40 +86,7 @@ Begin Window BugFindW
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   110
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
-   End
-   Begin PushButton Refuser
-      AutoDeactivate  =   True
-      BehaviorIndex   =   2
-      Bold            =   False
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "Annuler"
-      ControlOrder    =   "2"
-      Default         =   False
-      Enabled         =   True
-      Height          =   28
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   334
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   110
+      Top             =   109
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -138,13 +100,7 @@ End
 		  dim s as string
 		  
 		  s = " "+ EndOfLine +  dico.value("bugfound")+ EndOfLine + dico.value("bugcontinue") + EndOfLine + dico.value( "bugsorry")
-		  if System.Network.IsConnected then
-		    Refuser.visible = true
-		    StaticText2.text = s + EndofLine + EndOfLine+dico.value( "bugsignal")
-		  else
-		    Refuser.visible = false
-		    StaticText2.text = s
-		  end if
+		  
 		End Sub
 	#tag EndEvent
 
@@ -176,27 +132,9 @@ End
 #tag Events Accepter
 	#tag Event
 		Sub Action()
-		  dim Br as BugReport
-		  
-		  if System.Network.IsConnected then
-		    br = new BugReport
-		    Br.Show
-		  end if
 		  Close
 		  
 		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Refuser
-	#tag Event
-		Sub Action()
-		  Close
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Open()
-		  me.caption = Dico.Value("Cancel")
 		End Sub
 	#tag EndEvent
 #tag EndEvents

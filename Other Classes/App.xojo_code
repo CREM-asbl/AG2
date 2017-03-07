@@ -62,112 +62,98 @@ Inherits Application
 
 	#tag Event
 		Function UnhandledException(error As RuntimeException) As Boolean
-		  dim st(-1), cre, Op as String
+		  dim st(-1), cre, Op,log as String
 		  dim bugw as BugFindW
 		  dim i as integer
 		  dim curoper as Operation
-		  dim tos as TextOutputStream
 		  dim NWI As  NetworkInterface
-		  dim Log as FolderItem
+		  dim f as FolderItem
 		  
 		  
 		  if CurrentContent = nil or CurrentContent.bugfound then
 		    return true
 		  end if
 		  
+		  app.bugtime = new date()
 		  
-		  Log = DocFolder.Child("AG2.log")
-		  tos = Log.CreateTextFile
 		  curoper = CurrentContent.CurrentOperation
 		  
-		  if (System.Network.IsConnected or TargetLinux) and tos <> nil then
-		    NWI = System.GetNetworkInterface(0)
-		    st = error.Stack
-		    tos.WriteLine "BuildDate : "+str(self.BuildDate)
-		    tos.WriteLine ""
-		    tos.WriteLine "**** Runtime - Error Type****"
-		    tos.WriteLine ""
-		    tos.WriteLine str(Runtime.ObjectCount)+" éléments actifs"
-		    tos.WriteLine str(Runtime.MemoryUsed/1000000)+" Mo en mémoire"
-		    if Config<>nil then
-		      tos.WriteLine ""
-		      tos.WriteLine "**** Configuration ****"
-		      tos.WriteLine ""
-		      tos.WriteLine "Formes standards : "+Config.stdfile
-		      tos.WriteLine ""
-		      tos.WriteLine "**** Operation ****"
-		      tos.WriteLine ""
-		    end if
+		  
+		  log = "BuildDate : " + str(self.BuildDate) + EndOfLine +EndOfLine
+		  
+		  log = log + "**** Runtime - Error Type****" + EndOfLine + EndOfLine
+		  log = log + str(Runtime.ObjectCount) + " éléments actifs" + EndOfLine
+		  log = log + str(Runtime.MemoryUsed/1000000) + " Mo en mémoire" + EndOfLine + EndOfLine
+		  
+		  if Config<>nil then
+		    log = log + "**** Configuration ****" + EndOfLine + EndOfLine
+		    log = log + "Formes standards : "+Config.stdfile + EndOfLine +EndOfLine
+		    log = log + "**** Operation ****" + EndOfLine + EndOfLine
 		    
-		    if curoper <>nil then
-		      tos.WriteLine "Opération active : "+curoper.GetName
-		      if not curoper isa ReadHisto then
-		        if curoper.CurrentShape <> nil then
-		          tos.WriteLine "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id)
-		        else
-		          tos.WriteLine "Curoper.CurrentShape = nil"
-		        end if
-		      end if
-		    else
-		      tos.WriteLine "Ouverture de Fichier ou Operation Nil"
-		    end if
-		    
-		    tos.WriteLine ""
-		    tos.WriteLine "**** Debug message ****"
-		    if error isa OutOfMemoryException then
-		      tos.WriteLine "OutOfMemoryException"
-		    elseif error isa FunctionNotFoundException then
-		      tos.WriteLine "FunctionNotFoundException"
-		    elseif error isa IllegalCastException then
-		      tos.WriteLine "IllegalCastException"
-		    elseif error isa NilObjectException then
-		      tos.WriteLine "NilObjectException"
-		    elseif error isa OutOfBoundsException then
-		      tos.WriteLine "OutOfBoundsException"
-		    elseif error isa StackOverflowException then
-		      tos.WriteLine "StackOverflowException"
-		    elseif error isa XmlException then
-		      tos.WriteLine "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node
-		    else
-		      tos.WriteLine "Autre erreur"
-		    end if
-		    tos.Write error.message
-		    tos.WriteLine ""
-		    tos.WriteLine "**** fin Debug message ****"
-		    tos.WriteLine ""
-		    tos.WriteLine "**** Error Stack ****"
-		    tos.WriteLine ""
-		    tos.WriteLine str(error.ErrorNumber)
-		    for i = 0 to UBound(St)
-		      tos.WriteLine st(i)
-		    next
-		    
-		    Log = SpecialFolder.Documents.Parent
-		    if Log <> nil then
-		      cre = Log.Name
-		    end if
-		    tos.writeline "Createur :" + cre
-		    tos.WriteLine NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress
-		    tos.Close
 		  end if
 		  
-		  if not curoper isa ReadHisto then
-		    CurrentContent.currentfile = App.DocFolder.Child("Bug.fag")
-		    if CurrentContent.currentfile.Exists then
-		      CurrentContent.currentfile.Delete
+		  if curoper <>nil then
+		    CurrentContent.InsertInHisto(curoper)
+		    log = log+ "Opération active : "+curoper.GetName + EndOfLine
+		    if not curoper isa ReadHisto then
+		      if curoper.CurrentShape <> nil then
+		        log = log + "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id) + EndOfLine
+		      else
+		        log = log + "Curoper.CurrentShape = nil"+ EndOfLine
+		      end if
 		    end if
-		    CurrentContent.Save
-		    currentfile = CurrentContent.Currentfile
 		  else
-		    currentfile = ReadHisto(curoper).Histfile
+		    log = log + "Ouverture de Fichier ou Operation Nil" + EndOfLine
 		  end if
+		  
+		  log = log + EndOfLine
+		  
+		  log = log + "**** Debug message ****" + EndOfLine + EndOfLine
+		  if error isa OutOfMemoryException then
+		    log = log + "OutOfMemoryException" + EndOfLine
+		  elseif error isa FunctionNotFoundException then
+		    log = log + "FunctionNotFoundException" + EndOfLine
+		  elseif error isa IllegalCastException then
+		    log = log + "IllegalCastException" + EndOfLine
+		  elseif error isa NilObjectException then
+		    log = log + "NilObjectException" + EndOfLine
+		  elseif error isa OutOfBoundsException then
+		    log = log + "OutOfBoundsException" + EndOfLine
+		  elseif error isa StackOverflowException then
+		    log = log + "StackOverflowException" + EndOfLine
+		  elseif error isa XmlException then
+		    log = log + "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node + EndOfLine
+		  else
+		    log = log + "Autre erreur" + EndOfLine
+		  end if
+		  log = log+ error.message + EndOfLine
+		  log = log + "" + EndOfLine
+		  log = log + "**** fin Debug message ****" + EndOfLine + EndOfLine
+		  
+		  log = log + "**** Error Stack ****" + EndOfLine + EndOfLine
+		  st = error.Stack
+		  
+		  log = log + str(error.ErrorNumber) + EndOfLine
+		  for i = 0 to UBound(St)
+		    log = log + st(i) + EndOfLine
+		  next
+		  
+		  f = SpecialFolder.Documents.Parent
+		  if f <> nil then
+		    cre = f.Name
+		  end if
+		  log = log + "Createur : " + cre + EndOfLine
+		  NWI = System.GetNetworkInterface(0)
+		  log = log + NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress + EndOfLine
+		  
 		  CurrentContent.bugfound = true
 		  
-		  ErrorType = NthField(st(0),"%",1)
+		  app.ErrorType = NthField(st(1),"%",1)
+		  app.log = log
+		  api.SendBug
 		  
+		  BugFindW.showModal
 		  
-		  bugw = new BugFindW
-		  bugw.showModal
 		  if not quitting then
 		    if wnd.draphisto then
 		      if curoper <> nil then
@@ -177,11 +163,11 @@ Inherits Application
 		      wnd.draphisto = false
 		      wnd.Refresh
 		    end if
-		    'wnd.deleteContent
-		    'if UBound (wnd.wcontent) = -1 then
-		    'wnd.NewContent(false)
-		    'end if
-		    currentcontent.bugfound = false   'GN 17-08-2014
+		    wnd.deleteContent
+		    if UBound (wnd.wcontent) = -1 then
+		      wnd.NewContent(false)
+		    end if
+		    currentcontent.bugfound = false 
 		  end if
 		  return true
 		End Function
@@ -226,7 +212,6 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
-		  'si on est en mode debug, la recherche de mise à jour n'est pas utile
 		  #if DebugBuild then
 		    return
 		  #endif
@@ -396,6 +381,10 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		bugtime As Date
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		currentfile As FolderItem
 	#tag EndProperty
 
@@ -425,6 +414,10 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		iw As Initwindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		log As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -486,6 +479,12 @@ Inherits Application
 			Group="Behavior"
 			InitialValue="false"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="log"
+			Group="Behavior"
+			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="majok"
