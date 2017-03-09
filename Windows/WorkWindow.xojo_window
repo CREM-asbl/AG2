@@ -1319,6 +1319,7 @@ End
 			dim md as MessageDialog
 			Dim b as MessageDialogButton
 			Dim mois() as string
+			dim mess as string 
 			
 			mois.Append ("Janvier")
 			mois.Append ("Février")
@@ -1338,7 +1339,13 @@ End
 			md = New MessageDialog
 			md.Title = Dico.value("HelpAbout")
 			md.Icon = 0
-			md.Message = "Apprenti géomètre v."+App.LongVersion+EndOfLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
+			mess = "Apprenti géomètre v."+App.LongVersion
+			if Target32bit then
+			mess = mess+" 32bits "
+			else
+			mess = mess+" 64bits "
+			end if
+			md.Message = mess+EndOfLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
 			b = md.ShowModal
 			end if
 			return true
