@@ -5,10 +5,7 @@ Inherits Application
 		Function CancelClose() As Boolean
 		  if ipctransfert then
 		    ipc.send(FileName)
-		    ipctransfert = false
 		  end if
-		  
-		  Config.Save
 		  
 		  
 		End Function
@@ -44,7 +41,6 @@ Inherits Application
 
 	#tag Event
 		Sub OpenDocument(item As FolderItem)
-		  'reste un problème avec accent
 		  dim s As string
 		  s = item.NativePath
 		  
@@ -56,6 +52,7 @@ Inherits Application
 		  end if
 		  
 		  FileName = FileName+s
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -184,14 +181,13 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub CheckProcess()
-		  ipc = new IPC
 		  mut = new Mutex("AG2")
 		  
 		  if not mut.TryEnter then
 		    ipctransfert = true
-		  else
-		    ipc.listen
 		  end if
+		  
+		  ipc = new IPC
 		End Sub
 	#tag EndMethod
 

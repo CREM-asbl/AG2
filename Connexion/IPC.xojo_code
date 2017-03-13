@@ -9,32 +9,24 @@ Inherits IPCSocket
 		  data = me.ReadAll
 		  data = DefineEncoding(data,Encodings.UTF8)
 		  
+		  WorkWindow.Restore
+		  
 		  if data <> "focus" then
 		    f =  GetFolderItem(data)
-		    if (f = nil) then
+		    if f = nil then
 		      MsgBox  Dico.Value("MsgErrOpenFile")
-		      listen
-		      return
+		    else
+		      WorkWindow.OpenFile(f)
 		    end if
-		    wnd.Restore
-		    wnd.OpenFile(f)
 		  end if
-		  listen
+		  app.ipc = new IPC
 		  
-		  Exception err
-		    dim d As Debug
-		    d = new Debug
-		    d.setMethod(getString,"dataAvailable")
-		    d.setVariable("data",data)
-		    d.setVariable("file",f)
-		    err.message = err.message+EndOfLine+d.getString
-		    
-		    Raise err
-		    
-		    
-		    
-		    
-		    
+		  
+		  
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -43,13 +35,10 @@ Inherits IPCSocket
 		Sub Constructor()
 		  path = "SpecialFolder.Documents"
 		  
-		  Exception err
-		    dim d As Debug
-		    d = new Debug
-		    d.setMethod(getString,"dataAvailable")
-		    d.setVariable("path",path)
-		    err.message = err.message+d.getString
-		    Raise err
+		  if not app.ipctransfert then 
+		    listen
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
