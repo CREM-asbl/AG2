@@ -566,7 +566,7 @@ Inherits MultipleSelectOperation
 		  EL.SetAttribute("TsfType", str(type))
 		  EL.setattribute("TsfOri",str(ori))
 		  if   tsf.supp isa Lacet  then
-		    EL.setattribute("TsfSide", str(tsf.supp.side))
+		    EL.setattribute("TsfSide", str(tsf.supp.side)) 'str(index(iobj)))
 		  end if
 		  EL.SetAttribute("TsfNum",str(tsf.GetNum))
 		  return EL

@@ -31,7 +31,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -187,6 +187,7 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   4
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Texte :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -221,6 +222,7 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Taille :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -238,7 +240,7 @@ Begin Window LabelWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFFFF00FF
+      FillColor       =   &cFF00FFFF
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -252,6 +254,7 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   49
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -279,6 +282,7 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   7
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Couleur :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -313,6 +317,7 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   8
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Axe X :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -347,6 +352,7 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   9
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Axe Y :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -364,7 +370,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -407,7 +413,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -542,6 +548,7 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   15
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Police :"
       TextAlign       =   0
       TextColor       =   &c00000000

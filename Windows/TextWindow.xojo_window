@@ -31,7 +31,7 @@ Begin Window TextWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cE1E1E100
+      BackColor       =   &cE1E100E1
       Bold            =   False
       Border          =   True
       DataField       =   ""
