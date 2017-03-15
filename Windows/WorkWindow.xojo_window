@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -764,7 +765,7 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
 		  if currentcontent <> nil then
-		    PushButton1.enabled = currentcontent.currentop > 0
+		    PushButton1.enabled = (currentcontent.currentop > 0) or (currentcontent.currentoperation <> nil)
 		  end if
 		  
 		End Sub
@@ -3307,25 +3308,38 @@ End
 		  dim Name, Type as string
 		  dim op, op1 as integer
 		  dim n1, n2, n3 as integer
+		  dim s as shape
 		  
-		  if currentcontent.currentop = 0 or currentcontent.currentoperation = nil then
+		  if currentcontent.currentoperation <> nil then
+		    me.helptag =Dico.Value("Cancel") + " " + currentcontent.currentoperation.GetName
+		    if currentcontent.currentoperation.currentshape <> nil then
+		      currentcontent.currentoperation.currentshape.side = -1
+		      selshape = currentcontent.currentoperation.currentshape
+		    end if
+		    currentcontent.currentoperation.canceling = true
+		    return 
+		  end if
+		  
+		  if currentcontent.currentop = 0  then
 		    return
 		  end if
 		  
-		  currentcontent.currentoperation.canceling = true
 		  EL = currentcontent.OpToCancel
+		  if  EL = nil then
+		    return
+		  end if
 		  EL1 = XMLElement(EL.firstchild)
-		  
-		  if EL = nil  or EL1 = nil then
+		  if  EL1 = nil then
 		    return
 		  end if
 		  
 		  op = val(EL.GetAttribute("OpId"))
-		  Name = EL.GetAttribute(Dico.Value("Type")) + EL1.GetAttribute("Type")
+		  Name = EL.GetAttribute(Dico.Value("Type")) + " "+ EL1.GetAttribute("Type")
 		  me.Helptag = Dico.Value("Cancel") + " " + lowercase(Name)
 		  n1 =val(EL1.GetAttribute("Id"))
-		  selshape = currentcontent.TheObjects.GetShape(n1)
-		  
+		  s = currentcontent.TheObjects.GetShape(n1)
+		  s.side = -1
+		  selshape = s
 		  
 		  select case op
 		  case 19 //Dupliquer
@@ -3338,15 +3352,15 @@ End
 		    end if
 		  end select
 		  selshape.highlight
-		  me.Helptag = me.Helptag + " "+  lowercase(Type)
+		  me.Helptag = me.Helptag + " "+  lowercase(Dico.value(Type))
 		  can.refreshbackground
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
 		  if selshape <> nil then
-		    currentcontent.TheObjects.unhighlightall
-		    can.refreshbackground
+		    selshape.unhighlight
+		    'can.refreshbackground
 		  end if
 		  if currentcontent.currentoperation <> nil then
 		    currentcontent.currentoperation.canceling = false

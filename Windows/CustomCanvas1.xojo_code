@@ -89,9 +89,9 @@ Inherits Canvas
 		    else
 		      base.append(New MenuItem(Dico.Value("DePointer")))
 		    end if
-		    if  sctxt.ti = nil   then
+		    if  sctxt.ti = nil and not sctxt isa Bande and not sctxt isa secteur  then
 		      base.append( New MenuItem(Dico.Value("Flecher")))
-		    else
+		    elseif  sctxt.ti <> nil   then
 		      base.append(New MenuItem(Dico.Value("DeFlecher")))
 		    end if
 		  end if

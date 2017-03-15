@@ -584,17 +584,18 @@ Inherits Bipoint
 		  
 		  delta = can.MagneticDist
 		  
-		  if p.distance(firstp, secondp) < delta then
-		    return 0
-		  else
-		    return -1
-		  end if
-		  
-		  '//Ne vaudrait-il pas mieux if pinshape(p) then
+		  'if p.distance(firstp, secondp) < delta then
 		  'return 0
 		  'else
-		  'return 1
-		  'end if  ?
+		  'return -1
+		  'end if
+		  
+		  '//Ne vaudrait-il pas mieux 
+		  if pinshape(p) then
+		    return 0
+		  else
+		    return 1
+		  end if  
 		End Function
 	#tag EndMethod
 
