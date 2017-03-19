@@ -49,6 +49,30 @@ Inherits Triangle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Modifier2(n1 as integer, n2 as integer) As Matrix
+		  dim ep0, ep1, ep2, np0, np1,np2 as BasicPoint
+		  dim n0 as integer
+		  dim BiB as BiBPoint
+		  dim p as point
+		  dim u, v as BasicPoint
+		  
+		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
+		  v = points(1).bpt - points(0).bpt
+		  v = v.vecnorperp
+		  u = (points(0).bpt+points(1).bpt)/2
+		  BiB = new BiBPoint(u,u+v)
+		  np2 = np2.projection(BiB)
+		  points(2).moveto np2
+		  points(2).modified = true
+		  return new affinitymatrix(ep0,ep1,ep2,np0,np1,np2)
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Modifier2fixes(p as point) As Matrix
 		  // Routine qui modifie le triangle  dans le cas où le point n est seul à pouvoir être déplacé (pas arbitrairement)
 		  // Trois cas possibles selon l'index de p
@@ -82,6 +106,26 @@ Inherits Triangle
 		  
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier3() As matrix
+		  dim t as Boolean
+		  dim ff as figure
+		  
+		  ff = GetSousFigure(fig)
+		  t = false
+		  dim i as integer
+		  for i = 0 to 2
+		    t = t or  ff.replacerpoint (points(i))
+		  next
+		  
+		  if t then
+		    return ff.autospeupdate
+		  else
+		    return new Matrix(1)
+		  end if
 		End Function
 	#tag EndMethod
 

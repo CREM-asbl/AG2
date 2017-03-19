@@ -131,6 +131,12 @@ Inherits Shape
 		  dim i as integer
 		  dim b as Boolean
 		  
+		  computeradius
+		  
+		  if radius < epsilon then   'pour éviter les oreilles de lapin
+		    return
+		  end if
+		  
 		  b = (dret <> nil) and ( (dret isa RetTimer) or ((dret isa TsfTimer) and ((TsfTimer(dret).type = 6) or  TsfTimer(dret).type = 9 or TsfTimer(dret).type =11)) )
 		  if not b and not isaellipse then
 		    coord.CreateExtreAndCtrlPoints(ori)

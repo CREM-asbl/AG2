@@ -751,7 +751,9 @@ Protected Class Figure
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  s = shapes.item(0)
-		  if s isa arc  or s isa DSect then
+		  if s isa arc  or s isa DSect  then
+		    return s.Modifier2(n1,n2)
+		  elseif s isa Triangiso then
 		    return s.Modifier2(n1,n2)
 		  end if
 		  
@@ -794,7 +796,7 @@ Protected Class Figure
 		  
 		  
 		  s = shapes.item(0)
-		  if s isa arc  or s isa DSect then
+		  if s isa arc  or s isa DSect or s isa Triangiso then
 		    return s.modifier3
 		  end if
 		  
@@ -3025,7 +3027,7 @@ Protected Class Figure
 		  for i = 0 to shapes.count-1
 		    diam = shapes.item(i).computediam
 		    if diam <= epsilon then
-		      for j = 1 to ubound(shapes.item(i).points)
+		      for j = 2 to ubound(shapes.item(i).points)
 		        shapes.item(i).points(j).moveto shapes.item(i).points(0).bpt
 		      next
 		      return

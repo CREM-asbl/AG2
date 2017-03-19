@@ -90,7 +90,6 @@ Inherits Circle
 		    for i = 0 to 1
 		      Points(i).MoveTo(p)
 		    next
-		    
 		  else
 		    Points(1).moveto p
 		    updatecoord
