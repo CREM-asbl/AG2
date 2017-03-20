@@ -3655,9 +3655,6 @@ Protected Class Shape
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
 		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap 
-		          'if (s1.id = 1 and s2.id = 31) or(s1.id=31 and s2.id = 1) then
-		          'MsgBox ("ici")
-		          'end if
 		          inter = p.GetInter
 		          inter.update(p)
 		          p.updateconstructedpoints

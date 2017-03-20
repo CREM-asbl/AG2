@@ -90,18 +90,22 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function Inter(c as circle, byref intersec() as basicPoint) As integer
 		  dim B1, B2 as BiBPoint
-		  dim i as integer
 		  dim n as integer
-		  dim bq, w as basicpoint
+		  dim bq, w, c1, c2 as basicpoint
 		  redim intersec(-1)
+		  
+		  c1 =c.getgravitycenter
+		  c2 = getgravitycenter
 		  
 		  B1 = new BibPoint (c.GetGravityCenter, c.GetGravityCenter+ new BasicPoint(0,c.GetRadius))
 		  B2 = new BibPoint (GetGravityCenter, GetGravityCenter+ new BasicPoint(0,GetRadius))
 		  
-		  n = B1.BiBInterCercles(B2,intersec(),bq,w)
-		  
-		  return n
-		  
+		  if c1.distance(c2) < epsilon and abs(c.getradius-getradius) < epsilon then
+		    return 3
+		  else
+		    n = B1.BiBInterCercles(B2,intersec(),bq,w)
+		    return n
+		  end if
 		  
 		  
 		  

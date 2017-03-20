@@ -85,22 +85,32 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub computeintercercles()
 		  dim k as integer
-		  dim bq() as basicpoint
+		  dim bq(), bb0, bb1 as basicpoint
 		  dim g1, g2 as circle
 		  
+		  bb0 = bptinters(0,0)
+		  bb1 = bptinters(0,1)
 		  g1 = circle(sh1)
 		  g2 = circle(sh2)
 		  k = g1.inter(g2,bq())
 		  
-		  if  k = 0 then
-		    bq.append nil
-		    bq.append nil
-		    val(0,0) = false
-		    val(0,1) = false
+		  if k = 3 or k = 0 then   'introduit pour sangaku02
+		    'val(0,0) = true
+		    'val(0,1) = true
+		    return
 		  end if
+		  
+		  'if  k = 0 then
+		  'bb0 
+		  ''bq.append nil
+		  ''bq.append nil
+		  ''val(0,0) = false
+		  ''val(0,1) = false
+		  'end if
 		  
 		  bptinters(0,0) = bq(0)
 		  bptinters(0,1) = bq(1)
+		  
 		  
 		  
 		End Sub
@@ -152,6 +162,7 @@ Inherits SelectOperation
 		  dim   b, w, p() as basicpoint
 		  dim d1 as droite
 		  dim  g2 as circle
+		  
 		  
 		  
 		  for i = 0 to nlig
@@ -411,7 +422,7 @@ Inherits SelectOperation
 		  j1 = k
 		  for i = 0 to nlig
 		    for j = 0 to ncol
-		      if val(i,j)  and (not bezet(i,j))  then
+		      if val(i,j)  and (not bezet(i,j)) and bptinters(i,j) <> nil then
 		        s = pt.bpt.distance(bptinters(i,j))
 		        if abs(s) < r1 then
 		          r1 = s
@@ -621,7 +632,6 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub validerpoint(pt as point, i as integer, j As integer)
-		  'if bezet(i,j) = false then
 		  if bptinters(i,j) = nil then
 		    return
 		  end if
@@ -637,7 +647,6 @@ Inherits SelectOperation
 		  if val(i,j) and (bptinters(i,j) <> nil) and ((pt.conditionedby = nil) or (not pt.conditionedby.invalid)) and  not sh1.invalid and not sh2.invalid then
 		    pt.valider
 		  end if
-		  'end if
 		  
 		  
 		End Sub
