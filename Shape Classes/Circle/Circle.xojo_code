@@ -186,10 +186,16 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub print(g as Graphics, sc As Double)
 		  dim radius as Double
+		  dim i as integer
 		  
 		  ArcSkull(nsk).scale(self, sc) 
 		  nsk.paint(g)
 		  nsk.update(self)
+		  
+		  for i = 0 to labs.count-1
+		    Labs.item(i).print(g, sc)
+		  next
+		  
 		End Sub
 	#tag EndMethod
 
