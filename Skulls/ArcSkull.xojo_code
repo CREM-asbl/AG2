@@ -36,6 +36,43 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub scale(s as Shape, sc as Double)
+		  dim i as integer
+		  dim p, q as BasicPoint
+		  
+		  p =s.getgravitycenter
+		  ref = can.transform(p)
+		  x = ref.x * sc
+		  y = ref.y * sc
+		  
+		  q = can.dtransform(s.coord.tab(1)-p) * sc
+		  item(0).x = q.x
+		  item(0).y = q.y
+		  q = can.dtransform(s.coord.extre(0)-p) * sc
+		  item(0).x2 = q.x
+		  item(0).y2 = q.y
+		  item(1).x=q.x
+		  item(1).y=q.y
+		  q = can.dtransform(s.coord.extre(1)-p) * sc
+		  item(1).x2 = q.x
+		  item(1).y2 = q.y
+		  item(2).x=q.x
+		  item(2).y=q.y
+		  if s isa arc then
+		    q = can.dtransform(s.coord.tab(2)-p) * sc
+		  else
+		    q =can.dtransform(s.coord.tab(1)-p) * sc
+		  end if
+		  item(2).x2 = q.x
+		  item(2).y2 = q.y
+		  
+		  for i = 0 to 5
+		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p) * sc)
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub update(s as shape)
 		  dim i as integer
 		  dim p, q as BasicPoint

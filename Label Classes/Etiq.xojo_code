@@ -174,8 +174,6 @@ Inherits Label
 
 	#tag Method, Flags = &h0
 		Sub MouseCorrection(P as BasicPoint)
-		  
-		  
 		  Correction = P-Position
 		  
 		  
@@ -324,9 +322,11 @@ Inherits Label
 		  q = q*sc
 		  if text = "%"  then
 		    g.DrawString(str(chape.id),q.x, q.y)
+		    return
 		  end if
 		  if text <> "*"   then
 		    g.DrawString(Text,q.x, q.y)
+		    return
 		  end if
 		  
 		End Sub
