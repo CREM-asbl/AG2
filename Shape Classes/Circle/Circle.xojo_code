@@ -184,6 +184,16 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub print(g as Graphics, sc As Double)
+		  dim radius as Double
+		  
+		  ArcSkull(nsk).scale(self, sc) 
+		  nsk.paint(g)
+		  nsk.update(self)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetRadius(r as double)
 		  dim v as BasicPoint
 		  
