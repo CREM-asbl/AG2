@@ -265,4 +265,6 @@ UseBuildsFolder=True
 HiDPI=True
 CopyRedistNextToWindowsEXE=False
 IsWebProject=False
+LinuxBuildArchitecture=1
+MacBuildArchitecture=1
 OptimizationLevel=0
