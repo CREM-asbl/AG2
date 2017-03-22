@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFF008080
+      FillColor       =   &c8080FF00
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -765,7 +765,7 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		  
 		  if currentcontent <> nil then
-		    PushButton1.enabled = currentcontent.currentop > 0
+		    PushButton1.enabled = (currentcontent.currentop > 0) or (currentcontent.currentoperation <> nil)
 		  end if
 		  
 		End Sub
@@ -891,6 +891,9 @@ End
 		  DrapShowall = false
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
+		  end if
+		  if Config.username = "Tutoriel" then
+		    NotesWindow.visible = true
 		  end if
 		  
 		  if app.fileName <> "" then
@@ -1313,6 +1316,7 @@ End
 			dim md as MessageDialog
 			Dim b as MessageDialogButton
 			Dim mois() as string
+			dim mess as string 
 			
 			mois.Append ("Janvier")
 			mois.Append ("Février")
@@ -1332,7 +1336,13 @@ End
 			md = New MessageDialog
 			md.Title = Dico.value("HelpAbout")
 			md.Icon = 0
-			md.Message = "Apprenti géomètre v."+App.LongVersion+EndOfLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
+			mess = "Apprenti géomètre v."+App.LongVersion
+			if Target32bit then
+			mess = mess+" 32bits "
+			else
+			mess = mess+" 64bits "
+			end if
+			md.Message = mess+EndOfLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
 			b = md.ShowModal
 			end if
 			return true
@@ -2354,7 +2364,7 @@ End
 		      conf.close
 		    end if
 		    select case val
-		    case -1             '-1: annuler
+		    case -1             
 		      return
 		    case  1
 		      CurrentContent.Save
@@ -3283,11 +3293,13 @@ End
 		      if CurrentContent.CurrentOp = 0 then
 		        me.Enabled = false
 		      end if
+		      currentcontent.currentoperation = nil
+		      refreshtitle
 		    else
 		      currentcontent.undolastoperation
 		    end if
 		  end if
-		  'setfocus
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -3296,25 +3308,38 @@ End
 		  dim Name, Type as string
 		  dim op, op1 as integer
 		  dim n1, n2, n3 as integer
+		  dim s as shape
 		  
-		  if currentcontent.currentop = 0 or currentcontent.currentoperation = nil then
+		  if currentcontent.currentoperation <> nil then
+		    me.helptag =Dico.Value("Cancel") + " " + currentcontent.currentoperation.GetName
+		    if currentcontent.currentoperation.currentshape <> nil then
+		      currentcontent.currentoperation.currentshape.side = -1
+		      selshape = currentcontent.currentoperation.currentshape
+		    end if
+		    currentcontent.currentoperation.canceling = true
+		    return 
+		  end if
+		  
+		  if currentcontent.currentop = 0  then
 		    return
 		  end if
 		  
-		  currentcontent.currentoperation.canceling = true
 		  EL = currentcontent.OpToCancel
+		  if  EL = nil then
+		    return
+		  end if
 		  EL1 = XMLElement(EL.firstchild)
-		  
-		  if EL = nil  or EL1 = nil then
+		  if  EL1 = nil then
 		    return
 		  end if
 		  
 		  op = val(EL.GetAttribute("OpId"))
-		  Name = EL.GetAttribute(Dico.Value("Type")) + EL1.GetAttribute("Type")
+		  Name = EL.GetAttribute(Dico.Value("Type")) + " "+ EL1.GetAttribute("Type")
 		  me.Helptag = Dico.Value("Cancel") + " " + lowercase(Name)
 		  n1 =val(EL1.GetAttribute("Id"))
-		  selshape = currentcontent.TheObjects.GetShape(n1)
-		  
+		  s = currentcontent.TheObjects.GetShape(n1)
+		  s.side = -1
+		  selshape = s
 		  
 		  select case op
 		  case 19 //Dupliquer
@@ -3327,15 +3352,15 @@ End
 		    end if
 		  end select
 		  selshape.highlight
-		  me.Helptag = me.Helptag + " "+  lowercase(Type)
+		  me.Helptag = me.Helptag + " "+  lowercase(Dico.value(Type))
 		  can.refreshbackground
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
 		  if selshape <> nil then
-		    currentcontent.TheObjects.unhighlightall
-		    can.refreshbackground
+		    selshape.unhighlight
+		    'can.refreshbackground
 		  end if
 		  if currentcontent.currentoperation <> nil then
 		    currentcontent.currentoperation.canceling = false
@@ -3356,11 +3381,11 @@ End
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
-		      liboutils(0).refresh
 		    end if
 		    closefw
 		    return true
 		  end if
+		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -3375,6 +3400,7 @@ End
 		    else
 		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
 		    end if
+		    me.invalidate
 		  end if
 		End Sub
 	#tag EndEvent
@@ -3387,6 +3413,13 @@ End
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
+		  
+		  'g.ForeColor = RGB(255,255,255)
+		  'g.FillRect(0,0,g.Width,g.Height)
+		  if index = selectedtool then
+		    g.ForeColor = RGB(255,0,0)
+		    g.DrawRect(0,0,g.Width,g.Height)
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents

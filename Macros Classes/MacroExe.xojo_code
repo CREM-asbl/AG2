@@ -289,6 +289,9 @@ Inherits MultipleSelectOperation
 		      createdshape = curop.currentshape
 		    end select
 		    
+		    if Mac.ObFinal.IndexOf(n) = -1 then
+		      createdshape.hidden = true
+		    end if
 		    MacId.Append n
 		    Real.Append createdshape.id
 		    RealSide.Append 0
@@ -379,14 +382,15 @@ Inherits MultipleSelectOperation
 		    CurrentContent.CurrentFileUpToDate=false
 		    wnd.refreshtitle
 		    objects.unselectall
-		    objects.unhighlightall
 		    CurrentItemToSet=1
 		    Finished = true
-		    can.refreshbackground
 		  else
 		    currenthighlightedshape = nil
 		    super.EndOperation
 		  end if
+		  
+		  objects.unhighlightall
+		  can.refreshbackground
 		  MacInfo = new MacConstructionInfo(Mac)
 		  Mac.MacInf = MacInfo
 		  Redim MacId(-1)
@@ -519,13 +523,19 @@ Inherits MultipleSelectOperation
 		  if ubound(Mac.ObInit) = -1 then
 		    return
 		  end if
-		  currenthighlightedshape = nil
+		  if currenthighlightedshape <> nil then
+		    currenthighlightedshape.unhighlight
+		    currenthighlightedshape = nil
+		  end if
 		  if fa = -1 and CurrentItemToSet > 0 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
 		    fa = Mac.FaInit(CurrentItemToSet-1)
 		    fo = Mac.FoInit(CurrentItemToSet-1)
 		  end if
 		  currenthighlightedshape =getshape(p)
+		  if currenthighlightedshape <> nil then
+		    currenthighlightedshape.highlight
+		  end if
 		  
 		  
 		End Sub
@@ -653,6 +663,7 @@ Inherits MultipleSelectOperation
 		  if not currentcontent.macrocreation then
 		    Mac.MacInf.RealInit.append s.id
 		    Mac.MacInf.RealInitSide.append side
+		    objects.unhighlightall
 		  else
 		    MacId.append Mac.ObInit(CurrentItemtoSet-1)
 		    Real.append s.id

@@ -12,40 +12,26 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i,n as integer
+		  dim i as integer
 		  dim Tr as BasicPoint
 		  
 		  
 		  if (Fus1.Hybrid) or (Fus2.Hybrid) then
-		    
-		  elseif  dir = -1  then
-		    Fus = new Polyqcq(Objects,Fus1.Points((start1+1)mod Fus1.npts).bpt)
-		    for i = 2 to Fus1.npts-1
-		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
-		    next
-		    for  i = 1 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
-		    next
-		  elseif dir = 1 then
-		    Fus = new Polyqcq(Objects,Fus1.Points(start1).bpt)
-		    for i = 1 to Fus1.npts-1
-		      Fus.AddPoint Fus1.Points((start1+i) mod Fus1.npts).bpt
-		    next
-		    for i = 0 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+i) mod Fus2.npts).bpt
-		    next
-		    Fus.Points(0).Identify1(Fus.Points(Fus1.npts))
-		    Fus.Points(1).Identify1(Fus.Points(Fus1.npts+1))
+		    return
 		  end if
 		  
-		  Fus.coord= new nBPoint(Fus)
-		  if Fus1.std or Fus2.std then
-		    Fus.std = true
-		    Fus.fam = 14
+		  if Fus1.std then 
+		    Fus = StandardPolygon(Fus1).Fusionner(Fus2,start1,start2,dir)
 		  else
-		    Fus.autos
+		    Fus = Polygon(Fus1).Fusionner(Fus2,start1,start2,dir)
 		  end if
 		  
+		  if fus = nil then
+		    return
+		  end if
+		  
+		  
+		  Fus.autos
 		  Fus.forme = Fus.npts-3
 		  Fus.FillColor = Fus1.fillcolor.moyenne(Fus2.fillcolor)
 		  Fus.Fill = (Fus1.fill+Fus2.fill)/2
@@ -56,10 +42,7 @@ Inherits MultipleSelectOperation
 		  M1 = new Translationmatrix(Tr*0.2)
 		  M2 = new Translationmatrix(Tr*0.2)
 		  Fus.Move(M1)
-		  if dir = 1 and not Fus.std then
-		    Fus.Points(0).Move(M1.inv)
-		    Fus.Points(1).Move(M1.inv)
-		  end if
+		  
 		  Fus.EndConstruction
 		  if not fus.std then
 		    SetConstructionInfo(dir)
@@ -96,11 +79,9 @@ Inherits MultipleSelectOperation
 		  
 		  select case CurrentItemToSet
 		  case 1
-		    if S isa Lacet then
-		      return s
-		    end if
+		    return s
 		  case 2
-		    if S isa Lacet and S<>Fus1 and Lacet(Fus1).PossibleFusionWith(Lacet(s), start1, start2, dir) then
+		    if  S<>Fus1 and Lacet(Fus1).PossibleFusionWith(Lacet(s), start1, start2, dir) then
 		      return s
 		    end if
 		  end select
@@ -116,9 +97,8 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as Graphics)
-		  dim trait As CurveShape
+		  
 		  super.paint(g)
-		  dim a,b as BasicPoint
 		  
 		  g.Bold=True
 		  
@@ -136,22 +116,35 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
 		  dim EL0, EL1, EL2 as XMLElement
-		  
+		  dim List as XMLNodeList
 		  
 		  ReCreateCreatedFigures (Temp)
-		  EL0 = XMLElement(Temp.firstchild)
-		  EL1 = XMLElement(EL0.firstchild)
+		  EL0 =  XMLElement(Temp.FirstChild)
+		  List = EL0.XQL(Dico.Value("Forms"))
+		  if List.length > 0 then
+		    EL1 = XMLElement(List.Item(0))
+		  end if
 		  dir = val(EL1.GetAttribute("Dir"))
 		  start1 = val(EL1.GetAttribute("Start1"))
 		  start2 = val(EL1.GetAttribute("Start2"))
 		  Fus1 = Polygon(Objects.Getshape(val(XMLElement(EL1.child(0)).GetAttribute("Id"))))
 		  Fus2 = Polygon(Objects.GetShape(val(XMLElement(EL1.child(1)).GetAttribute("Id"))))
-		  EL2 = XMLElement(EL0.child(1))
-		  Fus =   Polygon(Objects.GetShape(val(EL2.GetAttribute("Id"))))
-		  EL2 = XMLElement(EL2.child(1))
-		  M1 = new Matrix(XMLElement(EL2.Child(0)))
-		  M2 = new Matrix(XMLElement(EL2.Child(1)))
-		  SetConstructionInfo(dir)
+		  List = EL0.XQL(Dico.Value("Form"))
+		  
+		  if List.length > 0 then
+		    EL1 = XMLElement(List.Item(0))
+		  end if
+		  Fus =   Polygon(Objects.GetShape(val(EL1.GetAttribute("Id"))))
+		  
+		  if not Fus.std then
+		    List = EL0.XQL(Dico.Value("ConstructedBy"))
+		    if List.length > 0 then
+		      EL1 = XMLElement(List.Item(0))
+		    end if
+		    M1 = new Matrix(XMLElement(EL1.Child(0)))
+		    M2 = new Matrix(XMLElement(EL1.Child(1)))
+		    SetConstructionInfo(dir)
+		  end if
 		  wnd.refresh
 		End Sub
 	#tag EndMethod
@@ -217,19 +210,31 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Function SetItem(S as shape) As boolean
+		  dim P as Lacet
+		  
 		  select case CurrentItemToSet
 		  case 1
 		    if s.Hybrid then
 		      Fus1 = lacet(s)
+		    elseif s.std then
+		      Fus1 = StandardPolygon(s)
 		    else
 		      Fus1 = Polygon(s)
 		    end if
 		  case 2
 		    if s.Hybrid then
 		      Fus2 = Lacet(s)
+		    elseif s.std then
+		      Fus2 = StandardPolygon(s)
 		    else
 		      Fus2 =Polygon(s)
 		    end if
+		    if Fus2.std and not Fus1.std then
+		      P = Fus1
+		      Fus1 = Fus2
+		      Fus2 = Polygon(P)
+		    end if
+		    
 		  end select
 		  
 		  return true

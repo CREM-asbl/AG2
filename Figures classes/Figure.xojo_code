@@ -743,19 +743,24 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autospeupdate2() As Matrix
-		  dim p, q as point
+		  dim p, q, r as point
+		  dim ep, eq, er, np, nq, nr As BasicPoint
 		  dim n1, n2 as integer
 		  dim s as shape
 		  
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  s = shapes.item(0)
-		  if s isa arc  or s isa DSect then
+		  if s isa arc  or s isa DSect  then
+		    return s.Modifier2(n1,n2)
+		  elseif s isa Triangiso then
 		    return s.Modifier2(n1,n2)
 		  end if
 		  
 		  p = somm.item(n1)
 		  q = somm.item(n2)
+		  getoldnewpos(p,ep,np)
+		  getoldnewpos(q,eq,nq)
 		  
 		  select case  NbSommSur(n1,n2)
 		  case 0
@@ -767,8 +772,12 @@ Protected Class Figure
 		  case 1
 		    if  (replacerpoint(p) or replacerpoint(q))  then
 		      return autospeupdate            //le 3e sommet est sur et on a replacé un des deux autres qui était également sur
-		    else
+		    elseif s isa rect then
 		      return rect(s).modifier2fixes(p,q)
+		    elseif s isa losange then
+		      r = somm.item(Listsommsur(0))
+		      getoldnewpos(r,er,nr)
+		      return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		    end if
 		  else
 		    return s.Modify2(p,q)
@@ -787,7 +796,7 @@ Protected Class Figure
 		  
 		  
 		  s = shapes.item(0)
-		  if s isa arc  or s isa DSect then
+		  if s isa arc  or s isa DSect or s isa Triangiso then
 		    return s.modifier3
 		  end if
 		  
@@ -1666,15 +1675,6 @@ Protected Class Figure
 		    n3 = ListPtsModifs(2)
 		    r = Point(somm.item(n3))
 		    getoldnewpos(r,er,nr)
-		    'for i = 0 to 3
-		    'if i <> n1 and i <> n2 and i <> n3 then
-		    'n4 = i
-		    'end if
-		    'next
-		    's = Point(somm.item(n4))
-		    'getoldnewpos(s,es,ns)
-		    's.moveto es
-		    's.modified = false
 		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  end select
 		End Function
@@ -2976,7 +2976,6 @@ Protected Class Figure
 		  end if
 		  
 		  if auto = 3 and f.auto = 1 and NbTrueSommCommuns(f) >= 2  then
-		    
 		    return not HasPointOnConstructedshape (f)
 		  end if
 		  
@@ -3028,7 +3027,7 @@ Protected Class Figure
 		  for i = 0 to shapes.count-1
 		    diam = shapes.item(i).computediam
 		    if diam <= epsilon then
-		      for j = 1 to ubound(shapes.item(i).points)
+		      for j = 2 to ubound(shapes.item(i).points)
 		        shapes.item(i).points(j).moveto shapes.item(i).points(0).bpt
 		      next
 		      return

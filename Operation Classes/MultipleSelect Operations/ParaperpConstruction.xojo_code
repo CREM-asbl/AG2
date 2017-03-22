@@ -21,7 +21,7 @@ Inherits ShapeConstruction
 		  
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  super.constructor (fa,fo)
+		  constructor (fa,fo)
 		  Mid = val(EL1.GetAttribute("Id"))              //Ids de la droite/segment
 		  ori = val(EL1.GetAttribute("Ori"))
 		  rid = MExe.GetRealId(Mid)

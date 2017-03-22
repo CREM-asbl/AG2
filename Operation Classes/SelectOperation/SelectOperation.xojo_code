@@ -406,7 +406,6 @@ Inherits Operation
 		      currenthighlightedtsf = nil
 		      currenthighlightedshape = nil
 		    end if
-		    'CurrentContent.TheObjects.unhighlightall
 		    CurrentContent.TheTransfos.GetTsf(p, ListTsf)
 		    if ListTsf.count  > 0 then
 		      CurrentHighlightedTsf = ListTsf.item(itsf)

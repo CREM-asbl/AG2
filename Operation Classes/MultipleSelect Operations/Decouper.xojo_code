@@ -231,7 +231,7 @@ Inherits MultipleSelectOperation
 		  
 		  if CurrentItemToSet = 1 then
 		    S = Operation.GetShape(p)
-		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc)  or s.isaellipse ) then
+		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc)  or s.isaellipse or S isa Bande ) then
 		      S = nil
 		    end if
 		    return s

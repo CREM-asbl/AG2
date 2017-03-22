@@ -68,17 +68,14 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as polygon, q as BasicPoint)
-		  dim i, j as integer
 		  dim M as Matrix
 		  
 		  Shape.constructor(ol,s)
-		  redim prol(-1)
 		  redim prol(s.npts-1)
-		  Ori=s.Ori
 		  liberte = s.liberte
-		  M = new TranslationMatrix(q)
+		  'M = new TranslationMatrix(q)
 		  createskull(s.Points(0).bpt)
-		  Move(M)
+		  'Move(M)
 		  
 		End Sub
 	#tag EndMethod
@@ -99,6 +96,32 @@ Inherits Lacet
 		Sub Constructor(P as Polygon, M as Matrix)
 		  Shape.constructor(P, M)
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CreateSpecs() As StdPolygonSpecifications
+		  
+		  dim specs as new StdPolygonSpecifications
+		  dim Angles(-1) As double
+		  dim Coul as Couleur
+		  dim Distances(-1) as double
+		  dim alpha, beta as double
+		  dim j as integer
+		  dim BiB as BiBPoint
+		  
+		  alpha = 0
+		  for j = 0 to npts-2
+		    Bib = GetBiBside(j)
+		    specs.Distances.append BiB.longueur
+		    beta = BiB.anglepolaire*180/PI
+		    specs.Angles.append beta-alpha
+		    alpha = beta
+		  next
+		  specs.coul = fillcolor
+		  return specs
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -125,6 +148,36 @@ Inherits Lacet
 		  next
 		  return false
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Fusionner(Fus2 as Lacet, start1 as integer, start2 as integer, dir as integer) As Polygon
+		  dim Fus as Polyqcq
+		  dim i as integer
+		  
+		  if  dir = -1  then
+		    Fus = new Polyqcq(Objects,Points((start1+1)mod npts).bpt)
+		    for i = 2 to npts-1
+		      Fus.AddPoint Points((start1+i) mod npts).bpt
+		    next
+		    for  i = 1 to Fus2.npts-1
+		      Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
+		    next
+		  elseif dir = 1 then
+		    Fus = new Polyqcq(Objects, Points(start1).bpt)
+		    for i = 1 to npts-1
+		      Fus.AddPoint Points((start1+i) mod npts).bpt
+		    next
+		    for i = 0 to Fus2.npts-1
+		      Fus.AddPoint Fus2.Points((start2+ i) mod Fus2.npts).bpt
+		    next
+		    
+		    Fus.Points(0).Identify1(Fus.Points(npts))
+		    Fus.Points(1).Identify1(Fus.Points(npts+1))
+		  end if
+		  Fus.coord= new nBPoint(Fus)
+		  return Fus
 		End Function
 	#tag EndMethod
 

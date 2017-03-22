@@ -4,19 +4,18 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub AddPoint(p as BasicPoint)
 		  'Sert à introduire les points correspondants aux points de découpe. Les  côtés correspondants sont nécessairement rectilignes sauf ptet le dernier.
-		  dim k as integer
-		  dim s as shape
+		  'Sert également pour les fusions
 		  dim Pt as Point
 		  
-		  s = constructedby.shape
-		  if npts = 0 then
+		  if npts = 0 then 'on passe ici dans decouper, pas dans fusionner
 		    Points(0).moveto p
-		    Pt = Points(0)
+		    createskull(p)
 		  else
 		    Pt = new Point(objects,p)
 		    Points.append Pt
 		    SetPoint(Pt)
 		  end if
+		  Lskull(nsk).addpoint(can.dtransform(p-Points(0).bpt))
 		  npts = npts+1
 		  ncpts = ncpts+1
 		  
@@ -681,6 +680,10 @@ Inherits Shape
 		  dim i, j,k,l as integer
 		  dim delta as double
 		  dim dr1, dr2 as BiBPoint
+		  
+		  if S.std then 
+		    return S.PossibleFusionWith(self, i0, j0, dir)
+		  end if
 		  
 		  delta = can.MagneticDist
 		  

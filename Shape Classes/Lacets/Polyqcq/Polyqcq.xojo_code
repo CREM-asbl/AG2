@@ -2,25 +2,6 @@
 Protected Class Polyqcq
 Inherits Polygon
 	#tag Method, Flags = &h0
-		Sub AddPoint(p as BasicPoint)
-		  if npts = 0 then
-		    Points(0).moveto p
-		    createskull(p)
-		  else
-		    Points.append new Point(objects,p)
-		    SetPoint(Points(npts))
-		  end if
-		  Lskull(nsk).addpoint(can.dtransform(p-Points(0).bpt))
-		  npts = npts+1
-		  ncpts = ncpts+1
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList)
 		  Shape.constructor (ol)
 		  npts = 0

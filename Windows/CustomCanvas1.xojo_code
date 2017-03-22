@@ -75,13 +75,13 @@ Inherits Canvas
 		    base.append(New MenuItem(Dico.Value("Mince")))
 		  end if
 		  
-		  if sctxt isa point and  point(sctxt).pointsur.count = 0 then
-		    if not Point(sctxt).std  then
-		      base.append(New MenuItem(Dico.Value("Rigidifier")))
-		    else
-		      base.append(New MenuItem(Dico.Value("Derigidifier")))
-		    end if
+		  
+		  if not sctxt.std and sctxt.fam < 10  then
+		    base.append(New MenuItem(Dico.Value("Rigidifier")))
+		  else
+		    base.append(New MenuItem(Dico.Value("Derigidifier")))
 		  end if
+		  
 		  
 		  if not sctxt isa point then
 		    if sctxt.nonpointed then
@@ -89,9 +89,9 @@ Inherits Canvas
 		    else
 		      base.append(New MenuItem(Dico.Value("DePointer")))
 		    end if
-		    if  sctxt.ti = nil   then
+		    if  sctxt.ti = nil and not sctxt isa Bande and not sctxt isa secteur  then
 		      base.append( New MenuItem(Dico.Value("Flecher")))
-		    else
+		    elseif  sctxt.ti <> nil   then
 		      base.append(New MenuItem(Dico.Value("DeFlecher")))
 		    end if
 		  end if
@@ -148,9 +148,6 @@ Inherits Canvas
 		    sctxt.borderwidth = 1.5*config.thickness
 		  case  Dico.Value("Mince")
 		    sctxt.borderwidth = config.thickness
-		    'currentcontent.currentoperation = new Epaisseur(3.75*config.Thickness-sctxt.Borderwidth)
-		    'currentoper = SelectOperation(currentcontent.currentoperation)
-		    'EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(true,new couleur(col))
@@ -168,7 +165,6 @@ Inherits Canvas
 		    else
 		      coul = negcolor
 		    end if
-		    
 		    currentcontent.currentoperation = new ColorChange(false,coul)
 		    currentoper = colorchange(currentcontent.currentoperation)
 		    EndOperMenuContext

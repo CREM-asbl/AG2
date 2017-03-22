@@ -2527,8 +2527,11 @@ Inherits Shape
 		  end if
 		  
 		  inter.computeinter
-		  return inter.locatepoint(bpt)
-		  
+		  if not inter.somevalidpoint then
+		    return nil
+		  else
+		    return inter.locatepoint(bpt)
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -3256,7 +3259,7 @@ Inherits Shape
 		    mobility
 		  end if
 		  forme = pointsur.count
-		  if pointsur.count = 2 then
+		  if forme = 2 then
 		    adjustinter(pointsur.item(0),pointsur.item(1))
 		  end if
 		End Sub

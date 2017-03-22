@@ -292,7 +292,7 @@ Inherits SelectOperation
 		  else
 		    for i = 0 to n-1
 		      s = tempshape.item(i)
-		      EL1 = Doc.CreateElement("Objet"+str(i))
+		      EL1 = Doc.CreateElement("Objet"+str(i))  'EL1 = EL.Child(i)
 		      if Bord then
 		        if s isa Lacet and not s isa Secteur then
 		          for j = 0 to s.npts-1
@@ -332,7 +332,7 @@ Inherits SelectOperation
 		  dim r, g, b as double
 		  dim c as couleur
 		  
-		  EL = XMLElement(Temp.Child(0))
+		  EL = XMLElement(Temp.Child(0)) 'EL est le Myself de ToXML
 		  bd =  EL.GetAttribute("Bord")
 		  
 		  if bd = "true" then
@@ -343,7 +343,7 @@ Inherits SelectOperation
 		  
 		  icot = val(EL.GetAttribute("Icot"))
 		  SelectIdForms(EL)
-		  n = tempshape.count-1
+		  n = tempshape.count
 		  
 		  EL1 = XMLElement(EL.child(2))
 		  if icot <> -1 then 
@@ -351,21 +351,26 @@ Inherits SelectOperation
 		    EL2 = XMLElement(EL1.child(0))
 		    s.colcotes(icot) = new Couleur(EL2)
 		  else
-		    for i = 0 to n
+		    for i = 0 to n-1
 		      s = tempshape.item(i)
 		      EL2 = XMLElement(EL1.child(i))
 		      if Bord then
-		        if s isa Lacet then
+		        if s isa Lacet and not s isa secteur then
 		          for j = 0 to s.npts-1
 		            EL3 = XMLElement(EL2.child(j))
-		            lacet(s).colcotes(j) =new Couleur(EL2)
+		            lacet(s).colcotes(j) =new Couleur(EL3)
+		          next
+		        elseif s isa secteur then
+		          for j = 0 to 1
+		            EL3 = XMLElement(EL2.child(j))
+		            lacet(s).colcotes(j) =new Couleur(EL3)
 		          next
 		        else
 		          s.FixeCouleurTrait new couleur(EL2), s.border
 		        end if
 		      else
-		        EL3 = XMLElement(EL2.child(j))
-		        c = new Couleur(EL2)
+		        EL3 = XMLElement(EL2.child(i))
+		        c = new Couleur(EL3)
 		        f = Val(EL2.GetAttribute("Fill"))
 		        s.FixeCouleurFond c, f
 		        s.tsp = false

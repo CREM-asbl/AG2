@@ -48,6 +48,7 @@ Begin Window ThickWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Epaisseur"
       TextAlign       =   1
       TextColor       =   &c00000000
@@ -65,7 +66,7 @@ Begin Window ThickWindow
       Alignment       =   2
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFF00FF
       Bold            =   False
       Border          =   True
       CueText         =   ""

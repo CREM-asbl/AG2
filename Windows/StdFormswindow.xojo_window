@@ -314,7 +314,7 @@ End
 		  Config.stdsize = val(popupmenu2.text)
 		  
 		  
-		  'wnd.StdBoxRefresh
+		  wnd.StdBoxRefresh
 		  for i=0 to 3
 		    wnd.SetIco(i,0)
 		    wnd.StdOutil(i).refresh

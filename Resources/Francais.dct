@@ -8,7 +8,7 @@
     <FileSave Name="Sauvegarder" />
     <FileSaveas Name="Sauvegarder_sous..." />
     <FileSaveEps Name="Exporter en Postscript" />
-    <FileSaveBitmap Name="Exporter en fichier bitmap" />
+    <FileSaveBitmap Name="Exporter en fichier bitmap"/>
     <PrintSetUp Name="Paramètres d'impression" />
     <FilePrint Name="Imprimer" />
     <FileQuit Name="Quitter" />
@@ -18,7 +18,7 @@
     <EditRedo Name="Refaire " />
     <EditCopy Name="Copier" />
     <EditPaste Name="Coller" />
-    <EditSelection Name="Sélectionner/Désélectionner" />
+    <EditSelection Name="Sélectionner/Désélectionner"/>
     <EditReselect Name="Resélection automatique" />
     <EditSelectall Name="Sélectionner tout" />
     <EditLink Name="Lier" />
@@ -44,7 +44,7 @@
     <ToolsLabel Name="Nommer" />
     <Opaque Name="Opaque" />
     <Transparent Name="Transparent" />
-    <ToolsColorStdFam Name="Couleur_Famille_Standard" />
+    <ToolsColorStdFam Name="Couleur_Famille_Standard"/>
     <ToolsHide Name="Montrer-Cacher des formes" />
     <ToolsHideCenter Name="Montrer-Cacher le centre" />
     <ToolsGrid Name="Grille" />
@@ -393,7 +393,7 @@
     <MsgNoValidFile Name="Fichier non valide" />
     <MsgUnfoundable Name="Fichier introuvable" />
     <MsgErrOpenFile Name="Erreur à l'ouverture du fichier" />
-    <Nofagfile Name="Ce fichier n'est pas un fichier Apprenti Géomètre V2" />
+    <Nofagfile Name="Ce fichier n'est pas un fichier Apprenti Géomètre Version 2" />
     <MsgCancel Name="Opération annulée" />
     <MsgEndFile Name="Fichier épuisé" />
     <savepic Name="Sauvegarder la figure" />

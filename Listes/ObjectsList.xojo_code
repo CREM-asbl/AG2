@@ -147,12 +147,6 @@ Inherits Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count() As Integer
-		  return Ubound(objects)+1
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function CreateShape(fa as integer, fo as integer) As Shape
 		  
 		  dim currentshape as shape

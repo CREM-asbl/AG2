@@ -90,7 +90,7 @@ Inherits MultipleSelectOperation
 		    else
 		      Trib = new TribPoint(lacet(s).getcentre(side),firstpoint.bpt,secondpoint.bpt)
 		    end if
-		  elseif S isa BiPoint or s isa polygon then
+		  elseif S isa BiPoint  then
 		    Bib = new BiBpoint(firstpoint.bpt,secondpoint.bpt)
 		  elseif s isa circle then
 		    Trib = new TriBPoint(s.getgravitycenter, firstpoint.bpt, secondpoint.bpt)
@@ -103,7 +103,7 @@ Inherits MultipleSelectOperation
 		      else
 		        p = Trib.subdiv(s.ori, NumberofDivisions,i)
 		      end if
-		    elseif S isa BiPoint or s isa polygon then
+		    elseif S isa BiPoint then
 		      p = Bib.subdiv(NumberofDivisions,i)
 		    elseif s isa circle then
 		      p = Trib.subdiv(s.ori, NumberofDivisions,i)
@@ -156,9 +156,9 @@ Inherits MultipleSelectOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s = visible.item(i)
-		    if s isa bande or s isa secteur then
-		      visible.removeobject visible.item(i)
-		    end if
+		    'if s isa bande or s isa secteur then
+		    'visible.removeobject visible.item(i)
+		    'end if
 		    if  (s isa droite and droite(s).nextre <> 2)   then
 		      visible.removeobject visible.item(i)
 		    end if

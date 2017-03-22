@@ -10,7 +10,9 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  super.endoperation
+		  if not currentcontent.drapabort then
+		    super.endoperation
+		  end if
 		  CurrentItemToSet=1
 		End Sub
 	#tag EndMethod

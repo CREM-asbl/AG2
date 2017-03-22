@@ -15,18 +15,19 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim Tos as TextOutputStream
-		  dim titre as string
 		  dim n, i, j as integer
 		  dim f as folderitem
 		  dim stdw as StdFamWindow
 		  dim Doc, NewDoc as XmlDocument
 		  dim FStd, Temp, EL, EL1  As XMLElement
-		  dim s as shape
+		  dim s as Polygon
 		  dim Bib as BiBPoint
 		  dim alpha, beta as double
 		  Dim dlg as New MessageDialog
 		  dim Mess as MessageDialogButton
 		  dim dlg2 As SaveAsDialog
+		  dim Specs as StdPolygonSpecifications
+		  dim Nom as string
 		  
 		  if tempshape.count =  0 then
 		    return
@@ -54,21 +55,26 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i = 0 to tempshape.count-1
-		    s = tempshape.item(i)
-		    EL = Doc.CreateElement("Forme")
-		    EL.AppendChild s.FillColor.XMLPutInContainer(Doc,"Couleur")
-		    EL.SetAttribute("Nom", "Forme "+str(i+1))
-		    alpha = 0
-		    for j = 0 to s.npts-2
-		      EL1 = Doc.CreateElement("Arete")
-		      Bib = s.GetBiBside(j)
-		      EL1.SetAttribute("Longueur",str(BiB.longueur))
-		      beta = BiB.anglepolaire*180/PI
-		      EL1.SetAttribute("Angle",str(beta-alpha))
-		      EL.AppendChild EL1
-		      alpha = beta
-		    next
-		    Temp.Appendchild EL
+		    if Tempshape.item(i) isa Polygon then
+		      s = Polygon(tempshape.item(i))
+		      EL = Doc.CreateElement("Forme")
+		      if s.fill = 100 then
+		        EL.AppendChild s.FillColor.XMLPutInContainer(Doc,"Couleur")
+		      end if
+		      if s.Labs.count > 0  then
+		        EL.SetAttribute("Nom", s.Labs.Item(0).text)
+		      else
+		        EL.SetAttribute("Nom", "Forme "+str(i+1))
+		      end if
+		      Specs  = s.CreateSpecs
+		      for j = 0 to s.npts-2
+		        EL1 = Doc.CreateElement("Arete")
+		        EL1.SetAttribute("Longueur",str(specs.distances(j)))
+		        EL1.SetAttribute("Angle",str(specs.Angles(j)))
+		        EL.AppendChild EL1
+		      next
+		      Temp.Appendchild EL
+		    end if
 		  next
 		  
 		  dlg.Message = "Pour sauvegarder la famille de formes standard créées :" +EndofLine  + "choisissez une action."

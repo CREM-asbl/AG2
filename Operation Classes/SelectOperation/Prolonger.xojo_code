@@ -147,16 +147,19 @@ Inherits SelectOperation
 		  nobj = visible.count-1
 		  for i = visible.count-1 downto 0
 		    s = Visible.item(i)
-		    if not s.ValidSegment(p,ibip) or ( s isa Lacet and Lacet(s).prol(ibip) ) then  //le côté a déjà été prolongé
+		    if s isa Bande or s isa Secteur then
+		      visible.removeobject(s)
+		    elseif not s.ValidSegment(p,ibip) or ( s isa Lacet and Lacet(s).prol(ibip) ) then  //le côté a déjà été prolongé
 		      visible.removeobject(s)
 		    end if
-		    if s isa Lacet then
+		    if s isa Bande then
+		      visible.removeobject(s)
+		    elseif s isa Lacet then
 		      n = s.pointonside(p)
 		      if n <> -1 and s.coord.curved(n) = 1 then
 		        visible.removeobject(s)
 		      end if
 		    end if
-		    
 		    if s isa droite and droite(s).nextre = 0 then
 		      visible.removeobject s
 		    end if

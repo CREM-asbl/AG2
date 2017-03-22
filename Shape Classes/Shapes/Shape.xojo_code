@@ -474,6 +474,10 @@ Protected Class Shape
 		  next
 		  updatecoord
 		  plan = -1
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -578,7 +582,7 @@ Protected Class Shape
 		  
 		  List = EL.XQL(Dico.Value("Thickness"))
 		  if list.length = 0 then
-		    Borderwidth = 1
+		    Borderwidth = config.thickness
 		  else
 		    Borderwidth = val(XMLElement(List.Item(0)).GetAttribute("Value"))
 		  end if
@@ -2804,7 +2808,7 @@ Protected Class Shape
 		    for i = 0 to ubound(s2.macconstructedby.RealInit)
 		      h = s2.macconstructedby.RealInit(i)
 		      sh = Objects.GetShape(h)
-		      if self = sh or (sh isa point and getindex(point(sh)) <> -1) then
+		      if self = sh or (sh isa point and (getindex(point(sh)) <> -1) and (sh.id > id)) then
 		        return true
 		      end if
 		    next
@@ -3231,8 +3235,8 @@ Protected Class Shape
 		  
 		  MacConstructedBy = MacInfo
 		  for i = 0 to ubound(childs)
-		    if childs(i).forme = 2 then
-		      childs(i).forme = 0
+		    if childs(i).forme = 2 and childs(i).macconstructedby <> nil then
+		      childs(i).forme = 3
 		    end if
 		  next
 		  for i = 0 to ubound(MacInfo.RealInit)
@@ -3650,7 +3654,7 @@ Protected Class Shape
 		        s2 = p.pointsur.item(1)
 		        f1 = s1.getsousfigure(s1.fig)
 		        f2 = s2.getsousfigure(s2.fig)
-		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap
+		        if f1 <> f2 or f1.auto = 4 or f1.auto = 5 then  'polyqcq ou trap 
 		          inter = p.GetInter
 		          inter.update(p)
 		          p.updateconstructedpoints
@@ -3956,7 +3960,7 @@ Protected Class Shape
 		  if  NbPtsConsted > 0 then
 		    Form.appendchild XMLPutPtsConstedInContainer(Doc)
 		  end if
-		  if self isa Lacet then
+		  if self.hybrid and not self isa arc then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
 		  end if
 		  if constructedby <> nil then
@@ -4477,7 +4481,7 @@ Protected Class Shape
 		    for i = npts to EL.Childcount-1
 		      EL1 =  XMLElement(EL.Child(i))
 		      pt = XMLReadPoint(EL1)  //pt est un point
-		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit
+		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit; NE PAS REMPLACER par pt.forme
 		        pt.XMLReadCarac(EL1)
 		      end if
 		    next

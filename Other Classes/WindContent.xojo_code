@@ -187,7 +187,7 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Function CreerOperation(Temp as XMLElement) As Operation
 		  dim nop as integer
-		  'dim curoper as Operation
+		  dim curoper as Operation
 		  dim EL as XMLElement
 		  dim n as integer
 		  dim mac as Macro
@@ -620,8 +620,9 @@ Protected Class WindContent
 		Function OpToCancel() As XMLElement
 		  dim n as integer
 		  
-		  
-		  if not macrocreation then
+		  if macrocreation then
+		    return nil
+		  else
 		    n = currentop
 		    while n > 0 and val(XMLElement(Histo.child(n)).GetAttribute("Undone")) = 1
 		      n = n-1
@@ -630,8 +631,6 @@ Protected Class WindContent
 		      return nil
 		    end if
 		    return  XMLElement(Histo.Child(n))
-		  else
-		    return nil
 		  end if
 		End Function
 	#tag EndMethod
