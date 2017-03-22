@@ -312,14 +312,22 @@ Inherits Label
 	#tag Method, Flags = &h0
 		Sub Print(g as Graphics, sc as Double)
 		  dim  q as BasicPoint
+		  dim  dat as string
+		  dim vis as objectslist
+		  dim sh as shape
+		  dim type,a as integer  // 0 longueur  //1 aire // 2 abscisse
+		  dim dr as Droite
 		  
 		  if correction = nil then
 		    correction = new BasicPoint(0,0)
 		  end if
 		  
+		  SetParam(g)
+		  g.TextSize=Textsize * sc
+		  
 		  q = position + correction
 		  q = can.transform(q)
-		  q = q*sc
+		  q = q * sc
 		  if text = "%"  then
 		    g.DrawString(str(chape.id),q.x, q.y)
 		    return
@@ -329,6 +337,93 @@ Inherits Label
 		    return
 		  end if
 		  
+		  if not wnd.drapdim then
+		    return
+		  end if
+		  
+		  
+		  
+		  dat ="-10000"
+		  ///////////// Abscisses
+		  if chape isa point then
+		    if point(chape).pointsur.count = 1  then
+		      dat = arrondi2(point(chape).location(0))
+		    else
+		      vis = currentcontent.theobjects.findbipoint(point(chape).bpt)
+		      if vis.count > 0  then
+		        sh = vis.item(0)
+		        if sh isa bipoint then
+		          dat = arrondi2(point(chape).bpt.location(bipoint(sh)))
+		        elseif sh isa polygon then
+		          a = sh.pointonside(point(chape).bpt)
+		          if a <> -1 then
+		            dr = sh.getside(a)
+		            dat = arrondi2(point(chape).bpt.location(dr))
+		          end if
+		        elseif sh isa Freecircle then
+		          dat = arrondi2(point(chape).bpt.location(circle(sh)))
+		        end if
+		      else
+		        return
+		      end if
+		    end if
+		    Type = 2
+		  end if
+		  ////////////////////// Longueurs
+		  if (chape isa droite)  or (chape isa arc) or ((chape isa Lacet  or chape isa freecircle) and loc <>-1 ) then
+		    Type = 0
+		    if chape isa droite then
+		      if droite(chape).nextre = 2 then
+		        if chape = currentcontent.SHUL then
+		          dat = arrondi2(droite(chape).longueur)
+		        elseif currentcontent.UL <> 0 then
+		          dat = arrondi2(droite(chape).longueur/currentcontent.UL)
+		        end if
+		      else
+		        dat =  "¥"
+		        setfont("Symbol")
+		      end if
+		    elseif chape isa Lacet and Loc <> -1 then
+		      if currentcontent.UL <> 0 then
+		        dat = arrondi2(Lacet(chape).SideLength(loc)/currentcontent.UL)
+		      end if
+		    elseif chape isa polygon and loc <> -1 then
+		      if chape = currentcontent.SHUL and loc = currentcontent.IcotUL then
+		        dat = arrondi2(polygon(chape).getside(loc).longueur)
+		      elseif currentcontent.UL <> 0 then
+		        dat = arrondi2(polygon(chape).getside(loc).longueur/currentcontent.UL)
+		      end if
+		    elseif chape isa arc  then
+		      dat = str(round(arc(chape).arcangle*180/PI))+"°"
+		    elseif chape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
+		      dat = arrondi2(2*PI*Freecircle(chape).getradius/currentcontent.UL)
+		    end if
+		  end if
+		  
+		  ////////////  Aires
+		  
+		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
+		    if chape = currentcontent.SHUA then
+		      dat = arrondi2(chape.Aire)
+		    elseif currentcontent.UA <> 0 then
+		      dat = arrondi2(chape.aire/currentcontent.UA)
+		    end if
+		    type = 1
+		  end if
+		  
+		  if dat <>"-10000" then
+		    select case type
+		    case 0
+		      if (chape isa droite and chape =currentcontent.SHUL) or (chape isa polygon and chape = currentcontent.SHUL and loc = currentcontent.IcotUL)  then
+		        dat = str(1)
+		      end if
+		    case 1
+		      if chape = currentcontent.SHUA  then
+		        dat = str(1)
+		      end if
+		    end select
+		    g.Drawstring(dat,q.x, q.y)
+		  end if
 		End Sub
 	#tag EndMethod
 
