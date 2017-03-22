@@ -21,7 +21,7 @@ Begin Window NotesWindow
    MinHeight       =   64
    MinimizeButton  =   True
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   True
    Title           =   "Notes"
    Visible         =   False
@@ -31,7 +31,7 @@ Begin Window NotesWindow
       Alignment       =   0
       AutoDeactivate  =   False
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -136,17 +136,6 @@ End
 		        m.Text=Font(i)
 		      end if
 		    Next
-		  end if
-		  
-		  If Config.username = "Tutoriel" then
-		    if tutor = 0 then
-		      tutor = 1
-		    end if
-		    Title = "Tutor"+str(tutor)+".rtf"
-		    f=getfolderitem(Title)
-		    if EF.open(f) = false then
-		      return
-		    end if
 		  end if
 		  
 		  EF.Styled = true
@@ -293,22 +282,6 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
-		Function NextMenu() As Boolean Handles NextMenu.Action
-			dim f as FolderItem
-			
-			Tutor=Tutor+1
-			
-			If Config.username = "Tutoriel" then
-			Title = "Tutor"+str(tutor)+".rtf"
-			f=getfolderitem(Title)
-			if EF.Open(f) then
-			refresh
-			end if
-			end if
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
 		Function NormalMenu() As Boolean Handles NormalMenu.Action
 			EF.StyledText.Bold(EF.SelStart,  EF.SelLength ) = false
 			EF.StyledText.Italic(EF.SelStart,  EF.SelLength ) = false
@@ -416,10 +389,6 @@ End
 
 	#tag Property, Flags = &h0
 		pol As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Tutor As Integer
 	#tag EndProperty
 
 
@@ -645,11 +614,6 @@ End
 		Group="Frame"
 		InitialValue="Untitled"
 		Type="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Tutor"
-		Group="Behavior"
-		Type="Integer"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Visible"
