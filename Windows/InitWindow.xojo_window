@@ -32,7 +32,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   0
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -230,7 +230,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   0
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
