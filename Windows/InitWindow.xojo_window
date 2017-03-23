@@ -1,7 +1,7 @@
 #tag Window
 Begin Window InitWindow
    BackColor       =   &cFFFFFF00
-   Backdrop        =   1356826623
+   Backdrop        =   1030127615
    CloseButton     =   False
    Compatibility   =   ""
    Composite       =   True
@@ -9,7 +9,7 @@ Begin Window InitWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   584
+   Height          =   554
    ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
@@ -32,7 +32,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   30
+      Height          =   0
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -230,7 +230,7 @@ Begin Window InitWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   30
+      Height          =   0
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
