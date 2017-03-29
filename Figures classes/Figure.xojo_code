@@ -1654,9 +1654,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function DefaultMatrix() As Matrix
-		  dim ep, eq, er, np, nq, nr, es, ns as BasicPoint
-		  dim p, q, r, s as point
-		  dim i,  n1, n2, n3, n4 as integer
+		  dim ep, eq, er, np, nq, nr as BasicPoint
+		  dim p, q, r as point
+		  dim  n1, n2, n3, n4 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)

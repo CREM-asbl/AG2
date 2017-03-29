@@ -88,7 +88,7 @@ End
 		  Macs = app.TheMacros
 		  EF.height = height
 		  EF.ReadOnly = true
-		  EF.Backcolor=&cD0D0D0
+		  EF.Backcolor=&cFFFFFF
 		  if can.sctxt = nil then
 		    Title = "Objets"
 		  elseif  currentcontent.Macrocreation then
@@ -120,9 +120,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Afficher()
-		  dim  i, j, nc as integer
-		  dim s, t as shape
-		  dim mess as string
+		  dim  i, j as integer
 		  dim f , ff as figure
 		  dim Doc as XMLDocument
 		  dim FAG As XMLElement
@@ -179,7 +177,6 @@ End
 	#tag Method, Flags = &h0
 		Function mess(f as Figure) As string
 		  
-		  dim i as integer
 		  dim m as string
 		  m = "Figure nr "+ str(f.idfig)
 		  
@@ -232,19 +229,19 @@ End
 		  dim m as string
 		  m = Type(s)
 		  if s.std then
-		    m = m+ " std"
+		    m = m+ ", std"
 		  end if
 		  if s.hidden then
-		    m = m + " caché "
+		    m = m + ", caché "
 		  end if
 		  if s.invalid then
-		    m = m + " invalide"
+		    m = m + ", invalide"
 		  end if
 		  if s.constructedby <> nil and s.constructedby.shape <> nil then
-		    m = m + " construit par forme " + str(s.constructedby.shape.id)
+		    m = m + ", construit par forme " + str(s.constructedby.shape.id)
 		  end if
 		  if s.macconstructedby <> nil then
-		    m = m+" mac-construit par formes ("
+		    m = m+", mac-construit par formes ("
 		    for i = 0 to ubound(s.MacConstructedby.RealInit)
 		      m = m +"," + str(s.MacConstructedby.RealInit(i))
 		    next
@@ -257,28 +254,32 @@ End
 
 	#tag Method, Flags = &h0
 		Sub messages(f as Figure)
-		  dim i, k as integer
+		  dim i as integer
 		  
 		  EF.Text = EF.Text + "Figure "+ str(f.idfig)+chr(10)
 		  EF.Text = EF.Text + "Formes: "
-		  for i = 0 to f.shapes.count-1
+		  for i = 0 to f.shapes.count-2
 		    EF.Text = EF.Text + mess(f.shapes.item(i))+",  "
 		  next
-		  EF.Text = EF.Text+chr(10)+"Sommets : "
-		  for i = 0 to f.somm.count -1
+		  EF.Text = EF.Text + mess(f.shapes.item(f.shapes.count-1))+"."+chr(10)
+		  EF.Text = EF.Text+"Sommets : "
+		  for i = 0 to f.somm.count -2
 		    EF.Text = EF.Text + mess(f.somm.item(i))+", "
 		  next
+		  EF.Text = EF.Text + mess(f.somm.item(f.somm.count-1))+"."+chr(10)
 		  if  f.PtsSur.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Sur : "
-		    for i = 0 to f.PtsSur.count -1
+		    for i = 0 to f.PtsSur.count -2
 		      EF.Text = EF.Text+ mess(f.PtsSur.item(i))+", "
 		    next
+		    EF.Text = EF.Text + mess(f.PtsSur.item(f.PtsSur.count-1))+"."+chr(10)
 		  end if
 		  if f.PtsConsted.count > 0 then
 		    EF.Text = EF.Text+ chr(10)+"Points Construits : "
-		    for i = 0 to f.PtsConsted.count -1
+		    for i = 0 to f.PtsConsted.count -2
 		      EF.Text = EF.Text+mess(f.PtsConsted.item(i))+",  "
 		    next
+		    EF.Text = EF.Text+mess(f.PtsConsted.item(f.PtsConsted.count-1))+"."
 		  end if
 		  EF.Text = EF.Text + chr(10)+chr(13)
 		  
@@ -291,7 +292,7 @@ End
 	#tag Method, Flags = &h0
 		Sub messages(f as figure, j as integer)
 		  dim s as shape
-		  dim i, k as integer
+		  dim i as integer
 		  EF.Text = EF.Text+mess(f,j)
 		  
 		  for i = 0 to f.shapes.count -1
@@ -409,7 +410,7 @@ End
 
 	#tag Method, Flags = &h0
 		Function messconstructedshapes(s As shape) As string
-		  dim i, n as integer
+		  dim i as integer
 		  dim m as string
 		  dim tsf as transformation
 		  

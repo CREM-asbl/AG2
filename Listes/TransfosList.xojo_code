@@ -31,14 +31,13 @@ Inherits Liste
 		  for i = 0 to count-1
 		    s = item(i).supp
 		    if  s.pInShape(p) then
-		      select case item(i).type
-		      case 8
+		      if item(i).type > 6 then
 		        TsfL.AddObject item(i)
 		      else
-		        if item(i).type > 0 and (s isa point or  item(i).index = item(i).supp.pointonside(p)) then
+		        if item(i).type > 0 and (s isa point or  item(i).index = item(i).supp.pointonside(p)) then  's est un point ou p est sur le "bon coté" du support
 		          TsfL.AddObject item(i)
 		        end if
-		      end select
+		      end if
 		    end if
 		  next
 		  

@@ -39,21 +39,22 @@ Inherits SelectOperation
 		  'if Bip isa polygon then
 		  for i =  ubound(Bip.childs) downto Bip.npts
 		    p = Bip.Childs(i)
-		    select case p.forme
-		    case 1
-		      if p.numside(0) = ibip then
+		    j = p.PointSur.GetPosition(Bip)
+		    if p.numside(j) = ibip then
+		      select case p.forme
+		      case 1
 		        p.removepointsur Bip
 		        p.puton Dr
-		      end if
-		    case 2 
-		      j = p.PointSur.GetPosition(Bip)
-		      s = p.PointSur.item(1-j)
-		      p.removepointsur Bip
-		      p.puton Dr
-		      p.adjustinter(s,Dr)
-		    end select
+		      case 2 
+		        s = p.PointSur.item(1-j)
+		        p.removepointsur Bip
+		        p.puton Dr
+		        p.permuterparam
+		        p.adjustinter(Dr,s)
+		      end select
+		    end if
 		  next
-		  'end if
+		  
 		  
 		  for i = 2 to ubound(Dr.childs)
 		    p = Dr.childs(i)

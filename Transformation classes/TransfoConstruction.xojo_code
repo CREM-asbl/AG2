@@ -99,9 +99,6 @@ Inherits MultipleSelectOperation
 		      end if
 		    end select
 		  next
-		  // index a autant d'éléments que visible
-		  // un index de -1 désigne une absence d'ambigüité
-		  // ne pas confondre l'index avec le numéro de la transformation quand plusieurs sont définies sur le même support
 		  
 		  nobj = visible.count
 		  if nobj >0 then
@@ -493,14 +490,14 @@ Inherits MultipleSelectOperation
 		        qp.moveto qp.bpt.projection(fp.bpt, sp.bpt)
 		        currentshape = new Supphom(objects, fp,  sp, qp)
 		        type = 71
-		        index.append 0
+		        index.append  0 
 		      else
 		        bp1 = tp.bpt+sp.bpt-fp.bpt
 		        bp2 = qp.bpt.projection(tp.bpt, bp1)
 		        qp2 = new point(objects, bp2 )
 		        currentshape = new Trap(objects, fp,sp, qp2, tp)
 		        type = 72
-		        index.append -1
+		        currentshape.side = -1
 		      end if
 		    case 8
 		      if fp = tp  and qp <> sp then
@@ -515,28 +512,23 @@ Inherits MultipleSelectOperation
 		        qp = nil
 		        return false
 		      end if
-		      index.append-1
 		    case 9
 		      currentshape = new Polyqcq(objects,fp,sp,qp, tp)
-		      index.append -1
-		      
 		    case 10
 		      if fp <> sp   and  qp <> tp then
 		        currentshape = new Polyqcq(objects,fp,sp,qp,tp)
-		        index.append -1
 		      end if
 		    case 11
 		      bp1 = tp.bpt+sp.bpt-fp.bpt
 		      bp2 = qp.bpt.projection(tp.bpt, bp1)
 		      qp.moveto bp2
 		      currentshape = new Trap(objects, fp,sp, qp, tp)
-		      index.append -1
 		    end select
 		    return true
 		  end select
 		  return false
 		  
-		  // Types: 1 Translation 2 Rotation 3 Demi-tour,4 Quart G, 5 Quart D, 6 Symétrie 7 Homothétie 8 Similitude 9 Etirement 10 Déplacement 11 Cisaillement
+		  // Types: 1 Translation 2 Rotation 3 Demi-tour,4 Quart G, 5 Quart D, 6 Symétrie 7 Homothétie 8 Similitude 9 Etirement 10 Déplacement 11 Cisaillement 12 Affinité générique
 		End Function
 	#tag EndMethod
 
