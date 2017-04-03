@@ -338,7 +338,7 @@ Protected Class Shape
 		  if not self isa point then
 		    return false
 		  elseif constructedby <> nil then
-		    return constructedby.oper =0 or constructedby.oper = 4 or constructedby.oper = 7
+		    return constructedby.oper =0 or constructedby.oper = 4 or constructedby.oper = 7 or constructedby.oper = 45
 		  end if
 		  return false
 		  
