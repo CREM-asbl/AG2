@@ -461,7 +461,7 @@ Inherits Operation
 		    return
 		  end if
 		  
-		  if  currenthighlightedshape isa Lacet and currentcontent.currentoperation.colsep   and side <> -1 then
+		  if  currenthighlightedshape isa Lacet and not currenthighlightedshape isa cube  and currentcontent.currentoperation.colsep   and side <> -1 then
 		    Lacet(currenthighlightedshape).nsk.paintside(g, side, 1.5*Lacet(currenthighlightedshape).nsk.borderwidth, config.highlightcolor)  
 		  else
 		    CurrentHighlightedShape.HighLight

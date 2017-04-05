@@ -312,13 +312,7 @@ End
 		  
 		  Config.setStdFile(popupmenu1.text+".std")
 		  Config.stdsize = val(popupmenu2.text)
-		  
-		  
-		  wnd.StdBoxRefresh
-		  for i=0 to 3
-		    wnd.SetIco(i,0)
-		    wnd.StdOutil(i).refresh
-		  next
+		  wnd.ClearStdBox
 		  Close
 		End Sub
 	#tag EndEvent

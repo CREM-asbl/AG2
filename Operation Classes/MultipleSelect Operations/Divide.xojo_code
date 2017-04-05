@@ -156,9 +156,9 @@ Inherits MultipleSelectOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s = visible.item(i)
-		    'if s isa bande or s isa secteur then
-		    'visible.removeobject visible.item(i)
-		    'end if
+		    if s isa cube then
+		      visible.removeobject visible.item(i)
+		    end if
 		    if  (s isa droite and droite(s).nextre <> 2)   then
 		      visible.removeobject visible.item(i)
 		    end if

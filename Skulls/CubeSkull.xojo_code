@@ -72,6 +72,33 @@ Inherits Group2d
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub fixecouleurs(s as shape)
+		  if s.hidden  Then
+		    updateborderwidth(s.borderwidth)
+		    updatebordercolor(config.HideColor.col, 100)
+		    updatefillcolor(s.fillcolor.col,0)
+		  elseif s.highlighted then
+		    updateborderwidth(s.borderwidth)
+		    updatebordercolor(Config.highlightcolor.col,100)
+		  elseif s.isinconstruction then
+		    updateborderwidth(1.5*s.borderwidth)
+		    updatebordercolor(Config.Weightlesscolor.col,100)
+		  elseif s.selected then
+		    updateborderwidth(s.borderwidth)
+		    updatebordercolor(s.BorderColor.col, 100)
+		  else
+		    updateborderwidth(s.Borderwidth)
+		    UpdateFillColor(s.FillColor.col,Fill)
+		    updatebordercolors(s.colcotes,100)
+		    updatebordercolor(s.bordercolor.col,100)
+		  end if
+		  if s.forme = 2 then
+		    fill = 50
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetCote(i as integer) As curveshape
 		  dim fs as figureshape
 		  fs = figureshape(item(0))
@@ -109,15 +136,22 @@ Inherits Group2d
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub update(p as BasicPoint, m as integer)
-		  dim cs as curveshape
-		  ref = p
-		  cs = curveshape(item(1))
-		  if m = 1 then
-		    cs.X2 = p.X
-		    cs.Y2 = p.Y
-		  end if
+		Sub update(s as cube)
 		  
+		  ref =can.transform(s.Points(0).bpt)
+		  rotation = s.angles(0)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub update(n as integer, k as double)
+		  
+		  if n = 0 then
+		    scale = k * scale
+		  elseif n = 1 then
+		    rotation = rotation*(1+k)
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -181,49 +215,49 @@ Inherits Group2d
 
 	#tag Method, Flags = &h0
 		Sub updatesommet(n as integer, p as BasicPoint, m as integer)
-		  dim cs, cs0 as curveshape
-		  dim fs as figureshape
-		  dim i as integer
-		  fs = figureshape(item(0))
-		  
-		  if n < 6 then
-		    fs.item(n).X=p.x
-		    fs.item(n).Y=p.y
-		    if n <> 0 then
-		      fs.item(n-1).X2=p.x
-		      fs.item(n-1).Y2=p.y
-		    end if
-		    if  n = 5  then
-		      fs.item(5).X2 = item(0).X
-		      fs.item(5).Y2 = item(0).Y
-		    end if
-		    i = n+m-1
-		    if i mod 2 = 0 then
-		      i = i/2
-		      fs.item(i+1).X2 = p.X
-		      fs.item(i+1).Y2 = p.Y
-		    end if
-		  end if
-		  
-		  if n = 6 then
-		    for i = 1 to 3
-		      cs = curveshape(item(i))
-		      cs.X = p.X
-		      cs.y = p.Y
-		      cs.X2 = item(2*i-1-m).X
-		      cs.Y2 =item(2*i-1-m).Y
-		    next
-		  end if
-		  
-		  if n = 7 then
-		    for i = 4 to 6
-		      cs = curveshape(item(i))
-		      cs.X = p.X
-		      cs.y = p.Y
-		      cs.X2 =item(2*(i-4)).X
-		      cs.Y2 = item(2*(i-4)).Y
-		    next
-		  end if
+		  'dim cs, cs0 as curveshape
+		  'dim fs as figureshape
+		  'dim i as integer
+		  'fs = figureshape(item(0))
+		  '
+		  'if n < 6 then
+		  'fs.item(n).X=p.x
+		  'fs.item(n).Y=p.y
+		  'if n <> 0 then
+		  'fs.item(n-1).X2=p.x
+		  'fs.item(n-1).Y2=p.y
+		  'end if
+		  'if  n = 5  then
+		  'fs.item(5).X2 = item(0).X
+		  'fs.item(5).Y2 = item(0).Y
+		  'end if
+		  'i = n+m-1
+		  'if i mod 2 = 0 then
+		  'i = i/2
+		  'fs.item(i+1).X2 = p.X
+		  'fs.item(i+1).Y2 = p.Y
+		  'end if
+		  'end if
+		  '
+		  'if n = 6 then
+		  'for i = 1 to 3
+		  'cs = curveshape(item(i))
+		  'cs.X = p.X
+		  'cs.y = p.Y
+		  'cs.X2 = item(2*i-1-m).X
+		  'cs.Y2 =item(2*i-1-m).Y
+		  'next
+		  'end if
+		  '
+		  'if n = 7 then
+		  'for i = 4 to 6
+		  'cs = curveshape(item(i))
+		  'cs.X = p.X
+		  'cs.y = p.Y
+		  'cs.X2 =item(2*(i-4)).X
+		  'cs.Y2 = item(2*(i-4)).Y
+		  'next
+		  'end if
 		End Sub
 	#tag EndMethod
 

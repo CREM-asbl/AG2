@@ -296,10 +296,10 @@ Inherits SelectOperation
 		  for i = 0 to tempshape.count-1
 		    s = tempshape.item(i)
 		    if s isa StandardPolygon  then
-		      StandardPolygon(s).angles(0) = StandardPolygon(s).angles(0) + a
+		      StandardPolygon(s).angles(0) = StandardPolygon(s).angles(0) - a
 		    end if
 		    if s isa StdCircle  then
-		      StdCircle(s).angles(0) = StdCircle(s).angles(0) + a
+		      StdCircle(s).angles(0) = StdCircle(s).angles(0) - a
 		    end if
 		  next
 		End Sub

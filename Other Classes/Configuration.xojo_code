@@ -262,7 +262,7 @@ Protected Class Configuration
 		    Doc = new XMLDocument(jeu_reduit)
 		  case "Polyminos.std"
 		    Doc=new XMLDocument(polyminos)
-		  case "Reglettes.std"
+		  case "Reglettes.std", "Rods.std"
 		    Doc = new XMLDocument(reglettes)
 		  case "Tangram.std"
 		    Doc = new XMLDocument(tangram)
@@ -325,7 +325,9 @@ Protected Class Configuration
 		      StdFamilies(i,j) = Curspecs
 		    next
 		  next
-		  
+		  if wnd <> nil then
+		    wnd.ClearStdBox
+		  end if
 		End Sub
 	#tag EndMethod
 

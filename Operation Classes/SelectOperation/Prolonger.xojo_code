@@ -157,7 +157,7 @@ Inherits SelectOperation
 		      visible.removeobject(s)
 		    elseif s isa Lacet then
 		      n = s.pointonside(p)
-		      if n <> -1 and s.coord.curved(n) = 1 then
+		      if n <> -1 and not s isa cube and s.coord.curved(n) = 1 then
 		        visible.removeobject(s)
 		      end if
 		    end if
@@ -224,10 +224,10 @@ Inherits SelectOperation
 		      Lacet(sh).PaintSide(g,cot,2,config.highlightcolor)
 		      'end if
 		      'if currentcontent.macrocreation then
-		      if sh.coord.curved(cot)=0 then
-		        display = thissideofpoly + "?"
-		      else
+		      if not sh isa cube and sh.coord.curved(cot)=1 then
 		        display = thisarc + "?"
+		      else
+		        display = thissideofpoly + "?"
 		      end if
 		    else
 		      display = thissegment + "?"

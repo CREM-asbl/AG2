@@ -21,7 +21,7 @@ Inherits StandardPolygon
 		  if Config.NamesStdFamilies(0) = "Rods" then
 		    k = forme+1                        'k est la taille de la réglette
 		    FixeCouleurFond  (Specs.Coul,  100)
-		    mode = 0
+		    mode = 0                            'pour les réglettes, le mode est toujours 0, pour les cubes, il y a aussi 1 et 2
 		    rod = true
 		  else
 		    k = 1
@@ -89,7 +89,7 @@ Inherits StandardPolygon
 		  stdsize = Val(El.GetAttribute("Taille"))
 		  angles.append  Val(El.GetAttribute("Angle"))
 		  name =  EL.GetAttribute("StdFile")
-		  if name = "Rods.std" then
+		  if name = "Rods.std" or name = "Reglettes.std" then
 		    rod = true
 		    mode = 0
 		    k = forme+1
@@ -106,7 +106,7 @@ Inherits StandardPolygon
 		  csk.updatesize(sc*stdsize)
 		  Borderwidth = 1/(sc*stdsize)
 		  Border = 100
-		  updateskull
+		  
 		End Sub
 	#tag EndMethod
 
@@ -145,7 +145,6 @@ Inherits StandardPolygon
 
 	#tag Method, Flags = &h0
 		Sub Endconstruction()
-		  ConstructShape
 		  super.Endconstruction
 		End Sub
 	#tag EndMethod
@@ -154,7 +153,6 @@ Inherits StandardPolygon
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  If n = 0 then
 		    Points(0).Moveto(p)
-		    csk.update(can.transform(p), n)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -242,28 +240,13 @@ Inherits StandardPolygon
 		    return
 		  end if
 		  
-		  
-		  
-		  if hidden  Then
-		    csk.updateborderwidth(borderwidth)
-		    csk.updatebordercolor(config.HideColor.col, 100)
-		    csk.updatefillcolor(fillcolor.col,0)
-		  elseif highlighted then
-		    csk.updateborderwidth(borderwidth)
-		    csk.updatebordercolor(Config.highlightcolor.col,100)
-		  elseif isinconstruction then
-		    csk.updateborderwidth(1.5*borderwidth)
-		    csk.updatebordercolor(Config.Weightlesscolor.col,100)
-		  elseif selected then
-		    csk.updateborderwidth(borderwidth)
-		    csk.updatebordercolor(BorderColor.col, 100)
-		  else
-		    csk.updateborderwidth(Borderwidth)
-		    csk.UpdateFillColor(FillColor.col,Fill)
-		    csk.updatebordercolors(colcotes,100)
-		  end if
-		  
+		  csk.update(self)
+		  csk.fixecouleurs(self)
+		  'csk.fixeepaisseurs(self)
 		  csk.paint(g)
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -271,10 +254,10 @@ Inherits StandardPolygon
 		Sub Paintside(g as graphics, cot as integer, ep as double, coul as couleur)
 		  dim cs as curveshape
 		  
-		  cs = cubeskull(nsk).getcote(cot)
+		  cs = csk.getcote(cot)
 		  cs.borderwidth = ep*borderwidth
 		  cs.bordercolor = coul.col
-		  g.drawobject(cs, nsk.ref.x, nsk.ref.y)
+		  g.drawobject(cs, csk.ref.x, csk.ref.y)
 		  
 		  
 		End Sub
@@ -461,11 +444,11 @@ Inherits StandardPolygon
 
 	#tag Method, Flags = &h0
 		Sub UpdateSkull(n as integer, p as BasicPoint)
-		  if rod then 
-		    cubeskull(csk).updatesommet(n,p,0)
-		  else
-		    cubeskull(csk).updatesommet(n,p,forme)
-		  end if
+		  'if rod then 
+		  'cubeskull(csk).updatesommet(n,p,0)
+		  'else
+		  'cubeskull(csk).updatesommet(n,p,forme)
+		  'end if
 		  
 		End Sub
 	#tag EndMethod

@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -776,6 +775,7 @@ End
 		  dim u(-1), s as integer
 		  dim disp, nom as string
 		  
+		  setfocus
 		  if CurrentContent.bugfound then
 		    return false
 		  end if
@@ -2146,6 +2146,21 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ClearStdBox()
+		  dim i as integer
+		  
+		  for i=0 to 3
+		    StdOutil(i).Graphics.FillRect(0,0,width,height)
+		    stdoutil(i).refresh
+		  next
+		  for i=0 to 3
+		    SetIco(i,0)
+		    StdOutil(i).refresh
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub closefw()
 		  if fw = nil then
 		    return
@@ -2467,12 +2482,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub IcoDraw(Fa as integer, Fo as integer)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub InitParams()
 		  wnd = self
 		  can = wnd.mycanvas1
@@ -2762,7 +2771,7 @@ End
 		  h = stdoutil(fam).height
 		  specs = config.stdfamilies(fam,form)
 		  
-		  if specs.family = "Cubes"  then
+		  if specs.family = "Cubes"   then
 		    ico(fam) = new Cubeskull(new BasicPoint(3, 0.5*h-6), form,1)
 		    taille = 0.5*h
 		    ico(fam).x = 3
@@ -2770,16 +2779,16 @@ End
 		    Cubeskull(ico(fam)).updatesize(taille)
 		    ico(fam).fillcolor = config.stdcolor(fam).col
 		    if form = 1 then
-		      cubeskull(ico(Fam)).Update( new BasicPoint (0.5*h-4,0.5*h-4), 1)
+		      ico(fam) = new Cubeskull(new BasicPoint (0.5*h-2,h-4), form,1)
 		      taille = 0.4*h
 		      Cubeskull(ico(fam)).updatesize(taille)
 		    end if
-		    if form = 2 then
-		      ico(fam).fill = 0
-		    end if
+		    previousform = form
 		  elseif specs.family = "Rods" then
 		    ico(fam) = new Cubeskull(new BasicPoint(3,0.5*h-6), 0, 1)
 		    taille = 0.5*h
+		    ico(fam).x = 3
+		    ico(fam).y = h-taille-3
 		    Cubeskull(ico(fam)).updatesize(taille)
 		    cubeskull(ico(fam)).updatefillcolor(specs.coul.col,100)
 		  elseif  ubound(specs.angles) > 0 then                 'cas des polygonestd
@@ -2809,10 +2818,13 @@ End
 		  end if                                                         'partie  commune
 		  ico(fam).bordercolor = Config.Bordercolor.col
 		  ico(fam).border = 100
-		  ico(fam).fill = 100
+		  if specs.family = "Cubes" and form = 2 then
+		    ico(fam).fill = 0
+		  else
+		    ico(fam).fill = 100
+		  end if
 		  if specs.family <> "Rods" then              'la couleur de fond d'une réglette varie avec la longueur, non la famille
 		    ico(fam).fillcolor=config.stdcolor(fam).col
-		    ico(fam).fill =100
 		  end if
 		  ico(fam).borderwidth= 1/h
 		  
@@ -3126,15 +3138,15 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		previousform As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		quitting As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		rh As ReadHisto
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Sans_titre As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -3177,7 +3189,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if CurrentContent.TheObjects.count = 1 then
 		    return
 		  end if
@@ -3219,7 +3231,7 @@ End
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3252,14 +3264,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  dim fs as figureshape
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
@@ -3274,7 +3286,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3374,7 +3386,7 @@ End
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
 		    if selectedtool = 0 and fw = nil then
 		      selectedtool = -1
@@ -3386,7 +3398,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  
 		  if mousedispo then
 		    Me.SetFocus
@@ -3402,12 +3414,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseExit()
+		Sub MouseExit(index as Integer)
 		  refreshtitle
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  
@@ -3670,6 +3682,11 @@ End
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
+		Name="previousform"
+		Group="Behavior"
+		Type="Integer"
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="quitting"
 		Group="Behavior"
 		Type="Boolean"
@@ -3681,11 +3698,6 @@ End
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Sans_titre"
-		Group="Behavior"
-		Type="Integer"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="SelectedTool"

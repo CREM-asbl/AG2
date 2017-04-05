@@ -252,6 +252,7 @@
     <Lacets Name="Formes hybrides" />
     <Compo Name="Forme_Hybride" />
     <Thickness Name="Epaisseur" />
+    <Rods Name="Reglettes"/>
   </Formes>
   <Operations>
     <Savecfg Name="Sauver la configuration" />

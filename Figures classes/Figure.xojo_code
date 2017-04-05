@@ -2411,9 +2411,6 @@ Protected Class Figure
 		      secteur(s).skullcoord.CreateExtreAndCtrlPoints(s.ori)
 		      secteur(s).skullcoord.MoveExtreCtrl(M)
 		    end if
-		    if  s isa cube then
-		      cube(s).updateskull
-		    end if
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
 		      s.endmove
 		    end if

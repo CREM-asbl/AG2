@@ -110,6 +110,8 @@ Inherits SelectOperation
 		  
 		  if s isa point then
 		    co = s.nsk.bordercolor
+		  elseif s isa cube then
+		    co = cube(s).csk.fillcolor
 		  elseif s isa circle or s isa lacet then
 		    co =s.nsk.fillcolor
 		  end if
@@ -515,8 +517,6 @@ Inherits SelectOperation
 		  tos.writeline("%!PS-Adobe-3.0 EPSF-3.0")
 		  tos.writeline("%%BoundingBox: 28 28 "+ str(urx) + " "+ str(ury))
 		  tos.writeline("%%Creator:Apprenti Geometre Version 2")
-		  'readag2ps
-		  'writeag2ps(tos)
 		  tos.write ag2
 		  tos.writeline("debut")
 		  tos.writeline("[[1 cm 1 cm][" + str(a+1) + " cm " + str(b+1) + " cm]] fixecadre")

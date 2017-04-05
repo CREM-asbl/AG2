@@ -20,6 +20,7 @@ Inherits SelectAndDragOperation
 		    Repere(tempshape.item(0)).Origine = M*Repere(tempshape.item(0)).Origine
 		    M = new Rotationmatrix(new BasicPoint(0,0),a)
 		    tempshape.item(0).Transform(M)
+		    objects.updateangles(-a)
 		    endpoint = newpoint
 		    super.CompleteOperation(NewPoint)
 		    return
@@ -33,7 +34,7 @@ Inherits SelectAndDragOperation
 		    a = GetAngle(c,NewPoint)-GetAngle(c,EndPoint)
 		    M = new RotationMatrix(c,a)
 		    figs.Bouger(M)
-		    updateangles(a)
+		    tempshape.updateangles(a)
 		  end if
 		  
 		  EndPoint =NewPoint
@@ -195,13 +196,14 @@ Inherits SelectAndDragOperation
 		  M = new RotationMatrix(c,a)
 		  
 		  if  currentshape isa repere then
-		    if Config.Trace then
-		      dret = new ModifTimer(self)
-		    else
-		      Repere(currentshape).Origine = M*Repere(currentshape).Origine
-		      M = new Rotationmatrix(new BasicPoint(0,0),a)
-		      currentshape.Transform(M)
-		    end if
+		    'if Config.Trace then
+		    'dret = new ModifTimer(self)
+		    'else
+		    Repere(currentshape).Origine = M*Repere(currentshape).Origine
+		    M = new Rotationmatrix(new BasicPoint(0,0),a) 
+		    objects.updateangles(-a)
+		    currentshape.Transform(M)
+		    'end if
 		  else
 		    for i = 0 to tempshape.count-1
 		      figs.addobject tempshape.item(i).fig
@@ -257,9 +259,10 @@ Inherits SelectAndDragOperation
 		    Repere(tempshape.item(0)).Origine = M*Repere(tempshape.item(0)).Origine
 		    M = new Rotationmatrix(new BasicPoint(0,0),a)
 		    tempshape.item(0).Transform(M)
+		    objects.updateangles(-a)
 		  else
 		    super.UndoOperation(Temp)
-		    Updateangles(a)
+		    tempshape.Updateangles(a)
 		  end if
 		End Sub
 	#tag EndMethod
