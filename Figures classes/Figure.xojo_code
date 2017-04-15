@@ -2977,7 +2977,7 @@ Protected Class Figure
 		  end if
 		  
 		  if auto = 1 and f.auto=3  and NbTrueSommCommuns(f) >= 2  then
-		    return f.HasPointOnConstructedShape(self)
+		    return not f.HasPointOnConstructedShape(self)
 		  end if
 		  
 		  Return false

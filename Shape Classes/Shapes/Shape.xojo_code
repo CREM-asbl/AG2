@@ -2775,7 +2775,7 @@ Protected Class Shape
 		    return true
 		  end if
 		  
-		  if self isa trap and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
+		  if  (self.auto = 3 or self.auto = 5) and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
 		    return true
 		  end if
 		  
