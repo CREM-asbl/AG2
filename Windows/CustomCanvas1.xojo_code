@@ -246,7 +246,7 @@ Inherits Canvas
 		    s =  CurrentContent.CurrentOperation.currentshape
 		    if (s.fam > 10 and s.IndexConstructedPoint = 0)  then
 		      CurrentContent.undolastoperation
-		    elseif  (s.fam <=10 and s.IndexConstructedpoint >= 1) then
+		    elseif  (s.fam <=10 and s.IndexConstructedpoint > 1) then
 		      CurrentContent.abortconstruction
 		    end if
 		  end if
