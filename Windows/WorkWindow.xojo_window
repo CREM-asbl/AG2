@@ -1166,9 +1166,7 @@ End
 
 	#tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
-			if dret = nil then
-			currentcontent.currentoperation.Annuler
-			end if
+			Annuler
 			return true
 		End Function
 	#tag EndMenuHandler
@@ -2114,18 +2112,19 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  'dim op as operation
-		  'op =CurrentContent.CurrentOperation
-		  'closefw
-		  'if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >= 1) then
-		  'if op isa AppliquerTsf then
-		  'AppliquerTsf(op).tsf.highlighted = false
-		  'end if
-		  'CurrentContent.abortconstruction
-		  'else
-		  'CurrentContent.UndoLastOperation
-		  'end if
-		  'mycanvas1.refreshBackground
+		  if dret = nil then
+		    if currentcontent.currentoperation <> nil then
+		      currentcontent.currentoperation.Annuler
+		      if CurrentContent.CurrentOp = 0 then
+		        PushButton1.Enabled = false
+		      end if
+		      currentcontent.currentoperation = nil
+		      refreshtitle
+		    else
+		      currentcontent.undolastoperation
+		    end if
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -3296,19 +3295,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  if dret = nil then
-		    if currentcontent.currentoperation <> nil then
-		      currentcontent.currentoperation.Annuler
-		      if CurrentContent.CurrentOp = 0 then
-		        me.Enabled = false
-		      end if
-		      currentcontent.currentoperation = nil
-		      refreshtitle
-		    else
-		      currentcontent.undolastoperation
-		    end if
-		  end if
-		  
+		  Annuler
 		End Sub
 	#tag EndEvent
 	#tag Event
