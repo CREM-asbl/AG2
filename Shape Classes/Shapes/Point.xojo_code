@@ -2773,14 +2773,10 @@ Inherits Shape
 		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
-		  'M = new TranslationMatrix(np-bpt)
-		  Moveto np   'M*bpt
-		  'if pointsur.count = 1 then
-		  'puton pointsur.item(0)
-		  'end if
+		  Moveto np   
 		  modified = true
-		  updateshape
-		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
+		  'updateshape Mauvaise idée: le point mobile peut avoir été dragué en un endroit où il ne peut aller
+		  
 		End Sub
 	#tag EndMethod
 
