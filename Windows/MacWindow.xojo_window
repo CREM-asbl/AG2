@@ -31,7 +31,7 @@ Begin Window MacWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFFFFFF00
+      BackColor       =   
       Bold            =   True
       Border          =   True
       DataField       =   ""
@@ -56,7 +56,7 @@ Begin Window MacWindow
       Mask            =   ""
       Multiline       =   True
       ReadOnly        =   True
-      Scope           =   0
+      Scope           =   "0"
       ScrollbarHorizontal=   False
       ScrollbarVertical=   True
       Styled          =   False
@@ -64,7 +64,7 @@ Begin Window MacWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   14.0
       TextUnit        =   0
@@ -93,7 +93,7 @@ Begin Window MacWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -124,7 +124,7 @@ Begin Window MacWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True

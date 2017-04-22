@@ -134,6 +134,8 @@ Inherits Shape
 		Sub paint(g as Graphics)
 		  dim i as integer
 		  dim b as Boolean
+		  dim s1, s2 as circle
+		  dim tsf as transformation
 		  
 		  computeradius
 		  
@@ -144,8 +146,19 @@ Inherits Shape
 		  b = (dret <> nil) and ( (dret isa RetTimer) or ((dret isa TsfTimer) and ((TsfTimer(dret).type = 6) or  TsfTimer(dret).type = 9 or TsfTimer(dret).type =11)) )
 		  if not b and not isaellipse then
 		    coord.CreateExtreAndCtrlPoints(ori)
+		    nsk.update(self)
+		  elseif b then 
+		    nsk.update(self)
+		  else
+		    if constructedby <> nil and constructedby.oper = 6 then
+		      tsf = transformation(constructedby.data(0))
+		      s1 = circle(constructedby.shape)
+		      s2 = circle(self)
+		      tsf.appliquer(s1,s2)
+		      nsk.update(s2)
+		    end if
 		  end if
-		  nsk.update(self)
+		  
 		  
 		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
 		    return

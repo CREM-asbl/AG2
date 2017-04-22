@@ -52,12 +52,11 @@ Inherits Circle
 		  angles.append Val(EL.getAttribute("Angle"))
 		  sc = can.scaling
 		  rsk= radius*Config.StdSize*sc
+		  'nsk = new CircleSkull(can.transform(Points(0).bpt))
+		  'nsk.updatesize(1)
 		  std = true
 		  autos
 		  file = config.stdfile
-		  nsk = new ArcSkull(can.transform(Points(0).bpt))
-		  nsk.skullof = self
-		  nsk.updatesize(1)
 		  EndConstruction
 		End Sub
 	#tag EndMethod
@@ -84,6 +83,9 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
+		  
+		  
+		  
 		  Points(0).Hide
 		  Points(1).hide
 		  super.endconstruction

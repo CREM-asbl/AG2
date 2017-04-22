@@ -2729,7 +2729,7 @@ Protected Class Figure
 		    if p.forme = 2 and p.pointsur.item(0).modified and p.pointsur.item(1).modified then
 		      p.unmodifiable = true
 		    end if
-		    if p.constructedby <> nil and p.constructedby.oper <> 10 and p.constructedby.shape.modified then
+		    if p.constructedby <> nil and p.constructedby.oper <> 10  then
 		      p.unmodifiable = true
 		    end if
 		    if ubound(p.parents) >=1 then
@@ -2977,7 +2977,7 @@ Protected Class Figure
 		  end if
 		  
 		  if auto = 1 and f.auto=3  and NbTrueSommCommuns(f) >= 2  then
-		    return not f.HasPointOnConstructedShape(self)
+		    return not  f.HasPointOnConstructedShape(self)
 		  end if
 		  
 		  Return false
@@ -3103,7 +3103,6 @@ Protected Class Figure
 		  i0 = 0
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Lacet  then
-		      's = Lacet(shapes.item(i))
 		      sh = shapes.item(i)
 		      for j = 0 to sh.npts-1
 		        if sh.coord.curved(j) = 1 then

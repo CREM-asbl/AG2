@@ -570,7 +570,6 @@ Inherits Lacet
 		Sub ToEPS(tos as textoutputstream)
 		  dim s as string
 		  dim j as integer
-		  dim col as color
 		  dim seps as SaveEPS
 		  
 		  seps = SaveEps(CurrentContent.currentoperation)

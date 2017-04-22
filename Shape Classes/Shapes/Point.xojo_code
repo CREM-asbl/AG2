@@ -2773,10 +2773,13 @@ Inherits Shape
 		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
-		  Moveto np   
+		  Moveto np  
 		  modified = true
-		  'updateshape Mauvaise idée: le point mobile peut avoir été dragué en un endroit où il ne peut aller
-		  
+		  'updateshape
+		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; 
+		  //on initialise ainsi la modification de toutes les figures
+		  // ... et ce n'est pas une bonne idée car le point mobile peut à ce moment être déplacé en un endroit 
+		  // où il ne peut aller! exemple: sommet de l'angle droit d'un triangle rectangle
 		End Sub
 	#tag EndMethod
 

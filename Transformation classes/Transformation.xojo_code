@@ -399,7 +399,6 @@ Protected Class Transformation
 		        AppliquerExtreCtrl(s1,s2)
 		      end if
 		    next
-		    'constructedfigs.updatematrixduplicatedshapes(M)
 		  end if
 		  
 		  

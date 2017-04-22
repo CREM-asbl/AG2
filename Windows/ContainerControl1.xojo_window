@@ -28,7 +28,7 @@ Begin ContainerControl ContainerControl1
    Begin BevelButton Stop
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c00000000
+      BackColor       =   
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -55,11 +55,11 @@ Begin ContainerControl ContainerControl1
       LockRight       =   False
       LockTop         =   False
       MenuValue       =   0
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -72,7 +72,7 @@ Begin ContainerControl ContainerControl1
    Begin BevelButton First
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c00000000
+      BackColor       =   
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -99,11 +99,11 @@ Begin ContainerControl ContainerControl1
       LockRight       =   False
       LockTop         =   False
       MenuValue       =   0
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -116,7 +116,7 @@ Begin ContainerControl ContainerControl1
    Begin BevelButton Prec
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c00000000
+      BackColor       =   
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -143,11 +143,11 @@ Begin ContainerControl ContainerControl1
       LockRight       =   False
       LockTop         =   False
       MenuValue       =   0
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -160,7 +160,7 @@ Begin ContainerControl ContainerControl1
    Begin BevelButton BNext
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c00000000
+      BackColor       =   
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -187,11 +187,11 @@ Begin ContainerControl ContainerControl1
       LockRight       =   False
       LockTop         =   False
       MenuValue       =   0
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -204,7 +204,7 @@ Begin ContainerControl ContainerControl1
    Begin BevelButton Last
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c00000000
+      BackColor       =   
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -231,11 +231,11 @@ Begin ContainerControl ContainerControl1
       LockRight       =   False
       LockTop         =   False
       MenuValue       =   0
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0

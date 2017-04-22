@@ -32,7 +32,7 @@ Begin Window WorkWindow
       AutoDeactivate  =   False
       Backdrop        =   0
       BackgroundPicture=   0
-      Bkcol           =   &c00000000
+      Bkcol           =   
       ctxt            =   False
       DoubleBuffer    =   True
       drapzone        =   False
@@ -59,7 +59,7 @@ Begin Window WorkWindow
       nobj            =   0
       OffscreenPicture=   0
       scaling         =   0.0
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -73,9 +73,9 @@ Begin Window WorkWindow
    Begin Rectangle Tools
       AutoDeactivate  =   False
       BorderWidth     =   1
-      BottomRightColor=   &c00000000
+      BottomRightColor=   
       Enabled         =   True
-      FillColor       =   &c8080FF00
+      FillColor       =   
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -86,11 +86,12 @@ Begin Window WorkWindow
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
-      TopLeftColor    =   &c00000000
+      TopLeftColor    =   
       Visible         =   True
       Width           =   122
       Begin GroupBox MoveBox
@@ -109,7 +110,7 @@ Begin Window WorkWindow
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   False
-         Scope           =   0
+         Scope           =   "0"
          TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
@@ -139,7 +140,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
@@ -170,7 +171,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
@@ -201,7 +202,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
@@ -232,7 +233,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
@@ -261,7 +262,7 @@ Begin Window WorkWindow
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   False
-         Scope           =   0
+         Scope           =   "0"
          TabIndex        =   1
          TabPanelIndex   =   0
          TabStop         =   True
@@ -290,7 +291,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
@@ -318,7 +319,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
@@ -346,7 +347,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
@@ -374,7 +375,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
@@ -404,7 +405,7 @@ Begin Window WorkWindow
          LockLeft        =   False
          LockRight       =   False
          LockTop         =   False
-         Scope           =   0
+         Scope           =   "0"
          TabIndex        =   2
          TabPanelIndex   =   0
          TabStop         =   True
@@ -432,7 +433,7 @@ Begin Window WorkWindow
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   False
-         Scope           =   0
+         Scope           =   "0"
          TabIndex        =   3
          TabPanelIndex   =   0
          TabStop         =   True
@@ -461,7 +462,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
@@ -489,7 +490,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
@@ -517,7 +518,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   6
             TabPanelIndex   =   0
             TabStop         =   True
@@ -545,7 +546,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
@@ -573,7 +574,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
@@ -601,7 +602,7 @@ Begin Window WorkWindow
             LockLeft        =   True
             LockRight       =   True
             LockTop         =   True
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   4
             TabPanelIndex   =   0
             TabStop         =   True
@@ -629,7 +630,7 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
-            Scope           =   0
+            Scope           =   "0"
             TabIndex        =   5
             TabPanelIndex   =   0
             TabStop         =   True
@@ -659,7 +660,7 @@ Begin Window WorkWindow
          LockLeft        =   False
          LockRight       =   False
          LockTop         =   False
-         Scope           =   0
+         Scope           =   "0"
          TabIndex        =   4
          TabPanelIndex   =   0
          TabStop         =   True

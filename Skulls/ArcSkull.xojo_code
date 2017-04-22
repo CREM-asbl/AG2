@@ -107,8 +107,7 @@ Inherits NSkull
 		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p))
 		  next
 		  
-		  'fixecouleurs(s)
-		  'fixeepaisseurs(s)
+		  
 		  
 		  
 		  
