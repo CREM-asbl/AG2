@@ -41,7 +41,7 @@ Protected Module api
 		  NWI = System.GetNetworkInterface(0)
 		  
 		  form = New Dictionary
-		  form.Value("version") = app.LongVersion+" "+str(app.StageCodeToString)
+		  form.Value("version") = app.LongVersion+" "+app.StageCodeToString
 		  form.Value("os") = app.sys
 		  form.Value("mac") = NWI.MACAddress
 		  
