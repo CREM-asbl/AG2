@@ -80,6 +80,7 @@ Inherits Label
 		  Text = chr(Etiquette)
 		  loc = n
 		  TextSize = sizelabel
+		  Selectable = true
 		  
 		End Sub
 	#tag EndMethod
@@ -212,7 +213,7 @@ Inherits Label
 		    return
 		  end if
 		  if text <> "*"   then
-		    g.DrawString(Text,q.x, q.y)
+		    g.DrawString(Text,q.x,q.y)
 		    ResetParam(g)
 		    return
 		  end if

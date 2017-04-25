@@ -30,7 +30,7 @@ Begin Window HistCmd
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      BackColor       =   &cFFFFFF00
+      BackColor       =   
       Backdrop        =   0
       BehaviorIndex   =   0
       ControlOrder    =   "0"
@@ -39,7 +39,7 @@ Begin Window HistCmd
       HasBackColor    =   False
       Height          =   22
       HelpTag         =   ""
-      Index           =   -2147483648
+      Index           =   "-2147483648"
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   False
@@ -47,7 +47,7 @@ Begin Window HistCmd
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True

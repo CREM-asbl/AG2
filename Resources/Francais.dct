@@ -45,8 +45,8 @@
     <Opaque Name="Opaque" />
     <Transparent Name="Transparent" />
     <ToolsColorStdFam Name="Couleur_Famille_Standard"/>
-    <ToolsHide Name="Montrer-Cacher des formes" />
-    <ToolsHideCenter Name="Montrer-Cacher le centre" />
+    <ToolsHide Name="Montrer-Cacher-Formes" />
+    <ToolsHideCenter Name="Montrer-Cacher-Centre" />
     <ToolsGrid Name="Grille" />
     <ToolsHisto Name="Lire un historique" />
     <MacrosMenu Name="Macros" />
@@ -252,6 +252,7 @@
     <Lacets Name="Formes hybrides" />
     <Compo Name="Forme_Hybride" />
     <Thickness Name="Epaisseur" />
+    <Rods Name="Reglettes"/>
   </Formes>
   <Operations>
     <Savecfg Name="Sauver la configuration" />

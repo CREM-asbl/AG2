@@ -405,7 +405,7 @@ Inherits SelectAndDragOperation
 		  //sh est la nouvelle copie, (duplicata de s)
 		  
 		  s = tempshape.item(i)
-		  if s.centerordivpoint then                            //les dupliqués des points de subdivision ou des centres sont considérés cimme des points de subdiv
+		  if s.centerordivpoint then                            //les dupliqués des points de subdivision ou des centres sont considérés comme des points de subdiv
 		    q = point(sh)                                             //ou des centres pourautant que la forme mère des originaux soit également dupliquée
 		    s1 = s.constructedby.shape
 		    n = tempshape.getposition(s1)

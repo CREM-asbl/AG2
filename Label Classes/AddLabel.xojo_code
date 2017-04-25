@@ -218,15 +218,7 @@ Inherits SelectAndDragOperation
 		    end if
 		    if currentshape isa Lacet and loc <> -1 then
 		      Lacet(Currentshape).paintside(g,loc,2,config.highlightcolor)
-		      'elseif currentshape isa polygon and loc <> -1 then
-		      'polygon(currentshape).paintside(g,loc,2,config.highlightcolor)
 		      display = display + sur +  thissegment
-		      'elseif currentshape isa Bande and loc <> -1 then
-		      'Bande(currentshape).paintside(g,loc,2,Config.highlightcolor)
-		      'display = display+ " " +ontheline
-		      'elseif  currentshape isa secteur and loc <> -1 then
-		      'Secteur(currentshape).paintside(g,loc,2,Config.highlightcolor)
-		      'display = display + " " + ontheline
 		    else
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)

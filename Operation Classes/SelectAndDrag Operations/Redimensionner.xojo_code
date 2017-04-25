@@ -21,6 +21,7 @@ Inherits SelectAndDragOperation
 		      return
 		    end if
 		    newrep(c,k)
+		    objects.updatecubes(0,k)
 		    endpoint = newpoint
 		    super.completeoperation(NewPoint)
 		    return
@@ -107,6 +108,7 @@ Inherits SelectAndDragOperation
 		  if currentshape isa repere then
 		    k0 = 1
 		    newrep(c,M1.rapport)
+		    objects.updatecubes(0,M1.rapport)
 		  else
 		    figs.Bouger(M1)
 		  end if
@@ -266,6 +268,7 @@ Inherits SelectAndDragOperation
 		    else
 		      M = new HomothetyMatrix(new BasicPoint(0,0),ratio)
 		      currentshape.Transform(M)
+		      objects.updatecubes(0,ratio)
 		    end if
 		  else
 		    for i = 0 to tempshape.count-1
@@ -326,6 +329,7 @@ Inherits SelectAndDragOperation
 		  if currentshape isa repere then
 		    M = new HomothetyMatrix(new BasicPoint(0,0),r)
 		    currentshape.Transform(M)
+		    objects.updatecubes(0,r)
 		  else
 		    super.UndoOperation(Temp)
 		  end if

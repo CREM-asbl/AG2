@@ -45,7 +45,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -76,7 +76,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -107,7 +107,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -138,7 +138,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -169,7 +169,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -200,7 +200,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -231,7 +231,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
@@ -262,7 +262,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
@@ -293,7 +293,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
@@ -324,7 +324,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
@@ -355,7 +355,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
@@ -386,7 +386,7 @@ Begin Window Formswindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
@@ -546,7 +546,7 @@ End
 
 #tag Events Bouton
 	#tag Event
-		Sub MouseEnter()
+		Sub MouseEnter(index as Integer)
 		  if selection then
 		    return
 		  end if
@@ -559,7 +559,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  if  selection then
 		    if index =0 then
 		      Config.ToggleFLib(fam)
@@ -596,7 +596,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Open(index as Integer)
 		  select case kit
 		  case 0
 		    if index < config.nstdf(fam) then
@@ -637,12 +637,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseUp(X As Integer, Y As Integer) As Boolean
+		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent

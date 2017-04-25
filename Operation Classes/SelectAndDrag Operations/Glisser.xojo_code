@@ -247,7 +247,7 @@ Inherits SelectAndDragOperation
 		    if EL.childcount = 2 then
 		      EL = XMLElement(EL.child(1))
 		      a = val(EL.Getattribute("angle"))
-		      updateangles(-a)
+		      tempshape.updateangles(-a)
 		    end if
 		  end if
 		  

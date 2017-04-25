@@ -215,22 +215,10 @@ Protected Class Transformation
 		  if type <> 0 and  (type < 3 or type > 6 ) then
 		    T = new Tip
 		  end if
-		  'supp.side = index
 		  setfpsp(s)                             'Deux premiers points du support
 		  CurrentContent.TheTransfos.AddObject(self)
 		  
-		  'if type > 0 then 
-		  'supp.bordercolor = green
-		  'if  s isa Lacet then
-		  'if i <> -1 then
-		  'supp.colcotes(i) = green
-		  'else
-		  'for j = 0 to supp.npts-1
-		  'supp.colcotes(j) = green
-		  'next
-		  'end if
-		  'end if
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -411,7 +399,6 @@ Protected Class Transformation
 		        AppliquerExtreCtrl(s1,s2)
 		      end if
 		    next
-		    'constructedfigs.updatematrixduplicatedshapes(M)
 		  end if
 		  
 		  

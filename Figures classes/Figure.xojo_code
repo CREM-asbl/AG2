@@ -1654,9 +1654,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function DefaultMatrix() As Matrix
-		  dim ep, eq, er, np, nq, nr, es, ns as BasicPoint
-		  dim p, q, r, s as point
-		  dim i,  n1, n2, n3, n4 as integer
+		  dim ep, eq, er, np, nq, nr as BasicPoint
+		  dim p, q, r as point
+		  dim  n1, n2, n3, n4 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)
@@ -2411,9 +2411,6 @@ Protected Class Figure
 		      secteur(s).skullcoord.CreateExtreAndCtrlPoints(s.ori)
 		      secteur(s).skullcoord.MoveExtreCtrl(M)
 		    end if
-		    if  s isa cube then
-		      cube(s).updateskull
-		    end if
 		    if (not s isa point)  then ' sinon on effectue deux fois tsf.update quand s est le support d'un demi-tour ou d'un quart de tour
 		      s.endmove
 		    end if
@@ -2732,7 +2729,7 @@ Protected Class Figure
 		    if p.forme = 2 and p.pointsur.item(0).modified and p.pointsur.item(1).modified then
 		      p.unmodifiable = true
 		    end if
-		    if p.constructedby <> nil and p.constructedby.oper <> 10 and p.constructedby.shape.modified then
+		    if p.constructedby <> nil and p.constructedby.oper <> 10  then
 		      p.unmodifiable = true
 		    end if
 		    if ubound(p.parents) >=1 then
@@ -2980,7 +2977,7 @@ Protected Class Figure
 		  end if
 		  
 		  if auto = 1 and f.auto=3  and NbTrueSommCommuns(f) >= 2  then
-		    return f.HasPointOnConstructedShape(self)
+		    return not  f.HasPointOnConstructedShape(self)
 		  end if
 		  
 		  Return false
@@ -3106,7 +3103,6 @@ Protected Class Figure
 		  i0 = 0
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Lacet  then
-		      's = Lacet(shapes.item(i))
 		      sh = shapes.item(i)
 		      for j = 0 to sh.npts-1
 		        if sh.coord.curved(j) = 1 then

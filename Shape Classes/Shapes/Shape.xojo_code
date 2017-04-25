@@ -338,7 +338,7 @@ Protected Class Shape
 		  if not self isa point then
 		    return false
 		  elseif constructedby <> nil then
-		    return constructedby.oper =0 or constructedby.oper = 4 or constructedby.oper = 7
+		    return constructedby.oper =0 or constructedby.oper = 4 or constructedby.oper = 7 or constructedby.oper = 45
 		  end if
 		  return false
 		  
@@ -844,7 +844,7 @@ Protected Class Shape
 		  
 		  if constructedby <> nil then
 		    nonpointed = constructedby.shape.nonpointed
-		  elseif not self isa cube then
+		  else 'if not self isa cube then
 		    nonpointed = not currentcontent.PolygPointes
 		  end if
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
@@ -2775,7 +2775,7 @@ Protected Class Shape
 		    return true
 		  end if
 		  
-		  if self isa trap and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
+		  if (self.auto = 3 or self.auto = 5) and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
 		    return true
 		  end if
 		  
@@ -3451,6 +3451,26 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub updateconstructedshapes()
+		  dim i as integer
+		  dim s2 as shape
+		  dim tsf as Transformation
+		  
+		  if self isa circle then
+		    
+		    for i = 0 to ubound(constructedshapes)
+		      s2 = constructedshapes(i)
+		      if s2. constructedby.oper = 6 then
+		        tsf = s2.constructedby.data(0)
+		        tsf.modifyimages
+		      end if
+		    next
+		    
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub updatecoord()
 		  //updatecoord doit appara^tre dans endmove (à l'issue des mouvements) et updateshape (à l'issue des modifications)
 		  dim i  as integer
@@ -3667,6 +3687,7 @@ Protected Class Shape
 		  if not self isa lacet then
 		    modified = true
 		    endmove
+		    updateconstructedshapes
 		    updateMacConstructedShapes
 		  end if
 		End Sub

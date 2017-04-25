@@ -118,9 +118,9 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  'if sctxt isa polygon then
-		  'base.append (New MenuItem(dico.value("AutoIntersec")))
-		  'end if
+		  if sctxt isa polygon then
+		    base.append (New MenuItem(dico.value("AutoIntersec")))
+		  end if
 		  
 		  
 		  Return True//display the contextual menu
@@ -225,8 +225,7 @@ Inherits Canvas
 		    Modifier(currentoper).Animer(point(sctxt))
 		  case Dico.value("AutoIntersec")
 		    currentoper = new AutoIntersec(polygon(sctxt))
-		    AutoIntersec(currentoper).ComputeInterLines
-		    AutoIntersec(currentoper).Paint(OffscreenPicture.graphics)
+		    EndOperMenuContext
 		  end select
 		  
 		  ctxt = false
@@ -247,7 +246,7 @@ Inherits Canvas
 		    s =  CurrentContent.CurrentOperation.currentshape
 		    if (s.fam > 10 and s.IndexConstructedPoint = 0)  then
 		      CurrentContent.undolastoperation
-		    elseif  (s.fam <=10 and s.IndexConstructedpoint >= 1) then
+		    elseif  (s.fam <=10 and s.IndexConstructedpoint > 1) then
 		      CurrentContent.abortconstruction
 		    end if
 		  end if

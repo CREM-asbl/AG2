@@ -39,21 +39,22 @@ Inherits SelectOperation
 		  'if Bip isa polygon then
 		  for i =  ubound(Bip.childs) downto Bip.npts
 		    p = Bip.Childs(i)
-		    select case p.forme
-		    case 1
-		      if p.numside(0) = ibip then
+		    j = p.PointSur.GetPosition(Bip)
+		    if p.numside(j) = ibip then
+		      select case p.forme
+		      case 1
 		        p.removepointsur Bip
 		        p.puton Dr
-		      end if
-		    case 2 
-		      j = p.PointSur.GetPosition(Bip)
-		      s = p.PointSur.item(1-j)
-		      p.removepointsur Bip
-		      p.puton Dr
-		      p.adjustinter(s,Dr)
-		    end select
+		      case 2 
+		        s = p.PointSur.item(1-j)
+		        p.removepointsur Bip
+		        p.puton Dr
+		        p.permuterparam
+		        p.adjustinter(Dr,s)
+		      end select
+		    end if
 		  next
-		  'end if
+		  
 		  
 		  for i = 2 to ubound(Dr.childs)
 		    p = Dr.childs(i)
@@ -156,7 +157,7 @@ Inherits SelectOperation
 		      visible.removeobject(s)
 		    elseif s isa Lacet then
 		      n = s.pointonside(p)
-		      if n <> -1 and s.coord.curved(n) = 1 then
+		      if n <> -1 and not s isa cube and s.coord.curved(n) = 1 then
 		        visible.removeobject(s)
 		      end if
 		    end if
@@ -223,10 +224,10 @@ Inherits SelectOperation
 		      Lacet(sh).PaintSide(g,cot,2,config.highlightcolor)
 		      'end if
 		      'if currentcontent.macrocreation then
-		      if sh.coord.curved(cot)=0 then
-		        display = thissideofpoly + "?"
-		      else
+		      if not sh isa cube and sh.coord.curved(cot)=1 then
 		        display = thisarc + "?"
+		      else
+		        display = thissideofpoly + "?"
 		      end if
 		    else
 		      display = thissegment + "?"

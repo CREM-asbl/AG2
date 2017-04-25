@@ -305,7 +305,6 @@ Protected Class Operation
 		      if CurrentHighlightedShape<>nil   then
 		        CurrentHighlightedShape.HighLight
 		        side = currenthighlightedshape.pointonside(p)
-		        'can.refreshBackground
 		      end if
 		      
 		    end if

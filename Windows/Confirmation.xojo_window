@@ -44,14 +44,14 @@ Begin Window Confirmation
       LockRight       =   False
       LockTop         =   False
       Multiline       =   False
-      Scope           =   0
+      Scope           =   "0"
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Sauver?"
       TextAlign       =   0
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
@@ -80,7 +80,7 @@ Begin Window Confirmation
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -111,7 +111,7 @@ Begin Window Confirmation
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -142,7 +142,7 @@ Begin Window Confirmation
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True

@@ -624,7 +624,7 @@ Protected Class WindContent
 		    return nil
 		  else
 		    n = currentop
-		    while n > 0 and val(XMLElement(Histo.child(n)).GetAttribute("Undone")) = 1
+		    while n > 0 and Histo.child(n) <> nil and val(XMLElement(Histo.child(n)).GetAttribute("Undone")) = 1
 		      n = n-1
 		    wend
 		    if n = 0 then

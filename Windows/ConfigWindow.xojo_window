@@ -45,7 +45,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -76,7 +76,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -107,7 +107,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -138,7 +138,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -169,7 +169,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -200,7 +200,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -230,7 +230,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
@@ -258,7 +258,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
@@ -286,7 +286,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
@@ -314,7 +314,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
@@ -342,7 +342,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
@@ -370,7 +370,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
@@ -398,7 +398,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
@@ -427,7 +427,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
@@ -458,7 +458,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
@@ -489,7 +489,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
@@ -520,7 +520,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
@@ -551,7 +551,7 @@ Begin Window ConfigWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
@@ -1370,7 +1370,7 @@ End
 #tag EndEvents
 #tag Events Canvas1
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
 		    Config.nlibvis(0) = not config.nlibvis(0)
 		    wnd.LibBoxRefresh
@@ -1387,7 +1387,7 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
 		  if not Config.nlibvis(index) then
 		    g.ForeColor = &c000000
 		    g.DrawLine 0,0,me.width,me.height
@@ -1400,7 +1400,7 @@ End
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action()
+		Sub Action(index as Integer)
 		  wnd.MouvBut(index).visible = not wnd.MouvBut(index).visible
 		  Config.MvBt(index) = wnd.MouvBut(Index).visible
 		  

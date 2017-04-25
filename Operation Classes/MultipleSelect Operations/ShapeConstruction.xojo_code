@@ -158,7 +158,7 @@ Inherits MultipleSelectOperation
 		      currentshape = new Point(objects, p)
 		    case 1
 		      select case forme
-		      case 0
+		      case -1, 0
 		        currentshape = new Droite(objects, p,2)
 		      case 3
 		        currentshape = new Droite(objects,p,0)

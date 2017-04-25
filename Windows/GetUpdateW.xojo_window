@@ -45,7 +45,7 @@ Begin Window GetUpdateW
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -76,7 +76,7 @@ Begin Window GetUpdateW
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -106,13 +106,14 @@ Begin Window GetUpdateW
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   "0"
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   ""
       TextAlign       =   1
-      TextColor       =   &c00000000
+      TextColor       =   
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
@@ -177,7 +178,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/logiciel/AG")
+		  showUrl("http://crem.be/logiciels/-K0QFCVwKVLay6Bb2-Xn")
 		  close
 		  
 		End Sub

@@ -76,6 +76,9 @@ Inherits Polygon
 		  stdsize=Val(EL.GetAttribute("Taille"))
 		  Ori = val(EL.GetAttribute("Ori"))
 		  nonpointed = (val(EL.GetAttribute("NonPointed")) = 1)
+		  if self isa cube then
+		    return
+		  end  if
 		  redim Angles(npts-2)
 		  if fam < 14 then
 		    file = Config.stdfile
@@ -89,13 +92,8 @@ Inherits Polygon
 		  
 		  p = coord.tab(1) - coord.tab(0) 
 		  Angles(0)= p.anglepolaire
-		  'nsk = new Lskull(points(0).bpt)
-		  'redim coord.curved(-1)
-		  'redim coord.curved(npts-1)
-		  'redim prol(-1)
-		  'redim prol(npts-1)
 		  std = true
-		  'autos
+		  
 		End Sub
 	#tag EndMethod
 

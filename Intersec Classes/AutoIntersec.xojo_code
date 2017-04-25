@@ -2,6 +2,32 @@
 Protected Class AutoIntersec
 Inherits Intersec
 	#tag Method, Flags = &h0
+		Sub computeinter()
+		  dim i, j as integer
+		  init
+		  drappara = false
+		  somevalidpoint = false
+		  computeinterlines
+		  
+		  for i = 0 to nlig
+		    for j = i to ncol
+		      somevalidpoint = somevalidpoint or val(i,j)
+		    next
+		  next
+		  
+		  if not somevalidpoint then
+		    return
+		  else
+		    positionfalseinterpoints
+		  end if  
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub computeinterlines()
 		  dim i, j,k as integer
 		  dim bp as basicpoint
@@ -11,27 +37,23 @@ Inherits Intersec
 		  
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
-		    for j = 0 to ncol
-		      if j <> i then
-		        d2 = sh2.getside(j)
-		        bp = nil
-		        k = d1.inter(d2,bp,r1,r2)
-		        if bp <> nil then
-		          bptinters(i,j) = bp
-		        end if
-		        if (k = 0)  or (r1 > 998) then
-		          val(i,j) = false
-		        end if
-		        if r1 > 998 then
-		          drappara = true
-		        end if
-		      else
+		    for j = i+1 to nlig
+		      d2 = sh2.getside(j)
+		      bp = nil
+		      k = d1.inter(d2,bp,r1,r2)
+		      if bp <> nil then
+		        bptinters(i,j) = bp
+		      end if
+		      if (k = 0)  or (r1 > 998) then
 		        val(i,j) = false
+		      end if
+		      if r1 > 998 then
+		        drappara = true
 		      end if
 		    next
 		  next
 		  
-		  positionfalseinterpoints
+		  
 		  
 		  
 		  
@@ -53,34 +75,45 @@ Inherits Intersec
 		  sh1 = s
 		  sh2 = s
 		  nlig = s.npts-1
-		  ncol = s.npts-1
+		  ncol = nlig
 		  
-		  redim bptinters(nlig, ncol)
-		  redim ids(nlig,ncol)
-		  redim val(nlig,ncol)
+		  redim bptinters(nlig, nlig)
+		  redim ids(nlig,nlig)
+		  redim val(nlig,nlig)
 		  redim pts(-1)
 		  
-		  computeinter
-		  s.autointer = self
+		  'computeinter
+		  's.autointer = self
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Create()
-		  'dim i, j as integer
-		  '
-		  'dim p as point
-		  '
-		  'for i = 0 to sh1.npts-1
-		  'for j = i+1 to sh2.npts-1
-		  'if  val(i,j) and  not bezet(i,j) then
-		  'p = new point (bptinters(i,j))
-		  'p.endconstruction
-		  'p.rsk = new Ovalskull(3,can.transform(bptinters(i,j)))
-		  'p.rsk.updatecolor(bleu,100)
-		  'end if
-		  'next
-		  'next
+		Sub CreatePoints()
+		  dim i, j as integer
+		  
+		  dim p as point
+		  
+		  for i = 0 to sh1.npts-1
+		    for j = i+1 to sh2.npts-1
+		      if  val(i,j) and  not bezet(i,j) then
+		        p = new point (objects,bptinters(i,j))
+		        p.setconstructedby sh1,45
+		        p.endconstruction
+		      end if
+		    next
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DoOperation()
+		  currentshape = sh1
+		  'CurrentContent.TheFigs.Removefigure currentshape.fig
+		  ComputeInter
+		  createpoints
+		  EndOperation
+		  
 		  
 		End Sub
 	#tag EndMethod

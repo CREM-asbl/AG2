@@ -1335,23 +1335,6 @@ Inherits Shape
 		    if labs.count = 1 and not(labs.item(0).LockRight and labs.item(0).LockBottom) then
 		      labs.item(0).SetPosition
 		    end if
-		    'if tracept then
-		    'if can.ObjectsTraced = nil then
-		    'can.ObjectsTraced = new Group2D
-		    'can.ObjectsTraced.border = 100
-		    'can.objectsTraced.bordercolor = bleu
-		    'can.objectstraced.x = can.rep.origine.x
-		    'can.objectstraced.y = can.rep.origine.y
-		    'end if
-		    'rsk.Border = 100
-		    'rsk.Bordercolor = bleu
-		    'rsk.fillcolor = bleu
-		    'rsk.fill = 100
-		    'rsk.x = 0
-		    'rsk.y = 0
-		    'can.ObjectsTraced.append rsk
-		    ''Trace.append d
-		    'end if
 		  end if
 		  
 		End Sub
@@ -1551,6 +1534,27 @@ Inherits Shape
 		  end if
 		  return s
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub permuterparam()
+		  dim n as integer
+		  dim loc as double
+		  dim p as variant
+		  
+		  if pointsur.count = 2 then
+		    n = numside(0)
+		    numside(0) = numside(1)
+		    numside(1) = n
+		    loc = location(0)
+		    location(0) = location(1)
+		    location(1) = loc
+		    p = pointsur.element(0)
+		    pointsur.objects(0) = pointsur.objects(1)
+		    pointsur.objects(1) = p
+		  end if
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -2769,14 +2773,13 @@ Inherits Shape
 		      np = bpt+ (delta.normer)*0.2
 		    end if
 		  end if
-		  'M = new TranslationMatrix(np-bpt)
-		  Moveto np   'M*bpt
-		  'if pointsur.count = 1 then
-		  'puton pointsur.item(0)
-		  'end if
+		  Moveto np  
 		  modified = true
-		  updateshape
-		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; on initialise ainsi la modification de toutes les figures
+		  'updateshape
+		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; 
+		  //on initialise ainsi la modification de toutes les figures
+		  // ... et ce n'est pas une bonne idée car le point mobile peut à ce moment être déplacé en un endroit 
+		  // où il ne peut aller! exemple: sommet de l'angle droit d'un triangle rectangle
 		End Sub
 	#tag EndMethod
 

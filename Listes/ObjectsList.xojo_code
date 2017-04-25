@@ -771,6 +771,37 @@ Inherits Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub updateangles(a as double)
+		  dim i as integer
+		  dim s as shape
+		  
+		  for i = 0 to count-1
+		    s = item(i)
+		    if s isa StandardPolygon  then
+		      StandardPolygon(s).angles(0) = StandardPolygon(s).angles(0) - a
+		    end if
+		    if s isa StdCircle  then
+		      StdCircle(s).angles(0) = StdCircle(s).angles(0) - a
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updatecubes(n as integer, k as double)
+		  dim i as integer
+		  dim s as shape
+		  for i = 0 to count - 1
+		    s= item(i)
+		    if s isa cube then
+		      cube(s).csk.update(n, k)
+		    end if 
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub updateids()
 		  dim i,j,n as integer
 		  dim s as shape

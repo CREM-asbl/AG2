@@ -1,8 +1,8 @@
 #tag MultiImage
 Image splash
 	#tag ImageRepresentation
-		SaveInfo = APHRcwECAQAAAABAQzpcVXNlcnNcZ3VuYmxcT25lRHJpdmUgLSBDUkVNIGFzYmxcZGV2XEFHMlxSZXNvdXJjZXNcc3BsYXNoLnBuZwMAAAAAAQAEAAAAAAEAAAAAAAAA
-		FullPath = C:\Users\gunbl\OneDrive - CREM asbl\dev\AG2\Resources\splash.png
+		SaveInfo = APHRcwECAQAAAAA9QzpcVXNlcnNcVXRpbGlzYXRldXJcRHJvcGJveFxHdXktQUcyLjUuMVxSZXNvdXJjZXNcc3BsYXNoLnBuZwMAAAAAAQAEAAAAAAEAAAAAAAAA
+		FullPath = C:\Users\Utilisateur\Dropbox\Guy-AG2.5.1\Resources\splash.png
 		PartialPath = Resources\splash.png
 		#tag ImageSpecification
 			Comment = 
