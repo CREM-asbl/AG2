@@ -118,9 +118,9 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  if sctxt isa polygon then
-		    base.append (New MenuItem(dico.value("AutoIntersec")))
-		  end if
+		  'if sctxt isa polygon then
+		  'base.append (New MenuItem(dico.value("AutoIntersec")))
+		  'end if
 		  
 		  
 		  Return True//display the contextual menu
