@@ -83,7 +83,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   440
+      Top             =   432
       Underline       =   False
       Visible         =   False
       Width           =   71
@@ -157,7 +157,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   326
+      Top             =   329
       Underline       =   False
       Visible         =   True
       Width           =   112
@@ -219,7 +219,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   440
+      Top             =   432
       Underline       =   False
       Visible         =   True
       Width           =   108
