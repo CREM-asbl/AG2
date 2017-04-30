@@ -2073,30 +2073,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub PutOnArc(s as arc)
-		  dim alpha as double
-		  dim n as integer
-		  dim a as BasicPoint
-		  
-		  
-		  n = Pointsur.getposition(s)
-		  a = bpt- s.getgravitycenter
-		  if a.norme < epsilon then
-		    return
-		  end if
-		  
-		  alpha = s.computeangle(bpt)
-		  numside(n) = 0
-		  if s.Inside(bpt) then
-		    Moveto bpt.projection(s.getgravitycenter, s.getradius)
-		    location(n) = alpha/s.arcangle
-		  end if
-		  
-		  S.setpoint self
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub putonarc(a as basicpoint, b as basicPoint, c as BasicPoint, angle as double, ampliarc as double, startangle as double, n as integer)
 		  dim r as double
 		  dim q as basicPoint
@@ -2761,21 +2737,29 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(np as BasicPoint)
-		  'dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
+		  dim sh as shape
 		  
 		  
 		  delta = np-bpt
 		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
 		    if d > 0.1 and dret = nil then
-		      np = bpt+ (delta.normer)*0.2
-		    end if
+		      np = bpt+ (delta.normer)*0.2 
+		    end if                   'On évite de faire des pas trop grands
 		  end if
 		  Moveto np  
+		  if  forme =1  then
+		    sh = pointsur.item(0)
+		    if not sh isa arc then
+		      puton sh
+		    else
+		      arc(sh).positionner(self)   //Voir remarque dans Figure.updatePtssur
+		    end if
+		  end if
 		  modified = true
-		  'updateshape
+		  
 		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; 
 		  //on initialise ainsi la modification de toutes les figures
 		  // ... et ce n'est pas une bonne idée car le point mobile peut à ce moment être déplacé en un endroit 
@@ -2942,10 +2926,12 @@ Inherits Shape
 		    sh = pointsur.item(0)
 		    if not sh isa arc then
 		      puton sh
-		    else
-		      putonarc (arc(sh))  //Voir remarque dans Figure.updatePtssur
+		    elseif not modified then
+		      Arc(sh).Positionner(self)  //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
+		  
+		  
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
 		    if parents(i) isa circle  or parents(i) isa DSect then
