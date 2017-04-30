@@ -3433,12 +3433,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Untitled()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub updateconstructedpoints()
 		  dim i as integer
 		  
@@ -3689,6 +3683,10 @@ Protected Class Shape
 		    endmove
 		    updateconstructedshapes
 		    updateMacConstructedShapes
+		  end if
+		  
+		  if self isa polygon and polygon(self).autointer<> nil then
+		    polygon(self).autointer.Replace
 		  end if
 		End Sub
 	#tag EndMethod

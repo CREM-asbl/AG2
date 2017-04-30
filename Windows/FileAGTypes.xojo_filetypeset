@@ -61,7 +61,7 @@
 		Extension=std;xml
 		Flags=&h9
 		MacCreator=CREM
-		MacType=STD
+		MacType=
 		Name=STD
 		UTI=
 		UTIConformsTo=

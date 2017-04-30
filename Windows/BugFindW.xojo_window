@@ -44,14 +44,14 @@ Begin Window BugFindW
       LockRight       =   False
       LockTop         =   False
       Multiline       =   True
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Cette figure a provoqué une erreur et va être fermée.\r\nNous nous excusons de ce désagrément.\r\n"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "SmallSystem"
       TextSize        =   12.0
       TextUnit        =   0
@@ -80,7 +80,7 @@ Begin Window BugFindW
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True

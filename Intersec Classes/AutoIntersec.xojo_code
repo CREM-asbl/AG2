@@ -84,6 +84,7 @@ Inherits Intersec
 		  
 		  'computeinter
 		  's.autointer = self
+		  CurrentContent.TheIntersecs.AddObject(self)
 		End Sub
 	#tag EndMethod
 
@@ -94,10 +95,11 @@ Inherits Intersec
 		  dim p as point
 		  
 		  for i = 0 to sh1.npts-1
-		    for j = i+1 to sh2.npts-1
+		    for j = i+1 to sh1.npts-1
 		      if  val(i,j) and  not bezet(i,j) then
 		        p = new point (objects,bptinters(i,j))
 		        p.setconstructedby sh1,45
+		        ids(i,j) =p.id
 		        p.endconstruction
 		      end if
 		    next
@@ -112,8 +114,36 @@ Inherits Intersec
 		  'CurrentContent.TheFigs.Removefigure currentshape.fig
 		  ComputeInter
 		  createpoints
+		  polygon(sh1).autointer = self
 		  EndOperation
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Replace()
+		  dim i, j as integer
+		  dim p as point
+		  
+		  currentshape = sh1
+		  ComputeInter
+		  for i = 0 to sh1.npts-1
+		    for j = i+1 to sh1.npts-1
+		      if ids(i,j) <> 0 then
+		        p = Point(CurrentContent.TheObjects.Getshape(ids(i,j)))
+		        if  val(i,j)  then
+		          if p.invalid then
+		            p.valider
+		          end if
+		          p.moveto bptinters(i,j)
+		          p.updateshape
+		        else
+		          p.invalider 
+		        end if
+		      end if
+		    next
+		  next
 		  
 		End Sub
 	#tag EndMethod

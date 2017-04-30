@@ -8,7 +8,7 @@
     <FileSave Name="Sauvegarder" />
     <FileSaveas Name="Sauvegarder_sous..." />
     <FileSaveEps Name="Exporter en Postscript" />
-    <FileSaveBitmap Name="Exporter en fichier bitmap"/>
+    <FileSaveBitmap Name="Exporter en fichier bitmap" />
     <PrintSetUp Name="Paramètres d'impression" />
     <FilePrint Name="Imprimer" />
     <FileQuit Name="Quitter" />
@@ -18,7 +18,7 @@
     <EditRedo Name="Refaire " />
     <EditCopy Name="Copier" />
     <EditPaste Name="Coller" />
-    <EditSelection Name="Sélectionner/Désélectionner"/>
+    <EditSelection Name="Sélectionner/Désélectionner" />
     <EditReselect Name="Resélection automatique" />
     <EditSelectall Name="Sélectionner tout" />
     <EditLink Name="Lier" />
@@ -44,7 +44,7 @@
     <ToolsLabel Name="Nommer" />
     <Opaque Name="Opaque" />
     <Transparent Name="Transparent" />
-    <ToolsColorStdFam Name="Couleur_Famille_Standard"/>
+    <ToolsColorStdFam Name="Couleur_Famille_Standard" />
     <ToolsHide Name="Montrer-Cacher-Formes" />
     <ToolsHideCenter Name="Montrer-Cacher-Centre" />
     <ToolsGrid Name="Grille" />
@@ -252,7 +252,7 @@
     <Lacets Name="Formes hybrides" />
     <Compo Name="Forme_Hybride" />
     <Thickness Name="Epaisseur" />
-    <Rods Name="Reglettes"/>
+    <Rods Name="Reglettes" />
   </Formes>
   <Operations>
     <Savecfg Name="Sauver la configuration" />

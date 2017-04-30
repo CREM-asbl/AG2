@@ -38,7 +38,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   560
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -55,7 +55,7 @@ Begin Window InitWindow
       Top             =   390
       Underline       =   False
       Visible         =   True
-      Width           =   200
+      Width           =   180
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
@@ -70,7 +70,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   682
+      Left            =   681
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -83,7 +83,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   470
+      Top             =   440
       Underline       =   False
       Visible         =   False
       Width           =   71
@@ -106,7 +106,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   640
+      Left            =   644
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -125,11 +125,11 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   350
+      Top             =   368
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   False
-      Width           =   120
+      Width           =   108
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   False
@@ -144,7 +144,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   560
+      Left            =   572
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -157,10 +157,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   310
+      Top             =   339
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   112
    End
    Begin PushButton PushButton3
       AutoDeactivate  =   True
@@ -175,7 +175,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   560
+      Left            =   572
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -188,10 +188,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   350
+      Top             =   364
       Underline       =   False
       Visible         =   True
-      Width           =   70
+      Width           =   69
    End
    Begin PushButton PushButton4
       AutoDeactivate  =   True
@@ -206,7 +206,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   560
+      Left            =   572
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -219,10 +219,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   470
+      Top             =   440
       Underline       =   False
       Visible         =   True
-      Width           =   110
+      Width           =   108
    End
    Begin PopupMenu ComboBox1
       AutoDeactivate  =   True
@@ -236,7 +236,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   560
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -250,10 +250,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   430
+      Top             =   410
       Underline       =   False
       Visible         =   True
-      Width           =   200
+      Width           =   180
    End
 End
 #tag EndWindow
