@@ -25,7 +25,7 @@ Inherits Operation
 		  super.constructor
 		  OpId = 34
 		  
-		  wnd.Title = Histfile.Name
+		  Workwindow.Title = Histfile.Name
 		  
 		  HistMenu.Child("FileMenu").Text = Dico.Value("FileMenu")
 		  HistMenu.Child("FileMenu").Child("HistClose").Text = Dico.Value("FileClose")
@@ -37,21 +37,21 @@ Inherits Operation
 		  for i= 0 to HistMenu.Child("Fenetres").Count-1
 		    HistMenu.Child("Fenetres").remove(i)
 		  next
-		  wnd.MenuBar.Child("Fenetres").item(wnd.GetNumWindow).Checked = false
-		  for i = 0 to wnd.MenuBar.Child("Fenetres").Count-1
+		  Workwindow.MenuBar.Child("Fenetres").item(Workwindow.GetNumWindow).Checked = false
+		  for i = 0 to Workwindow.MenuBar.Child("Fenetres").Count-1
 		    mitem = new MenuItem
 		    mitem.Name = "winitem"
-		    mitem.Text = wnd. MenuBar.Child("Fenetres").item(i).text
-		    mitem.index =wnd. MenuBar.Child("Fenetres").item(i).index
-		    if mitem.index = wnd.GetNumWindow then
+		    mitem.Text = Workwindow. MenuBar.Child("Fenetres").item(i).text
+		    mitem.index =Workwindow. MenuBar.Child("Fenetres").item(i).index
+		    if mitem.index = Workwindow.GetNumWindow then
 		      mitem.Checked = true
 		    end if
 		    HistMenu.Child("Fenetres").append mitem
 		  next
 		  
-		  wnd.MenuBar = HistMenu
-		  wnd.draphisto = true
-		  wnd.rh = self
+		  Workwindow.MenuBar = HistMenu
+		  Workwindow.draphisto = true
+		  Workwindow.rh = self
 		  
 		  'objects = CurrentContent.TheObjects
 		  XMLLoadOperations(CurrentContent.OpList)
@@ -257,10 +257,6 @@ Inherits Operation
 
 	#tag Property, Flags = &h0
 		drref As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Hcmd As HistCmd
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

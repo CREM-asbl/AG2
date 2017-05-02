@@ -37,6 +37,7 @@ Begin Window HistCmd
       HasBackColor    =   False
       Height          =   30
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True
@@ -62,7 +63,7 @@ End
 		Sub Open()
 		  Left = WorkWindow.Tools.Width 
 		  Left = left + (WorkWindow.Width - Left - 800)/2
-		  Top = WorkWindow.Height
+		  Top = WorkWindow.Height - 20
 		  
 		End Sub
 	#tag EndEvent

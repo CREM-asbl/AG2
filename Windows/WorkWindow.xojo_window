@@ -2086,13 +2086,13 @@ End
 			if oldOp isa ReadHisto then
 			if not CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = Menu
-			ReadHisto(oldOp).Hcmd.visible = false
+			HistCmd.visible = false
 			wnd.draphisto = false
 			wnd.refreshtitle
 			end if
 			elseif CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = HistMenu
-			ReadHisto(CurrentContent.CurrentOperation).Hcmd.visible = true
+			HistCmd.visible = true
 			wnd.draphisto = true
 			wnd.DisableToolBar
 			elseif CurrentContent.Macrocreation then

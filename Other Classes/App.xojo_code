@@ -154,7 +154,7 @@ Inherits Application
 		  if not quitting then
 		    if wnd.draphisto then
 		      if curoper <> nil then
-		        ReadHisto(curoper).Hcmd.close
+		        HistCmd.close
 		      end if
 		      wnd.menubar = menu
 		      wnd.draphisto = false
