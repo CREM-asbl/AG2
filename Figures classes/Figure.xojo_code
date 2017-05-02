@@ -3375,7 +3375,7 @@ Protected Class Figure
 		      p = point(somm.item(i))
 		      if p.tsfi.count > 0 or ubound(p.constructedshapes) > -1 or (p.constructedby <> nil and p.constructedby.oper = 6) then
 		        shapes.addshape p
-		        CurrentContent.Theobjects.addShape p
+		        CurrentContent.addShape p
 		      else
 		        somm.removeobject p
 		      end if

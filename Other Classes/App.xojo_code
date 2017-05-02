@@ -43,7 +43,9 @@ Inherits Application
 		Sub OpenDocument(item As FolderItem)
 		  dim s As string
 		  s = item.NativePath
+		  FileName =""
 		  
+		  s = s.mid(1,Len(s)-4)
 		  if Right(s,1) = "\" then
 		    s = s.mid(1,Len(s)-1)
 		  end if
@@ -53,7 +55,7 @@ Inherits Application
 		  
 		  FileName = FileName+s
 		  
-		  
+		  wnd.openfile(item)
 		End Sub
 	#tag EndEvent
 
@@ -197,7 +199,7 @@ Inherits Application
 		    sys = "win32"
 		  #elseif TargetLinux then
 		    sys="Linux"
-		  #elseif TargetMacOSClassic then
+		  #elseif TargetMacOS then
 		    sys = "Mac"
 		  #else
 		    sys = "MacOsX"

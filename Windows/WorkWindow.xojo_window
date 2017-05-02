@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFFFFFF00
+      FillColor       =   &cFFFF00FF
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -893,6 +893,7 @@ End
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
 		  end if
+		  
 		  
 		  if app.fileName <> "" then
 		    dim f as FolderItem

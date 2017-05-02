@@ -708,7 +708,19 @@ Protected Class Shape
 		    for i =tsfi.count-1 downto 0
 		      CurrentContent.Thetransfos.RemoveObject tsfi.item(i)
 		    next
+		    tsfi.removeall
 		  end if
+		  
+		  for i = 0 to ubound(childs)
+		    if childs(i).tsfi.count >0 then
+		      for j = 0 to childs(i).tsfi.count -1
+		        CurrentContent.Thetransfos.RemoveObject childs(i).tsfi.item(j)
+		      next
+		      childs(i).tsfi.removeall
+		    end if
+		  next
+		  
+		  
 		  
 		  if conditionedby <> nil then
 		    conditionedby.conditioned.removeobject self
