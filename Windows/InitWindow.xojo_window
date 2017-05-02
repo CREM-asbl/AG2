@@ -70,7 +70,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   682
+      Left            =   681
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -320,6 +320,7 @@ End
 	#tag Event
 		Sub Action()
 		  Config.Menu = PopupMenu1.Text
+		  Config.Save
 		  App.Continuer
 		  close
 		  
