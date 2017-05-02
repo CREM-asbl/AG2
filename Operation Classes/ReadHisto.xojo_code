@@ -56,9 +56,9 @@ Inherits Operation
 		  'objects = CurrentContent.TheObjects
 		  XMLLoadOperations(CurrentContent.OpList)
 		  can.mousecursor = System.Cursors.StandardPointer
-		  Hcmd = New HistCmd
-		  Hcmd.ShowWithin(wnd)
-		  Hcmd.HistCtrl.rh = self
+		  
+		  HistCmd.ShowWithin(WorkWindow)
+		  HistCmd.HistCtrl.rh = self
 		  
 		End Sub
 	#tag EndMethod

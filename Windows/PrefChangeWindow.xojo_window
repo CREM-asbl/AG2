@@ -44,14 +44,13 @@ Begin Window PrefChangeWindow
       LockRight       =   False
       LockTop         =   False
       Multiline       =   False
-      Scope           =   "0"
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Configuration :"
       TextAlign       =   0
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
@@ -80,7 +79,7 @@ Begin Window PrefChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -111,7 +110,7 @@ Begin Window PrefChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -142,7 +141,7 @@ Begin Window PrefChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      Scope           =   "0"
+      Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -168,7 +167,6 @@ End
 
 	#tag Method, Flags = &h0
 		Sub update()
-		  
 		  Config.ChargerConfig
 		  wnd.refresh
 		  

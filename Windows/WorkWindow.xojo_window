@@ -698,9 +698,8 @@ End
 
 	#tag Event
 		Sub Close()
-		  if fw <> nil then
-		    fw.close
-		  end if
+		  HistCmd.close
+		  
 		End Sub
 	#tag EndEvent
 
