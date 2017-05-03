@@ -888,13 +888,14 @@ End
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
+		  
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
 		  end if
 		  
 		  if app.fileName <> "" then
 		    dim f as FolderItem
-		    f = GetFolderItem(app.FileName)
+		    f = GetFolderItem(app.FileName, FolderItem.PathTypeShell)
 		    if f <> nil then
 		      OpenFile(f)
 		    else
@@ -2631,7 +2632,7 @@ End
 		  elseif f.Type = "SAVE" then
 		    CurrentContent.CurrentOperation = new Ouvrir(f)
 		  else
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
 		    if nc then
 		      deleteContent
 		    end if

@@ -2,7 +2,7 @@
 	#tag FileType
 		CodeName=SAVE
 		DocIcon=AG.xojo_resources;&h0
-		Extension=fag
+		Extension=fag;xml
 		Flags=&h2
 		MacCreator=CREM
 		MacType=FAG
