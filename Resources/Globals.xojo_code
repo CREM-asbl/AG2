@@ -965,10 +965,6 @@ Protected Module Globals
 
 
 	#tag Property, Flags = &h0
-		ati(-1) As AnimTimer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		can As CustomCanvas1
 	#tag EndProperty
 

@@ -39,7 +39,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub computeinter()
-		  dim i, j as integer
+		  dim i, j, k  as integer
+		  
 		  if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
 		    return
 		  end if
@@ -63,7 +64,10 @@ Inherits SelectOperation
 		      end if
 		    end if
 		  else
-		    computeintercercles
+		    k = computeintercercles
+		    if k = 3 then
+		      somevalidpoint = false
+		    end if
 		  end if
 		  
 		  for i = 0 to nlig
@@ -83,37 +87,29 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub computeintercercles()
+		Function computeintercercles() As integer
 		  dim k as integer
-		  dim bq(), bb0, bb1 as basicpoint
+		  dim bq() as basicpoint
 		  dim g1, g2 as circle
 		  
-		  bb0 = bptinters(0,0)
-		  bb1 = bptinters(0,1)
 		  g1 = circle(sh1)
 		  g2 = circle(sh2)
 		  k = g1.inter(g2,bq())
 		  
 		  if k = 3 or k = 0 then   'introduit pour sangaku02
-		    'val(0,0) = true
-		    'val(0,1) = true
-		    return
+		    val(0,0) = false
+		    val(0,1) = false
+		    return k
 		  end if
-		  
-		  'if  k = 0 then
-		  'bb0 
-		  ''bq.append nil
-		  ''bq.append nil
-		  ''val(0,0) = false
-		  ''val(0,1) = false
-		  'end if
 		  
 		  bptinters(0,0) = bq(0)
 		  bptinters(0,1) = bq(1)
 		  
+		  return 2
 		  
 		  
-		End Sub
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

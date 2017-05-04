@@ -84,18 +84,13 @@ Inherits SelectAndDragOperation
 		          Visible.removeobject(s)
 		        end if
 		      end if
+		      if not choixvalide(s) then
+		        Visible.removeobject(s)
+		      end if
 		      nobj = visible.count
 		    next
 		  end if
 		  
-		  if visible.count > 0 then
-		    for i =  visible.count-1 downto 0
-		      s = Visible.item(i)
-		      if not choixvalide(s) then
-		        Visible.removeobject(s)
-		      end if
-		    next
-		  end if
 		  nobj = visible.count
 		  
 		  if Visible.count > 0  then
