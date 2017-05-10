@@ -699,9 +699,8 @@ End
 
 	#tag Event
 		Sub Close()
-		  if fw <> nil then
-		    fw.close
-		  end if
+		  HistCmd.close
+		  
 		End Sub
 	#tag EndEvent
 
@@ -871,10 +870,8 @@ End
 
 	#tag Event
 		Sub Maximize()
-		  
 		  UpdateToolBar
-		  'width = screen(0).width -120
-		  'height = screen(0).height
+		  
 		End Sub
 	#tag EndEvent
 
@@ -890,29 +887,13 @@ End
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
+		  
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
 		  end if
-		  
-		  
-		  if app.fileName <> "" then
-		    dim f as FolderItem
-		    f = GetFolderItem(app.FileName)
-		    if f <> nil then
-		      OpenFile(f)
-		    else
-		      MsgBox  Dico.Value("MsgErrOpenFile")
-		    end if
-		    app.FileName = ""
-		  end if
-		  
+
 		  maximize
-		  
-		  
-		  
-		  
-		  
-		  
+	  
 		End Sub
 	#tag EndEvent
 
@@ -2091,13 +2072,13 @@ End
 			if oldOp isa ReadHisto then
 			if not CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = Menu
-			ReadHisto(oldOp).Hcmd.visible = false
+			HistCmd.visible = false
 			wnd.draphisto = false
 			wnd.refreshtitle
 			end if
 			elseif CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = HistMenu
-			ReadHisto(CurrentContent.CurrentOperation).Hcmd.visible = true
+			HistCmd.visible = true
 			wnd.draphisto = true
 			wnd.DisableToolBar
 			elseif CurrentContent.Macrocreation then
@@ -2626,7 +2607,7 @@ End
 		  dim nc as boolean
 		  
 		  if  CurrentContent.TheObjects.count > 1 then
-		    closefw
+		    Formswindow.close
 		    NewContent(false)
 		    nc = true
 		  end if
@@ -2636,7 +2617,7 @@ End
 		  elseif f.Type = "SAVE" then
 		    CurrentContent.CurrentOperation = new Ouvrir(f)
 		  else
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
 		    if nc then
 		      deleteContent
 		    end if
@@ -2959,26 +2940,14 @@ End
 
 	#tag Method, Flags = &h0
 		Sub updatemenu()
+		  
 		  EraseMenuBar
 		  CopyMenuBar
 		  ReadNomsMouvBut
 		  ReadStTexts
 		  TradMenu
-		  if MenuBar.Child("PrefsMenu") <> nil then 'correctif pour annuler dans InitWindow
-		    if MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = Config.PolPointes
-		    end if
-		    if MenuBar.Child("PrefsMenu").Child("PrefsTrace") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
-		    end if
-		    if MenuBar.Child("PrefsMenu").Child("PrefsAjust") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
-		    end if
-		  end if
-		  if  MenuBar.Child("ToolsMenu").Child("ToolsThickness") <> nil then
-		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").child("ToolsThick1").checked = true
-		  end if
 		  updateToolBar
+		  
 		  
 		End Sub
 	#tag EndMethod

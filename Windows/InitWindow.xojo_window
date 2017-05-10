@@ -320,6 +320,7 @@ End
 	#tag Event
 		Sub Action()
 		  Config.Menu = PopupMenu1.Text
+		  Config.Save
 		  App.Continuer
 		  close
 		  

@@ -1,5 +1,5 @@
 #tag Window
-Begin ContainerControl ContainerControl1
+Begin ContainerControl HistoControl
    AcceptFocus     =   False
    AcceptTabs      =   False
    AutoDeactivate  =   True
@@ -9,14 +9,14 @@ Begin ContainerControl ContainerControl1
    Enabled         =   True
    EraseBackground =   True
    HasBackColor    =   False
-   Height          =   22
+   Height          =   30
    HelpTag         =   ""
    InitialParent   =   ""
    Left            =   32
-   LockBottom      =   False
-   LockLeft        =   False
-   LockRight       =   False
-   LockTop         =   False
+   LockBottom      =   True
+   LockLeft        =   True
+   LockRight       =   True
+   LockTop         =   True
    TabIndex        =   0
    TabPanelIndex   =   0
    TabStop         =   True
@@ -24,7 +24,7 @@ Begin ContainerControl ContainerControl1
    Transparent     =   True
    UseFocusRing    =   False
    Visible         =   False
-   Width           =   600
+   Width           =   800
    Begin BevelButton Stop
       AcceptFocus     =   False
       AutoDeactivate  =   True
@@ -39,7 +39,7 @@ Begin ContainerControl ContainerControl1
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
-      Height          =   22
+      Height          =   30
       HelpTag         =   ""
       Icon            =   0
       IconAlign       =   0
@@ -48,12 +48,12 @@ Begin ContainerControl ContainerControl1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   480
-      LockBottom      =   False
+      Left            =   640
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
       MenuValue       =   0
       Scope           =   0
       TabIndex        =   0
@@ -67,7 +67,7 @@ Begin ContainerControl ContainerControl1
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin BevelButton First
       AcceptFocus     =   False
@@ -83,7 +83,7 @@ Begin ContainerControl ContainerControl1
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
-      Height          =   22
+      Height          =   30
       HelpTag         =   "Première construction"
       Icon            =   0
       IconAlign       =   0
@@ -93,11 +93,11 @@ Begin ContainerControl ContainerControl1
       InitialParent   =   ""
       Italic          =   False
       Left            =   0
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   False
-      LockTop         =   False
+      LockTop         =   True
       MenuValue       =   0
       Scope           =   0
       TabIndex        =   1
@@ -111,7 +111,7 @@ Begin ContainerControl ContainerControl1
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin BevelButton Prec
       AcceptFocus     =   False
@@ -127,7 +127,7 @@ Begin ContainerControl ContainerControl1
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
-      Height          =   22
+      Height          =   30
       HelpTag         =   ""
       Icon            =   0
       IconAlign       =   0
@@ -136,12 +136,12 @@ Begin ContainerControl ContainerControl1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   120
-      LockBottom      =   False
+      Left            =   160
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   False
-      LockTop         =   False
+      LockTop         =   True
       MenuValue       =   0
       Scope           =   0
       TabIndex        =   2
@@ -155,7 +155,7 @@ Begin ContainerControl ContainerControl1
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin BevelButton BNext
       AcceptFocus     =   False
@@ -171,7 +171,7 @@ Begin ContainerControl ContainerControl1
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
-      Height          =   22
+      Height          =   30
       HelpTag         =   ""
       Icon            =   0
       IconAlign       =   0
@@ -180,12 +180,12 @@ Begin ContainerControl ContainerControl1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   240
-      LockBottom      =   False
+      Left            =   320
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   False
-      LockTop         =   False
+      LockTop         =   True
       MenuValue       =   0
       Scope           =   0
       TabIndex        =   3
@@ -199,7 +199,7 @@ Begin ContainerControl ContainerControl1
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin BevelButton Last
       AcceptFocus     =   False
@@ -215,7 +215,7 @@ Begin ContainerControl ContainerControl1
       Enabled         =   True
       HasBackColor    =   False
       HasMenu         =   0
-      Height          =   22
+      Height          =   30
       HelpTag         =   ""
       Icon            =   0
       IconAlign       =   0
@@ -224,12 +224,12 @@ Begin ContainerControl ContainerControl1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   360
-      LockBottom      =   False
+      Left            =   480
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
       MenuValue       =   0
       Scope           =   0
       TabIndex        =   4
@@ -243,7 +243,7 @@ Begin ContainerControl ContainerControl1
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
 End
 #tag EndWindow
@@ -251,7 +251,6 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  width = 600
 		  First.caption = Dico.value("HstFirst")
 		  Prec.Caption = Dico.Value("HstPrec")
 		  BNext.caption = Dico.value("HstNext")
