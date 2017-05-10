@@ -2,18 +2,17 @@
 Protected Class ReadHisto
 Inherits Operation
 	#tag Method, Flags = &h0
-		Sub Constructor(f as folderitem)
+		Sub Constructor(HistFile as folderitem)
 		  dim mitem as MenuItem
 		  dim i as integer
-		  
-		  Histfile = f
 		  
 		  try
 		    Currentcontent.OpList =new XMLDocument(Histfile)
 		    CurrentContent.Histo = CurrentContent.OpList.DocumentElement
 		    Histo = CurrentContent.Histo
 		  catch err as XmlException
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
+		    MsgBox err.Message
 		    return
 		  end try
 		  
@@ -53,7 +52,6 @@ Inherits Operation
 		  Workwindow.draphisto = true
 		  Workwindow.rh = self
 		  
-		  'objects = CurrentContent.TheObjects
 		  XMLLoadOperations(CurrentContent.OpList)
 		  can.mousecursor = System.Cursors.StandardPointer
 		  

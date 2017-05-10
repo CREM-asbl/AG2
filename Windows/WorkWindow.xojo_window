@@ -869,10 +869,8 @@ End
 
 	#tag Event
 		Sub Maximize()
-		  
 		  UpdateToolBar
-		  'width = screen(0).width -120
-		  'height = screen(0).height
+		  
 		End Sub
 	#tag EndEvent
 
@@ -892,18 +890,6 @@ End
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
 		  end if
-		  
-		  if app.fileName <> "" then
-		    dim f as FolderItem
-		    f = GetFolderItem(app.FileName, FolderItem.PathTypeShell)
-		    if f <> nil then
-		      OpenFile(f)
-		    else
-		      MsgBox  Dico.Value("MsgErrOpenFile")
-		    end if
-		    app.FileName = ""
-		  end if
-		  
 		  maximize
 		  
 		  
@@ -2622,7 +2608,7 @@ End
 		  dim nc as boolean
 		  
 		  if  CurrentContent.TheObjects.count > 1 then
-		    closefw
+		    Formswindow.close
 		    NewContent(false)
 		    nc = true
 		  end if
@@ -2955,26 +2941,14 @@ End
 
 	#tag Method, Flags = &h0
 		Sub updatemenu()
+		  
 		  EraseMenuBar
 		  CopyMenuBar
 		  ReadNomsMouvBut
 		  ReadStTexts
 		  TradMenu
-		  if MenuBar.Child("PrefsMenu") <> nil then 'correctif pour annuler dans InitWindow
-		    if MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = Config.PolPointes
-		    end if
-		    if MenuBar.Child("PrefsMenu").Child("PrefsTrace") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
-		    end if
-		    if MenuBar.Child("PrefsMenu").Child("PrefsAjust") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
-		    end if
-		  end if
-		  if  MenuBar.Child("ToolsMenu").Child("ToolsThickness") <> nil then
-		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").child("ToolsThick1").checked = true
-		  end if
 		  updateToolBar
+		  
 		  
 		End Sub
 	#tag EndMethod
