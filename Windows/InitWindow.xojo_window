@@ -8,7 +8,7 @@ Begin Window InitWindow
    Frame           =   4
    FullScreen      =   False
    FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackColor    =   True
    Height          =   554
    ImplicitInstance=   True
    LiveResize      =   False
@@ -25,7 +25,7 @@ Begin Window InitWindow
    Resizeable      =   False
    Title           =   ""
    Visible         =   True
-   Width           =   772
+   Width           =   780
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
       Bold            =   True
@@ -86,7 +86,7 @@ Begin Window InitWindow
       Top             =   432
       Underline       =   False
       Visible         =   False
-      Width           =   71
+      Width           =   78
    End
    Begin TextField User
       AcceptTabs      =   False

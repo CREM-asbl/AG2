@@ -56,6 +56,7 @@ Inherits Application
 		  
 		  if item.Exists then
 		    WorkWindow.OpenFile(item)
+		    InitWindow.close
 		  end if
 
 		End Sub

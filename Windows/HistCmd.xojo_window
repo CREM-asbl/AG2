@@ -5,7 +5,7 @@ Begin Window HistCmd
    CloseButton     =   False
    Compatibility   =   ""
    Composite       =   False
-   Frame           =   4
+   Frame           =   3
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
