@@ -2,9 +2,11 @@
 Protected Class ReadHisto
 Inherits Operation
 	#tag Method, Flags = &h0
-		Sub Constructor(HistFile as folderitem)
+		Sub Constructor(f as folderitem)
 		  dim mitem as MenuItem
 		  dim i as integer
+		  
+		  HistFile = f
 		  
 		  try
 		    Currentcontent.OpList =new XMLDocument(Histfile)
