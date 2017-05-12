@@ -685,6 +685,10 @@ Inherits Shape
 		    return S.PossibleFusionWith(self, i0, j0, dir)
 		  end if
 		  
+		  if auto = 3 and s.auto = 3 and  ((constructedby <> nil  and constructedby.shape = s) or (s.constructedby <> nil and s.Constructedby.shape = self)) then
+		    return false
+		  end if
+		  
 		  delta = can.MagneticDist
 		  
 		  for i = 0  to npts-1
