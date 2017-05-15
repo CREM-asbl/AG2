@@ -1235,20 +1235,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub markmodifiedallconstructedpoints()
-		  dim i as integer
-		  dim s as point
-		  
-		  for i=0 to UBound(ConstructedShapes)
-		    s = Point(ConstructedShapes(i))
-		    s.modified = true
-		    s.markmodifiedallconstructedpoints
-		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Mobility()
 		  dim i as integer
 		  dim p, p1 as point
@@ -2073,30 +2059,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub PutOnArc(s as arc)
-		  dim alpha as double
-		  dim n as integer
-		  dim a as BasicPoint
-		  
-		  
-		  n = Pointsur.getposition(s)
-		  a = bpt- s.getgravitycenter
-		  if a.norme < epsilon then
-		    return
-		  end if
-		  
-		  alpha = s.computeangle(bpt)
-		  numside(n) = 0
-		  if s.Inside(bpt) then
-		    Moveto bpt.projection(s.getgravitycenter, s.getradius)
-		    location(n) = alpha/s.arcangle
-		  end if
-		  
-		  S.setpoint self
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub putonarc(a as basicpoint, b as basicPoint, c as BasicPoint, angle as double, ampliarc as double, startangle as double, n as integer)
 		  dim r as double
 		  dim q as basicPoint
@@ -2673,7 +2635,7 @@ Inherits Shape
 		  
 		  for i=0 to UBound(ConstructedShapes)
 		    s = Point(ConstructedShapes(i))
-		    if not s.modified then
+		    if not s.modified  then
 		      select case s.constructedby.Oper
 		      case 3, 5 'duplication et découpage
 		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
@@ -2761,25 +2723,38 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(np as BasicPoint)
-		  'dim M as Matrix
 		  dim delta as BasicPoint
 		  dim d as double
+		  dim sh as shape
 		  
 		  
 		  delta = np-bpt
 		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
 		    if d > 0.1 and dret = nil then
-		      np = bpt+ (delta.normer)*0.2
-		    end if
+		      np = bpt+ (delta.normer)*0.2 
+		    end if                   'On évite de faire des pas trop grands
 		  end if
 		  Moveto np  
+		  if  forme =1  then
+		    sh = pointsur.item(0)
+		    if not sh isa arc then
+		      puton sh
+		    else
+		      arc(sh).positionner(self)   //Voir remarque dans Figure.updatePtssur
+		    end if
+		  end if
 		  modified = true
-		  'updateshape
+		  if parents(0).getsousfigure(fig).auto = 3 then
+		    return
+		  end if
+		  updateshape
+		  
 		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; 
 		  //on initialise ainsi la modification de toutes les figures
 		  // ... et ce n'est pas une bonne idée car le point mobile peut à ce moment être déplacé en un endroit 
 		  // où il ne peut aller! exemple: sommet de l'angle droit d'un triangle rectangle
+		  // mais cela entraîne d'autres problèmes (fusion de deux formes dupliquées)
 		End Sub
 	#tag EndMethod
 
@@ -2929,6 +2904,8 @@ Inherits Shape
 		Sub UpdateShape()
 		  dim sh  as shape
 		  dim i as integer
+		  dim ff as figure
+		  dim t as Boolean
 		  
 		  if bpt = nil then
 		    return
@@ -2942,10 +2919,12 @@ Inherits Shape
 		    sh = pointsur.item(0)
 		    if not sh isa arc then
 		      puton sh
-		    else
-		      putonarc (arc(sh))  //Voir remarque dans Figure.updatePtssur
+		    elseif not modified then
+		      Arc(sh).Positionner(self)  //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
+		  
+		  
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
 		    if parents(i) isa circle  or parents(i) isa DSect then
@@ -2956,6 +2935,12 @@ Inherits Shape
 		    ifmac.location = location(0)
 		  end if
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
+		  
+		  'ff = parents(0).getsousfigure(fig)
+		  'if ff.auto = 3 and first then
+		  'fig.pointmobile = self
+		  't = ff.subfigupdate
+		  'end if
 		  
 		  if ubound(constructedshapes) > -1 or constructedby <> nil then
 		    updateconstructedpoints
@@ -3312,6 +3297,10 @@ Inherits Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		first As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Guide As Point
 	#tag EndProperty
 
@@ -3429,6 +3418,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="first"
+			Group="Behavior"
+			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"

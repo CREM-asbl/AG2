@@ -1929,6 +1929,11 @@ Protected Class Figure
 		  dim t, t1 as boolean
 		  dim p as point
 		  
+		  if f1.auto = 1 and f2.auto = 3  then
+		    concat1(f1,f2,3)
+		    return false 'false parce qu'on a déjà fait un remove de f2
+		  end if
+		  
 		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
 		    return false
 		  end if
@@ -3375,7 +3380,7 @@ Protected Class Figure
 		      p = point(somm.item(i))
 		      if p.tsfi.count > 0 or ubound(p.constructedshapes) > -1 or (p.constructedby <> nil and p.constructedby.oper = 6) then
 		        shapes.addshape p
-		        CurrentContent.Theobjects.addShape p
+		        CurrentContent.addShape p
 		      else
 		        somm.removeobject p
 		      end if
@@ -3882,6 +3887,7 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
+		    p.first = false
 		    p.Transform(M)
 		    p.updateshape
 		    if  p.forme = 0 then

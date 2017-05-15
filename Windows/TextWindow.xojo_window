@@ -31,7 +31,7 @@ Begin Window TextWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   
+      BackColor       =   &cFF00FFFF
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -56,7 +56,7 @@ Begin Window TextWindow
       Mask            =   ""
       Multiline       =   True
       ReadOnly        =   False
-      Scope           =   "0"
+      Scope           =   0
       ScrollbarHorizontal=   True
       ScrollbarVertical=   True
       Styled          =   False
@@ -64,7 +64,7 @@ Begin Window TextWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextColor       =   
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0

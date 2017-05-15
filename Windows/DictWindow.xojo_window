@@ -58,7 +58,7 @@ Begin Window DictWindow
       LockRight       =   False
       LockTop         =   False
       RequiresSelection=   False
-      Scope           =   "0"
+      Scope           =   0
       ScrollbarHorizontal=   False
       ScrollBarVertical=   True
       SelectionType   =   1
