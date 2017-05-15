@@ -8,7 +8,7 @@ Begin Window InitWindow
    Frame           =   4
    FullScreen      =   False
    FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackColor    =   True
    Height          =   554
    ImplicitInstance=   True
    LiveResize      =   False
@@ -25,7 +25,7 @@ Begin Window InitWindow
    Resizeable      =   False
    Title           =   ""
    Visible         =   True
-   Width           =   772
+   Width           =   780
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
       Bold            =   True
@@ -38,7 +38,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   579
+      Left            =   560
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -52,10 +52,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   381
+      Top             =   390
       Underline       =   False
       Visible         =   True
-      Width           =   173
+      Width           =   200
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
@@ -70,7 +70,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   692
+      Left            =   681
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -83,17 +83,17 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   442
+      Top             =   470
       Underline       =   False
       Visible         =   False
-      Width           =   68
+      Width           =   78
    End
    Begin TextField User
       AcceptTabs      =   False
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   True
       Border          =   True
       CueText         =   ""
@@ -106,7 +106,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   644
+      Left            =   640
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -125,11 +125,11 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   343
+      Top             =   350
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   False
-      Width           =   108
+      Width           =   120
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   False
@@ -144,7 +144,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   572
+      Left            =   560
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -157,10 +157,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   312
+      Top             =   310
       Underline       =   False
       Visible         =   True
-      Width           =   112
+      Width           =   120
    End
    Begin PushButton PushButton3
       AutoDeactivate  =   True
@@ -175,7 +175,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   572
+      Left            =   560
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -188,10 +188,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   343
+      Top             =   350
       Underline       =   False
       Visible         =   True
-      Width           =   69
+      Width           =   70
    End
    Begin PushButton PushButton4
       AutoDeactivate  =   True
@@ -206,7 +206,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   572
+      Left            =   560
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -219,10 +219,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   442
+      Top             =   470
       Underline       =   False
       Visible         =   True
-      Width           =   108
+      Width           =   110
    End
    Begin PopupMenu ComboBox1
       AutoDeactivate  =   True
@@ -236,7 +236,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   579
+      Left            =   560
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -250,10 +250,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   409
+      Top             =   430
       Underline       =   False
       Visible         =   True
-      Width           =   173
+      Width           =   200
    End
 End
 #tag EndWindow
@@ -320,6 +320,7 @@ End
 	#tag Event
 		Sub Action()
 		  Config.Menu = PopupMenu1.Text
+		  Config.Save
 		  App.Continuer
 		  close
 		  

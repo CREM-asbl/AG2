@@ -9,7 +9,7 @@ Begin Window HistCmd
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   22
+   Height          =   30
    ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
@@ -18,46 +18,41 @@ Begin Window HistCmd
    MaxWidth        =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   22
+   MinHeight       =   30
    MinimizeButton  =   False
-   MinWidth        =   64
-   Placement       =   0
+   MinWidth        =   800
+   Placement       =   3
    Resizeable      =   False
    Title           =   ""
    Visible         =   True
-   Width           =   600
-   Begin ContainerControl1 HistCtrl
+   Width           =   800
+   Begin HistoControl HistCtrl
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &cFFFFFF00
       Backdrop        =   0
-      BehaviorIndex   =   0
-      ControlOrder    =   "0"
       Enabled         =   True
       EraseBackground =   True
       HasBackColor    =   False
-      Height          =   22
+      Height          =   30
       HelpTag         =   ""
-      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
       Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   "0"
       Top             =   0
       Transparent     =   True
       UseFocusRing    =   False
       Visible         =   True
-      Width           =   600
+      Width           =   800
    End
 End
 #tag EndWindow
@@ -65,8 +60,9 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Left = (Wnd.Width-HistCtrl.Width)/2
-		  Top = Wnd.Height-20
+		  Left = WorkWindow.Tools.Width 
+		  Left = left + (WorkWindow.Width - Left - 800)/2
+		  Top = WorkWindow.Height - 30
 		  
 		End Sub
 	#tag EndEvent

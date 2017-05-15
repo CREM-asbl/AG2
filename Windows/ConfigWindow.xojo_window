@@ -1314,6 +1314,7 @@ End
 	#tag Event
 		Sub Action()
 		  wnd.updatemenu
+		  Config.Save
 		  close
 		End Sub
 	#tag EndEvent
