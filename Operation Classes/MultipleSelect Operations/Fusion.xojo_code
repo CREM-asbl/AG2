@@ -40,8 +40,11 @@ Inherits MultipleSelectOperation
 		  Tr = Fus1.points((start1+1)mod Fus1.npts).bpt - Fus1.points(start1).bpt
 		  Tr = Tr.VecNorPerp
 		  M1 = new Translationmatrix(Tr*0.2)
-		  M2 = new Translationmatrix(Tr*0.2)
-		  Fus.Move(M1)
+		  
+		  
+		  if Fus1.fill=0 and Fus2.fill = 0 then
+		    Fus.Move(M1)
+		  end if
 		  
 		  Fus.EndConstruction
 		  if not fus.std then
@@ -73,7 +76,7 @@ Inherits MultipleSelectOperation
 		  dim S As Shape
 		  
 		  S = Operation.GetShape(p)
-		  if S = nil or (not s isa Lacet) or s isa cube then
+		  if S = nil or (not s isa Lacet) or s isa cube or s.auto = 3 then
 		    return nil
 		  end if
 		  

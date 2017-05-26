@@ -343,7 +343,8 @@ Protected Class BasicPoint
 		Sub Paint(g as graphics)
 		  dim sk as OvalSkull
 		  
-		  sk = new Ovalskull(1,can.transform(self))
+		  sk = new Ovalskull(1.5,can.transform(self))
+		  sk.update(self,2)
 		  sk.updatecolor(bleu,100)
 		  sk.paint(g)
 		  
