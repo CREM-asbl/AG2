@@ -27,7 +27,7 @@ Inherits Operation
 		  try
 		    Doc=new XMLDocument(f)
 		  catch err as XmlException
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
 		    return
 		  end try
 		  
@@ -37,6 +37,7 @@ Inherits Operation
 		    MsgBox Dico.Value("Nofagfile")
 		    return
 		  end if
+		  
 		  
 		  version = FAG.GetAttribute("Version") 
 		  v1 = val(NthField(version,".", 1))
@@ -56,29 +57,36 @@ Inherits Operation
 		  
 		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
 		  
-		  
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
+		  
 		  if Cfg <> Config.Menu then
+		    
 		    if left(cfg,6) = "Niveau" or left(cfg,5) = "Level" then
 		      n = len(cfg)
 		      cfg = "Menu"+right(cfg,n-6)
 		    end if
+		    
 		    Config.Menu = Cfg
 		    Config.ChargerConfig
 		  end if
 		  
 		  app.themacros.XMLLoadMacros(FAG)
 		  
+		  
 		  currentcontent.removeall
 		  currentcontent.ndec = val(FAG.GetAttribute("NbrDec"))
 		  if currentcontent.ndec =0 then
 		    currentcontent.ndec = 2
 		  end if
+		  
 		  can.Mousecursor = system.cursors.wait
 		  BkCol = FAG.GetAttribute("BkCol")
+		  
 		  if BkCol = "noir" and wnd.BackColor = &cFFFFFF then
 		    wnd.switchcolors
 		  end if
+		  
+		  
 		  Objects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
 		  Objects.SetId(-1)
 		  Objects.XMLLoadObjects(FAG)
@@ -89,8 +97,6 @@ Inherits Operation
 		  can.mousecursor = System.Cursors.StandardPointer
 		  can.refreshbackground
 		  wnd.refreshtitle
-		  
-		  
 		End Sub
 	#tag EndMethod
 

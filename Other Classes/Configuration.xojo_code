@@ -22,7 +22,6 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  
 		  select case Menu
 		  case "Menu_A"
 		    C=new XMLDocument(Menu_A)
@@ -72,7 +71,6 @@ Protected Class Configuration
 		  end if
 		  
 		  ChargerLibForms(El)
-		  
 		  
 		End Sub
 	#tag EndMethod

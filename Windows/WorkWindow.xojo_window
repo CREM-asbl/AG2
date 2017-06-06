@@ -734,37 +734,48 @@ End
 		  if currentcontent <> nil then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		  end if
-		  
-		  if wnd<>nil and can.rep <> nil and currentcontent <> nil then
-		    B =  CurrentContent.TheObjects.count > 1
-		    B1 = CurrentContent.TheGrid <> nil
-		    B2 = can.rep.labs.count > 0
-		    B = (B or B1 or B2) and not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
-		    if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
-		      wnd.pushbutton1.enabled = true 
-		    end if
-		    if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
-		      MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
-		    end if
-		  else
-		    B = false
-		    MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
-		    MenuBar.Child("FileMenu").Child("FileClose").enabled = false
-		  end if
-		  
-		  MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
-		  MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		  MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
-		  
-		  if currentcontent <> nil then
 		    PushButton1.enabled = (currentcontent.currentop > 0) or (currentcontent.currentoperation <> nil)
+		    
+		    if can.rep <> nil then
+		      B =  CurrentContent.TheObjects.count > 1
+		      B1 = CurrentContent.TheGrid <> nil
+		      B2 = can.rep.labs.count > 0
+		      B = (B or B1 or B2) and not currentcontent.macrocreation
+		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		      MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		      if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
+		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
+		        pushbutton1.enabled = true 
+		      end if
+		      if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
+		        MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		      end if
+		    else
+		      B = false
+		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		      MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		    end if
+		    
+		    MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		    
+		    if MenuBar.Child("PrefsMenu") <> nil then
+		      if MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
+		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = CurrentContent.PolygFleches
+		      end if
+		      if MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
+		        MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = CurrentContent.polygpointes
+		      end if
+		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
+		    end if
 		  end if
+		  
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -2826,7 +2837,7 @@ End
 		  else
 		    config.trace = false
 		  end if
-		  MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
+		  
 		  
 		End Sub
 	#tag EndMethod
