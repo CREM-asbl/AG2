@@ -56,8 +56,8 @@ Inherits Application
 		  #Endif
 		  
 		  if item.Exists then
-		    WorkWindow.OpenFile(item)
 		    InitWindow.close
+		    WorkWindow.OpenFile(item)
 		  end if
 		  
 		  

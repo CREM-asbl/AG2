@@ -58,17 +58,7 @@ Inherits Operation
 		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
 		  
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
-		  
-		  if Cfg <> Config.Menu then
-		    
-		    if left(cfg,6) = "Niveau" or left(cfg,5) = "Level" then
-		      n = len(cfg)
-		      cfg = "Menu"+right(cfg,n-6)
-		    end if
-		    
-		    Config.Menu = Cfg
-		    Config.ChargerConfig
-		  end if
+		  Config.setMenu(Cfg)
 		  
 		  app.themacros.XMLLoadMacros(FAG)
 		  
@@ -82,10 +72,9 @@ Inherits Operation
 		  can.Mousecursor = system.cursors.wait
 		  BkCol = FAG.GetAttribute("BkCol")
 		  
-		  if BkCol = "noir" and wnd.BackColor = &cFFFFFF then
-		    wnd.switchcolors
+		  if BkCol = "noir" and WorkWindow.BackColor = &cFFFFFF then
+		    WorkWindow.switchcolors
 		  end if
-		  
 		  
 		  Objects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
 		  Objects.SetId(-1)
@@ -96,7 +85,7 @@ Inherits Operation
 		  CurrentContent.AddOperation(self)
 		  can.mousecursor = System.Cursors.StandardPointer
 		  can.refreshbackground
-		  wnd.refreshtitle
+		  Workwindow.refreshtitle
 		End Sub
 	#tag EndMethod
 

@@ -18,6 +18,7 @@ Protected Class Configuration
 		  dim El,temp as  XMLElement
 		  dim fi as FolderItem
 		  
+		  
 		  if oldMenu = Menu then
 		    return
 		  end if
@@ -252,7 +253,6 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  
 		  select case stdfile
 		  case "Jeu_de_base.std"
 		    Doc=new XMLDocument(jeu_de_base)
@@ -323,9 +323,6 @@ Protected Class Configuration
 		      StdFamilies(i,j) = Curspecs
 		    next
 		  next
-		  if wnd <> nil then
-		    wnd.ClearStdBox
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -567,6 +564,8 @@ Protected Class Configuration
 		    m  = "Menu_AC"
 		  end if
 		  Menu = m
+		  
+		  ChargerConfig
 		  
 		End Sub
 	#tag EndMethod

@@ -774,9 +774,6 @@ End
 		  end if
 		  
 		  
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
@@ -2469,14 +2466,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStdSpecs(v as integer, sv as integer) As StdPolygonSpecifications
-		  
-		  return config.StdFamilies(v,sv)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub InitParams()
 		  wnd = self
 		  can = wnd.mycanvas1
@@ -2952,7 +2941,6 @@ End
 
 	#tag Method, Flags = &h0
 		Sub updatemenu()
-		  
 		  EraseMenuBar
 		  CopyMenuBar
 		  ReadNomsMouvBut
