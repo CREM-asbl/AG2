@@ -564,7 +564,6 @@ Protected Class Configuration
 		    m  = "Menu_AC"
 		  end if
 		  Menu = m
-		  
 		  ChargerConfig
 		  
 		End Sub
