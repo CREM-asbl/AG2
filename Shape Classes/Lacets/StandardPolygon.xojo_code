@@ -13,7 +13,7 @@ Inherits Polygon
 		  self.forme = form
 		  ncpts = 1
 		  if fam < 14 then 'fam = 14 pour la fusion de deux stdpolyg
-		    specs = wnd.GetStdSpecs(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		    npts = Ubound(specs.angles)+2
 		    for i=0 to npts-2
 		      Angles.Append specs.Angles(i)
@@ -73,26 +73,30 @@ Inherits Polygon
 		  dim specs as StdPolygonSpecifications
 		  
 		  Super.Constructor(ol, EL)
+		  
 		  stdsize=Val(EL.GetAttribute("Taille"))
 		  Ori = val(EL.GetAttribute("Ori"))
 		  nonpointed = (val(EL.GetAttribute("NonPointed")) = 1)
+		  
 		  if self isa cube then
 		    return
 		  end  if
+		  
 		  redim Angles(npts-2)
+		  
 		  if fam < 14 then
 		    file = Config.stdfile
-		    specs = wnd.GetStdSpecs(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		    for i=0 to npts-2
 		      Angles(i) =  specs.Angles(i)
 		      Distances.Append specs.Distances(i)
 		    next
 		  end if
 		  
-		  
 		  p = coord.tab(1) - coord.tab(0) 
 		  Angles(0)= p.anglepolaire
 		  std = true
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -105,7 +109,7 @@ Inherits Polygon
 		  dim specs as StdPolygonSpecifications
 		  
 		  if fam < 14 then
-		    specs = wnd.GetStdSpecs(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		  else
 		    specs = createspecs
 		  end if

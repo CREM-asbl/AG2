@@ -32,6 +32,7 @@ Inherits Application
 		  Config = new Configuration
 		  autoquit = true
 		  CheckUpdate
+		  themacros = new macroslist
 		  initWindow.show
 		  'end if
 		  
@@ -41,7 +42,6 @@ Inherits Application
 	#tag Event
 		Sub OpenDocument(item As FolderItem)
 		  dim s As string
-		  
 		  
 		  #if TargetWindows then
 		    s = item.ShellPath
@@ -56,8 +56,8 @@ Inherits Application
 		  #Endif
 		  
 		  if item.Exists then
-		    WorkWindow.OpenFile(item)
 		    InitWindow.close
+		    WorkWindow.OpenFile(item)
 		  end if
 		  
 		  
@@ -229,10 +229,8 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub Continuer()
 		  Config.ChargerConfig
-		  themacros = new macroslist
 		  Tampon = new ObjectsList
-		  wnd = WorkWindow
-		  wnd.Show
+		  WorkWindow.Show
 		  
 		  
 		  
