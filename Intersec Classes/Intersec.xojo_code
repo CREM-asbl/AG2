@@ -38,6 +38,23 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Combien() As integer
+		  dim i, j , n as integer
+		  
+		  n = 0
+		  
+		  for i = 0 to nlig -1
+		    for j = 0 to ncol -1
+		      if val(i,j) then
+		        n = n+1
+		      end if
+		    next j
+		  next i
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub computeinter()
 		  dim i, j, k  as integer
 		  

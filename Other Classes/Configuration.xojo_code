@@ -231,6 +231,9 @@ Protected Class Configuration
 		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULChoix").checked = true
 		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUADef").checked = true
 		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUAChoix").checked = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").checked = El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").checked= El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").checked = El.XQL("Area").length >0
 		  
 		  mmenubar.Child("HelpMenu").Child("HelpView").checked = true
 		  mmenubar.Child("HelpMenu").Child("HelpVisit").checked = true

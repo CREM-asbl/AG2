@@ -131,6 +131,7 @@ Inherits SelectAndDragOperation
 		  if lab <> nil then
 		    Lab.MouseCorrection(P)
 		  end if
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod

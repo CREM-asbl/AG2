@@ -278,7 +278,7 @@ Inherits SelectOperation
 		  
 		  for i = 1 to CurrentContent.TheObjects.count-1
 		    s = CurrentContent.TheObjects.GetPlan(i)
-		    if s.selected then
+		    if s <> nil and s.selected then
 		      if s isa polygon then
 		        adapterparamepais(s,tos)
 		        adapterparamfill(s, tos)

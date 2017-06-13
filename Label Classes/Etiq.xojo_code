@@ -184,9 +184,9 @@ Inherits Label
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim  q as BasicPoint
-		  dim a  as integer
+		  dim a, i  as integer
 		  dim  dat as string
-		  dim vis as objectslist
+		  dim vis, viss as objectslist
 		  dim sh as shape
 		  dim type as integer  // 0 longueur  //1 aire // 2 abscisse
 		  dim dr as droite
@@ -219,7 +219,6 @@ Inherits Label
 		  end if
 		  if not wnd.drapdim then
 		    resetParam(g)
-		    return
 		  end if
 		  
 		  
@@ -244,13 +243,31 @@ Inherits Label
 		        elseif sh isa Freecircle then
 		          dat = arrondi2(point(chape).bpt.location(circle(sh)))
 		        end if
-		      else
-		        ResetParam(g)
-		        return
+		        'else
+		        'ResetParam(g)
+		        'return
 		      end if
 		    end if
-		    Type = 2
 		  end if
+		  if chape isa point and point(chape).forme = 0 then
+		    viss = currentcontent.theobjects.findObject(point(chape).bpt)
+		    if viss.count > 0 then
+		      for i = viss.count-1 downto 0
+		        if not viss.item(i) isa polygon then
+		          viss.removeobject viss.item(i)
+		        end if
+		      next
+		    end if
+		    if viss.count > 0 then
+		      sh = viss.item(0)
+		      dat = str(point(chape).indice(polygon(sh)))
+		    else
+		      ResetParam(g)
+		      return
+		    end if
+		  end if
+		  Type = 2
+		  
 		  ////////////////////// Longueurs
 		  if (chape isa droite)  or (chape isa arc) or ((chape isa Lacet  or chape isa freecircle) and loc <>-1 ) then
 		    Type = 0
@@ -304,7 +321,9 @@ Inherits Label
 		        dat = str(1)
 		      end if
 		    end select
-		    g.Drawstring(dat,q.x, q.y)
+		    if wnd.drapdim then
+		      g.Drawstring(dat,q.x, q.y)
+		    end if
 		  end if
 		  ResetParam(g)
 		End Sub

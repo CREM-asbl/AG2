@@ -423,17 +423,44 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
+		  'dim i  as integer
+		  'dim c as Boolean
+		  'dim q,r as basicPoint
+		  
+		  
+		  'c = false
+		  'for  i = 0  to Taille -1
+		  'q = Tab(i)
+		  'r =  Tab((i+1) mod Taille)
+		  'if ( ((q.y<=p.y) and (p.y <r.y)) or ((r.y <= p.y) and (p.y < q.y)) ) and (p.x < (r.x - q.x) * (p.y - q.y) / (r.y - q.y) + q.x) then
+		  'c =not c
+		  'end if
+		  'next
+		  'return c
+		  
+		  dim n as integer
+		  
+		  n = p.indice(self)
+		  return n <> 0
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function pInShape1(p as BasicPoint) As integer
 		  dim i  as integer
-		  dim c as Boolean
+		  dim c as integer
 		  dim q,r as basicPoint
 		  
 		  
-		  c = false
+		  c = 0
 		  for  i = 0  to Taille -1
 		    q = Tab(i)
 		    r =  Tab((i+1) mod Taille)
-		    if ( ((q.y<=p.y) and (p.y <r.y)) or ((r.y <= p.y) and (p.y < q.y)) ) and (p.x < (r.x - q.x) * (p.y - q.y) / (r.y - q.y) + q.x) then
-		      c =not c
+		    if ( ((q.y<=p.y) and (p.y <r.y)) or ((r.y <= p.y) and (p.y < q.y)) )  and (p.x < (r.x - q.x) * (p.y - q.y) / (r.y - q.y) + q.x) then
+		      c = c+1
 		    end if
 		  next
 		  return c

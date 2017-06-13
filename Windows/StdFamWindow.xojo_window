@@ -163,7 +163,7 @@ Begin Window StdFamWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   True
       Border          =   True
       CueText         =   ""
@@ -176,7 +176,7 @@ Begin Window StdFamWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   140
+      Left            =   146
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -195,7 +195,7 @@ Begin Window StdFamWindow
       TextFont        =   "System"
       TextSize        =   10.0
       TextUnit        =   0
-      Top             =   13
+      Top             =   16
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -241,18 +241,26 @@ End
 		  Title = Dico.Value("Standardiser")
 		  OKButton.Caption = Dico.Value("OK")
 		  CancelButton.Caption = Dico.value("Cancel")
-		  if config.langue = "english" then
+		  if config.langue <> "francais" then
 		    StaticText1.Text = Dico.Value("Family Name")
 		    StaticText2.Text = Dico.Value("Family Color")
 		  end if
 		  EditField1.backcolor = blanc
-		  curop = SaveStd(currentcontent.currentoperation)
+		  
 		End Sub
 	#tag EndEvent
 
 
 	#tag Property, Flags = &h0
-		curop As SaveStd
+		col As color
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		coul As couleur
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		nom As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -282,18 +290,19 @@ End
 #tag Events EditField1
 	#tag Event
 		Sub TextChange()
-		  curop.Nom = me.text
+		  nom = me.text
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events ChooseColButton
 	#tag Event
 		Sub Action()
-		  dim col as color
 		  
-		  if selectcolor(col,"Choisis une couleur") then
-		    curop.coul  = new couleur(col)
+		  
+		  if selectcolor(col,"Choisis une couleur")  then
+		    coul = new couleur(col)
 		  end if
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -320,6 +329,12 @@ End
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="col"
+		Group="Behavior"
+		InitialValue="&c000000"
+		Type="color"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Composite"
@@ -470,6 +485,12 @@ End
 		Group="ID"
 		Type="String"
 		EditorType="String"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="nom"
+		Group="Behavior"
+		Type="string"
+		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Placement"

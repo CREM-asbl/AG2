@@ -2,6 +2,23 @@
 Protected Class AutoIntersec
 Inherits Intersec
 	#tag Method, Flags = &h0
+		Function combien() As integer
+		  dim i, j , n as integer
+		  
+		  n = 0
+		  
+		  for i = 0 to nlig - 2
+		    for j = i+1 to ncol -1
+		      if val(i,j) and not bezet(i,j) then
+		        n = n+1
+		      end if
+		    next j
+		  next i
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub computeinter()
 		  dim i, j as integer
 		  init
@@ -82,9 +99,11 @@ Inherits Intersec
 		  redim val(nlig,nlig)
 		  redim pts(-1)
 		  
-		  'computeinter
-		  's.autointer = self
-		  CurrentContent.TheIntersecs.AddObject(self)
+		  computeinter
+		  s.autointer = self
+		  if combien > 0 then
+		    CurrentContent.TheIntersecs.AddObject(self)
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -98,9 +117,15 @@ Inherits Intersec
 		    for j = i+1 to sh1.npts-1
 		      if  val(i,j) and  not bezet(i,j) then
 		        p = new point (objects,bptinters(i,j))
+		        p.forme=2
 		        p.setconstructedby sh1,45
+		        p.numside.append i
+		        p.numside.append j
+		        p.location.append bptinters(i,j).location(sh1,i)
+		        p.location.append bptinters(i,j).location(sh1,j)
 		        ids(i,j) =p.id
 		        p.endconstruction
+		        pts.append p
 		      end if
 		    next
 		  next
@@ -111,7 +136,6 @@ Inherits Intersec
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  currentshape = sh1
-		  'CurrentContent.TheFigs.Removefigure currentshape.fig
 		  ComputeInter
 		  createpoints
 		  polygon(sh1).autointer = self
@@ -147,11 +171,6 @@ Inherits Intersec
 		  
 		End Sub
 	#tag EndMethod
-
-
-	#tag Property, Flags = &h0
-		PL As PointsList
-	#tag EndProperty
 
 
 	#tag ViewBehavior

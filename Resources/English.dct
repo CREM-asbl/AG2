@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <English>
 <Menus>
 <FileMenu Name="File"/>
@@ -24,8 +24,8 @@
 <EditLink Name="Link"/>
 <EditUnlink Name="Unlink"/>
 <EditDelete Name="Delete"/>
-<ToolsMenu Name="Tools"/><
-OperaIdentify Name="Identify"/>
+<ToolsMenu Name="Tools"/>
+<OperaIdentify Name="Identify"/>
 <ToolsColor Name="Color"/>
 <ToolsColorBorder Name="BorderColor"/>
 <ToolsColorFill Name="FillColor"/>
@@ -113,6 +113,9 @@ OperaIdentify Name="Identify"/>
 <PrefsUA Name="Area_Unit"/>
 <PrefsUADef Name="Default"/>
 <PrefsUAChoix Name="Choose a reference shape"/>
+<PrefsArea Name="Area" />
+<PrefsAreaArith Name="Arithmetic Area" />
+<PrefsAreaAlg Name="Algebraic Area" />
 <Customize Name="Customize"/>
 <NotesOpen Name="Open"/>
 <NotesMail Name="eMail"/>
@@ -242,8 +245,8 @@ OperaIdentify Name="Identify"/>
 <CubeOrtho Name="Model 1"/>
 <CubeCav Name="Model 2"/>
 <Disque Name="Disk"/>
-<PDisque Name="Small disk"/
-><GDisque Name="Large disk"/>
+<PDisque Name="Small disk"/>
+<GDisque Name="Large disk"/>
 <CercleStd Name="Standard Circle"/>
 <Triangles Name="Triangles"/>
 <Quadris Name="Quadrilaterals"/>
@@ -338,8 +341,8 @@ OperaIdentify Name="Identify"/>
 <theotherendpoint Name=" the other endpoint"/>
 <onthearc Name="on the arc"/>
 <onthecircle Name="on the circle"/>
-<onthedisk Name="on the disk"/><
-ontheline Name="on the line"/>
+<onthedisk Name="on the disk"/>
+<ontheline Name="on the line"/>
 <onthesector Name="on the sector"/>
 <orfourpoints Name=" or four points"/>
 <rightclick Name="Right Click "/>
@@ -386,8 +389,8 @@ ontheline Name="on the line"/>
 <onabuttonoramenu Name=" on a button, a menu or a key"/>
 <Chooseafile Name="Select a file"/>
 <MsgPWFalse Name="Incorrect password"/>
-<PWchanged Name="Modified password"/
-><PWDifferent Name="The two wordpasses are different"/>
+<PWchanged Name="Modified password"/>
+<PWDifferent Name="The two wordpasses are different"/>
 <Messdico Name="Choose a dictionnary"/>
 <Messdico2 Name="Select another column"/>
 <MsgNoValidFile Name="Invalid file"/>

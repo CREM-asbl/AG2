@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFF00FFFF
+      FillColor       =   &c00FFFFFF
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -1742,8 +1742,7 @@ End
 			mw = new ThickWindow
 			mw.ShowModal
 			if mw.result=1 then
-			d = val(mw.TF.text)
-			Config.Thickness = d
+			Config.Thickness = val(mw.TF.text)
 			mw.close
 			end if
 			Return True
@@ -3235,6 +3234,7 @@ End
 	#tag Event
 		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
+		  dim j as integer
 		  
 		  if app.quitting then
 		    return
@@ -3253,6 +3253,9 @@ End
 		    c = Config.stdcolor(index).col
 		    if selectcolor(c, "Choisis une  couleur") then
 		      Config.stdcolor(index) = new couleur(c)
+		      for j = 0 to config.nstdf(index) - 1
+		        Config.stdfamilies(index,j).coul = Config.stdcolor(index)
+		      next
 		    end if
 		    setico(index,0)
 		    stdoutil(index).refresh
@@ -3274,7 +3277,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  dim fs as figureshape
+		  
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)

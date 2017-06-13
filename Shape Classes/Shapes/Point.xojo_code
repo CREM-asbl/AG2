@@ -472,9 +472,16 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function etiquet() As string
 		  dim et as string
+		  dim n as integer
+		  
 		  
 		  if labs.count = 1  and labs.item(0).text <> "" then
-		    et = labs.item(0).text
+		    n = Integer.Parse(labs.item(0).text.ToText)
+		    if n <>-1 then
+		      et = "n"+labs.item(0).text
+		    else
+		      et = labs.item(0).text
+		    end if
 		  else
 		    et = "p"+str(id)+ " "
 		  end if
@@ -814,6 +821,14 @@ Inherits Shape
 		  P.Mobility
 		  CurrentContent.removeobject self   // self est retiré du  jeu
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function indice(p as polygon) As integer
+		  return bpt.indice(p.coord)
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1342,35 +1357,38 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function OnSameShape(Q as Point, Byref s as shape) As boolean
 		  dim i,j,n as integer
-		  dim num1,num2 as double
+		  'dim num1,num2 as double
 		  dim sh(-1) as shape
-		  dim t as Boolean
+		  dim t as Boolean  'Utilisé uniquement par divide
 		  
-		  t = sameparent(q, sh)    // self  et Q ont-ils un parent commun? si oui, le tableau sh les contient tous
-		  // rechercher si des points construits sont ok
-		  if not t then
-		    if Q.ConstructedBy <> nil and Q.ConstructedBy.Oper <> 0 then // si Q est un point construit sans être un centre
-		      for i=0 to Ubound(parents)
-		        if parents(i)=Q.ConstructedBy.shape then //et si un parent de P est le constructeur de Q
-		          sh.append parents(i)                                             // sh est ce parent
-		          t = true
-		        end if
-		      next
-		      if ConstructedBy <> nil  and ConstructedBy.Oper <> 0  then
-		        if constructedby.shape = Q.constructedby.shape then  // si P et Q ont un même constructeur, on choisit celui-ci
-		          sh.append constructedby.shape
-		          t = true
-		        end if
+		  if  sameparent(q, sh) then  // self  et Q ont-ils un parent commun? si oui, le tableau sh les contient tous; rechercher ensuite si des points construits sont ok
+		    s = sh(ubound(sh))
+		    return true
+		  end if
+		  
+		  
+		  
+		  
+		  if Q.ConstructedBy <> nil and Q.ConstructedBy.Oper = 4 then // si Q est un point de subdivision 
+		    s = Q.constructedby.shape
+		    for i=0 to Ubound(parents)
+		      if parents(i)= s then //et si un parent de P est le constructeur de Q
+		        return true                                             
 		      end if
-		      
+		    next
+		    if ConstructedBy <> nil  and ConstructedBy.Oper = 4  then
+		      if constructedby.shape = s then  
+		        return  true
+		      end if
 		    end if
 		  end if
 		  
-		  if not t and ConstructedBy <> nil and ConstructedBy.Oper <> 0  then // si self est construit sans être un centre
+		  
+		  if  ConstructedBy <> nil and ConstructedBy.Oper = 4 then // si self est construit sans être un centre
+		    s = constructedby.shape
 		    for j=0 to Ubound(Q.parents)
-		      if ConstructedBy.shape =Q.parents(j) then // et que le Constructeur de self est un parent de Q
-		        t = true
-		        sh .append Q.parents(j) // on choisit cette forme
+		      if s = Q.parents(j) then // et que le Constructeur de self est un parent de Q
+		        return  true
 		      end if
 		    next
 		  end if
@@ -1379,44 +1397,41 @@ Inherits Shape
 		    s = nil
 		    return false
 		  end if
-		  if ubound(sh) = -1 then
-		    return false
-		  end if
 		  
 		  t = false
 		  i = 0
 		  
-		  while i <=  ubound(sh) and not t
-		    num1 = sh(i).getindex(self)
-		    num2 = sh(i).getindex(q)
-		    if num1 <> -1 and  num2 <> -1 then
-		      t = true
-		    end if
-		    i = i+1
-		  wend
-		  
-		  if not t then
-		    return false
-		  else
-		    s = sh(i-1)
-		  end if
-		  
-		  
-		  's = sh(0)
-		  if s isa BiPoint  then  // même si s est un bipoint, P et Q n'en sont pas nécessairement les extrémités
-		    if abs(num1-num2) = 1 then
-		      return true
-		    end if
-		  elseif  s isa polygon then
-		    n = s.npts
-		    if abs(num1-num2) = 1 or abs(num1-num2) = s.npts-1 then
-		      return true
-		    end if
-		  elseif  s isa circle and (self <> s.points(0) and  Q <>  s.points(0))  then
-		    return true
-		  end if
-		  
-		  return false
+		  ''while i <=  ubound(sh) and not t
+		  ''num1 = sh(i).getindex(self)
+		  ''num2 = sh(i).getindex(q)
+		  ''if num1 <> -1 and  num2 <> -1 then
+		  ''t = true
+		  ''end if
+		  ''i = i+1
+		  ''wend
+		  ''
+		  ''if not t then
+		  ''return false
+		  ''else
+		  ''s = sh(i-1)
+		  ''end if
+		  '
+		  '
+		  ''s = sh(0)
+		  'if s isa BiPoint  then  // même si s est un bipoint, P et Q n'en sont pas nécessairement les extrémités
+		  'if abs(num1-num2) = 1 then
+		  'return true
+		  'end if
+		  'elseif  s isa polygon then
+		  'n = s.npts
+		  'if abs(num1-num2) = 1 or abs(num1-num2) = s.npts-1 then
+		  'return true
+		  'end if
+		  'elseif  s isa circle and (self <> s.points(0) and  Q <>  s.points(0))  then
+		  'return true
+		  'end if
+		  '
+		  'return false
 		  
 		  
 		End Function
@@ -1566,6 +1581,16 @@ Inherits Shape
 		    return false
 		  end if
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function pInPolygon(s as shape) As integer
+		  if not s isa polygon then
+		    return 0
+		  else
+		    return polygon(s).pinshape1(bpt)
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -2392,7 +2417,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function SameParent(Q as Point, Byref s() as shape) As boolean
-		  dim i,j as integer
+		  dim i,j as integer          'utilisé par prolonger et divide
 		  
 		  for i = 0 to ubound(parents)
 		    for j=0 to Ubound(Q.parents)
@@ -2745,7 +2770,7 @@ Inherits Shape
 		    end if
 		  end if
 		  modified = true
-		  if parents(0).getsousfigure(fig).auto = 3 then
+		  if ubound(parents)>-1 and parents(0).getsousfigure(fig).auto = 3 then
 		    return
 		  end if
 		  updateshape

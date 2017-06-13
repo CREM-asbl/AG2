@@ -324,6 +324,7 @@ Inherits NSkull
 		Sub paint(g as graphics)
 		  dim i as integer
 		  
+		  
 		  if fill > 0 then
 		    border = 0
 		    g.drawobject self, x, y

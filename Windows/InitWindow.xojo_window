@@ -38,7 +38,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   579
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -52,7 +52,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   381
+      Top             =   385
       Underline       =   False
       Visible         =   True
       Width           =   173
@@ -70,7 +70,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   692
+      Left            =   683
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -87,49 +87,6 @@ Begin Window InitWindow
       Underline       =   False
       Visible         =   False
       Width           =   68
-   End
-   Begin TextField User
-      AcceptTabs      =   False
-      Alignment       =   1
-      AutoDeactivate  =   True
-      AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
-      Bold            =   True
-      Border          =   True
-      CueText         =   ""
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Format          =   ""
-      Height          =   30
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   644
-      LimitText       =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Mask            =   ""
-      Password        =   False
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   360
-      Underline       =   False
-      UseFocusRing    =   True
-      Visible         =   False
-      Width           =   108
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   False
@@ -157,7 +114,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   329
+      Top             =   318
       Underline       =   False
       Visible         =   True
       Width           =   112
@@ -175,7 +132,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   572
+      Left            =   683
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -188,7 +145,7 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   360
+      Top             =   318
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -236,7 +193,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   579
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -250,9 +207,52 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   409
+      Top             =   412
       Underline       =   False
       Visible         =   True
+      Width           =   173
+   End
+   Begin TextField User
+      AcceptTabs      =   False
+      Alignment       =   1
+      AutoDeactivate  =   True
+      AutomaticallyCheckSpelling=   False
+      BackColor       =   &cFFFFFF00
+      Bold            =   True
+      Border          =   True
+      CueText         =   ""
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Format          =   ""
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   572
+      LimitText       =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Mask            =   ""
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   350
+      Underline       =   False
+      UseFocusRing    =   True
+      Visible         =   False
       Width           =   173
    End
 End
@@ -325,34 +325,6 @@ End
 		  
 		  
 		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events User
-	#tag Event
-		Function KeyDown(Key As String) As Boolean
-		  if Key = chr(13) and  me.text <> "" then
-		    app.Continuer
-		  end if
-		  
-		End Function
-	#tag EndEvent
-	#tag Event
-		Sub GotFocus()
-		  Config.pwok = false
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub TextChange()
-		  Config.username = me.text
-		  if me.text <> "" then
-		    pushbutton1.visible = true
-		    pushbutton1.default = true
-		  else
-		    pushbutton1.visible = false
-		    pushbutton1.default = false
-		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -443,6 +415,34 @@ End
 		Sub Change()
 		  Config.SetLangue(ComboBox1.Text)
 		  refresh
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events User
+	#tag Event
+		Function KeyDown(Key As String) As Boolean
+		  if Key = chr(13) and  me.text <> "" then
+		    app.Continuer
+		  end if
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub GotFocus()
+		  Config.pwok = false
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub TextChange()
+		  Config.username = me.text
+		  if me.text <> "" then
+		    pushbutton1.visible = true
+		    pushbutton1.default = true
+		  else
+		    pushbutton1.visible = false
+		    pushbutton1.default = false
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
