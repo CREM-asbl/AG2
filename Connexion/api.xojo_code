@@ -82,7 +82,7 @@ Protected Module api
 		  end if
 		  
 		  date = app.bugtime.LongDate+" "+str(app.bugtime.Hour)+"h"+str(app.bugtime.Minute)
-		  directory="bugs/"+str(app.LongVersion)+"."+app.StageCodeToString+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
+		  directory="bugs/"+str(app.LongVersion)+" "+app.StageCodeToString+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
 		  
 		  form = New Dictionary
 		  form.Value("dir") = directory

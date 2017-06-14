@@ -32,7 +32,7 @@ Begin Window Confirmation
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   53
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -48,18 +48,17 @@ Begin Window Confirmation
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Sauver?"
-      TextAlign       =   0
+      TextAlign       =   1
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   25
+      Top             =   0
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   150
+      Width           =   268
    End
    Begin PushButton Yes
       AutoDeactivate  =   True

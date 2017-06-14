@@ -5,7 +5,7 @@ Begin Window ConfigWindow
    CloseButton     =   False
    Compatibility   =   ""
    Composite       =   True
-   Frame           =   1
+   Frame           =   3
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
@@ -1279,10 +1279,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		fw As formswindow
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		ObjPoint As ovalskull
 	#tag EndProperty
 
@@ -1313,7 +1309,8 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-		  wnd.updatemenu
+		  Formswindow.close
+		  WorkWindow.updatemenu
 		  Config.Save
 		  close
 		End Sub
@@ -1373,15 +1370,17 @@ End
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
+		    Formswindow.close
 		    Config.nlibvis(0) = not config.nlibvis(0)
-		    wnd.LibBoxRefresh
+		    WorkWindow.LibBoxRefresh
 		    me.Refresh
 		    return false
 		  end if
 		  
-		  fw=new FormsWindow(1,index,true)
-		  fw.left= me.left
-		  fw.top = me.Top+me.Height
+		  FormsWindow.setParams(1, index, true)
+		  FormsWindow.left = self.left + me.left
+		  FormsWindow.top = self.top + me.Top+2*me.Height
+		  Formswindow.SetFocus
 		  
 		  
 		  

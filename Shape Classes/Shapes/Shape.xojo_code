@@ -1548,8 +1548,6 @@ Protected Class Shape
 		      childs(i).invalider
 		    next
 		    
-		    CurrentContent.Theobjects.invalidatefrom(self)
-		    
 		    for j = 0 to ubound(ConstructedShapes)        //on invalide les images
 		      s = ConstructedShapes(j)
 		      s.invalider

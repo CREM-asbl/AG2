@@ -2632,9 +2632,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub openformswindow(k as integer, f as integer)
-		  closefw
 		  CurrentContent.CurrentOperation = nil
-		  fw=new FormsWindow(k,f,false)
+		  FormsWindow.setParams(k, f, false)
+		  Formswindow.SetFocus
 		  
 		  
 		  
@@ -3208,7 +3208,6 @@ End
 		  if app.quitting then
 		    return
 		  end if
-		  closefw
 		  
 		  if not Config.ShowStdTools then
 		    return
@@ -3359,7 +3358,6 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
-		  
 		  if mousedispo then
 		    Me.SetFocus
 		    selectedTool = index
@@ -3367,6 +3365,7 @@ End
 		    if selectedtool <> 0 then
 		      openformswindow(1, selectedtool)
 		    else
+		      Formswindow.close
 		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
 		    end if
 		    me.invalidate
@@ -3380,15 +3379,12 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  
 		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  
-		  'g.ForeColor = RGB(255,255,255)
-		  'g.FillRect(0,0,g.Width,g.Height)
-		  if index = selectedtool then
-		    g.ForeColor = RGB(255,0,0)
-		    g.DrawRect(0,0,g.Width,g.Height)
-		  end if
+		  'if index = selectedtool then
+		  'g.ForeColor = RGB(255,0,0)
+		  'g.DrawRect(0,0,g.Width,g.Height)
+		  'end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
