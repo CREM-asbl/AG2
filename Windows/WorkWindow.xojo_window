@@ -942,7 +942,7 @@ End
 	#tag MenuHandler
 		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(11)
 			refreshtitle
 			end if
@@ -955,7 +955,7 @@ End
 	#tag MenuHandler
 		Function DefinirDemiTour() As Boolean Handles DefinirDemiTour.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(3)
 			refreshtitle
 			end if
@@ -966,7 +966,7 @@ End
 	#tag MenuHandler
 		Function DefinirDeplacement() As Boolean Handles DefinirDeplacement.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(10)
 			refreshtitle
 			end if
@@ -979,7 +979,7 @@ End
 	#tag MenuHandler
 		Function DefinirEtirement() As Boolean Handles DefinirEtirement.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(9)
 			refreshtitle
 			end if
@@ -991,7 +991,7 @@ End
 	#tag MenuHandler
 		Function DefinirHomothetie() As Boolean Handles DefinirHomothetie.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(7)
 			refreshtitle
 			end if
@@ -1002,7 +1002,7 @@ End
 	#tag MenuHandler
 		Function DefinirQuartD() As Boolean Handles DefinirQuartD.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(5)
 			refreshtitle
 			end if
@@ -1013,7 +1013,7 @@ End
 	#tag MenuHandler
 		Function DefinirQuartG() As Boolean Handles DefinirQuartG.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(4)
 			refreshtitle
 			end if
@@ -1024,7 +1024,7 @@ End
 	#tag MenuHandler
 		Function DefinirRotation() As Boolean Handles DefinirRotation.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(2)
 			refreshtitle
 			end if
@@ -1035,7 +1035,7 @@ End
 	#tag MenuHandler
 		Function DefinirSimilitude() As Boolean Handles DefinirSimilitude.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(8)
 			refreshtitle
 			end if
@@ -1046,7 +1046,7 @@ End
 	#tag MenuHandler
 		Function DefinirSymetrieaxiale() As Boolean Handles DefinirSymetrieaxiale.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(6)
 			refreshtitle
 			end if
@@ -1057,7 +1057,7 @@ End
 	#tag MenuHandler
 		Function DefinirTranslation() As Boolean Handles DefinirTranslation.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(1)
 			refreshtitle
 			end if
@@ -1068,7 +1068,7 @@ End
 	#tag MenuHandler
 		Function EditCopy() As Boolean Handles EditCopy.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new Copier
 			Copier(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -1080,7 +1080,7 @@ End
 	#tag MenuHandler
 		Function EditDelete() As Boolean Handles EditDelete.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.theobjects.unselectall
 			CurrentContent.CurrentOperation=new Delete()
 			refreshtitle
@@ -1092,7 +1092,7 @@ End
 	#tag MenuHandler
 		Function EditLink() As Boolean Handles EditLink.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new Lier
 			Lier(CurrentContent.CurrentOPeration).ImmediateDoOperation
 			refreshtitle
@@ -1104,7 +1104,7 @@ End
 	#tag MenuHandler
 		Function EditPaste() As Boolean Handles EditPaste.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new Coller
 			refreshtitle
 			end if
@@ -1115,7 +1115,7 @@ End
 	#tag MenuHandler
 		Function EditRedo() As Boolean Handles EditRedo.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.RedoLastOperation
 			end if
 			return true
@@ -1133,7 +1133,7 @@ End
 	#tag MenuHandler
 		Function EditSelectall() As Boolean Handles EditSelectall.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Selectionner(true)
 			CurrentContent.Currentoperation.Dooperation
 			CurrentContent.Currentoperation.endoperation
@@ -1147,7 +1147,7 @@ End
 	#tag MenuHandler
 		Function EditSelection() As Boolean Handles EditSelection.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			if not CurrentContent.CurrentOperation isa selectionner or selectionner(CurrentContent.currentoperation).all = true  then
 			CurrentContent.CurrentOperation=new Selectionner()
 			end if
@@ -1168,7 +1168,7 @@ End
 	#tag MenuHandler
 		Function EditUnlink() As Boolean Handles EditUnlink.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.currentoperation = nil
 			refreshtitle
 			CurrentContent.CurrentOperation = new Delier
@@ -1191,7 +1191,7 @@ End
 	#tag MenuHandler
 		Function FileNew() As Boolean Handles FileNew.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			NewContent(false)
 			refresh
 			end if
@@ -1204,7 +1204,7 @@ End
 			Dim f As FolderItem
 			
 			if mousedispo then
-			closefw
+			Formswindow.close
 			f=GetOpenFolderItem(FileAGTypes.All)
 			if f=nil then
 			return true
@@ -1224,7 +1224,7 @@ End
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.currentoperation = nil
 			refreshtitle
 			CurrentContent.CurrentOperation = new Imprimer
@@ -1240,7 +1240,7 @@ End
 	#tag MenuHandler
 		Function FileSave() As Boolean Handles FileSave.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.Save
 			refreshtitle
 			end if
@@ -1251,7 +1251,7 @@ End
 	#tag MenuHandler
 		Function FileSaveAs() As Boolean Handles FileSaveAs.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.SaveAs
 			refreshtitle
 			end if
@@ -1262,7 +1262,7 @@ End
 	#tag MenuHandler
 		Function FileSaveBitmap() As Boolean Handles FileSaveBitmap.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new SaveBitMap
 			end if
 			return true
@@ -1272,7 +1272,7 @@ End
 	#tag MenuHandler
 		Function FileSaveEps() As Boolean Handles FileSaveEps.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new SaveEPS
 			CurrentContent.currentoperation.finished = false
 			SaveEPS(CurrentContent.CurrentOPeration).ImmediateDoOperation
@@ -1286,7 +1286,7 @@ End
 	#tag MenuHandler
 		Function FileSaveStd() As Boolean Handles FileSaveStd.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new SaveStd
 			CurrentContent.currentoperation.finished = false
 			SaveStd(CurrentContent.CurrentOPeration).ImmediateDoOperation
@@ -1321,7 +1321,7 @@ End
 			mois.Append ("Décembre")
 			
 			
-			closefw
+			Formswindow.close
 			md = New MessageDialog
 			md.Title = Dico.value("HelpAbout")
 			md.Icon = 0
@@ -1360,7 +1360,7 @@ End
 	#tag MenuHandler
 		Function HelpView() As Boolean Handles HelpView.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			Config.ShowHelp=not Config.ShowHelp
 			can.RefreshBackground
 			MenuBar.Child("HelpMenu").Child("HelpView").checked = Config.showhelp
@@ -1372,7 +1372,7 @@ End
 	#tag MenuHandler
 		Function HelpVisit() As Boolean Handles HelpVisit.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			ShowURL "http://www.crem.be/"
 			end if
 			return true
@@ -1394,7 +1394,7 @@ End
 			Dim f As FolderItem
 			
 			if mousedispo then
-			closefw
+			Formswindow.close
 			f=GetOpenFolderItem(FileAGTypes.Image)
 			if f=nil then
 			return true
@@ -1411,7 +1411,7 @@ End
 	#tag MenuHandler
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new MacroExe(index)
 			refreshtitle
 			end if
@@ -1439,7 +1439,7 @@ End
 	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
 			
-			closefw
+			Formswindow.close
 			newcontent(true)
 			MenuMacros(true)
 			can.resize
@@ -1470,7 +1470,7 @@ End
 			dim mac as macro
 			dim cf as Confirmation
 			
-			closefw
+			Formswindow.close
 			currentcontent.currentoperation = nil
 			refreshtitle
 			
@@ -1497,7 +1497,7 @@ End
 	#tag MenuHandler
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new ChooseFinal
 			MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
 			refreshtitle
@@ -1514,7 +1514,7 @@ End
 			dim mac as macro
 			dim dlg as OpenDialog
 			
-			closefw
+			Formswindow.close
 			currentcontent.currentoperation = nil
 			refreshtitle
 			dlg = new OpenDialog
@@ -1545,7 +1545,7 @@ End
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
 			dim op as operation
 			
-			closefw
+			Formswindow.close
 			op = currentcontent.currentoperation
 			if op isa choosefinal then
 			choosefinal(op).endoperation
@@ -1559,7 +1559,7 @@ End
 	#tag MenuHandler
 		Function NotesOpen() As Boolean Handles NotesOpen.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			NotesWindow.visible = true
 			end if
 			return true
@@ -1569,7 +1569,7 @@ End
 	#tag MenuHandler
 		Function OperaClone() As Boolean Handles OperaClone.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Duplicate()
 			refreshtitle
 			end if
@@ -1580,7 +1580,7 @@ End
 	#tag MenuHandler
 		Function OperaCreateCenter() As Boolean Handles OperaCreateCenter.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new GCConstruction()
 			GCConstruction(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -1592,7 +1592,7 @@ End
 	#tag MenuHandler
 		Function OperaCut() As Boolean Handles OperaCut.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Decouper()
 			refreshtitle
 			end if
@@ -1605,7 +1605,7 @@ End
 			dim diw as DivideWindow
 			
 			if mousedispo then
-			closefw
+			Formswindow.close
 			diw = new DivideWindow
 			diw.ShowModal
 			CurrentContent.CurrentOperation=new Divide(ntemp)
@@ -1618,7 +1618,7 @@ End
 	#tag MenuHandler
 		Function OperaIdentify() As Boolean Handles OperaIdentify.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Identifier()
 			refreshtitle
 			end if
@@ -1632,7 +1632,7 @@ End
 		Function OperaMerge() As Boolean Handles OperaMerge.Action
 			
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Fusion()
 			refreshtitle
 			end if
@@ -1643,7 +1643,7 @@ End
 	#tag MenuHandler
 		Function OperaProl() As Boolean Handles OperaProl.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Prolonger()
 			refreshtitle
 			end if
@@ -1715,7 +1715,7 @@ End
 			if mousedispo then
 			CurrentContent.CurrentOperation = nil
 			refreshtitle
-			closefw
+			Formswindow.close
 			stdw = new stdformswindow
 			stdw.ShowModal
 			end if
@@ -1753,7 +1753,7 @@ End
 	#tag MenuHandler
 		Function PrefsUAChoix() As Boolean Handles PrefsUAChoix.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Unit(1)
 			refreshtitle
 			end if
@@ -1764,7 +1764,7 @@ End
 	#tag MenuHandler
 		Function PrefsUADef() As Boolean Handles PrefsUADef.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Unit(3)
 			refreshtitle
 			end if
@@ -1779,7 +1779,7 @@ End
 	#tag MenuHandler
 		Function PrefsULChoix() As Boolean Handles PrefsULChoix.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Unit(0)
 			refreshtitle
 			end if
@@ -1790,7 +1790,7 @@ End
 	#tag MenuHandler
 		Function PrefsULDef() As Boolean Handles PrefsULDef.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Unit(2)
 			refreshtitle
 			end if
@@ -1805,7 +1805,7 @@ End
 	#tag MenuHandler
 		Function ToolsARPlan() As Boolean Handles ToolsARPlan.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new ChangePosition(0)
 			ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
 			refreshtitle
@@ -1817,7 +1817,7 @@ End
 	#tag MenuHandler
 		Function ToolsAvPlan() As Boolean Handles ToolsAvPlan.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new ChangePosition(1)
 			ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
 			refreshtitle
@@ -1845,7 +1845,7 @@ End
 	#tag MenuHandler
 		Function ToolsColorStdFam() As Boolean Handles ToolsColorStdFam.Action
 			CurrentContent.currentoperation = nil
-			closefw
+			Formswindow.close
 			refreshtitle
 			drapstdcolor = true
 			return true
@@ -1864,7 +1864,7 @@ End
 	#tag MenuHandler
 		Function ToolsGrid() As Boolean Handles ToolsGrid.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new CreateGrid()
 			Refresh
 			end if
@@ -1875,7 +1875,7 @@ End
 	#tag MenuHandler
 		Function ToolsHide() As Boolean Handles ToolsHide.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new Hide()
 			Hide(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -1892,7 +1892,7 @@ End
 			dim ohw as OpenHistWindow
 			
 			if mousedispo then
-			closefw
+			Formswindow.close
 			MyCanvas1.Mousecursor = system.cursors.wait
 			if not (Config.username = "Enseignant") then
 			ohw = new OpenHistWindow
@@ -1921,7 +1921,7 @@ End
 	#tag MenuHandler
 		Function ToolsLabel() As Boolean Handles ToolsLabel.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new AddLabel()
 			refreshtitle
 			end if
@@ -1932,7 +1932,7 @@ End
 	#tag MenuHandler
 		Function ToolsOpq() As Boolean Handles ToolsOpq.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new TransparencyChange(100)
 			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -1946,7 +1946,7 @@ End
 	#tag MenuHandler
 		Function ToolsRigid() As Boolean Handles ToolsRigid.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new Rigidifier()
 			Rigidifier(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -1958,7 +1958,7 @@ End
 	#tag MenuHandler
 		Function ToolsSTsp() As Boolean Handles ToolsSTsp.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new TransparencyChange(50)
 			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -1971,7 +1971,7 @@ End
 	#tag MenuHandler
 		Function ToolsThick1() As Boolean Handles ToolsThick1.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new Epaisseur(Config.Thickness)
 			Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
 			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = true
@@ -1985,7 +1985,7 @@ End
 	#tag MenuHandler
 		Function ToolsThick2() As Boolean Handles ToolsThick2.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation = new Epaisseur(1.5*Config.Thickness)
 			Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
 			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = false
@@ -1999,7 +1999,7 @@ End
 	#tag MenuHandler
 		Function ToolsTrace() As Boolean Handles ToolsTrace.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			MyCanvas1.ClearOffscreen
 			CurrentContent.CurrentOperation = new Tracer()
 			Tracer(CurrentContent.CurrentOperation).ImmediateDoOperation
@@ -2014,7 +2014,7 @@ End
 	#tag MenuHandler
 		Function ToolsTsp() As Boolean Handles ToolsTsp.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new TransparencyChange(0)
 			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
 			refreshtitle
@@ -2027,7 +2027,7 @@ End
 	#tag MenuHandler
 		Function TransfosAppliquer() As Boolean Handles TransfosAppliquer.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new AppliquerTsf()
 			refreshtitle
 			end if
@@ -2038,7 +2038,7 @@ End
 	#tag MenuHandler
 		Function TransfosFixedPoints() As Boolean Handles TransfosFixedPoints.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new FixPConstruction
 			refreshtitle
 			end if
@@ -2050,7 +2050,7 @@ End
 	#tag MenuHandler
 		Function TransfosHide() As Boolean Handles TransfosHide.Action
 			if mousedispo then
-			closefw
+			Formswindow.close
 			CurrentContent.CurrentOperation=new HideTsf
 			refreshtitle
 			end if
@@ -2073,7 +2073,7 @@ End
 			dim oldOp as Operation
 			
 			if mousedispo then
-			closefw
+			Formswindow.close
 			if index <> GetNumWindow then
 			oldOp = CurrentContent.CurrentOperation
 			MenuBar.Child("Fenetres").Item(GetNumWindow).checked = false
@@ -2153,25 +2153,8 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub closefw()
-		  if fw = nil then
-		    return
-		  else
-		    selectedtool = -1
-		    if fw.kit = 0 then
-		      stdoutil(fw.fam).refresh
-		    else
-		      liboutils(fw.fam).refresh
-		    end if
-		    fw.close
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub CloseMacro()
-		  closefw
+		  Formswindow.close
 		  deletecontent
 		  MenuMacros(false)
 		  
@@ -2215,7 +2198,7 @@ End
 		  dim coul as couleur
 		  
 		  if mousedispo then
-		    closefw
+		    Formswindow.close
 		    if selectcolor(col,"Choisis une couleur") then
 		      coul = new couleur(col)
 		      CurrentContent.CurrentOperation=new ColorChange(b,coul)
@@ -2631,19 +2614,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub openformswindow(k as integer, f as integer)
-		  CurrentContent.CurrentOperation = nil
-		  FormsWindow.setParams(k, f, false)
-		  Formswindow.SetFocus
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub PointerPolyg()
 		  if not CurrentContent.currentoperation isa readhisto and MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
 		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
@@ -2971,10 +2941,6 @@ End
 		    MouvBut(i).TextSize = config.TextSize
 		  next
 		  
-		  if fw <> nil then
-		    fw.updateTextSize
-		  end if
-		  
 		  MyCanvas1.Refresh
 		End Sub
 	#tag EndMethod
@@ -3081,10 +3047,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		fw As Formswindow
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		hh As Integer
 	#tag EndProperty
 
@@ -3167,7 +3129,7 @@ End
 		  
 		  
 		  if mousedispo then
-		    closefw
+		    Formswindow.close
 		    select case index
 		    case 0
 		      if currentcontent.Thefigs.count > 0 then
@@ -3228,7 +3190,7 @@ End
 		  else
 		    selectedTool = index
 		    drapico = true
-		    openformswindow(0,SelectedTool)
+		    FormsWindow.setParams(0, SelectedTool, false)
 		  end if
 		  
 		End Sub
@@ -3347,13 +3309,8 @@ End
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if mousedispo then
-		    if selectedtool = 0 and fw = nil then
-		      selectedtool = -1
-		    end if
-		    closefw
 		    return true
 		  end if
-		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -3363,7 +3320,7 @@ End
 		    selectedTool = index
 		    Kit = "Libre"
 		    if selectedtool <> 0 then
-		      openformswindow(1, selectedtool)
+		      Formswindow.setParams(1, SelectedTool, false)
 		    else
 		      Formswindow.close
 		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point

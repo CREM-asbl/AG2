@@ -5,7 +5,7 @@ Begin Window ConfigWindow
    CloseButton     =   False
    Compatibility   =   ""
    Composite       =   True
-   Frame           =   3
+   Frame           =   11
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False

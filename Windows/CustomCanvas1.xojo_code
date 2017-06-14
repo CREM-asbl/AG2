@@ -7,7 +7,7 @@ Inherits Canvas
 		  dim s as shape
 		  dim m as MenuItem
 		  
-		  wnd.closefw
+		  Formswindow.close
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
 		  CurrentContent.TheTransfos.ShowAll                     //On montre les autres
 		  currentcontent.thetransfos.unhighlightall
