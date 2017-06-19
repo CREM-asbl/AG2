@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -1325,13 +1326,7 @@ End
 			md = New MessageDialog
 			md.Title = Dico.value("HelpAbout")
 			md.Icon = 0
-			mess = "Apprenti géomètre v."+App.LongVersion
-			if Target32bit then
-			mess = mess+" 32bits "
-			else
-			mess = mess+" 64bits "
-			end if
-			md.Message = mess+EndOfLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
+			md.Message = mess+EndOfLine+EndofLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
 			b = md.ShowModal
 			end if
 			return true
