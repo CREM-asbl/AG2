@@ -32,10 +32,11 @@ Inherits Application
 		    Dico = new Dictionnaire
 		    Config = new Configuration
 		    autoquit = true
-		    CheckUpdate
+		    CheckUpdate 
+              themacros = new macroslist
 		    initWindow.show
 		  end if
-		  
+		  		  
 		End Sub
 	#tag EndEvent
 
@@ -45,6 +46,7 @@ Inherits Application
 		  s = item.NativePath
 		  FileName =""
 		  
+
 		  s = s.mid(1,Len(s)-4)
 		  if Right(s,1) = "\" then
 		    s = s.mid(1,Len(s)-1)
@@ -223,10 +225,8 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub Continuer()
 		  Config.ChargerConfig
-		  themacros = new macroslist
 		  Tampon = new ObjectsList
-		  wnd = WorkWindow
-		  wnd.Show
+		  WorkWindow.Show
 		  
 		  
 		  
