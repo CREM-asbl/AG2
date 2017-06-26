@@ -48,7 +48,6 @@ Begin Window BugFindW
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Cette figure a provoqué une erreur et va être fermée.\r\nNous nous excusons de ce désagrément.\r\n"
       TextAlign       =   0
       TextColor       =   &c00000000
