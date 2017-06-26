@@ -42,10 +42,10 @@ Inherits Lacet
 		    next
 		    loc.sortwith(arside)
 		    
-		    for j = ubound(autointer.pts) downto 0
-		      p = autointer.pts(j)
-		      
-		    next
+		    'for j = ubound(autointer.pts) downto 0
+		    'p = autointer.pts(j)
+		    '
+		    'next
 		    
 		    for k = 0 to ubound(arside)
 		      arpoints.append arside(k)
@@ -169,14 +169,16 @@ Inherits Lacet
 		  dim comp as polygon
 		  dim compos() as polygon
 		  dim p as point
+		  dim pile() as point
 		  
 		  
 		  nmax  = ubound(ars)+1
-		  pini = ars(0)
-		  i = 0
+		  pile.append ars(0)
 		  n = nmax
-		  balise = -1
 		  while n >0
+		    pini = pile(ubound(pile))
+		    i = ars.indexof(pini)
+		    pile.remove ubound(pile)
 		    comp = new Polygon(objects,pini.bpt)  'insertion du point balise
 		    n = n-1
 		    i = (i+1) mod nmax
@@ -184,10 +186,8 @@ Inherits Lacet
 		      p = ars(i)
 		      comp.addpoint(p.bpt)   'insertion du point i
 		      n = n-1
-		      if getindexpoint(p) = -1 then 
-		         if balise = -1 then
-		          balise = i
-		        end if 'le point inséré est un point d'inter
+		      if getindexpoint(p) = -1 then 'on a affaire Ã  un point d'intersection
+		        pile.append p
 		        for j = 0 to ubound(ars)        'on en recherche la deuxième occurrence
 		          if j <> i and ars(j).id = p.id then
 		            i0 = j
@@ -201,11 +201,6 @@ Inherits Lacet
 		    comp.initcolcotes
 		    comp.endconstruction
 		    compos.append comp
-		    if balise <> -1 then
-		      pini = ars(balise)
-		      i = balise
-		    end if
-		    balise = -1
 		  wend
 		End Sub
 	#tag EndMethod

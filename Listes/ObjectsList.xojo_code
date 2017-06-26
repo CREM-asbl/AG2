@@ -461,19 +461,6 @@ Inherits Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub invalidatefrom(s as shape)
-		  'dim i as integer
-		  '
-		  '
-		  'for i = 0 to count-1
-		  'if not item(i).deleted and not item(i).invalid and item(i).id > s.id and item(i).hascommonpointwith(s) then
-		  'item(i).invalider
-		  'end if
-		  'next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub inverserordre()
 		  dim s1, s2 as shape
 		  dim i as integer

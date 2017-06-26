@@ -32,7 +32,7 @@ Begin Window BugFindW
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   59
+      Height          =   86
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -49,12 +49,12 @@ Begin Window BugFindW
       TabIndex        =   0
       TabPanelIndex   =   0
       Text            =   "Cette figure a provoqué une erreur et va être fermée.\r\nNous nous excusons de ce désagrément.\r\n"
-      TextAlign       =   0
+      TextAlign       =   1
       TextColor       =   &c00000000
       TextFont        =   "SmallSystem"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   28
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -97,9 +97,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  dim s as string
-		  
-		  s = " "+ EndOfLine +  dico.value("bugfound")+ EndOfLine + dico.value("bugcontinue") + EndOfLine + dico.value( "bugsorry")
+		  StaticText2.text = dico.value("bugfound")+ EndOfLine + dico.value( "bugsorry") + EndOfLine + dico.value("bugcontinue") 
 		  
 		End Sub
 	#tag EndEvent

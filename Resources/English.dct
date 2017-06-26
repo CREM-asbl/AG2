@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <English>
 <Menus>
 <FileMenu Name="File"/>
@@ -32,8 +32,8 @@
 <Fororientedarea Name=" 'Oriented area'"/>
 <ToolsColorTransparent Name="Opacity"/>
 <ToolsOpq Name="Opaque" />
-<ToolsSTsp Name = "Half transparent"/>
-<ToolsTsp Name = "Transparent"/>
+<ToolsSTsp Name="Half transparent"/>
+<ToolsTsp Name="Transparent"/>
 <ToolsThickness Name="Modify thickness"/>
 <ToolsThick1 Name="Thin"/>
 <ToolsThick2 Name="Thick"/>

@@ -247,7 +247,7 @@ WinInternalName=AG2
 WinProductName=Apprenti Géomètre 2
 WinFileDescription=
 AutoIncrementVersionInformation=False
-BuildFlags=&h1900
+BuildFlags=&h2910
 BuildLanguage=&h3
 DebugLanguage=&h3
 Region=6
@@ -266,5 +266,8 @@ UseBuildsFolder=True
 HiDPI=True
 CopyRedistNextToWindowsEXE=False
 IsWebProject=False
+<<<<<<< HEAD
 LinuxBuildArchitecture=1
+=======
+>>>>>>> refs/remotes/origin/master
 OptimizationLevel=0

@@ -326,6 +326,9 @@ Protected Class Configuration
 		      StdFamilies(i,j) = Curspecs
 		    next
 		  next
+		  if wnd <> nil then
+		    wnd.ClearStdBox
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -550,10 +553,7 @@ Protected Class Configuration
 		      NewLang = "Francais" 'pas de caractères spéciaux pour nom de fichier
 		    end if
 		    Langue = NewLang
-		    'todo : doit être déplacé dans Workwindow
 		    Dico.load(Langue)
-		    'wnd.setMenus
-		    ///////
 		  end if
 		  
 		  

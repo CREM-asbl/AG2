@@ -33,7 +33,7 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate 
-              themacros = new macroslist
+            themacros = new macroslist
 		    initWindow.show
 		  end if
 		  		  
@@ -251,6 +251,16 @@ Inherits Application
 		  next
 		  
 		  return dicos
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function FullVersion() As String
+		  if Target32Bit then
+		    return app.LongVersion  + " " + app.StageCodeToString  + " (32 bits) "
+		  else
+		    return app.LongVersion + " " + app.StageCodeToString + " (64 bits) "
+		  end if
 		End Function
 	#tag EndMethod
 

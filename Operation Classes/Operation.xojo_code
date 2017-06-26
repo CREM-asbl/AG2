@@ -29,7 +29,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  wnd.closefw
+		  Formswindow.close
 		  if finished = true then
 		    'if self isa AppliquerTsf then
 		    'AppliquerTsf(self).tsf.highlighted = false

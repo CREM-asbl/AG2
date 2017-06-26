@@ -1656,7 +1656,7 @@ Protected Class Figure
 		Function DefaultMatrix() As Matrix
 		  dim ep, eq, er, np, nq, nr as BasicPoint
 		  dim p, q, r as point
-		  dim  n1, n2, n3, n4 as integer
+		  dim  n1, n2, n3 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)
@@ -2754,7 +2754,7 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p =somm.item(i)
-		    if  (p.liberte = 0 or p.unmodifiable) then ' and (p <> supfig.pointmobile ) and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
+		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and not p.modified then 'PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      'if p.pointsur.count <> 2 then
 		      NbUnModif = NbUnModif+1
