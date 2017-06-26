@@ -404,40 +404,36 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Close()
-		  wnd.fw = nil
-		  if not selection and kit = 0  then
-		    wnd.setIco(fam,0)
-		    wnd.stdoutil(fam).refresh
-		  end if
+		  reset
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub MouseExit()
-		  if not selection and kit = 0  then
-		    wnd.setIco(fam,0)
-		    wnd.stdoutil(fam).refresh
-		  end if
+		  reset
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Open()
-		  Title = Dico.Value("Forms")
-		  Height = hauteur
-		  updateTextSize
 		  
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		  if not selection then
+		    left= WorkWindow.Left+Workwindow.Tools.Width+1
+		  end if 
+		  
+		  updateTextSize
 		End Sub
 	#tag EndEvent
 
 
 	#tag Method, Flags = &h0
-		Sub Constructor(k as integer, f as integer, selection As boolean)
-		  kit = k
-		  fam = f
-		  self.selection = selection
-		  
-		  Super.Window
+		Sub refreshContent()
 		  select case kit
 		  case 0
 		    title = Dico.value("Famille") + " '"+ Dico.Value(Config.NamesStdFamilies(fam))+ "'"
@@ -458,33 +454,69 @@ End
 		    case 7
 		      title = Dico.Value("Lacets")
 		    end select
-		  end select
-		  
-		  left= wnd.Left+wnd.Tools.Width+1
-		  
+		  end 
+		  height = 0
+		  for i as Integer = 0 to 11
+		    
+		    Bouton(i).Visible = false
+		    
+		    if kit = 0 and  i < config.nstdf(fam) then
+		      
+		      Bouton(i).caption = Dico.Value(Config.StdFamilies(fam, i).Name)
+		      Bouton(i).visible = true
+		      
+		    elseif  kit = 1 then
+		      
+		      if selection = true and i < config.nlibf(fam)+2 then
+		        if i = 0 then
+		          Bouton(i).bold = Config.nlibvis(fam)
+		          Bouton(i).italic = not Config.nlibvis(fam)
+		          if Config.nlibvis(fam) then
+		            Bouton(i).caption = Dico.Value("Retirer la famille complète")
+		          else
+		            Bouton(i).caption = Dico.Value("Activer la famille complète")
+		          end if
+		        else
+		          Bouton(i).bold = Config.libvisible(fam,i-1)
+		          Bouton(i).italic = not Config.libvisible(fam,i-1)
+		          Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i-1))
+		          if Config.libvisible(fam,i-1) then
+		            Bouton(i).caption = Bouton(i).caption + " x"
+		          end if
+		        end if
+		        Bouton(i).visible = true
+		      elseif i < config.nlibf(fam)+1 and (Config.libvisible(fam,i) or (CurrentContent.thegrid <> nil and fam = 6)) then
+		        Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i))
+		        Bouton(i).visible = true
+		      end if
+		    end if
+		    
+		    if Bouton(i).Visible then
+		      Bouton(i).top = height
+		      height = height + Bouton(i).Height
+		    end if
+		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SelectionRefresh()
-		  dim i as integer
-		  
-		  Bouton(0).bold = Config.nlibvis(fam)
-		  Bouton(0).italic = not Config.nlibvis(fam)
-		  if Bouton(0).bold then
-		    Bouton(0).caption = Dico.Value("Retirer la famille complète")
-		  else
-		    Bouton(0).caption = Dico.Value("Activer la famille complète")
+		Sub reset()
+		  if not selection and kit = 0  then
+		    Workwindow.setIco(fam,0)
+		    Workwindow.stdoutil(fam).refresh
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub setParams(k as integer, f as integer, selection As boolean)
+		  kit = k
+		  fam = f
+		  self.selection = selection
 		  
-		  for i=1 to config.nlibf(fam)+1
-		    Bouton(i).bold = Config.libvisible(fam,i-1)
-		    Bouton(i).italic = not Config.libvisible(fam,i-1)
-		    Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i-1))
-		    if Config.libvisible(fam,i-1) then
-		      Bouton(i).caption = Bouton(i).caption + " x"
-		    end if
-		  next
+		  refreshContent
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -530,10 +562,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		hauteur As Integer = 0
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		kit As integer
 	#tag EndProperty
 
@@ -547,13 +575,9 @@ End
 #tag Events Bouton
 	#tag Event
 		Sub MouseEnter(index as Integer)
-		  if selection then
-		    return
-		  end if
-		  wnd.selectedtool = fam
-		  if kit = 0 then
-		    wnd.setIco(fam,index)
-		    wnd.stdoutil(fam).refresh
+		  if  not selection then
+		    workwindow.selectedtool = fam
+		    reset
 		  end if
 		  
 		End Sub
@@ -566,8 +590,8 @@ End
 		    else
 		      Config.ToggleLibVisible(fam,index-1)
 		    end if
-		    SelectionRefresh
-		    wnd.LibBoxRefresh
+		    RefreshContent
+		    WorkWindow.LibBoxRefresh
 		  else
 		    dim Op As Operation
 		    Op = CurrentContent.CurrentOperation
@@ -578,7 +602,7 @@ End
 		    
 		    if kit = 0 then
 		      Op=new ShapeConstruction(10 + fam,index)
-		      wnd.drapico = false
+		      Workwindow.drapico = false
 		    else
 		      if (fam = 1) and ( index mod 3 <>  0 ) and (index < 6)  then
 		        Op = new ParaPerpConstruction (fam, index)
@@ -586,59 +610,21 @@ End
 		        Op=new ShapeConstruction(fam,index)
 		      end if
 		    end if
-		    'form = index
 		    CurrentContent.TheObjects.unselectAll
 		    CurrentContent.CurrentOperation  = Op
-		    wnd.setcross
-		    wnd.refreshtitle
 		    Close
 		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Open(index as Integer)
-		  select case kit
-		  case 0
-		    if index < config.nstdf(fam) then
-		      me.caption = Dico.Value(Config.StdFamilies(fam,index).Name)
-		    else
-		      me.visible = false
-		    end if
-		  case 1
-		    if selection = true and index < config.nlibf(fam)+2 then
-		      if index = 0 then
-		        me.bold = Config.nlibvis(fam)
-		        me.italic = not Config.nlibvis(fam)
-		        if me.bold then
-		          me.caption = Dico.Value("Retirer la famille complète")
-		        else
-		          me.caption = Dico.Value("Activer la famille complète")
-		        end if
-		      else
-		        me.bold = Config.libvisible(fam,index-1)
-		        me.italic = not Config.libvisible(fam,index-1)
-		        me.caption = Dico.Value(config.Libfamilies(fam,index-1))
-		        if Config.libvisible(fam,index-1) then
-		          me.caption = me.caption + " x"
-		        end if
-		      end if
-		    elseif index < config.nlibf(fam)+1 and (Config.libvisible(fam,index) or (CurrentContent.thegrid <> nil and fam = 6)) then
-		      me.caption = Dico.Value(config.Libfamilies(fam,index))
-		    else
-		      me.Visible = false
-		    end if
-		  end select
 		  
-		  if me.Visible then
-		    me.top = hauteur
-		    hauteur = hauteur+Me.Height
-		  end
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Function MouseUp(index as Integer, X As Integer, Y As Integer) As Boolean
-		  return true
+		  return false
 		End Function
 	#tag EndEvent
 	#tag Event

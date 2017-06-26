@@ -807,7 +807,7 @@ Protected Class WindContent
 		  dim curoper as Operation
 		  
 		  isaundoredo = true
-		  wnd.closefw
+		  Formswindow.close
 		  
 		  if currentop = 0 then
 		    return

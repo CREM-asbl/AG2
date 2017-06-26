@@ -281,8 +281,8 @@
   </Couleurs>
   <Messages>
     <bugsent Name="Bug envoyé, merci!" />
-    <bugfound Name="Cette figure a provoqué une erreur." />
-    <bugcontinue Name="Vous pouvez essayer de continuer à travailler, mais sauvegardez régulièrement votre travail" />
+    <bugfound Name="Cette figure a provoqué une erreur et va être fermée." />
+    <bugcontinue Name="Vous pouvez continuer à travailler, mais sauvegardez régulièrement votre travail" />
     <bugsorry Name="Nous nous excusons de ce désagrément" />
     <bugsignal Name="Voulez-vous nous signaler l'erreur ?" />
     <MessBugsent1 Name="Envoi du fichier log" />

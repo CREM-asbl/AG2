@@ -41,7 +41,7 @@ Protected Module api
 		  NWI = System.GetNetworkInterface(0)
 		  
 		  form = New Dictionary
-		  form.Value("version") = app.LongVersion+" "+app.StageCodeToString
+		  form.Value("version") = app.FullVersion
 		  form.Value("os") = app.sys
 		  form.Value("mac") = NWI.MACAddress
 		  
@@ -82,7 +82,7 @@ Protected Module api
 		  end if
 		  
 		  date = app.bugtime.LongDate+" "+str(app.bugtime.Hour)+"h"+str(app.bugtime.Minute)
-		  directory="bugs/"+str(app.LongVersion)+"."+app.StageCodeToString+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
+		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
 		  
 		  form = New Dictionary
 		  form.Value("dir") = directory

@@ -281,9 +281,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
 		  if SetItem(Currentshape) then
-		    if wnd.fw <> nil then
-		      wnd.fw.close
-		    end if
+		    Formswindow.close
 		    finished = false
 		    NextItem
 		    if CurrentItemToSet>NumberOfItemsToSelect then

@@ -1656,7 +1656,7 @@ Protected Class Figure
 		Function DefaultMatrix() As Matrix
 		  dim ep, eq, er, np, nq, nr as BasicPoint
 		  dim p, q, r as point
-		  dim  n1, n2, n3, n4 as integer
+		  dim  n1, n2, n3 as integer
 		  
 		  
 		  n1 = ListPtsModifs(0)
