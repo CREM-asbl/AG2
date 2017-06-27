@@ -27,7 +27,7 @@ Inherits Operation
 		  try
 		    Doc=new XMLDocument(f)
 		  catch err as XmlException
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
 		    return
 		  end try
 		  
@@ -37,6 +37,7 @@ Inherits Operation
 		    MsgBox Dico.Value("Nofagfile")
 		    return
 		  end if
+		  
 		  
 		  version = FAG.GetAttribute("Version") 
 		  v1 = val(NthField(version,".", 1))
@@ -69,7 +70,8 @@ Inherits Operation
 		  end if
 		  
 		  can.Mousecursor = system.cursors.wait
-		  BkCol = FAG.GetAttribute("BkCol") 
+		  BkCol = FAG.GetAttribute("BkCol")
+		  
 		  if BkCol = "noir" and WorkWindow.BackColor = &cFFFFFF then
 		    WorkWindow.switchcolors
 		  end if
@@ -79,9 +81,11 @@ Inherits Operation
 		  Objects.XMLLoadObjects(FAG)
 		  Objects.updateids
 		  currentcontent.FinInitialisation(FAG, f)
-		  finished = true		  CurrentContent.AddOperation(self)
+		  finished = true
+		  CurrentContent.AddOperation(self)
 		  can.mousecursor = System.Cursors.StandardPointer
-		  can.refreshbackground		  Workwindow.refreshtitle
+		  can.refreshbackground
+		  Workwindow.refreshtitle
 		End Sub
 	#tag EndMethod
 

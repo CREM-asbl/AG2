@@ -1309,13 +1309,9 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-
-
-
 		  Formswindow.close
 		  WorkWindow.updatemenu
 		  Config.Save
-
 		  close
 		End Sub
 	#tag EndEvent

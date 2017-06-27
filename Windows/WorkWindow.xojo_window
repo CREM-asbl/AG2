@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c00FFFFFF
+      FillColor       =   &cFFFFFF00
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -699,9 +699,8 @@ End
 
 	#tag Event
 		Sub Close()
-		  if fw <> nil then
-		    fw.close
-		  end if
+		  HistCmd.close
+		  
 		End Sub
 	#tag EndEvent
 
@@ -879,10 +878,8 @@ End
 
 	#tag Event
 		Sub Maximize()
-		  
 		  UpdateToolBar
-		  'width = screen(0).width -120
-		  'height = screen(0).height
+		  
 		End Sub
 	#tag EndEvent
 
@@ -898,22 +895,10 @@ End
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
+		  
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
 		  end if
-		  
-		  
-		  if app.fileName <> "" then
-		    dim f as FolderItem
-		    f = GetFolderItem(app.FileName)
-		    if f <> nil then
-		      OpenFile(f)
-		    else
-		      MsgBox  Dico.Value("MsgErrOpenFile")
-		    end if
-		    app.FileName = ""
-		  end if
-		  
 		  maximize
 		  
 		  
@@ -1176,9 +1161,7 @@ End
 
 	#tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
-			if dret = nil then
-			currentcontent.currentoperation.Annuler
-			end if
+			Annuler
 			return true
 		End Function
 	#tag EndMenuHandler
@@ -1745,7 +1728,8 @@ End
 			mw = new ThickWindow
 			mw.ShowModal
 			if mw.result=1 then
-			Config.Thickness = val(mw.TF.text)
+			d = val(mw.TF.text)
+			Config.Thickness = d
 			mw.close
 			end if
 			Return True
@@ -2093,13 +2077,13 @@ End
 			if oldOp isa ReadHisto then
 			if not CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = Menu
-			ReadHisto(oldOp).Hcmd.visible = false
+			HistCmd.visible = false
 			wnd.draphisto = false
 			wnd.refreshtitle
 			end if
 			elseif CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = HistMenu
-			ReadHisto(CurrentContent.CurrentOperation).Hcmd.visible = true
+			HistCmd.visible = true
 			wnd.draphisto = true
 			wnd.DisableToolBar
 			elseif CurrentContent.Macrocreation then
@@ -2118,18 +2102,18 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  'dim op as operation
-		  'op =CurrentContent.CurrentOperation
-		  'closefw
-		  'if  op isa MultipleSelectOperation and ( MultipleSelectOperation(op).currentitemtoset >= 1) then
-		  'if op isa AppliquerTsf then
-		  'AppliquerTsf(op).tsf.highlighted = false
-		  'end if
-		  'CurrentContent.abortconstruction
-		  'else
-		  'CurrentContent.UndoLastOperation
-		  'end if
-		  'mycanvas1.refreshBackground
+		  if dret = nil then
+		    if currentcontent.currentoperation <> nil then
+		      currentcontent.currentoperation.Annuler
+		      if CurrentContent.CurrentOp = 0 then
+		        PushButton1.Enabled = false
+		      end if
+		      currentcontent.currentoperation = nil
+		      refreshtitle
+		    else
+		      currentcontent.undolastoperation
+		    end if
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -2603,7 +2587,7 @@ End
 		  dim nc as boolean
 		  
 		  if  CurrentContent.TheObjects.count > 1 then
-		    closefw
+		    Formswindow.close
 		    NewContent(false)
 		    nc = true
 		  end if
@@ -2613,7 +2597,7 @@ End
 		  elseif f.Type = "SAVE" then
 		    CurrentContent.CurrentOperation = new Ouvrir(f)
 		  else
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
 		    if nc then
 		      deleteContent
 		    end if
@@ -2928,21 +2912,8 @@ End
 		  ReadNomsMouvBut
 		  ReadStTexts
 		  TradMenu
-		  if MenuBar.Child("PrefsMenu") <> nil then 'correctif pour annuler dans InitWindow
-		    if MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = Config.PolPointes
-		    end if
-		    if MenuBar.Child("PrefsMenu").Child("PrefsTrace") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
-		    end if
-		    if MenuBar.Child("PrefsMenu").Child("PrefsAjust") <> nil then
-		      MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = Config.Ajust
-		    end if
-		  end if
-		  if  MenuBar.Child("ToolsMenu").Child("ToolsThickness") <> nil then
-		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").child("ToolsThick1").checked = true
-		  end if
 		  updateToolBar
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -3191,7 +3162,6 @@ End
 	#tag Event
 		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
 		  dim c as color
-		  dim j as integer
 		  
 		  if app.quitting then
 		    return
@@ -3209,9 +3179,6 @@ End
 		    c = Config.stdcolor(index).col
 		    if selectcolor(c, "Choisis une  couleur") then
 		      Config.stdcolor(index) = new couleur(c)
-		      for j = 0 to config.nstdf(index) - 1
-		        Config.stdfamilies(index,j).coul = Config.stdcolor(index)
-		      next
 		    end if
 		    setico(index,0)
 		    stdoutil(index).refresh
@@ -3233,7 +3200,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  
+		  dim fs as figureshape
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3257,18 +3224,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  if dret = nil then
-		    if currentcontent.currentoperation <> nil then
-		      currentcontent.currentoperation.Annuler
-		      if CurrentContent.CurrentOp = 0 then
-		        me.Enabled = false
-		      end if
-		      currentcontent.currentoperation = nil
-		      refreshtitle
-		    else
-		      currentcontent.undolastoperation
-		    end if
-		  end if
+		  Annuler
 		  
 		End Sub
 	#tag EndEvent

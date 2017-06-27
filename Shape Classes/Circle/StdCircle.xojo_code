@@ -25,7 +25,7 @@ Inherits Circle
 		  npts = 2
 		  self.fam = fam
 		  forme = form
-		  Myspecs = wnd.GetStdSpecs(fam-10,Form)
+		  Myspecs = config.StdFamilies(fam-10,Form)
 		  radius=Myspecs.distances(0)
 		  radius = radius*Config.StdSize
 		  angles.append Myspecs.angles(0)
@@ -40,8 +40,6 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectsList, El as XMLElement)
-		  dim sc, rsk as double
-		  
 		  Shape.Constructor(ol,EL)
 		  if npts = 1 then
 		    npts = 2
@@ -50,10 +48,10 @@ Inherits Circle
 		  end if //pour pouvoir relire d'anciens fichiers
 		  radius=Val(El.getAttribute("Rayon"))
 		  angles.append Val(EL.getAttribute("Angle"))
-		  sc = can.scaling
-		  rsk= radius*Config.StdSize*sc
-		  'nsk = new CircleSkull(can.transform(Points(0).bpt))
-		  'nsk.updatesize(1)
+		  
+		  nsk = new ArcSkull(can.transform(Points(0).bpt))
+		  nsk.skullof = self
+		  nsk.updatesize(1)
 		  std = true
 		  autos
 		  file = config.stdfile

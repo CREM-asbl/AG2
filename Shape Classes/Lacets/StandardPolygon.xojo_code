@@ -13,7 +13,7 @@ Inherits Polygon
 		  self.forme = form
 		  ncpts = 1
 		  if fam < 14 then 'fam = 14 pour la fusion de deux stdpolyg
-		    specs = wnd.GetStdSpecs(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		    npts = Ubound(specs.angles)+2
 		    for i=0 to npts-2
 		      Angles.Append specs.Angles(i)
@@ -82,7 +82,7 @@ Inherits Polygon
 		  redim Angles(npts-2)
 		  if fam < 14 then
 		    file = Config.stdfile
-		    specs = wnd.GetStdSpecs(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		    for i=0 to npts-2
 		      Angles(i) =  specs.Angles(i)
 		      Distances.Append specs.Distances(i)
@@ -105,7 +105,7 @@ Inherits Polygon
 		  dim specs as StdPolygonSpecifications
 		  
 		  if fam < 14 then
-		    specs = wnd.GetStdSpecs(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		  else
 		    specs = createspecs
 		  end if

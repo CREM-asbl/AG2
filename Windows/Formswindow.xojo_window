@@ -10,7 +10,7 @@ Begin Window Formswindow
    FullScreenButton=   False
    HasBackColor    =   False
    Height          =   360
-   ImplicitInstance=   False
+   ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
    MaxHeight       =   32000
@@ -27,7 +27,7 @@ Begin Window Formswindow
    Visible         =   True
    Width           =   200
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -58,7 +58,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -89,7 +89,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -120,7 +120,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -151,7 +151,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -182,7 +182,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -213,7 +213,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -244,7 +244,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -275,7 +275,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -306,7 +306,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -368,7 +368,7 @@ Begin Window Formswindow
       Width           =   200
    End
    Begin PushButton Bouton
-      AutoDeactivate  =   True
+      AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
@@ -451,8 +451,8 @@ End
 		      title = Dico.value("Arcs")
 		    case 6
 		      title = Dico.value("Polyqcqs")
-		      'case 7
-		      'title = Dico.Value("Lacets")
+		    case 7
+		      title = Dico.Value("Lacets")
 		    end select
 		  end 
 		  height = 0
