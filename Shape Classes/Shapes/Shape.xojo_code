@@ -2523,21 +2523,20 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function PassePar(p() as point) As Boolean
-		  dim i, n as integer
+		  dim i as integer 'utilise uniquement par  divide 
 		  dim t as Boolean
 		  
 		  t = true
 		  
-		  for i = 0 to ubound(p)
-		    t = t and (getindex(p(i)) <> -1)
-		  next
-		  
-		  if self isa circle then
+		  if self isa circle then 'on élimine le centre du cercle
 		    for i = 0 to ubound(p)
 		      t = t and (getindex(p(i)) <> 0)
 		    next
 		  end if
 		  
+		  for i = 0 to ubound(p)
+		    t = t and ((getindex(p(i)) <> -1) or (p(i).constructedby <>nil and p(i).constructedby.oper = 4 and p(i).constructedby.shape = self))
+		  next
 		  return t
 		  
 		End Function

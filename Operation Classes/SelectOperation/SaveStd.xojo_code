@@ -39,8 +39,11 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  if Nom = "" then
+		  coul = new couleur(stdw.col)
+		  if stdw.nom = "" then
 		    nom = "Untitled"
+		  else
+		    nom = stdw.nom
 		  end if
 		  
 		  Doc = new XmlDocument

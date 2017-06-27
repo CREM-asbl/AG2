@@ -390,8 +390,11 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function GetPlan(n as integer) As shape
-		  
-		  return GetShape(currentcontent.plans(n))
+		  if ubound(currentcontent.plans)  >= n then
+		    return GetShape(currentcontent.plans(n))
+		  else
+		    return nil
+		  end if
 		End Function
 	#tag EndMethod
 

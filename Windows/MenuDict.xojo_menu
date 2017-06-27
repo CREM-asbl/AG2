@@ -20,13 +20,6 @@ Begin Menu MenuDict
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ModifDict
-         SpecialMenu = 0
-         Text = "Modifier"
-         Index = -2147483648
-         AutoEnable = True
-         Visible = True
-      End
       Begin MenuItem CreerDict
          SpecialMenu = 0
          Text = "Créer"
@@ -44,13 +37,6 @@ Begin Menu MenuDict
       Begin MenuItem FinDict
          SpecialMenu = 0
          Text = "Fin"
-         Index = -2147483648
-         AutoEnable = True
-         Visible = True
-      End
-      Begin MenuItem Untitled0
-         SpecialMenu = 0
-         Text = ""
          Index = -2147483648
          AutoEnable = True
          Visible = True

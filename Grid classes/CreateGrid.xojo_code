@@ -81,6 +81,13 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  DoOper(type,taillepoints,rapport)
+		  if config.menu = "Menu_A" then
+		    if type <> 0 then
+		      config.MvBt(0) = true
+		    else
+		      config.MvBt(0)=false
+		    end if
+		  end if
 		  endoperation
 		  
 		End Sub

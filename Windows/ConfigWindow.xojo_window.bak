@@ -1309,13 +1309,13 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-
-
-
+<<<<<<< HEAD
+		  wnd.updatemenu
+=======
 		  Formswindow.close
 		  WorkWindow.updatemenu
 		  Config.Save
-
+>>>>>>> refs/remotes/origin/master
 		  close
 		End Sub
 	#tag EndEvent

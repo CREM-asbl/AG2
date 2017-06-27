@@ -124,6 +124,34 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function indice(nbp as nbpoint) As integer
+		  dim protab(2) as basicpoint
+		  dim BiB as BiBPoint
+		  dim ang as angle
+		  dim i, orien, resucorrig as integer
+		  dim provi as nbpoint
+		  dim resu as double
+		  
+		  
+		  resu = 0
+		  protab(0) = self
+		  for i = 0 to nbp.taille-1
+		    protab(1) = nbp.tab(i)
+		    protab(2) =  nbp.tab((i+1) mod nbp.taille)
+		    BiB = new BiBPoint(nbp.tab(i), nbp.tab((i+1) mod nbp.taille))
+		    provi = new nbpoint(protab)
+		    orien = provi.orientation
+		    ang =new angle(Bib, self, orien)
+		    resu = resu + ang.alpha
+		  next
+		  resu = resu /(2*PI)
+		  'resucorrig = resu
+		  return resu  'corrig
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function insidescreen() As Boolean
 		  dim csg, cig, csd, cid as BasicPoint
 		  can.coins(csg,csd,cig,cid)
@@ -343,7 +371,8 @@ Protected Class BasicPoint
 		Sub Paint(g as graphics)
 		  dim sk as OvalSkull
 		  
-		  sk = new Ovalskull(1,can.transform(self))
+		  sk = new Ovalskull(1.5,can.transform(self))
+		  sk.update(self,2)
 		  sk.updatecolor(bleu,100)
 		  sk.paint(g)
 		  

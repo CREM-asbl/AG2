@@ -2,22 +2,26 @@
 	#tag FileType
 		CodeName=SAVE
 		DocIcon=AG.xojo_resources;&h0
-		Extension=.fag
-		Flags=&h9
+		Extension=fag
+		Flags=&h2
+
 		MacCreator=CREM
 		MacType=FAG
 		Name=SAVE
 		UTI=
 		UTIConformsTo=
 		Description=
-		MimeType=application/xml
-		Imported=False
+
+		MimeType=
+		Imported=True
+
 	#tag EndFileType
 
 	#tag FileType
 		CodeName=MACR
-		DocIcon=AG.xojo_resources;&h55465C
-		Extension=.mag
+
+		Extension=xmag;xml
+
 		Flags=&h9
 		MacCreator=CREM
 		MacType=MAG
@@ -25,8 +29,9 @@
 		UTI=
 		UTIConformsTo=
 		Description=
-		MimeType=application/xml
-		Imported=False
+
+		MimeType=
+		Imported=True
 	#tag EndFileType
 
 	#tag FileType
@@ -40,8 +45,9 @@
 		UTI=
 		UTIConformsTo=
 		Description=
-		MimeType=application/xml
-		Imported=False
+		MimeType=
+		Imported=True
+
 	#tag EndFileType
 
 	#tag FileType
@@ -68,8 +74,9 @@
 		UTI=
 		UTIConformsTo=
 		Description=
-		MimeType=application/xml
-		Imported=False
+		MimeType=
+		Imported=True
+
 	#tag EndFileType
 
 	#tag FileType

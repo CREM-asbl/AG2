@@ -198,6 +198,25 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetSide(i as integer) As Droite
+		  dim d as droite
+		  
+		  if i = 0 then
+		    d = new Droite(Points(0),Points(1))
+		  elseif i = 1 or i = 2 then
+		    
+		    d = new Droite(Points(0),Points(2))
+		  else 
+		    d = nil
+		  end if
+		  if d <> nil then
+		    d.nextre = 1
+		  end if
+		  return d
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetType() As string
 		  return Dico.value("Secteur")
 		End Function

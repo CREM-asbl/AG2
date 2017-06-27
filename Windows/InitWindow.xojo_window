@@ -8,7 +8,7 @@ Begin Window InitWindow
    Frame           =   4
    FullScreen      =   False
    FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackColor    =   False
    Height          =   554
    ImplicitInstance=   True
    LiveResize      =   False
@@ -25,7 +25,7 @@ Begin Window InitWindow
    Resizeable      =   False
    Title           =   ""
    Visible         =   True
-   Width           =   780
+   Width           =   772
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
       Bold            =   True
@@ -38,7 +38,7 @@ Begin Window InitWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   560
+      Left            =   572
       ListIndex       =   0
       LockBottom      =   True
       LockedInPosition=   False
@@ -52,10 +52,10 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   390
+      Top             =   385
       Underline       =   False
       Visible         =   True
-      Width           =   200
+      Width           =   173
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
@@ -70,7 +70,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   681
+      Left            =   683
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -83,10 +83,134 @@ Begin Window InitWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   470
+      Top             =   442
       Underline       =   False
       Visible         =   False
-      Width           =   78
+      Width           =   68
+   End
+   Begin PushButton PushButton2
+      AutoDeactivate  =   False
+      Bold            =   True
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Enseignant(e)"
+      Default         =   False
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   572
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   318
+      Underline       =   False
+      Visible         =   True
+      Width           =   112
+   End
+   Begin PushButton PushButton3
+      AutoDeactivate  =   True
+      Bold            =   True
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Elève"
+      Default         =   False
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   683
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   318
+      Underline       =   False
+      Visible         =   True
+      Width           =   69
+   End
+   Begin PushButton PushButton4
+      AutoDeactivate  =   True
+      Bold            =   True
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Annuler"
+      Default         =   False
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   572
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   12.0
+      TextUnit        =   0
+      Top             =   442
+      Underline       =   False
+      Visible         =   True
+      Width           =   108
+   End
+   Begin PopupMenu ComboBox1
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   572
+      ListIndex       =   0
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   412
+      Underline       =   False
+      Visible         =   True
+      Width           =   173
    End
    Begin TextField User
       AcceptTabs      =   False
@@ -106,7 +230,7 @@ Begin Window InitWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   640
+      Left            =   572
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -117,7 +241,7 @@ Begin Window InitWindow
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   2
+      TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
@@ -129,131 +253,7 @@ Begin Window InitWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   False
-      Width           =   120
-   End
-   Begin PushButton PushButton2
-      AutoDeactivate  =   False
-      Bold            =   True
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "Enseignant(e)"
-      Default         =   False
-      Enabled         =   True
-      Height          =   30
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   560
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   310
-      Underline       =   False
-      Visible         =   True
-      Width           =   120
-   End
-   Begin PushButton PushButton3
-      AutoDeactivate  =   True
-      Bold            =   True
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "Elève"
-      Default         =   False
-      Enabled         =   True
-      Height          =   30
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   560
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   350
-      Underline       =   False
-      Visible         =   True
-      Width           =   70
-   End
-   Begin PushButton PushButton4
-      AutoDeactivate  =   True
-      Bold            =   True
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "Annuler"
-      Default         =   False
-      Enabled         =   True
-      Height          =   30
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   560
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   5
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   470
-      Underline       =   False
-      Visible         =   True
-      Width           =   110
-   End
-   Begin PopupMenu ComboBox1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   30
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      InitialValue    =   ""
-      Italic          =   False
-      Left            =   560
-      ListIndex       =   0
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   6
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   430
-      Underline       =   False
-      Visible         =   True
-      Width           =   200
+      Width           =   173
    End
 End
 #tag EndWindow
@@ -320,40 +320,11 @@ End
 	#tag Event
 		Sub Action()
 		  Config.Menu = PopupMenu1.Text
-		  Config.Save
 		  App.Continuer
 		  close
 		  
 		  
 		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events User
-	#tag Event
-		Function KeyDown(Key As String) As Boolean
-		  if Key = chr(13) and  me.text <> "" then
-		    app.Continuer
-		  end if
-		  
-		End Function
-	#tag EndEvent
-	#tag Event
-		Sub GotFocus()
-		  Config.pwok = false
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub TextChange()
-		  Config.username = me.text
-		  if me.text <> "" then
-		    pushbutton1.visible = true
-		    pushbutton1.default = true
-		  else
-		    pushbutton1.visible = false
-		    pushbutton1.default = false
-		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -444,6 +415,34 @@ End
 		Sub Change()
 		  Config.SetLangue(ComboBox1.Text)
 		  refresh
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events User
+	#tag Event
+		Function KeyDown(Key As String) As Boolean
+		  if Key = chr(13) and  me.text <> "" then
+		    app.Continuer
+		  end if
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub GotFocus()
+		  Config.pwok = false
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub TextChange()
+		  Config.username = me.text
+		  if me.text <> "" then
+		    pushbutton1.visible = true
+		    pushbutton1.default = true
+		  else
+		    pushbutton1.visible = false
+		    pushbutton1.default = false
+		  end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents

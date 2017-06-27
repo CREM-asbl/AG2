@@ -31,7 +31,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -240,7 +240,7 @@ Begin Window LabelWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFF00FFFF
+      FillColor       =   &c00FFFFFF
       Height          =   21
       HelpTag         =   ""
       Index           =   -2147483648
@@ -370,7 +370,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -413,7 +413,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       CueText         =   ""
