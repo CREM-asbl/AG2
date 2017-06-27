@@ -4,24 +4,19 @@
 		DocIcon=AG.xojo_resources;&h0
 		Extension=fag
 		Flags=&h2
-
 		MacCreator=CREM
 		MacType=FAG
 		Name=SAVE
 		UTI=
 		UTIConformsTo=
 		Description=
-
 		MimeType=
 		Imported=True
-
 	#tag EndFileType
 
 	#tag FileType
 		CodeName=MACR
-
 		Extension=xmag;xml
-
 		Flags=&h9
 		MacCreator=CREM
 		MacType=MAG
@@ -29,14 +24,13 @@
 		UTI=
 		UTIConformsTo=
 		Description=
-
 		MimeType=
 		Imported=True
 	#tag EndFileType
 
 	#tag FileType
 		CodeName=HIST
-		DocIcon=AG.xojo_resources;&hAA8CB8
+		DocIcon=AG.xojo_resources;&h55465C
 		Extension=.hag
 		Flags=&h9
 		MacCreator=CREM
@@ -47,7 +41,6 @@
 		Description=
 		MimeType=
 		Imported=True
-
 	#tag EndFileType
 
 	#tag FileType
@@ -76,7 +69,6 @@
 		Description=
 		MimeType=
 		Imported=True
-
 	#tag EndFileType
 
 	#tag FileType

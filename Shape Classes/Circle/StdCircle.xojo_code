@@ -25,7 +25,8 @@ Inherits Circle
 		  npts = 2
 		  self.fam = fam
 		  forme = form
-		  Myspecs = wnd.GetStdSpecs(fam-10,Form)
+		  Myspecs = config.stdfamilies(fam-10,form)
+		  'Myspecs = wnd.GetStdSpecs(fam-10,Form)
 		  radius=Myspecs.distances(0)
 		  radius = radius*Config.StdSize
 		  angles.append Myspecs.angles(0)

@@ -79,9 +79,11 @@ Inherits Operation
 		  Objects.XMLLoadObjects(FAG)
 		  Objects.updateids
 		  currentcontent.FinInitialisation(FAG, f)
-		  finished = true		  CurrentContent.AddOperation(self)
+		  finished = true		  
+		  CurrentContent.AddOperation(self)
 		  can.mousecursor = System.Cursors.StandardPointer
-		  can.refreshbackground		  Workwindow.refreshtitle
+		  can.refreshbackground		 
+		  Workwindow.refreshtitle
 		End Sub
 	#tag EndMethod
 
