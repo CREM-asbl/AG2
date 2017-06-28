@@ -2,7 +2,6 @@
 	#tag FileType
 		CodeName=SAVE
 		DocIcon=AG.xojo_resources;&h0
-
 		Extension=.fag
 		Flags=&h9
 		MacCreator=CREM
@@ -26,15 +25,13 @@
 		UTI=
 		UTIConformsTo=
 		Description=
-
 		MimeType=application/xml
 		Imported=False
-
 	#tag EndFileType
 
 	#tag FileType
 		CodeName=HIST
-		DocIcon=AG.xojo_resources;&h55465C
+		DocIcon=AG.xojo_resources;&hAA8CB8
 		Extension=.hag
 		Flags=&h9
 		MacCreator=CREM
@@ -43,7 +40,6 @@
 		UTI=
 		UTIConformsTo=
 		Description=
-
 		MimeType=application/xml
 		Imported=False
 	#tag EndFileType

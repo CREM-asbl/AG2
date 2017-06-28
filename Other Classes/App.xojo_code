@@ -33,10 +33,10 @@ Inherits Application
 		    Config = new Configuration
 		    autoquit = true
 		    CheckUpdate 
-            themacros = new macroslist
+		    themacros = new macroslist
 		    initWindow.show
 		  end if
-		  		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -46,7 +46,7 @@ Inherits Application
 		  s = item.NativePath
 		  FileName =""
 		  
-
+		  
 		  s = s.mid(1,Len(s)-4)
 		  if Right(s,1) = "\" then
 		    s = s.mid(1,Len(s)-1)

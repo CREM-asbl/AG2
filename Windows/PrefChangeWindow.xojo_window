@@ -48,6 +48,7 @@ Begin Window PrefChangeWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Configuration :"
       TextAlign       =   0
       TextColor       =   &c00000000

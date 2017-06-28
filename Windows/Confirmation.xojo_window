@@ -48,6 +48,7 @@ Begin Window Confirmation
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Sauver?"
       TextAlign       =   1
       TextColor       =   &c00000000

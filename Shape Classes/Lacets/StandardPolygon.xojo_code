@@ -13,7 +13,7 @@ Inherits Polygon
 		  self.forme = form
 		  ncpts = 1
 		  if fam < 14 then 'fam = 14 pour la fusion de deux stdpolyg		    
-             specs = config.StdFamilies(fam-10,Forme)
+		    specs = config.StdFamilies(fam-10,Forme)
 		    npts = Ubound(specs.angles)+2
 		    for i=0 to npts-2
 		      Angles.Append specs.Angles(i)
