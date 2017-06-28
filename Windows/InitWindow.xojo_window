@@ -55,7 +55,7 @@ Begin Window InitWindow
       Top             =   385
       Underline       =   False
       Visible         =   True
-      Width           =   173
+      Width           =   180
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True
@@ -86,7 +86,7 @@ Begin Window InitWindow
       Top             =   442
       Underline       =   False
       Visible         =   False
-      Width           =   68
+      Width           =   70
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   False
@@ -117,7 +117,7 @@ Begin Window InitWindow
       Top             =   318
       Underline       =   False
       Visible         =   True
-      Width           =   112
+      Width           =   108
    End
    Begin PushButton PushButton3
       AutoDeactivate  =   True
@@ -148,7 +148,7 @@ Begin Window InitWindow
       Top             =   318
       Underline       =   False
       Visible         =   True
-      Width           =   69
+      Width           =   70
    End
    Begin PushButton PushButton4
       AutoDeactivate  =   True
@@ -210,23 +210,23 @@ Begin Window InitWindow
       Top             =   412
       Underline       =   False
       Visible         =   True
-      Width           =   173
+      Width           =   180
    End
    Begin TextField User
       AcceptTabs      =   False
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFFFFFF00
       Bold            =   True
       Border          =   True
-      CueText         =   ""
+      CueText         =   "Nom"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
       Format          =   ""
       Height          =   30
-      HelpTag         =   ""
+      HelpTag         =   "Indiquer prénom"
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -253,7 +253,7 @@ Begin Window InitWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   False
-      Width           =   173
+      Width           =   180
    End
 End
 #tag EndWindow
