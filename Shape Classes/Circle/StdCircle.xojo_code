@@ -24,6 +24,7 @@ Inherits Circle
 		  super.Constructor(ol,1,p)
 		  npts = 2
 		  self.fam = fam
+		  forme = form
 		  Myspecs = config.StdFamilies(fam-10,Form)
 		  radius=Myspecs.distances(0)
 		  radius = radius*Config.StdSize

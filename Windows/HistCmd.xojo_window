@@ -30,14 +30,13 @@ Begin Window HistCmd
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
-      BackColor       =   &cFFFF00FF
+      BackColor       =   &cFFFFFF00
       Backdrop        =   0
       Enabled         =   True
       EraseBackground =   True
       HasBackColor    =   False
       Height          =   30
       HelpTag         =   ""
-      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True

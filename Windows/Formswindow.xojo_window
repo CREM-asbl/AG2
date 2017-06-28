@@ -716,6 +716,12 @@ End
 		Type="Boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
+		Name="hauteur"
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="Height"
 		Visible=true
 		Group="Size"

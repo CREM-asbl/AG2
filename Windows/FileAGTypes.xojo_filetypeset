@@ -17,7 +17,7 @@
 	#tag FileType
 		CodeName=MACR
 		DocIcon=AG.xojo_resources;&h55465C
-		Extension=.xmag
+		Extension=.mag
 		Flags=&h9
 		MacCreator=CREM
 		MacType=MAG
