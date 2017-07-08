@@ -229,9 +229,9 @@ Inherits Canvas
 		  case Dico.value("AutoIntersec")
 		    currentoper = new AutoIntersec(polygon(sctxt))
 		    EndOperMenuContext
-		    'case Dico.value("Decomposer")
-		    'currentoper = new Decomposer(polygon(sctxt))
-		    'EndOperMenuContext
+		  case Dico.value("Decomposer")
+		    currentoper = new Decomposer(polygon(sctxt))
+		    EndOperMenuContext
 		  end select
 		  
 		  ctxt = false

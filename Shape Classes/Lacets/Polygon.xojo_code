@@ -41,7 +41,7 @@ Inherits Lacet
 		      end if
 		    next
 		    loc.sortwith(arside)
-		    
+		    '
 		    'for j = ubound(autointer.pts) downto 0
 		    'p = autointer.pts(j)
 		    '

@@ -42,34 +42,34 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
-		  'dim s as shape
-		  'dim i, j as integer
-		  's = super.getshape(p)
-		  'dim dec as autointersec
-		  '
-		  'if visible.count > 0 then
-		  'for i =  visible.count-1 downto 0
-		  's = Visible.item(i)
-		  'if not s isa polygon then
-		  'visible.removeobject(s)
-		  'else 
-		  'dec = s.autointer
-		  'if dec = nil then
-		  'dec = new AutoIntersec(polygon(s))
-		  'end if
-		  'if dec.combien = 0 then
-		  'dec= nil
-		  'visible.removeobject(s)
-		  'end if
-		  'end if
-		  'next
-		  'end if
-		  '
-		  'if Visible.count > 0  then
-		  'return visible.item(iobj)
-		  'else
-		  'return nil
-		  'end if
+		  dim s as shape
+		  dim i, j as integer
+		  s = super.getshape(p)
+		  dim dec as autointersec
+		  
+		  if visible.count > 0 then
+		    for i =  visible.count-1 downto 0
+		      s = Visible.item(i)
+		      if not s isa polygon then
+		        visible.removeobject(s)
+		      else 
+		        dec = polygon(s).autointer
+		        if dec = nil then
+		          dec = new AutoIntersec(polygon(s))
+		        end if
+		        if dec.combien = 0 then
+		          dec= nil
+		          visible.removeobject(s)
+		        end if
+		      end if
+		    next
+		  end if
+		  
+		  if Visible.count > 0  then
+		    return visible.item(iobj)
+		  else
+		    return nil
+		  end if
 		  
 		End Function
 	#tag EndMethod
