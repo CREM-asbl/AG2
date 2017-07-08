@@ -112,12 +112,15 @@ Inherits MultipleSelectOperation
 		  
 		  if (currentshape isa Circle)  or (currentshape.hybrid) then
 		    s = new Lacet(Objects)   //initialisation de la pièce
+		  elseif currentshape isa standardpolygon then
+		    s = new StandardPolygon(Objects)
 		  else
 		    s = new Polyqcq(Objects)
 		  end if
 		  
-		  s.std = currentshape.std
-		  s.SetConstructedBy currentshape,5
+		  if not s.std then
+		    s.SetConstructedBy currentshape,5
+		  end if
 		  
 		  if n = 0 then
 		    for i = 0 to ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
@@ -180,14 +183,6 @@ Inherits MultipleSelectOperation
 		    s.narcs = s.narcs + curved(i)
 		  next
 		  
-		  if s.std then
-		    s.constructedby = nil
-		    currentshape.constructedshapes.remove currentshape.constructedshapes.indexof(s)
-		    for i = 0 to s.npts-1
-		      s.points(i).constructedby = nil
-		    next
-		  end if
-		  
 		  s.autos
 		  Tr = CutPts(ncutpt-1).bpt-CutPts(0).bpt
 		  Tr = Tr.VecNorPerp
@@ -197,12 +192,19 @@ Inherits MultipleSelectOperation
 		  end if
 		  s.Ori = currentshape.Ori                //Les deux pièces sont orientées comme la forme mère
 		  s.fixecouleurfond(currentshape.fillcolor,currentshape.fill)
+		  s.fam = 7
 		  s.forme = s.npts-2
 		  s.initconstruction
 		  recopiercouleurs (s)
 		  if s.Hybrid  then
 		    s.coord.centres = centres
 		    s.coord.curved = curved
+		  end if
+		  if s.std then
+		    s.fam = 14
+		    standardpolygon(s).myspecs = polygon(s).createspecs
+		    standardpolygon(s).angles = standardpolygon(s).myspecs.angles
+		    standardpolygon(s).distances = standardpolygon(s).myspecs.angles
 		  end if
 		  Lacet(s).prepareskull(s.points(0).bpt)
 		  if s.hybrid then

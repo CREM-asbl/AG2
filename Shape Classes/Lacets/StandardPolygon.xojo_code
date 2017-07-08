@@ -2,6 +2,19 @@
 Protected Class StandardPolygon
 Inherits Polygon
 	#tag Method, Flags = &h0
+		Sub Constructor(ol as ObjectsList)
+		  
+		  Shape.Constructor(ol)
+		  fam = 0
+		  forme = 0
+		  npts = 0
+		  ncpts = 0
+		  std = true
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList, fam as integer, form as integer, p as BasicPoint)
 		  dim i as integer
 		  dim specs as StdPolygonSpecifications
@@ -322,7 +335,7 @@ Inherits Polygon
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		oldMySpecs As StdPolygonSpecifications
+		MySpecs As StdPolygonSpecifications
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
