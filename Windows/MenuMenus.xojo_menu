@@ -590,16 +590,16 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsAjust
+      Begin MenuItem PrefsTrace
          SpecialMenu = 0
-         Text = "Ajustement automatique"
+         Text = "Trajectoires"
          Index = -2147483648
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsTrace
+      Begin MenuItem PrefsAjust
          SpecialMenu = 0
-         Text = "Trajectoires"
+         Text = "Ajustement automatique"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -666,30 +666,6 @@ Begin Menu MenuMenus
             Text = "Choisir"
             Index = -2147483648
             AutoEnable = True
-            Visible = True
-         End
-      End
-      Begin MenuItem PrefsArea
-         SpecialMenu = 0
-         Text = "Aire"
-         Index = -2147483648
-         AutoEnable = True
-         SubMenu = True
-         Visible = True
-         Begin MenuItem PrefsAreaArith
-            SpecialMenu = 0
-            Text = "Aire arithmétique"
-            Index = -2147483648
-            AutoEnable = True
-            SubMenu = True
-            Visible = True
-         End
-         Begin MenuItem PrefsAreaAlg
-            SpecialMenu = 0
-            Text = "Aire algébrique"
-            Index = -2147483648
-            AutoEnable = True
-            SubMenu = True
             Visible = True
          End
       End

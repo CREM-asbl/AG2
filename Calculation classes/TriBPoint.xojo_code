@@ -174,9 +174,9 @@ Inherits nBpoint
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="Aire"
+			Name="decomp"
 			Group="Behavior"
-			Type="double"
+			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"

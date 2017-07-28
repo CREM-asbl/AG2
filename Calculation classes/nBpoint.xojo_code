@@ -7,6 +7,92 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function airealgelacet() As double
+		  dim i as integer
+		  dim A as double
+		  dim TriB as nBpoint
+		  dim ar(-1) as BasicPoint
+		  dim ori as integer
+		  dim alpha as double
+		  dim r as double
+		  dim p, q as BasicPoint
+		  
+		  for i = 0 to taille-1
+		    if curved(i) = 0 then
+		      A = A +tab(i).Vect(tab((i+1) mod taille))
+		    else
+		      redim ar(-1)
+		      ar.append centres(i)
+		      ar.append tab(i)
+		      ar.append tab((i+1) mod taille)
+		      TriB = new nBPoint(ar())
+		      ori = TriB.orientation
+		      alpha = normalize(TriB.endangle - TriB.startangle, ori)
+		      r = TriB.distance01
+		      A = A+ r^2*alpha
+		      
+		      p = tab(i)
+		      p = p-ar(0)
+		      q = new BasicPoint(p.y,-p.x)
+		      A = A + ar(0)*(p*sin(alpha)+ q*(cos(alpha) -1))
+		    end if
+		  next
+		  A = A/2
+		  return A
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airealgepolygon() As double
+		  dim i as integer
+		  dim A as double
+		  
+		  for i = 0 to taille-1
+		    A = A +tab(i).Vect(tab((i+1) mod taille))
+		  next
+		  A = A/2
+		  return A
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airearithlacet() As double
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airearithpolygon() As double
+		  
+		  dim arpobp() as basicpoint
+		  dim arpolig() as integer
+		  dim arpocol() as integer
+		  dim compos() as nbpoint
+		  dim comp as nbpoint
+		  dim poly as polygon
+		  dim i as integer
+		  dim aire as double
+		  
+		  autointer = new AutoIntersec(self)
+		  if autointer.combien = 0 then
+		    return abs(airealgepolygon)
+		  end if
+		  arpobp()=completesides(arpolig(), arpocol())
+		  compos() = ComponentsCreation(arpobp(),arpolig(),arpocol())
+		  aire = compomesurer(compos)
+		  if wnd.drapg and not decomp then
+		    for i = 0 to ubound(compos)
+		      comp = compos(i)
+		      poly = new polygon(currentcontent.theobjects, comp)
+		      poly.endconstruction
+		    next
+		    decomp = true
+		  end if
+		  return aire
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Append(bp as BasicPoint)
 		  Tab.append bp
 		End Sub
@@ -45,6 +131,155 @@ Protected Class nBpoint
 		  else
 		    return nil
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function completesides(byref arpolig() as integer, byref arpocol() as integer) As BasicPoint()
+		  dim i, j, k, t  as integer  
+		  dim  bp as Basicpoint
+		  dim arsidebp(-1) As BasicPoint
+		  dim arpobp() as basicpoint
+		  dim loc(-1) As double
+		  dim arsidelig(-1) as integer
+		  dim arsidecol(-1) as integer
+		  
+		  if autointer = nil then
+		    return nil
+		  end if
+		  
+		  t = taille 
+		  
+		  for i = 0 to t-1
+		    arpobp.append tab(i)
+		    arpolig.append i
+		    arpocol.append i
+		    redim arsidebp(-1)
+		    redim arsidelig(-1)
+		    redim arsidecol(-1)
+		    redim loc(-1)
+		    for j = 0 to t-1
+		      if autointer.bezet(i,j) = false then '(j <> i) and  (j <> ( (i+t - 1) mod t )) and ( j<> ((i+1) mod t )) then
+		        bp = autointer.bptinters(i,j)
+		        if  bp <> nil then
+		          arsidebp.append bp
+		          arsidelig.append i
+		          arsidecol.append j
+		          loc.append bp.location(tab(i),tab((i+1) mod t))
+		        end if
+		      end if
+		    next
+		    if ubound(loc) > 0 then
+		      loc.sortwith(arsidebp,arsidelig,arsidecol)
+		    end if
+		    for k = 0 to ubound(arsidebp)
+		      arpobp.append arsidebp(k)
+		      arpolig.append arsidelig(k)
+		      arpocol.append arsidecol(k)
+		    next
+		  next
+		  
+		  
+		  return arpobp
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CompoGererPile(byref pile() as integer,  i as integer)
+		  dim k as integer
+		  
+		  k = pile.indexof(i)
+		  if k <> -1 then
+		    pile.remove k
+		  else
+		    pile.append i
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function compomesurer(compos() as nbpoint) As double
+		  dim n, i, j, ic  As integer
+		  dim mes() as double
+		  dim bp as basicpoint
+		  dim aire As double
+		  
+		  n = ubound(compos)
+		  
+		  for i = 0 to n
+		    mes.append compos(i).airealgepolygon
+		  next'Elimination des composantes entièrement incluses à une autre de même orientation
+		  
+		  for i = 0 to n
+		    bp = (compos(i).tab(0) + compos(i).tab(1))/2
+		    for j = 0 to n
+		      if j <> i and mes(j) <> 0 then
+		        ic = bp.indice(compos(j))
+		        if ic <> 0 then 
+		          if mes(i)*mes(j) < 0 then
+		            mes(j) = mes(j)+mes(i)
+		          end if
+		          mes(i)=0
+		        end if
+		      end if
+		    next
+		  next
+		  
+		  aire = 0
+		  for i = 0 to n
+		    aire = aire+abs(mes(i))
+		  next
+		  
+		  return aire
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ComponentsCreation(arpobp() as BasicPoint, arpolig() as integer, arpocol() as integer) As nbpoint()
+		  dim i, j, n, nmax as integer
+		  dim pini as integer
+		  dim comp as nbpoint
+		  dim compos() as nbpoint
+		  dim pile() as integer
+		  dim nnpini(), nnbp() as integer
+		  dim ligini, colini, lig2, col2  as integer
+		  
+		  
+		  nmax  = ubound(arpobp)+1
+		  pile.append 0
+		  n = nmax 'Nombre de points (les points d'inter sont comptés deux fois)
+		  i = 0
+		  while n >0
+		    pini = pile(ubound(pile))
+		    pile.remove ubound(pile)
+		    comp = new nBPoint(arpobp(pini))  
+		    n = n-1
+		    ligini= arpolig(pini)
+		    colini = arpocol(pini)
+		    i = pini
+		    i = (i+1) mod nmax
+		    
+		    while  n > 0 and  ((colini  <>arpolig(i)) or (ligini <> arpocol(i)))
+		      comp.append(arpobp(i))   'insertion du point i
+		      n = n-1
+		      if arpolig(i) <> arpocol(i) then 'on a affaire Ã  un point d'intersection
+		        CompoGererPile(pile,  i)
+		        lig2 = arpolig(i)
+		        col2 = arpocol(i)
+		        j = 0
+		        while j <= ubound(arpobp) and (arpocol(j) <> lig2 or arpolig(j) <> col2)
+		          j = j+1
+		        wend
+		        i =(j+1) mod nmax
+		      else
+		        i = (i+1) mod nmax
+		      end if
+		    wend
+		    compos.append comp
+		  wend
+		  
+		  return compos()
 		End Function
 	#tag EndMethod
 
@@ -141,6 +376,43 @@ Protected Class nBpoint
 		    redim ctrl(-1)
 		    redim ctrl(6*s.narcs-1) 
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConstructParaPerp(fo as integer, ref as nBpoint, n as integer, ori as integer)
+		  dim  w as BasicPoint
+		  dim M as Matrix
+		  
+		  w = ref.tab(1)-ref.tab(0)
+		  w=w.normer
+		  if fo = 2 or fo = 5 Then
+		    w=w.VecNorPerp
+		  end if
+		  
+		  select case n
+		  case 0                           'On appelle la méthode lors du positionnement de l'origine du segment
+		    if ori <> 0 then
+		      tab(1) = tab(0)+w*ori
+		    else
+		      tab(1) = tab(0) +w
+		    end if
+		  case 1                           'Positionnement de l'extrémité du segment
+		    'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
+		    'Quand on travaille à la souris, c'est le clic qui indique la position finale
+		    'Pour les macros, c'est différent
+		    if fo = 1 or fo = 2 then
+		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
+		      tab(1)=M*tab(1)
+		    elseif ori <> 0 then
+		      tab(1) = tab(0) +w*ori
+		    else
+		      tab(1)=tab(0)
+		    end if
+		  end select
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -243,43 +515,6 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConstructShape(fa as integer, fo as integer, ref as nBpoint, n as integer, ori as integer)
-		  dim  w as BasicPoint
-		  dim M as Matrix
-		  
-		  w = ref.tab(1)-ref.tab(0)
-		  w=w.normer
-		  if fo = 2 or fo = 5 Then
-		    w=w.VecNorPerp
-		  end if
-		  
-		  select case n
-		  case 0                           'On appelle la méthode lors du positionnement de l'origine du segment
-		    if ori <> 0 then
-		      tab(1) = tab(0)+w*ori
-		    else
-		      tab(1) = tab(0) +w
-		    end if
-		  case 1                           'Positionnement de l'extrémité du segment
-		    'Ceci ne préjuge ps de la position finale de l'extrémité (si c'est un point sur , ...)
-		    'Quand on travaille à la souris, c'est le clic qui indique la position finale
-		    'Pour les macros, c'est différent
-		    if fo = 1 or fo = 2 then
-		      M = new OrthoProjectionMatrix(tab(0), tab(0)+w)
-		      tab(1)=M*tab(1)
-		    elseif ori <> 0 then
-		      tab(1) = tab(0) +w*ori
-		    else
-		      tab(1)=tab(0)
-		    end if
-		  end select
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub CreateExtreAndCtrlPoints(orien as integer)
 		  dim Mat as RotationMatrix
 		  dim BiB as BiBPoint
@@ -339,7 +574,7 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetBibSide(i as integer) As nBPoint
+		Function GetBibSide(i as integer) As BiBPoint
 		  
 		  if i > -1 and i < taille then
 		    return new BiBPoint (tab(i),tab((i+1) mod taille))
@@ -473,7 +708,7 @@ Protected Class nBpoint
 
 	#tag Method, Flags = &h0
 		Function PositionOnCircle(a as double, ori as integer) As BasicPoint
-		  dim p, q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à ce cercle
+		  dim  q as BasicPoint   'positionne un basicpoint sur un cercle à partir de son abscisse curviligne relative à ce cercle
 		  dim r, b as double
 		  
 		  if abs(ori) = 1 then
@@ -558,22 +793,9 @@ Protected Class nBpoint
 	#tag EndMethod
 
 
-	#tag ComputedProperty, Flags = &h0
-		#tag Getter
-			Get
-			  dim i as integer
-			  dim a as double
-			  
-			  a = 0
-			  for i = 0 to Taille-1
-			    a = a + Tab(i).Vect( Tab((i+1) mod Taille) )
-			  next
-			  
-			  return a/2
-			End Get
-		#tag EndGetter
-		Aire As double
-	#tag EndComputedProperty
+	#tag Property, Flags = &h0
+		autointer As autointersec
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		centres() As BasicPoint
@@ -588,6 +810,10 @@ Protected Class nBpoint
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		decomp As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		extre() As BasicPoint
 	#tag EndProperty
 
@@ -598,9 +824,9 @@ Protected Class nBpoint
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="Aire"
+			Name="decomp"
 			Group="Behavior"
-			Type="double"
+			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"

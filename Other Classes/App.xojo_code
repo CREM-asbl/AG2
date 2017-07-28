@@ -54,7 +54,7 @@ Inherits Application
 		  if FileName <> "" then
 		    s = " "+s
 		  end if
-		  
+		  'MsgBox s
 		  FileName = FileName+s
 		  
 		  wnd.openfile(item)

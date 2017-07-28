@@ -30,29 +30,17 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function Aire() As double
-		  dim A, r,  alpha, beta as double
-		  dim i as integer
-		  dim c, p, q as BasicPoint
 		  
-		  A = 0
+		  if Ti <> nil then
+		    return coord.airealgelacet
+		  elseif self isa DSect then
+		    return abs(coord.airealgelacet)
+		  else
+		    MsgBox "Routine non encore implémentée"
+		  end if
 		  
-		  for i = 0 to npts-1
-		    if coord.curved(i) = 0 then
-		      A = A +points(i).bpt.Vect(points((i+1) mod npts).bpt)
-		    else
-		      r = getradius(i)
-		      alpha = getarcangle(i)
-		      c = coord.centres(i)
-		      p = Points(i).bpt
-		      p = p-c
-		      q = new BasicPoint(p.y,-p.x)
-		      
-		      A = A+ r^2*alpha
-		      A = A + c*(p*sin(alpha)+ q*(cos(alpha) -1))
-		    end if
-		  next
-		  A = A/2
-		  return A
+		  
+		  
 		End Function
 	#tag EndMethod
 

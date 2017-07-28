@@ -476,8 +476,9 @@ Inherits Shape
 		  
 		  
 		  if labs.count = 1  and labs.item(0).text <> "" then
-		    n = Integer.Parse(labs.item(0).text.ToText)
-		    if n <>-1 then
+		    if labs.item(0).text = "0" then
+		      et = "n0"
+		    elseif Integer.Parse(labs.item(0).text.ToText) <> 0 then
 		      et = "n"+labs.item(0).text
 		    else
 		      et = labs.item(0).text
@@ -614,7 +615,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function GetLab() As string
-		  if labs.count > 0 then
+		  if labs <> nil and labs.count > 0 then
 		    return labs.item(0).text
 		  else
 		    return ""
@@ -1333,7 +1334,7 @@ Inherits Shape
 		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
 		  if d <> nil then
 		    bpt = d                       'On déplace même les points modifiés
-		    if labs.count = 1 and not(labs.item(0).LockRight and labs.item(0).LockBottom) then
+		    if labs <> nil and labs.count = 1 and not(labs.item(0).LockRight and labs.item(0).LockBottom) then
 		      labs.item(0).SetPosition
 		    end if
 		  end if
@@ -1343,6 +1344,8 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function multassomm() As integer
+		  'multiplicité en tant que sommet
+		  
 		  dim i, n as integer
 		  
 		  for i = 0 to ubound(parents)
@@ -1952,7 +1955,7 @@ Inherits Shape
 		  if invalid then
 		    EL.setattribute("Invalid", str(1))
 		  end if
-		  if pointsur.count = 2 then
+		  if pointsur <> nil and pointsur.count = 2 then
 		    EL.SetAttribute("Side0", str(numside(0)))
 		    EL.SetAttribute("Side1",str(numside(1)))
 		  end if

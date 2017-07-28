@@ -217,7 +217,7 @@ Begin Window InitWindow
       Alignment       =   1
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
+      BackColor       =   &c00FFFFFF
       Bold            =   True
       Border          =   True
       CueText         =   "Nom"

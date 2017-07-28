@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &cFFFFFF00
+      FillColor       =   &c00FFFFFF
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -789,55 +789,60 @@ End
 		  end if
 		  s = asc(key)
 		  
+		  
 		  select case asc(Key)
-		  case 59    ' ;
-		    config
-		  case 181 'µ
-		    stdflag = not stdflag
-		  case   163  //shift "µ"
-		    if CurrentContent.currentoperation <> nil then
-		      CurrentContent.CurrentOperation.std2flag = not CurrentContent.CurrentOperation.std2flag
-		    end if
-		  case 1 'ctrl-shft a
+		  case 1 'ctrl-shft a  Modifications affines
 		    currentcontent.drapaff = not currentcontent.drapaff
 		    currentcontent.drapeucli = false
-		  case 5 'ctrl-shft e
+		  case 5 'ctrl-shft e  Modifications euclidiennes
 		    currentcontent.drapeucli = not currentcontent.drapeucli
 		    currentcontent.drapaff = false
-		  case  20 ' ctrl-shft t
+		  case 7 'ctrl-shft g Decomposition d'un polygone
+		    drapg = not drapg
+		  case  20 ' ctrl-shft t Afficher le currentcontent
 		    can.sctxt = nil
 		    tw = new TextWindow
 		    tw.visible = true
-		  case 21 'ctrl-shft u
-		    tw = new textwindow
-		    tw.source1 = true  //historique
-		    tw.visible = true
-		  case 22 'ctrl-shft v
-		    tw = new textwindow
-		    tw.source2 = true  //fag
-		    tw.visible = true
-		  case 42 'shft *
-		    currentcontent.ndec = currentcontent.ndec+1
-		    mycanvas1.refreshbackground
-		  case 36 '$
+		  case 26 'ctrl-shft z Afficher zone de magnétisme
+		    'mycanvas1.drapzone = not mycanvas1.drapzone
+		  case 32   'barre d'espacement Remplace la mousewheel
+		    if  CurrentContent.CurrentOperation <> nil then
+		      CurrentContent.currentoperation.MouseWheel
+		    elseif Mycanvas1.ctxt then
+		      Mycanvas1.ChoixcontextMenu
+		    end if
+		  case 36 '$ Diminuer décimales
 		    if currentcontent.ndec > 0 then
 		      currentcontent.ndec = currentcontent.ndec-1
 		      mycanvas1.refreshbackground
 		    end if
-		  case 99  'c
+		  case 42 'shft * Augmenter décimales
+		    currentcontent.ndec = currentcontent.ndec+1
+		    mycanvas1.refreshbackground
+		  case 43, 61 'touche + Textes plus grands
+		    AugmenteFont
+		    refresh
+		  case 45 'touche - Textes plus petits
+		    DiminueFont
+		    refresh
+		  case 48, 224 'touche 0 réinitialise taille textes
+		    ResetFont
+		  case 59    ' ; Afficher fenetre de configuration 
+		    config
+		  case 99  'c Inverser couleurs
 		    switchcolors
-		  case 100 'd
+		  case 100 'd ?
 		    drapdim = not drapdim
 		  case 101 'e copie d'écran
 		    CurrentContent.currentoperation = new SaveBitMap(0,0,mycanvas1.width,mycanvas1.height)
 		    CurrentContent.currentoperation = nil
 		    refreshtitle
-		  case 112 'p'
+		  case 112 'p' afficher numéros des points
 		    drappt = not drappt
-		  case 113 'q
-		    app.quiet = not app.quiet
+		  case 113 'q ?
+		    app.quiet = not app.quiet 
 		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
-		    MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
+		    'MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
 		    's = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
@@ -852,22 +857,8 @@ End
 		    end if
 		  case 116 't Creer Objets Tracés
 		    CurrentContent.TheObjects.CreerTrace = not  CurrentContent.TheObjects.creertrace
-		  case 26 'ctrl-shft z
-		    'mycanvas1.drapzone = not mycanvas1.drapzone
-		  case 32   'barre d'espacement
-		    if  CurrentContent.CurrentOperation <> nil then
-		      CurrentContent.currentoperation.MouseWheel
-		    elseif Mycanvas1.ctxt then
-		      Mycanvas1.ChoixcontextMenu
-		    end if
-		  case 45 'touche -
-		    DiminueFont
-		    refresh
-		  case 43, 61 'touche +
-		    AugmenteFont
-		    refresh
-		  case 48, 224 'touche 0
-		    ResetFont
+		  case 181 'µ
+		    stdflag = not stdflag
 		  end select
 		  
 		  return true
@@ -3015,6 +3006,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		drapg As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		draphisto As boolean
 	#tag EndProperty
 
@@ -3372,6 +3367,11 @@ End
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="drapdim"
+		Group="Behavior"
+		Type="boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="drapg"
 		Group="Behavior"
 		Type="boolean"
 	#tag EndViewProperty

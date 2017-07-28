@@ -3,7 +3,11 @@ Protected Class Polygon
 Inherits Lacet
 	#tag Method, Flags = &h0
 		Function aire() As double
-		  return coord.aire
+		  if Ti <> nil then
+		    return coord.airealgepolygon
+		  else
+		    return coord.airearithpolygon
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -15,7 +19,7 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Function completesides() As point()
-		  dim i, j, k  as integer  'n'intervient que dans "Decomposer
+		  dim i, j, k  as integer  'n'intervient que dans Decomposer
 		  dim p as point
 		  dim arpoints(-1) As Point
 		  dim arside(-1) As  Point
@@ -41,12 +45,6 @@ Inherits Lacet
 		      end if
 		    next
 		    loc.sortwith(arside)
-		    '
-		    'for j = ubound(autointer.pts) downto 0
-		    'p = autointer.pts(j)
-		    '
-		    'next
-		    
 		    for k = 0 to ubound(arside)
 		      arpoints.append arside(k)
 		    next
@@ -65,7 +63,7 @@ Inherits Lacet
 		Sub ComputeOri()
 		  dim r as double
 		  
-		  r = aire
+		  r = coord.airealgepolygon
 		  
 		  if r > 0 then
 		    ori = 1
@@ -95,6 +93,28 @@ Inherits Lacet
 		  shape.constructor(ol,d,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub constructor(ol as objectslist, nb as nbpoint)
+		  dim i as integer
+		  dim p as BasicPoint
+		  
+		  constructor(ol, nb.tab(0))
+		  
+		  for i = 1 to nb.taille-1
+		    p = nb.tab(i)
+		    Points.append new Point(ol,p)
+		    setpoint points(i)
+		  next
+		  
+		  npts = nb.taille
+		  createcoord
+		  redim prol(npts-1)
+		  initcolcotes
+		  createskull(points(0).bpt)
 		  
 		End Sub
 	#tag EndMethod
@@ -163,8 +183,7 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub createcomponents(ars() as point)
-		  dim i, i0, j,  n, nmax as integer
-		  dim balise As integer
+		  dim i, i0, j,  n, k, nmax as integer
 		  dim pini as point
 		  dim comp as polygon
 		  dim compos() as polygon
@@ -187,7 +206,12 @@ Inherits Lacet
 		      comp.addpoint(p.bpt)   'insertion du point i
 		      n = n-1
 		      if getindexpoint(p) = -1 then 'on a affaire Ã  un point d'intersection
-		        pile.append p
+		        k = pile.indexof(p)
+		        if k <> -1 then
+		          pile.remove k
+		        else
+		          pile.append p
+		        end if
 		        for j = 0 to ubound(ars)        'on en recherche la deuxième occurrence
 		          if j <> i and ars(j).id = p.id then
 		            i0 = j
@@ -329,7 +353,7 @@ Inherits Lacet
 		  case 12
 		    return Dico.Value("Dodeca")
 		  else
-		    return Dico.Value("GrandPol")
+		    return str(npts)+"-"+Dico.value("gone")
 		  end select
 		End Function
 	#tag EndMethod

@@ -243,7 +243,7 @@ Inherits Bipoint
 		        ori = constructedby.data(2)
 		      end if
 		      s = constructedby.shape
-		      coord.constructshape(fam,forme, s.getbibside(index), indexconstructedpoint, ori)
+		      coord.constructparaperp(forme, s.getbibside(index), indexconstructedpoint, ori)
 		      repositionnerpoints
 		      computeextre
 		    end if

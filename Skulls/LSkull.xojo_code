@@ -174,7 +174,7 @@ Inherits NSkull
 		  
 		  'Concernant le bord
 		  
-		  if s.hidden then
+		  if s.hidden and not s.highlighted then
 		    col = config.HideColor.col
 		  elseif s.highlighted then
 		    col = config.HighlightColor.col
