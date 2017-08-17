@@ -625,6 +625,28 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
+      Begin MenuItem PrefsArea
+         SpecialMenu = 0
+         Text = "Aire"
+         Index = -2147483648
+         AutoEnable = True
+         SubMenu = True
+         Visible = True
+         Begin MenuItem PrefsAreaArith
+            SpecialMenu = 0
+            Text = "Aire arithmétique"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem PrefsAreaAlg
+            SpecialMenu = 0
+            Text = "Aire algébrique"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+      End
       Begin MenuItem PrefsUL
          SpecialMenu = 0
          Text = "UL"

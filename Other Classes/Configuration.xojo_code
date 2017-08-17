@@ -230,9 +230,9 @@ Protected Class Configuration
 		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULChoix").checked = true
 		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUADef").checked = true
 		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUAChoix").checked = true
-		  'mmenubar.Child("PrefsMenu").Child("PrefsArea").checked = El.XQL("Area").length >0
-		  'mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").checked= El.XQL("Area").length >0
-		  'mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").checked = El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").checked = El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").checked= El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").checked = El.XQL("Area").length >0
 		  
 		  mmenubar.Child("HelpMenu").Child("HelpView").checked = true
 		  mmenubar.Child("HelpMenu").Child("HelpVisit").checked = true
@@ -483,6 +483,7 @@ Protected Class Configuration
 		  ajust = true
 		  stdbiface = false
 		  PolPointes = true
+		  area = 0
 		End Sub
 	#tag EndMethod
 
@@ -792,6 +793,10 @@ Protected Class Configuration
 
 	#tag Property, Flags = &h0
 		Ajust As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Area As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

@@ -46,7 +46,8 @@
 	<Pointer/>
 	<Biface/>
 	<Ajuster/>
-        <Area/>
+        
+                 <Area/>
 	<Flecher/>
         <Macros/>
 	<View/>

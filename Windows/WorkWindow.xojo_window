@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -1648,6 +1647,37 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function PrefsAreaAlg() As Boolean Handles PrefsAreaAlg.Action
+			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked 
+			if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked then
+			config.area = 1
+			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = false
+			else
+			config.area = 0
+			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = true
+			end if
+			Return True
+			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function PrefsAreaArith() As Boolean Handles PrefsAreaArith.Action
+			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked 
+			if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked then
+			config.area = 0
+			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = false
+			else
+			config.area = 1
+			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = true
+			end if
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function PrefsBiface() As Boolean Handles PrefsBiface.Action
 			MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked = not MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
 			Config.StdBiface = MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
@@ -2233,6 +2263,16 @@ End
 		    end if
 		  next
 		  CopyCFGMenu
+		  
+		  if config.ajust then
+		    menubar.Child("PrefsMenu").Child("PrefsAjust").checked = true
+		  end if
+		  
+		  if config.area = 0  then
+		    menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = true
+		  else
+		    menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = true
+		  end if
 		End Sub
 	#tag EndMethod
 
