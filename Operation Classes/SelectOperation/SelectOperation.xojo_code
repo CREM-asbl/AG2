@@ -527,7 +527,7 @@ Inherits Operation
 		Sub selection()
 		  dim i as integer
 		  
-		  if CurrentHighlightedshape <> nil then   'and currenthighlightedshape.selected = false then
+		  if CurrentHighlightedshape <> nil  and currenthighlightedshape.selected = false then
 		    Objects.Unselectall
 		    Objects.selectobject(CurrentHighLightedshape)
 		    CurrentHighlightedShape.tsp= false
