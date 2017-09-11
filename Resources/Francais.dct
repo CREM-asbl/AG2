@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Francais>
   <Menus>
     <FileMenu Name="Fichier" />
@@ -113,6 +113,9 @@
     <PrefsUA Name="Unité_d_aire" />
     <PrefsUADef Name="Par_défaut" />
     <PrefsUAChoix Name="Choisir une forme de référence" />
+    <PrefsArea Name="Aire" />
+    <PrefsAreaArith Name="Aire arithmétique" />
+    <PrefsAreaAlg Name="Aire algébrique" />
     <Customize Name="Personnaliser" />
     <NotesOpen Name="Ouvrir" />
     <NotesMail Name="Courriel" />

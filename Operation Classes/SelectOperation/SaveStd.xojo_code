@@ -39,8 +39,11 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  if Nom = "" then
+		  coul = new couleur(stdw.col)
+		  if stdw.nom = "" then
 		    nom = "Untitled"
+		  else
+		    nom = stdw.nom
 		  end if
 		  
 		  Doc = new XmlDocument
@@ -236,12 +239,6 @@ Inherits SelectOperation
 			Name="side"
 			Group="Behavior"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

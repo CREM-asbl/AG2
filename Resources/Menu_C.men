@@ -33,12 +33,12 @@
 	<Rot90D/>
 	<Rot90G/>
 	<SymCentrale/>
-                  <Deplacement/>
+        <Deplacement/>
 	<SymOrtho/>
 	<Homothetie/>
 	<Similitude/>
-                  <Etirement/>
-                 <Cisaillement/>
+        <Etirement/>
+        <Cisaillement/>
 	<PtsFix/>
 	<HideTsf/>
 	<Traj/>
@@ -46,8 +46,10 @@
 	<Pointer/>
 	<Biface/>
 	<Ajuster/>
+        
+                 <Area/>
 	<Flecher/>
-                     <Macros/>
+        <Macros/>
 	<View/>
 	<Visit/>
 	<About/>
@@ -87,7 +89,7 @@
 	<Fam4 Vis="9"/>
 	<Fam5 Vis="0"/>
 	<Fam5 Vis="1"/>
-                    <Fam5 Vis="2"/>
+        <Fam5 Vis="2"/>
 	<Fam6 Vis="0"/>
 	<Fam6 Vis="1"/>
 	<Fam6 Vis="2"/>

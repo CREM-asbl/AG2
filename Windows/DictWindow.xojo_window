@@ -85,10 +85,8 @@ End
 		  chargerdict.enable
 		  creerdict.enabled=enablecreer
 		  findict.enable
-		  modifdict.enabled=enablecreer
 		  SauverDict.enabled=enablecreer
-		  'LignesInserer.enabled=enablecreer
-		  'Lignessupprimer.enabled=enablecreer
+		  
 		End Sub
 	#tag EndEvent
 

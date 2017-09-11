@@ -103,9 +103,12 @@ Inherits Quadri
 		  case 1
 		    Bib1 = new BibPoint(p.bpt, p.bpt+np2-np3)
 		    Bib2 = new BiBPoint(p.bpt, p.bpt+ep1-ep0)
+		    p.bpt = p.bpt.projection(BiB1)
 		  case 5
-		    Bib1 = new BibPoint(p.bpt, p.bpt+np1-np0)
+		    Bib1 = new BibPoint(q.bpt, q.bpt+np1-np0)
 		    Bib2 = new BiBPoint(p.bpt, p.bpt+ep2-ep3)
+		    p.bpt = p.bpt.projection(BiB1)
+		    return true
 		  case 2
 		    if n = 0 then
 		      Bib1 = new BibPoint(np3, np3+np1-np0)

@@ -1,6 +1,94 @@
 #tag Class
 Protected Class Figure
 	#tag Method, Flags = &h0
+		Sub AdapterAutos(f1 as figure)
+		  // Une figure a été construite par fusion de plusieurs autres.  Les formes sont de types différents.
+		  //Il faut trouver une valeur de auto qui ne crée pas de déformations et provoque le moins de blocages possibles.
+		  dim t, tt as boolean
+		  dim h, j, n as integer
+		  dim aut(-1) as integer
+		  dim Ob1 as objectslist
+		  
+		  redim aut(f1.shapes.count-1)
+		  for  j = 0 to f1.Shapes.count-1
+		    aut(j) = f1.shapes.item(j).auto
+		  next
+		  
+		  'D'abord un cas simple: toutes les formes ont même auto (différent de 3 (autospe) et 5 (autotrap)
+		  'On attribue cet auto à la figure.
+		  for  n = 0 to 6
+		    t = true
+		    for j = 0 to ubound(aut)
+		      t  = t and (aut(j) = n)
+		    next
+		    if t then
+		      select case n
+		      case 0, 1, 2, 4, 6
+		        f1.auto = n
+		      end select
+		      return
+		    end if
+		  next
+		  
+		  ''Deuxième cas: toutes les formes sont autosim ou autoaff
+		  t = true
+		  for j = 0 to ubound(aut)
+		    t  = t and ((aut(j) =1 ) or (aut(j) = 2))
+		  next
+		  if t then   
+		    tt = true
+		    for j = 0 to f1.shapes.count -1
+		      tt = tt and ( (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle))
+		    next
+		    if tt then 'Si toutes les formes sont des droites ou des cercles, tout  point peut être modifié indépendamment des autres  
+		      f1.auto = 0
+		      return
+		    else 'Sinon, on choisit autosim (les autoaff ne seront pas déformées)
+		      f1.auto = 1
+		      return
+		    end if
+		    
+		    'Troisième cas: toutes les formes sont autosim ou paraperp
+		    t = true
+		    for j = 0 to ubound(aut)
+		      t  = t and ((aut(j) =1 ) or (aut(j) = 6))
+		    next
+		    if t then
+		      f1.auto = 6
+		      return
+		    end if
+		  end if
+		  
+		  'Quatrième cas: s'il y a un mélange de droites  avec des formes autospe
+		  
+		  t = true
+		  for j = 0 to ubound(aut)
+		    t  = t and (f1.shapes.item(j) isa BiPoint ) or (aut(j) = 3)
+		  next
+		  
+		  if t then 
+		    j = 0
+		    while aut(j) <> 3
+		      j = j+1
+		    wend
+		    Ob1 = new ObjectsList
+		    Ob1.addobject f1.shapes.item(j)
+		    for h = 0 to f1.shapes.count -1
+		      if h <> j then
+		        Ob1.addObject f1.shapes.item(h)
+		      end if
+		    next
+		    f1.shapes = Ob1
+		    f1.auto = 3
+		    return
+		  end if
+		  
+		  f1.auto = -1
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub addconstructedfigs(figs as figslist, s as shape)
 		  dim ci as constructioninfo
 		  dim k as integer
@@ -424,11 +512,17 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function autoprppupdate() As Matrix
 		  dim s as droite
+		  dim i as integer
 		  
-		  s = droite(shapes.item(0))
+		  i = 0
+		  while not shapes.item(i).isaparaperp
+		    i=i+1
+		  wend
+		  
+		  s = droite(shapes.item(i))
 		  
 		  if s <> nil then
-		    select case NbPtsModif
+		    select case NbPtsModif  'Et si les points modifiés sont sur une autre droite?
 		    case 0
 		      return s.prppupdate0
 		    case 1
@@ -1831,9 +1925,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub FusionnerSubfigs(pos() as integer)
 		  dim f1, sf as figure
-		  dim i, j, n as integer
-		  dim t, tt as boolean
-		  dim aut() as integer
+		  dim i as integer
 		  
 		  
 		  
@@ -1854,66 +1946,7 @@ Protected Class Figure
 		    end if
 		  next
 		  
-		  'if f1.shapes.item(0).isaparaperp(sh) then
-		  'f1.auto=6
-		  'else
-		  'for j = 0 to f1.somm.count-1
-		  't = t or (f1.somm.item(j).constructedby <> nil and f1.somm.item(j).constructedby.oper = 6)
-		  'next
-		  '
-		  'if not t then
-		  'f1.auto = 1
-		  'else
-		  'f1.auto = 0
-		  'end if
-		  'end if
-		  
-		  redim aut(f1.shapes.count-1)
-		  for  j = 0 to f1.Shapes.count-1
-		    aut(j) = f1.shapes.item(j).auto
-		  next
-		  
-		  for  n = 0 to 6
-		    t = true
-		    for j = 0 to ubound(aut)
-		      t  = t and (aut(j) = n)
-		    next
-		    if t then
-		      select case n
-		      case 0, 1, 2, 4, 6
-		        f1.auto = n
-		        'case 3, 5
-		        'f1.auto = 1
-		      end select
-		      return
-		    end if
-		  next
-		  
-		  t = true
-		  for j = 0 to ubound(aut)
-		    t  = t and ((aut(j) =1 ) or (aut(j) = 2))
-		  next
-		  if t then
-		    tt = true
-		    for j = 0 to ubound(aut)
-		      if aut(j) = 1 and not ( F1.shapes.item(j) isa droite) then
-		        tt = false
-		      end if
-		    next
-		    if tt then
-		      f1.auto = 2
-		    else
-		      f1.auto = 1
-		    end if
-		  else
-		    for j = 0 to ubound(aut)
-		      t  = t and ((aut(j) =1 ) or (aut(j) = 6))
-		    next
-		    if t then
-		      f1.auto = 6
-		    end if
-		  end if
-		  
+		  Adapterautos(f1)
 		  
 		  return
 		  
@@ -2754,7 +2787,7 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p =somm.item(i)
-		    if  (p.liberte = 0 or p.unmodifiable) then ' and (p <> supfig.pointmobile ) and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
+		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and not p.modified then 'PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      'if p.pointsur.count <> 2 then
 		      NbUnModif = NbUnModif+1
@@ -3583,6 +3616,8 @@ Protected Class Figure
 		  
 		  NbUnModif = 0
 		  select case auto
+		  case -1
+		    return false
 		  case 0
 		    if standard then
 		      M = autosimupdate

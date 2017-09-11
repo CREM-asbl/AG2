@@ -31,7 +31,7 @@ Begin Window TextWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   True
-      BackColor       =   &cFF00FFFF
+      BackColor       =   &c00FFFFFF
       Bold            =   False
       Border          =   True
       DataField       =   ""
@@ -132,40 +132,24 @@ End
 		  end if
 		  
 		  
-		  if source1 or source2  then
-		    if CurrentContent.currentoperation <> nil and CurrentContent.currentoperation isa ReadHisto then
-		      if source1 then              'ctrl u
-		        Doc = new XMLDocument(ReadHisto(CurrentContent.currentoperation).Histfile)
-		      else                                 'ctrl v
-		        Doc = CurrentContent.MakeXML
-		      end if
-		    else
-		      Doc = CurrentContent.MakeXML
+		  
+		  EF.Text = "Largeur du fonds d'écran: "
+		  EF.Text = EF.Text+ str(can.width) + chr(10)
+		  EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(can.height) + chr(10)+chr(13)
+		  
+		  for i = 0 to Figs.count-1
+		    f = Figs.item(i)
+		    messages(f)
+		    if f.subs.count > 0 then
+		      for j=0 to f.subs.count -1
+		        EF.Text =  EF.Text +chr(10)+chr(13)
+		        ff = f.subs.item(j)
+		        messages(ff,j)
+		      next
 		    end if
-		    
-		    if Doc <> nil then
-		      FAG = Doc.DocumentElement
-		      EF.Text =  ToString(XMLElement(Doc.FirstChild))
-		    end if
-		    
-		  else
-		    EF.Text = "Largeur du fonds d'écran: "
-		    EF.Text = EF.Text+ str(can.width) + chr(10)
-		    EF.Text =  EF.Text+ "Hauteur du fonds d'écran: " +str(can.height) + chr(10)+chr(13)
-		    
-		    for i = 0 to Figs.count-1
-		      f = Figs.item(i)
-		      messages(f)
-		      if f.subs.count > 0 then
-		        for j=0 to f.subs.count -1
-		          EF.Text =  EF.Text +chr(10)+chr(13)
-		          ff = f.subs.item(j)
-		          messages(ff,j)
-		        next
-		      end if
-		      EF.Text = EF.Text + "---------------------------------------------"+chr(10)+chr(13)
-		    next
-		  end if
+		    EF.Text = EF.Text + "---------------------------------------------"+chr(10)+chr(13)
+		  next
+		  
 		  
 		  for i = 0 to Macs.count-1
 		    EF.Text = EF.Text + Macs.item(i).caption +chr(10)
@@ -535,14 +519,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		source1 As boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		source2 As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		tab As Integer
 	#tag EndProperty
 
@@ -751,16 +727,6 @@ End
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="source1"
-		Group="Behavior"
-		Type="boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="source2"
-		Group="Behavior"
-		Type="Boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Super"

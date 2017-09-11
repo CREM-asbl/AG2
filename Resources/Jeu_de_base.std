@@ -1,5 +1,5 @@
 ﻿<FormesStandard>
-<Famille Nom="Triangle">
+<Famille Nom="Triangle équilatéral">
 	<Couleur Rouge="255" Vert="255" Bleu="0"/>
 	<Forme  Nom="TriangEqui">
 		<Arete Angle="0" Longueur="1"/>
@@ -110,7 +110,7 @@
                                       <Arete Longueur="0.7071067812" Angle="0"/>
 	</Forme>
 </Famille>
-<Famille  Nom="Pentagon">
+<Famille  Nom="Pentagone régulier">
 	<Couleur Rouge="0" Vert="255" Bleu="0"/>
 	<Forme  Nom="PentaReg">
 		<Arete Longueur="1" Angle="0"/>

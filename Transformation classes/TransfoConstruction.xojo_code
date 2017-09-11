@@ -259,6 +259,7 @@ Inherits MultipleSelectOperation
 		Protected Function GetShape(p as basicPoint) As shape
 		  dim q as point
 		  dim nbp as nbpoint
+		  dim u, v as basicpoint
 		  
 		  
 		  currentshape = super.getshape(p)  //on liste les objets visibles et on ramène le premier
@@ -287,7 +288,15 @@ Inherits MultipleSelectOperation
 		      elseif fp = q or (sp = q)  or  (tp = q) then
 		        return nil
 		      end if
-		      if type = 9 then
+		      if type = 7 then
+		        u = sp.bpt-fp.bpt
+		        v = q.bpt-tp.bpt
+		        if abs(u.x*v.y-u.y*v.x) < epsilon then
+		          return q
+		        else
+		          return nil
+		        end if
+		      elseif type = 9 then
 		        nbp = new nbpoint(fp)
 		        nbp.append sp.bpt
 		        nbp.append q.bpt
@@ -388,8 +397,6 @@ Inherits MultipleSelectOperation
 		        display = this(currenthighlightedshape.gettype)+" ?"
 		      end if
 		    case 4
-		      
-		    else
 		      display = thispoint+" ?"
 		    end select
 		  end if
@@ -492,10 +499,7 @@ Inherits MultipleSelectOperation
 		        type = 71
 		        index.append  0 
 		      else
-		        bp1 = tp.bpt+sp.bpt-fp.bpt
-		        bp2 = qp.bpt.projection(tp.bpt, bp1)
-		        qp2 = new point(objects, bp2 )
-		        currentshape = new Trap(objects, fp,sp, qp2, tp)
+		        currentshape = new Polyqcq(objects, fp,sp, qp, tp)
 		        type = 72
 		        currentshape.side = -1
 		      end if
@@ -819,12 +823,6 @@ Inherits MultipleSelectOperation
 			Name="side"
 			Group="Behavior"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

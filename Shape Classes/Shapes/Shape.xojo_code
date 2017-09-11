@@ -297,7 +297,7 @@ Protected Class Shape
 		Sub Autos()
 		  if (constructedby <> nil and constructedby.oper = 6)   or std then 'or (macconstructedby <> nil) then
 		    auto = 0
-		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp) or self isa Freecircle      then 'or  (self isa Bipoint and not self.isaparaperp)
+		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp) or self isa Freecircle      then
 		    auto = 1
 		  elseif ((self isa polyqcq and npts = 3) and (not Hybrid)) or (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then
 		    auto = 2
@@ -308,7 +308,7 @@ Protected Class Shape
 		  elseif self.isaparaperp then
 		    auto = 6
 		  else
-		    auto = 4 // Bipoints, Points isolés,  Polyqcq (npts > 3), y compris Lacets
+		    auto = 4 // Points isolés,  Polyqcq (npts > 3), y compris Lacets
 		  end if
 		  
 		  
@@ -382,7 +382,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub computeori()
-		  
+		  signaire = sign(aire)
 		End Sub
 	#tag EndMethod
 
@@ -865,7 +865,7 @@ Protected Class Shape
 		      addtofigure
 		    end if
 		  end if
-		  signaire = sign(aire)
+		  'signaire = sign(aire)
 		  computeori
 		  dounselect
 		  currentcontent.optimize
@@ -882,7 +882,7 @@ Protected Class Shape
 		  dim i as integer
 		  
 		  updatecoord
-		  if tsfi.count > 0 then
+		  if tsfi <> nil and tsfi.count > 0 then
 		    for i=0 to tsfi.count-1
 		      tsfi.item(i).update
 		    next
@@ -2523,21 +2523,20 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function PassePar(p() as point) As Boolean
-		  dim i, n as integer
+		  dim i as integer 'utilise uniquement par  divide 
 		  dim t as Boolean
 		  
 		  t = true
 		  
-		  for i = 0 to ubound(p)
-		    t = t and (getindex(p(i)) <> -1)
-		  next
-		  
-		  if self isa circle then
+		  if self isa circle then 'on élimine le centre du cercle
 		    for i = 0 to ubound(p)
 		      t = t and (getindex(p(i)) <> 0)
 		    next
 		  end if
 		  
+		  for i = 0 to ubound(p)
+		    t = t and ((getindex(p(i)) <> -1) or (p(i).constructedby <>nil and p(i).constructedby.oper = 4 and p(i).constructedby.shape = self))
+		  next
 		  return t
 		  
 		End Function
@@ -3480,14 +3479,7 @@ Protected Class Shape
 		  dim i  as integer
 		  
 		  if coord = nil then
-		    select case npts
-		    case 2
-		      coord = new BiBPoint(self)
-		    case 3
-		      coord = new TriBPoint(self)
-		    else
-		      coord = new nBPoint(self)
-		    end select
+		    createcoord
 		    return
 		  end if
 		  
@@ -3508,11 +3500,13 @@ Protected Class Shape
 		  dim i as integer
 		  dim pos as basicPoint
 		  
-		  for i = 0 to labs.count-1
-		    if not (labs.item(i).LockRight and labs.item(i).LockBottom) then
-		      labs.item(i).SetPosition
-		    end if
-		  next
+		  if labs <> nil then
+		    for i = 0 to labs.count-1
+		      if not (labs.item(i).LockRight and labs.item(i).LockBottom) then
+		        labs.item(i).SetPosition
+		      end if
+		    next
+		  end if
 		  if not (currentcontent.currentoperation isa modifier) or  modifier(currentcontent.currentoperation).testfinished then
 		    if self = currentcontent.SHUL and modified then
 		      currentcontent.UL = currentcontent.SHUL.longueur(currentcontent.IcotUL)
@@ -3657,7 +3651,7 @@ Protected Class Shape
 		  
 		  updatecoord
 		  computeori
-		  a = aire
+		  'a = aire
 		  if a = -10000 then
 		    return
 		  end if
@@ -3695,9 +3689,7 @@ Protected Class Shape
 		    updateMacConstructedShapes
 		  end if
 		  
-		  if self isa polygon and polygon(self).autointer<> nil then
-		    polygon(self).autointer.Replace
-		  end if
+		  
 		End Sub
 	#tag EndMethod
 

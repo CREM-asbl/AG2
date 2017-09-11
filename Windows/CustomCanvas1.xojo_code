@@ -118,10 +118,6 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  'if sctxt isa polygon then
-		  'base.append (New MenuItem(dico.value("AutoIntersec")))
-		  'end if
-		  
 		  
 		  Return True//display the contextual menu
 		  
@@ -223,9 +219,6 @@ Inherits Canvas
 		    currentoper = Modifier(currentcontent.currentoperation)
 		    ClearOffscreen
 		    Modifier(currentoper).Animer(point(sctxt))
-		  case Dico.value("AutoIntersec")
-		    currentoper = new AutoIntersec(polygon(sctxt))
-		    EndOperMenuContext
 		  end select
 		  
 		  ctxt = false

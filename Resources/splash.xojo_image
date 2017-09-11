@@ -1,8 +1,8 @@
 #tag MultiImage
 Image splash
 	#tag ImageRepresentation
-		SaveInfo = APHRcwECAQAAAAA9QzpcVXNlcnNcVXRpbGlzYXRldXJcRHJvcGJveFxHdXktQUcyLjUuMVxSZXNvdXJjZXNcc3BsYXNoLnBuZwMAAAAAAQAEAAAAAAEAAAAAAAAA
-		FullPath = C:\Users\Utilisateur\Dropbox\Guy-AG2.5.1\Resources\splash.png
+		SaveInfo = APHRcwECAQAAAAA+QzpcVXNlcnNcVXRpbGlzYXRldXJcRG9jdW1lbnRzXEdpdEh1YlxHdXlcUmVzb3VyY2VzXHNwbGFzaC5wbmcDAAAAAAEABAAAAAABAAAAAAAAAA==
+		FullPath = C:\Users\Utilisateur\Documents\GitHub\Guy\Resources\splash.png
 		PartialPath = Resources\splash.png
 		#tag ImageSpecification
 			Comment = 

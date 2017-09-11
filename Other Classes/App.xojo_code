@@ -3,9 +3,9 @@ Protected Class App
 Inherits Application
 	#tag Event
 		Function CancelClose() As Boolean
-		  'if ipctransfert then
-		  'ipc.send(FileName)
-		  'end if
+		  if ipctransfert then
+		    ipc.send(FileName)
+		  end if
 		  
 		  
 		End Function
@@ -13,28 +13,29 @@ Inherits Application
 
 	#tag Event
 		Sub Close()
-		  'try
-		  'mut.Leave
-		  'Catch
-		  '
-		  'end try
+		  try
+		    mut.Leave
+		  Catch
+		    
+		  end try
+		  
 		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Open()
-		  'CheckProcess
-		  'if not ipctransfert then
-		  CheckSystem
-		  InitFolders
-		  Dico = new Dictionnaire
-		  Config = new Configuration
-		  autoquit = true
-		  CheckUpdate
-		  themacros = new macroslist
-		  initWindow.show
-		  'end if
+		  CheckProcess
+		  if not ipctransfert then
+		    CheckSystem
+		    InitFolders
+		    Dico = new Dictionnaire
+		    Config = new Configuration
+		    autoquit = true
+		    CheckUpdate 
+		    themacros = new macroslist
+		    initWindow.show
+		  end if
 		  
 		End Sub
 	#tag EndEvent
@@ -42,26 +43,21 @@ Inherits Application
 	#tag Event
 		Sub OpenDocument(item As FolderItem)
 		  dim s As string
+		  s = item.NativePath
+		  FileName =""
 		  
-		  #if TargetWindows then
-		    s = item.ShellPath
-		    if Right(s,1) = "\" then
-		      s = s.mid(1,Len(s)-1)
-		    end if
-		    if FileName <> "" then
-		      s = " "+s
-		    end if
-		    FileName = FileName+s
-		    item = GetFolderItem(Filename)
-		  #Endif
 		  
-		  if item.Exists then
-		    InitWindow.close
-		    WorkWindow.OpenFile(item)
+		  s = s.mid(1,Len(s)-4)
+		  if Right(s,1) = "\" then
+		    s = s.mid(1,Len(s)-1)
 		  end if
+		  if FileName <> "" then
+		    s = " "+s
+		  end if
+		  'MsgBox s
+		  FileName = FileName+s
 		  
-		  
-		  
+		  wnd.openfile(item)
 		End Sub
 	#tag EndEvent
 
@@ -162,7 +158,7 @@ Inherits Application
 		  if not quitting then
 		    if wnd.draphisto then
 		      if curoper <> nil then
-		        HistCmd.close
+		        ReadHisto(curoper).Hcmd.close
 		      end if
 		      wnd.menubar = menu
 		      wnd.draphisto = false
@@ -205,7 +201,7 @@ Inherits Application
 		    sys = "win32"
 		  #elseif TargetLinux then
 		    sys="Linux"
-		  #elseif TargetMacOSClassic then
+		  #elseif TargetMacOS then
 		    sys = "Mac"
 		  #else
 		    sys = "MacOsX"

@@ -174,7 +174,7 @@ Inherits NSkull
 		  
 		  'Concernant le bord
 		  
-		  if s.hidden then
+		  if s.hidden and not s.highlighted then
 		    col = config.HideColor.col
 		  elseif s.highlighted then
 		    col = config.HighlightColor.col
@@ -323,6 +323,7 @@ Inherits NSkull
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
+		  
 		  
 		  if fill > 0 then
 		    border = 0

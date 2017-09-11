@@ -772,7 +772,9 @@ Protected Class WindContent
 		  else
 		    PolygFleches = false
 		  end if
-		  
+		  if wnd.MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
+		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = PolygFleches
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -784,7 +786,14 @@ Protected Class WindContent
 		  else
 		    polygpointes = false
 		  end if
+		  if wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
+		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = polygpointes
+		  end if
 		  
+		  Exception err
+		    
+		    err.message = err.message+EndOfLine+str(n)
+		    Raise err
 		End Sub
 	#tag EndMethod
 
@@ -807,7 +816,7 @@ Protected Class WindContent
 		  dim curoper as Operation
 		  
 		  isaundoredo = true
-		  Formswindow.close
+		  formswindow.close
 		  
 		  if currentop = 0 then
 		    return

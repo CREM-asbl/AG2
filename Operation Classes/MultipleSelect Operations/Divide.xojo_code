@@ -71,7 +71,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub createshapes()
-		  dim s as shape
+		  dim s as shape  'ON CRéE PRESQUE TOUJOURS DES BIPOINTS VEILLER à CE QUE SOIT SANS CONSéQUENCES
 		  dim i as integer
 		  dim p as BasicPoint
 		  dim Q as point
@@ -153,13 +153,12 @@ Inherits MultipleSelectOperation
 		  
 		  s = Operation.GetShape(p)
 		  
-		  
 		  for i = visible.count-1 downto 0
 		    s = visible.item(i)
 		    if s isa cube then
 		      visible.removeobject visible.item(i)
 		    end if
-		    if  (s isa droite and droite(s).nextre <> 2)   then
+		    if  (s isa droite and s.forme > 2)   then
 		      visible.removeobject visible.item(i)
 		    end if
 		    if s isa lacet then
@@ -176,7 +175,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  s = visible.item(iobj)
-		  if s = nil or  (currentitemtoset = 2 and s = firstpoint) then
+		  if s = nil or  ((currentitemtoset = 2) and s isa point and (point(s).distanceto(firstpoint) < epsilon)) then 
 		    return nil
 		  end if
 		  
@@ -504,12 +503,6 @@ Inherits MultipleSelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

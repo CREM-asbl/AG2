@@ -435,7 +435,6 @@ Inherits SelectAndDragOperation
 		  currenthighlightedshape = point(currentshape)
 		  pointmobile = point(currentshape)
 		  InitFigs
-		  figs.createstate("InitState",pointmobile)
 		  if gGetSpecialkey = 4  then
 		    if (pointmobile.pointsur.count =1) and (ubound(currentshape.constructedshapes) = -1) and (currentshape.constructedby = nil )  then
 		      pointmobile.removepointsur pointmobile.pointsur.item(0)
@@ -451,6 +450,7 @@ Inherits SelectAndDragOperation
 		    end if
 		    initfigs
 		  end if
+		  figs.createstate("InitState",pointmobile)
 		  s = pointmobile
 		  for i = 0 to ubound(s.parents)
 		    if s.parents(i) isa arc  then
@@ -1014,12 +1014,6 @@ Inherits SelectAndDragOperation
 			Name="side"
 			Group="Behavior"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

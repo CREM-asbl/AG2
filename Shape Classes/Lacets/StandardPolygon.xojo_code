@@ -2,6 +2,19 @@
 Protected Class StandardPolygon
 Inherits Polygon
 	#tag Method, Flags = &h0
+		Sub Constructor(ol as ObjectsList)
+		  
+		  Shape.Constructor(ol)
+		  fam = 0
+		  forme = 0
+		  npts = 0
+		  ncpts = 0
+		  std = true
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList, fam as integer, form as integer, p as BasicPoint)
 		  dim i as integer
 		  dim specs as StdPolygonSpecifications
@@ -12,7 +25,7 @@ Inherits Polygon
 		  self.fam = fam
 		  self.forme = form
 		  ncpts = 1
-		  if fam < 14 then 'fam = 14 pour la fusion de deux stdpolyg
+		  if fam < 14 then 'fam = 14 pour la fusion de deux stdpolyg		    
 		    specs = config.StdFamilies(fam-10,Forme)
 		    npts = Ubound(specs.angles)+2
 		    for i=0 to npts-2
@@ -73,17 +86,13 @@ Inherits Polygon
 		  dim specs as StdPolygonSpecifications
 		  
 		  Super.Constructor(ol, EL)
-		  
 		  stdsize=Val(EL.GetAttribute("Taille"))
 		  Ori = val(EL.GetAttribute("Ori"))
 		  nonpointed = (val(EL.GetAttribute("NonPointed")) = 1)
-		  
 		  if self isa cube then
 		    return
 		  end  if
-		  
 		  redim Angles(npts-2)
-		  
 		  if fam < 14 then
 		    file = Config.stdfile
 		    specs = config.StdFamilies(fam-10,Forme)
@@ -93,10 +102,10 @@ Inherits Polygon
 		    next
 		  end if
 		  
+		  
 		  p = coord.tab(1) - coord.tab(0) 
 		  Angles(0)= p.anglepolaire
 		  std = true
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -326,7 +335,7 @@ Inherits Polygon
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		oldMySpecs As StdPolygonSpecifications
+		MySpecs As StdPolygonSpecifications
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

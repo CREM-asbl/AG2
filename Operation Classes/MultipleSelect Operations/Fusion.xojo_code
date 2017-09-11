@@ -40,7 +40,7 @@ Inherits MultipleSelectOperation
 		  Tr = Fus1.points((start1+1)mod Fus1.npts).bpt - Fus1.points(start1).bpt
 		  Tr = Tr.VecNorPerp
 		  M1 = new Translationmatrix(Tr*0.2)
-		  M2 = new Translationmatrix(Tr*0.2)
+		  
 		  Fus.Move(M1)
 		  
 		  Fus.EndConstruction
@@ -73,7 +73,7 @@ Inherits MultipleSelectOperation
 		  dim S As Shape
 		  
 		  S = Operation.GetShape(p)
-		  if S = nil or (not s isa Lacet) or s isa cube then
+		  if S = nil or (not s isa Lacet) or s isa cube or s.auto = 3 then
 		    return nil
 		  end if
 		  
@@ -158,7 +158,7 @@ Inherits MultipleSelectOperation
 		  Fus.constructedby.data.append Fus1
 		  Fus.constructedby.data.append M1
 		  Fus.constructedby.data.append Fus2
-		  Fus.constructedby.data.append M2
+		  Fus.constructedby.data.append M1
 		  Fus.constructedby.data.append dir
 		  Fus1.AddConstructedShape Fus
 		  Fus2.AddConstructedShape Fus
@@ -172,7 +172,7 @@ Inherits MultipleSelectOperation
 		    next
 		    for i = 2 to Fus2.npts-1
 		      Fus.Points(Fus1.npts+i).setconstructedby  Fus2.Points((start2+i) mod Fus2.npts), 9
-		      Fus.Points(Fus1.npts+i).constructedby.data.append M2
+		      Fus.Points(Fus1.npts+i).constructedby.data.append M1
 		    next
 		  else                               //Idem mais les numéros sont différents
 		    SetConstructionInfoPoint (0, dir,   (start1+1) mod Fus1.npts, start2)
@@ -183,7 +183,7 @@ Inherits MultipleSelectOperation
 		    next
 		    for i = 2 to Fus2.npts-1
 		      Fus.Points(Fus1.npts+i-2).setconstructedby  Fus2.Points((start2+i) mod Fus2.npts), 9
-		      Fus.Points(Fus1.npts+i-2).constructedby.data.append M2
+		      Fus.Points(Fus1.npts+i-2).constructedby.data.append M1
 		    next
 		  end if
 		  
@@ -200,7 +200,7 @@ Inherits MultipleSelectOperation
 		  Fus.Points(n).constructedby.data.append Fus1.points(s1)
 		  Fus.Points(n).constructedby.data.append M1
 		  Fus.Points(n).constructedby.data.append Fus2.points(s2)
-		  Fus.Points(n).constructedby.data.append M2
+		  Fus.Points(n).constructedby.data.append M1
 		  Fus.Points(n).constructedby.data.append dir
 		  Fus1.points(s1).addconstructedshape(Fus.points(n))
 		  Fus2.points(s2).addconstructedshape(Fus.points(n))
@@ -448,12 +448,6 @@ Inherits MultipleSelectOperation
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

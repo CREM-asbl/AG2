@@ -2,25 +2,36 @@
 Protected Class AutoIntersec
 Inherits Intersec
 	#tag Method, Flags = &h0
-		Sub computeinter()
+		Function combien() As integer
+		  dim i, j , n as integer
+		  
+		  n = 0
+		  
+		  for i = 0 to t
+		    for j = i+1 to t
+		      if val(i,j) and not bezet(i,j) then
+		        n = n+1
+		      end if
+		    next j
+		  next i
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub computeinterbpt()
 		  dim i, j as integer
 		  init
 		  drappara = false
 		  somevalidpoint = false
-		  computeinterlines
 		  
-		  for i = 0 to nlig
-		    for j = i to ncol
+		  computeinterlinesbpt
+		  positionfalseinterpoints
+		  for i = 0 to t
+		    for j = i+1 to t
 		      somevalidpoint = somevalidpoint or val(i,j)
 		    next
 		  next
-		  
-		  if not somevalidpoint then
-		    return
-		  else
-		    positionfalseinterpoints
-		  end if  
-		  
 		  
 		  
 		  
@@ -28,35 +39,22 @@ Inherits Intersec
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub computeinterlines()
-		  dim i, j,k as integer
-		  dim bp as basicpoint
-		  dim d1, d2 as droite
+		Sub computeinterlinesbpt()
+		  dim i, j as integer
+		  dim d1, d2 as BiBPoint
 		  dim r1,r2 as double
 		  
 		  
-		  for i = 0 to nlig
-		    d1 = sh1.getside(i)
-		    for j = i+1 to nlig
-		      d2 = sh2.getside(j)
-		      bp = nil
-		      k = d1.inter(d2,bp,r1,r2)
-		      if bp <> nil then
-		        bptinters(i,j) = bp
-		      end if
-		      if (k = 0)  or (r1 > 998) then
-		        val(i,j) = false
-		      end if
-		      if r1 > 998 then
-		        drappara = true
-		      end if
+		  for i = 0 to t
+		    d1 = sbpt.getbibside(i)
+		    for j = i+1 to t
+		      'if (j <> i) and  (j <> ( (i+t-1) mod t )) and ( j<> ((i+1) mod t )) then
+		      d2 = sbpt.getbibside(j)
+		      bptinters(i,j) =  d1.BiBInterDroites(d2,2,2,r1,r2)
+		      bptinters(j,i) = bptinters(i,j)
+		      'end if
 		    next
 		  next
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -69,38 +67,63 @@ Inherits Intersec
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(s as polygon)
+		Sub Constructor(sbpt as nBpoint)
+		  
 		  Super.Constructor
+		  t = sbpt.taille -1
+		  self.sbpt = sbpt
+		  computeinterbpt
 		  
-		  sh1 = s
-		  sh2 = s
-		  nlig = s.npts-1
-		  ncol = nlig
 		  
-		  redim bptinters(nlig, nlig)
-		  redim ids(nlig,nlig)
-		  redim val(nlig,nlig)
-		  redim pts(-1)
 		  
-		  'computeinter
-		  's.autointer = self
-		  CurrentContent.TheIntersecs.AddObject(self)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreatePoints()
+		Sub Constructor(s as polygon)
+		  // Calling the overridden superclass constructor.
+		  // Note that this may need modifications if there are multiple constructor choices.
+		  // Possible constructor calls:
+		  
+		  Super.Constructor
+		  
+		  t = s.npts-1
+		  self.s = s
+		  sbpt = s.coord
+		  
+		  redim bptinters(t,t)
+		  redim ids(t,t)
+		  redim val(t,t)
+		  redim pts(-1)
+		  
+		  computeinter
+		  s.autointer = self
+		  'if combien > 0 then
+		  'CurrentContent.TheIntersecs.AddObject(self)
+		  'end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreatePoints(s as polygon)
 		  dim i, j as integer
 		  
 		  dim p as point
 		  
-		  for i = 0 to sh1.npts-1
-		    for j = i+1 to sh1.npts-1
-		      if  val(i,j) and  not bezet(i,j) then
+		  for i = 0 to t
+		    for j = i+1 to t
+		      if  val(i,j) and  not bezet(i,j) and bptinters(i,j) <> nil  then
 		        p = new point (objects,bptinters(i,j))
-		        p.setconstructedby sh1,45
-		        ids(i,j) =p.id
+		        p.forme=2
+		        p.setconstructedby s,45
+		        p.numside.append i
+		        p.numside.append j
+		        p.location.append bptinters(i,j).location(sh1,i)
+		        p.location.append bptinters(i,j).location(sh1,j)
+		        'ids(i,j) =p.id
 		        p.endconstruction
+		        pts.append p
 		      end if
 		    next
 		  next
@@ -110,47 +133,71 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  currentshape = sh1
-		  'CurrentContent.TheFigs.Removefigure currentshape.fig
-		  ComputeInter
-		  createpoints
-		  polygon(sh1).autointer = self
-		  EndOperation
+		  'currentshape = sh1
+		  'ComputeInter
+		  'createpoints(sh1)
+		  'polygon(sh1).autointer = self
+		  'EndOperation
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Replace()
+		Sub init()
 		  dim i, j as integer
-		  dim p as point
 		  
-		  currentshape = sh1
-		  ComputeInter
-		  for i = 0 to sh1.npts-1
-		    for j = i+1 to sh1.npts-1
-		      if ids(i,j) <> 0 then
-		        p = Point(CurrentContent.TheObjects.Getshape(ids(i,j)))
-		        if  val(i,j)  then
-		          if p.invalid then
-		            p.valider
-		          end if
-		          p.moveto bptinters(i,j)
-		          p.updateshape
-		        else
-		          p.invalider 
-		        end if
-		      end if
+		  
+		  
+		  redim bptinters(t,t)
+		  redim val(t,t)
+		  redim bezet(t,t)
+		  
+		  for i = 0 to t
+		    for j = 0 to t
+		      bptinters(i,j) = nil
+		      val(i,j) = true
+		      bezet(i,j) = false
 		    next
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub positionfalseinterpoints()
+		  //Les faux points d'intersection sont les  sommets de la forme dont on cherche les points d'Autointersection
+		  // Ces places seront marquées bezet
+		  
+		  dim i,j, h as integer
+		  dim p as basicpoint
+		  
+		  
+		  for i = 0 to t
+		    for j = 0 to t
+		      for h = 0 to t
+		        p = sbpt.tab(h)
+		        if bptinters(i,j) <> nil and p.distance(bptinters(i,j)) < epsilon then
+		          bezet(i,j) = true
+		        end if
+		      next
+		    next
+		  next
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		PL As PointsList
+		s As Polygon
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		sbpt As nbpoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		t As integer
 	#tag EndProperty
 
 
@@ -274,16 +321,15 @@ Inherits Intersec
 			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="t"
+			Group="Behavior"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"

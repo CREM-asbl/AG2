@@ -278,7 +278,7 @@ Inherits SelectOperation
 		  
 		  for i = 1 to CurrentContent.TheObjects.count-1
 		    s = CurrentContent.TheObjects.GetPlan(i)
-		    if s.selected then
+		    if s <> nil and s.selected then
 		      if s isa polygon then
 		        adapterparamepais(s,tos)
 		        adapterparamfill(s, tos)
@@ -931,12 +931,6 @@ Inherits SelectOperation
 			Name="side"
 			Group="Behavior"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Std2flag"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

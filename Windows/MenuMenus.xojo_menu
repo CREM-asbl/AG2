@@ -230,7 +230,7 @@ Begin Menu MenuMenus
       Text = "Opérations"
       Index = -2147483648
       AutoEnable = True
-      Visible = True
+      Visible = False
       Begin MenuItem OperaDivide
          SpecialMenu = 0
          Text = "Diviser"
@@ -279,6 +279,13 @@ Begin Menu MenuMenus
          Index = -2147483648
          AutoEnable = True
          Visible = True
+      End
+      Begin MenuItem UntitledMenu0
+         SpecialMenu = 0
+         Text = ""
+         Index = -2147483648
+         AutoEnable = False
+         Visible = False
       End
    End
    Begin MenuItem TransfosMenu
@@ -583,16 +590,16 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsAjust
+      Begin MenuItem PrefsTrace
          SpecialMenu = 0
-         Text = "Ajustement automatique"
+         Text = "Trajectoires"
          Index = -2147483648
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsTrace
+      Begin MenuItem PrefsAjust
          SpecialMenu = 0
-         Text = "Trajectoires"
+         Text = "Ajustement automatique"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -617,6 +624,28 @@ Begin Menu MenuMenus
          Index = -2147483648
          AutoEnable = True
          Visible = True
+      End
+      Begin MenuItem PrefsArea
+         SpecialMenu = 0
+         Text = "Aire"
+         Index = -2147483648
+         AutoEnable = True
+         SubMenu = True
+         Visible = True
+         Begin MenuItem PrefsAreaArith
+            SpecialMenu = 0
+            Text = "Aire arithmétique"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
+         Begin MenuItem PrefsAreaAlg
+            SpecialMenu = 0
+            Text = "Aire algébrique"
+            Index = -2147483648
+            AutoEnable = True
+            Visible = True
+         End
       End
       Begin MenuItem PrefsUL
          SpecialMenu = 0

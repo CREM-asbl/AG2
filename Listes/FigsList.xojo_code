@@ -309,7 +309,7 @@ Inherits Liste
 		  
 		  EL = CurrentContent.Oplist.CreateElement(st)
 		  
-		  if p <> nil and p.pointsur.count > 0 and p.multassomm < 2 then
+		  if p <> nil and p.pointsur.count > 0 and p.multassomm < 2 then 
 		    EL.appendchild InsertPointSurInState(p, CurrentContent.OpList)
 		  end if
 		  

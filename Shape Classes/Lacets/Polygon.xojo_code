@@ -3,7 +3,11 @@ Protected Class Polygon
 Inherits Lacet
 	#tag Method, Flags = &h0
 		Function aire() As double
-		  return coord.aire
+		  if Ti <> nil then
+		    return coord.airealgepolygon
+		  else
+		    return coord.airearithpolygon
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -14,10 +18,52 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function completesides() As point()
+		  dim i, j, k  as integer  'n'intervient que dans Decomposer
+		  dim p as point
+		  dim arpoints(-1) As Point
+		  dim arside(-1) As  Point
+		  dim loc(-1) As double
+		  
+		  if autointer = nil then
+		    return nil
+		  end if
+		  
+		  for i = 0 to npts-1
+		    arpoints. append points(i)
+		    redim arside(-1)
+		    redim loc(-1)
+		    for j = 0 to ubound(autointer.pts)
+		      p = autointer.pts(j)
+		      if p.numside(0)= i  then
+		        arside.append p
+		        loc.Append p.location(0)
+		      end if
+		      if  p.numside(1) = i then
+		        arside.append p
+		        loc.Append p.location(1)
+		      end if
+		    next
+		    loc.sortwith(arside)
+		    for k = 0 to ubound(arside)
+		      arpoints.append arside(k)
+		    next
+		  next
+		  
+		  
+		  return arpoints
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ComputeOri()
 		  dim r as double
 		  
-		  r = aire
+		  r = coord.airealgepolygon
 		  
 		  if r > 0 then
 		    ori = 1
@@ -28,10 +74,47 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(ol as Objectslist, p as BasicPoint)
+		  
+		  Shape.constructor(ol)
+		  Points(0).MoveTo(p)
+		  npts = 1
+		  ncpts = 1
+		  fam = 6
+		  createskull(can.transform(p))
+		  Lskull(nsk).addpoint(new BasicPoint(0,0))
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, d as integer, p as basicpoint)
 		  shape.constructor(ol,d,d)
 		  Points.append new Point(ol, p)
 		  setPoint(Points(0))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub constructor(ol as objectslist, nb as nbpoint)
+		  dim i as integer
+		  dim p as BasicPoint
+		  
+		  constructor(ol, nb.tab(0))
+		  
+		  for i = 1 to nb.taille-1
+		    p = nb.tab(i)
+		    Points.append new Point(ol,p)
+		    setpoint points(i)
+		  next
+		  
+		  npts = nb.taille
+		  createcoord
+		  redim prol(npts-1)
+		  initcolcotes
+		  createskull(points(0).bpt)
 		  
 		End Sub
 	#tag EndMethod
@@ -99,12 +182,57 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub createcomponents(ars() as point)
+		  dim i, i0, j,  n, k, nmax as integer
+		  dim pini as point
+		  dim comp as polygon
+		  dim compos() as polygon
+		  dim p as point
+		  dim pile() as point
+		  
+		  
+		  nmax  = ubound(ars)+1
+		  pile.append ars(0)
+		  n = nmax
+		  while n >0
+		    pini = pile(ubound(pile))
+		    i = ars.indexof(pini)
+		    pile.remove ubound(pile)
+		    comp = new Polygon(objects,pini.bpt)  'insertion du point balise
+		    n = n-1
+		    i = (i+1) mod nmax
+		    while  ars(i).id <> pini.id
+		      p = ars(i)
+		      comp.addpoint(p.bpt)   'insertion du point i
+		      n = n-1
+		      if getindexpoint(p) = -1 then 'on a affaire Ã  un point d'intersection
+		        k = pile.indexof(p)
+		        if k <> -1 then
+		          pile.remove k
+		        else
+		          pile.append p
+		        end if
+		        for j = 0 to ubound(ars)        'on en recherche la deuxième occurrence
+		          if j <> i and ars(j).id = p.id then
+		            i0 = j
+		          end if
+		        next
+		        i = (i0+1) mod nmax
+		      else
+		        i = (i+1) mod nmax
+		      end if
+		    wend
+		    comp.initcolcotes
+		    comp.endconstruction
+		    compos.append comp
+		  wend
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function CreateSpecs() As StdPolygonSpecifications
 		  
 		  dim specs as new StdPolygonSpecifications
-		  dim Angles(-1) As double
-		  dim Coul as Couleur
-		  dim Distances(-1) as double
 		  dim alpha, beta as double
 		  dim j as integer
 		  dim BiB as BiBPoint
@@ -225,7 +353,7 @@ Inherits Lacet
 		  case 12
 		    return Dico.Value("Dodeca")
 		  else
-		    return Dico.Value("GrandPol")
+		    return str(npts)+"-"+Dico.value("gone")
 		  end select
 		End Function
 	#tag EndMethod
@@ -419,22 +547,6 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldConstructor(ol as Objectslist, p as BasicPoint)
-		  'N intervient que dans fusion et decouper
-		  
-		  Shape.constructor(ol)
-		  Points(0).MoveTo(p)
-		  npts = 1
-		  ncpts = 1
-		  fam = 6
-		  createskull(can.transform(p))
-		  Lskull(nsk).addpoint(new BasicPoint(0,0))
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub OldInitConstruction()
 		  Super.InitConstruction
 		  
@@ -510,6 +622,12 @@ Inherits Lacet
 		  end if
 		  return coord.pInShape(p)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function pinshape1(p as BasicPoint) As integer
+		  return coord.pinshape1(p)
 		End Function
 	#tag EndMethod
 

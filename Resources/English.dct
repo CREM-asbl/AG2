@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <English>
 <Menus>
 <FileMenu Name="File"/>
@@ -113,6 +113,9 @@
 <PrefsUA Name="Area_Unit"/>
 <PrefsUADef Name="Default"/>
 <PrefsUAChoix Name="Choose a reference shape"/>
+<PrefsArea Name="Area" />
+<PrefsAreaArith Name="Arithmetic Area" />
+<PrefsAreaAlg Name="Algebraic Area" />
 <Customize Name="Customize"/>
 <NotesOpen Name="Open"/>
 <NotesMail Name="eMail"/>
