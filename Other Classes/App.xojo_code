@@ -58,6 +58,7 @@ Inherits Application
 		  
 		  if item.Exists then
 		    WorkWindow.OpenFile(item)
+		    initWindow.close
 		  end if
 		End Sub
 	#tag EndEvent
