@@ -231,7 +231,7 @@ Inherits MultipleSelectOperation
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
 		  
-		  wnd.setcross
+		  Workwindow.setcross
 		End Sub
 	#tag EndMethod
 
