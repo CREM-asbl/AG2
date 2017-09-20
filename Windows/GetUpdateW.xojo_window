@@ -110,7 +110,6 @@ Begin Window GetUpdateW
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   ""
       TextAlign       =   1
       TextColor       =   &c00000000
@@ -178,7 +177,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/logiciels/-K0QFCVwKVLay6Bb2-Xn")
+		  showUrl("http://crem.be/logiciels/AG")
 		  close
 		  
 		End Sub
