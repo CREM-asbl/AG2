@@ -56,9 +56,7 @@ Protected Module api
 		  
 		  update = http.Get(url+"version.xml", timeout)
 		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
-		    dim GuW As GetUpdateW
-		    GuW = new GetUpdateW(update)
-		    GuW.ShowModal
+		    GetUpdateW.ShowModal
 		  end if
 		  
 		  
@@ -68,9 +66,9 @@ Protected Module api
 
 	#tag Method, Flags = &h0
 		Sub init()
-		  '#if DebugBuild then
-		  'return
-		  '#endif
+		  #if DebugBuild then
+		    return
+		  #endif
 		  
 		  if System.Network.IsConnected or TargetLinux then
 		    http = New HTTPSocket

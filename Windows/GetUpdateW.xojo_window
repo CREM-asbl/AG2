@@ -135,16 +135,6 @@ End
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
-		Sub Constructor(v as string)
-		  version = v
-		  // Calling the overridden superclass constructor.
-		  Super.Window
-		  
-		End Sub
-	#tag EndMethod
-
-
 	#tag Note, Name = Licence
 		
 		Copyright © 2010 CREM
@@ -167,19 +157,13 @@ End
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		version As string
-	#tag EndProperty
-
-
 #tag EndWindowCode
 
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/logiciels/AG")
-		  close
-		  
+		  showUrl("http://crem.be/logiciel/AG")
+		  Quit
 		End Sub
 	#tag EndEvent
 	#tag Event
