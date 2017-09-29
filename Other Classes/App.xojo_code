@@ -32,7 +32,7 @@ Inherits Application
 		  Dico = new Dictionnaire
 		  Config = new Configuration
 		  autoquit = true
-		  CheckUpdate 
+		  api.checkUpdate 
 		  themacros = new macroslist
 		  initWindow.show
 		  'end if
@@ -207,18 +207,6 @@ Inherits Application
 		  #else
 		    sys = "MacOsX"
 		  #endif
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CheckUpdate()
-		  '#if DebugBuild then
-		  'return
-		  '#endif
-		  
-		  api.init
-		  api.Connect
 		  
 		End Sub
 	#tag EndMethod

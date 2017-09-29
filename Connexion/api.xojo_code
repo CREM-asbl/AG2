@@ -29,10 +29,12 @@ Protected Module api
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Connect()
+		Sub checkUpdate()
 		  dim log,info,update As string
 		  Dim form As Dictionary
 		  dim NWI as NetworkInterface
+		  
+		  init
 		  
 		  if http = Nil then
 		    return
@@ -66,6 +68,10 @@ Protected Module api
 
 	#tag Method, Flags = &h0
 		Sub init()
+		  '#if DebugBuild then
+		  'return
+		  '#endif
+		  
 		  if System.Network.IsConnected or TargetLinux then
 		    http = New HTTPSocket
 		  end if
