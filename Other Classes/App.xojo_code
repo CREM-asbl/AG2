@@ -66,7 +66,6 @@ Inherits Application
 	#tag Event
 		Function UnhandledException(error As RuntimeException) As Boolean
 		  dim st(-1), cre, Op,log as String
-		  dim bugw as BugFindW
 		  dim i as integer
 		  dim curoper as Operation
 		  dim NWI As  NetworkInterface
@@ -158,17 +157,17 @@ Inherits Application
 		  BugFindW.showModal
 		  
 		  if not quitting then
-		    if wnd.draphisto then
+		    if Workwindow.draphisto then
 		      if curoper <> nil then
 		        ReadHisto(curoper).Hcmd.close
 		      end if
-		      wnd.menubar = menu
-		      wnd.draphisto = false
-		      wnd.Refresh
+		      Workwindow.menubar = menu
+		      Workwindow.draphisto = false
+		      Workwindow.Refresh
 		    end if
-		    wnd.deleteContent
-		    if UBound (wnd.wcontent) = -1 then
-		      wnd.NewContent(false)
+		    Workwindow.deleteContent
+		    if UBound (Workwindow.wcontent) = -1 then
+		      Workwindow.NewContent(false)
 		    end if
 		    currentcontent.bugfound = false 
 		  end if
@@ -214,9 +213,9 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub CheckUpdate()
-		  #if DebugBuild then
-		    return
-		  #endif
+		  '#if DebugBuild then
+		  'return
+		  '#endif
 		  
 		  api.init
 		  api.Connect
@@ -259,9 +258,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Function FullVersion() As String
 		  if Target32Bit then
-		    return app.LongVersion  + " " + app.StageCodeToString  + " (32 bits) "
+		    return app.LongVersion  + " " + app.StageCodeToString  + " (32 bits)"
 		  else
-		    return app.LongVersion + " " + app.StageCodeToString + " (64 bits) "
+		    return app.LongVersion + " " + app.StageCodeToString + " (64 bits)"
 		  end if
 		End Function
 	#tag EndMethod
