@@ -865,7 +865,7 @@ Protected Class Shape
 		      addtofigure
 		    end if
 		  end if
-		  'signaire = sign(aire)
+		  signaire = sign(aire)
 		  computeori
 		  dounselect
 		  currentcontent.optimize
@@ -3651,7 +3651,7 @@ Protected Class Shape
 		  
 		  updatecoord
 		  computeori
-		  'a = aire
+		  a = aire
 		  if a = -10000 then
 		    return
 		  end if

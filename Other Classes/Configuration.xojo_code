@@ -796,7 +796,7 @@ Protected Class Configuration
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Area As Integer = 0
+		Area As double = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -966,6 +966,12 @@ Protected Class Configuration
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Area"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
