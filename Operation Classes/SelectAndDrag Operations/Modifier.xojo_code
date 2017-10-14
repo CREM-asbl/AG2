@@ -165,7 +165,7 @@ Inherits SelectAndDragOperation
 		  Endpoint = pc
 		  figs.enablemodifyall
 		  UpdateFigs(pc)
-		  super.completeoperation(pc)
+		  can.refreshBackGround
 		  
 		  
 		  
