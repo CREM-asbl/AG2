@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -2268,10 +2269,12 @@ End
 		    menubar.Child("PrefsMenu").Child("PrefsAjust").checked = true
 		  end if
 		  
-		  if config.area = 0  then
-		    menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = true
-		  else
-		    menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = true
+		  if config.menu = "Menu_C" or config.menu = "Menu_AC" then
+		    if config.area = 0  then
+		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = true
+		    else
+		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = true
+		    end if
 		  end if
 		End Sub
 	#tag EndMethod
