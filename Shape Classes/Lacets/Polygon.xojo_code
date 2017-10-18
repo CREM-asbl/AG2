@@ -3,7 +3,7 @@ Protected Class Polygon
 Inherits Lacet
 	#tag Method, Flags = &h0
 		Function aire() As double
-		  if Ti <> nil then
+		  if Ti <> nil or config.area = 1 then
 		    return coord.airealgepolygon
 		  else
 		    return coord.airearithpolygon

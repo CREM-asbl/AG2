@@ -60,8 +60,8 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  super.constructor
-		  OpId = 45
+		  'super.constructor
+		  'OpId = 45
 		  
 		End Sub
 	#tag EndMethod
@@ -69,7 +69,7 @@ Inherits Intersec
 	#tag Method, Flags = &h0
 		Sub Constructor(sbpt as nBpoint)
 		  
-		  Super.Constructor
+		  'Super.Constructor
 		  t = sbpt.taille -1
 		  self.sbpt = sbpt
 		  computeinterbpt
@@ -86,19 +86,19 @@ Inherits Intersec
 		  // Note that this may need modifications if there are multiple constructor choices.
 		  // Possible constructor calls:
 		  
-		  Super.Constructor
+		  'Super.Constructor
 		  
-		  t = s.npts-1
-		  self.s = s
-		  sbpt = s.coord
-		  
-		  redim bptinters(t,t)
-		  redim ids(t,t)
-		  redim val(t,t)
-		  redim pts(-1)
-		  
-		  computeinter
-		  s.autointer = self
+		  't = s.npts-1
+		  'self.s = s
+		  'sbpt = s.coord
+		  '
+		  'redim bptinters(t,t)
+		  'redim ids(t,t)
+		  'redim val(t,t)
+		  'redim pts(-1)
+		  '
+		  'computeinter
+		  's.autointer = self
 		  'if combien > 0 then
 		  'CurrentContent.TheIntersecs.AddObject(self)
 		  'end if

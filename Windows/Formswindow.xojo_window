@@ -612,6 +612,7 @@ End
 		    end if
 		    CurrentContent.TheObjects.unselectAll
 		    CurrentContent.CurrentOperation  = Op
+		    wnd.refreshtitle
 		    Close
 		  end if
 		End Sub
@@ -629,6 +630,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		  
 		  return false
 		End Function
 	#tag EndEvent
