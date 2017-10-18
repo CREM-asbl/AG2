@@ -45,10 +45,12 @@ Inherits SelectOperation
 		  dim s as shape
 		  dim i, n as integer
 		  
+		  
+		  s = currenthighlightedshape
 		  n = tempshape.count-1
 		  setoldcolors
 		  
-		  s = currenthighlightedshape
+		  
 		  
 		  if s.side <> -1 then
 		    s = tempshape.item(0)

@@ -61,7 +61,7 @@ Inherits nBpoint
 	#tag Method, Flags = &h0
 		Function BibDroiteInterCercle(D as BiBPoint, Byref p() as BasicPoint, byref q as Basicpoint, byref v as basicpoint) As integer
 		  dim ray, dist, cot as Double
-		  dim i, n as integer
+		  
 		  
 		  q = D.second - D.First                       // D est le cercle
 		  ray = q.norme
@@ -93,6 +93,30 @@ Inherits nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function BiBInterBiB(B2 as BiBPoint) As BasicPoint
+		  dim B1 as BiBPoint
+		  dim p , q, r as BasicPoint
+		  dim t, det as double
+		  
+		  B1 = self
+		  p = B1.VecteurDirecteur
+		  p = p.VecNorPerp
+		  q = B2.VecteurDirecteur
+		  det = p*q
+		  
+		  if  abs(p*q) < epsilon then
+		    Return nil
+		  else
+		    r = B1.first - B2.first
+		    t = (r*p)/det
+		    return B2.first +  q * t
+		  end if 
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function BibInterCercles(D as BiBPoint, Byref p() as BasicPoint, byref bq as Basicpoint, byref v as basicpoint) As integer
 		  dim B as BiBPoint
 		  
@@ -112,57 +136,76 @@ Inherits nBpoint
 		Function BibInterdroites(D as BiBPoint, n1 as integer, n2 as integer, Byref r1 as double, byref r2 as double) As basicPoint
 		  dim p, q, u, v as BasicPoint
 		  
-		  p = D.VecteurDirecteur
+		  'p = D.VecteurDirecteur
+		  'if p = nil then
+		  'return nil
+		  'end if
+		  'p = p.Vecnorperp
+		  'u = VecteurDirecteur
+		  'if u = nil then
+		  'return nil
+		  'end if
+		  'q = D.first-first
+		  'r1= p*u
+		  '
+		  'if abs (r1) < epsilon*u.norme then   
+		  'v = D.first-second
+		  'r2 = q.vect(v)
+		  'if abs(r2) <= epsilon*v.norme*q.norme then
+		  'r1 = 1000   // les bipoints sont alignés
+		  'r2 = 1000
+		  'else
+		  'r1 = 999     // les bipoints sont paralleles
+		  'r2 = 999
+		  'end if
+		  'return nil
+		  'end if
+		  '
+		  'r1 = (p*q)/(p*u)   // r = 999: parallelisme r = 1000: alignement  et return = nil sinon r réel  et return <> nil
+		  'q= BptOnBiBpt(r1) // r1 est la position du point d'intersection sur self
+		  'r2 = q.location(D.first,D.second)  //Position sur D
+		  
+		  'setlongueur
+		  'D.setlongueur
+		  '
+		  'if (n1 = 1 and r1 <-epsilon)  or(n1 = 2 and ((r1<0 and abs(r1)*longueur > epsilon) or (r1>1 and (r1-1)*longueur > epsilon)) ) then
+		  'return nil
+		  'elseif (n2 = 1 and r2 <-epsilon) or(n2 = 2 and ((r2<0 and abs(r2)*D.longueur > epsilon) or (r2>1 and (r2-1)*D.longueur > epsilon)) ) then
+		  'return nil
+		  'else
+		  'return q
+		  'end if
+		  
+		  ///////////////////:::::::::::::::::::::::::::::::::::::::::::::::::::://////////////////////////////////////////////////////////////////
+		  
+		  p = BiBInterBib(D)
+		  
 		  if p = nil then
-		    return nil
-		  end if
-		  p = p.Vecnorperp
-		  u = VecteurDirecteur
-		  if u = nil then
-		    return nil
-		  end if
-		  q = D.first-first
-		  r1= p*u
-		  
-		  if abs (r1) < epsilon*u.norme then   // Bibpoints parallèles ou alignés
-		    v = D.first-second
-		    r2 = q.vect(v)
-		    if abs(r2) <= epsilon*v.norme*q.norme then
-		      r1 = 1000   // les bipoints sont alignés
-		      r2 = 1000
-		    else
-		      r1 = 999     // les bipoints sont paralleles
-		      r2 = 999
-		    end if
-		    return nil
-		  end if
-		  
-		  r1 = (p*q)/(p*u)   // r = 999: parallelisme r = 1000: alignement  et return = nil sinon r réel  et return <> nil
-		  q= BptOnBiBpt(r1) // r1 est la position du point d'intersection sur self
-		  r2 = q.location(D.first,D.second)  //Position sur D
-		  
-		  setlongueur
-		  D.setlongueur
-		  'if (n1 = 1 and r1 <-epsilon) or(n1 = 2 and (r1<-epsilon or r1>1+epsilon)) then
-		  'if (n1 = 1 and r1 <0) or(n1 = 2 and (r1<0 or r1>1)) then
-		  
-		  if (n1 = 1 and r1 <-epsilon)  or(n1 = 2 and ((r1<0 and abs(r1)*longueur > epsilon) or (r1>1 and (r1-1)*longueur > epsilon)) ) then
-		    return nil
-		    'elseif (n2 = 1 and r2 <0) or(n2 = 2 and (r2<0 or r2>1)) then
-		  elseif (n2 = 1 and r2 <-epsilon) or(n2 = 2 and ((r2<0 and abs(r2)*D.longueur > epsilon) or (r2>1 and (r2-1)*D.longueur > epsilon)) ) then
-		    return nil
+		    return nil // Bibpoints parallèles ou alignés
 		  else
-		    return q
+		    r1 = p.location (first, second)
+		    r2 = p.location (D.first, D.second)
+		    
+		    
+		    setlongueur
+		    D.setlongueur
+		    
+		    if (n1 = 1 and r1 <-epsilon)  or(n1 = 2 and ((r1<0 and abs(r1)*longueur > epsilon) or (r1>1 and (r1-1)*longueur > epsilon)) ) then
+		      return nil
+		    elseif (n2 = 1 and r2 <-epsilon) or(n2 = 2 and ((r2<0 and abs(r2)*D.longueur > epsilon) or (r2>1 and (r2-1)*D.longueur > epsilon)) ) then
+		      return nil
+		    else
+		      return p
+		    end if
 		  end if
-		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function BibSegmentInterCercle(D as BiBPoint, Byref p() as BasicPoint, byref bq as BasicPoint, byref v as basicpoint) As integer
-		  dim q() as BasicPoint
-		  dim i, n, m as integer
+		  
+		  dim i, n as integer
 		  
 		  n = BiBDroiteInterCercle(D,p(), bq, v)
 		  
@@ -198,8 +241,7 @@ Inherits nBpoint
 		Function ComputeCircleFirstIntersect(S as Shape, k as integer, P as BasicPoint) As Basicpoint
 		  dim q() as BasicPoint
 		  dim Bib As  BiBPoint
-		  dim i,n as integer
-		  dim r as double
+		  dim n as integer
 		  dim bp, bq, v as BasicPoint
 		  dim dr as droite
 		  
@@ -239,7 +281,6 @@ Inherits nBpoint
 		  dim q() as BasicPoint
 		  dim Bib As  BiBPoint
 		  dim i,n, k as integer
-		  dim r as double
 		  dim bq, v as BasicPoint
 		  redim q(-1)
 		  redim q(1)
@@ -601,7 +642,7 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function PositionOnCircle(a as double, orien as integer) As BasicPoint
-		  dim p, q as BasicPoint
+		  dim  q as BasicPoint
 		  dim r, b as double
 		  
 		  

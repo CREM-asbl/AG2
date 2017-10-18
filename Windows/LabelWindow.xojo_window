@@ -597,6 +597,7 @@ Begin Window LabelWindow
       ScrollbarHorizontal=   False
       ScrollBarVertical=   True
       SelectionType   =   0
+      ShowDropIndicator=   False
       TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True

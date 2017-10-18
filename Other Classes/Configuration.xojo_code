@@ -971,7 +971,7 @@ Protected Class Configuration
 			Name="Area"
 			Group="Behavior"
 			InitialValue="0"
-			Type="Integer"
+			Type="double"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"

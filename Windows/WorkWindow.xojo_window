@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -2159,10 +2158,10 @@ End
 		Sub ClearStdBox()
 		  dim i as integer
 		  
-		  for i=0 to 3
-		    StdOutil(i).Graphics.FillRect(0,0,width,height)
-		    stdoutil(i).refresh
-		  next
+		  'for i=0 to 3
+		  'StdOutil(i).Graphics.FillRect(0,0,width,height)
+		  'stdoutil(i).refresh
+		  'next
 		  for i=0 to 3
 		    SetIco(i,0)
 		    StdOutil(i).refresh
@@ -3238,7 +3237,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  dim fs as figureshape
+		  
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
