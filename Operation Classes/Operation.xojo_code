@@ -70,8 +70,6 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  
-		  
 		  display = ""
 		  if oldvisible <> nil then
 		    oldvisible.tspfalse

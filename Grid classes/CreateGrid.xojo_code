@@ -3,27 +3,25 @@ Protected Class CreateGrid
 Inherits Operation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  dim gw as GridWindow
 		  dim k as integer
 		  
 		  super.constructor()
 		  OpId = 29
 		  
 		  'todo : A placer dans gridWindow
-		  gw = new GridWindow
-		  oldtype = gw.popupmenu1.listindex
+		  oldtype = GridWindow.popupmenu1.listindex
 		  
 		  if CurrentContent.thegrid <> nil then
 		    oldtaillepoints = CurrentContent.thegrid.gs
 		    oldrapport = CurrentContent.thegrid.rapport
 		  end if
-		  gw.ShowModal
+		  GridWindow.ShowModal
 		  
-		  if gw.result=1 then
-		    type = gw.PopupMenu1.listindex
-		    taillepoints = gw.Popupmenu2.listindex + 2
-		    k = gw.Popupmenu3.listindex
-		    gw.close
+		  if GridWindow.result=1 then
+		    type = GridWindow.PopupMenu1.listindex
+		    taillepoints = GridWindow.Popupmenu2.listindex + 2
+		    k = GridWindow.Popupmenu3.listindex
+		    GridWindow.close
 		    select case k
 		    case 0
 		      rapport = 1
