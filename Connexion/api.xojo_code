@@ -70,7 +70,7 @@ Protected Module api
 		    return
 		  #endif
 		  
-		  if System.Network.IsConnected or TargetLinux then
+		  if System.Network.IsConnected then
 		    http = New HTTPSocket
 		  end if
 		End Sub

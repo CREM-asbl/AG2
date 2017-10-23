@@ -31,7 +31,7 @@ Begin Window GetUpdateW
       Bold            =   True
       ButtonStyle     =   "0"
       Cancel          =   False
-      Caption         =   "Mettre à jour"
+      Caption         =   "Télécharger"
       Default         =   True
       Enabled         =   True
       Height          =   28
@@ -393,12 +393,6 @@ End
 		Group="Frame"
 		InitialValue="Untitled"
 		Type="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="version"
-		Group="Behavior"
-		Type="string"
-		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Visible"

@@ -2498,7 +2498,7 @@ End
 		  if LibBox.Visible then
 		    dim i as integer
 		    for i=0 to 6
-		      LibOutils(i).Visible =true
+		      LibOutils(i).Visible =  Config.nlibvis(i) or (i = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		    next
 		  end if
 		  LibBox.Refresh
@@ -3369,12 +3369,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  me.Visible = Config.nlibvis(index) or (index = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
 		  
-		  'if index = selectedtool then
-		  'g.ForeColor = RGB(255,0,0)
-		  'g.DrawRect(0,0,g.Width,g.Height)
-		  'end if
 		End Sub
 	#tag EndEvent
 #tag EndEvents
