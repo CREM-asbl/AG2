@@ -47,17 +47,17 @@ Protected Class Figure
 		      f1.auto = 1
 		      return
 		    end if
-		    
-		    'Troisième cas: toutes les formes sont autosim ou paraperp
-		    t = true
-		    for j = 0 to ubound(aut)
-		      t  = t and ((aut(j) =1 ) or (aut(j) = 6))
-		    next
-		    if t then
-		      f1.auto = 6
-		      return
-		    end if
 		  end if
+		  'Troisième cas: toutes les formes sont autosim ou paraperp
+		  t = true
+		  for j = 0 to ubound(aut)
+		    t  = t and ((aut(j) =1 ) or (aut(j) = 6))
+		  next
+		  if t then
+		    f1.auto = 6
+		    return
+		  end if
+		  
 		  
 		  'Quatrième cas: s'il y a un mélange de droites  avec des formes autospe
 		  
