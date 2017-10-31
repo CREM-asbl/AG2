@@ -404,13 +404,13 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Close()
-		  reset
+		  reset(0)
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub MouseExit()
-		  reset
+		  reset(0)
 		End Sub
 	#tag EndEvent
 
@@ -500,9 +500,9 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
+		Sub reset(n as integer)
 		  if not selection and kit = 0  then
-		    Workwindow.setIco(fam,0)
+		    Workwindow.setIco(fam,n)
 		    Workwindow.stdoutil(fam).refresh
 		  end if
 		End Sub
@@ -577,7 +577,7 @@ End
 		Sub MouseEnter(index as Integer)
 		  if  not selection then
 		    workwindow.selectedtool = fam
-		    reset
+		    reset(index)
 		  end if
 		  
 		End Sub

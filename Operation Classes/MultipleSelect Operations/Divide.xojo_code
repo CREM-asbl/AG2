@@ -297,12 +297,12 @@ Inherits MultipleSelectOperation
 		    
 		  case 2
 		    secondpoint = point(s)
-		    ar = array(firstpoint, secondpoint)
-		    if firstpoint.onsameshape(secondpoint, sh)  and ((sh isa droite) or  (sh isa circle)) and sh.PassePar(ar) then
-		      currentshape = sh
-		    else
-		      currentshape = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
-		    end if
+		    'ar = array(firstpoint, secondpoint)
+		    'if firstpoint.onsameshape(secondpoint, sh)  and ((sh isa droite) or  (sh isa circle)) and sh.PassePar(ar) then
+		    'currentshape = sh
+		    'else
+		    currentshape = new BiPoint(Objects,Firstpoint,secondpoint) // on crée un "bipoint de circonstance"
+		    'end if
 		  end select
 		  return true
 		  
