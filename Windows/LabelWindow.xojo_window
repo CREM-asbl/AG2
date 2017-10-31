@@ -39,12 +39,12 @@ Begin Window LabelWindow
       DataSource      =   ""
       Enabled         =   True
       Format          =   ""
-      Height          =   22
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   54
+      Left            =   56
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -76,13 +76,13 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   "10\r\n11\r\n12\r\n13\r\n14\r\n15\r\n16\r\n17\r\n18\r\n19\r\n20\r\n21\r\n22\r\n23\r\n24\r\n25\r\n26\r\n27\r\n28\r\n29\r\n30"
       Italic          =   False
-      Left            =   54
+      Left            =   56
       ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -100,7 +100,7 @@ Begin Window LabelWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   45
+      Width           =   50
    End
    Begin CheckBox Italic
       AutoDeactivate  =   True
@@ -109,7 +109,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -132,7 +132,7 @@ Begin Window LabelWindow
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   60
+      Width           =   80
    End
    Begin PushButton submit
       AutoDeactivate  =   True
@@ -171,7 +171,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   22
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -187,7 +187,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   4
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Texte :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -206,7 +205,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -222,7 +221,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   5
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Taille :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -233,7 +231,7 @@ Begin Window LabelWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   36
+      Width           =   40
    End
    Begin Rectangle RecColor
       AutoDeactivate  =   False
@@ -241,7 +239,7 @@ Begin Window LabelWindow
       BottomRightColor=   &c00000000
       Enabled         =   True
       FillColor       =   &c00FFFFFF
-      Height          =   21
+      Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -254,8 +252,7 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
-      Top             =   49
+      Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True
       Width           =   20
@@ -266,12 +263,12 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   111
+      Left            =   115
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -282,7 +279,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   7
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Couleur :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -301,7 +297,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -317,18 +313,17 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   8
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Axe X :"
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   81
+      Top             =   82
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   36
+      Width           =   40
    End
    Begin Label TxtY
       AutoDeactivate  =   True
@@ -336,7 +331,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -352,22 +347,21 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   9
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Axe Y :"
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   81
+      Top             =   82
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   45
+      Width           =   40
    End
    Begin TextField CoordX
       AcceptTabs      =   False
-      Alignment       =   0
+      Alignment       =   2
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
       BackColor       =   &c00FFFFFF
@@ -383,7 +377,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   54
+      Left            =   56
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -402,15 +396,15 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   81
+      Top             =   82
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   29
+      Width           =   30
    End
    Begin TextField CoordY
       AcceptTabs      =   False
-      Alignment       =   0
+      Alignment       =   2
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
       BackColor       =   &c00FFFFFF
@@ -426,7 +420,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   170
+      Left            =   172
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -445,11 +439,11 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   81
+      Top             =   82
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   29
+      Width           =   30
    End
    Begin UpDownArrows UpDownArrows1
       AcceptFocus     =   False
@@ -469,7 +463,7 @@ Begin Window LabelWindow
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   81
+      Top             =   82
       Visible         =   True
       Width           =   13
    End
@@ -481,7 +475,7 @@ Begin Window LabelWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   202
+      Left            =   208
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -491,7 +485,7 @@ Begin Window LabelWindow
       TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   80
+      Top             =   82
       Visible         =   True
       Width           =   13
    End
@@ -532,7 +526,7 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
@@ -548,7 +542,6 @@ Begin Window LabelWindow
       Selectable      =   False
       TabIndex        =   15
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Police :"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -561,43 +554,27 @@ Begin Window LabelWindow
       Visible         =   True
       Width           =   40
    End
-   Begin ListBox Polices
+   Begin ComboBox Polices
+      AutoComplete    =   False
       AutoDeactivate  =   True
-      AutoHideScrollbars=   True
       Bold            =   False
-      Border          =   True
-      ColumnCount     =   1
-      ColumnsResizable=   False
-      ColumnWidths    =   ""
       DataField       =   ""
       DataSource      =   ""
-      DefaultRowHeight=   -1
       Enabled         =   True
-      EnableDrag      =   False
-      EnableDragReorder=   False
-      GridLinesHorizontal=   0
-      GridLinesVertical=   0
-      HasHeading      =   False
-      HeadingIndex    =   -1
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
-      Hierarchical    =   False
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
       Left            =   254
+      ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
-      RequiresSelection=   False
       Scope           =   0
-      ScrollbarHorizontal=   False
-      ScrollBarVertical=   True
-      SelectionType   =   0
-      ShowDropIndicator=   False
       TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
@@ -609,8 +586,6 @@ Begin Window LabelWindow
       UseFocusRing    =   True
       Visible         =   True
       Width           =   172
-      _ScrollOffset   =   0
-      _ScrollWidth    =   -1
    End
    Begin PushButton Delete
       AutoDeactivate  =   True
@@ -641,7 +616,7 @@ Begin Window LabelWindow
       Top             =   82
       Underline       =   False
       Visible         =   False
-      Width           =   80
+      Width           =   100
    End
    Begin CheckBox Fixe
       AutoDeactivate  =   True
@@ -650,12 +625,12 @@ Begin Window LabelWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   516
+      Left            =   532
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -673,7 +648,7 @@ Begin Window LabelWindow
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   78
+      Width           =   80
    End
 End
 #tag EndWindow
@@ -697,20 +672,19 @@ End
 		  Title = Dico.value("Nommer")
 		  Txt.Text = Dico.value("Name")+" : "
 		  Texte.Text = lab.Text
-		  Pol.Text = Dico.value("Font")+ " :"
+		  Pol.Text = Dico.value("Font")+ " : "
 		  TxtSize.Text = Dico.value("Size")+" : "
 		  size.Text = str(lab.Textsize)
 		  TxtColor.Text = Dico.value("Color")+" : "
 		  RecColor.FillColor = Lab.TextColor
 		  Italic.caption = " "+Dico.value("Italic")
-		  'Italic.setBoolean(lab.TextFont)
 		  Fixe.Caption = Dico.value("Fixe")
 		  corr = can.dtransform(lab.correction)
-		  CoordX.text =str(corr.X)
+		  CoordX.text = str(corr.X)
 		  CoordY.text = str(- corr.y)
 		  CoordX.Backcolor = blanc
 		  CoordY.Backcolor = blanc
-		  Texte.Backcolor = blanc
+		  Texte.Backcolor = blanc 
 		  if drapnew then
 		    Delete.visible = false
 		    for i = 0 to Polices.ListCount-1
@@ -720,7 +694,7 @@ End
 		    next
 		  else
 		    for i = 0 to Polices.ListCount-1
-		      if Polices.List(i)  = Lab.TextFont then
+		      if Polices.List(i) = Lab.TextFont then
 		        Polices.ListIndex = i
 		      end if
 		    next
@@ -919,23 +893,13 @@ End
 #tag Events Polices
 	#tag Event
 		Sub Open()
-		  dim i, k, n as integer
+		  dim i as integer
 		  
-		  n= FontCount-1
-		  For i=1 to n
-		    If Font(i)="Arial"  or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol" Then
+		  For i=1 to FontCount-1
+		    If Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol" Then
 		      me.AddRow Font(i)
 		    end if
 		  Next
-		  
-		  'i = 0
-		  'while me.List(i) <> "Times New Roman" and i < me.listcount
-		  'i = i+1
-		  'wend
-		  'if i < me.listcount then
-		  'me.removerow i
-		  'me.InsertRow 0, "Times New Roman"
-		  'end if
 		  
 		End Sub
 	#tag EndEvent
