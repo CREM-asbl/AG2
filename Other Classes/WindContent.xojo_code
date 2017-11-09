@@ -289,10 +289,15 @@ Protected Class WindContent
 		    Mac = app.theMacros.GetMacro(cap)
 		    if Mac = nil then
 		      cap = cap+".xmag"
-		      Doc = new XmlDocument(app.MacFolder.Child(cap))
-		      mac =new Macro(Doc)
-		      app.themacros.addmac mac
-		      wnd.updatesousmenusmacros
+		      try 
+		        Doc = new XmlDocument(app.MacFolder.Child(cap))
+		        mac =new Macro(Doc)
+		        app.themacros.addmac mac
+		        wnd.updatesousmenusmacros
+		      catch
+		        MsgBox "Macro "+cap+" introuvable"
+		        return nil
+		      end try
 		    end if
 		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide

@@ -13,7 +13,7 @@ Inherits Operation
 		    CurrentContent.Histo = CurrentContent.OpList.DocumentElement
 		    Histo = CurrentContent.Histo
 		  catch err as XmlException
-		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
+		    MsgBox Dico.Value("MsgNovalidFile")
 		    return
 		  end try
 		  
@@ -25,7 +25,7 @@ Inherits Operation
 		  super.constructor
 		  OpId = 34
 		  
-		  wnd.Title = Histfile.Name
+		  Workwindow.Title = Histfile.Name
 		  
 		  HistMenu.Child("FileMenu").Text = Dico.Value("FileMenu")
 		  HistMenu.Child("FileMenu").Child("HistClose").Text = Dico.Value("FileClose")
@@ -34,31 +34,27 @@ Inherits Operation
 		  HistMenu.Child("FileMenu").Child("PrintSetUp").Text = Dico.Value("PrintSetUp")
 		  HistMenu.Child("FileMenu").Child("FilePrint").Text = Dico.Value("FilePrint")
 		  HistMenu.Child("FileMenu").Child("FileAfficher").Text = Dico.Value("Afficher Opérations")
+		  
 		  for i= 0 to HistMenu.Child("Fenetres").Count-1
 		    HistMenu.Child("Fenetres").remove(i)
 		  next
-		  wnd.MenuBar.Child("Fenetres").item(wnd.GetNumWindow).Checked = false
-		  for i = 0 to wnd.MenuBar.Child("Fenetres").Count-1
+		  
+		  for i = 0 to Workwindow.MenuBar.Child("Fenetres").Count-1
 		    mitem = new MenuItem
 		    mitem.Name = "winitem"
-		    mitem.Text = wnd. MenuBar.Child("Fenetres").item(i).text
-		    mitem.index =wnd. MenuBar.Child("Fenetres").item(i).index
-		    if mitem.index = wnd.GetNumWindow then
-		      mitem.Checked = true
-		    end if
+		    mitem.Text = Workwindow. MenuBar.Child("Fenetres").item(i).text
+		    mitem.index =Workwindow. MenuBar.Child("Fenetres").item(i).index
 		    HistMenu.Child("Fenetres").append mitem
 		  next
 		  
-		  wnd.MenuBar = HistMenu
-		  wnd.draphisto = true
-		  wnd.rh = self
+		  Workwindow.MenuBar = HistMenu
+		  Workwindow.draphisto = true
+		  Workwindow.rh = self
 		  
-		  'objects = CurrentContent.TheObjects
 		  XMLLoadOperations(CurrentContent.OpList)
 		  can.mousecursor = System.Cursors.StandardPointer
-		  Hcmd = New HistCmd
-		  Hcmd.ShowWithin(wnd)
-		  Hcmd.HistCtrl.rh = self
+		  HistCmd.ShowWithin(Workwindow)
+		  HistCmd.HistCtrl.rh = self
 		  
 		End Sub
 	#tag EndMethod
@@ -76,10 +72,7 @@ Inherits Operation
 		  
 		  can.Mousecursor = system.Cursors.wait
 		  CurrentContent.CurrentOperation=nil
-		  wnd.menubar = menu
-		  wnd.MenuBar.Child("Fenetres").Item(wnd.GetNumWindow).Checked = true
-		  wnd.draphisto = false
-		  wnd.Refresh
+		  Workwindow.closeHisto
 		  
 		  CurrentContent.SaveHisto
 		  CurrentContent.currentop = currentop
@@ -149,7 +142,9 @@ Inherits Operation
 		  wend
 		  if EL <> nil then
 		    curoper = CurrentContent.CreerOperation(EL)
-		    CurOper.RedoOperation(EL)
+		    if curoper <> nil then
+		      CurOper.RedoOperation(EL)
+		    end if
 		  end if
 		  
 		  can.refreshbackground
@@ -206,7 +201,7 @@ Inherits Operation
 		  
 		  n =val(Histo.GetAttribute(Dico.value("PrefsTrace")))
 		  Config.Trace = (n=1)
-		  wnd.refresh
+		  Workwindow.refresh
 		  
 		  currentop = -1
 		  NextOper  //Chargement du repère ou d'un fichier de formes
@@ -257,10 +252,6 @@ Inherits Operation
 
 	#tag Property, Flags = &h0
 		drref As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Hcmd As HistCmd
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

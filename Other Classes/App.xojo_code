@@ -158,12 +158,7 @@ Inherits Application
 		  
 		  if not quitting then
 		    if Workwindow.draphisto then
-		      if curoper <> nil then
-		        ReadHisto(curoper).Hcmd.close
-		      end if
-		      Workwindow.menubar = menu
-		      Workwindow.draphisto = false
-		      Workwindow.Refresh
+		      Workwindow.closeHisto
 		    end if
 		    Workwindow.deleteContent
 		    if UBound (Workwindow.wcontent) = -1 then
