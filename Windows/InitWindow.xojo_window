@@ -290,11 +290,6 @@ End
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		result As integer
-	#tag EndProperty
-
-
 #tag EndWindowCode
 
 #tag Events PopupMenu1

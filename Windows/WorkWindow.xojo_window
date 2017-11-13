@@ -728,7 +728,9 @@ End
 		  dim item as MenuItem
 		  dim i as integer
 		  
-		  MenuBar.Child("Fenetres").Item(GetNumWindow).Checked = true
+		  if MenuBar.Child("Fenetres").Count > 0 then
+		    MenuBar.Child("Fenetres").Item(GetNumWindow).Checked = true
+		  end if
 		  
 		  if (MenuBar = HistMenu) then
 		    return
