@@ -48,7 +48,7 @@ Begin Window GridWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      Text            =   "Grille:"
+      Text            =   "Grille"
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "System"

@@ -563,12 +563,17 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Sub setMenu(m as string)
+		  if Menu = m then
+		    return
+		  end if
+		  
 		  oldMenu = Menu
 		  if m = "" then
 		    m  = "Menu_AC"
 		  end if
 		  Menu = m
 		  ChargerConfig
+		  save
 		  
 		End Sub
 	#tag EndMethod

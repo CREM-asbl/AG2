@@ -290,11 +290,6 @@ End
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		result As integer
-	#tag EndProperty
-
-
 #tag EndWindowCode
 
 #tag Events PopupMenu1
@@ -319,7 +314,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Config.Menu = PopupMenu1.Text
+		  Config.setMenu(PopupMenu1.Text)
 		  App.Continuer
 		  close
 		  

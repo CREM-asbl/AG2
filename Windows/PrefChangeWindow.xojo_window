@@ -25,19 +25,19 @@ Begin Window PrefChangeWindow
    Resizeable      =   False
    Title           =   "Choix Config"
    Visible         =   True
-   Width           =   366
+   Width           =   314
    Begin Label StaticText1
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   30
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -48,18 +48,17 @@ Begin Window PrefChangeWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Configuration :"
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   14
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   107
+      Width           =   100
    End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
@@ -67,13 +66,13 @@ Begin Window PrefChangeWindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   25
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   152
+      Left            =   140
       ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -87,10 +86,10 @@ Begin Window PrefChangeWindow
       TextFont        =   "System"
       TextSize        =   12.0
       TextUnit        =   0
-      Top             =   14
+      Top             =   20
       Underline       =   False
       Visible         =   True
-      Width           =   154
+      Width           =   150
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   True

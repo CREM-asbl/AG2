@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -726,6 +727,10 @@ End
 		  dim B, B1, B2 as boolean
 		  dim item as MenuItem
 		  dim i as integer
+		  
+		  if MenuBar.Child("Fenetres").Count > 0 then
+		    MenuBar.Child("Fenetres").Item(GetNumWindow).Checked = true
+		  end if
 		  
 		  if (MenuBar = HistMenu) then
 		    return
@@ -2166,6 +2171,15 @@ End
 		    SetIco(i,0)
 		    StdOutil(i).refresh
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CloseHisto()
+		  HistCmd.close
+		  menubar = menu
+		  draphisto = false
+		  Refresh
 		End Sub
 	#tag EndMethod
 
