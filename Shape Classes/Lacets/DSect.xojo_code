@@ -44,7 +44,6 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist,  p as BasicPoint)
-		  
 		  super.constructor(ol,3, p)
 		  auto = 3
 		  narcs = 1

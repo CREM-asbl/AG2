@@ -45,13 +45,6 @@ Inherits DSect
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, p as BasicPoint)
-		  
-		  'super.constructor(ol,3,3)
-		  'narcs = 1
-		  'Points.append new Point(ol, p)
-		  'setPoint(Points(0))
-		  'ori = 0
-		  'createskull(p)
 		  super.constructor(ol,p)
 		  auto = 2
 		  
@@ -85,9 +78,10 @@ Inherits DSect
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, Temp as XMLElement)
-		  Super.Constructor(ol,Temp)
+		  super.Constructor(ol,Temp)
 		  ncpts = 3
-		  nsk = new Lskull(can.transform(Points(0).bpt))
+		  createskull(can.transform(Points(0).bpt))
+		  computeextre
 		  
 		End Sub
 	#tag EndMethod
@@ -102,7 +96,6 @@ Inherits DSect
 	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
 		  'Cfr Bande
-		  
 		  nsk = new Lskull(5,p)
 		  nsk.skullof = self
 		End Sub
@@ -115,10 +108,6 @@ Inherits DSect
 		    Points(i).moveto(p)
 		  next
 		  
-		  if n > 0 then
-		    
-		  end if
-		  'updatecoord
 		  select case n
 		  case 0
 		    arcangle = 0
@@ -131,7 +120,6 @@ Inherits DSect
 		      Lskull(nsk).item(i).border = 100  
 		    next
 		  case 2
-		    
 		    Lskull(nsk).item(4).border = 100
 		  end select
 		  constructshape
