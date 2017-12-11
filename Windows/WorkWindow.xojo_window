@@ -75,7 +75,7 @@ Begin Window WorkWindow
       BorderWidth     =   1
       BottomRightColor=   &c00000000
       Enabled         =   True
-      FillColor       =   &c00FFFFFF
+      FillColor       =   &c80808000
       Height          =   595
       HelpTag         =   ""
       Index           =   -2147483648
@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
