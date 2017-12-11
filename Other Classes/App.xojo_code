@@ -282,21 +282,14 @@ Inherits Application
 		  dim menus(-1),nom as String
 		  dim i as integer
 		  
-		  'for i=1 to AppFolder.count
-		  'nom = app.AppFolder.trueItem(i).Name
-		  'if right(nom,4)=".men" then
-		  'menus.append(Left(nom,len(nom)-4))
-		  'end if
-		  'next
-		  
 		  menus.append "Menu_A"
 		  menus.append "Menu_B"
 		  menus.append "Menu_C"
 		  menus.append "Menu_AB"
 		  menus.append "Menu_AC"
 		  
-		  for i=1 to MenusFolder.count-1
-		    nom = app.MenusFolder.trueItem(i).Name
+		  for i=1 to MenusFolder.count
+		    nom = MenusFolder.trueItem(i).Name
 		    if right(nom,4)=".men" then
 		      menus.append(Left(nom,len(nom)-4))
 		    end if

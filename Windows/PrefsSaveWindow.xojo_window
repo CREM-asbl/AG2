@@ -25,7 +25,7 @@ Begin Window PrefsSaveWindow
    Resizeable      =   False
    Title           =   "Enregistrer Sous"
    Visible         =   True
-   Width           =   408
+   Width           =   320
    Begin Label StaticText1
       AutoDeactivate  =   True
       Bold            =   False
@@ -79,7 +79,7 @@ Begin Window PrefsSaveWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   217
+      Left            =   182
       LimitText       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -117,7 +117,7 @@ Begin Window PrefsSaveWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   256
+      Left            =   217
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -219,12 +219,11 @@ End
 		Sub Action()
 		  dim nom as string
 		  nom = EditField1.text
-		  if (instr(nom, " ") <> 0)or (nom.Len() = 0)  then
+		  if (instr(nom, " ") <> 0) or (nom.Len() = 0)  then
 		    MsgBox Dico.Value("Noblankspace")
 		  else
+		    Config.CreateNewMenu(nom)
 		    Config.setMenu(nom)
-		    Config.SaveToFile
-		    Config.save
 		    Close
 		  end if
 		  

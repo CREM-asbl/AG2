@@ -1296,12 +1296,8 @@ End
 #tag Events SaveButton
 	#tag Event
 		Sub Action()
-		  dim psw as PrefsSaveWindow
-		  
 		  CurrentContent.CurrentOperation=nil
-		  
-		  psw=new PrefsSaveWindow
-		  psw.ShowModal
+		  PrefsSaveWindow.ShowModal
 		  
 		End Sub
 	#tag EndEvent
@@ -1319,27 +1315,15 @@ End
 #tag Events LoadButton
 	#tag Event
 		Sub Action()
-		  dim pcw as PrefChangeWindow
-		  
 		  CurrentContent.CurrentOperation=nil
-		  
-		  pcw=new PrefChangeWindow
-		  pcw.ShowModal
-		  
-		  
-		  
-		  
-		  
+		  PrefChangeWindow.ShowModal
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events PWButton
 	#tag Event
 		Sub Action()
-		  dim pcw As PassChangeWindow
-		  
-		  pcw = new PassChangeWindow
-		  pcw.ShowModal
+		  PassChangeWindow.ShowModal
 		  
 		End Sub
 	#tag EndEvent
