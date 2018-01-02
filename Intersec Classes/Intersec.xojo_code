@@ -65,8 +65,8 @@ Inherits SelectOperation
 		  init
 		  drappara = false
 		  somevalidpoint = false
-		  if not sh1 isa circle then
-		    if not sh2 isa circle then
+		  if not sh1 isa circle and not sh1 isa lacet then
+		    if not sh2 isa circle and not sh2 isa lacet then
 		      computeinterlines
 		    else
 		      computeinterlines_circle
@@ -80,7 +80,7 @@ Inherits SelectOperation
 		        next
 		      end if
 		    end if
-		  else
+		  elseif sh1 isa circle and sh2 isa circle then
 		    k = computeintercercles
 		    if k = 3 then
 		      somevalidpoint = false
