@@ -20,7 +20,7 @@ Inherits Operation
 		  dim version as string
 		  dim msg as MessageDialog
 		  dim but as MessageDialogButton
-		  dim BkCol as string
+		  
 		  
 		  constructor()
 		  
@@ -59,33 +59,23 @@ Inherits Operation
 		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
 		  Config.setMenu(Cfg)
-		  
+		  currentcontent.ChargerPrefs(FAG)
+		  currentcontent.ChargerObjets(FAG)
+		  currentcontent.CurrentFile = f
+		  currentcontent.CurrentFileUpToDate=true
 		  app.themacros.XMLLoadMacros(FAG)
-		  
-		  
-		  currentcontent.removeall
-		  currentcontent.ndec = val(FAG.GetAttribute("NbrDec"))
-		  if currentcontent.ndec =0 then
-		    currentcontent.ndec = 2
-		  end if
-		  
-		  can.Mousecursor = system.cursors.wait
-		  BkCol = FAG.GetAttribute("BkCol")
-		  
-		  if BkCol = "noir" and WorkWindow.BackColor = &cFFFFFF then
-		    WorkWindow.switchcolors
-		  end if
-		  
-		  Objects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
-		  Objects.SetId(-1)
-		  Objects.XMLLoadObjects(FAG)
-		  Objects.updateids
-		  currentcontent.FinInitialisation(FAG, f)
-		  finished = true
 		  CurrentContent.AddOperation(self)
+		  currentcontent.CurrentOperation=nil
 		  can.mousecursor = System.Cursors.StandardPointer
-		  can.refreshbackground
 		  Workwindow.refreshtitle
+		  can.refreshbackground
+		  finished = true
+		  
+		  
+		  
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

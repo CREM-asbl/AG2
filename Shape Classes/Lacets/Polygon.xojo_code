@@ -2,12 +2,18 @@
 Protected Class Polygon
 Inherits Lacet
 	#tag Method, Flags = &h0
-		Function aire() As double
-		  if Ti <> nil or config.area = 1 then
-		    return coord.airealgepolygon
-		  else
-		    return coord.airearithpolygon
-		  end if
+		Function airealge() As double
+		  
+		  return coord.airealgepolygon
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airearith() As double
+		  
+		  return coord.airearithpolygon
+		  
 		End Function
 	#tag EndMethod
 
@@ -172,12 +178,6 @@ Inherits Lacet
 		  redim coord.curved(npts-1)
 		  createskull(Points(0).bpt)
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(P as Polygon, M as Matrix)
-		  Shape.constructor(P, M)
 		End Sub
 	#tag EndMethod
 
@@ -547,6 +547,12 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub oldConstructor(P as Polygon, M as Matrix)
+		  Shape.constructor(P, M)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub OldInitConstruction()
 		  Super.InitConstruction
 		  
@@ -732,7 +738,7 @@ Inherits Lacet
 		      end if
 		    end if
 		    
-		    if not nonpointed then
+		    if pointe then
 		      for j = 0 to ubound(points)
 		        childs(j).ToEps(tos)
 		      next
@@ -783,6 +789,11 @@ Inherits Lacet
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -793,6 +804,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -835,6 +851,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -935,12 +956,6 @@ Inherits Lacet
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -957,6 +972,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"

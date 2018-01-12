@@ -64,15 +64,6 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(D as Droite, M as Matrix)
-		  Super.Constructor(D, M)
-		  nextre = D.nextre
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(ol As ObjectsList, p as BasicPoint, n as integer)
 		  'Utilise pour la construction à la souris
 		  
@@ -472,6 +463,15 @@ Inherits Bipoint
 		Function longueur() As double
 		  return firstp.distance(secondp)
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldConstructor(D as Droite, M as Matrix)
+		  Super.Constructor(D, M)
+		  nextre = D.nextre
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -896,6 +896,11 @@ Inherits Bipoint
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -906,6 +911,11 @@ Inherits Bipoint
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -948,6 +958,11 @@ Inherits Bipoint
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -1053,12 +1068,6 @@ Inherits Bipoint
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -1075,6 +1084,11 @@ Inherits Bipoint
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"

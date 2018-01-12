@@ -60,28 +60,6 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  'super.constructor
-		  'OpId = 45
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(sbpt as nBpoint)
-		  
-		  'Super.Constructor
-		  t = sbpt.taille -1
-		  self.sbpt = sbpt
-		  computeinterbpt
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(s as polygon)
 		  // Calling the overridden superclass constructor.
 		  // Note that this may need modifications if there are multiple constructor choices.
 		  // Possible constructor calls:
@@ -102,6 +80,20 @@ Inherits Intersec
 		  'if combien > 0 then
 		  'CurrentContent.TheIntersecs.AddObject(self)
 		  'end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(sbpt as nBpoint)
+		  
+		  'Super.Constructor
+		  t = sbpt.taille -1
+		  self.sbpt = sbpt
+		  computeinterbpt
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 

@@ -506,7 +506,7 @@ Inherits SelectAndDragOperation
 		      setconstedpoint(i,s2)
 		      IdentifyPointsinCopies(s2,i)
 		      s2.EndConstruction
-		      s2.nonpointed = s1.nonpointed
+		      s2.pointe = s1.pointe
 		      if s1.Highlighted then
 		        highlight s2
 		      end if

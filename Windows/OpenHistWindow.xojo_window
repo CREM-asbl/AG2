@@ -64,6 +64,7 @@ Begin Window OpenHistWindow
       ScrollbarHorizontal=   False
       ScrollBarVertical=   True
       SelectionType   =   0
+      ShowDropIndicator=   False
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True

@@ -88,7 +88,7 @@ Inherits SelectOperation
 		        copiercenterordivpoint(s,s2,i)
 		      end if
 		      s2.pastelabs(s)
-		      s2.nonpointed = s.nonpointed
+		      s2.copierparams(s)
 		      s2.endconstruction
 		    next
 		    LierGroupes

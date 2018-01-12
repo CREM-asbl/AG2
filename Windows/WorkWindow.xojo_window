@@ -768,10 +768,10 @@ End
 		    
 		    if MenuBar.Child("PrefsMenu") <> nil then
 		      if MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
-		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = CurrentContent.PolygFleches
+		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = Config.PolFleches
 		      end if
 		      if MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
-		        MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = CurrentContent.polygpointes
+		        MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
 		      end if
 		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
 		    end if
@@ -1170,6 +1170,22 @@ End
 			refreshtitle
 			end if
 			return true
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function EpsConvertToPdf() As Boolean Handles EpsConvertToPdf.Action
+			dim sh as new shell
+			dim f as folderitem
+			dim s as string
+			
+			f = GetOpenFolderItem(FileAGTypes.eps)
+			if f <> nil then
+			s=  f.shellpath
+			sh.execute("epstopdf --nosafer "+s)
+			end if
+			Return True
+			
 		End Function
 	#tag EndMenuHandler
 
@@ -1684,7 +1700,7 @@ End
 	#tag MenuHandler
 		Function PrefsBiface() As Boolean Handles PrefsBiface.Action
 			MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked = not MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
-			Config.StdBiface = MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
+			Config.Biface = MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
 			Return True
 			
 		End Function
@@ -1693,7 +1709,7 @@ End
 	#tag MenuHandler
 		Function PrefsFleches() As Boolean Handles PrefsFleches.Action
 			MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked = not MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
-			currentcontent.PolygFleches = MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
+			config.PolFleches = MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
 			return true
 		End Function
 	#tag EndMenuHandler
@@ -1721,9 +1737,9 @@ End
 
 	#tag MenuHandler
 		Function PrefsPolyg() As Boolean Handles PrefsPolyg.Action
+			'"Formes pointees dans le menu et PrefsPolyg dans XojoProject
 			MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = not MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked
-			currentcontent.PolygPointes = MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked
-			Config.PolPointes = currentcontent.polygpointes
+			config.PolPointes = MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked
 			return true
 		End Function
 	#tag EndMenuHandler
@@ -1764,7 +1780,7 @@ End
 
 	#tag MenuHandler
 		Function PrefsTrace() As Boolean Handles PrefsTrace.Action
-			
+			'Le menu correspondant s'appelle "trajectoire"
 			MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked = not MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
 			Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
 			return true
@@ -2524,10 +2540,10 @@ End
 		    MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked = config.trace
 		  end if
 		  if menumenus.Child("PrefsMenu").Child("PrefsPolyg").checked  then
-		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = currentcontent.polygpointes
+		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = config.polpointes
 		  end if
 		  if menumenus.Child("PrefsMenu").Child("PrefsBiface").checked  then
-		    MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked = config.stdbiface
+		    MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked = config.biface
 		  end if
 		  if menumenus.Child("PrefsMenu").Child("PrefsAjust").checked  then
 		    MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = config.Ajust
@@ -2660,7 +2676,7 @@ End
 		  if not CurrentContent.currentoperation isa readhisto and MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
 		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
 		  end if
-		  currentcontent.PolygPointes = true
+		  config.PolPointes = true
 		  refresh
 		End Sub
 	#tag EndMethod

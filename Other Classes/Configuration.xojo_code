@@ -484,9 +484,11 @@ Protected Class Configuration
 		  ShowHelp = true
 		  trace = true
 		  ajust = true
-		  stdbiface = false
-		  PolPointes = true
-		  area = 0
+		  ' Quatre paramètres peuvent varier d'une forme à une autre. Ils doivent être incorporés aux fichiers des formes.
+		  biface = false   'Param de forme : biface
+		  PolPointes = true   'Param de forme : pointe
+		  PolFleches = false   ' 'Param de forme : fleche
+		  area = 0                  ' 'Param de forme : area (0 ou 1)
 		End Sub
 	#tag EndMethod
 
@@ -791,7 +793,11 @@ Protected Class Configuration
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Area As double = 0
+		Area As integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		biface As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -887,6 +893,10 @@ Protected Class Configuration
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		PolFleches As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		PolPointes As Boolean
 	#tag EndProperty
 
@@ -904,10 +914,6 @@ Protected Class Configuration
 
 	#tag Property, Flags = &h0
 		ShowTools As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		stdbiface As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -967,6 +973,12 @@ Protected Class Configuration
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="biface"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -1057,6 +1069,11 @@ Protected Class Configuration
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="PolFleches"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="PolPointes"
 			Group="Behavior"
 			InitialValue="0"
@@ -1082,12 +1099,6 @@ Protected Class Configuration
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ShowTools"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="stdbiface"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

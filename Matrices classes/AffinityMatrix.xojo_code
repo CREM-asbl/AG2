@@ -5,7 +5,7 @@ Inherits Matrix
 		Sub Constructor(u1 as basicpoint, u2 as basicpoint, u3 as basicpoint, p1 as basicpoint, p2 as basicpoint, p3 as basicpoint)
 		  dim w1,w2,q1,q2, a, b, c  as basicpoint
 		  dim M as matrix
-		  dim r as double
+		  
 		  
 		  if u1 <> nil and u2 <> nil and u3 <> nil and p1 <> nil and p2 <> nil and p3 <> nil then
 		    w1 = u2-u1
@@ -48,8 +48,8 @@ Inherits Matrix
 		  dim M1, M2, M as  Matrix
 		  dim np1, np2 as Basicpoint
 		  dim s1, s2 as shape
-		  dim bib1, Bib2, BiB3,  Bib11, Bib22 As BiBPoint
-		  dim u, v, bp1, bp2, bp3, q as Basicpoint
+		  dim bib1, Bib2,   Bib11, Bib22 As BiBPoint
+		  dim u, v, bp1, bp2, q as Basicpoint
 		  dim r1, r2 as double
 		  
 		  s1 = p1.pointsur.item(0)

@@ -424,7 +424,6 @@ Inherits Liste
 		Function GetShapeIn(s as Shape, id as Integer) As shape
 		  
 		  dim i as Integer
-		  dim temp as Shape
 		  
 		  if s=nil then
 		    return nil
@@ -451,8 +450,6 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub InsertShape(S As Shape, n as integer)
-		  dim i As integer
-		  dim t as shape
 		  
 		  if GetPosition(s)  = -1 then
 		    objects.insert (n,S)
@@ -831,7 +828,7 @@ Inherits Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub validatefrom(s as shape)
+		Sub validatefrom()
 		  'dim i as integer
 		  '
 		  '
@@ -847,7 +844,6 @@ Inherits Liste
 		Sub XMLLireCondi(Obj as XMLElement)
 		  dim i, j as integer
 		  dim s as shape
-		  dim p as point
 		  dim List1 as XMLNodeList
 		  dim Pt as XMLNode
 		  dim Temp as XMLElement
@@ -986,7 +982,6 @@ Inherits Liste
 		Sub XMLLirePointsSur(Obj as XMLElement)
 		  dim i, fam  as integer
 		  dim s as shape
-		  dim List1 as XMLNodeList
 		  dim Temp as XMLElement
 		  
 		  for i=0 to Obj.ChildCount-1
@@ -1022,7 +1017,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function XMLLoadObject(Temp as XMLElement) As Shape
-		  dim  fam, forme, id, pl as Integer
+		  dim  fam, forme, id as Integer
 		  dim a as integer
 		  dim fstd as String
 		  dim s as shape
@@ -1234,7 +1229,6 @@ Inherits Liste
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  dim i  As  integer
 		  dim EL as XMLElement
-		  dim  MAG as XMLElement
 		  dim s as shape
 		  
 		  optimize

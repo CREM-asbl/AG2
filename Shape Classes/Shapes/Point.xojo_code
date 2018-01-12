@@ -145,7 +145,7 @@ Inherits Shape
 		  for i = 0 to ubound(parents)
 		    if parents(i).getindexpoint(self) <> -1 then
 		      n = n + 1
-		      t = t and  parents(i).nonpointed
+		      t = t and  not parents(i).pointe
 		    end if
 		  next
 		  
@@ -1455,7 +1455,7 @@ Inherits Shape
 		    can.drawzone(can.transform(bpt))
 		  end
 		  
-		  if nonpointed then
+		  if not pointe then
 		    return
 		  end if
 		  
@@ -2633,7 +2633,7 @@ Inherits Shape
 		  
 		  seps = SaveEps(CurrentContent.currentoperation)
 		  
-		  if not nonpointed and not hidden and not invalid  and not deleted  then
+		  if pointe and not hidden and not invalid  and not deleted  then
 		    seps.adapterparamdessin(self,tos)
 		    tos.writeline etiquet + " point"
 		  end if
@@ -3376,6 +3376,11 @@ Inherits Shape
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -3386,6 +3391,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -3451,6 +3461,11 @@ Inherits Shape
 			Name="first"
 			Group="Behavior"
 			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -3550,12 +3565,6 @@ Inherits Shape
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="notest"
 			Group="Behavior"
 			InitialValue="0"
@@ -3578,6 +3587,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"

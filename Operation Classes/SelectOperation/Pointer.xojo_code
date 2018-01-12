@@ -13,18 +13,12 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i as integer
 		  
-		  if currenthighlightedshape.nonpointed then
-		    currenthighlightedshape.nonpointed = false
-		    for i = 0 to ubound(currenthighlightedshape.childs) 
-		      currenthighlightedshape.childs(i).nonpointed = false
-		    next
+		  if currenthighlightedshape.pointe = false then
+		    currenthighlightedshape.pointer
 		  else
-		    currenthighlightedshape.nonpointed = true
-		    for i = 0 to ubound(currenthighlightedshape.childs) 
-		      currenthighlightedshape.childs(i).nonpointed = true
-		    next
+		    currenthighlightedshape.depointer 
 		    if currenthighlightedshape isa arc then
-		      currenthighlightedshape.childs(0).nonpointed = false
+		      currenthighlightedshape.points(0).pointe = true
 		    end if
 		  end if
 		  

@@ -192,6 +192,23 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function aire() As double
+		  if config.area = 1 then
+		    return airealge
+		  else
+		    return airearith
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airealge() As double
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airearith() As double
 		  
 		End Function
 	#tag EndMethod
@@ -346,6 +363,22 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ChargerParam()
+		  Fixecouleurtrait(Config.bordercolor,Config.Border)
+		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
+		  Borderwidth = config.thickness
+		  
+		  'On charge les paramètres pointe, fleche, biface et area à partir des paramètres correspondants de la configuration
+		  'NonPointed ne devrait plus servir à rien
+		  
+		  Pointe = config.polpointes
+		  Fleche = config.polfleches
+		  biface= config.biface
+		  area = config.area
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function check() As boolean
 		  return true
 		End Function
@@ -395,9 +428,7 @@ Protected Class Shape
 		  tsfi = new transfoslist
 		  drapori = false
 		  Autos
-		  Fixecouleurtrait(Config.bordercolor,Config.Border)
-		  FixeCouleurFond(Config.Fillcolor,Config.Fill)
-		  Borderwidth = config.thickness
+		  ChargerParam
 		  Border = 100
 		  Fill = 0
 		  Points.append new Point(ol, new Basicpoint(0,0))
@@ -408,6 +439,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol As ObjectsList, ncp as Integer, np as integer)
+		  
 		  if id=0 then
 		    id = ol.newId
 		  end if
@@ -418,11 +450,7 @@ Protected Class Shape
 		  Npts = np
 		  Autos
 		  IdGroupe = -1
-		  if not std then
-		    Fixecouleurtrait(Config.bordercolor,Config.Border)
-		    FixeCouleurFond(Config.Fillcolor,0)
-		  end if
-		  Borderwidth =  Config.Thickness
+		  ChargerParam
 		  plan = -1
 		  
 		  
@@ -435,7 +463,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as shape)
-		  dim i, n as integer
+		  
 		  
 		  constructor(ol)
 		  Npts=s.Npts
@@ -446,32 +474,7 @@ Protected Class Shape
 		  auto = s.auto
 		  labs = new Lablist
 		  InitConstruction
-		  if s isa cube then
-		    n = 11
-		  elseif s isa Lacet then
-		    n = npts-1
-		  elseif s isa bande or s isa secteur  then
-		    n = 1
-		  else
-		    n = -1
-		  end if
-		  for i = 0 to n
-		    colcotes(i) = s.colcotes(i)
-		  next
-		  border = s.border
-		  borderwidth = s.borderwidth
-		  bordercolor = s.bordercolor
-		  Fixecouleurfond s.Getfillcolor, s.Fill
-		  Ti = s.Ti
-		  std = s.std
-		  ori = s.ori
-		  hidden = s.hidden
-		  
-		  for i = 0 to npts-1
-		    points(i).borderwidth = s.points(i).borderwidth
-		    Points(i).moveto (s.Points(i).bpt)
-		    points(i).hidden = s.points(i).hidden
-		  next
+		  CopierParams(s)
 		  updatecoord
 		  plan = -1
 		  
@@ -507,7 +510,9 @@ Protected Class Shape
 		  end if
 		  
 		  if val(EL.GetAttribute("NonPointed")) = 1 then
-		    nonpointed = true
+		    pointe = false
+		  else
+		    pointe = true
 		  end if
 		  if val(EL.GetAttribute("TiP")) = 1 then
 		    Ti = new Tip
@@ -633,6 +638,42 @@ Protected Class Shape
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CopierParams(s as shape)
+		  dim i,n as integer
+		  
+		  if s isa cube then
+		    n = 11
+		  elseif s isa Lacet then
+		    n = npts-1
+		  elseif s isa bande or s isa secteur  then
+		    n = 1
+		  else
+		    n = -1
+		  end if
+		  for i = 0 to n
+		    colcotes(i) = s.colcotes(i)
+		  next
+		  border = s.border
+		  borderwidth = s.borderwidth
+		  bordercolor = s.bordercolor
+		  Fixecouleurfond s.Getfillcolor, s.Fill
+		  Ti = s.Ti
+		  std = s.std
+		  ori = s.ori
+		  hidden = s.hidden
+		  fleche = s.fleche
+		  pointe = s.pointe
+		  area = s.area
+		  biface = s.biface
+		  for i = 0 to npts-1
+		    points(i).borderwidth = s.points(i).borderwidth
+		    Points(i).moveto (s.Points(i).bpt)
+		    points(i).hidden = s.points(i).hidden
+		  next
 		End Sub
 	#tag EndMethod
 
@@ -770,6 +811,16 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub depointer()
+		  dim i as integer
+		  pointe = false
+		  for i = 0 to ubound(points)
+		    points(i).pointe = false
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub DiminueFont()
 		  dim i, j as integer
 		  
@@ -855,9 +906,9 @@ Protected Class Shape
 		  next
 		  
 		  if constructedby <> nil then
-		    nonpointed = constructedby.shape.nonpointed
+		    pointe = constructedby.shape.pointe
 		  else 'if not self isa cube then
-		    nonpointed = not currentcontent.PolygPointes
+		    pointe =  config.PolPointes
 		  end if
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
 		    Currentcontent.addShape self
@@ -1503,7 +1554,7 @@ Protected Class Shape
 		      points(i).isinconstruction = true
 		    next
 		  end
-		  if currentcontent.PolygFleches  then
+		  if config.PolFleches  then
 		    Ti = new Tip
 		  end if
 		  
@@ -2377,6 +2428,21 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub oldConstructor(s as shape, M as Matrix)
+		  dim i as integer
+		  dim p as BasicPoint
+		  
+		  npts = s.npts
+		  
+		  for i = 0 to npts-1
+		    p = M*(s.points(i).bpt)
+		    Points.append new Point(p)
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function oldGetIndexSide() As integer
 		  dim op as operation
 		  dim i, n as integer
@@ -2471,7 +2537,7 @@ Protected Class Shape
 		    currentcontent.theobjects.tracept = true
 		  end if
 		  
-		  if not nonpointed then
+		  if pointe then
 		    for i=0 to Ubound(childs)
 		      childs(i).Paint(g)
 		      for j = 0 to childs(i).tsfi.count-1
@@ -2603,6 +2669,16 @@ Protected Class Shape
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub pointer()
+		  dim i, n as integer
+		  pointe = true
+		  for i = 0 to ubound(points)
+		    points(i).pointe = true
+		  next
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3938,7 +4014,7 @@ Protected Class Shape
 		    Form.SetAttribute(Dico.value("Ncpts"),Str(Ncpts))
 		    Form.SetAttribute("Ori", str(ori))
 		  end if
-		  if nonpointed then
+		  if not pointe then
 		    Form.SetAttribute("NonPointed","1")
 		  end if
 		  if conditionedby <> nil then
@@ -4011,10 +4087,19 @@ Protected Class Shape
 		      Temp.SetAttribute("OpacityBorder", str(border))
 		      Form.AppendChild  Temp
 		    end if
-		    
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
 		    Temp.SetAttribute("Value", str(borderwidth))
 		    Form.AppendChild Temp
+		    Temp = Doc.CreateElement(Dico.Value("Pointed"))
+		    if pointe then
+		      Temp.SetAttribute("Value", str(1))
+		    else
+		      Temp.SetAttribute("Value", str(0))
+		    end if
+		    Form.AppendChild Temp
+		    
+		    
+		    
 		  end if
 		  
 		  if Hidden then
@@ -4610,11 +4695,19 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		area As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Attracting As boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		auto As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Biface As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -4683,6 +4776,10 @@ Protected Class Shape
 
 	#tag Property, Flags = &h0
 		firstcurrentattractingshape As shape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Fleche As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -4766,10 +4863,6 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		nonpointed As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		npts As integer
 	#tag EndProperty
 
@@ -4791,6 +4884,10 @@ Protected Class Shape
 
 	#tag Property, Flags = &h0
 		plan As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Pointe As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -4849,6 +4946,11 @@ Protected Class Shape
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -4859,6 +4961,11 @@ Protected Class Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -4901,6 +5008,11 @@ Protected Class Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -5000,12 +5112,6 @@ Protected Class Shape
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -5022,6 +5128,11 @@ Protected Class Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"

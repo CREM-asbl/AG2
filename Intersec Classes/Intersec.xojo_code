@@ -3,7 +3,7 @@ Protected Class Intersec
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
-		  dim i1, j1, j2, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
+		  dim i1, j1, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
 		  dim d as Double
 		  
 		  if pts.indexof(p) <> -1 then
@@ -58,29 +58,26 @@ Inherits SelectOperation
 		Sub computeinter()
 		  dim i, j, k  as integer
 		  
-		  if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
-		    return
+		  'if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
+		  if sh1.hybrid or sh2.hybrid then
+		    return  'Cas à ajouter
 		  end if
 		  
 		  init
 		  drappara = false
 		  somevalidpoint = false
-		  if not sh1 isa circle and not sh1 isa lacet then
-		    if not sh2 isa circle and not sh2 isa lacet then
+		  if not sh1 isa circle then
+		    if not sh2 isa circle then
 		      computeinterlines
 		    else
 		      computeinterlines_circle
 		      if sh2 isa arc then
 		        for i = 0 to nlig
-		          for j = 0 to 1
-		            if val(i,j) then
-		              val(i,j) = arc(sh2).inside(bptinters(i,j) )
-		            end if
-		          next
+		          val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
 		        next
 		      end if
 		    end if
-		  elseif sh1 isa circle and sh2 isa circle then
+		  elseif  sh1 isa circle then '( sh1 est un cercle, sh2 aussi))
 		    k = computeintercercles
 		    if k = 3 then
 		      somevalidpoint = false

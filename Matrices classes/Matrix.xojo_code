@@ -239,7 +239,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function RacN(n as integer) As Matrix
+		Function RACN(n as integer) As Matrix
 		  
 		End Function
 	#tag EndMethod
