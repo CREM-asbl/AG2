@@ -734,11 +734,11 @@ Inherits SelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		urx As double
+		urx As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ury As double
+		ury As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

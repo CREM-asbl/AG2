@@ -483,21 +483,33 @@ Inherits SelectOperation
 		  for i = 0 to ubound(sh1.constructedshapes)
 		    if sh1.constructedshapes(i) isa point  then
 		      p = point(sh1.constructedshapes(i))
-		      if bptinters(h,k) = nil or (p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon) then 'p.constructedby.data(4) = h
-		        bezet(h,k) = true
-		        ids(h,k) = p.id 
+		      h = sh1.pointonside(p.bpt)
+		      if h <> -1 then
+		        for k = 0 to sh2.npts-1
+		          if bptinters(h,k) <> nil and bezet(h,k) = false and  ( p.bpt.distance (bptinters(h,k)) < epsilon) then
+		            bezet(h,k) = true
+		            ids(h,k) = p.id 
+		          end if
+		        next
 		      end if
 		    end if
 		  next
+		  
 		  for i = 0 to ubound(sh2.constructedshapes)
 		    if sh2.constructedshapes(i) isa point  then
 		      p = point(sh2.constructedshapes(i))
-		      if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
-		        bezet(h,k) = true
-		        ids(h,k) = p.id 
+		      h = sh2.pointonside(p.bpt)
+		      if h <> -1 then
+		        for k = 0 to sh1.npts-1
+		          if bptinters(k,h) <> nil and bezet(k,h) =false and  ( p.bpt.distance (bptinters(k,h)) < epsilon) then 
+		            bezet(k,h) = true
+		            ids(k,h) = p.id 
+		          end if
+		        next
 		      end if
 		    end if
 		  next
+		  
 		  
 		  
 		  
