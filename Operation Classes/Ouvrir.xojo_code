@@ -16,7 +16,7 @@ Inherits Operation
 		Sub Constructor(f as folderitem)
 		  dim Doc as XmlDocument
 		  dim Cfg as string
-		  dim v1, v2, v3, n as integer
+		  dim v1, v2, v3 as integer
 		  dim version as string
 		  dim msg as MessageDialog
 		  dim but as MessageDialogButton
@@ -59,11 +59,12 @@ Inherits Operation
 		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
 		  Config.setMenu(Cfg)
+		  app.themacros.XMLLoadMacros(FAG)
 		  currentcontent.ChargerPrefs(FAG)
 		  currentcontent.ChargerObjets(FAG)
 		  currentcontent.CurrentFile = f
 		  currentcontent.CurrentFileUpToDate=true
-		  app.themacros.XMLLoadMacros(FAG)
+		  
 		  CurrentContent.AddOperation(self)
 		  currentcontent.CurrentOperation=nil
 		  can.mousecursor = System.Cursors.StandardPointer

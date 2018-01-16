@@ -955,13 +955,13 @@ Inherits SelectOperation
 			Name="urx"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ury"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="xmax"

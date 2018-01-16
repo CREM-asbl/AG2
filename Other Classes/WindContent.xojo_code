@@ -376,16 +376,6 @@ Protected Class WindContent
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub FinInitialisation(Temp as XMLElement, f as folderitem)
-		  dim n as integer
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function ForHisto() As Boolean
 		  return  (not isaundoredo and not (currentoperation isa ReadHisto))
 		End Function

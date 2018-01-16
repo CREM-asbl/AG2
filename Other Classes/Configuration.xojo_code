@@ -972,7 +972,7 @@ Protected Class Configuration
 			Name="Area"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="biface"
