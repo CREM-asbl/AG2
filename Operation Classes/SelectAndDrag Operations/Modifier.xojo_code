@@ -129,7 +129,7 @@ Inherits SelectAndDragOperation
 		    return false
 		  end if
 		  
-		  if p.forme = 1 and p.constructedby <> nil and p.constructedby.oper = 10 and p.constructedby.shape.liberte = 0 then
+		  if p.forme = 1 and p.constructedby <> nil and p.constructedby.oper = 10 and point(p.constructedby.shape).isextremityofaparaperpseg then
 		    return false
 		  end if
 		  
