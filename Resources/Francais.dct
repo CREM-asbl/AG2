@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Francais>
   <Menus>
     <FileMenu Name="Fichier" />
@@ -7,7 +7,7 @@
     <FileNew Name="Nouveau" />
     <FileSave Name="Sauvegarder" />
     <FileSaveas Name="Sauvegarder_sous..." />
-    <FileSaveEps Name="Exporter en Postscript" />
+    <FileSaveEps Name="Exporter en fichier eps" />
     <FileSaveBitmap Name="Exporter en fichier bitmap" />
     <PrintSetUp Name="Paramètres d'impression" />
     <FilePrint Name="Imprimer" />

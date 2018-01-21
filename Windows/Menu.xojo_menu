@@ -2,7 +2,7 @@
 Begin Menu Menu
    Begin MenuItem FileMenu
       SpecialMenu = 0
-      Text = "File"
+      Text = "Fichier"
       Index = -2147483648
       AutoEnable = False
       Visible = True
@@ -46,6 +46,13 @@ Begin Menu Menu
          Text = "Sauver comme Fichier Eps..."
          Index = -2147483648
          AutoEnable = False
+         Visible = True
+      End
+      Begin MenuItem ViewEps
+         SpecialMenu = 0
+         Text = "Visionner fichier eps"
+         Index = -2147483648
+         AutoEnable = True
          Visible = True
       End
       Begin MenuItem EpsConvertToPdf

@@ -927,6 +927,23 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function isextremityofaparaperpseg() As Boolean
+		  dim i as integer
+		  dim s as shape
+		  
+		  for i = 0 to ubound(parents)
+		    if parents(i) isa droite and parents(i).isaparaperp then
+		      s = parents(i)
+		      if droite(s).nextre = 2 then
+		        return (s.points(1) = self)
+		      end if
+		    end if
+		  next
+		  return false
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function isextremityofarc(byref n as integer, byref ar as arc) As boolean
 		  dim i as integer
 		  
@@ -1256,7 +1273,15 @@ Inherits Shape
 		  dim p, p1 as point
 		  
 		  liberte = 2
-		  liberte = liberte-forme 'pointsur.count
+		  
+		  select case forme
+		  case  1 
+		    liberte = 1
+		  case 2
+		    liberte = 0
+		    return
+		  end select
+		  
 		  if std then
 		    liberte = 0
 		  end if

@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -765,6 +764,8 @@ End
 		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		    MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		    
 		    if MenuBar.Child("PrefsMenu") <> nil then
@@ -1177,13 +1178,18 @@ End
 	#tag MenuHandler
 		Function EpsConvertToPdf() As Boolean Handles EpsConvertToPdf.Action
 			dim sh as new shell
-			dim f as folderitem
-			dim s as string
+			dim f, f1 as folderitem
+			dim s, S1 as string
 			
 			f = GetOpenFolderItem(FileAGTypes.eps)
+			'sh.Execute(f.shellpath)
 			if f <> nil then
 			s=  f.shellpath
+			s1 = s.replace(f.name,"")
+			sh.execute("cd "+ s1)
 			sh.execute("epstopdf --nosafer "+s)
+			s1 = s.replace("eps","pdf") 'GetOpenFolderItem(FileAGTypes.pdf)
+			sh.execute(s1)
 			end if
 			Return True
 			
@@ -2101,6 +2107,30 @@ End
 		Function UnInstall() As Boolean Handles UnInstall.Action
 			mycanvas1.FondsEcran = nil
 			Return False
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function Vieweps() As Boolean Handles Vieweps.Action
+			dim sh as new shell
+			dim f, f1 as folderitem
+			dim s, S1 as string
+			
+			f = GetOpenFolderItem(FileAGTypes.eps)
+			if f <> nil then
+			sh.execute (f.shellpath)
+			's1 = s.replace(f.name,"")
+			'sh.execute("cd "+ s1)
+			'sh.execute("epstopdf --nosafer "+s)
+			'f1 = GetOpenFolderItem(FileAGTypes.pdf)
+			'if f1 <> nil then
+			'sh.execute(s1+f1.name)
+			'end if
+			'end if
+			'Return True
+			end if
+			Return True
 			
 		End Function
 	#tag EndMenuHandler
