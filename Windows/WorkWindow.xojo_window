@@ -776,9 +776,11 @@ End
 		        MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
 		      end if
 		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
+		      if MenuBar.Child("PrefsMenu").Child("PrefsArea")<> nil then
+		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = (config.area = 0)
+		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
+		      end if
 		    end if
-		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = (config.area = 0)
-		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
 		  end if
 		  
 		  
