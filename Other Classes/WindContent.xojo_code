@@ -77,6 +77,62 @@ Protected Class WindContent
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ChargerObjets(FAG as XMLElement)
+		  dim n as integer
+		  dim dr as droite
+		  
+		  TheObjects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
+		  TheObjects.SetId(-1)
+		  TheObjects.XMLLoadObjects(FAG)
+		  TheObjects.updateids
+		  n = val(FAG.GetAttribute("SHUA"))
+		  if n <> 0 then
+		    SHUA = TheObjects.Getshape(n)
+		    UA = SHUA.aire
+		  end if
+		  n = val(FAG.GetAttribute("SHUL"))
+		  if n <> 0 then
+		    SHUL = TheObjects.Getshape(n)
+		    if SHUL isa droite then
+		      UL = droite(SHUL).longueur
+		    elseif SHUL isa polygon then
+		      IcotUL = val(FAG.GetAttribute("IcotUL"))
+		      dr = Polygon(SHUL).Getside(IcotUL)
+		      UL = dr.longueur
+		    end if
+		  end if
+		  TheObjects.updatelabels(can.rep.echelle)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ChargerPrefs(FAG as XMLElement)
+		  dim BkCol as string
+		  
+		  removeall
+		  ndec = val(FAG.GetAttribute("NbrDec"))
+		  if ndec =0 then
+		    ndec = 2
+		  end if
+		  BkCol = FAG.GetAttribute("BkCol")
+		  if BkCol = "noir" and WorkWindow.BackColor = &cFFFFFF then
+		    WorkWindow.switchcolors
+		  end if
+		  
+		  Setpolygpointes(val(FAG.GetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"))))
+		  wnd.settrace(val(FAG.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
+		  SetFleches(val(FAG.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
+		  config.area  = val(FAG.GetAttribute("Area"))
+		  
+		  wnd.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked =(config.area = 0)
+		  wnd.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(n as integer)
 		  id = n
 		  TheGrid = nil
@@ -87,7 +143,6 @@ Protected Class WindContent
 		  OpenOpList
 		  Etiquette=64
 		  ndec = 2
-		  Polygpointes = config.PolPointes
 		  SHUA = nil
 		  SHUL = nil
 		  UA = 1
@@ -321,38 +376,6 @@ Protected Class WindContent
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub FinInitialisation(Temp as XMLElement, f as folderitem)
-		  dim n as integer
-		  dim dr as droite
-		  
-		  n = val(Temp.GetAttribute("SHUA"))
-		  if n <> 0 then
-		    SHUA = TheObjects.Getshape(n)
-		    UA = SHUA.aire
-		  end if
-		  n = val(Temp.GetAttribute("SHUL"))
-		  if n <> 0 then
-		    SHUL = TheObjects.Getshape(n)
-		    if SHUL isa droite then
-		      UL = droite(SHUL).longueur
-		    elseif SHUL isa polygon then
-		      IcotUL = val(Temp.GetAttribute("IcotUL"))
-		      dr = Polygon(SHUL).Getside(IcotUL)
-		      UL = dr.longueur
-		    end if
-		  end if
-		  CurrentFile = f
-		  CurrentFileUpToDate=true
-		  CurrentOperation=nil
-		  setpolygpointes(val(Temp.GetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"))))
-		  wnd.settrace(val(Temp.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
-		  SetFleches(val(Temp.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
-		  TheObjects.updatelabels(can.rep.echelle)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function ForHisto() As Boolean
 		  return  (not isaundoredo and not (currentoperation isa ReadHisto))
 		End Function
@@ -494,25 +517,30 @@ Protected Class WindContent
 		  end if
 		  AG.SetAttribute("Version",str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion))
 		  AG.SetAttribute("DateCompil", str(app.BuildDate))
-		  if polygpointes then
-		    AG.SetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"), str(1))
-		  else
-		    AG.SetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"), str(0))
-		  end if
 		  if Config.Trace then
 		    AG.SetAttribute(Replace(Dico.value("PrefsTrace")," ","_"), str(1))
 		  else
 		    AG.SetAttribute(Replace(Dico.value("PrefsTrace")," ","_"), str(0))
 		  end if
-		  if PolygFleches then
+		  if config.polpointes then
+		    AG.SetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"), str(1))
+		  else
+		    AG.SetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"), str(0))
+		  end if
+		  if config.polfleches then
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(1))
 		  else
 		    AG.SetAttribute(Replace(Dico.value("PrefsFleches")," ","_"), str(0))
 		  end if
-		  if config.stdbiface then 
+		  if config.biface then 
 		    AG.SetAttribute(Replace(Dico.value("PrefsBiface")," ","_"), str(1))
 		  else
 		    AG.SetAttribute(Replace(Dico.value("PrefsBiface")," ","_"), str(0))
+		  end if
+		  if config.area = 0  then 'AireArith
+		    AG.SetAttribute("Area", str(0)) 
+		  else   'AireAlge
+		    AG.SetAttribute("Area", str(1))
 		  end if
 		  AG.SetAttribute("NbrDec", str(ndec))
 		  if app.TheMacros.Count > 0 then
@@ -585,7 +613,7 @@ Protected Class WindContent
 		    Histo.SetAttribute(Dico.Value("Langage"),Config.Langue)
 		    Histo.SetAttribute(Dico.value("Config"),Config.Menu)
 		    Histo.SetAttribute("Version",str(App.MajorVersion)+"."+str(App.MinorVersion)+"."+str(App.BugVersion))
-		    if polygpointes then
+		    if config.polpointes then
 		      Histo.SetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"), str(1))
 		    else
 		      Histo.SetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"), str(0))
@@ -773,12 +801,12 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub setfleches(n as integer)
 		  if n = 1 then
-		    PolygFleches = true
+		    config.PolFleches = true
 		  else
-		    PolygFleches = false
+		    config.PolFleches = false
 		  end if
 		  if wnd.MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
-		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = PolygFleches
+		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = config.PolFleches
 		  end if
 		  
 		End Sub
@@ -787,12 +815,12 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub setpolygpointes(n as integer)
 		  if n = 1 then
-		    polygpointes = true
+		    config.polpointes = true
 		  else
-		    polygpointes = false
+		    config.polpointes = false
 		  end if
 		  if wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
-		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = polygpointes
+		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
 		  end if
 		  
 		  Exception err
@@ -990,14 +1018,6 @@ Protected Class WindContent
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		PolygFleches As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		PolygPointes As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		SHUA As shape
 	#tag EndProperty
 
@@ -1138,18 +1158,6 @@ Protected Class WindContent
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="PolygFleches"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Polygpointes"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

@@ -576,6 +576,11 @@ Inherits Circle
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -586,6 +591,11 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -634,6 +644,11 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -733,12 +748,6 @@ Inherits Circle
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -755,6 +764,11 @@ Inherits Circle
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Radius"

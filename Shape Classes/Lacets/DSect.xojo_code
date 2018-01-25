@@ -201,17 +201,25 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub ToEps(tos as TextOutputStream)
-		  dim s as string
-		  dim r as double
 		  dim i as integer
+		  dim tbp as tribpoint
+		  dim q as BasicPoint
+		  dim s as string
 		  
-		  tos.writeline  "[ "+points(1).etiquet + "  " + points(0).etiquet  + " " + points(2).etiquet + " ] " + "suitesegments"
-		  tos.writeline "newpath"
-		  s= "[ [ "+points(1).etiquet + "  " + points(0).etiquet  + " " + points(2).etiquet + " ] "
-		  r = points(0).bpt.distance(points(1).bpt)
-		  r = r*ori
-		  s = s +  str(r) +"]"
-		  tos.writeline s + "arccerclesecteur"
+		  tbp =  new TriBPoint(coord.tab(0), coord.tab(1), coord.tab(2))
+		  q = tbp.subdiv(ori,2,1)
+		  tos.writeline "/milieuarc  [ " + str(q.x) + " " + str(q.y) +" ] store"
+		  
+		  
+		  s= "[ "  +points(2).etiquet + "  " + points(0).etiquet  + " " + points(1).etiquet + " [ " + points(1).etiquet + " milieuarc "+ points(2).etiquet  +" ] ]"
+		  
+		  if fill > 50 then
+		    tos.writeline s + "lacetrempli"
+		  else
+		    tos.writeline s + "lacet"
+		  end if
+		  
+		  
 		  
 		  
 		  
@@ -299,6 +307,11 @@ Inherits Lacet
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -309,6 +322,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -357,6 +375,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -457,12 +480,6 @@ Inherits Lacet
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -479,6 +496,11 @@ Inherits Lacet
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="radius"

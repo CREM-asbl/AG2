@@ -409,7 +409,7 @@ Inherits StandardPolygon
 		    tos.writeline "traitplein"
 		  end if
 		  
-		  if not nonpointed then
+		  if pointe then
 		    for i = 0 to ubound(childs)
 		      childs(i).ToEps(tos)
 		    next
@@ -504,6 +504,11 @@ Inherits StandardPolygon
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -514,6 +519,11 @@ Inherits StandardPolygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -562,6 +572,11 @@ Inherits StandardPolygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -668,12 +683,6 @@ Inherits StandardPolygon
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="np"
 			Group="Behavior"
 			InitialValue="0"
@@ -696,6 +705,11 @@ Inherits StandardPolygon
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="rod"

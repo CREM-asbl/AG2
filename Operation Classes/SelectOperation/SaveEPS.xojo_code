@@ -734,11 +734,11 @@ Inherits SelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		urx As double
+		urx As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ury As double
+		ury As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -955,13 +955,13 @@ Inherits SelectOperation
 			Name="urx"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ury"
 			Group="Behavior"
 			InitialValue="0"
-			Type="double"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="xmax"

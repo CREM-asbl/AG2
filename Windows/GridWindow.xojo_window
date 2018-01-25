@@ -48,6 +48,7 @@ Begin Window GridWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Grille"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -175,6 +176,7 @@ Begin Window GridWindow
       Selectable      =   False
       TabIndex        =   4
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Taille des points"
       TextAlign       =   0
       TextColor       =   &c00000000
@@ -240,6 +242,7 @@ Begin Window GridWindow
       Selectable      =   False
       TabIndex        =   6
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Écart"
       TextAlign       =   0
       TextColor       =   &c00000000

@@ -29,17 +29,23 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Aire() As double
+		Function AireAlge() As double
 		  
-		  if Ti <> nil then
+		  
+		  if self isa DSect then
 		    return coord.airealgelacet
-		  elseif self isa DSect then
-		    return abs(coord.airealgelacet)
-		  else
-		    MsgBox "Routine non encore implémentée"
+		    'else
+		    'MsgBox "Routine non encore implémentée"
 		  end if
 		  
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AireArith() As double
+		  return abs(airealge)
 		  
 		End Function
 	#tag EndMethod
@@ -421,9 +427,16 @@ Inherits Shape
 		  super.paint(g)
 		  
 		  if not isinconstruction and  not hidden and Ti <> nil then
-		    for i = 0 to npts-1
-		      PaintTipOnside(g, i)
-		    next
+		    if self isa Bande then
+		      PaintTipOnSide(g,0)
+		    elseif self isa Secteur then
+		      PaintTipOnSide(g,0)
+		      PaintTipOnSide(g,2)
+		    else
+		      for i = 0 to npts-1
+		        PaintTipOnside(g, i)
+		      next
+		    end if
 		  end if
 		End Sub
 	#tag EndMethod
@@ -959,6 +972,11 @@ Inherits Shape
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -969,6 +987,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -1011,6 +1034,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -1111,12 +1139,6 @@ Inherits Shape
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -1133,6 +1155,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"

@@ -249,10 +249,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp As XMLElement)
 		  dim EL, EL1 as XMLElement
-		  dim loc as integer
 		  dim Lab1 as Etiq
-		  dim corr as BasicPoint
-		  dim coul as Couleur
 		  dim type as string
 		  
 		  EL = XMLElement(Temp.Child(0))
@@ -342,10 +339,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp As XMLElement)
 		  dim EL, EL1  as XMLElement
-		  dim List as XMLNodeList
-		  dim loc As integer
 		  dim lab1 as Etiq
-		  dim corr as BasicPoint
 		  dim type as string
 		  
 		  

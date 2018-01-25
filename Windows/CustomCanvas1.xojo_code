@@ -84,7 +84,7 @@ Inherits Canvas
 		  
 		  
 		  if not sctxt isa point then
-		    if sctxt.nonpointed then
+		    if not sctxt.pointe then
 		      base.append(New MenuItem(Dico.Value("Pointer")))
 		    else
 		      base.append(New MenuItem(Dico.Value("DePointer")))

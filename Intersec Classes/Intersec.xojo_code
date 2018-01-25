@@ -3,7 +3,7 @@ Protected Class Intersec
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
-		  dim i1, j1, j2, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
+		  dim i1, j1, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
 		  dim d as Double
 		  
 		  if pts.indexof(p) <> -1 then
@@ -58,8 +58,9 @@ Inherits SelectOperation
 		Sub computeinter()
 		  dim i, j, k  as integer
 		  
-		  if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
-		    return
+		  'if ((sh1 isa DSect) and (not sh1 isa secteur) ) or ((sh2 isa Dsect)  and not (sh2 isa secteur)) then
+		  if sh1.hybrid or sh2.hybrid then
+		    return  'Cas à ajouter
 		  end if
 		  
 		  init
@@ -72,15 +73,11 @@ Inherits SelectOperation
 		      computeinterlines_circle
 		      if sh2 isa arc then
 		        for i = 0 to nlig
-		          for j = 0 to 1
-		            if val(i,j) then
-		              val(i,j) = arc(sh2).inside(bptinters(i,j) )
-		            end if
-		          next
+		          val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
 		        next
 		      end if
 		    end if
-		  else
+		  elseif  sh1 isa circle then '( sh1 est un cercle, sh2 aussi))
 		    k = computeintercercles
 		    if k = 3 then
 		      somevalidpoint = false
@@ -486,21 +483,33 @@ Inherits SelectOperation
 		  for i = 0 to ubound(sh1.constructedshapes)
 		    if sh1.constructedshapes(i) isa point  then
 		      p = point(sh1.constructedshapes(i))
-		      if bptinters(h,k) = nil or (p.constructedby.oper = 4 and  sh1.pointonside(p.bpt)= h and  p.bpt.distance (bptinters(h,k)) < epsilon) then 'p.constructedby.data(4) = h
-		        bezet(h,k) = true
-		        ids(h,k) = p.id 
+		      h = sh1.pointonside(p.bpt)
+		      if h <> -1 then
+		        for k = 0 to sh2.npts-1
+		          if bptinters(h,k) <> nil and bezet(h,k) = false and  ( p.bpt.distance (bptinters(h,k)) < epsilon) then
+		            bezet(h,k) = true
+		            ids(h,k) = p.id 
+		          end if
+		        next
 		      end if
 		    end if
 		  next
+		  
 		  for i = 0 to ubound(sh2.constructedshapes)
 		    if sh2.constructedshapes(i) isa point  then
 		      p = point(sh2.constructedshapes(i))
-		      if p.constructedby.oper = 4 and sh2.pointonside(p.bpt) = k and  p.bpt.distance (bptinters(h,k)) < epsilon then 'p.constructedby.data(4)= k
-		        bezet(h,k) = true
-		        ids(h,k) = p.id 
+		      h = sh2.pointonside(p.bpt)
+		      if h <> -1 then
+		        for k = 0 to sh1.npts-1
+		          if bptinters(k,h) <> nil and bezet(k,h) =false and  ( p.bpt.distance (bptinters(k,h)) < epsilon) then 
+		            bezet(k,h) = true
+		            ids(k,h) = p.id 
+		          end if
+		        next
 		      end if
 		    end if
 		  next
+		  
 		  
 		  
 		  

@@ -2,7 +2,7 @@
 Protected Class Circle
 Inherits Shape
 	#tag Method, Flags = &h0
-		Function aire() As double
+		Function airealge() As double
 		  dim r as double
 		  dim tsf as transformation
 		  
@@ -21,6 +21,12 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function airearith() As double
+		  return abs(airealge)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub computeradius()
 		  if ubound(points) > 0 then
 		    radius = coord.distance01
@@ -33,12 +39,6 @@ Inherits Shape
 		  
 		  Points.append new Point(bp1)
 		  Points.append new Point(bp2)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(C as Circle, M as Matrix)
-		  Shape.Constructor(C, M)
 		End Sub
 	#tag EndMethod
 
@@ -128,6 +128,12 @@ Inherits Shape
 		Function NextBorderPoint(P as Point, p2 as point) As Point
 		  return p2
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldConstructor(C as Circle, M as Matrix)
+		  Shape.Constructor(C, M)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -332,6 +338,11 @@ Inherits Shape
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -342,6 +353,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -384,6 +400,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -483,12 +504,6 @@ Inherits Shape
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -505,6 +520,11 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Radius"

@@ -48,9 +48,16 @@ Begin Menu Menu
          AutoEnable = False
          Visible = True
       End
-      Begin MenuItem FileSaveStd
+      Begin MenuItem ViewEps
          SpecialMenu = 0
-         Text = "Standardiser"
+         Text = "Visionner fichier eps"
+         Index = -2147483648
+         AutoEnable = True
+         Visible = True
+      End
+      Begin MenuItem EpsConvertToPdf
+         SpecialMenu = 0
+         Text = "Convertir eps en pdf"
          Index = -2147483648
          AutoEnable = True
          Visible = True
@@ -60,6 +67,13 @@ Begin Menu Menu
          Text = "Sauver comme Image..."
          Index = -2147483648
          AutoEnable = False
+         Visible = True
+      End
+      Begin MenuItem FileSaveStd
+         SpecialMenu = 0
+         Text = "Standardiser"
+         Index = -2147483648
+         AutoEnable = True
          Visible = True
       End
       Begin MenuItem FilePrint

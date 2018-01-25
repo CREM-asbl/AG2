@@ -308,10 +308,10 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function Autoaffupdate2() As Matrix
 		  
-		  dim bp1 as basicpoint
-		  dim p, q, p1, p2 as point
-		  dim ep, eq, np, nq,ep1,np1 as BasicPoint
-		  dim n1, n2 as integer
+		  
+		  dim p, q, r, p1, p2 as point
+		  dim ep, eq, np, nq,ep1,np1, er, nr as BasicPoint
+		  dim i, n1, n2, n3 as integer
 		  
 		  if NbUnModif > 2 then
 		    return new Matrix(1)
@@ -329,12 +329,22 @@ Protected Class Figure
 		  select case NbSommSur(n1,n2)
 		  case 0
 		    if NbUnModif < 2 then
-		      if fx1 <> n1 and fx1 <> n2 then
-		        bp1 = Point(Somm.item(fx1)).bpt
-		      else
-		        bp1 = Point(Somm.item(fx2)).bpt
+		      n3 = -1
+		      for i = 0 to somm.count-1
+		        if i <> n1 and i <> n2 and (somm.item(i).constructedby <> nil or somm.item(i).macconstructedby <> nil)  then
+		          n3 = i
+		        end if
+		      next
+		      if n3 = -1 then
+		        if fx1 <> n1 and fx1 <> n2 then
+		          n3 = fx1
+		        else
+		          n3 = fx2
+		        end if
 		      end if
-		      return new AffinityMatrix (bp1, ep, eq, bp1,np, nq)
+		      r = somm.item(n3)
+		      getoldnewpos(r,er,nr)
+		      return new AffinityMatrix (er, ep, eq, nr,np, nq)
 		    end if
 		  case 1
 		    if NbUnModif  = 0 then

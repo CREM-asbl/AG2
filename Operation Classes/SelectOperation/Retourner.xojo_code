@@ -67,7 +67,7 @@ Inherits SelectOperation
 		    s.ori = -s.ori
 		    
 		    if not Config.Trace then
-		      if Config.stdbiface or ( s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
+		      if Config.biface or ( s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
 		        s.fixecouleurfond(s.fillcolor.comp, s.fill)
 		      end if
 		    end if

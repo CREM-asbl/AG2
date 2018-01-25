@@ -76,7 +76,7 @@ Inherits MultipleSelectOperation
 		    end if
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i)
-		    s2.nonpointed = s1.nonpointed
+		    s2.copierparams(s1)
 		    s2.endconstruction
 		  next
 		  
@@ -93,7 +93,7 @@ Inherits MultipleSelectOperation
 		    s1 = tempshape.item(i)
 		    s2 = copies.item(i)
 		    tsf.appliquer(s1,s2)
-		    if tsf.type = 6 and  Config.stdbiface  then
+		    if tsf.type = 6 and  Config.biface  then
 		      s2.fixecouleurfond(s2.fillcolor.comp, s2.fill)
 		    end if
 		  next

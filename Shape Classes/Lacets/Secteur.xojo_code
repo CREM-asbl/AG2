@@ -87,13 +87,6 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(S as Secteur, M as Matrix)
-		  Super.Constructor(S,M)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
 		  'Cfr Bande
 		  nsk = new Lskull(5,p)
@@ -246,6 +239,13 @@ Inherits DSect
 	#tag Method, Flags = &h0
 		Sub oldcomputeori()
 		  ori = coord.orientation
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub oldConstructor(S as Secteur, M as Matrix)
+		  Super.Constructor(S,M)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -521,6 +521,11 @@ Inherits DSect
 			Type="Double"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="area"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Attracting"
 			Group="Behavior"
 			InitialValue="True"
@@ -531,6 +536,11 @@ Inherits DSect
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Biface"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
@@ -579,6 +589,11 @@ Inherits DSect
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Fleche"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
@@ -678,12 +693,6 @@ Inherits DSect
 			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="nonpointed"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="npts"
 			Group="Behavior"
 			InitialValue="0"
@@ -700,6 +709,11 @@ Inherits DSect
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Pointe"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="radius"
