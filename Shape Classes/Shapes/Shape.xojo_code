@@ -2501,7 +2501,7 @@ Protected Class Shape
 		  dim i as integer
 		  
 		  
-		  if (self isa Bipoint and not self isa droite) or (not wnd.drapshowall and hidden) or not noinvalidpoints then
+		  if (self isa Bipoint and not self isa droite) or (not WorkWindow.drapshowall and hidden) or not noinvalidpoints then
 		    return
 		  end if
 		  
@@ -3218,7 +3218,7 @@ Protected Class Shape
 		  
 		  
 		  for i=0 to Ubound(Childs)
-		    if not Childs(i).Hidden or wnd.DrapShowALL  then
+		    if not Childs(i).Hidden or WorkWindow.DrapShowALL  then
 		      S=Childs(i).SelectShape(p)
 		      if S<>nil then
 		        return S
@@ -3227,7 +3227,7 @@ Protected Class Shape
 		  next
 		  
 		  for i = 0 to ubound(constructedshapes)
-		    if  constructedshapes(i).centerordivpoint and (not Constructedshapes(i).hidden or wnd.Drapshowall) then
+		    if  constructedshapes(i).centerordivpoint and (not Constructedshapes(i).hidden or WorkWindow.Drapshowall) then
 		      s = constructedshapes(i).selectshape(p)
 		      if S<>nil then
 		        return S
@@ -3236,7 +3236,7 @@ Protected Class Shape
 		  next
 		  
 		  
-		  if pInShape(p) and (not hidden or wnd.DrapShowALL)  then
+		  if pInShape(p) and (not hidden or WorkWindow.DrapShowALL)  then
 		    return self
 		  else
 		    return nil

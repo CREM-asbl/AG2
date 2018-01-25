@@ -45,7 +45,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  Wnd.drapshowall = false
+		  WorkWindow.drapshowall = false
 		  Objects = CurrentContent.theobjects
 		  oldp = new BasicPoint(0,0)
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
@@ -371,7 +371,7 @@ Protected Class Operation
 		    end if
 		  #endif
 		  
-		  'if wnd.drappt then
+		  'if WorkWindow.drappt then
 		  'info = info + " (" + left(str(can.Mouseuser.x),5)+", "+ left(str(can.Mouseuser.y),5) +")"
 		  'end if
 		End Sub

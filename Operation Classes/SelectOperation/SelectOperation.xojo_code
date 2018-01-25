@@ -193,10 +193,10 @@ Inherits Operation
 		      CurrentContent.AddOperation(self)  // Ne faut-il pas tester si l'opération est finie?
 		    end if
 		    CurrentContent.CurrentFileUpToDate=false
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		  end if
 		  
-		  if wnd.drapresel and not self isa delete and not self isa colorchange then
+		  if WorkWindow.drapresel and not self isa delete and not self isa colorchange then
 		    Objects.Oldselection = copytempshape
 		    if not self isa appliquertsf  then
 		      Objects.Reselect
@@ -343,7 +343,7 @@ Inherits Operation
 		Sub ImmediateDoOperation()
 		  if tempshape.count > 0 then
 		    can.Mousecursor = System.Cursors.Wait
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		    DoOperation
 		    endoperation
 		  end if
@@ -386,7 +386,7 @@ Inherits Operation
 		  Finished = false
 		  can.Mousecursor = System.Cursors.Wait
 		  
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  DoOperation
 		  if dret = nil  then
 		    endoperation

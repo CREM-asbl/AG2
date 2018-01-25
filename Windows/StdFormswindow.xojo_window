@@ -312,7 +312,6 @@ End
 		  
 		  Config.setStdFile(popupmenu1.text+".std")
 		  Config.stdsize = val(popupmenu2.text)
-		  wnd.ClearStdBox
 		  Close
 		End Sub
 	#tag EndEvent

@@ -1456,7 +1456,7 @@ End
 			newcontent(true)
 			MenuMacros(true)
 			can.resize
-			wnd.refreshtitle
+			WorkWindow.refreshtitle
 			config.trace = false
 			can.refreshbackground
 			currentcontent.mac = nil
@@ -1539,7 +1539,7 @@ End
 			Doc = new XmlDocument(f)
 			mac =new Macro(Doc)
 			app.themacros.addmac mac
-			wnd.updatesousmenusmacros
+			WorkWindow.updatesousmenusmacros
 			end if
 			return true
 			
@@ -2150,14 +2150,14 @@ End
 			if not CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = Menu
 			HistCmd.visible = false
-			wnd.draphisto = false
-			wnd.refreshtitle
+			WorkWindow.draphisto = false
+			WorkWindow.refreshtitle
 			end if
 			elseif CurrentContent.CurrentOperation isa ReadHisto then
 			MenuBar = HistMenu
 			HistCmd.visible = true
-			wnd.draphisto = true
-			wnd.DisableToolBar
+			WorkWindow.draphisto = true
+			WorkWindow.DisableToolBar
 			elseif CurrentContent.Macrocreation then
 			MenuMacros(true)
 			end if
@@ -2213,10 +2213,10 @@ End
 		  'StdOutil(i).Graphics.FillRect(0,0,width,height)
 		  'stdoutil(i).refresh
 		  'next
-		  for i=0 to 3
-		    SetIco(i,0)
-		    StdOutil(i).refresh
-		  next
+		  'for i=0 to 3
+		  'SetIco(i,0)
+		  'StdOutil(i).refresh
+		  'next
 		End Sub
 	#tag EndMethod
 
@@ -2539,8 +2539,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub InitParams()
-		  wnd = self
-		  can = wnd.mycanvas1
+		  can = mycanvas1
 		  
 		  width = screen(0).width -120
 		  height = screen(0).height
@@ -3241,7 +3240,7 @@ End
 		    if index <> 0 then
 		      can.mousecursor = System.Cursors.StandardPointer
 		    else
-		      wnd.setcross
+		      WorkWindow.setcross
 		    end if
 		    SetFocus
 		  end if

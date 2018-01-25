@@ -5,7 +5,7 @@ Inherits SelectOperation
 		Sub Constructor()
 		  super.constructor
 		  OpId = 7
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  
 		  
 		End Sub
@@ -243,7 +243,7 @@ Inherits SelectOperation
 		  
 		  ReDeleteDeletedFigures(Temp)
 		  ReCreateCreatedFigures(Temp)
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 

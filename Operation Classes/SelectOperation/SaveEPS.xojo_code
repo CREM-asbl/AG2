@@ -294,7 +294,7 @@ Inherits SelectOperation
 		        next
 		      end if
 		      for j = 0 to  s.labs.count -1
-		        if wnd.drapdim or s.labs.item(j).text <> "*" then
+		        if WorkWindow.drapdim or s.labs.item(j).text <> "*" then
 		          adapterparametiq(s.labs.item(j), tos)
 		          s.labs.item(j).toEPS(tos)
 		        end if

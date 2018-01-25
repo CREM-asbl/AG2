@@ -5,7 +5,7 @@ Inherits SelectOperation
 		Sub Constructor()
 		  super.Constructor
 		  OpId = 15
-		  wnd.Drapshowall = true
+		  WorkWindow.Drapshowall = true
 		  
 		  
 		  

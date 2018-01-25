@@ -130,7 +130,7 @@ Inherits SelectOperation
 		  Objects.selectobject(CurrentHighLightedshape)
 		  Finished = false
 		  can.Mousecursor = System.Cursors.Wait
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  
 		  CurrentContent.Thefigs.removefigure remplacement.fig
 		  if remplace <> nil then

@@ -236,7 +236,7 @@ Inherits StandardPolygon
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  if not wnd.drapshowall and hidden then
+		  if not WorkWindow.drapshowall and hidden then
 		    return
 		  end if
 		  

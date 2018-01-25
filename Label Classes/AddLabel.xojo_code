@@ -21,7 +21,7 @@ Inherits SelectAndDragOperation
 		  Correction = new BasicPoint(lab.Correction.X,  lab.Correction.Y)
 		  Etiquette = asc(Lab.Text)
 		  if Lab.text = "*" then
-		    wnd.drapdim = true
+		    WorkWindow.drapdim = true
 		  elseif Lab.text = "" then
 		    currentshape.labs.removeobject lab
 		  end if
@@ -275,7 +275,7 @@ Inherits SelectAndDragOperation
 		  end select
 		  
 		  if lab1  <> nil and lab1.text = "*" then
-		    wnd.drapdim = true
+		    WorkWindow.drapdim = true
 		  end if
 		  
 		End Sub
@@ -367,7 +367,7 @@ Inherits SelectAndDragOperation
 		  end select
 		  
 		  if lab1  <> nil and lab1.text = "*" then
-		    wnd.drapdim = true
+		    WorkWindow.drapdim = true
 		  end if
 		  
 		  

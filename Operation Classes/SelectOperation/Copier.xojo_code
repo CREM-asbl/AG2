@@ -54,7 +54,7 @@ Inherits SelectOperation
 		  can.Mousecursor = System.Cursors.Wait
 		  currentcontent.MoveFront(CurrentHighlightedShape.id)
 		  CurrentHighlightedShape.SelectNeighboor
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  DoOperation
 		  
 		  endoperation

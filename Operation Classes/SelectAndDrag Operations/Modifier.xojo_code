@@ -497,7 +497,7 @@ Inherits SelectAndDragOperation
 		    return
 		  else
 		    super.mouseup(p)
-		    wnd.setcross
+		    WorkWindow.setcross
 		  end if
 		End Sub
 	#tag EndMethod
@@ -645,7 +645,7 @@ Inherits SelectAndDragOperation
 		    figs.restore
 		    figs.canceloldbpts
 		    figs.EnableModifyall
-		    wnd.setcross
+		    WorkWindow.setcross
 		    testfinished = true
 		    pointmobile = nil
 		    currentshape = nil

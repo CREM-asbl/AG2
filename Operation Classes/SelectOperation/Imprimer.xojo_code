@@ -44,9 +44,9 @@ Inherits SelectOperation
 		  gprint = OpenPrinterDialog(prtsetup)
 		  
 		  if gprint <> nil then
-		    if wnd.backcolor = noir then
+		    if WorkWindow.backcolor = noir then
 		      switch = true
-		      wnd.switchcolors
+		      WorkWindow.switchcolors
 		    end if
 		    can.mousecursor = system.Cursors.Wait
 		    
@@ -70,7 +70,7 @@ Inherits SelectOperation
 		      d = new date
 		      
 		      gprint.DrawPicture Pict, printLeft, printTop+2, printWidth, printHeight, 0, 0, Pict.width, Pict.height
-		      gprint.drawstring  wnd.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year), printLeft, printTop 
+		      gprint.drawstring  WorkWindow.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year), printLeft, printTop 
 		      gprint.drawrect printLeft, printTop+2, printWidth, printHeight-2
 		      
 		      if copies<gprint.Copies then
@@ -80,7 +80,7 @@ Inherits SelectOperation
 		    can.mousecursor = System.Cursors.StandardPointer
 		  end if
 		  if switch then
-		    wnd.switchcolors
+		    WorkWindow.switchcolors
 		  end if
 		  
 		  

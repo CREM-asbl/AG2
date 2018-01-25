@@ -988,10 +988,6 @@ Protected Module Globals
 		SizeLabel As Integer = 18
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		wnd As workwindow
-	#tag EndProperty
-
 
 	#tag Constant, Name = blanc, Type = Color, Dynamic = False, Default = \"&cFFFFFF", Scope = Public
 	#tag EndConstant

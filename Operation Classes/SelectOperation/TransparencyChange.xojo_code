@@ -42,7 +42,7 @@ Inherits SelectOperation
 		Sub ImmediateDoOperation(f as integer)
 		  if tempshape.count > 0 then
 		    can.Mousecursor = System.Cursors.Wait
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		    DoOperation
 		    endoperation
 		  end if

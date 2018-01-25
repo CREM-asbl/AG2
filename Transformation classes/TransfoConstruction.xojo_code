@@ -150,7 +150,7 @@ Inherits MultipleSelectOperation
 		Sub Constructor()
 		  super.constructor
 		  colsep = true
-		  wnd.pointerpolyg
+		  WorkWindow.pointerpolyg
 		  OPId = 17
 		End Sub
 	#tag EndMethod

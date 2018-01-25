@@ -7,7 +7,7 @@ Inherits SelectOperation
 		  super.Constructor
 		  colsep = true
 		  OpId = 28
-		  wnd.PointerPolyg
+		  WorkWindow.PointerPolyg
 		  
 		End Sub
 	#tag EndMethod

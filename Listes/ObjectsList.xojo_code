@@ -216,7 +216,7 @@ Inherits Liste
 		    end select
 		  else
 		    'fa = fa-10
-		    'specs =  wnd.StdFamilies(Fa,Fo)
+		    'specs =  WorkWindow.StdFamilies(Fa,Fo)
 		    'if ubound(specs.angles) > 0 then
 		    'currentShape=new StandardPolygon(self, fa, fo, bp(0))
 		    'elseif specs.family = "Cubes" or specs.family = "Rods" then
@@ -345,12 +345,12 @@ Inherits Liste
 		  for i=Ubound(currentcontent.plans) downto 0
 		    S=GetShape(currentcontent.plans(i))
 		    if s <> nil   then
-		      if s isa point and (not s.invalid) and (not s.deleted) and (not s.Hidden or wnd.DrapShowALL)   and point(s).pinshape(p)  then
+		      if s isa point and (not s.invalid) and (not s.deleted) and (not s.Hidden or WorkWindow.DrapShowALL)   and point(s).pinshape(p)  then
 		        visible.addshape  point(s)
 		      else
 		        for j = 0 to ubound(s.childs)
 		          pt = s.childs(j)
-		          if (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or wnd.DrapShowALL)   and pt.pinshape(p)  then
+		          if (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or WorkWindow.DrapShowALL)   and pt.pinshape(p)  then
 		            visible.addshape pt
 		          end if
 		        next
@@ -616,7 +616,7 @@ Inherits Liste
 		  
 		  for i=0 to Ubound(Objects)
 		    sh = shape(objects(i))
-		    if (not sh.Hidden or wnd.DrapShowALL)  and not sh.invalid and (not sh.deleted) then
+		    if (not sh.Hidden or WorkWindow.DrapShowALL)  and not sh.invalid and (not sh.deleted) then
 		      S=sh.SelectShape(p)
 		      if S<>nil then
 		        return S

@@ -145,7 +145,7 @@ Inherits MultipleSelectOperation
 		    M2 = new Matrix(XMLElement(EL1.Child(1)))
 		    SetConstructionInfo(dir)
 		  end if
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 
@@ -276,7 +276,7 @@ Inherits MultipleSelectOperation
 		  s.delete
 		  objects.unselectall
 		  ReDeleteCreatedFigures (Temp)
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 

@@ -247,7 +247,7 @@ Inherits SelectAndDragOperation
 		  
 		  objects.tspfalse
 		  finished = false
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  nobj = 1
 		  
 		  if CurrentShape.Idgroupe <> -1 then
@@ -389,7 +389,7 @@ Inherits SelectAndDragOperation
 		      EndOper1(M)
 		    end if
 		  end if
-		  wnd.refresh
+		  WorkWindow.refresh
 		  
 		  
 		  
@@ -627,7 +627,7 @@ Inherits SelectAndDragOperation
 		  RecreateDeletedFigures(Temp)
 		  
 		  objects.unselectall
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 

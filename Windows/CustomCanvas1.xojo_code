@@ -27,7 +27,7 @@ Inherits Canvas
 		  end if
 		  
 		  currentcontent.currentoperation = nil
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  
 		  
 		  sctxt = currenthighlightedshape
@@ -226,7 +226,7 @@ Inherits Canvas
 		  if currentcontent.currentoperation <> nil and not (currentoper isa Conditionner) and not (currentoper isa modifier) then
 		    currentcontent.currentoperation = nil
 		  end if
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  return true
 		End Function
 	#tag EndEvent
@@ -620,8 +620,8 @@ Inherits Canvas
 		Sub Resize()
 		  me.left = 122
 		  me.top = 0
-		  me.width = wnd.width - me.left
-		  me.height = wnd.height 
+		  me.width = WorkWindow.width - me.left
+		  me.height = WorkWindow.height 
 		  
 		  BackgroundPicture=New Picture(width,height,screen(0).depth) 
 		  BackgroundPicture.graphics.ForeColor= &cFFFFFF

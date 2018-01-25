@@ -380,7 +380,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  if currentcontent.macrocreation then
 		    CurrentContent.CurrentFileUpToDate=false
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		    objects.unselectall
 		    CurrentItemToSet=1
 		    Finished = true
@@ -598,7 +598,7 @@ Inherits MultipleSelectOperation
 		    end if
 		  end if
 		  DoOperation
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 
@@ -742,7 +742,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  ReDeleteCreatedFigures (Temp)
 		  RecreateDeletedFigures(Temp)
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 

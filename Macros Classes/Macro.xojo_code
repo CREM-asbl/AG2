@@ -571,7 +571,7 @@ Protected Class Macro
 		  mw = new MacWindow(self)
 		  mw.Title = GetName + " : " + Dico.Value("MacroDescription") +" " + caption
 		  mw.EF.Text = expli
-		  wnd.setfocus
+		  WorkWindow.setfocus
 		  
 		End Sub
 	#tag EndMethod
@@ -694,7 +694,7 @@ Protected Class Macro
 		  end if
 		  
 		  CurrentContent.CurrentOperation = nil
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		  
 		  Doc = CurrentContent.OpList
 		  Histo = XMLElement(Doc.FirstChild)
@@ -725,7 +725,7 @@ Protected Class Macro
 		      tos.write Doc.tostring
 		      tos.close
 		      app.theMacros.addmac self
-		      wnd.updatesousmenusmacros
+		      WorkWindow.updatesousmenusmacros
 		    end if
 		  end if
 		  

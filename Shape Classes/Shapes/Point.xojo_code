@@ -1489,7 +1489,7 @@ Inherits Shape
 		  else
 		    rsk.update(bpt,2)
 		  end if
-		  if   (wnd.drapshowall or not hidden)  and (not invalid)  and (not deleted)  then
+		  if   (WorkWindow.drapshowall or not hidden)  and (not invalid)  and (not deleted)  then
 		    if highlighted or not allparentsnonpointed then
 		      if tracept   then
 		        rsk.updateborderwidth(borderwidth)

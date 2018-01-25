@@ -18,7 +18,7 @@ Protected Class WindContent
 		  end if
 		  drapabort = false
 		  currentoperation = nil
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		End Sub
 	#tag EndMethod
 
@@ -41,7 +41,7 @@ Protected Class WindContent
 		  end if
 		  TotalOperation  = TotalOperation +1
 		  SaveHisto
-		  wnd.pushbutton1.enabled = true
+		  WorkWindow.pushbutton1.enabled = true
 		  
 		End Sub
 	#tag EndMethod
@@ -122,13 +122,13 @@ Protected Class WindContent
 		  end if
 		  
 		  Setpolygpointes(val(FAG.GetAttribute(Replace(Dico.value("PrefsPolyg")," ","_"))))
-		  wnd.settrace(val(FAG.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
+		  Workwindow.settrace(val(FAG.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
 		  SetFleches(val(FAG.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
 		  config.area  = val(FAG.GetAttribute("Area"))
 		  
-		  wnd.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked =(config.area = 0)
-		  wnd.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
 		  
+		  WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = (config.area = 0)
+		  WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
 		End Sub
 	#tag EndMethod
 
@@ -348,7 +348,7 @@ Protected Class WindContent
 		        Doc = new XmlDocument(app.MacFolder.Child(cap))
 		        mac =new Macro(Doc)
 		        app.themacros.addmac mac
-		        wnd.updatesousmenusmacros
+		        WorkWindow.updatesousmenusmacros
 		      catch
 		        MsgBox "Macro "+cap+" introuvable"
 		        return nil
@@ -505,7 +505,7 @@ Protected Class WindContent
 		  AG.SetAttribute(Dico.Value("Langage"),Config.Langue)
 		  AG.SetAttribute(Dico.value("Config"),Config.Menu)
 		  AG.SetAttribute("Plans", str(1))
-		  if wnd.backcolor = noir then
+		  if WorkWindow.backcolor = noir then
 		    AG.SetAttribute("BkCol","noir")
 		  end if
 		  if SHUA <> nil then
@@ -683,8 +683,8 @@ Protected Class WindContent
 		  can.ClearOffscreen
 		  CurOper.RedoOperation(EL)
 		  
-		  if wnd.mousedispo then
-		    wnd.refresh
+		  if WorkWindow.mousedispo then
+		    WorkWindow.refresh
 		    if curoper isa lier or curoper isa delier then
 		      curoper.paint(can.BackgroundPicture.graphics)
 		    end if
@@ -747,7 +747,7 @@ Protected Class WindContent
 		    end if
 		    TheObjects.unselectall
 		    CurrentFileUpToDate=true
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		  end if
 		  
 		End Sub
@@ -805,8 +805,8 @@ Protected Class WindContent
 		  else
 		    config.PolFleches = false
 		  end if
-		  if wnd.MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
-		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = config.PolFleches
+		  if WorkWindow.MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
+		    WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = config.PolFleches
 		  end if
 		  
 		End Sub
@@ -819,8 +819,8 @@ Protected Class WindContent
 		  else
 		    config.polpointes = false
 		  end if
-		  if wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
-		    wnd.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
+		  if WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
+		    WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
 		  end if
 		  
 		  Exception err
@@ -868,7 +868,7 @@ Protected Class WindContent
 		    currentop = currentop-1
 		  wend
 		  
-		  if wnd.mousedispo then
+		  if WorkWindow.mousedispo then
 		    if curoper isa lier or curoper isa delier then
 		      curoper.paint(can.BackgroundPicture.graphics)
 		    end if

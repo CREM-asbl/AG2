@@ -110,7 +110,7 @@ Inherits ShapeConstruction
 		  currentshape.liberte = 3
 		  Currentshape.InitConstruction
 		  CurrentShape.IndexConstructedPoint = 0
-		  wnd.setcross
+		  WorkWindow.setcross
 		  
 		  
 		  
@@ -336,7 +336,7 @@ Inherits ShapeConstruction
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
 		  
-		  wnd.refresh
+		  WorkWindow.refresh
 		  
 		End Sub
 	#tag EndMethod

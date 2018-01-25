@@ -326,9 +326,8 @@ Protected Class Configuration
 		      StdFamilies(i,j) = Curspecs
 		    next
 		  next
-		  if wnd <> nil then
-		    wnd.ClearStdBox
-		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 

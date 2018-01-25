@@ -15,7 +15,7 @@ Inherits MultipleSelectOperation
 		  EndOperation
 		  currentcontent.drapabort = false
 		  can.refreshbackground
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		End Sub
 	#tag EndMethod
 
@@ -376,7 +376,7 @@ Inherits MultipleSelectOperation
 		    showattraction
 		    Help g, display
 		    
-		    if  (not currentshape.std or wnd.stdflag) then
+		    if  (not currentshape.std or WorkWindow.stdflag) then
 		      currentshape.paintall(g)
 		    else
 		      Currentshape.Points(0).Paint(g)

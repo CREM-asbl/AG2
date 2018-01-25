@@ -67,7 +67,7 @@ Protected Class MacrosList
 		  if macs.indexof(m) <> -1 then
 		    macs.remove macs.indexof(m)
 		  end if
-		  wnd.updateSousMenusMacros
+		  WorkWindow.updateSousMenusMacros
 		  
 		End Sub
 	#tag EndMethod
@@ -90,7 +90,7 @@ Protected Class MacrosList
 		      addmac(mac)
 		    next
 		  end if
-		  wnd.UpdateSousMenusMacros
+		  WorkWindow.UpdateSousMenusMacros
 		  
 		  
 		End Sub

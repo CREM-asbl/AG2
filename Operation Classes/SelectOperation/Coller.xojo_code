@@ -151,7 +151,7 @@ Inherits SelectOperation
 		  
 		  RedeleteCreatedFigures(Temp)
 		  objects.unselectall
-		  wnd.Refresh
+		  WorkWindow.Refresh
 		  
 		  
 		End Sub

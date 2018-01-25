@@ -53,7 +53,7 @@ Inherits MultipleSelectOperation
 		Sub Constructor()
 		  super.constructor
 		  OpId = 25
-		  wnd.PointerPolyg
+		  WorkWindow.PointerPolyg
 		  
 		  
 		End Sub
@@ -332,7 +332,7 @@ Inherits MultipleSelectOperation
 		Sub RedoOperation(Temp as XMLElement)
 		  
 		  ReCreateCreatedFigures(Temp)
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 
@@ -437,7 +437,7 @@ Inherits MultipleSelectOperation
 		  Cut(0).delete
 		  Cut(1).delete
 		  ReDeleteCreatedFigures (Temp)
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 

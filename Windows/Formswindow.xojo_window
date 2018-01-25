@@ -612,7 +612,7 @@ End
 		    end if
 		    CurrentContent.TheObjects.unselectAll
 		    CurrentContent.CurrentOperation  = Op
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		    Close
 		  end if
 		End Sub

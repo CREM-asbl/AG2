@@ -95,7 +95,7 @@ Inherits Label
 		  
 		  Text = El.GetAttribute("Text")
 		  if Text = "*" then
-		    wnd.drapdim = true
+		    WorkWindow.drapdim = true
 		  end if
 		  TextFont = EL.GetAttribute("Font")
 		  TextSize = val(El.GetAttribute("Size"))
@@ -114,7 +114,7 @@ Inherits Label
 		  else
 		    SetFixe(false)
 		  end if
-		  if wnd.version >= 222 then
+		  if WorkWindow.version >= 222 then
 		    correction = corr
 		  else
 		    correction = can.idtransform(corr)
@@ -167,7 +167,7 @@ Inherits Label
 		  end if
 		  
 		  if text = "*" then
-		    wnd.drapdim = true
+		    WorkWindow.drapdim = true
 		  end if
 		  return et
 		End Function
@@ -217,7 +217,7 @@ Inherits Label
 		    ResetParam(g)
 		    return
 		  end if
-		  if not wnd.drapdim then
+		  if not WorkWindow.drapdim then
 		    resetParam(g)
 		  end if
 		  
@@ -321,7 +321,7 @@ Inherits Label
 		        dat = str(1)
 		      end if
 		    end select
-		    if wnd.drapdim then
+		    if WorkWindow.drapdim then
 		      g.Drawstring(dat,q.x, q.y)
 		    end if
 		  end if
@@ -357,7 +357,7 @@ Inherits Label
 		    return
 		  end if
 		  
-		  if not wnd.drapdim then
+		  if not WorkWindow.drapdim then
 		    return
 		  end if
 		  
@@ -906,6 +906,13 @@ Inherits Label
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TabStop"
+			Visible=true
+			Group="Position"
+			InitialValue="True"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Text"

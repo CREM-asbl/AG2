@@ -113,7 +113,7 @@ Inherits SelectOperation
 		  CurrentContent.currentoperation = nil
 		  objects.unselectall
 		  objects.unhighlightall
-		  wnd.refresh
+		  WorkWindow.refresh
 		  
 		End Sub
 	#tag EndMethod

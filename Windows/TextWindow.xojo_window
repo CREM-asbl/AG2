@@ -80,9 +80,9 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  left = 2*wnd.width/3-5
-		  width = wnd.width/3
-		  height = wnd.height/3
+		  left = 2*WorkWindow.width/3-5
+		  width = WorkWindow.width/3
+		  height = WorkWindow.height/3
 		  objects = CurrentContent.TheObjects
 		  Figs = CurrentContent.TheFigs
 		  Macs = app.TheMacros

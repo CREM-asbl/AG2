@@ -166,7 +166,7 @@ Inherits Shape
 		  end if
 		  
 		  
-		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not wnd.drapshowall and hidden) then
+		  if (nsk= nil ) or ( nsk.item(0).x = 0 and nsk.item(0).y = 0)  or (points(0).bpt = nil) or  (not WorkWindow.drapshowall and hidden) then
 		    return
 		  end if
 		  

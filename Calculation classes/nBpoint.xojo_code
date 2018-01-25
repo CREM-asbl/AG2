@@ -80,7 +80,7 @@ Protected Class nBpoint
 		  arpobp()=completesides(arpolig(), arpocol())
 		  compos() = ComponentsCreation(arpobp(),arpolig(),arpocol())
 		  aire = compomesurer(compos)
-		  if wnd.drapg and not decomp then
+		  if WorkWindow.drapg and not decomp then
 		    for i = 0 to ubound(compos)
 		      comp = compos(i)
 		      poly = new polygon(currentcontent.theobjects, comp)

@@ -21,7 +21,7 @@ Inherits SelectOperation
 		    sctxt.conditionedby = nil
 		    endoperation
 		    currentcontent.currentoperation = nil
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		  elseif (currenthighlightedshape <> nil) and (currenthighlightedshape isa point) and (point(currenthighlightedshape).pointsur.count = 2) then
 		    if point(currenthighlightedshape).conditioned.getposition(sctxt) =-1 then
 		      point(currenthighlightedshape).conditioned.objects.append sctxt
@@ -31,7 +31,7 @@ Inherits SelectOperation
 		  end if
 		  
 		  currentcontent.currentoperation = nil
-		  wnd.refreshtitle
+		  WorkWindow.refreshtitle
 		End Sub
 	#tag EndMethod
 

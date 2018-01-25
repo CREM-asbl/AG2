@@ -185,7 +185,7 @@ Inherits SelectOperation
 		    currentshape = currenthighlightedshape
 		    objects.tspfalse
 		    finished = false
-		    wnd.refreshtitle
+		    WorkWindow.refreshtitle
 		    
 		    if not self isa modifier    then
 		      CurrentShape.SelectNeighboor //sélectionne  toute la figure  et les formes  liées
@@ -284,7 +284,7 @@ Inherits SelectOperation
 		      ff.updatemacconstructedshapes
 		    next
 		  end if
-		  wnd.refresh
+		  WorkWindow.refresh
 		End Sub
 	#tag EndMethod
 

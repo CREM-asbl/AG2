@@ -664,7 +664,7 @@ End
 	#tag Event
 		Sub Close()
 		  sizelabel = val(size.text)
-		  wnd.setfocus
+		  WorkWindow.setfocus
 		  
 		End Sub
 	#tag EndEvent

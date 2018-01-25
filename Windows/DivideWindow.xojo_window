@@ -130,18 +130,18 @@ End
 #tag Events PopupMenu1
 	#tag Event
 		Sub Change()
-		  wnd.ntemp= val(me.text)
+		  WorkWindow.ntemp= val(me.text)
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub LostFocus()
-		  wnd.ntemp = val(me.text)
+		  WorkWindow.ntemp = val(me.text)
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Open()
-		  wnd.ntemp = val(me.text)
+		  WorkWindow.ntemp = val(me.text)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

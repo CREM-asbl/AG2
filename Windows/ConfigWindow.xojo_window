@@ -1385,8 +1385,8 @@ End
 #tag Events MouvBut
 	#tag Event
 		Sub Action(index as Integer)
-		  wnd.MouvBut(index).visible = not wnd.MouvBut(index).visible
-		  Config.MvBt(index) = wnd.MouvBut(Index).visible
+		  WorkWindow.MouvBut(index).visible = not WorkWindow.MouvBut(index).visible
+		  Config.MvBt(index) = WorkWindow.MouvBut(Index).visible
 		  
 		End Sub
 	#tag EndEvent

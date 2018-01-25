@@ -145,8 +145,8 @@ Inherits MultipleSelectOperation
 		  mw.ShowModal
 		  mac.SaveFileMacro
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
-		  wnd.EraseMenuBar
-		  wnd.CopyMenuBar
+		  WorkWindow.EraseMenuBar
+		  WorkWindow.CopyMenuBar
 		  
 		End Sub
 	#tag EndMethod
