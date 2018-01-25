@@ -126,9 +126,6 @@ Protected Class WindContent
 		  SetFleches(val(FAG.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
 		  config.area  = val(FAG.GetAttribute("Area"))
 		  
-		  
-		  WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = (config.area = 0)
-		  WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
 		End Sub
 	#tag EndMethod
 

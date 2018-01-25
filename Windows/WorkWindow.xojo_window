@@ -777,6 +777,8 @@ End
 		      end if
 		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
 		    end if
+		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = (config.area = 0)
+		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
 		  end if
 		  
 		  
@@ -2202,21 +2204,6 @@ End
 		    obj.item(i).augmentefont
 		  next
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub ClearStdBox()
-		  dim i as integer
-		  
-		  'for i=0 to 3
-		  'StdOutil(i).Graphics.FillRect(0,0,width,height)
-		  'stdoutil(i).refresh
-		  'next
-		  'for i=0 to 3
-		  'SetIco(i,0)
-		  'StdOutil(i).refresh
-		  'next
 		End Sub
 	#tag EndMethod
 
