@@ -1105,7 +1105,7 @@ Inherits Liste
 		  else
 		    fstd = Temp.GetAttribute("StdFile")
 		    if fstd <> "" and fstd <> Config.stdfile then
-		      Config.setStdFile(fstd)
+		      Config.ChargerStdForms(fstd)
 		    end if
 		    s = XMLLoadStdForm (temp)
 		  end select

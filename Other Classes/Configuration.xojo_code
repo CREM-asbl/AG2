@@ -64,8 +64,7 @@ Protected Class Configuration
 		    List = EL.XQL("StdFile")
 		    if List.Length > 0 then
 		      Temp = XMLElement(List.Item(0))
-		      StdFile = Temp.GetAttribute("Name")
-		      ChargerStdForms
+		      ChargerStdForms(Temp.GetAttribute("Name"))
 		    else
 		      ShowStdTools = false
 		    end if
@@ -244,7 +243,7 @@ Protected Class Configuration
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerStdForms()
+		Sub ChargerStdForms(std as string)
 		  dim fi as FolderItem
 		  dim Doc As XMLDocument
 		  dim List, Famlist, FormList as XMLNodeList
@@ -256,7 +255,7 @@ Protected Class Configuration
 		    return
 		  end if
 		  
-		  select case stdfile
+		  select case std
 		  case "Jeu_de_base.std"
 		    Doc=new XMLDocument(jeu_de_base)
 		  case "Jeu_reduit.std"
@@ -274,11 +273,13 @@ Protected Class Configuration
 		  else
 		    fi = app.StdFolder.Child(stdfile)
 		    if not fi.exists then
-		      MsgBox Dico.Value("FileMenu") + " " + stdfile + Dico.Value("Introuvable")
+		      MsgBox Dico.Value("FileMenu") + " " + std + Dico.Value("Introuvable")
 		      return
 		    end if
 		    Doc=new XMLDocument(fi)
 		  end select
+		  
+		  stdfile = std
 		  
 		  EL = Doc.DocumentElement
 		  Famlist = EL.XQL("Famille")
@@ -573,13 +574,6 @@ Protected Class Configuration
 		Sub setPassword(pass as string)
 		  Password = pass
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetStdFile(file as string)
-		  stdfile = file
-		  ChargerStdForms
 		End Sub
 	#tag EndMethod
 

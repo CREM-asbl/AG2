@@ -310,7 +310,7 @@ End
 		Sub Action()
 		  dim i as integer
 		  
-		  Config.setStdFile(popupmenu1.text+".std")
+		  Config.ChargerStdForms(popupmenu1.text+".std")
 		  Config.stdsize = val(popupmenu2.text)
 		  Close
 		End Sub
