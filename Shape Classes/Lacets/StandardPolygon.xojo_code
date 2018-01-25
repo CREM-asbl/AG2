@@ -94,7 +94,10 @@ Inherits Polygon
 		  end  if
 		  redim Angles(npts-2)
 		  if fam < 14 then
-		    file = Config.stdfile
+		    file = EL.GetAttribute("StdFile")
+		    if (file <> Config.stdfile) then
+		      return
+		    end if
 		    specs = config.StdFamilies(fam-10,Forme)
 		    for i=0 to npts-2
 		      Angles(i) =  specs.Angles(i)
