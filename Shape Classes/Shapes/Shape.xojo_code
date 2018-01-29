@@ -2860,7 +2860,7 @@ Protected Class Shape
 		    return true
 		  end if
 		  
-		  if (self.auto = 3 or self.auto = 5) and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
+		  if not (self isa arc) and  (self.auto = 3 or self.auto = 5) and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
 		    return true
 		  end if
 		  
@@ -3606,6 +3606,7 @@ Protected Class Shape
 		  for i = 0 to labs.count-1
 		    labs.item(i).setsize round(labs.item(i).Textsize * k)
 		    labs.item(i).setposition
+		    labs.item(i).correction = labs.item(i).correction*k
 		  next
 		  
 		  labupdated = true

@@ -261,9 +261,9 @@ Inherits Label
 		    if viss.count > 0 then
 		      sh = viss.item(0)
 		      dat = str(point(chape).indice(polygon(sh)))
-		    else
-		      ResetParam(g)
-		      return
+		      'else
+		      'ResetParam(g)
+		      'return
 		    end if
 		  end if
 		  Type = 2

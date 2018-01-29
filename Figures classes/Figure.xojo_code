@@ -63,7 +63,7 @@ Protected Class Figure
 		  
 		  t = true
 		  for j = 0 to ubound(aut)
-		    t  = t and (f1.shapes.item(j) isa BiPoint ) or (aut(j) = 3)
+		    t  = t and ( (f1.shapes.item(j) isa BiPoint ) or (aut(j) = 3))
 		  next
 		  
 		  if t then 
@@ -83,7 +83,7 @@ Protected Class Figure
 		    return
 		  end if
 		  
-		  f1.auto = -1
+		  f1.auto = 1
 		  
 		End Sub
 	#tag EndMethod
