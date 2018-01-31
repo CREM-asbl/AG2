@@ -3,10 +3,6 @@ Protected Class App
 Inherits Application
 	#tag Event
 		Function CancelClose() As Boolean
-		  'if ipctransfert then
-		  'ipc.send(FileName)
-		  'end if
-		  
 		  
 		End Function
 	#tag EndEvent
@@ -25,8 +21,6 @@ Inherits Application
 
 	#tag Event
 		Sub Open()
-		  'CheckProcess
-		  'if not ipctransfert then
 		  CheckSystem
 		  InitFolders
 		  Dico = new Dictionnaire
@@ -35,7 +29,7 @@ Inherits Application
 		  api.checkUpdate 
 		  themacros = new macroslist
 		  initWindow.show
-		  'end if
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -176,18 +170,6 @@ Inherits Application
 		  MsgBox Dico.Value("MsgNovalidFile") + Dico.Value("Noread")
 		  CurrentContent.currentoperation = nil
 		  quit      'trouver un moyen de mettre un terme à la lecture sans sortir du programme en rétablissant la situation telle qu'avant le début de la lecture"
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub CheckProcess()
-		  mut = new Mutex("AG2")
-		  
-		  if not mut.TryEnter then
-		    ipctransfert = true
-		  end if
-		  
-		  ipc = new IPC
 		End Sub
 	#tag EndMethod
 
@@ -387,14 +369,6 @@ Inherits Application
 
 	#tag Property, Flags = &h0
 		FileName As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ipc As IPC
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ipctransfert As boolean = false
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

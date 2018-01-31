@@ -34,7 +34,6 @@ Class=RotationMatrix;Matrices classes/RotationMatrix.xojo_code;&hFFFFFFFFBDDD140
 Class=SimilarityMatrix;Matrices classes/SimilarityMatrix.xojo_code;&h00000000798FAFFF;&h00000000360477FF;false
 Class=SymmetryMatrix;Matrices classes/SymmetryMatrix.xojo_code;&hFFFFFFFFBDDCFD08;&h00000000360477FF;false
 Class=Translationmatrix;Matrices classes/Translationmatrix.xojo_code;&h00000000420847FF;&h00000000360477FF;false
-Class=IPC;Connexion/IPC.xojo_code;&h000000005FA2FFFF;&h00000000476F47FF;false
 Class=AddLabel;Label Classes/AddLabel.xojo_code;&h00000000066257FF;&h0000000071D6E7FF;false
 Class=Etiq;Label Classes/Etiq.xojo_code;&h000000007E4CB7FF;&h0000000071D6E7FF;false
 Folder=SelectOperation;Operation Classes/SelectOperation;&hFFFFFFFFBDBA440F;&hFFFFFFFFBA483D7A;false
