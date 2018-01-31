@@ -255,10 +255,54 @@ Begin Window InitWindow
       Visible         =   False
       Width           =   180
    End
+   Begin Label LabelVersion
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   171
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Version"
+      TextAlign       =   1
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   116
+      Transparent     =   True
+      Underline       =   False
+      Visible         =   True
+      Width           =   460
+   End
 End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Open()
+		  LabelVersion.setString( "Version "+App.FullVersion)
+		  LabelVersion.Bold = true
+		  LabelVersion.TextSize = 20
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Sub Refresh()
 		  PushButton2.Caption = Dico.Value("Enseignant")
