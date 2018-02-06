@@ -908,13 +908,6 @@ Inherits Label
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="TabStop"
-			Visible=true
-			Group="Position"
-			InitialValue="True"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Text"
 			Group="Behavior"
 			InitialValue="A"
