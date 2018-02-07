@@ -7,11 +7,11 @@ Image splash
 		#tag ImageSpecification
 			Comment = 
 			Device = 31
-			HSize = -1.00
+			HSize = 793.00
 			Orientation = Any
 			Platform = 15
 			PPI = 72
-			VSize = -1.00
+			VSize = 552.00
 		#tag EndImageSpecification
 	#tag EndImageRepresentation
 	#tag ImageRepresentation

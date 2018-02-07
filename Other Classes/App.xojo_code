@@ -434,12 +434,6 @@ Inherits Application
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="ipctransfert"
-			Group="Behavior"
-			InitialValue="false"
-			Type="boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="log"
 			Group="Behavior"
 			Type="String"
