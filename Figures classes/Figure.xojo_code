@@ -5,9 +5,10 @@ Protected Class Figure
 		  // Une figure a été construite par fusion de plusieurs autres.  Les formes sont de types différents.
 		  //Il faut trouver une valeur de auto qui ne crée pas de déformations et provoque le moins de blocages possibles.
 		  dim t, tt as boolean
-		  dim h, j, n as integer
+		  dim k, h, j, n as integer
 		  dim aut(-1) as integer
 		  dim Ob1 as objectslist
+		  dim s as shape
 		  
 		  redim aut(f1.shapes.count-1)
 		  for  j = 0 to f1.Shapes.count-1
@@ -58,8 +59,28 @@ Protected Class Figure
 		    return
 		  end if
 		  
+		  'Quatrième cas toutes les formes sont autosim  sauf une qcq dont tous les points sont sur les autres
 		  
-		  'Quatrième cas: s'il y a un mélange de droites  avec des formes autospe
+		  t = true
+		  for j = 0 to ubound(aut)
+		    t  = t and ((aut(j) =1 ) or (aut(j) = 4))
+		  next
+		  if t then
+		    tt = true
+		    for j = 0 to ubound(aut)
+		      if aut(j) = 4 then
+		        s = f1.shapes.element(j)
+		        for h = 0 to s.npts-1
+		          tt = tt and s.points(h).HasAutosimParent(k) 
+		        next
+		      end if
+		      if tt then
+		        f1.auto = 1
+		      end if
+		    next
+		    
+		  end if
+		  'Cinquième: s'il y a un mélange de droites  avec des formes autospe
 		  
 		  t = true
 		  for j = 0 to ubound(aut)
@@ -1996,6 +2017,7 @@ Protected Class Figure
 		    f2.PtsConsted.concat f1.PtsConsted
 		  end if
 		  
+		  AdapterAutos(f2)
 		  return t
 		  
 		End Function

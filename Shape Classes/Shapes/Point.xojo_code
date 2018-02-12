@@ -675,6 +675,20 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function HasAutoSimParent(byref j as integer) As boolean
+		  dim i as integer
+		  
+		  for i = 0 to ubound(parents)
+		    if parents(i).auto = 1 then
+		      j = i
+		      return true
+		    end if
+		  next
+		  return false
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function hasduplicate() As Boolean
 		  dim i As  integer
 		  dim pt as Point
