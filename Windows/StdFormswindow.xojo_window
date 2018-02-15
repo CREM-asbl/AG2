@@ -59,7 +59,7 @@ Begin Window StdFormswindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   95
    End
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
@@ -67,13 +67,13 @@ Begin Window StdFormswindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   118
+      Left            =   120
       ListIndex       =   1
       LockBottom      =   False
       LockedInPosition=   False
@@ -125,7 +125,7 @@ Begin Window StdFormswindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   95
    End
    Begin PopupMenu PopupMenu2
       AutoDeactivate  =   True
@@ -133,13 +133,13 @@ Begin Window StdFormswindow
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   "1\r\n2\r\n3"
       Italic          =   False
-      Left            =   126
+      Left            =   120
       ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False

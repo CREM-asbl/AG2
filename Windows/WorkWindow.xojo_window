@@ -1757,15 +1757,12 @@ End
 
 	#tag MenuHandler
 		Function PrefsStdForms() As Boolean Handles PrefsStdForms.Action
-			
-			dim stdw as StdFormsWindow
-			
 			if mousedispo then
 			CurrentContent.CurrentOperation = nil
 			refreshtitle
 			Formswindow.close
-			stdw = new stdformswindow
-			stdw.ShowModal
+			StdFormsWindow.ShowModal
+			Refresh
 			end if
 			return true
 			
@@ -2883,11 +2880,13 @@ End
 		  dim i as integer
 		  
 		  if  Config.ShowStdTools and not draphisto then
-		    for i = 0 to config.nstdfam-1
-		      if ico(i) = nil then
+		     for i = 0 to 3
+		      if ( i < config.nstdfam ) then
 		        setico(i,0)
+		        StdOutil(i).visible = true
+		      else
+		        StdOutil(i).visible = false
 		      end if
-		      StdOutil(i).visible =true
 		    next
 		    StdBox.visible = true
 		  else
