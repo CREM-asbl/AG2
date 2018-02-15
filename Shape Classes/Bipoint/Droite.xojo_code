@@ -594,7 +594,7 @@ Inherits Bipoint
 		  if pinshape(p) then
 		    return 0
 		  else
-		    return 1
+		    return -1
 		  end if  
 		End Function
 	#tag EndMethod

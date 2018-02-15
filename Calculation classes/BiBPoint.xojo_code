@@ -102,6 +102,9 @@ Inherits nBpoint
 		  p = B1.VecteurDirecteur
 		  p = p.VecNorPerp
 		  q = B2.VecteurDirecteur
+		  if p = nil or q = nil then
+		    return nil
+		  end if
 		  det = p*q
 		  
 		  if  abs(p*q) < epsilon then
