@@ -753,7 +753,7 @@ Protected Class WindContent
 	#tag Method, Flags = &h0
 		Sub SaveAs()
 		  
-		  dim Titre as string
+		  dim Titre, Ext as string
 		  dim n as integer
 		  
 		  Currentfile=GetSaveFolderItem(FileAGTypes.SAVE,"Figure_"+str(id)+".fag")
@@ -762,10 +762,18 @@ Protected Class WindContent
 		    n = Titre.Instr(".")
 		    if n > 0 then
 		      Titre = Left(Titre, n-1)
+		      Ext = Right(Titre, n+1)
 		    end if
-		    Currentfile.Name = Titre+".fag"
+		    if Ext = ".fag" then
+		      Currentfile.Name = Titre+".fag" 
+		    elseif Ext = "fapp" then
+		      Currentfile.Name = Titre+".fapp"
+		    else
+		      CurrentFile.Name = Titre+"."+Ext
+		    end if
 		    save
 		  end if
+		  
 		  
 		  
 		  
