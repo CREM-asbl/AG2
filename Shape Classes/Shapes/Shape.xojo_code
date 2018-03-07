@@ -1486,7 +1486,11 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function Hybrid() As Boolean
-		  return narcs > 0
+		  if self isa lacet and narcs >0 then
+		    return true
+		  else
+		    return false
+		  end if
 		End Function
 	#tag EndMethod
 

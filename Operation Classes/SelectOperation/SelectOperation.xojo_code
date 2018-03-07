@@ -118,15 +118,15 @@ Inherits Operation
 		  figsimges = new figslist
 		  Objects.ReattractingAll
 		  
-		  'Exception err
-		  'dim d As Debug
-		  'd = new Debug
-		  'd.setMethod(getString,getString)
-		  'err.message = err.message+d.getString
-		  '
-		  'Raise err
-		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod(getString,getString)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
+		    
 		End Sub
 	#tag EndMethod
 
