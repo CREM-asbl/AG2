@@ -79,6 +79,16 @@ Protected Class BasicPoint
 		  
 		  b = self-a
 		  return b.norme
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod(getString,"Distance")
+		    d.setVariable("a",a)
+		    d.setVariable("b",b)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Function
 	#tag EndMethod
 
@@ -93,7 +103,18 @@ Protected Class BasicPoint
 		    return distance(q)
 		  end if
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod(getString,"Distance")
+		    d.setVariable("u",u)
+		    d.setVariable("v",v)
+		    d.setVariable("q",q)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
+		    
 		End Function
 	#tag EndMethod
 

@@ -227,7 +227,7 @@ Inherits Shape
 		  
 		  g = new BasicPoint(0,0)
 		  
-		  for i = 0 to npts-1
+		  for i = 0 to UBound(points)
 		    g = g + points(i).bpt
 		  next
 		  
@@ -243,6 +243,16 @@ Inherits Shape
 		  end if
 		  
 		  'return coord.getgravitycenter
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod(getString,"GetGravitycenter")
+		    d.setVariable("i",i)
+		    d.setVariable("points",UBound(points))
+		    d.setVariable("coord.extre",ubound(coord.extre))
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Function
 	#tag EndMethod
 
