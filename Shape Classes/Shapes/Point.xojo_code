@@ -3222,6 +3222,9 @@ Inherits Shape
 		    if fig <> nil then
 		      Form.SetAttribute("FigId",str(fig.idfig))
 		    end if
+		    if tracept then 
+		      Form.SetAttribute("BlueTrace",str(1))
+		    end if
 		    Form.AppendChild Bpt.XMLPutInContainer(Doc)
 		    Form.AppendChild Bordercolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorBorder"))
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))

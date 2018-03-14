@@ -39,9 +39,9 @@ Protected Class Figure
 		  if t then   
 		    tt = true
 		    for j = 0 to f1.shapes.count -1
-		      tt = tt and ( (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle))
+		      tt = tt and ( (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
 		    next
-		    if tt then 'Si toutes les formes sont des droites ou des cercles, tout  point peut être modifié indépendamment des autres  
+		    if tt then 'Si toutes les formes sont des droites ou des cercles, ou des triangles quelconques, tout  point peut être modifié indépendamment des autres  
 		      f1.auto = 0
 		      return
 		    else 'Sinon, on choisit autosim (les autoaff ne seront pas déformées)

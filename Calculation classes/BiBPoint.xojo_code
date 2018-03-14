@@ -102,6 +102,9 @@ Inherits nBpoint
 		  p = B1.VecteurDirecteur
 		  p = p.VecNorPerp
 		  q = B2.VecteurDirecteur
+		  if p = nil or q = nil then
+		    return nil
+		  end if
 		  det = p*q
 		  
 		  if  abs(p*q) < epsilon then
@@ -135,48 +138,6 @@ Inherits nBpoint
 	#tag Method, Flags = &h0
 		Function BibInterdroites(D as BiBPoint, n1 as integer, n2 as integer, Byref r1 as double, byref r2 as double) As basicPoint
 		  dim p, q, u, v as BasicPoint
-		  
-		  'p = D.VecteurDirecteur
-		  'if p = nil then
-		  'return nil
-		  'end if
-		  'p = p.Vecnorperp
-		  'u = VecteurDirecteur
-		  'if u = nil then
-		  'return nil
-		  'end if
-		  'q = D.first-first
-		  'r1= p*u
-		  '
-		  'if abs (r1) < epsilon*u.norme then   
-		  'v = D.first-second
-		  'r2 = q.vect(v)
-		  'if abs(r2) <= epsilon*v.norme*q.norme then
-		  'r1 = 1000   // les bipoints sont alignés
-		  'r2 = 1000
-		  'else
-		  'r1 = 999     // les bipoints sont paralleles
-		  'r2 = 999
-		  'end if
-		  'return nil
-		  'end if
-		  '
-		  'r1 = (p*q)/(p*u)   // r = 999: parallelisme r = 1000: alignement  et return = nil sinon r réel  et return <> nil
-		  'q= BptOnBiBpt(r1) // r1 est la position du point d'intersection sur self
-		  'r2 = q.location(D.first,D.second)  //Position sur D
-		  
-		  'setlongueur
-		  'D.setlongueur
-		  '
-		  'if (n1 = 1 and r1 <-epsilon)  or(n1 = 2 and ((r1<0 and abs(r1)*longueur > epsilon) or (r1>1 and (r1-1)*longueur > epsilon)) ) then
-		  'return nil
-		  'elseif (n2 = 1 and r2 <-epsilon) or(n2 = 2 and ((r2<0 and abs(r2)*D.longueur > epsilon) or (r2>1 and (r2-1)*D.longueur > epsilon)) ) then
-		  'return nil
-		  'else
-		  'return q
-		  'end if
-		  
-		  ///////////////////:::::::::::::::::::::::::::::::::::::::::::::::::::://////////////////////////////////////////////////////////////////
 		  
 		  p = BiBInterBib(D)
 		  

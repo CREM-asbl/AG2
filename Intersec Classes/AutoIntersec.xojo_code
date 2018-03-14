@@ -48,11 +48,11 @@ Inherits Intersec
 		  for i = 0 to t
 		    d1 = sbpt.getbibside(i)
 		    for j = i+1 to t
-		      'if (j <> i) and  (j <> ( (i+t-1) mod t )) and ( j<> ((i+1) mod t )) then
 		      d2 = sbpt.getbibside(j)
 		      bptinters(i,j) =  d1.BiBInterDroites(d2,2,2,r1,r2)
 		      bptinters(j,i) = bptinters(i,j)
-		      'end if
+		      val(i,j) = (bptinters(i,j) <> nil)
+		      val(j,i) = val(i,j)
 		    next
 		  next
 		End Sub
@@ -163,6 +163,9 @@ Inherits Intersec
 		  dim i,j, h as integer
 		  dim p as basicpoint
 		  
+		  for i = 0  to t
+		    bezet(i,i) = true
+		  next
 		  
 		  for i = 0 to t
 		    for j = 0 to t

@@ -500,6 +500,7 @@ Protected Class Shape
 		  Npts= Val(EL.GetAttribute(Dico.value("Npts")))
 		  fam = Val(EL.GetAttribute(Dico.value("Nrfam")))
 		  forme = Val(EL.GetAttribute(Dico.value("Nrform")))
+		  TracePt = (val(EL.GetAttribute("BlueTrace")) = 1)
 		  Ori = val(EL.GetAttribute(Dico.value("Ori")))
 		  tsfi = new transfosList
 		  plan = val(EL.GetAttribute("Plan"))
@@ -1485,7 +1486,11 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function Hybrid() As Boolean
-		  return narcs > 0
+		  if self isa lacet and narcs >0 then
+		    return true
+		  else
+		    return false
+		  end if
 		End Function
 	#tag EndMethod
 
