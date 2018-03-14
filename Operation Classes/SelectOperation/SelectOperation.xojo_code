@@ -36,19 +36,17 @@ Inherits Operation
 		  
 		  'On ne peut pas déplacer une forme construite par une macro sauf si les objets initiaux sont dans la même figure
 		  
-		  if  s.macconstructedby <> nil then
-		    return false
-		  end if
 		  // On invalide ensuite les formes appartenant à une figure qui contient une image sans contenir la source et le support de la transformation
 		  // idem si une des formes liées à s est dans le même cas
 		  // Il y a des exceptions
 		  
-		  if s = nil or  not s.fig.PossibleDrag(self) then
+		  if s = nil or not s.fig.PossibleDrag(self) or  s.macconstructedby <> nil then
 		    return false
-		  else
-		    ffl = new figslist
-		    ffl.addobject s.fig
 		  end if
+		  
+		  ffl = new figslist
+		  ffl.addobject s.fig
+		  
 		  
 		  if s.IDGroupe <> -1 then
 		    ob = objects.groupes(s.idgroupe)
