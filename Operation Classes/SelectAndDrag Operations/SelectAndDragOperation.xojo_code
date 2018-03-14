@@ -285,6 +285,19 @@ Inherits SelectOperation
 		    next
 		  end if
 		  WorkWindow.refresh
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod("SelectAndDragOperation","UndoOperation")
+		    d.setVariable("List",List)
+		    d.setVariable("EL",EL)
+		    d.setVariable("EL1",EL1)
+		    d.setVariable("EL2",EL2)
+		    d.setVariable("ff",ff)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

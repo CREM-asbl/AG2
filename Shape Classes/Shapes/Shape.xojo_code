@@ -721,7 +721,7 @@ Protected Class Shape
 		      constructedby.shape.removeconstructedshape self
 		    case 5
 		      constructedby.shape.removeconstructedshape self
-		      for i =  ncpts-1 to 0
+		      for i =  Ubound(points) to 0
 		        s = points(i).constructedby.shape
 		        s.removeconstructedshape points(i)
 		      next
@@ -773,7 +773,7 @@ Protected Class Shape
 		    p.removepointsur(self)
 		  next
 		  
-		  for i = npts-1 downto 0
+		  for i = Ubound(points) downto 0
 		    p = points(i)
 		    if p.forme = 2 and p.id > id then
 		      inter = p.GetInter  'CurrentContent.TheIntersecs.find(p.pointsur.item(0), p.pointsur.item(1))
@@ -807,7 +807,16 @@ Protected Class Shape
 		  
 		  currentcontent.removeobject self
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod("Shape","delete")
+		    d.setVariable("constructedby",constructedby)
+		    d.setVariable("macconstructedby",macconstructedby)
+		    d.setVariable("points",UBound(points))
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

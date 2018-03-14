@@ -155,6 +155,7 @@ Inherits SelectAndDragOperation
 		Function GetShape(p as BasicPoint) As shape
 		  dim s as shape
 		  dim i, j as integer
+		  
 		  s = super.getshape(p)
 		  
 		  if visible.count > 0  then

@@ -711,7 +711,16 @@ End
 		    fixe.value = lab.fixe
 		  end if
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod("LabelWindow","Open")
+		    d.setVariable("CurrentContent",CurrentContent)
+		    d.setVariable("addlab",addlab)
+		    d.setVariable("lab",Lab)
+		    err.message = err.message+d.getString
+		    
+		    
 		End Sub
 	#tag EndEvent
 

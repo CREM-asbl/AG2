@@ -389,7 +389,16 @@ Inherits Shape
 		    currentcontent.removeobject self
 		  end if
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod("Point","delete")
+		    d.setVariable("constructedby",constructedby)
+		    d.setVariable("macconstructedby",macconstructedby)
+		    d.setVariable("forme",forme)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

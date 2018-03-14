@@ -3707,9 +3707,8 @@ Protected Class Figure
 		    dim d As Debug
 		    d = new Debug
 		    d.setMethod("Figure","subfigupdate")
-		    d.setVariable("M",M)
 		    d.setVariable("auto",auto)
-		    d.setVariable("standard",standard)
+		    d.setVariable("M",M)
 		    err.message = err.message+d.getString
 		    
 		    Raise err

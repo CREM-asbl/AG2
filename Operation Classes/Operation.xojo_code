@@ -295,6 +295,7 @@ Protected Class Operation
 		  if not self isa decouper then
 		    currentshape = nil
 		  end if
+		  
 		  if not (self isa readhisto) then
 		    if oldp <> nil and p.distance(oldp) > can.magneticdist  then
 		      oldp = p
