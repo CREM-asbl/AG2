@@ -114,7 +114,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   468
+      Left            =   465
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -132,7 +132,7 @@ Begin Window LabelWindow
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   68
+      Width           =   80
    End
    Begin PushButton submit
       AutoDeactivate  =   True
