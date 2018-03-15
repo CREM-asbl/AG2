@@ -8,7 +8,7 @@ Begin Window LabelWindow
    Frame           =   1
    FullScreen      =   False
    FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackColor    =   False
    Height          =   131
    ImplicitInstance=   True
    LiveResize      =   False
@@ -100,7 +100,7 @@ Begin Window LabelWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   50
+      Width           =   60
    End
    Begin CheckBox Italic
       AutoDeactivate  =   True
@@ -114,7 +114,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   444
+      Left            =   468
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -132,7 +132,7 @@ Begin Window LabelWindow
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   80
+      Width           =   68
    End
    Begin PushButton submit
       AutoDeactivate  =   True
@@ -245,7 +245,7 @@ Begin Window LabelWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   170
+      Left            =   185
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -254,7 +254,6 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -271,7 +270,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   115
+      Left            =   126
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -293,7 +292,7 @@ Begin Window LabelWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   47
+      Width           =   55
    End
    Begin Label TxtX
       AutoDeactivate  =   True
@@ -406,7 +405,7 @@ Begin Window LabelWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   30
+      Width           =   46
    End
    Begin TextField CoordY
       AcceptTabs      =   False
@@ -449,7 +448,7 @@ Begin Window LabelWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   30
+      Width           =   46
    End
    Begin UpDownArrows UpDownArrows1
       AcceptFocus     =   False
@@ -459,7 +458,7 @@ Begin Window LabelWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   92
+      Left            =   104
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -481,7 +480,7 @@ Begin Window LabelWindow
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   208
+      Left            =   219
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -537,7 +536,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   209
+      Left            =   225
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -559,7 +558,7 @@ Begin Window LabelWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   40
+      Width           =   50
    End
    Begin ComboBox Polices
       AutoComplete    =   False
@@ -574,7 +573,7 @@ Begin Window LabelWindow
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   254
+      Left            =   278
       ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False
@@ -637,7 +636,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   532
+      Left            =   547
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -651,11 +650,11 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   48
+      Top             =   49
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   80
+      Width           =   54
    End
 End
 #tag EndWindow
@@ -674,7 +673,6 @@ End
 		  dim i as integer
 		  
 		  addlab =  addlabel(CurrentContent.CurrentOperation)
-		  drapnew = addlab.drapnew
 		  Lab = addlab.lab
 		  Title = Dico.value("Nommer")
 		  Txt.Text = Dico.value("Name")+" : "
@@ -692,35 +690,24 @@ End
 		  CoordX.Backcolor = blanc
 		  CoordY.Backcolor = blanc
 		  Texte.Backcolor = blanc 
-		  if drapnew then
-		    Delete.visible = false
-		    for i = 0 to Polices.ListCount-1
-		      if Polices.List(i) = "Times New Roman" then
-		        Polices.ListIndex = i
-		      end if
-		    next
-		  else
-		    for i = 0 to Polices.ListCount-1
-		      if Polices.List(i) = Lab.TextFont then
-		        Polices.ListIndex = i
-		      end if
-		    next
-		    delete.visible = true
+		  
+		  if Lab.TextFont = "" then
+		    Lab.TextFont =  "System"
 		  end if
+		  
+		  for i = 0 to Polices.ListCount-1
+		    if Polices.List(i) = Lab.TextFont then
+		      Polices.ListIndex = i
+		    end if
+		  next
+		  
+		  Delete.visible = not addlab.drapnew
+		  
 		  if lab <> nil then
 		    fixe.value = lab.fixe
 		  end if
 		  
-		  Exception err
-		    dim d As Debug
-		    d = new Debug
-		    d.setMethod("LabelWindow","Open")
-		    d.setVariable("CurrentContent",CurrentContent)
-		    d.setVariable("addlab",addlab)
-		    d.setVariable("lab",Lab)
-		    err.message = err.message+d.getString
-		    
-		    
+		  
 		End Sub
 	#tag EndEvent
 
@@ -756,10 +743,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		drapnew As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Lab As Etiq
 	#tag EndProperty
 
@@ -769,19 +752,6 @@ End
 #tag Events Texte
 	#tag Event
 		Sub TextChange()
-		  dim n as integer
-		  dim s as string
-		  dim k as Byte
-		  
-		  s = me.Text
-		  n = s.len
-		  k = asc(right(s,1))
-		  if k < 32 or k = 127 then
-		    s = left(s,n-1)
-		    me.Text = s
-		  end if
-		  
-		  
 		  Lab.Text = me.Text
 		  can.refreshbackground
 		  
@@ -801,8 +771,11 @@ End
 		  dim n as integer
 		  
 		  n = val(me.text)
-		  lab.SetSize(n)
-		  can.refreshbackground
+		  
+		  if n <> SizeLabel then
+		    lab.SetSize(n)
+		    can.refreshbackground
+		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -911,10 +884,13 @@ End
 		Sub Open()
 		  dim i as integer
 		  
-		  For i=1 to FontCount-1
-		    If Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol" Then
-		      me.AddRow Font(i)
-		    end if
+		  For i=0 to FontCount-1
+		    'If Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol"  or Font(i) = "Sans" or Font(i) = "Monospace" Then
+		    me.AddRow Font(i)
+		    'if Font(i) = Lab.TextFont then
+		    'me.ListIndex = i
+		    'end if
+		    'end if
 		  Next
 		  
 		End Sub
@@ -949,6 +925,11 @@ End
 #tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
+		Name="addlab"
+		Group="Behavior"
+		Type="Boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="BackColor"
 		Visible=true
 		Group="Background"
@@ -974,11 +955,6 @@ End
 		Name="Composite"
 		Group="OS X (Carbon)"
 		InitialValue="False"
-		Type="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="drapnew"
-		Group="Behavior"
 		Type="Boolean"
 	#tag EndViewProperty
 	#tag ViewProperty

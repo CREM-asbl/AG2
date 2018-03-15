@@ -166,6 +166,7 @@ Inherits SelectAndDragOperation
 		  if lab <> nil then
 		    lab.MouseCorrection(p)
 		  end if
+		  
 		  LabelWindow.ShowModal
 		  
 		  if lab.LockRight and lab.LockBottom then
