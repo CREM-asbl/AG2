@@ -27,7 +27,7 @@ Begin Window NotesWindow
    Visible         =   False
    Width           =   625
    Begin TextArea EF
-      AcceptTabs      =   False
+      AcceptTabs      =   True
       Alignment       =   0
       AutoDeactivate  =   False
       AutomaticallyCheckSpelling=   True
@@ -48,10 +48,10 @@ Begin Window NotesWindow
       LimitText       =   0
       LineHeight      =   0.0
       LineSpacing     =   1.0
-      LockBottom      =   True
+      LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Mask            =   ""
       Multiline       =   True
@@ -108,8 +108,8 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
-		  Dim i,n as Integer
-		  n= FontCount-1
+		  Dim i as Integer
+		  
 		  For i=0 to nf
 		    FontFontName(i).enable
 		  Next
@@ -118,7 +118,7 @@ End
 
 	#tag Event
 		Sub Open()
-		  dim f as folderitem
+		  
 		  Dim m as MenuItem
 		  Dim i,n as Integer
 		  
@@ -127,21 +127,20 @@ End
 		  
 		  if FontMenu.count = 1 then
 		    n= FontCount-1
-		    FontFontName(0).Text=Font(0)
+		    FontFontName(0).Text = "System"
 		    nf = 0
-		    For i=1 to n
+		    For i=0 to n
 		      If Font(i)="Arial"  or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol" Then
 		        nf = nf+1
-		        m= New FontFontName
-		        m.Text=Font(i)
+		        FontMenu.Append(New MenuItem)
+		        FontMenu.Item(nf).index = nf
+		        FontMenu.Item(nf).Name= "FontFontName"
+		        FontMenu.Item(nf).Text =  Font(i)
 		      end if
 		    Next
 		  end if
 		  
-		  EF.Styled = true
-		  EF.width = self.width-10
-		  EF.height = self.height-10
-		  EF.BackColor = blanc
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -218,17 +217,22 @@ End
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
 			dim f as folderitem
+			dim t as textinputstream 
+			dim st as new StyledText
 			
-			Dim TT as New FileType
 			
-			TT.Name= "Rtf  Files"
-			TT.Extensions=".rtf"
 			
-			f =GetOpenFolderItem(TT)
+			
+			f =GetOpenFolderItem("Rtf")
 			if f <> nil then
-			if EF.Open(f) then
 			title = f.name
+			t = TextInputStream.Open(f)
+			if t <> nil then
+			St.RTFData = t.ReadAll
+			EF.StyledText.Text = st.Text
 			end if
+			else 
+			MsgBox Dico.value("MsgNoValidFile")
 			end if
 		End Function
 	#tag EndMenuHandler
@@ -324,7 +328,7 @@ End
 		      nomfich = title+".rtf"
 		    end if
 		  end if
-		  dim f as FolderItem= GetSaveFolderItem(FileAGTypes.RTF, nomfich)
+		  dim f as FolderItem= GetSaveFolderItem(FileAGTypes.Rtf, nomfich)
 		  if f <> nil then
 		    Dim s as TextOutputStream=TextOutputStream.Create(f)
 		    s.Write EF.StyledText.RTFData
@@ -394,6 +398,18 @@ End
 
 #tag EndWindowCode
 
+#tag Events EF
+	#tag Event
+		Sub Open()
+		  me.Styled = true
+		  me.width = self.width-10
+		  me.height = self.height-1
+		  me.BackColor = blanc
+		  'me.AcceptPictureDrop
+		  'me.AcceptFileDrop
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="BackColor"

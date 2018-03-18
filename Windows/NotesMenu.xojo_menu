@@ -27,13 +27,6 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FilePrint
-         SpecialMenu = 0
-         Text = "untitled"
-         Index = -2147483648
-         AutoEnable = True
-         Visible = True
-      End
    End
    Begin MenuItem EditMenu
       SpecialMenu = 0

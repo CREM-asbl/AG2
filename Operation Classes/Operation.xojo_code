@@ -45,7 +45,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  'WorkWindow.drapshowall = false
+		  WorkWindow.drapshowall = false
 		  Objects = CurrentContent.theobjects
 		  oldp = new BasicPoint(0,0)
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
