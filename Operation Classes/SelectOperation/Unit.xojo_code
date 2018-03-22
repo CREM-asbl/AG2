@@ -47,8 +47,8 @@ Inherits SelectOperation
 		        dr = droite(sh)
 		      elseif sh isa cube and icot <> -1 then
 		        dr = cube(sh).getside(icot)
-		      elseif sh isa polygon and icot <> -1  then
-		        dr = polygon(sh).getside(icot)
+		      elseif sh isa lacet and icot <> -1  then
+		        dr = lacet(sh).getside(icot)
 		      end if
 		      if dr.longueur > epsilon then
 		        currentcontent.UL = dr.longueur
