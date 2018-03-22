@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Francais>
   <Menus>
     <FileMenu Name="Fichier" />
@@ -370,6 +370,7 @@
     <thisgroup Name=" ce groupe" />
     <thispoint Name="ce point" />
     <thissegment Name="ce segment" />
+    <thisarc Name="cet arc" />
     <thisdisplacement Name=" ce déplacement" />
     <thistranslation Name=" cette translation" />
     <thisrotation Name=" cette rotation" />
