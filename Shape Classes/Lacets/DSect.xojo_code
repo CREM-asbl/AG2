@@ -2,6 +2,18 @@
 Protected Class DSect
 Inherits Lacet
 	#tag Method, Flags = &h0
+		Function airealge() As double
+		  return coord.airealgeDSect
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airearith() As double
+		  return abs(airealge)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function computeangle(q as Basicpoint) As double
 		  
 		  return coord.computeangle(q,ori)

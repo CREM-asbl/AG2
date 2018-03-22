@@ -33,9 +33,9 @@ Inherits Shape
 		  
 		  
 		  if self isa DSect then
-		    return coord.airealgelacet
-		    'else
-		    'MsgBox "Routine non encore implémentée"
+		    return coord.airealgeDSect
+		  else
+		    MsgBox "Routine non encore implémentée"
 		  end if
 		  
 		  

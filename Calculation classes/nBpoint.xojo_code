@@ -7,38 +7,50 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function airealgelacet() As double
-		  dim i as integer
-		  dim A as double
-		  dim TriB as nBpoint
-		  dim ar(-1) as BasicPoint
-		  dim ori as integer
+		Function airealgeDsect() As double
 		  dim alpha as double
-		  dim r as double
-		  dim p, q as BasicPoint
+		  dim r  as double
+		  dim A as angle
 		  
-		  for i = 0 to taille-1
-		    if curved(i) = 0 then
-		      A = A +tab(i).Vect(tab((i+1) mod taille))
-		    else
-		      redim ar(-1)
-		      ar.append centres(i)
-		      ar.append tab(i)
-		      ar.append tab((i+1) mod taille)
-		      TriB = new nBPoint(ar())
-		      ori = TriB.orientation
-		      alpha = normalize(TriB.endangle - TriB.startangle, ori)
-		      r = TriB.distance01
-		      A = A+ r^2*alpha
-		      
-		      p = tab(i)
-		      p = p-ar(0)
-		      q = new BasicPoint(p.y,-p.x)
-		      A = A + ar(0)*(p*sin(alpha)+ q*(cos(alpha) -1))
-		    end if
-		  next
-		  A = A/2
-		  return A
+		  A =  new Angle(self)
+		  r = distance01()
+		  return A.alpha * r * r
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function airealgelacet() As double
+		  'dim i as integer
+		  'dim A as double
+		  'dim TriB as nBpoint
+		  'dim ar(-1) as BasicPoint
+		  'dim ori as integer
+		  'dim alpha as double
+		  'dim r as double
+		  'dim p, q as BasicPoint
+		  '
+		  'for i = 0 to taille-1
+		  'if curved(i) = 0 then
+		  'A = A +tab(i).Vect(tab((i+1) mod taille))
+		  'else
+		  'redim ar(-1)
+		  'ar.append centres(i)
+		  'ar.append tab(i)
+		  'ar.append tab((i+1) mod taille)
+		  'TriB = new nBPoint(ar())
+		  'ori = TriB.orientation
+		  'alpha = normalize(TriB.endangle - TriB.startangle, ori)
+		  'r = TriB.distance01
+		  'A = A+ r^2*alpha
+		  '
+		  'p = tab(i)
+		  'p = p-ar(0)
+		  'q = new BasicPoint(p.y,-p.x)
+		  'A = A - ar(0)*(p*sin(alpha)+ q*(cos(alpha) -1))
+		  'end if
+		  'next
+		  'A = A/2
+		  'return A
 		End Function
 	#tag EndMethod
 
