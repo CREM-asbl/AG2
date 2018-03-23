@@ -29,7 +29,7 @@ Begin Menu NotesMenu
       End
       Begin MenuItem FilePrint
          SpecialMenu = 0
-         Text = "untitled"
+         Text = "Print"
          Index = -2147483648
          AutoEnable = True
          Visible = True

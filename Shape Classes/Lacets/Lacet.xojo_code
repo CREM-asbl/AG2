@@ -33,9 +33,9 @@ Inherits Shape
 		  
 		  
 		  if self isa DSect then
-		    return coord.airealgelacet
-		    'else
-		    'MsgBox "Routine non encore implémentée"
+		    return coord.airealgeDSect
+		  else
+		    MsgBox "Routine non encore implémentée"
 		  end if
 		  
 		  
@@ -454,7 +454,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub Paintside(g as graphics, cot as integer, ep as double, coul as couleur)
 		  
-		  'nsk.update(self)
+		  
 		  
 		  nsk.paintside(g, cot, ep, coul)
 		  
@@ -750,7 +750,7 @@ Inherits Shape
 		  if coord.curved(n) = 0  then
 		    return Points(n).bpt.distance(Points((n+1) mod npts).bpt)
 		  else
-		    return GetArcAngle(n)*GetRadius(n)
+		    return abs(GetArcAngle(n))*GetRadius(n)
 		  end if
 		End Function
 	#tag EndMethod

@@ -254,6 +254,7 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -924,11 +925,6 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
-	#tag ViewProperty
-		Name="addlab"
-		Group="Behavior"
-		Type="Boolean"
-	#tag EndViewProperty
 	#tag ViewProperty
 		Name="BackColor"
 		Visible=true

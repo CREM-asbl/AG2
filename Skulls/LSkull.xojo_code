@@ -384,10 +384,12 @@ Inherits NSkull
 		  
 		  if skullof.coord.curved(i) = 0 then
 		    item(n).borderwidth = ep*borderwidth
+		    item(n).bordercolor = coul.col
 		    g.drawobject item(n), ref.x, ref.y
 		  else
 		    for j = 0 to 2
 		      item(n+j).borderwidth = ep*borderwidth
+		      item(n+j).bordercolor = coul.col
 		      g.drawobject item(n+j), ref.x, ref.y
 		    next
 		  end if

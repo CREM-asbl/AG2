@@ -87,20 +87,6 @@
 	#tag EndFileType
 
 	#tag FileType
-		CodeName=Rtf
-		Extension=rtf
-		Flags=&h9
-		MacCreator=MSWD
-		MacType=TEXT
-		Name=application/rtf
-		UTI=public.rtf
-		UTIConformsTo=public.text
-		Description=
-		MimeType=
-		Imported=True
-	#tag EndFileType
-
-	#tag FileType
 		CodeName=Pdf
 		Extension=.pdf
 		Flags=&h9
@@ -109,6 +95,20 @@
 		Name=application/pdf
 		UTI=com.adobe.pdf
 		UTIConformsTo=public.data, public.composite-content
+		Description=
+		MimeType=
+		Imported=True
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=Rtf
+		Extension=.rtf
+		Flags=&h0
+		MacCreator=MSWD
+		MacType=TEXT
+		Name=application/rtf
+		UTI=public.rtf
+		UTIConformsTo=public.text
 		Description=
 		MimeType=
 		Imported=True

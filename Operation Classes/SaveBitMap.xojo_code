@@ -36,6 +36,7 @@ Inherits Operation
 		Sub DoOperation()
 		  dim pic as picture
 		  dim temp as integer
+		  dim fi as FolderItem
 		  
 		  if lux > drx then
 		    temp = lux
@@ -51,7 +52,16 @@ Inherits Operation
 		  can.RefreshBackground
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
 		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
-		  finished = exportpicture(Pic)
+		  #if targetMacOS
+		    finished = exportpicture(Pic)
+		  #endif
+		  #if targetWin32
+		    fi=GetSaveFolderItem("bmp","Sauvegarde.bmp")
+		    '?????
+		  #endif
+		  #If targetLinux
+		  #endif
+		  
 		  
 		End Sub
 	#tag EndMethod

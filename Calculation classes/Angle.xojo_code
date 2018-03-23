@@ -19,6 +19,23 @@ Protected Class Angle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub constructor(tb as nBPoint)
+		  dim c, bpf, bps as BasicPoint
+		  dim fa, sa as double
+		  
+		  c = tb.tab(0)
+		  
+		  bpf = tb.tab(1) - c
+		  fa  = bpf.anglepolaire
+		  bps = tb.tab(2) - c
+		  sa = bps.anglepolaire
+		  alpha = sa - fa
+		  ori = tb.orientation
+		  'On ne normalise pas, en vue du calcul de l'aire
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Normalize()
 		  if ori >0 then
 		    if alpha < 0 then

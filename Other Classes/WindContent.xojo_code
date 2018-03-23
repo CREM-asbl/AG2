@@ -767,8 +767,8 @@ Protected Class WindContent
 		    end if
 		    if Ext = ".fag" then
 		      Currentfile.Name = Titre+".fag" 
-		    elseif Ext = "app" then
-		      Currentfile.Name = Titre+".fapp"
+		      'elseif Ext = "app" then
+		      'Currentfile.Name = Titre+".fapp"
 		    else
 		      CurrentFile.Name = Titre+"."+Ext
 		    end if

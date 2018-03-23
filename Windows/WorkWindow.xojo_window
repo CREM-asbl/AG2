@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -2880,7 +2881,7 @@ End
 		  dim i as integer
 		  
 		  if  Config.ShowStdTools and not draphisto then
-		     for i = 0 to 3
+		    for i = 0 to 3
 		      if ( i < config.nstdfam ) then
 		        setico(i,0)
 		        StdOutil(i).visible = true

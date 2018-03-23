@@ -286,12 +286,12 @@ Inherits Label
 		      if currentcontent.UL <> 0 then
 		        dat = arrondi2(Lacet(chape).SideLength(loc)/currentcontent.UL)
 		      end if
-		    elseif chape isa polygon and loc <> -1 then
-		      if chape = currentcontent.SHUL and loc = currentcontent.IcotUL then
-		        dat = arrondi2(polygon(chape).getside(loc).longueur)
-		      elseif currentcontent.UL <> 0 then
-		        dat = arrondi2(polygon(chape).getside(loc).longueur/currentcontent.UL)
-		      end if
+		      'elseif chape isa polygon and loc <> -1 then
+		      'if chape = currentcontent.SHUL and loc = currentcontent.IcotUL then
+		      'dat = arrondi2(polygon(chape).getside(loc).longueur)
+		      'elseif currentcontent.UL <> 0 then
+		      'dat = arrondi2(polygon(chape).getside(loc).longueur/currentcontent.UL)
+		      'end if
 		    elseif chape isa arc  then
 		      dat = str(round(arc(chape).arcangle*180/PI))+"°"
 		    elseif chape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
@@ -906,6 +906,13 @@ Inherits Label
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TabStop"
+			Visible=true
+			Group="Position"
+			InitialValue="True"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Text"

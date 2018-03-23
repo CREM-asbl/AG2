@@ -564,6 +564,25 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub oldsaveAsPict()
+		  
+		  dim fi as folderItem
+		  
+		  #if targetMacOS
+		    fi=GetSaveFolderItem("application/pict","Sauvegarde.pict")
+		  #endif
+		  #if targetWin32
+		    fi=GetSaveFolderItem("bmp","Sauvegarde.bmp")
+		  #endif
+		  If fi<>Nil then
+		    fi.saveAsPicture BackgroundPicture
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RefreshBackground()
 		  'dim  j as Integer
 		  dim op As operation
@@ -639,25 +658,6 @@ Inherits Canvas
 		  
 		  calculcoins
 		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub saveAsPict()
-		  
-		  dim fi as folderItem
-		  
-		  #if targetMacOS
-		    fi=GetSaveFolderItem("application/pict","Sauvegarde.pict")
-		  #endif
-		  #if targetWin32
-		    fi=GetSaveFolderItem("bmp","Sauvegarde.bmp")
-		  #endif
-		  If fi<>Nil then
-		    fi.saveAsPicture BackgroundPicture
-		  end if
 		  
 		  
 		End Sub

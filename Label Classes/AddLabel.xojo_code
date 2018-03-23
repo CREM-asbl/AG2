@@ -220,7 +220,11 @@ Inherits SelectAndDragOperation
 		    end if
 		    if currentshape isa Lacet and loc <> -1 then
 		      Lacet(Currentshape).paintside(g,loc,2,config.highlightcolor)
-		      display = display + sur +  thissegment
+		      if currentshape.coord.curved(loc) = 0 then
+		        display = display + sur +  thissegment
+		      else
+		        display = display + sur +  thisarc
+		      end if
 		    else
 		      currenthighlightedshape.highlight
 		      currenthighlightedshape.paint(g)
