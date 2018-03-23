@@ -50,17 +50,54 @@ Inherits Operation
 		    dry = temp
 		  end if
 		  can.RefreshBackground
+		  
 		  pic = New Picture(drx-lux-2,dry-luy-2,32)
 		  pic.graphics.drawpicture can.BackgroundPicture, 0, 0, pic.width, pic.height, lux+1, luy+1,drx-lux-2,dry-luy-2
-		  #if targetMacOS
-		    finished = exportpicture(Pic)
-		  #endif
-		  #if targetWin32
-		    fi=GetSaveFolderItem("bmp","Sauvegarde.bmp")
-		    '?????
-		  #endif
-		  #If targetLinux
-		  #endif
+		  
+		  '#if targetMacOS
+		  'finished = exportpicture(Pic)
+		  '#endif
+		  '
+		  '#if not targetMacOS
+		  Dim dlg as New SaveAsDialog
+		  Dim f as FolderItem
+		  
+		  Dim jpegType as New FileType
+		  jpegType.Name = "jpeg (*.jpg)"
+		  jpegType.MacType = "JPEG"
+		  jpegType.Extensions = "jpg"
+		  
+		  Dim pngType As New FileType
+		  pngType.Name = "png (*.png)"
+		  pngType.MacType = "PNG "
+		  pngType.Extensions = "png"
+		  
+		  Dim bmpType as New FileType
+		  bmpType.Name = "bmp (*.bmp)"
+		  bmpType.MacType = "BMP"
+		  bmpType.Extensions = "bmp"
+		  
+		  
+		  dlg.InitialDirectory=SpecialFolder.Desktop
+		  dlg.SuggestedFileName="Image"
+		  dlg.Title="Save image"
+		  dlg.Filter=jpegType + pngType + bmpType
+		  f=dlg.ShowModal()
+		  
+		  If f <> Nil then
+		    dim format as Integer
+		    select  case Right(f.Name,3) 
+		      
+		    case "jpeg"
+		      format = Picture.SaveAsJPEG
+		    case  "png"
+		      format = Picture.SaveAsPNG
+		    case "bmp" 
+		      format = Picture.SaveAsWindowsBMP
+		    end select
+		    Pic.Save(f, format)
+		  End if
+		  '#endif
 		  
 		  
 		End Sub
