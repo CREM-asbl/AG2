@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -728,7 +727,7 @@ End
 		  dim item as MenuItem
 		  dim i as integer
 		  
-		  if MenuBar.Child("Fenetres").Count > 0 then
+		  if MenuBar.Child("Fenetres").Count > GetNumWindow then
 		    MenuBar.Child("Fenetres").Item(GetNumWindow).Checked = true
 		  end if
 		  
@@ -2435,8 +2434,12 @@ End
 		  end if
 		  
 		  n = GetNumWindow
+		  
 		  wcontent.Remove(n)
-		  MenuBar.Child("Fenetres").Remove(n)
+		  
+		  if n < MenuBar.Child("Fenetres").Count then
+		    MenuBar.Child("Fenetres").Remove(n)
+		  end if
 		  
 		  if ubound(wcontent) >= n then
 		    for i=n to UBound (wcontent)
@@ -2452,6 +2455,7 @@ End
 		    MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
 		    refresh
 		  end if
+		  
 		  
 		  
 		  
@@ -2645,6 +2649,7 @@ End
 		    MenuBar.Child("Fenetres").Item(GetNumWindow).checked = false
 		  end if
 		  
+		  
 		  numfig=numfig+1
 		  currentContent = new WindContent(numfig)
 		  wcontent.Append(currentContent)
@@ -2656,7 +2661,6 @@ End
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
 		  MenuBar.Child("Fenetres").append mitem
 		  MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
-		  'MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
 		  
 		End Sub
 	#tag EndMethod

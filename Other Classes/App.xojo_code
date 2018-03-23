@@ -154,10 +154,13 @@ Inherits Application
 		    if Workwindow.draphisto then
 		      Workwindow.closeHisto
 		    end if
+		    
 		    Workwindow.deleteContent
+		    
 		    if UBound (Workwindow.wcontent) = -1 then
 		      Workwindow.NewContent(false)
 		    end if
+		    
 		    currentcontent.bugfound = false 
 		  end if
 		  return true
