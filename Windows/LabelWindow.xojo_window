@@ -886,12 +886,9 @@ End
 		  dim i as integer
 		  
 		  For i=0 to FontCount-1
-		    'If Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol"  or Font(i) = "Sans" or Font(i) = "Monospace" Then
-		    me.AddRow Font(i)
-		    'if Font(i) = Lab.TextFont then
-		    'me.ListIndex = i
-		    'end if
-		    'end if
+		    if Font(i)="System" or Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol"  or Font(i) = "Sans"  or Font(i) = "Serif" or Font(i) = "Monospace" Then
+		      me.AddRow Font(i)
+		    end if
 		  Next
 		  
 		End Sub
