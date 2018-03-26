@@ -254,7 +254,6 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -693,14 +692,15 @@ End
 		  Texte.Backcolor = blanc 
 		  
 		  if Lab.TextFont = "" then
-		    Lab.TextFont =  "System"
+		    Lab.TextFont =  Polices.List(0)
+		    Polices.ListIndex = 0
+		  else
+		    for i = 0 to Polices.ListCount-1
+		      if Polices.List(i) = Lab.TextFont then
+		        Polices.ListIndex = i
+		      end if
+		    next
 		  end if
-		  
-		  for i = 0 to Polices.ListCount-1
-		    if Polices.List(i) = Lab.TextFont then
-		      Polices.ListIndex = i
-		    end if
-		  next
 		  
 		  Delete.visible = not addlab.drapnew
 		  
