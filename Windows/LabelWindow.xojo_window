@@ -31,7 +31,7 @@ Begin Window LabelWindow
       Alignment       =   0
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -70,7 +70,7 @@ Begin Window LabelWindow
       Width           =   547
    End
    Begin ComboBox Size
-      AutoComplete    =   False
+      AutoComplete    =   True
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
@@ -369,7 +369,7 @@ Begin Window LabelWindow
       Alignment       =   2
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -412,7 +412,7 @@ Begin Window LabelWindow
       Alignment       =   2
       AutoDeactivate  =   True
       AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
+      BackColor       =   &cFFFFFF00
       Bold            =   False
       Border          =   True
       CueText         =   ""
@@ -670,26 +670,29 @@ End
 
 	#tag Event
 		Sub Open()
+		  Title = Dico.value("Nommer")
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub setAddLab(addlab as AddLabel)
+		  self.addlab = addlab
+		  
+		  Lab = addlab.lab
+		  Texte.Text = lab.Text
+		  size.Text = str(lab.Textsize)
+		  RecColor.FillColor = Lab.TextColor
+		  
 		  dim i as integer
 		  
-		  addlab =  addlabel(CurrentContent.CurrentOperation)
-		  Lab = addlab.lab
-		  Title = Dico.value("Nommer")
-		  Txt.Text = Dico.value("Name")+" : "
-		  Texte.Text = lab.Text
-		  Pol.Text = Dico.value("Font")+ " : "
-		  TxtSize.Text = Dico.value("Size")+" : "
-		  size.Text = str(lab.Textsize)
-		  TxtColor.Text = Dico.value("Color")+" : "
-		  RecColor.FillColor = Lab.TextColor
-		  Italic.caption = " "+Dico.value("Italic")
-		  Fixe.Caption = Dico.value("Fixe")
 		  corr = can.dtransform(lab.correction)
 		  CoordX.text = str(corr.X)
 		  CoordY.text = str(- corr.y)
-		  CoordX.Backcolor = blanc
-		  CoordY.Backcolor = blanc
-		  Texte.Backcolor = blanc 
 		  
 		  if Lab.TextFont = "" then
 		    Lab.TextFont =  Polices.List(0)
@@ -707,10 +710,21 @@ End
 		  if lab <> nil then
 		    fixe.value = lab.fixe
 		  end if
-		  
-		  
 		End Sub
-	#tag EndEvent
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updateLabelSize()
+		  dim n as integer
+		  
+		  n = val(size.text)
+		  
+		  if lab <> nil and n <> lab.TextSize then
+		    lab.SetSize(n)
+		    can.refreshbackground
+		  end if
+		End Sub
+	#tag EndMethod
 
 
 	#tag Note, Name = Licence
@@ -768,25 +782,18 @@ End
 #tag EndEvents
 #tag Events Size
 	#tag Event
-		Sub Change()
-		  dim n as integer
-		  
-		  n = val(me.text)
-		  
-		  if n <> SizeLabel then
-		    lab.SetSize(n)
-		    can.refreshbackground
-		  end if
-		End Sub
-	#tag EndEvent
-	#tag Event
 		Sub Open()
 		  me.text = str(sizelabel)
 		End Sub
 	#tag EndEvent
 	#tag Event
+		Sub Change()
+		  updateLabelSize
+		End Sub
+	#tag EndEvent
+	#tag Event
 		Sub TextChanged()
-		  sizelabel = val(me.text)
+		  updateLabelSize
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -797,11 +804,30 @@ End
 		  can.refreshBackground
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub Open()
+		  me.caption = Dico.value("Italic")
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events submit
 	#tag Event
 		Sub Action()
 		  self.close()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Txt
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("Name")+" : "
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events TxtSize
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("Size")+" : "
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -814,6 +840,13 @@ End
 		    lab.SetColor( col)
 		  end if
 		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events TxtColor
+	#tag Event
+		Sub Open()
+		  me.Text = Dico.value("Color")+" : "
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events UpDownArrows1
@@ -885,6 +918,8 @@ End
 		Sub Open()
 		  dim i as integer
 		  
+		  me.Text = Dico.value("Font")+ " : "
+		  
 		  For i=0 to FontCount-1
 		    if Font(i)="System" or Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol"  or Font(i) = "Sans"  or Font(i) = "Serif" or Font(i) = "Monospace" Then
 		      me.AddRow Font(i)
@@ -918,6 +953,11 @@ End
 	#tag Event
 		Sub Action()
 		  lab.setfixe(me.value)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Open()
+		  me.Caption = Dico.value("Fixe")
 		End Sub
 	#tag EndEvent
 #tag EndEvents

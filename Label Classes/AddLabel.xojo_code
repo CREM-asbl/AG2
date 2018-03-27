@@ -138,7 +138,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  
 		  if finished = false then
 		    return
 		  end if
@@ -167,6 +166,7 @@ Inherits SelectAndDragOperation
 		    lab.MouseCorrection(p)
 		  end if
 		  
+		  LabelWindow.setAddLab(self)
 		  LabelWindow.ShowModal
 		  
 		  if lab.LockRight and lab.LockBottom then
