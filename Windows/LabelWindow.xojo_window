@@ -70,7 +70,7 @@ Begin Window LabelWindow
       Width           =   547
    End
    Begin ComboBox Size
-      AutoComplete    =   False
+      AutoComplete    =   True
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
@@ -713,6 +713,19 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub updateLabelSize()
+		  dim n as integer
+		  
+		  n = val(size.text)
+		  
+		  if lab <> nil and n <> lab.TextSize then
+		    lab.SetSize(n)
+		    can.refreshbackground
+		  end if
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Licence
 		
@@ -774,15 +787,13 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
+		Sub Change()
+		  updateLabelSize
+		End Sub
+	#tag EndEvent
+	#tag Event
 		Sub TextChanged()
-		  dim n as integer
-		  
-		  n = val(me.text)
-		  
-		  if lab <> nil and n <> lab.TextSize then
-		    lab.SetSize(n)
-		    can.refreshbackground
-		  end if
+		  updateLabelSize
 		End Sub
 	#tag EndEvent
 #tag EndEvents
