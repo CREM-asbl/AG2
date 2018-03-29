@@ -485,7 +485,7 @@ Inherits SelectOperation
 		      p = point(sh1.constructedshapes(i))
 		      h = sh1.pointonside(p.bpt)
 		      if h <> -1 then
-		        for k = 0 to sh2.npts-1
+		        for k = 0 to ncol
 		          if bptinters(h,k) <> nil and bezet(h,k) = false and  ( p.bpt.distance (bptinters(h,k)) < epsilon) then
 		            bezet(h,k) = true
 		            ids(h,k) = p.id 
@@ -500,7 +500,7 @@ Inherits SelectOperation
 		      p = point(sh2.constructedshapes(i))
 		      h = sh2.pointonside(p.bpt)
 		      if h <> -1 then
-		        for k = 0 to sh1.npts-1
+		        for k = 0 to nlig
 		          if bptinters(k,h) <> nil and bezet(k,h) =false and  ( p.bpt.distance (bptinters(k,h)) < epsilon) then 
 		            bezet(k,h) = true
 		            ids(k,h) = p.id 
