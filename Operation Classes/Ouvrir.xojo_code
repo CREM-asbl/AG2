@@ -41,20 +41,20 @@ Inherits Operation
 		  
 		  
 		  version = FAG.GetAttribute("Version") 
-		  v1 = val(NthField(version,".", 1))
-		  v2 = val(NthField(version,".",2))
-		  v3 = val(NthField(version,".",3))
-		  WorkWindow.version = 100*v1+ 10*v2 + v3  'les trois numéros de version ne peuvent avoir qu'un chiffre
-		  if WorkWindow.version <  222 and not app.quiet then '100*App.MajorVersion + 10* App.MinorVersion + App.BugVersion then
-		    msg = new MessageDialog
-		    msg.Message = "Ce fichier a été enregistré avec une  version d'Apprenti Géomètre antérieure à la version 2.2.2." + EndOfLine + "S'il comporte des découpages, il est possible qu'il ne fonctionne pas correctement."
-		    msg.AlternateActionButton.visible = true
-		    msg.AlternateActionButton.Caption = "Ne plus afficher ce message"
-		    but = msg.ShowModal
-		    if but <> msg.ActionButton then
-		      app.quiet = true
-		    end if
-		  end if
+		  'v1 = val(NthField(version,".", 1))
+		  'v2 = val(NthField(version,".",2))
+		  'v3 = val(NthField(version,".",3))
+		  'WorkWindow.version = 100*v1+ 10*v2 + v3  'les trois numéros de version ne peuvent avoir qu'un chiffre
+		  'if WorkWindow.version <  222 and not app.quiet then '100*App.MajorVersion + 10* App.MinorVersion + App.BugVersion then
+		  'msg = new MessageDialog
+		  'msg.Message = "Ce fichier a été enregistré avec une  version d'Apprenti Géomètre antérieure à la version 2.2.2." + EndOfLine + "S'il comporte des découpages, il est possible qu'il ne fonctionne pas correctement."
+		  'msg.AlternateActionButton.visible = true
+		  'msg.AlternateActionButton.Caption = "Ne plus afficher ce message"
+		  'but = msg.ShowModal
+		  'if but <> msg.ActionButton then
+		  'app.quiet = true
+		  'end if
+		  'end if
 		  
 		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
