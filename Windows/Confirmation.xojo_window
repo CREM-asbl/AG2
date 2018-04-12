@@ -211,11 +211,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		Closing As integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Result As integer
+		Result As integer = -1
 	#tag EndProperty
 
 
@@ -231,7 +227,6 @@ End
 #tag Events Yes
 	#tag Event
 		Sub Action()
-		  
 		  result=1
 		  Hide
 		End Sub
@@ -258,7 +253,6 @@ End
 #tag Events Cancel
 	#tag Event
 		Sub Action()
-		  result=-1
 		  Hide
 		End Sub
 	#tag EndEvent

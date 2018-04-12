@@ -89,6 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -2443,12 +2444,17 @@ End
 		      val = Conf.result      ''Yes
 		      conf.close
 		    end if
-		    select case val
-		    case -1             
-		      return
-		    case  1
+		    
+		    if val = 1 then
 		      CurrentContent.Save
-		    end select
+		      if CurrentContent.Currentfile = nil then
+		        val = -1 
+		      end if
+		    end if
+		    
+		    if val = -1 then
+		      return
+		    end if
 		  end if
 		  
 		  n = GetNumWindow

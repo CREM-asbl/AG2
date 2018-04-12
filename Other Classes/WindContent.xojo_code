@@ -752,7 +752,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub SaveAs()
-		  
 		  dim Titre, Ext, s as string
 		  dim n as integer
 		  
