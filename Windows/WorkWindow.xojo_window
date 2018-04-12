@@ -764,8 +764,13 @@ End
 		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		    MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
-		    MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    #if TargetWindows  then
+		      MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
+		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    #else
+		      MenuBar.Child("FileMenu").Child("ViewEps").visible= false
+		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= false
+		    #Endif
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		    
 		    if MenuBar.Child("PrefsMenu") <> nil then
@@ -1184,15 +1189,28 @@ End
 			dim sh as new shell
 			dim f, f1 as folderitem
 			dim s, S1 as string
+			dim dlg as new OpenDialog
 			
-			f = GetOpenFolderItem(FileAGTypes.eps)
-			'sh.Execute(f.shellpath)
-			if f <> nil then
+			
+			dlg.ActionButtonCaption = "Convertir"
+			dlg.Title = "Choisis un fichier .eps"
+			dlg.Filter = FileAGTypes.EPS
+			
+			f = dlg.ShowModal
+			
+			if dlg.Result <> nil then
+			#if targetWindows then 
+			sh.Execute(f.shellpath)
 			s=  f.shellpath
 			s1 = s.replace(f.name,"")
 			sh.execute("cd "+ s1)
 			sh.execute("epstopdf --nosafer "+s)
-			s1 = s.replace("eps","pdf") 'GetOpenFolderItem(FileAGTypes.pdf)
+			#elseif targetMacOS then
+			's1 = s.replace("eps","pdf") 
+			'sh.execute ("pstopdf "+ s +" -o "+s1)
+			#elseif targetlinux then
+			#Endif
+			s1 = s.replace("eps","pdf") 
 			sh.execute(s1)
 			end if
 			Return True
@@ -2115,21 +2133,21 @@ End
 	#tag MenuHandler
 		Function Vieweps() As Boolean Handles Vieweps.Action
 			dim sh as new shell
-			dim f, f1 as folderitem
+			dim f as folderitem
 			dim s, S1 as string
 			
 			f = GetOpenFolderItem(FileAGTypes.eps)
 			if f <> nil then
-			sh.execute (f.shellpath)
-			's1 = s.replace(f.name,"")
-			'sh.execute("cd "+ s1)
-			'sh.execute("epstopdf --nosafer "+s)
-			'f1 = GetOpenFolderItem(FileAGTypes.pdf)
-			'if f1 <> nil then
-			'sh.execute(s1+f1.name)
-			'end if
-			'end if
-			'Return True
+			#if targetWindows then
+			sh.execute(f.shellpath)
+			#elseif targetMacOS then
+			'sh.execute (
+			sh.execute (s,  f.shellpath)
+			'gs.quit
+			#elseif targetlinux then
+			#Endif
+			
+			
 			end if
 			Return True
 			
