@@ -291,7 +291,6 @@ Inherits Canvas
 		Sub MouseMove(X As Integer, Y As Integer)
 		  //On passe d'abord dans le mousemove du canvas, puis dans celui de la fenêtre
 		  dim p as BasicPoint
-		  dim curop as operation
 		  
 		  
 		  p =mouseuser

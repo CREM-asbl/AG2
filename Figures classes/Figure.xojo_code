@@ -80,29 +80,31 @@ Protected Class Figure
 		    next
 		    
 		  end if
-		  'Cinquième: s'il y a un mélange de droites  avec des formes autospe
+		  'Cinquième: s'il y a un mélange de droites  avec des formes de même auto
 		  
-		  t = true
-		  for j = 0 to ubound(aut)
-		    t  = t and ( (f1.shapes.item(j) isa BiPoint ) or (aut(j) = 3))
-		  next
-		  
-		  if t then 
-		    j = 0
-		    while aut(j) <> 3
-		      j = j+1
-		    wend
-		    Ob1 = new ObjectsList
-		    Ob1.addobject f1.shapes.item(j)
-		    for h = 0 to f1.shapes.count -1
-		      if h <> j then
-		        Ob1.addObject f1.shapes.item(h)
-		      end if
+		  for n = 2 to 6
+		    t = true
+		    for j = 0 to ubound(aut)
+		      t  = t and ( (f1.shapes.item(j) isa BiPoint ) or (aut(j) = n))
 		    next
-		    f1.shapes = Ob1
-		    f1.auto = 3
-		    return
-		  end if
+		    
+		    if t then 
+		      j = 0
+		      while aut(j) <> n
+		        j = j+1
+		      wend
+		      Ob1 = new ObjectsList
+		      Ob1.addobject f1.shapes.item(j)
+		      for h = 0 to f1.shapes.count -1
+		        if h <> j then
+		          Ob1.addObject f1.shapes.item(h)
+		        end if
+		      next
+		      f1.shapes = Ob1
+		      f1.auto = n
+		      return
+		    end if
+		  next
 		  
 		  f1.auto = 1
 		  
