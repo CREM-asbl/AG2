@@ -21,7 +21,7 @@ Begin Window Formswindow
    MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   1
    Resizeable      =   False
    Title           =   "Formes"
    Visible         =   True
@@ -424,7 +424,8 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  if not selection then
-		    left= WorkWindow.Left+Workwindow.Tools.Width+1
+		    left= WorkWindow.Left + Workwindow.Tools.Width+1
+		    top= WorkWindow.top + WorkWindow.StdBox.top
 		  end if 
 		  
 		  updateTextSize

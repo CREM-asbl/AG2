@@ -705,7 +705,6 @@ End
 
 	#tag Event
 		Sub DropObject(obj As DragItem, action As Integer)
-		  
 		  if obj.FolderItem <> nil then
 		    OpenFile(obj.FolderItem)
 		  else
@@ -890,7 +889,7 @@ End
 
 	#tag Event
 		Sub Moved()
-		  
+		  Formswindow.Close
 		End Sub
 	#tag EndEvent
 
@@ -923,7 +922,6 @@ End
 
 	#tag Event
 		Sub Resizing()
-		  
 		  can.resize
 		  can.RefreshBackground
 		  

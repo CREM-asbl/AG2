@@ -21,7 +21,7 @@ Begin Window PrefChangeWindow
    MinHeight       =   64
    MinimizeButton  =   False
    MinWidth        =   64
-   Placement       =   0
+   Placement       =   3
    Resizeable      =   False
    Title           =   "Choix Config"
    Visible         =   True

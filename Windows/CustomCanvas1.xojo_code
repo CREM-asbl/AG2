@@ -259,6 +259,7 @@ Inherits Canvas
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  dim p as BasicPoint
 		  
+		  Formswindow.close
 		  if not IsContextualClick then
 		    if dret = nil then
 		      if CurrentContent.CurrentOperation<>nil then
