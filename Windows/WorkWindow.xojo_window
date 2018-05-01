@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -706,7 +705,6 @@ End
 
 	#tag Event
 		Sub DropObject(obj As DragItem, action As Integer)
-		  
 		  if obj.FolderItem <> nil then
 		    OpenFile(obj.FolderItem)
 		  else
@@ -891,7 +889,7 @@ End
 
 	#tag Event
 		Sub Moved()
-		  
+		  Formswindow.Close
 		End Sub
 	#tag EndEvent
 
@@ -924,7 +922,6 @@ End
 
 	#tag Event
 		Sub Resizing()
-		  
 		  can.resize
 		  can.RefreshBackground
 		  
@@ -1953,28 +1950,25 @@ End
 		Function ToolsHisto() As Boolean Handles ToolsHisto.Action
 			Dim f As FolderItem
 			Dim dlg as OpenDialog
-			dim ohw as OpenHistWindow
 			
 			if mousedispo then
 			Formswindow.close
 			MyCanvas1.Mousecursor = system.cursors.wait
 			if not (Config.username = "Enseignant") then
-			ohw = new OpenHistWindow
-			ohw.ShowModal
-			f = ohw.file
-			ohw.close
-			if f<>nil  then
-			OpenFile(f)
-			end if
+			OpenHistWindow.ShowModal
+			f = OpenHistWindow.file
+			OpenHistWindow.close
 			else
 			dlg = new OpenDialog
 			dlg.InitialDirectory = App.DocFolder.Child("Historiques")
 			dlg.Filter = FileAGTypes.HIST
 			f = dlg.ShowModal
-			if f <> nil then
+			end if
+			
+			if f<>nil  then
 			OpenFile(f)
 			end if
-			end if
+			
 			MyCanvas1.Mousecursor = System.Cursors.StandardPointer
 			end if
 			return true

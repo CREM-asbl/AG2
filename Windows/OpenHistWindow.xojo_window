@@ -29,13 +29,11 @@ Begin Window OpenHistWindow
    Begin ListBox ListFiles
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
-      BehaviorIndex   =   0
       Bold            =   True
       Border          =   True
       ColumnCount     =   3
       ColumnsResizable=   False
       ColumnWidths    =   "100,100,150"
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
@@ -81,12 +79,10 @@ Begin Window OpenHistWindow
    End
    Begin PushButton ActionB
       AutoDeactivate  =   True
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -114,12 +110,10 @@ Begin Window OpenHistWindow
    End
    Begin PushButton Cancel
       AutoDeactivate  =   True
-      BehaviorIndex   =   2
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
       Caption         =   "Annuler"
-      ControlOrder    =   "2"
       Default         =   False
       Enabled         =   True
       Height          =   28
@@ -171,6 +165,16 @@ End
 		      ListFiles.cell(row+i,1)=dir.item(i).NativePath
 		    next
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMethod("OpenHistWindow","setList")
+		    d.setVariable("dirCount ", Dir.count )
+		    d.setVariable("i ", i)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
@@ -198,10 +202,6 @@ End
 
 
 	#tag Property, Flags = &h0
-		Dir As folderItem
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		file As FolderItem
 	#tag EndProperty
 
@@ -211,12 +211,15 @@ End
 #tag Events ListFiles
 	#tag Event
 		Sub Open()
+		  dim Dir as FolderItem
+		  
 		  Title = Dico.Value("Chooseafile")
 		  
 		  me.ColumnCount = 2
 		  me.ColumnWidths = str(me.Width)+",0"
 		  
 		  Dir = App.DocFolder.Child("Historiques")
+		  
 		  if not dir.Exists then
 		    Dir = SelectFolder
 		  end if
@@ -244,7 +247,7 @@ End
 	#tag Event
 		Sub DoubleClick()
 		  if file <> nil then
-		    close
+		    hide
 		  end if
 		End Sub
 	#tag EndEvent
@@ -253,7 +256,7 @@ End
 	#tag Event
 		Sub Action()
 		  if file <> nil then
-		    close
+		    hide
 		  else
 		    MsgBox Dico.value ("Chooseafile")
 		  end if
@@ -270,17 +273,14 @@ End
 	#tag Event
 		Sub Action()
 		  file = nil
-		  Close
+		  hide
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Open()
-		  if Config.username ="Enseignant" then
-		    me.caption = Dico.value("FileClose")
-		  else
-		    me.caption = Dico.value("cancel")
-		  end if
+		  me.caption = Dico.value("cancel")
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
