@@ -1992,7 +1992,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function fusionsubfigs(f1 as figure, f2 as figure) As Boolean
 		  dim k as integer
-		  dim t, t1 as boolean
+		  dim t, t1, t2, t3 as boolean
 		  dim p as point
 		  
 		  if f1.auto = 1 and f2.auto = 3  then
@@ -2011,6 +2011,9 @@ Protected Class Figure
 		    t = t and((f2.somm.getposition(p)<> -1) or t1)
 		  next
 		  'On fusionne f1 et f2 si tous les sommets de f1 sont soit des sommets de f2 soit des points d'inter de  deux formes de f2
+		  if f1.NbSommCommuns(f2) = f1.Somm.count or f2.NbSommCommuns(f1) = f2.Somm.count then
+		    t=true
+		  end if
 		  
 		  if t then
 		    f2.shapes.concat f1.shapes

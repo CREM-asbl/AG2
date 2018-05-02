@@ -64,31 +64,31 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i, j, n, i0 as integer
 		  dim s, s1, s2 as shape
-		  dim p0 as BasicPoint
+		  dim p0, v as BasicPoint
 		  
 		  p0 = can.MouseUser
 		  s = tempshape.item(0)
-		  if not (s isa point) and not (s isa arc)  then
-		    p0 = p0 - s.Points(0).bpt
+		  if not (s isa point)   then
+		    v = p0 - s.Points(0).bpt
 		  elseif s isa point then
-		    p0 = p0-Point(s).bpt
+		    v = p0-Point(s).bpt
 		  end if
 		  n = tempshape.count
 		  if n=1 and s isa point then
-		    s2 = s.Paste(Objects,p0,currenthighlightedshape)
+		    s2 = s.Paste(Objects,v,currenthighlightedshape)
 		    tempshape.objects(0) = s2
 		    s2.endconstruction
 		  else
 		    for i = 0 to n-1
 		      s = tempshape.item(i)
-		      s2 = s.Paste(Objects,p0)
+		      s2 = s.Paste(Objects,v)
 		      copies.addshape s2
 		      IdentifyPointsinCopies(s2,i)
 		      if s.centerordivpoint and s.constructedby.oper <> 7 then
 		        copiercenterordivpoint(s,s2,i)
 		      end if
 		      s2.pastelabs(s)
-		      s2.copierparams(s)
+		      's2.copierparams(s)
 		      s2.endconstruction
 		    next
 		    LierGroupes

@@ -162,9 +162,9 @@ Inherits Lacet
 		  Shape.constructor(ol,s)
 		  redim prol(s.npts-1)
 		  liberte = s.liberte
-		  'M = new TranslationMatrix(q)
+		  M = new TranslationMatrix(q)
 		  createskull(s.Points(0).bpt)
-		  'Move(M)
+		  Move(M)
 		  
 		End Sub
 	#tag EndMethod
