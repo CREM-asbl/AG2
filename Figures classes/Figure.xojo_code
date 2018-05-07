@@ -5,7 +5,7 @@ Protected Class Figure
 		  // Une figure a été construite par fusion de plusieurs autres.  Les formes sont de types différents.
 		  //Il faut trouver une valeur de auto qui ne crée pas de déformations et provoque le moins de blocages possibles.
 		  dim t, tt as boolean
-		  dim k, h, j, n as integer
+		  dim k, h, j, n, amin as integer
 		  dim aut(-1) as integer
 		  dim Ob1 as objectslist
 		  dim s as shape
