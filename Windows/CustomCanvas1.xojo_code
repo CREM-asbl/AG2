@@ -455,6 +455,27 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub DrawFondEcran()
+		  if FondsEcran = nil then
+		    return
+		  end if
+		  
+		  'dim scale As Double
+		  'scale = min(Height / FondsEcran.Height, width/FondsEcran.width)
+		  
+		  'MsgBox str(FondsEcran.width)
+		  
+		  
+		  if fondEcranStretched then 
+		    BackgroundPicture.graphics.drawpicture fondsecran,0,0,width,height,0,0,fondsecran.width,fondsecran.height
+		  else
+		    BackgroundPicture.graphics.drawpicture fondsecran,0,0,fondsecran.width,fondsecran.height,0,0,fondsecran.width,fondsecran.height
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub drawzone(bp as BasicPoint)
 		  if currentcontent.currentoperation <> nil then
 		    BackgroundPicture.graphics.drawobject zone, bp.x, bp.y
@@ -484,9 +505,7 @@ Inherits Canvas
 		  if BackgroundPicture <> nil then
 		    BackgroundPicture.graphics.ForeColor= Bkcol
 		    BackgroundPicture.graphics.FillRect(0,0,width,height)
-		    if FondsEcran <> nil then
-		      BackgroundPicture.graphics.drawpicture fondsecran,0,0,width,height,0,0,fondsecran.width,fondsecran.height
-		    end if
+		    DrawFondEcran
 		    BackgroundPicture.graphics.forecolor = Config.bordercolor.col
 		    BackgroundPicture.graphics.TextSize = Config.TextSize
 		    BackgroundPicture.graphics.Bold = true
@@ -772,6 +791,10 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		fondEcranStretched As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		FondsEcran As Picture
 	#tag EndProperty
 
@@ -918,6 +941,12 @@ Inherits Canvas
 			Visible=true
 			Group="Behavior"
 			InitialValue="True"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="fondEcranStretched"
+			Group="Behavior"
+			InitialValue="false"
 			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty

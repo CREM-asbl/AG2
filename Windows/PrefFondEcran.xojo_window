@@ -1,17 +1,17 @@
 #tag Window
-Begin Window PasswordWindow
+Begin Window PrefFondEcran
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
-   CloseButton     =   False
+   CloseButton     =   True
    Compatibility   =   ""
    Composite       =   False
    Frame           =   1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   84
+   Height          =   142
    ImplicitInstance=   True
-   LiveResize      =   False
+   LiveResize      =   True
    MacProcID       =   0
    MaxHeight       =   32000
    MaximizeButton  =   False
@@ -23,216 +23,130 @@ Begin Window PasswordWindow
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   False
-   Title           =   "Mot de passe"
+   Title           =   "Fond d'écran"
    Visible         =   True
-   Width           =   307
-   Begin Label StaticText1
-      AutoDeactivate  =   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   0
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Mot de passe:"
-      TextAlign       =   0
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   137
-   End
+   Width           =   422
    Begin PushButton PushButton1
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "Ok"
-      Default         =   True
+      Cancel          =   True
+      Caption         =   "Annuler"
+      Default         =   False
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   201
+      Left            =   95
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   False
-      LockTop         =   False
+      LockTop         =   True
       Scope           =   0
-      TabIndex        =   1
+      TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "System"
-      TextSize        =   12.0
+      TextSize        =   0.0
       TextUnit        =   0
-      Top             =   45
+      Top             =   100
       Underline       =   False
       Visible         =   True
-      Width           =   69
-   End
-   Begin TextField EditField1
-      AcceptTabs      =   False
-      Alignment       =   0
-      AutoDeactivate  =   True
-      AutomaticallyCheckSpelling=   False
-      BackColor       =   &c00FFFFFF
-      Bold            =   False
-      Border          =   True
-      CueText         =   ""
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Format          =   ""
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   160
-      LimitText       =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Mask            =   ""
-      Password        =   True
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
-      Top             =   13
-      Underline       =   False
-      UseFocusRing    =   True
-      Visible         =   True
-      Width           =   121
+      Width           =   80
    End
    Begin PushButton PushButton2
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
-      Caption         =   "Annuler"
+      Caption         =   "OK"
       Default         =   False
       Enabled         =   True
-      Height          =   28
+      Height          =   30
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   254
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   False
-      LockTop         =   False
+      LockTop         =   True
       Scope           =   0
-      TabIndex        =   3
+      TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "System"
-      TextSize        =   12.0
+      TextSize        =   0.0
       TextUnit        =   0
-      Top             =   45
+      Top             =   100
       Underline       =   False
       Visible         =   True
-      Width           =   69
+      Width           =   80
+   End
+   Begin Label Label1
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   40
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Ajuster l'image à la taille de l'écran ?"
+      TextAlign       =   1
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   27
+      Transparent     =   True
+      Underline       =   False
+      Visible         =   True
+      Width           =   422
    End
 End
 #tag EndWindow
 
 #tag WindowCode
-	#tag Event
-		Sub Open()
-		  Title= Dico.value("PassWindow")
-		  StaticText1.text  = Dico.value("PassWindow") + ":"
-		  EditField1.setfocus
-		End Sub
-	#tag EndEvent
-
-
-	#tag Note, Name = Licence
-		
-		Copyright © 2010 CREM
-		Noël Guy - Pliez Geoffrey
-		
-		This file is part of Apprenti Géomètre 2.
-		
-		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
-		the Free Software Foundation, either version 3 of the License, or
-		(at your option) any later version.
-		
-		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU General Public License for more details.
-		
-		You should have received a copy of the GNU General Public License
-		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
-	#tag EndNote
-
-
-	#tag Property, Flags = &h0
-		result As integer
-	#tag EndProperty
-
-
 #tag EndWindowCode
 
-#tag Events StaticText1
-	#tag Event
-		Sub Open()
-		  me.Text = Dico.value("PassWindow")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events PushButton1
 	#tag Event
+		Sub Open()
+		  me.caption = Dico.value("Cancel")
+		End Sub
+	#tag EndEvent
+	#tag Event
 		Sub Action()
-		  result=1
-		  Hide
+		  WorkWindow.MyCanvas1.fondEcranStretched = false
+		  Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events PushButton2
 	#tag Event
 		Sub Action()
-		  result=-1
-		  Hide
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Open()
-		  me.caption = Dico.Value("Cancel")
+		  WorkWindow.MyCanvas1.fondEcranStretched = true
+		  Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -332,7 +246,6 @@ End
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="LiveResize"
-		Visible=true
 		Group="Behavior"
 		InitialValue="True"
 		Type="Boolean"
@@ -375,7 +288,8 @@ End
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="MenuBarVisible"
-		Group="Behavior"
+		Visible=true
+		Group="Deprecated"
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
@@ -431,11 +345,6 @@ End
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="result"
-		Group="Behavior"
-		Type="integer"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Super"

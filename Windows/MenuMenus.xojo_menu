@@ -557,7 +557,13 @@ Begin Menu MenuMenus
             Text = "Installer"
             Index = -2147483648
             AutoEnable = True
-            SubMenu = True
+            Visible = True
+         End
+         Begin MenuItem FondEcranConfigurer
+            SpecialMenu = 0
+            Text = "Configurer"
+            Index = -2147483648
+            AutoEnable = True
             Visible = True
          End
          Begin MenuItem UnInstall
@@ -565,7 +571,6 @@ Begin Menu MenuMenus
             Text = "Retirer"
             Index = -2147483648
             AutoEnable = True
-            SubMenu = True
             Visible = True
          End
       End
