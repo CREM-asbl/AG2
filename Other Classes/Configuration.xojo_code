@@ -216,6 +216,7 @@ Protected Class Configuration
 		  mmenubar.Child("TransfosMenu").Child("InvCurve").checked = El.XQL("InvCurve").length > 0
 		  
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").checked =true
+		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("FondEcranConfigurer").checked =true
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").checked =true
 		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").checked = El.XQL("StdForms").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").checked = El.XQL("Traj").length > 0

@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -774,6 +773,11 @@ End
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		    
 		    if MenuBar.Child("PrefsMenu") <> nil then
+		      
+		      if MenuBar.Child("PrefsMenu").child("Fonds") <> nil then
+		        MenuBar.Child("PrefsMenu").child("Fonds").child("FondEcranConfigurer").enabled = MyCanvas1.FondsEcran <> nil
+		      end if
+		      
 		      if MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
 		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = Config.PolFleches
 		      end if
@@ -1339,6 +1343,14 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function FondEcranConfigurer() As Boolean Handles FondEcranConfigurer.Action
+			PrefFondEcran.ShowModal
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function HelpAbout() As Boolean Handles HelpAbout.Action
 			if mousedispo then
 			dim md as MessageDialog
@@ -1434,6 +1446,7 @@ End
 			return true
 			else
 			mycanvas1.FondsEcran = Picture.Open(f)
+			PrefFondEcran.ShowModal
 			end if
 			end if
 			
@@ -2121,6 +2134,7 @@ End
 	#tag MenuHandler
 		Function UnInstall() As Boolean Handles UnInstall.Action
 			mycanvas1.FondsEcran = nil
+			MyCanvas1.fondEcranStretched = false
 			Return False
 			
 		End Function
@@ -2348,12 +2362,12 @@ End
 		  item.Name = mitem.Name
 		  item.KeyboardShortCut = mitem.KeyboardShortCut
 		  item.index = mitem.index
-		  if not  (item.Name = "MacrosChoose" or item.Name="MacrosErase2" or item.Name = "MacrosClose2" or item.Name = "MacrosDescri2" or item.Name="MacrosCopy2")   then '
-		    item.Text = Dico.Value(item.Name)
-		  else
+		  
+		  item.Text = Dico.Value(item.Name)
+		  
+		  if item.Text = item.name then
 		    item.Text = mitem.Text
 		  end if
-		  
 		  
 		  if item.name = "PrefsFreeForms" then
 		    return nil
