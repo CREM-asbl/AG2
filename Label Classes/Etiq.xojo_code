@@ -91,7 +91,6 @@ Inherits Label
 		  
 		  super.constructor
 		  
-		  dim corr as BasicPoint
 		  
 		  Text = El.GetAttribute("Text")
 		  if Text = "*" then
@@ -108,17 +107,14 @@ Inherits Label
 		    Italic = false
 		  end if
 		  loc = side
-		  Corr= new BasicPoint( val(El.GetAttribute("CorrectionX")),  val(El.GetAttribute("CorrectionY")))
+		  Correction = new BasicPoint( val(El.GetAttribute("CorrectionX")),  val(El.GetAttribute("CorrectionY")))
 		  if val(EL.GetAttribute("Fixe")) = 1 then
 		    SetFixe(true)
 		  else
 		    SetFixe(false)
 		  end if
-		  if WorkWindow.version >= 222 then
-		    correction = corr
-		  else
-		    correction = can.idtransform(corr)
-		  end if
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

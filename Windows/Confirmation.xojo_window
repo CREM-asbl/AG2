@@ -286,11 +286,6 @@ End
 		EditorType="Boolean"
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Closing"
-		Group="Behavior"
-		Type="integer"
-	#tag EndViewProperty
-	#tag ViewProperty
 		Name="Composite"
 		Group="OS X (Carbon)"
 		InitialValue="False"
@@ -466,6 +461,7 @@ End
 	#tag ViewProperty
 		Name="Result"
 		Group="Behavior"
+		InitialValue="-1"
 		Type="integer"
 	#tag EndViewProperty
 	#tag ViewProperty

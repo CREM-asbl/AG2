@@ -254,6 +254,7 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True

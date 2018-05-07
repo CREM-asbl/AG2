@@ -312,22 +312,24 @@ Inherits Operation
 		  end if
 		  
 		  sh = tempshape.item(i0)
-		  if not sh isa point then
-		    for i = 0 to sh.npts-1
-		      p = sh.points(i)
-		      j = 0
-		      while (j < i0)and p.parents.indexof(tempshape.item(j)) = -1
-		        j = j+1
-		      wend
-		      if j < i0 then
-		        k = tempshape.item(j).getindexpoint(p)
-		        if k <> -1 then
-		          s2 = copies.item(j)
-		          s.SubstitutePoint(s2.points(k), s.points(i))
-		        end if
-		      end if
-		    next
+		  if  sh isa point then
+		    return
 		  end if
+		  for i = 0 to sh.npts-1
+		    p = sh.points(i)
+		    j = 0
+		    while (j < i0)and p.parents.indexof(tempshape.item(j)) = -1
+		      j = j+1
+		    wend
+		    if j < i0 then
+		      k = tempshape.item(j).getindexpoint(p)
+		      if k <> -1 then
+		        s2 = copies.item(j)
+		        s.SubstitutePoint(s2.points(k), s.points(i))
+		      end if
+		    end if
+		  next
+		  
 		  
 		  
 		  
