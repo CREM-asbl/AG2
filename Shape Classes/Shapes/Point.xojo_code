@@ -2426,7 +2426,7 @@ Inherits Shape
 		    if s isa circle then
 		      Trib = new TriBPoint(s.getgravitycenter,a,b)
 		      bp = Trib.subdiv(s.ori,ConstructedBy.data(2), ConstructedBy.data(3))
-		    elseif s isa lacet then
+		    elseif s.hybrid then
 		      side = constructedby.data(4)
 		      if lacet(s).coord.curved(side) = 0 then
 		        Bib = new BiBpoint(a,b)

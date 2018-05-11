@@ -90,7 +90,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -769,8 +768,8 @@ End
 		      MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
 		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
 		    #else
-		      MenuBar.Child("FileMenu").Child("ViewEps").visible= false
-		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= false
+		      MenuBar.Child("FileMenu").Child("ViewEps").visible= true
+		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= true
 		    #Endif
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		    
@@ -1202,17 +1201,16 @@ End
 			dlg.Filter = FileAGTypes.EPS
 			
 			f = dlg.ShowModal
-			
+			s=  f.shellpath
 			if dlg.Result <> nil then
 			#if targetWindows then 
 			sh.Execute(f.shellpath)
-			s=  f.shellpath
 			s1 = s.replace(f.name,"")
 			sh.execute("cd "+ s1)
 			sh.execute("epstopdf --nosafer "+s)
 			#elseif targetMacOS then
-			's1 = s.replace("eps","pdf") 
-			'sh.execute ("pstopdf "+ s +" -o "+s1)
+			s1 = s.replace("eps","pdf") 
+			sh.execute ("pstopdf "+ s +" -o "+s1, f.shellpath)
 			#elseif targetlinux then
 			#Endif
 			s1 = s.replace("eps","pdf") 
@@ -1346,7 +1344,7 @@ End
 
 	#tag MenuHandler
 		Function FondEcranConfigurer() As Boolean Handles FondEcranConfigurer.Action
-			PrefFondEcran.ShowModal
+			'PrefFondEcran.ShowModal
 			Return True
 			
 		End Function
@@ -1448,7 +1446,7 @@ End
 			return true
 			else
 			mycanvas1.FondsEcran = Picture.Open(f)
-			PrefFondEcran.ShowModal
+			'PrefFondEcran.ShowModal
 			end if
 			end if
 			
@@ -2153,13 +2151,9 @@ End
 			#if targetWindows then
 			sh.execute(f.shellpath)
 			#elseif targetMacOS then
-			'sh.execute (
-			sh.execute (s,  f.shellpath)
-			'gs.quit
+			sh.execute (f.name,  f.shellpath)
 			#elseif targetlinux then
 			#Endif
-			
-			
 			end if
 			Return True
 			
