@@ -90,6 +90,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -1344,7 +1345,7 @@ End
 
 	#tag MenuHandler
 		Function FondEcranConfigurer() As Boolean Handles FondEcranConfigurer.Action
-			'PrefFondEcran.ShowModal
+			PrefFondEcran.ShowModal
 			Return True
 			
 		End Function
@@ -1446,7 +1447,7 @@ End
 			return true
 			else
 			mycanvas1.FondsEcran = Picture.Open(f)
-			'PrefFondEcran.ShowModal
+			PrefFondEcran.ShowModal
 			end if
 			end if
 			
