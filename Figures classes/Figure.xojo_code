@@ -5,7 +5,7 @@ Protected Class Figure
 		  // Une figure a été construite par fusion de plusieurs autres.  Les formes sont de types différents.
 		  //Il faut trouver une valeur de auto qui ne crée pas de déformations et provoque le moins de blocages possibles.
 		  dim t, tt as boolean
-		  dim k, h, j, n as integer
+		  dim k, h, j, n, amin as integer
 		  dim aut(-1) as integer
 		  dim Ob1 as objectslist
 		  dim s as shape
@@ -106,7 +106,17 @@ Protected Class Figure
 		    end if
 		  next
 		  
-		  f1.auto = 1
+		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si 
+		  'une des formes est autoaff, etc
+		  amin = aut(0)
+		  for j = 1 to ubound(aut)
+		    amin = min(amin,aut(j))
+		  next
+		  if amin <> 4 then 
+		    f1.auto = amin
+		  end if
+		  return
+		  
 		  
 		End Sub
 	#tag EndMethod
