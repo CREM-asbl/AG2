@@ -820,13 +820,19 @@ Protected Class Figure
 		  
 		  n = ListPtsModifs(0)
 		  s = shapes.item(0)
+		  p = Point(somm.item(n)) 
 		  
 		  if s isa arc or s isa DSect  then
 		    return s.Modifier1(n)
 		  end if
 		  
-		  p = Point(somm.item(n))
+		  if s isa TriangRect then
+		    return s.Modifier2fixes(p)
+		  end if
+		  
+		  
 		  getoldnewpos(p, ep, np)
+		  
 		  choixpointsfixes
 		  
 		  if  NbUnModif > 2 then

@@ -671,9 +671,10 @@ Protected Class Shape
 		  area = s.area
 		  biface = s.biface
 		  for i = 0 to npts-1
+		    points(i).moveto s.points(i).bpt
 		    points(i).borderwidth = s.points(i).borderwidth
-		    Points(i).moveto (s.Points(i).bpt)
 		    points(i).hidden = s.points(i).hidden
+		    points(i).forme = s.points(i).forme
 		  next
 		End Sub
 	#tag EndMethod
