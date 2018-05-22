@@ -295,32 +295,6 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldConstructor(n as integer, p as basicPoint, sh as shape)
-		  // Calling the overridden superclass constructor.
-		  dim i, j, k as integer
-		  
-		  Super.Constructor(p)
-		  for i = 0 to n-1
-		    append new curveshape
-		  next
-		  i = 0
-		  for j = 0 to sh.npts-1
-		    if sh.coord.curved(j) = 0 then
-		      item(i).order = 0
-		      i = i+1
-		    else
-		      for k = 0 to 2
-		        item(i+k).order = 2
-		      next
-		      i = i+3
-		    end if
-		  next
-		  fill = 0
-		  'n est ici le nombre de curveshapes, non le nombre de côtés
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
 		  dim i as integer
 		  

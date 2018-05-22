@@ -1297,8 +1297,8 @@ Inherits Liste
 		OldSelection As ObjectsList
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected PrevId As integer
+	#tag Property, Flags = &h0
+		PrevId As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1342,6 +1342,11 @@ Inherits Liste
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="PrevId"
+			Group="Behavior"
+			Type="integer"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

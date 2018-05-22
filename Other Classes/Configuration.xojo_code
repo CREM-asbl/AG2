@@ -111,8 +111,8 @@ Protected Class Configuration
 		    Libfamilies(4,j)=Names(j)
 		  next
 		  
-		  Names = Array("FreeCircle", "Arc","DSect")
-		  nlibf(5)=2
+		  Names = Array("FreeCircle", "Arc","DSect", "HalfDsk")
+		  nlibf(5)=3
 		  for j = 0 to nlibf(5)
 		    Libfamilies(5,j)=Names(j)
 		  next
