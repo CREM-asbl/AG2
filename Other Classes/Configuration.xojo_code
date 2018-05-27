@@ -272,7 +272,7 @@ Protected Class Configuration
 		  case "Etoiles.std"
 		    Doc = new XMLDocument(etoiles)
 		  else
-		    fi = app.StdFolder.Child(stdfile)
+		    fi = app.StdFolder.Child(std)
 		    if not fi.exists then
 		      MsgBox Dico.Value("FileMenu") + " " + std + Dico.Value("Introuvable")
 		      return
