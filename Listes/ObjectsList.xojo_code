@@ -1097,6 +1097,8 @@ Inherits Liste
 		      s = new Arc(self,temp)
 		    case 2
 		      s = new DSect(self,temp)
+		    case 3
+		      s = new HalfDsk(self, temp)
 		    end select
 		  case 6
 		    s = new Polyqcq(self,temp)

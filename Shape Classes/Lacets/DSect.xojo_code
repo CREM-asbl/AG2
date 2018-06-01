@@ -91,6 +91,7 @@ Inherits Lacet
 		  coord.CreateExtreAndCtrlPoints(ori)
 		  createskull(points(0).bpt)
 		  InitCurvesOrders
+		  drapori = true
 		End Sub
 	#tag EndMethod
 
