@@ -566,7 +566,7 @@ Inherits SelectOperation
 		  
 		  if f <> nil then
 		    can.MouseCursor= System.Cursors.wait
-		    tos=f.createTextFile
+		    tos=TextoutputStream.create(f)
 		    creerprologueeps(tos)
 		    Body(tos,tempshape)
 		    Body1(tos,tempshape)

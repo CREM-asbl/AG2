@@ -122,10 +122,10 @@ Inherits SelectOperation
 		    if f.exists then
 		      NewDoc = new XMLDocument(f)
 		      NewDoc.Child(0).appendchild NewDoc.ImportNode(temp, true)
-		      tos = f.CreateTextFile
+		      tos = TextOutputStream.Create(f)
 		      tos.write NewDoc.ToString
 		    else
-		      tos = f.CreateTextFile
+		      tos =TextOutputStream.Create(f)
 		      tos.write Doc.ToString
 		    end if
 		    tos.close

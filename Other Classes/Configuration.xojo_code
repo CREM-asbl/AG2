@@ -526,7 +526,7 @@ Protected Class Configuration
 		  
 		  //enregistrement du document XML
 		  fi=app.DocFolder.Child("AG_Init.xml")
-		  tos=fi.CreateTextFile
+		  tos=TextOutputStream.Create(fi)
 		  if tos =nil then
 		    MsgBox Dico.Value("AGInitNotUpdatable")
 		  else
