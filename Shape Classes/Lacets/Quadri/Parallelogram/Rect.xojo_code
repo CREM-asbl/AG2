@@ -68,6 +68,7 @@ Inherits Parallelogram
 		  dim s as shape
 		  dim dr as droite
 		  
+		  ori = coord.orientation
 		  n = getindexpoint(p) 'numero du point qui doit rester fixe
 		  n1 = getindexpoint(p1)
 		  ff = getsousfigure(fig)
@@ -112,7 +113,7 @@ Inherits Parallelogram
 		      end if
 		      w = w.vecnorperp
 		      d = ep1.distance(ep3)
-		      np3 = np1+w*d
+		      np3 = np1+w*d*ori
 		      M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
 		    else
 		      M = new SimilarityMatrix(ep, ep1, np, np1)
