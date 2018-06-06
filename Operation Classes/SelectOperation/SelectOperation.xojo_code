@@ -302,7 +302,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub IdentifyPointsinCopies(byref s as shape, i0 as integer)
-		  dim i,j,k,m, n as integer
+		  dim i,j,k,m, n as integer   'Identification des sommets communs
 		  dim s1, s2, sh, ss as shape
 		  dim p as point
 		  // s est l'élément i0 de copies
@@ -343,9 +343,12 @@ Inherits Operation
 		Sub ImmediateDoOperation()
 		  if tempshape.count > 0 then
 		    can.Mousecursor = System.Cursors.Wait
-		    WorkWindow.refreshtitle
 		    DoOperation
 		    endoperation
+		    if currentcontent.currentoperation isa Copier then
+		      currentcontent.currentoperation = nil
+		    end if
+		    WorkWindow.refreshtitle
 		  end if
 		End Sub
 	#tag EndMethod

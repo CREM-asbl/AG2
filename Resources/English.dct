@@ -240,6 +240,7 @@
 <FreeCircle Name="Circle"/>
 <Arc Name="Arc"/>
 <DSect Name="Disk sector"/>
+<HalfDsk Name="Half Disk"/>
 <PolygStd Name="Standard Polygon"/>
 <Cube Name="Cube"/>
 <CubeOrtho Name="Model 1"/>

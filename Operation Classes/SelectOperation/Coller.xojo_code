@@ -62,10 +62,11 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, j, n, i0 as integer
-		  dim s, s1, s2 as shape
+		  dim i, j, h, n, i0 as integer
+		  dim s,  s2, sj as shape
 		  dim p0, v as BasicPoint
 		  
+		  n = tempshape.count
 		  p0 = can.MouseUser
 		  s = tempshape.item(0)
 		  if not (s isa point)   then
@@ -73,30 +74,50 @@ Inherits SelectOperation
 		  elseif s isa point then
 		    v = p0-Point(s).bpt
 		  end if
-		  n = tempshape.count
+		  
 		  if n=1 and s isa point then
 		    s2 = s.Paste(Objects,v,currenthighlightedshape)
 		    tempshape.objects(0) = s2
 		    s2.endconstruction
-		  else
-		    for i = 0 to n-1
-		      s = tempshape.item(i)
-		      s2 = s.Paste(Objects,v)
-		      copies.addshape s2
-		      IdentifyPointsinCopies(s2,i)
-		      if s.centerordivpoint and s.constructedby.oper <> 7 then
-		        copiercenterordivpoint(s,s2,i)
-		      end if
-		      s2.pastelabs(s)
-		      's2.copierparams(s)
-		      s2.endconstruction
-		    next
-		    LierGroupes
-		    'for i = 0 to n-1
-		    'tempshape.objects(i) = copies.item(i)
-		    'next
-		    copies.removeall
+		    return
 		  end if
+		  
+		  for i = 0 to n-1
+		    s = tempshape.item(i)
+		    s2 = s.Paste(Objects,v)
+		    copies.addshape s2
+		    IdentifyPointsinCopies(s2,i) 'identification des sommets communs à deux formes
+		    if s.centerordivpoint and s.constructedby.oper <> 7 then
+		      copiercenterordivpoint(s,s2,i)
+		    end if
+		  next
+		  for i = 0 to n-1
+		    s = tempshape.item(i)
+		    s2 = copies.item(i)
+		    for h = 0 to s.npts-1
+		      for j = 0 to n-1
+		        sj = tempshape.item(j) 
+		        if s.points(h).forme > 0 and s.points(h).pointsur.GetPosition(sj) <> -1 then
+		          s2.points(h).puton copies.item(j)
+		        end if
+		      next
+		    next
+		    for h = 0 to s.npts-1
+		      if s.points(h).forme=2 then
+		        s2.points(h).adjustinter(s2.points(h).pointsur.element(0),s2.points(h).pointsur.element(1))
+		      end if
+		    next 
+		    s2.endconstruction
+		  next
+		  LierGroupes
+		  for i = 0 to n-1
+		    s2.pastelabs(s)
+		    's2.copierparams(s)
+		    s2.updatecoord
+		    tempshape.objects(i) = copies.item(i)
+		  next
+		  copies.removeall
+		  
 		  
 		  
 		End Sub

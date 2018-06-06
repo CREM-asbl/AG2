@@ -74,7 +74,9 @@ Inherits nBpoint
 		  BiB = new BiBPoint(tab(1),extre(0))
 		  Bib.computeCtrlPoints(tab(0), orien,  ctrl)
 		  for i = 2 to 5
-		    ctrl(i) = M*ctrl(i-2)
+		    if ctrl(i-2) <> nil then
+		      ctrl(i) = M*ctrl(i-2)
+		    end if
 		  next
 		  
 		  
@@ -86,6 +88,29 @@ Inherits nBpoint
 		Function EndAngle() As double
 		  return getangle(tab(0),tab(2))
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub HalfDskCreateExtreAndCtrlPoints(orien as integer)
+		  dim Bib as BiBPoint
+		  dim alpha as double
+		  dim M as RotationMatrix
+		  dim i as integer
+		  
+		  orien = 1
+		  alpha = PI/3
+		  M = new RotationMatrix(tab(0),alpha)
+		  extre(0) = M*tab(1)
+		  extre(1) = M*extre(0)
+		  BiB = new BiBPoint(tab(1),extre(0))
+		  Bib.computeCtrlPoints(tab(0), orien,  ctrl)
+		  for i = 2 to 5
+		    ctrl(i) = M*ctrl(i-2)
+		  next
+		  
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

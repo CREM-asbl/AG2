@@ -211,6 +211,8 @@ Inherits MultipleSelectOperation
 		        currentshape = new Arc(objects,p)
 		      case 2
 		        currentshape = new DSect(objects,p)
+		      case 3
+		        currentshape = new HalfDsk(objects,p)
 		      end select
 		    case 6
 		      currentshape = new Polyqcq(objects, forme+3, p)

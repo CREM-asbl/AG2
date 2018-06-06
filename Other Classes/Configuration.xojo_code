@@ -111,8 +111,8 @@ Protected Class Configuration
 		    Libfamilies(4,j)=Names(j)
 		  next
 		  
-		  Names = Array("FreeCircle", "Arc","DSect")
-		  nlibf(5)=2
+		  Names = Array("FreeCircle", "Arc","DSect", "HalfDsk")
+		  nlibf(5)=3
 		  for j = 0 to nlibf(5)
 		    Libfamilies(5,j)=Names(j)
 		  next
@@ -272,7 +272,7 @@ Protected Class Configuration
 		  case "Etoiles.std"
 		    Doc = new XMLDocument(etoiles)
 		  else
-		    fi = app.StdFolder.Child(stdfile)
+		    fi = app.StdFolder.Child(std)
 		    if not fi.exists then
 		      MsgBox Dico.Value("FileMenu") + " " + std + Dico.Value("Introuvable")
 		      return
@@ -526,7 +526,7 @@ Protected Class Configuration
 		  
 		  //enregistrement du document XML
 		  fi=app.DocFolder.Child("AG_Init.xml")
-		  tos=fi.CreateTextFile
+		  tos=TextOutputStream.Create(fi)
 		  if tos =nil then
 		    MsgBox Dico.Value("AGInitNotUpdatable")
 		  else

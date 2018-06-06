@@ -371,11 +371,11 @@ Inherits Canvas
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		  
 		  if OffscreenPicture <> nil and BackgroundPicture <> nil  then
 		    BackgroundPicture.graphics.DrawPicture OffscreenPicture , 0, 0 
 		    g.drawPicture(BackgroundPicture, 0, 0)
 		  end if
-		  
 		  
 		End Sub
 	#tag EndEvent
