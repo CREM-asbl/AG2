@@ -90,7 +90,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -1446,7 +1445,7 @@ End
 			if f=nil then
 			return true
 			else
-			mycanvas1.FondsEcran = Picture.Open(f)
+			mycanvas1.setFondEcran(Picture.Open(f))
 			PrefFondEcran.ShowModal
 			end if
 			end if
@@ -2135,7 +2134,6 @@ End
 	#tag MenuHandler
 		Function UnInstall() As Boolean Handles UnInstall.Action
 			mycanvas1.FondsEcran = nil
-			MyCanvas1.fondEcranStretched = false
 			Return False
 			
 		End Function
