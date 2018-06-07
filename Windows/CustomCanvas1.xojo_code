@@ -396,6 +396,13 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub alignFondEcran(align as String)
+		  FondsEcran.align = align
+		  RefreshBackground
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub calculcoins()
 		  if invctm <> nil then
 		    csg = new BasicPoint(0,0)
@@ -460,18 +467,33 @@ Inherits Canvas
 		    return
 		  end if
 		  
-		  'dim scale As Double
-		  'scale = min(Height / FondsEcran.Height, width/FondsEcran.width)
+		  dim image As Picture
+		  dim fondLeft, fondTop, fondWidth, fondHeight as Double
 		  
-		  'MsgBox str(FondsEcran.width)
+		  image= FondsEcran.image
+		  fondLeft = 0
+		  fondTop = 0
+		  fondWidth = image.width
+		  fondHeight = image.height
 		  
+		  Select Case FondsEcran.align 
+		  Case "stretched" 
+		    fondWidth = width
+		    fondHeight = height 
+		  Case "topCenter", "centerCenter", "bottomCenter"
+		    fondLeft = (Width - image.width)/2
+		  Case "topRight", "centerRight", "bottomRight"
+		    fondLeft = Width - image.width
+		  end Select
 		  
-		  if fondEcranStretched then 
-		    BackgroundPicture.graphics.drawpicture fondsecran,0,0,width,height,0,0,fondsecran.width,fondsecran.height
-		  else
-		    BackgroundPicture.graphics.drawpicture fondsecran,0,0,fondsecran.width,fondsecran.height,0,0,fondsecran.width,fondsecran.height
-		  end if
+		  Select Case FondsEcran.align 
+		  Case "centerLeft", "centerCenter", "centerRight"
+		    fondTop = (Height - image.Height)/2
+		  Case "bottomLeft", "bottomCenter", "bottomRight"
+		    fondTop = Height - image.Height
+		  end Select
 		  
+		  BackgroundPicture.graphics.drawpicture image,fondLeft,fondTop,fondWidth,fondHeight,0,0,image.width,image.height
 		End Sub
 	#tag EndMethod
 
@@ -683,6 +705,16 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub setFondEcran(image as Picture)
+		  if FondsEcran = nil then
+		    FondsEcran = new FondEcran
+		  end if
+		  
+		  FondsEcran.image = image
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetMagneticDist()
 		  MagneticDist = abs(Config.magneticdist/scaling)
 		End Sub
@@ -791,11 +823,7 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		fondEcranStretched As Boolean = false
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		FondsEcran As Picture
+		FondsEcran As FondEcran
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -942,18 +970,6 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="True"
 			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="fondEcranStretched"
-			Group="Behavior"
-			InitialValue="false"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="FondsEcran"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Picture"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Height"
