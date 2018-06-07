@@ -9,7 +9,7 @@ Begin Window PrefFondEcran
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   186
+   Height          =   192
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
@@ -25,7 +25,7 @@ Begin Window PrefFondEcran
    Resizeable      =   False
    Title           =   "Fond d'écran"
    Visible         =   True
-   Width           =   422
+   Width           =   362
    Begin PushButton PushButton2
       AutoDeactivate  =   True
       Bold            =   False
@@ -39,7 +39,7 @@ Begin Window PrefFondEcran
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   294
+      Left            =   262
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -57,90 +57,38 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   80
    End
-   Begin RadioButton centerLeft
+   Begin Label Label1
       AutoDeactivate  =   True
       Bold            =   False
-      Caption         =   "Centre-Gauche"
+      DataField       =   ""
+      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   50
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
+      Multiline       =   False
       Scope           =   0
-      TabIndex        =   8
+      Selectable      =   False
+      TabIndex        =   19
       TabPanelIndex   =   0
       TabStop         =   True
+      Text            =   "Position ?"
+      TextAlign       =   0
+      TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   53
+      Top             =   56
+      Transparent     =   True
       Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton centerCenter
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Centre-Centre"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   160
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   53
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton centerRight
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Centre-Droite"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   270
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   10
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   53
-      Underline       =   False
-      Value           =   False
       Visible         =   True
       Width           =   100
    End
@@ -154,198 +102,341 @@ Begin Window PrefFondEcran
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   50
+      Left            =   262
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       Scope           =   0
-      TabIndex        =   11
+      TabIndex        =   20
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   115
+      Top             =   56
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton topLeft
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Haut-Gauche"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   50
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   12
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   21
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton topCenter
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Haut-Centre"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   160
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   13
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   21
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton topRight
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Haut-Droite"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   270
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   14
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   21
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton bottomLeft
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Bas-Gauche"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   50
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   15
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   83
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin RadioButton bottomCenter
-      AutoDeactivate  =   True
-      Bold            =   False
-      Caption         =   "Bas-Centre"
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   160
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   16
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   83
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   100
+      Width           =   93
    End
    Begin RadioButton bottomRight
       AutoDeactivate  =   True
       Bold            =   False
-      Caption         =   "Bas-Droite"
+      Caption         =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   270
+      Left            =   217
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       Scope           =   0
-      TabIndex        =   17
+      TabIndex        =   21
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   83
+      Top             =   90
       Underline       =   False
       Value           =   False
       Visible         =   True
-      Width           =   100
+      Width           =   18
+   End
+   Begin RadioButton bottomCenter
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   171
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   22
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   90
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   30
+   End
+   Begin RadioButton bottomLeft
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   122
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   23
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   90
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   30
+   End
+   Begin RadioButton centerLeft
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   122
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   26
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   58
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   30
+   End
+   Begin RadioButton topLeft
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   122
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   29
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   25
+      Underline       =   False
+      Value           =   True
+      Visible         =   True
+      Width           =   30
+   End
+   Begin RadioButton centerRight
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   217
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   24
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   58
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   18
+   End
+   Begin RadioButton centerCenter
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   171
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   25
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   58
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   30
+   End
+   Begin RadioButton topRight
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   217
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   27
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   25
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   18
+   End
+   Begin RadioButton topCenter
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   171
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   28
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   25
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   30
+   End
+   Begin Line Line1
+      BorderWidth     =   1
+      Index           =   -2147483648
+      InitialParent   =   ""
+      LineColor       =   &c00000000
+      LockedInPosition=   False
+      Scope           =   0
+      TabPanelIndex   =   0
+      Visible         =   True
+      X1              =   118
+      X2              =   235
+      Y1              =   20
+      Y2              =   20
+   End
+   Begin Line Line2
+      BorderWidth     =   1
+      Index           =   -2147483648
+      InitialParent   =   ""
+      LineColor       =   &c00000000
+      LockedInPosition=   False
+      Scope           =   0
+      TabPanelIndex   =   0
+      Visible         =   True
+      X1              =   118
+      X2              =   118
+      Y1              =   20
+      Y2              =   110
+   End
+   Begin Line Line3
+      BorderWidth     =   1
+      Index           =   -2147483648
+      InitialParent   =   ""
+      LineColor       =   &c00000000
+      LockedInPosition=   False
+      Scope           =   0
+      TabPanelIndex   =   0
+      Visible         =   True
+      X1              =   118
+      X2              =   235
+      Y1              =   110
+      Y2              =   110
+   End
+   Begin Line Line4
+      BorderWidth     =   1
+      Index           =   -2147483648
+      InitialParent   =   ""
+      LineColor       =   &c00000000
+      LockedInPosition=   False
+      Scope           =   0
+      TabPanelIndex   =   0
+      Visible         =   True
+      X1              =   235
+      X2              =   235
+      Y1              =   20
+      Y2              =   110
    End
 End
 #tag EndWindow
@@ -360,27 +451,6 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events centerLeft
-	#tag Event
-		Sub Action()
-		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events centerCenter
-	#tag Event
-		Sub Action()
-		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events centerRight
-	#tag Event
-		Sub Action()
-		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events stretched
 	#tag Event
 		Sub Action()
@@ -388,28 +458,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events topLeft
-	#tag Event
-		Sub Action()
-		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events topCenter
-	#tag Event
-		Sub Action()
-		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events topRight
-	#tag Event
-		Sub Action()
-		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events bottomLeft
+#tag Events bottomRight
 	#tag Event
 		Sub Action()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
@@ -423,7 +472,49 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events bottomRight
+#tag Events bottomLeft
+	#tag Event
+		Sub Action()
+		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events centerLeft
+	#tag Event
+		Sub Action()
+		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events topLeft
+	#tag Event
+		Sub Action()
+		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events centerRight
+	#tag Event
+		Sub Action()
+		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events centerCenter
+	#tag Event
+		Sub Action()
+		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events topRight
+	#tag Event
+		Sub Action()
+		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events topCenter
 	#tag Event
 		Sub Action()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
