@@ -606,9 +606,11 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub rotate()
 		  dim u, c, p as BasicPoint
+		  dim r as repere
 		  
+		  r = can.Rep
 		  
-		  u = new BasicPoint(can.Rep.Idx.x, can.Rep.Idx.y)
+		  u = new BasicPoint(r.Idx.x, r.Idx.y)
 		  u.y = - u.y
 		  alpha = u.anglepolaire
 		  c = new BasicPoint(0,0)

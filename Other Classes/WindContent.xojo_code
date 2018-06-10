@@ -80,6 +80,7 @@ Protected Class WindContent
 		Sub ChargerObjets(FAG as XMLElement)
 		  dim n as integer
 		  dim dr as droite
+		  dim r as Repere
 		  
 		  TheObjects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
 		  TheObjects.SetId(-1)
@@ -101,7 +102,8 @@ Protected Class WindContent
 		      UL = dr.longueur
 		    end if
 		  end if
-		  TheObjects.updatelabels(can.rep.echelle)
+		  r = can.rep
+		  TheObjects.updatelabels(r.echelle)
 		  
 		  
 		End Sub
