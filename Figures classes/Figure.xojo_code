@@ -939,10 +939,20 @@ Protected Class Figure
 		  dim t as boolean
 		  dim s as shape
 		  
+		  n1 = ListPtsModifs(0)
+		  n2 = ListPtsModifs(1)
+		  n3 = ListPtsModifs(2)
+		  p = Point(somm.item(n1))
+		  q = Point(somm.item(n2))
+		  r =Point(somm.item(n3))
 		  
 		  s = shapes.item(0)
-		  if s isa arc  or s isa DSect or s isa Triangiso then
+		  if s isa arc  or s isa DSect or s isa Triangiso  then
 		    return s.modifier3
+		  end if
+		  
+		  if s isa rect then 
+		    return rect(s).modifier3(p,q,r)
 		  end if
 		  
 		  Choixpointsfixes
@@ -950,12 +960,7 @@ Protected Class Figure
 		    return new Matrix(1)
 		  end if
 		  
-		  n1 = ListPtsModifs(0)
-		  n2 = ListPtsModifs(1)
-		  n3 = ListPtsModifs(2)
-		  p = Point(somm.item(n1))
-		  q = Point(somm.item(n2))
-		  r =Point(somm.item(n3))
+		  
 		  
 		  n = NbSommSur
 		  

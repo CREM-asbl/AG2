@@ -254,7 +254,6 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -306,7 +305,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   12
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -324,7 +323,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   82
+      Top             =   84
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -359,7 +358,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   82
+      Top             =   84
       Transparent     =   False
       Underline       =   False
       Visible         =   True

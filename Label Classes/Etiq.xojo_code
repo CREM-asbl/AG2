@@ -5,7 +5,7 @@ Inherits Label
 		Function arrondi2(d as double) As string
 		  dim s1, s2, s3 as string
 		  dim r, k as double
-		  dim m,  i as integer
+		  dim m as integer
 		  dim b as boolean
 		  dim p as integer
 		  
@@ -51,6 +51,100 @@ Inherits Label
 		  
 		  SetSize(n+2)
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function calculmesure() As string
+		  dim dat as string
+		  dim sh as shape
+		  dim pt as point
+		  dim dr as droite
+		  dim bp as basicpoint
+		  dim vis as objectslist
+		  dim a,  i as integer
+		  
+		  dat ="-10000"
+		  ///////////// Abscisses 
+		  if chape isa point then
+		    pt = point(chape)
+		    bp = pt.bpt
+		    
+		    ///////// Si le point est localisé sur une forme sans être nécessairement un point sur ////////////
+		    vis = currentcontent.theobjects.findbipoint(bp)
+		    if vis.count > 0  then
+		      sh = vis.item(0)
+		      if sh isa bipoint then
+		        dat = arrondi2(bp.location(bipoint(sh)))
+		      elseif sh isa polygon then
+		        a = sh.pointonside(bp)
+		        if a <> -1 then
+		          dr = sh.getside(a)
+		          dat = arrondi2(bp.location(dr))
+		        end if
+		      elseif sh isa Freecircle then
+		        dat = arrondi2(bp.location(circle(sh)))
+		      end if
+		    end if
+		    
+		    /////////////////// Si pt est un point sur ou un point "dans"///////////////////////////
+		    select case pt.forme
+		    case 0
+		      dat = ""
+		      vis = currentcontent.theobjects.findObject(bp)
+		      if vis.count > 0 then
+		        for i = vis.count-1 downto 0
+		          if not vis.item(i) isa polygon then
+		            vis.removeobject vis.item(i)
+		          end if
+		        next
+		      end if
+		      if vis.count > 0 then
+		        sh = vis.item(0)
+		        dat = str(pt.indice(polygon(sh)))    // Indice de "Cauchy"
+		      end if
+		    case 1
+		      dat = arrondi2(pt.location(0))
+		    end select
+		  end if
+		  
+		  ////////////////////// Longueurs 
+		  
+		  
+		  if chape isa droite then
+		    if chape =currentcontent.SHUL then
+		      dat= str(1)
+		    elseif droite(chape).nextre = 2 then
+		      dat = arrondi2(droite(chape).longueur/currentcontent.UL)
+		    elseif droite(chape).nextre < 2 then
+		      dat =  "¥"/////Infini
+		      setfont("Symbol")
+		    end if
+		  end if 
+		  if chape isa polygon and chape = currentcontent.SHUL and loc = currentcontent.IcotUL  then
+		    dat = str(1)
+		  elseif chape isa Lacet and Loc <> -1 then
+		    dat = arrondi2(Lacet(chape).SideLength(loc)/currentcontent.UL)
+		  elseif chape isa arc  then
+		    dat = str(round(arc(chape).arcangle*180/PI))+"°"
+		  elseif chape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
+		    dat = arrondi2(2*PI*Freecircle(chape).getradius/currentcontent.UL)
+		  end if
+		  
+		  ////// Aires 
+		  
+		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
+		    if chape = currentcontent.SHUA then
+		      dat = str(1)
+		    elseif currentcontent.UA <> 0 then
+		      dat = arrondi2(chape.aire/currentcontent.UA)
+		    end if
+		  end if
+		  
+		  return dat
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -180,12 +274,7 @@ Inherits Label
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim  q as BasicPoint
-		  dim a, i  as integer
 		  dim  dat as string
-		  dim vis, viss as objectslist
-		  dim sh as shape
-		  dim type as integer  // 0 longueur  //1 aire // 2 abscisse
-		  dim dr as droite
 		  
 		  if (dret <> nil and dret isa rettimer and text =  "*")   then
 		    return
@@ -197,131 +286,30 @@ Inherits Label
 		  
 		  q = position + correction
 		  q = can.transform(q)
+		  me.left = q.x
 		  SetParam(g)
 		  
 		  if chape.highlighted then
 		    g.forecolor =config.highlightcolor.col
 		  end if
 		  
-		  if text = "%"  then
-		    g.DrawString(str(chape.id),q.x, q.y)
-		    ResetParam(g)
-		    return
-		  end if
-		  if text <> "*"   then
-		    g.DrawString(Text,q.x,q.y)
-		    ResetParam(g)
-		    return
-		  end if
-		  if not WorkWindow.drapdim then
-		    resetParam(g)
-		  end if
+		  select case text
+		  case "%"  
+		    dat = str(chape.id)
+		  case "*"
+		    dat = calculmesure
+		  else
+		    dat = Text
+		  end select
 		  
-		  
-		  
-		  dat ="-10000"
-		  ///////////// Abscisses
-		  if chape isa point then
-		    if point(chape).pointsur.count = 1  then
-		      dat = arrondi2(point(chape).location(0))
-		    else
-		      vis = currentcontent.theobjects.findbipoint(point(chape).bpt)
-		      if vis.count > 0  then
-		        sh = vis.item(0)
-		        if sh isa bipoint then
-		          dat = arrondi2(point(chape).bpt.location(bipoint(sh)))
-		        elseif sh isa polygon then
-		          a = sh.pointonside(point(chape).bpt)
-		          if a <> -1 then
-		            dr = sh.getside(a)
-		            dat = arrondi2(point(chape).bpt.location(dr))
-		          end if
-		        elseif sh isa Freecircle then
-		          dat = arrondi2(point(chape).bpt.location(circle(sh)))
-		        end if
-		        'else
-		        'ResetParam(g)
-		        'return
-		      end if
-		    end if
-		  end if
-		  if chape isa point and point(chape).forme = 0 then
-		    viss = currentcontent.theobjects.findObject(point(chape).bpt)
-		    if viss.count > 0 then
-		      for i = viss.count-1 downto 0
-		        if not viss.item(i) isa polygon then
-		          viss.removeobject viss.item(i)
-		        end if
-		      next
-		    end if
-		    if viss.count > 0 then
-		      sh = viss.item(0)
-		      dat = str(point(chape).indice(polygon(sh)))
-		      'else
-		      'ResetParam(g)
-		      'return
-		    end if
-		  end if
-		  Type = 2
-		  
-		  ////////////////////// Longueurs
-		  if (chape isa droite)  or (chape isa arc) or ((chape isa Lacet  or chape isa freecircle) and loc <>-1 ) then
-		    Type = 0
-		    if chape isa droite then
-		      if droite(chape).nextre = 2 then
-		        if chape = currentcontent.SHUL then
-		          dat = arrondi2(droite(chape).longueur)
-		        elseif currentcontent.UL <> 0 then
-		          dat = arrondi2(droite(chape).longueur/currentcontent.UL)
-		        end if
-		      else
-		        dat =  "¥"
-		        setfont("Symbol")
-		      end if
-		    elseif chape isa Lacet and Loc <> -1 then
-		      if currentcontent.UL <> 0 then
-		        dat = arrondi2(Lacet(chape).SideLength(loc)/currentcontent.UL)
-		      end if
-		      'elseif chape isa polygon and loc <> -1 then
-		      'if chape = currentcontent.SHUL and loc = currentcontent.IcotUL then
-		      'dat = arrondi2(polygon(chape).getside(loc).longueur)
-		      'elseif currentcontent.UL <> 0 then
-		      'dat = arrondi2(polygon(chape).getside(loc).longueur/currentcontent.UL)
-		      'end if
-		    elseif chape isa arc  then
-		      dat = str(round(arc(chape).arcangle*180/PI))+"°"
-		    elseif chape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
-		      dat = arrondi2(2*PI*Freecircle(chape).getradius/currentcontent.UL)
-		    end if
-		  end if
-		  
-		  ////////////  Aires
-		  
-		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
-		    if chape = currentcontent.SHUA then
-		      dat = arrondi2(chape.Aire)
-		    elseif currentcontent.UA <> 0 then
-		      dat = arrondi2(chape.aire/currentcontent.UA)
-		    end if
-		    type = 1
-		  end if
-		  
-		  if dat <>"-10000" then
-		    select case type
-		    case 0
-		      if (chape isa droite and chape =currentcontent.SHUL) or (chape isa polygon and chape = currentcontent.SHUL and loc = currentcontent.IcotUL)  then
-		        dat = str(1)
-		      end if
-		    case 1
-		      if chape = currentcontent.SHUA  then
-		        dat = str(1)
-		      end if
-		    end select
-		    if WorkWindow.drapdim then
-		      g.Drawstring(dat,q.x, q.y)
-		    end if
-		  end if
+		  g.DrawString(dat,q.x,q.y)
 		  ResetParam(g)
+		  return
+		  
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 

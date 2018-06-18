@@ -1492,6 +1492,7 @@ Inherits Shape
 		Sub paint(g As Graphics)
 		  dim op as operation
 		  dim pt as point
+		  dim pic as Picture
 		  
 		  if bpt = nil then
 		    return
@@ -1548,12 +1549,14 @@ Inherits Shape
 		    pt.EndConstruction
 		  end if
 		  
+		  pic = can.OffScreenPicture
 		  if tracept  and (modified or currentcontent.currentoperation isa appliquertsf)  then
 		    rsk.paint(can.OffscreenPicture.Graphics)
 		    currentcontent.theobjects.tracept = true
 		  end if
 		  
-		  if  (not hidden) and  Labs.count = 1 and (not invalid) and (not deleted) and (g <> can.OffscreenPicture.graphics) then
+		  
+		  if  (not hidden) and  Labs.count = 1 and (not invalid) and (not deleted) and (g <> pic.graphics) then
 		    Labs.item(0).Paint(g)
 		  end if
 		  
