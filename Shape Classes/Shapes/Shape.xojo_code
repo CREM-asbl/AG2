@@ -55,16 +55,14 @@ Protected Class Shape
 		  // Création de la liste (List0) des figures comprenant un sommet ou un point sur de la forme (self)
 		  
 		  List0 = Listerfigsneighbour
-		  'for i = List0.count -1 downto 0
-		  'if List0.item(i).isapoint <> nil then
-		  'CurrentContent.TheFigs.Removefigure List0.item(i)
-		  'end if
-		  'next
 		  List0.addobject new Figure(self)
 		  if List0.count > 1 then
 		    CurrentContent.Thefigs.Removefigures List0
 		  end if
 		  fig = List0.concat
+		  for i = 0 to fig.subs.count-1
+		    Fig.AdapterAutos(fig.subs.element(i))
+		  next
 		  fig.ListerPrecedences
 		  fig.idfig = -1
 		  CurrentContent.TheFigs.addobject fig
@@ -101,6 +99,9 @@ Protected Class Shape
 		  end if
 		  
 		  fig.idfig = idf
+		  for i = 0 to fig.subs.count-1
+		    Fig.AdapterAutos(fig.subs.element(i))
+		  next
 		  CurrentContent.TheFigs.addobject fig
 		  
 		  

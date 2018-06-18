@@ -384,12 +384,15 @@ Begin Window PrefFondEcran
    End
    Begin Line Line1
       BorderWidth     =   1
+      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
+      TabIndex        =   "12"
       TabPanelIndex   =   0
+      TabStop         =   True
       Visible         =   True
       X1              =   118
       X2              =   235
@@ -398,12 +401,15 @@ Begin Window PrefFondEcran
    End
    Begin Line Line2
       BorderWidth     =   1
+      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
+      TabIndex        =   "13"
       TabPanelIndex   =   0
+      TabStop         =   True
       Visible         =   True
       X1              =   118
       X2              =   118
@@ -412,12 +418,15 @@ Begin Window PrefFondEcran
    End
    Begin Line Line3
       BorderWidth     =   1
+      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
+      TabIndex        =   "14"
       TabPanelIndex   =   0
+      TabStop         =   True
       Visible         =   True
       X1              =   118
       X2              =   235
@@ -426,12 +435,15 @@ Begin Window PrefFondEcran
    End
    Begin Line Line4
       BorderWidth     =   1
+      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
+      TabIndex        =   "15"
       TabPanelIndex   =   0
+      TabStop         =   True
       Visible         =   True
       X1              =   235
       X2              =   235

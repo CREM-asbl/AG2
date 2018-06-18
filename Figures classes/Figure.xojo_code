@@ -110,9 +110,15 @@ Protected Class Figure
 		  
 		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si 
 		  'une des formes est autoaff, etc
-		  amin = aut(0)
-		  for j = 1 to ubound(aut)
-		    amin = min(amin,aut(j))
+		  for j = 0 to ubound(aut)
+		    if aut(j)<>0 then
+		      amin = aut(j)
+		    end if
+		  next
+		  for j = 0 to ubound(aut)
+		    if aut(j) <> 0 then
+		      amin = min(amin,aut(j))
+		    end if
 		  next
 		  if amin <> 4 then 
 		    f1.auto = amin
@@ -2043,9 +2049,9 @@ Protected Class Figure
 		    f2.somm.concat f1.somm
 		    f2.PtsSur.concat f1.PtsSur
 		    f2.PtsConsted.concat f1.PtsConsted
+		    Adapterautos(f2)
 		  end if
 		  
-		  AdapterAutos(f2)
 		  return t
 		  
 		End Function

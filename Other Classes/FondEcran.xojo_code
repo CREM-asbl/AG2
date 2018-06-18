@@ -22,9 +22,15 @@ Protected Class FondEcran
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="align"
+			Group="Behavior"
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="image"
 			Group="Behavior"
-			Type="Integer"
+			Type="Picture"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -45,6 +51,11 @@ Protected Class FondEcran
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="stretched"
+			Group="Behavior"
+			Type="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

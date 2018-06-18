@@ -38,8 +38,8 @@ Begin Window WorkWindow
       drapzone        =   False
       Enabled         =   True
       EraseBackground =   False
-      fondEcranStretched=   False
-      FondsEcran      =   0
+      fondEcranStretched=   "False"
+      FondsEcran      =   "0"
       Height          =   595
       HelpTag         =   ""
       icot            =   0
@@ -90,6 +90,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Visible         =   True
