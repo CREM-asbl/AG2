@@ -61,7 +61,7 @@ Protected Class Shape
 		  end if
 		  fig = List0.concat
 		  for i = 0 to fig.subs.count-1
-		    Fig.AdapterAutos(fig.subs.element(i))
+		    Fig.AdapterAutos(fig.subs.item(i))
 		  next
 		  fig.ListerPrecedences
 		  fig.idfig = -1
@@ -100,7 +100,7 @@ Protected Class Shape
 		  
 		  fig.idfig = idf
 		  for i = 0 to fig.subs.count-1
-		    Fig.AdapterAutos(fig.subs.element(i))
+		    Fig.AdapterAutos(fig.subs.item(i))
 		  next
 		  CurrentContent.TheFigs.addobject fig
 		  

@@ -10,7 +10,14 @@ Protected Class Figure
 		  dim Ob1 as objectslist
 		  dim s as shape
 		  
+		  if f1.shapes.count = 1 then
+		    f1.auto = f1.shapes.item(0).auto
+		    return
+		  end if
+		  
 		  redim aut(f1.shapes.count-1)
+		  
+		  
 		  for  j = 0 to f1.Shapes.count-1
 		    aut(j) = f1.shapes.item(j).auto
 		  next
@@ -2036,7 +2043,7 @@ Protected Class Figure
 		  t = true
 		  for k = 0 to f1.somm.count-1
 		    p = f1.somm.item(k)
-		    t1 = (p.pointsur.count = 2) and (f2.shapes.getposition(p.pointsur.item(0)) <> -1) and (f2.shapes.getposition(p.pointsur.item(1))<> -1)
+		    t1 = (p.forme = 2) and (f2.shapes.getposition(p.pointsur.item(0)) <> -1) and (f2.shapes.getposition(p.pointsur.item(1))<> -1)
 		    t = t and((f2.somm.getposition(p)<> -1) or t1)
 		  next
 		  'On fusionne f1 et f2 si tous les sommets de f1 sont soit des sommets de f2 soit des points d'inter de  deux formes de f2
@@ -2049,7 +2056,7 @@ Protected Class Figure
 		    f2.somm.concat f1.somm
 		    f2.PtsSur.concat f1.PtsSur
 		    f2.PtsConsted.concat f1.PtsConsted
-		    Adapterautos(f2)
+		    'Adapterautos(f2)
 		  end if
 		  
 		  return t
