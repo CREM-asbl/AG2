@@ -3939,7 +3939,7 @@ Protected Class Figure
 		    p = point(ptssur.item(i))
 		    select case  p.forme
 		    case 1
-		      if not p.pointsur.item(0) isa arc then
+		      if not p.pointsur.item(0) isa circle then
 		        p.transform(M)                                  //Pas bon pour les arcs: les affinités ne conservent pas ls angles
 		      else
 		        p.puton p.pointsur.item(0), p.location(0)
