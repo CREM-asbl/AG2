@@ -1391,7 +1391,9 @@ End
 		Function HelpUG() As Boolean Handles HelpUG.Action
 			dim fi as Folderitem
 			
-			fi = getfolderitem(Dico.Value("UserGuide"))
+			'fi = getfolderitem(Dico.Value("UserGuide")) pas utile pour l'instant car un seul guide et en plus pose problème
+			
+			fi = getfolderitem("Guide Utilisateur AG2.pdf")
 			
 			if fi.exists then
 			fi.launch

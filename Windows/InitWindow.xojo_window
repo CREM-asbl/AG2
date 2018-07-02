@@ -359,6 +359,7 @@ End
 	#tag Event
 		Sub Action()
 		  Config.setMenu(PopupMenu1.Text)
+		  Config.save
 		  App.Continuer
 		  close
 		  
