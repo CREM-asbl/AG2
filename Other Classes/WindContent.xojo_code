@@ -139,6 +139,7 @@ Protected Class WindContent
 		  TheObjects = new ObjectsList
 		  TheTransfos = new TransfosList
 		  TheIntersecs = new IntersecList
+		  TheMacros = new MacrosList
 		  OpenOpList
 		  Etiquette=64
 		  ndec = 2
@@ -542,10 +543,10 @@ Protected Class WindContent
 		    AG.SetAttribute("Area", str(1))
 		  end if
 		  AG.SetAttribute("NbrDec", str(ndec))
-		  if app.TheMacros.Count > 0 then
+		  if TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")
-		    for i = 0 to app.TheMacros.count-1
-		      Mac =app.TheMacros.item(i)
+		    for i = 0 to TheMacros.count-1
+		      Mac =TheMacros.item(i)
 		      EL = XMLElement(Doc.importnode(mac.Histo,true))
 		      Mac.ToXML(Doc,EL)
 		      TMP.AppendChild EL
@@ -1042,6 +1043,10 @@ Protected Class WindContent
 
 	#tag Property, Flags = &h0
 		TheIntersecs As IntersecList
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TheMacros As MacrosList
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

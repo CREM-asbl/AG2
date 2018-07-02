@@ -4,6 +4,9 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor(n as integer)
 		  Mac = app.TheMacros.item(n)
+		  if currentcontent <> nil then  'On retient ainsi les macros réellement utilisées dans un écran (et sans répétition)
+		    currentcontent.TheMacros.addmac(Mac)
+		  end if
 		  Constructor(Mac)
 		  
 		  mac.OpenDescripWindow
