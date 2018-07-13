@@ -21,9 +21,7 @@ Inherits SelectOperation
 		  for i = 0 to n
 		    s = tempshape.item(i)
 		    oldfill(i) = s.fill
-		    if not (s.std and f = 50) then
-		      s.fill = f
-		    end if
+		    s.fill = f
 		  next
 		  
 		  

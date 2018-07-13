@@ -9,7 +9,7 @@ Begin Window LabelWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   131
+   Height          =   168
    ImplicitInstance=   True
    LiveResize      =   False
    MacProcID       =   0
@@ -25,7 +25,7 @@ Begin Window LabelWindow
    Resizeable      =   False
    Title           =   "Nommer"
    Visible         =   True
-   Width           =   614
+   Width           =   523
    Begin TextField Texte
       AcceptTabs      =   False
       Alignment       =   0
@@ -67,7 +67,7 @@ Begin Window LabelWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   547
+      Width           =   436
    End
    Begin ComboBox Size
       AutoComplete    =   True
@@ -114,7 +114,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   465
+      Left            =   278
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -128,7 +128,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   48
+      Top             =   81
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -147,7 +147,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   261
+      Left            =   219
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -160,7 +160,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   82
+      Top             =   129
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -254,7 +254,6 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
       Visible         =   True
@@ -508,7 +507,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   346
+      Left            =   311
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -521,7 +520,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   82
+      Top             =   129
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -607,7 +606,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   444
+      Left            =   403
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -620,7 +619,7 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   82
+      Top             =   129
       Underline       =   False
       Visible         =   False
       Width           =   100
@@ -637,7 +636,7 @@ Begin Window LabelWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   547
+      Left            =   378
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
@@ -651,7 +650,39 @@ Begin Window LabelWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   49
+      Top             =   81
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   54
+   End
+   Begin CheckBox bold
+      AutoDeactivate  =   True
+      Bold            =   False
+      Caption         =   "Gras"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   25
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   444
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      State           =   0
+      TabIndex        =   19
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   81
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -674,14 +705,14 @@ End
 		  Title = Dico.value("Nommer")
 		  
 		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
 
 	#tag Method, Flags = &h0
 		Sub setAddLab(addlab as AddLabel)
+		  dim i as integer
+		  
 		  self.addlab = addlab
 		  
 		  Lab = addlab.lab
@@ -689,11 +720,13 @@ End
 		  size.Text = str(lab.Textsize)
 		  RecColor.FillColor = Lab.TextColor
 		  
-		  dim i as integer
-		  
 		  corr = can.dtransform(lab.correction)
 		  CoordX.text = str(corr.X)
 		  CoordY.text = str(- corr.y)
+		  
+		  Italic.value = lab.Italic
+		  fixe.value = lab.fixe
+		  bold.value = lab.bold
 		  
 		  if Lab.TextFont = "" then
 		    Lab.TextFont =  Polices.List(0)
@@ -708,9 +741,8 @@ End
 		  
 		  Delete.visible = not addlab.drapnew
 		  
-		  if lab <> nil then
-		    fixe.value = lab.fixe
-		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -959,6 +991,19 @@ End
 	#tag Event
 		Sub Open()
 		  me.Caption = Dico.value("Fixe")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events bold
+	#tag Event
+		Sub Action()
+		  lab.setBold(me.value)
+		  can.refreshBackground
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Open()
+		  'me.Caption = Dico.value("Bold")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
