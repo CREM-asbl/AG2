@@ -475,6 +475,12 @@ Inherits Label
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub setBold(bold as Boolean)
+		  self.Bold = bold
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetColor(c as Color)
 		  Textcolor  = c
 		End Sub
@@ -482,6 +488,7 @@ Inherits Label
 
 	#tag Method, Flags = &h0
 		Sub SetFixe(t as Boolean)
+		  fixe = t
 		  LockRight = t
 		  LockBottom = t
 		End Sub
@@ -508,7 +515,7 @@ Inherits Label
 		  g.TextFont = TextFont
 		  g.ForeColor = TextColor
 		  g.TextSize=Textsize
-		  g.bold = true
+		  g.bold = Bold
 		  g.Italic = Italic
 		  
 		  
