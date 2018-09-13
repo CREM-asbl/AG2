@@ -377,7 +377,7 @@ Inherits NSkull
 		  dim n, k as integer
 		  
 		  
-		  for n = 0 to skullof.npts-1
+		  for n = 0 to Ubound(skullof.coord.curved)
 		    if skullof.coord.curved(n) = 1 then
 		      k = GetSide(n)
 		      item(k).order = 2

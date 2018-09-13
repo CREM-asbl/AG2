@@ -36,9 +36,10 @@ Inherits MultipleSelectOperation
 		      return  (currentshape.getindexpoint(pt) <> -1) or ((pt.constructedby <> nil) and (pt.constructedby.shape = currentshape) )
 		    end if
 		  else
-		    if  (Pt = CutPts(ncutpt-1) or Pt = CutPts(0))  then
+		    if  (Pt = CutPts(ncutpt-1) or Pt = CutPts(0))  or CurrentShape.sameSegment(Pt, CutPts(ncutpt-1)) then
 		      return false
 		    end if
+		    
 		    if currentshape.std then
 		      return  (currentshape.getindexpoint(pt) <> -1) or ((pt.constructedby <> nil) and (pt.constructedby.shape = currentshape) )
 		    else
