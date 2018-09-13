@@ -807,9 +807,13 @@ End
 	#tag EndEvent
 	#tag Event
 		Function KeyDown(Key As String) As Boolean
-		  if asc(Key) = 13 then
-		    self.close
-		  end if
+		  select case asc(key)
+		  case 1
+		    MsgBox "Caractère 01 illégal"
+		  case 13
+		    close
+		  end select
+		  
 		End Function
 	#tag EndEvent
 #tag EndEvents

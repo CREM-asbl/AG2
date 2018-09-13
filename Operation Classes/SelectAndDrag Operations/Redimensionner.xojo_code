@@ -117,21 +117,11 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  'dim M as Matrix
-		  '
-		  'if currentshape = nil then
-		  'currentcontent.currentoperation = nil
-		  'can.mousecursor = System.Cursors.StandardPointer
-		  'oldvisible.tspfalse
-		  'else
-		  'ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
-		  'M = new HomothetyMatrix(c,ratio)
-		  'currentcontent.thefigs.enablemodifyall
-		  'figs.updatematrixduplicatedshapes(M)
+		  
 		  super.endoperation
 		  c = nil
 		  M1 = nil
-		  'end if
+		  
 		  
 		  Exception err
 		    dim d As Debug

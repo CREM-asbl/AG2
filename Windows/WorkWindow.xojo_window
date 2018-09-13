@@ -38,8 +38,6 @@ Begin Window WorkWindow
       drapzone        =   False
       Enabled         =   True
       EraseBackground =   False
-      fondEcranStretched=   "False"
-      FondsEcran      =   "0"
       Height          =   595
       HelpTag         =   ""
       icot            =   0
