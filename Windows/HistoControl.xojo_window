@@ -6,6 +6,7 @@ Begin ContainerControl HistoControl
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
    Compatibility   =   ""
+   DoubleBuffer    =   False
    Enabled         =   True
    EraseBackground =   True
    HasBackColor    =   False
@@ -64,6 +65,7 @@ Begin ContainerControl HistoControl
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -108,6 +110,7 @@ Begin ContainerControl HistoControl
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -152,6 +155,7 @@ Begin ContainerControl HistoControl
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -196,6 +200,7 @@ Begin ContainerControl HistoControl
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -240,6 +245,7 @@ Begin ContainerControl HistoControl
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -370,6 +376,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="DoubleBuffer"
+		Visible=true
+		Group="Windows Behavior"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType="Boolean"
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="AcceptFocus"
 		Visible=true

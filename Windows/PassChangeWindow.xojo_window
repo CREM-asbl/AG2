@@ -169,6 +169,7 @@ Begin Window PassChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   14
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -212,6 +213,7 @@ Begin Window PassChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   45
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -255,6 +257,7 @@ Begin Window PassChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   77
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -287,6 +290,7 @@ Begin Window PassChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   127
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -318,6 +322,7 @@ Begin Window PassChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   127
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69

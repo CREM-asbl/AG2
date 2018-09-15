@@ -974,6 +974,7 @@ Inherits Label
 			Group="Appearance"
 			InitialValue="False"
 			Type="Boolean"
+			EditorType="Boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Underline"

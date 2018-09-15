@@ -99,6 +99,7 @@ Begin Window ThickWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   20
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -131,6 +132,7 @@ Begin Window ThickWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   65
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   70
@@ -162,6 +164,7 @@ Begin Window ThickWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   65
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   70

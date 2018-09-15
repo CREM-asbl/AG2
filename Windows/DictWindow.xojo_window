@@ -70,6 +70,7 @@ Begin Window DictWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   1
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   False
       Visible         =   True

@@ -294,7 +294,7 @@
     <MessBugsent3 Name="Avancement général" />
     <Max2Groups Name="Vous ne pouvez pas lier plus de deux groupes en une fois" />
     <adelier Name=" à délier" />
-    <aform Name=" une forme" />
+    <aform Name=" une forme ou une étiquette "/>
     <alier Name=" à lier" />
     <anarc Name=" un arc" />
     <anendpoint Name=" une extrémité" />

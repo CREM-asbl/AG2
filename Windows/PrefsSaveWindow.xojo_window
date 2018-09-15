@@ -99,6 +99,7 @@ Begin Window PrefsSaveWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   13
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -131,6 +132,7 @@ Begin Window PrefsSaveWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   52
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -162,6 +164,7 @@ Begin Window PrefsSaveWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   52
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69

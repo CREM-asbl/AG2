@@ -53,6 +53,7 @@ Begin Window Languagewindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   17
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   130
@@ -84,6 +85,7 @@ Begin Window Languagewindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   16
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   70

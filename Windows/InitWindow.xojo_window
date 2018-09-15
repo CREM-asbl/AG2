@@ -53,6 +53,7 @@ Begin Window InitWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   382
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   180
@@ -84,6 +85,7 @@ Begin Window InitWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   446
+      Transparent     =   False
       Underline       =   False
       Visible         =   False
       Width           =   70
@@ -115,6 +117,7 @@ Begin Window InitWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   318
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   108
@@ -146,6 +149,7 @@ Begin Window InitWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   318
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   70
@@ -177,6 +181,7 @@ Begin Window InitWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   446
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   108
@@ -208,6 +213,7 @@ Begin Window InitWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   414
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   180
@@ -250,6 +256,7 @@ Begin Window InitWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   350
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   False

@@ -131,7 +131,7 @@ Inherits SelectAndDragOperation
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString
 		    
-		    Raise ErrorException
+		    
 		End Sub
 	#tag EndMethod
 

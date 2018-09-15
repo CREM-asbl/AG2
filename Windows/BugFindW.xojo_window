@@ -88,6 +88,7 @@ Begin Window BugFindW
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   109
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80

@@ -88,6 +88,7 @@ Begin Window Confirmation
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   57
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -119,6 +120,7 @@ Begin Window Confirmation
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   57
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -150,6 +152,7 @@ Begin Window Confirmation
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   57
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69

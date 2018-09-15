@@ -53,6 +53,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   142
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -116,6 +117,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   56
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -145,6 +147,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   90
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -174,6 +177,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   90
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -203,6 +207,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   90
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -232,6 +237,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   58
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -261,6 +267,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   25
+      Transparent     =   False
       Underline       =   False
       Value           =   True
       Visible         =   True
@@ -290,6 +297,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   58
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -319,6 +327,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   58
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -348,6 +357,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   25
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -377,6 +387,7 @@ Begin Window PrefFondEcran
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   25
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -393,6 +404,7 @@ Begin Window PrefFondEcran
       TabIndex        =   "12"
       TabPanelIndex   =   0
       TabStop         =   True
+      Transparent     =   False
       Visible         =   True
       X1              =   118
       X2              =   235
@@ -410,6 +422,7 @@ Begin Window PrefFondEcran
       TabIndex        =   "13"
       TabPanelIndex   =   0
       TabStop         =   True
+      Transparent     =   False
       Visible         =   True
       X1              =   118
       X2              =   118
@@ -427,6 +440,7 @@ Begin Window PrefFondEcran
       TabIndex        =   "14"
       TabPanelIndex   =   0
       TabStop         =   True
+      Transparent     =   False
       Visible         =   True
       X1              =   118
       X2              =   235
@@ -444,6 +458,7 @@ Begin Window PrefFondEcran
       TabIndex        =   "15"
       TabPanelIndex   =   0
       TabStop         =   True
+      Transparent     =   False
       Visible         =   True
       X1              =   235
       X2              =   235

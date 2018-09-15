@@ -69,6 +69,7 @@ Begin Window NotesWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True

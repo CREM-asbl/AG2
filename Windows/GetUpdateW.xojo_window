@@ -53,6 +53,7 @@ Begin Window GetUpdateW
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   134
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   134
@@ -84,6 +85,7 @@ Begin Window GetUpdateW
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   134
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80

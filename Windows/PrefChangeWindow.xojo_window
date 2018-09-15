@@ -88,6 +88,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   20
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   150
@@ -119,6 +120,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   75
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -150,6 +152,7 @@ Begin Window PrefChangeWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   75
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69

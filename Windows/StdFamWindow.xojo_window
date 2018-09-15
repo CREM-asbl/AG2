@@ -123,6 +123,7 @@ Begin Window StdFamWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   97
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -154,6 +155,7 @@ Begin Window StdFamWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   97
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -196,6 +198,7 @@ Begin Window StdFamWindow
       TextSize        =   10.0
       TextUnit        =   0
       Top             =   16
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -228,6 +231,7 @@ Begin Window StdFamWindow
       TextSize        =   10.0
       TextUnit        =   0
       Top             =   50
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80

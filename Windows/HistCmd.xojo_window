@@ -32,6 +32,7 @@ Begin Window HistCmd
       AutoDeactivate  =   True
       BackColor       =   &c00FFFFFF
       Backdrop        =   0
+      DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
       HasBackColor    =   False

@@ -53,6 +53,7 @@ Begin Window ConfigWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   164
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   231
@@ -84,6 +85,7 @@ Begin Window ConfigWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   198
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -115,6 +117,7 @@ Begin Window ConfigWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   164
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   231
@@ -146,6 +149,7 @@ Begin Window ConfigWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   198
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   231
@@ -177,6 +181,7 @@ Begin Window ConfigWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   126
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   231
@@ -208,6 +213,7 @@ Begin Window ConfigWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   129
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   231
@@ -435,6 +441,7 @@ Begin Window ConfigWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   86
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -466,6 +473,7 @@ Begin Window ConfigWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   86
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -497,6 +505,7 @@ Begin Window ConfigWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   86
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -528,6 +537,7 @@ Begin Window ConfigWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   86
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -559,6 +569,7 @@ Begin Window ConfigWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   86
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80

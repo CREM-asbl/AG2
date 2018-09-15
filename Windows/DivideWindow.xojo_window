@@ -55,6 +55,7 @@ Begin Window DivideWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   8
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -88,6 +89,7 @@ Begin Window DivideWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   45
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69

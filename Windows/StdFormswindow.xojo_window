@@ -88,6 +88,7 @@ Begin Window StdFormswindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   13
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   126
@@ -154,6 +155,7 @@ Begin Window StdFormswindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   62
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   42
@@ -185,6 +187,7 @@ Begin Window StdFormswindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   106
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -216,6 +219,7 @@ Begin Window StdFormswindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   106
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69

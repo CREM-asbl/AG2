@@ -64,6 +64,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   13
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -97,6 +98,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   49
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -129,6 +131,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   81
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -161,6 +164,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   129
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -254,8 +258,10 @@ Begin Window LabelWindow
       Scope           =   0
       TabIndex        =   6
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   52
       TopLeftColor    =   &c00000000
+      Transparent     =   False
       Visible         =   True
       Width           =   20
    End
@@ -402,6 +408,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   82
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -445,6 +452,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   82
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -469,6 +477,7 @@ Begin Window LabelWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Top             =   82
+      Transparent     =   False
       Visible         =   True
       Width           =   13
    End
@@ -491,6 +500,7 @@ Begin Window LabelWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Top             =   82
+      Transparent     =   False
       Visible         =   True
       Width           =   13
    End
@@ -521,6 +531,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   129
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -588,6 +599,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   49
+      Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
@@ -620,6 +632,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   129
+      Transparent     =   False
       Underline       =   False
       Visible         =   False
       Width           =   100
@@ -651,6 +664,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   81
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
@@ -683,6 +697,7 @@ Begin Window LabelWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   81
+      Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True

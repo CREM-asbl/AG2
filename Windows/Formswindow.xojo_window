@@ -53,6 +53,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   0
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -84,6 +85,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   30
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -115,6 +117,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   60
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -146,6 +149,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   90
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -177,6 +181,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   120
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -208,6 +213,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   150
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -239,6 +245,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   180
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -270,6 +277,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   210
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -301,6 +309,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   240
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -332,6 +341,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   270
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -363,6 +373,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   300
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200
@@ -394,6 +405,7 @@ Begin Window Formswindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   330
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   200

@@ -88,9 +88,9 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
+      Transparent     =   False
       Visible         =   True
       Width           =   122
       Begin GroupBox MoveBox
@@ -117,6 +117,7 @@ Begin Window WorkWindow
          TextSize        =   0.0
          TextUnit        =   0
          Top             =   59
+         Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
@@ -147,6 +148,7 @@ Begin Window WorkWindow
             TextSize        =   0.0
             TextUnit        =   0
             Top             =   112
+            Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
@@ -178,6 +180,7 @@ Begin Window WorkWindow
             TextSize        =   0.0
             TextUnit        =   0
             Top             =   142
+            Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
@@ -209,6 +212,7 @@ Begin Window WorkWindow
             TextSize        =   0.0
             TextUnit        =   0
             Top             =   172
+            Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
@@ -240,6 +244,7 @@ Begin Window WorkWindow
             TextSize        =   0.0
             TextUnit        =   0
             Top             =   82
+            Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
@@ -269,6 +274,7 @@ Begin Window WorkWindow
          TextSize        =   0.0
          TextUnit        =   0
          Top             =   215
+         Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
@@ -412,6 +418,7 @@ Begin Window WorkWindow
          TextSize        =   0.0
          TextUnit        =   0
          Top             =   1
+         Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   120
@@ -440,6 +447,7 @@ Begin Window WorkWindow
          TextSize        =   0.0
          TextUnit        =   0
          Top             =   352
+         Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
@@ -667,6 +675,7 @@ Begin Window WorkWindow
          TextSize        =   0.0
          TextUnit        =   0
          Top             =   31
+         Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   120

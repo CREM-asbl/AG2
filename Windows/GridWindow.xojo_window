@@ -88,6 +88,7 @@ Begin Window GridWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   60
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -119,6 +120,7 @@ Begin Window GridWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   60
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
@@ -150,6 +152,7 @@ Begin Window GridWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   13
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   102
@@ -216,6 +219,7 @@ Begin Window GridWindow
       TextSize        =   12.0
       TextUnit        =   0
       Top             =   12
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
@@ -282,6 +286,7 @@ Begin Window GridWindow
       TextSize        =   0.0
       TextUnit        =   0
       Top             =   60
+      Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   103
