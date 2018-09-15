@@ -74,7 +74,7 @@
 
 	#tag FileType
 		CodeName=Image
-		Extension=jpg;jpeg
+		Extension=jpg;jpeg;png;
 		Flags=&h2
 		MacCreator=CREM
 		MacType=JPEG
