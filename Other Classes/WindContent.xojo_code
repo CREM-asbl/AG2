@@ -110,8 +110,12 @@ Protected Class WindContent
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerPrefs(FAG as XMLElement)
+		Sub ChargerPrefs(FAG as XMLElement, f as folderitem)
 		  dim BkCol as string
+		  dim Obj As XMLElement
+		  dim List as XMLNodeList
+		  dim s1, s2 As string
+		  
 		  
 		  removeall
 		  ndec = val(FAG.GetAttribute("NbrDec"))
@@ -127,6 +131,22 @@ Protected Class WindContent
 		  Workwindow.settrace(val(FAG.GetAttribute(Replace(Dico.value("PrefsTrace")," ","_"))))
 		  SetFleches(val(FAG.GetAttribute(Replace(Dico.value("PrefsFleches")," ","_"))))
 		  config.area  = val(FAG.GetAttribute("Area"))
+		  
+		  List = FAG.XQL("FondEcran")
+		  
+		  if List.length > 0 then
+		    Obj = XMLElement(List.item(0))
+		    s1 = Obj.GetAttribute("File")
+		    s2 = Obj.GetAttribute("Align")
+		    f = f.parent
+		    f = f.child(s1)
+		    if f=nil then
+		      return 
+		    else
+		      can.setFondEcran(Picture.Open(f), f.Name)
+		      can.alignFondEcran(s2)
+		    end if
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -490,6 +510,7 @@ Protected Class WindContent
 		  dim d as Date
 		  dim st as string
 		  dim f as FolderItem
+		  dim FEName As string
 		  
 		  d = new Date
 		  
@@ -543,6 +564,12 @@ Protected Class WindContent
 		    AG.SetAttribute("Area", str(1))
 		  end if
 		  AG.SetAttribute("NbrDec", str(ndec))
+		  if can.FondsEcran <> nil then
+		    TMP = Doc.CreateElement("FondEcran")
+		    TMP.SetAttribute("File",can.FondsEcran.GetName) 
+		    TMP.SetAttribute("Align",can.FondsEcran.GetAlign)
+		    AG.AppendChild TMP
+		  end if
 		  if TheMacros.Count > 0 then
 		    TMP = Doc.CreateElement("Macros")
 		    for i = 0 to TheMacros.count-1

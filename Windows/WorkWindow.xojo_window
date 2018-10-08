@@ -88,6 +88,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -924,6 +925,8 @@ End
 		  
 		  
 		  
+		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -1455,7 +1458,7 @@ End
 			if f=nil then
 			return true
 			else
-			mycanvas1.setFondEcran(Picture.Open(f))
+			mycanvas1.setFondEcran(Picture.Open(f), f.Name)
 			PrefFondEcran.ShowModal
 			end if
 			end if
@@ -3191,6 +3194,10 @@ End
 
 	#tag Property, Flags = &h0
 		numfig As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		pix As PixmapShape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

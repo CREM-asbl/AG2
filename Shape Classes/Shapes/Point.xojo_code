@@ -2805,8 +2805,16 @@ Inherits Shape
 		  dim delta as BasicPoint
 		  dim d as double
 		  dim sh as shape
+		  dim s as droite
+		  dim r as double
 		  
-		  
+		  if ubound(parents) = 0 and parents(0).isaparaperp then
+		    s = droite(parents(0))
+		    if s.points(1) = self then
+		      r = np.location(s.coord.tab(0),s.coord.tab(1))
+		      np = s.coord.tab(0)*(1-r)+s.coord.tab(1)*r
+		    end if
+		  end if
 		  delta = np-bpt
 		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then

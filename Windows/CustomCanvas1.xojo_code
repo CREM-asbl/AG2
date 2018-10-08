@@ -649,6 +649,8 @@ Inherits Canvas
 		    CurrentContent.TheGrid.Paint(BackgroundPicture.Graphics)
 		  end if
 		  
+		  
+		  
 		  CurrentContent.TheObjects.paint(BackgroundPicture.Graphics)
 		  op = CurrentContent.currentoperation
 		  if op <> nil  then
@@ -705,12 +707,13 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub setFondEcran(image as Picture)
+		Sub setFondEcran(image as Picture, name as string)
 		  if FondsEcran = nil then
 		    FondsEcran = new FondEcran
 		  end if
 		  
 		  FondsEcran.image = image
+		  FondsEcran.Name = Name
 		End Sub
 	#tag EndMethod
 

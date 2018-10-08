@@ -236,7 +236,7 @@ Begin Window PrefFondEcran
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   58
+      Top             =   56
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -395,15 +395,12 @@ Begin Window PrefFondEcran
    End
    Begin Line Line1
       BorderWidth     =   1
-      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
-      TabIndex        =   "12"
       TabPanelIndex   =   0
-      TabStop         =   True
       Transparent     =   False
       Visible         =   True
       X1              =   118
@@ -413,15 +410,12 @@ Begin Window PrefFondEcran
    End
    Begin Line Line2
       BorderWidth     =   1
-      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
-      TabIndex        =   "13"
       TabPanelIndex   =   0
-      TabStop         =   True
       Transparent     =   False
       Visible         =   True
       X1              =   118
@@ -431,15 +425,12 @@ Begin Window PrefFondEcran
    End
    Begin Line Line3
       BorderWidth     =   1
-      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
-      TabIndex        =   "14"
       TabPanelIndex   =   0
-      TabStop         =   True
       Transparent     =   False
       Visible         =   True
       X1              =   118
@@ -449,15 +440,12 @@ Begin Window PrefFondEcran
    End
    Begin Line Line4
       BorderWidth     =   1
-      Enabled         =   True
       Index           =   -2147483648
       InitialParent   =   ""
       LineColor       =   &c00000000
       LockedInPosition=   False
       Scope           =   0
-      TabIndex        =   "15"
       TabPanelIndex   =   0
-      TabStop         =   True
       Transparent     =   False
       Visible         =   True
       X1              =   235

@@ -46,7 +46,7 @@ Inherits Operation
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
 		  Config.setMenu(Cfg)
 		  app.themacros.XMLLoadMacros(FAG)
-		  currentcontent.ChargerPrefs(FAG)
+		  currentcontent.ChargerPrefs(FAG, f)
 		  currentcontent.ChargerObjets(FAG)
 		  currentcontent.CurrentFile = f
 		  currentcontent.CurrentFileUpToDate=true

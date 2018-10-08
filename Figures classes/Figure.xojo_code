@@ -259,6 +259,7 @@ Protected Class Figure
 		  
 		  
 		  
+		  
 		  select case NbPtsModif // Nombre de pointsmodifiés
 		  case 0
 		    return new Matrix(1)
@@ -292,11 +293,12 @@ Protected Class Figure
 		  p = somm.item(n)
 		  getoldnewpos(p, ep, np)
 		  
+		  choixpointsfixes
 		  
 		  if  NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  choixpointsfixes
+		  
 		  
 		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
 		  case 0
@@ -626,11 +628,11 @@ Protected Class Figure
 		  p = Point(somm.item(n))
 		  getoldnewpos(p, ep, np)
 		  
+		  Choixpointsfixes
+		  
 		  if  NbUnModif > 1 then
 		    return new Matrix(1)
 		  end if
-		  
-		  Choixpointsfixes
 		  
 		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
 		  case 0
@@ -831,7 +833,6 @@ Protected Class Figure
 		  dim s as shape
 		  dim n, n1, n2 as integer
 		  dim ep, np as BasicPoint
-		  
 		  
 		  n = ListPtsModifs(0)
 		  s = shapes.item(0)
@@ -2602,6 +2603,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function NbPtsModif() As integer
 		  dim i as integer
+		  dim p as point 
 		  Redim ListPtsModifs(-1)
 		  //Décompte et liste les sommets de la figure qui ont déjà été modifiés
 		  
@@ -2609,7 +2611,8 @@ Protected Class Figure
 		  
 		  
 		  for i = 0 to Somm.count-1
-		    if  point(somm.item(i)).modified   then
+		    p = point(somm.item(i))
+		    if  p.modified   then
 		      NbModif = NbModif+1
 		      ListPtsModifs.append i
 		    end if
@@ -2860,7 +2863,7 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p =somm.item(i)
-		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and not p.modified and PtsConsted.getposition(p) = -1 then 'and ListPtsModifs.indexof(i)=-1 then
+		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      'if p.pointsur.count <> 2 then
 		      NbUnModif = NbUnModif+1

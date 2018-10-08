@@ -1,8 +1,26 @@
 #tag Class
 Protected Class FondEcran
 	#tag Method, Flags = &h0
+		Function GetAlign() As string
+		  return self.Align
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetName() As string
+		  return self.Name
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub setImage(image As Picture)
 		  self.image = image
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub setName(Name as string)
+		  self.Name = Name
 		End Sub
 	#tag EndMethod
 
@@ -13,6 +31,10 @@ Protected Class FondEcran
 
 	#tag Property, Flags = &h0
 		image As Picture
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Name As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

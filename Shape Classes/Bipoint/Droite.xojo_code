@@ -678,10 +678,7 @@ Inherits Bipoint
 		    end if
 		    
 		  else
-		    if q.forme = 0 then
-		      w = w.normer
-		      nq = np+w*d
-		    else
+		    if q.forme <> 0 then
 		      return prpupdate11(q,ep,eq,np,nq)
 		    end if
 		  end if
