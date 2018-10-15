@@ -676,14 +676,15 @@ Inherits Bipoint
 		    elseif q.pointsur.item(0) isa circle then
 		      nq = BiB1.ComputeFirstIntersect(1,q.pointsur.item(0),points(1))
 		    end if
-		    
 		  else
-		    if q.forme <> 0 then
+		    if q.forme = 0 then
+		      w = w.normer
+		      nq = np+w*d
+		    else
 		      return prpupdate11(q,ep,eq,np,nq)
 		    end if
-		  end if
-		  return new SimilarityMatrix(ep,eq,np,nq)
-		  
+		    return new SimilarityMatrix(ep,eq,np,nq)
+		    
 		End Function
 	#tag EndMethod
 

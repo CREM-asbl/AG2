@@ -2047,6 +2047,9 @@ Protected Class Figure
 		    t1 = (p.forme = 2) and (f2.shapes.getposition(p.pointsur.item(0)) <> -1) and (f2.shapes.getposition(p.pointsur.item(1))<> -1)
 		    t = t and((f2.somm.getposition(p)<> -1) or t1)
 		  next
+		  
+		  
+		  
 		  'On fusionne f1 et f2 si tous les sommets de f1 sont soit des sommets de f2 soit des points d'inter de  deux formes de f2
 		  if f1.NbSommCommuns(f2) = f1.Somm.count or f2.NbSommCommuns(f1) = f2.Somm.count then
 		    t=true
