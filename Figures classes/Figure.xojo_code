@@ -1296,7 +1296,7 @@ Protected Class Figure
 		  dim i as integer
 		  dim ep, np as basicpoint
 		  dim p as point
-		  dim t as boolean
+		  dim t, tt as boolean
 		  dim d, d1 as double
 		  
 		  if shapes.item(0) = nil or  shapes.item(0) isa arc then
@@ -1306,7 +1306,11 @@ Protected Class Figure
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
-		    if (not p.invalid)  and  (p.pointsur.count < 2)  and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))  then
+		    tt = true
+		    tt = tt and (not p.invalid)  and  (p.pointsur.count < 2)
+		    tt = tt and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))
+		    tt = tt and not  ( (p.parents(0).isaparaperp) and (p.forme = 0))
+		    if   tt   then
 		      ep = oldbpts(i)
 		      np = p.bpt
 		      d =np.distance(M*ep)

@@ -683,8 +683,9 @@ Inherits Bipoint
 		    else
 		      return prpupdate11(q,ep,eq,np,nq)
 		    end if
-		    return new SimilarityMatrix(ep,eq,np,nq)
-		    
+		  end if
+		  return new SimilarityMatrix(ep,eq,np,nq)
+		  
 		End Function
 	#tag EndMethod
 
