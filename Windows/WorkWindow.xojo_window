@@ -88,7 +88,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -810,6 +809,7 @@ End
 		Function KeyDown(Key As String) As Boolean
 		  dim u(-1), s as integer
 		  dim disp, nom as string
+		  dim sh as shape
 		  
 		  setfocus
 		  if CurrentContent.bugfound then
