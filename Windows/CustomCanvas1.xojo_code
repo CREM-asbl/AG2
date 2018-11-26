@@ -118,7 +118,7 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  if sctxt isa droite then
+		  if sctxt isa droite and  sctxt.fig.shapes.count = 1 then
 		    base.append (New MenuItem("Rectifier l'horizontale"))
 		  end if
 		  
@@ -225,11 +225,9 @@ Inherits Canvas
 		    ClearOffscreen
 		    Modifier(currentoper).Animer(point(sctxt))
 		  case "Rectifier l'horizontale"
-		    if sctxt.fig.shapes.count = 1 then
-		      dr = droite(sctxt)
-		      dr.points(1).bpt.y = dr.points(0).bpt.y
-		      dr.updatecoord
-		    end if
+		    dr = droite(sctxt)
+		    dr.points(1).bpt.y = dr.points(0).bpt.y
+		    dr.updatecoord
 		  end select
 		  
 		  ctxt = false

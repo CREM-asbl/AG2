@@ -88,6 +88,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -832,7 +833,7 @@ End
 		    tw = new TextWindow
 		    tw.visible = true
 		  case 26 'ctrl-shft z Afficher zone de magnétisme
-		    'mycanvas1.drapzone = not mycanvas1.drapzone
+		    mycanvas1.drapzone = not mycanvas1.drapzone
 		  case 32   'barre d'espacement Remplace la mousewheel
 		    if  CurrentContent.CurrentOperation <> nil then
 		      CurrentContent.currentoperation.MouseWheel
