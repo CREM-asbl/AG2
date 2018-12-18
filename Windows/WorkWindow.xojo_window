@@ -810,6 +810,7 @@ End
 		Function KeyDown(Key As String) As Boolean
 		  dim u(-1), s as integer
 		  dim disp, nom as string
+		  dim sh as shape
 		  
 		  setfocus
 		  if CurrentContent.bugfound then
@@ -832,7 +833,7 @@ End
 		    tw = new TextWindow
 		    tw.visible = true
 		  case 26 'ctrl-shft z Afficher zone de magnétisme
-		    'mycanvas1.drapzone = not mycanvas1.drapzone
+		    mycanvas1.drapzone = not mycanvas1.drapzone
 		  case 32   'barre d'espacement Remplace la mousewheel
 		    if  CurrentContent.CurrentOperation <> nil then
 		      CurrentContent.currentoperation.MouseWheel

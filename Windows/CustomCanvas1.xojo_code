@@ -118,6 +118,10 @@ Inherits Canvas
 		    end if
 		  end if
 		  
+		  if sctxt isa droite and  sctxt.fig.shapes.count = 1 then
+		    base.append (New MenuItem("Rectifier l'horizontale"))
+		  end if
+		  
 		  
 		  Return True//display the contextual menu
 		  
@@ -129,6 +133,7 @@ Inherits Canvas
 		  dim col as color
 		  dim coul as couleur
 		  dim txt as TextWindow
+		  dim dr as droite
 		  
 		  select case hitItem.Text
 		  case tit
@@ -219,6 +224,10 @@ Inherits Canvas
 		    currentoper = Modifier(currentcontent.currentoperation)
 		    ClearOffscreen
 		    Modifier(currentoper).Animer(point(sctxt))
+		  case "Rectifier l'horizontale"
+		    dr = droite(sctxt)
+		    dr.points(1).bpt.y = dr.points(0).bpt.y
+		    dr.updatecoord
 		  end select
 		  
 		  ctxt = false
