@@ -51,7 +51,7 @@ Protected Class Figure
 		      end if
 		    next
 		    if tt then 'Si toutes les formes autosim sont des droites ou des cercles, ou des triangles quelconques, tout  point peut être modifié indépendamment des autres  
-		      f1.auto = 2
+		      f1.auto = 4
 		      return
 		    else 'Sinon, on choisit autosim (les autoaff ne seront pas déformées)
 		      f1.auto = 1
@@ -2675,7 +2675,7 @@ Protected Class Figure
 		  
 		  for i = 0 to Somm.count-1
 		    for j = 0 to f.PtsConsted.count-1
-		      if Somm.item(i) = f.PtsConsted.item(j) and (f.somm.getposition(f.ptsconsted.item(j)) =-1)    then
+		      if Somm.item(i) = f.PtsConsted.item(j) then 'and (f.somm.getposition(f.ptsconsted.item(j)) =-1)    then
 		        n = n+1
 		      end if
 		    next
@@ -2683,7 +2683,7 @@ Protected Class Figure
 		  
 		  for i = 0 to PtsConsted.count-1
 		    for j = 0 to f.Somm.count-1
-		      if PtsConsted.item(i) = f.Somm.item(j) and (somm.getposition(PtsConsted.item(i)) = -1) then
+		      if PtsConsted.item(i) = f.Somm.item(j) then 'and (somm.getposition(PtsConsted.item(i)) = -1) then
 		        n = n+1
 		      end if
 		    next

@@ -55,10 +55,11 @@ Protected Class Shape
 		  // Création de la liste (List0) des figures comprenant un sommet ou un point sur de la forme (self)
 		  
 		  List0 = Listerfigsneighbour
+		  CurrentContent.Thefigs.Removefigures List0
 		  List0.addobject new Figure(self)
-		  if List0.count > 1 then
-		    CurrentContent.Thefigs.Removefigures List0
-		  end if
+		  'if List0.count > 1 then
+		  '
+		  'end if
 		  fig = List0.concat
 		  for i = 0 to fig.subs.count-1
 		    Fig.AdapterAutos(fig.subs.item(i))
@@ -315,9 +316,9 @@ Protected Class Shape
 		Sub Autos()
 		  if (constructedby <> nil and constructedby.oper = 6)   or std then 'or (macconstructedby <> nil) then
 		    auto = 0
-		  elseif self  isa polreg or self isa triangrectiso or  (self isa Bipoint and not self.isaparaperp) or (self isa Freecircle)  or (self isa HalfDsk)   then
+		  elseif self  isa polreg or self isa triangrectiso or (self isa Bipoint and not self.isaparaperp) or   (self isa Freecircle)  or (self isa HalfDsk)   then
 		    auto = 1
-		  elseif ((self isa polyqcq and npts = 3) and (not Hybrid)) or (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then
+		  elseif  (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then '((self isa polyqcq and npts = 3) and (not Hybrid)) or
 		    auto = 2
 		  elseif self isa triangiso or self isa triangrect or self isa rect or self isa losange or self isa arc or self isa DSect then
 		    auto = 3
@@ -2835,9 +2836,9 @@ Protected Class Shape
 		          return true
 		        end if
 		      end if
-		      if s2.points(h).pointsur.count = 2 and s2.points(h).pointsur.getposition(self) <> -1 then
-		        return true
-		      end if
+		      'if s2.points(h).pointsur.count = 2 and s2.points(h).pointsur.getposition(self) <> -1 then
+		      'return true
+		      'end if
 		    next
 		  end if
 		  

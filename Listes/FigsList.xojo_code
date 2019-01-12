@@ -15,9 +15,7 @@ Inherits Liste
 		  else
 		    Objects.append Obj
 		  end if
-		  if not Obj isa Figure then
-		    return
-		  end if
+		  
 		  
 		  super.AddObject(obj)
 		  

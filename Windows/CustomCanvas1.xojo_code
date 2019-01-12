@@ -118,7 +118,7 @@ Inherits Canvas
 		    end if
 		  end if
 		  
-		  if sctxt isa droite and  sctxt.fig.shapes.count = 1 then
+		  if sctxt isa droite and  sctxt.fig.shapes.count = 1 and sctxt.constructedby = nil and ubound(sctxt.constructedshapes) = -1 then
 		    base.append (New MenuItem("Rectifier l'horizontale"))
 		  end if
 		  

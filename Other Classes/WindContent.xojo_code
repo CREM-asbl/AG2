@@ -482,19 +482,17 @@ Protected Class WindContent
 		  El.SetAttribute(Dico.Value("Type"), o.GetName)
 		  EL.SetAttribute("OpId", str(o.OpId))
 		  El.AppendChild (o.ToXml(Oplist))
-		  if not o isa Ouvrir then
-		    if FigsDeleted.childcount > 0 then
-		      EL.appendchild FigsDeleted
-		    end if
-		    if FigsCreated.childcount > 0 then
-		      EL.appendchild FigsCreated
-		    end if
-		    if FigsMoved.childcount > 0 then
-		      EL.appendchild FigsMoved
-		    end if
-		    if FigsModified.childcount > 0 then
-		      EL.appendchild FigsModified
-		    end if
+		  if FigsCreated.childcount > 0 then
+		    EL.appendchild FigsCreated
+		  end if
+		  if FigsDeleted.childcount > 0 then
+		    EL.appendchild FigsDeleted
+		  end if
+		  if FigsMoved.childcount > 0 then
+		    EL.appendchild FigsMoved
+		  end if
+		  if FigsModified.childcount > 0 then
+		    EL.appendchild FigsModified
 		  end if
 		  Histo.AppendChild El
 		End Sub
@@ -884,7 +882,7 @@ Protected Class WindContent
 		  dim curoper as Operation
 		  
 		  isaundoredo = true
-		  formswindow.close
+		  'formswindow.close
 		  
 		  if currentop = 0 then
 		    return

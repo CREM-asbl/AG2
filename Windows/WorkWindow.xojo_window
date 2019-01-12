@@ -392,38 +392,6 @@ Begin Window WorkWindow
             Width           =   50
          End
       End
-      Begin PushButton PushButton1
-         AutoDeactivate  =   False
-         Bold            =   True
-         ButtonStyle     =   "0"
-         Cancel          =   False
-         Caption         =   "Annuler"
-         Default         =   False
-         Enabled         =   True
-         Height          =   30
-         HelpTag         =   ""
-         Index           =   -2147483648
-         InitialParent   =   "Tools"
-         Italic          =   False
-         Left            =   1
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockLeft        =   False
-         LockRight       =   False
-         LockTop         =   False
-         Scope           =   0
-         TabIndex        =   2
-         TabPanelIndex   =   0
-         TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
-         Top             =   1
-         Transparent     =   False
-         Underline       =   False
-         Visible         =   True
-         Width           =   120
-      End
       Begin GroupBox LibBox
          AutoDeactivate  =   True
          Bold            =   True
@@ -650,7 +618,7 @@ Begin Window WorkWindow
          End
       End
       Begin PushButton MouvBut
-         AutoDeactivate  =   True
+         AutoDeactivate  =   False
          Bold            =   True
          ButtonStyle     =   "0"
          Cancel          =   False
@@ -681,6 +649,38 @@ Begin Window WorkWindow
          Visible         =   True
          Width           =   120
       End
+   End
+   Begin PushButton PushButton1
+      AutoDeactivate  =   False
+      Bold            =   True
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Annuler"
+      Default         =   False
+      Enabled         =   True
+      Height          =   30
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   5
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   0
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
    End
 End
 #tag EndWindow
@@ -3356,6 +3356,48 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events LibBox
+	#tag Event
+		Sub Open()
+		  LibBoxRefresh
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events LibOutils
+	#tag Event
+		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		  if mousedispo then
+		    return true
+		  end if
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		  if mousedispo then
+		    Me.SetFocus
+		    selectedTool = index
+		    Kit = "Libre"
+		    if selectedtool <> 0 then
+		      Formswindow.setParams(1, SelectedTool, false)
+		    else
+		      Formswindow.close
+		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
+		    end if
+		    me.invalidate
+		  end if
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit(index as Integer)
+		  refreshtitle
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
@@ -3426,48 +3468,6 @@ End
 		  if currentcontent.currentoperation <> nil then
 		    currentcontent.currentoperation.canceling = false
 		  end if
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events LibBox
-	#tag Event
-		Sub Open()
-		  LibBoxRefresh
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events LibOutils
-	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
-		  if mousedispo then
-		    return true
-		  end if
-		End Function
-	#tag EndEvent
-	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
-		  if mousedispo then
-		    Me.SetFocus
-		    selectedTool = index
-		    Kit = "Libre"
-		    if selectedtool <> 0 then
-		      Formswindow.setParams(1, SelectedTool, false)
-		    else
-		      Formswindow.close
-		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
-		    end if
-		    me.invalidate
-		  end if
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub MouseExit(index as Integer)
-		  refreshtitle
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
-		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

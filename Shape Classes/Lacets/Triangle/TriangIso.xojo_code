@@ -51,10 +51,11 @@ Inherits Triangle
 	#tag Method, Flags = &h0
 		Function Modifier2(n1 as integer, n2 as integer) As Matrix
 		  dim ep0, ep1, ep2, np0, np1,np2 as BasicPoint
-		  dim n0 as integer
+		  dim n0, k as integer
 		  dim BiB as BiBPoint
 		  dim p as point
-		  dim u, v as BasicPoint
+		  dim u, v , bp as BasicPoint
+		  dim S as shape
 		  
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
@@ -62,9 +63,15 @@ Inherits Triangle
 		  v = v.vecnorperp
 		  u = (points(0).bpt+points(1).bpt)/2
 		  BiB = new BiBPoint(u,u+v)
-		  np2 = np2.projection(BiB)
-		  points(2).moveto np2
-		  points(2).modified = true
+		  
+		  if n0 = 2 and points(2).forme = 1 then
+		    S = points(2).pointsur.item(0)
+		    np2 = BiB.ComputeFirstIntersect(0, S, Points(2))
+		  else
+		    np2 = np2.projection(BiB)
+		    points(2).moveto np2
+		    points(2).modified = true
+		  end if
 		  return new affinitymatrix(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  
@@ -113,13 +120,19 @@ Inherits Triangle
 		Function Modifier3() As matrix
 		  dim t as Boolean
 		  dim ff as figure
+		  dim i as integer
 		  
 		  ff = GetSousFigure(fig)
 		  t = false
-		  dim i as integer
-		  for i = 0 to 2
-		    t = t or  ff.replacerpoint (points(i))
-		  next
+		  
+		  if points(2).forme > 0 then
+		    points(2).modified = false
+		    t = true
+		  else
+		    for i = 0 to 2
+		      t = t or  ff.replacerpoint (points(i))
+		    next
+		  end if
 		  
 		  if t then
 		    return ff.autospeupdate
