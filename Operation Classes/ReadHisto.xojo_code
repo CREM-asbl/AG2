@@ -35,10 +35,12 @@ Inherits Operation
 		  HistMenu.Child("FileMenu").Child("FilePrint").Text = Dico.Value("FilePrint")
 		  HistMenu.Child("FileMenu").Child("FileAfficher").Text = Dico.Value("Afficher Opérations")
 		  
-		  for i= 0 to HistMenu.Child("Fenetres").Count-1
-		    HistMenu.Child("Fenetres").remove(i)
-		  next
 		  
+		  While (HistMenu.Child("Fenetres").Count > 0)
+		    HistMenu.Child("Fenetres").remove(HistMenu.Child("Fenetres").Count-1)
+		  Wend
+		  
+		  MsgBox str(Workwindow.MenuBar.Child("Fenetres").Count)
 		  for i = 0 to Workwindow.MenuBar.Child("Fenetres").Count-1
 		    mitem = new MenuItem
 		    mitem.Name = "winitem"
@@ -46,6 +48,7 @@ Inherits Operation
 		    mitem.index =Workwindow. MenuBar.Child("Fenetres").item(i).index
 		    HistMenu.Child("Fenetres").append mitem
 		  next
+		  
 		  
 		  Workwindow.MenuBar = HistMenu
 		  Workwindow.draphisto = true
