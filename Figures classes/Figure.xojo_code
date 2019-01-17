@@ -48,16 +48,29 @@ Protected Class Figure
 		    for j = 0 to f1.shapes.count -1
 		      if aut(j) = 1 then
 		        tt = tt and ( (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
+		      else 
+		        tt = false
 		      end if
 		    next
-		    if tt then 'Si toutes les formes autosim sont des droites ou des cercles, ou des triangles quelconques, tout  point peut être modifié indépendamment des autres  
+		    
+		    if tt then 'tout  point peut être modifié indépendamment des autres  
 		      f1.auto = 4
 		      return
+		    end if
+		    
+		    tt = true
+		    for j = 0 to f1.shapes.count -1
+		      tt = tt and (aut(j) = 2 or  (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) ) 
+		    next
+		    if tt then
+		      f1.auto = 2
 		    else 'Sinon, on choisit autosim (les autoaff ne seront pas déformées)
 		      f1.auto = 1
-		      return
 		    end if
+		    return
+		    
 		  end if
+		  
 		  'Troisième cas: toutes les formes sont autosim ou paraperp
 		  t = true
 		  for j = 0 to ubound(aut)

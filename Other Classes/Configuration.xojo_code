@@ -947,7 +947,7 @@ Protected Class Configuration
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		username As String = "Historique"
+		username As String = "Enseignant"
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
