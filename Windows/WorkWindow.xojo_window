@@ -88,7 +88,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -649,38 +648,38 @@ Begin Window WorkWindow
          Visible         =   True
          Width           =   120
       End
-   End
-   Begin PushButton PushButton1
-      AutoDeactivate  =   False
-      Bold            =   True
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "Annuler"
-      Default         =   False
-      Enabled         =   True
-      Height          =   30
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   5
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   0
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   120
+      Begin PushButton PushButton1
+         AutoDeactivate  =   False
+         Bold            =   True
+         ButtonStyle     =   "0"
+         Cancel          =   False
+         Caption         =   "Annuler"
+         Default         =   False
+         Enabled         =   True
+         Height          =   30
+         HelpTag         =   ""
+         Index           =   -2147483648
+         InitialParent   =   "Tools"
+         Italic          =   False
+         Left            =   1
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockLeft        =   False
+         LockRight       =   False
+         LockTop         =   False
+         Scope           =   0
+         TabIndex        =   5
+         TabPanelIndex   =   0
+         TabStop         =   True
+         TextFont        =   "System"
+         TextSize        =   0.0
+         TextUnit        =   0
+         Top             =   0
+         Transparent     =   False
+         Underline       =   False
+         Visible         =   True
+         Width           =   120
+      End
    End
 End
 #tag EndWindow
