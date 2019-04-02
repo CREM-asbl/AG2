@@ -57,8 +57,11 @@ Inherits SelectOperation
 		  
 		  
 		  EL = XMLElement(Temp.Child(0))
-		  r = val(EL.GetAttribute("NewThickness"))
-		  SelectIdForms(EL)
+		  if El <> nil then
+		    r = val(EL.GetAttribute("NewThickness"))
+		    SelectIdForms(EL)
+		  end if
+		  
 		  n = tempshape.count-1
 		  
 		  for i = 0 to n

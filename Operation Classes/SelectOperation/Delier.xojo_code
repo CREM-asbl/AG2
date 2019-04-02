@@ -19,8 +19,11 @@ Inherits SelectOperation
 		    tempshape.item(i).IdGroupe = -1
 		    redim tempshape.item(i).OldIdGroupes(-1)
 		  next
-		  objects.groupes(numlist).removeall
-		  objects.OptimizeGroups
+		  
+		  if(numlist > -1) then
+		    objects.groupes(numlist).removeall
+		    objects.OptimizeGroups
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -103,13 +106,14 @@ Inherits SelectOperation
 		  numlist = val(EL1.GetAttribute("IdGroupe"))
 		  SelectIdForms(EL1)
 		  
-		  objects.groupes.Insert(numlist,new ObjectsList)
-		  for i = 0 to tempshape.count-1
-		    Objects.Groupes(Numlist).addShape tempshape.item(i)
-		  next
-		  objects.OptimizeGroups
-		  objects.unselectall
-		  
+		  if (numlist > -1) then
+		    objects.groupes.Insert(numlist,new ObjectsList)
+		    for i = 0 to tempshape.count-1
+		      Objects.Groupes(Numlist).addShape tempshape.item(i)
+		    next
+		    objects.OptimizeGroups
+		    objects.unselectall
+		  end if
 		  
 		End Sub
 	#tag EndMethod

@@ -40,7 +40,6 @@ Inherits Operation
 		    HistMenu.Child("Fenetres").remove(HistMenu.Child("Fenetres").Count-1)
 		  Wend
 		  
-		  MsgBox str(Workwindow.MenuBar.Child("Fenetres").Count)
 		  for i = 0 to Workwindow.MenuBar.Child("Fenetres").Count-1
 		    mitem = new MenuItem
 		    mitem.Name = "winitem"
@@ -88,25 +87,15 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub FirstOper()
-		  dim i as integer
-		  
-		  dim EL as XMLElement
-		  
 		  if noper = 1 then
 		    MsgBox Dico.value("Empty_file")
 		    return
 		  end if
 		  
-		  if currentop = 0 then
-		    nextoper
-		  elseif currentop > 1 then
-		    for i = currentop downto 2
-		      precoper
-		    next
-		    currentop = 1
-		  end if
-		  curop1 = currentop
-		  can.refreshbackground
+		  
+		  while currentop > 1
+		    PrecOper
+		  wend
 		End Sub
 	#tag EndMethod
 
@@ -121,10 +110,10 @@ Inherits Operation
 		  dim i as integer
 		  
 		  Config.Trace = false
-		  for i = currentop to Noper-2
+		  
+		  while currentop < Noper-1
 		    NextOper
-		  next
-		  MsgBox Dico.value("End_of_file")
+		  wend
 		End Sub
 	#tag EndMethod
 
@@ -133,23 +122,24 @@ Inherits Operation
 		  dim EL as XMLElement
 		  
 		  if currentop = Noper-1 then
-		    MsgBox Dico.Value("End_of_file")
 		    return
 		  end if
 		  
 		  currentop = currentop+1
+		  
 		  EL = XMLElement(Histo.Child(currentop))
-		  while EL <> nil and  val(EL.Getattribute("Undone") ) = 1
-		    currentop = currentop +1
-		    EL = XMLElement(Histo.Child(currentop))
-		  wend
+		  
 		  if EL <> nil then
-		    curoper = CurrentContent.CreerOperation(EL)
-		    if curoper <> nil then
-		      CurOper.RedoOperation(EL)
+		    if val(EL.Getattribute("Undone")) = 1 then
+		      NextOper
+		    else
+		      curoper = CurrentContent.CreerOperation(EL)
+		      if curoper <> nil then
+		        CurOper.RedoOperation(EL)
+		      end if
 		    end if
 		  end if
-		  
+		  updateHistoControl
 		  can.refreshbackground
 		End Sub
 	#tag EndMethod
@@ -168,19 +158,31 @@ Inherits Operation
 		  dim EL as XMLElement
 		  
 		  if currentop = 0 then
-		    MsgBox Dico.value("Start_of_file")
-		    return
-		  end if
-		  if noper = 1 then
 		    return
 		  end if
 		  
 		  EL = XMLElement(Histo.Child(currentop))
-		  curoper= CurrentContent.CreerOperation(EL)
-		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
-		  can.refreshbackground
 		  
+		  if val(EL.Getattribute("Undone")) = 1 then
+		    PrecOper
+		  else
+		    curoper= CurrentContent.CreerOperation(EL)
+		    CurOper.UndoOperation(EL)
+		    updateHistoControl
+		    can.refreshbackground
+		  end if
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub updateHistoControl()
+		  HistCmd.HistCtrl.First.Enabled = currentop > 1
+		  HistCmd.HistCtrl.Prec.Enabled = currentop > 0
+		  HistCmd.HistCtrl.BNext.Enabled = currentop < Noper-1
+		  HistCmd.HistCtrl.Last.Enabled = currentop < Noper-1
 		End Sub
 	#tag EndMethod
 
@@ -236,10 +238,6 @@ Inherits Operation
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
-
-	#tag Property, Flags = &h0
-		curop1 As Integer
-	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		curoper As Operation

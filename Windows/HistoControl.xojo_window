@@ -82,7 +82,7 @@ Begin ContainerControl HistoControl
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      Enabled         =   True
+      Enabled         =   False
       HasBackColor    =   False
       HasMenu         =   0
       Height          =   30
@@ -127,7 +127,7 @@ Begin ContainerControl HistoControl
       CaptionAlign    =   3
       CaptionDelta    =   0
       CaptionPlacement=   1
-      Enabled         =   True
+      Enabled         =   False
       HasBackColor    =   False
       HasMenu         =   0
       Height          =   30

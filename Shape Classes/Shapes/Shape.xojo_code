@@ -1334,12 +1334,14 @@ Protected Class Shape
 		  dim i as integer
 		  dim ff as figure
 		  
-		  for i = 0 to Figu.subs.count-1
-		    ff = figu.subs.item(i)
-		    if ff.shapes.getposition (self) <> -1 or ff.somm.getposition(self) <> -1 or ff.ptssur.getposition(self) <> -1 or ff.ptsconsted.getposition(self) <> -1  then
-		      return figu.subs.item(i)
-		    end if
-		  next
+		  if Figu <> nil then
+		    for i = 0 to Figu.subs.count-1
+		      ff = figu.subs.item(i)
+		      if ff.shapes.getposition (self) <> -1 or ff.somm.getposition(self) <> -1 or ff.ptssur.getposition(self) <> -1 or ff.ptsconsted.getposition(self) <> -1  then
+		        return figu.subs.item(i)
+		      end if
+		    next
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -2376,19 +2378,22 @@ Protected Class Shape
 		  
 		  n0 = 0
 		  
-		  if not self isa point then
-		    for i = 0 to npts-1
-		      if f.somm.getposition(points(i)) <> -1  then
-		        n0 = n0+1
+		  if f <> nil then
+		    if not self isa point then
+		      for i = 0 to npts-1
+		        if f.somm.getposition(points(i)) <> -1  then
+		          n0 = n0+1
+		        end if
+		      next
+		    else
+		      if f.somm.getposition(self) <> -1  then
+		        n0 = 1
 		      end if
-		    next
-		  else
-		    if f.somm.getposition(self) <> -1  then
-		      n0 = 1
 		    end if
 		  end if
 		  
 		  return n0
+		  
 		End Function
 	#tag EndMethod
 
@@ -2522,10 +2527,12 @@ Protected Class Shape
 		    return
 		  end if
 		  
-		  nsk.update(self)
-		  nsk.fixecouleurs(self)
-		  nsk.fixeepaisseurs(self)
-		  nsk.paint(g)
+		  if nsk <> nil then
+		    nsk.update(self)
+		    nsk.fixecouleurs(self)
+		    nsk.fixeepaisseurs(self)
+		    nsk.paint(g)
+		  end if
 		  
 		  if not hidden then
 		    for i = 0 to labs.count-1
