@@ -77,7 +77,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub AddToFigure(ff as figure, idf as integer)
-		  dim List0 as figslist                                 //N'est utilisé que par ObjectsList.XMLLireIdFigs
+		  Dim List0 As figslist                                 //N'est utilisé que par ObjectsList.XMLLireIdFigs
 		  dim figu as figure
 		  dim o as shapeconstruction
 		  dim i, j, op as integer
@@ -2774,7 +2774,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function precede(s2 as shape) As boolean
-		  dim h, k, m, i, j  as integer
+		  Dim h, k, m, i, j  As Integer
 		  dim ff as figure
 		  dim p, q as point
 		  dim s, sh as shape
@@ -2892,9 +2892,9 @@ Protected Class Shape
 		    return t
 		  end if
 		  
-		  'if auto <>4 and NbTrueSomCommuns(ff) > 0 and  s2.auto = 4 then 
-		  'return true
-		  'end if
+		  If Auto <>4 And NbTrueSomCommuns(ff) > 0 And  s2.Auto = 4 Then   'Décommentarizé pour le cas d'un quadri inscrit à un cercle avec un sommet qui définit le cercle
+		    Return True
+		  end if
 		  
 		  for i = 0 to ubound(childs)    // double emploi avec une autre condition ci-dessus
 		    if childs(i).id > id then

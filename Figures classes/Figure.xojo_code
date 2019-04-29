@@ -1812,24 +1812,17 @@ Protected Class Figure
 		    f1=Figure(subs.item(i))
 		    for j = i+1 to n-1
 		      f2 = Figure(subs.item(j))
-		      'if subs.item(i).auto <> 4 then 'and subs.item(j).auto <> 4 then
 		      if  f1.precede(f2) then
 		        mat.col(i,j) = 1
 		      end if
 		      if f2.precede(f1) then
 		        mat.col(j,i) = 1
 		      end if
-		      'end if
 		    next
 		  next
 		  
 		  
-		  'if (subs.item(i).auto <> 4) and subs.item(i).precede(subs.item(j)) then
-		  'mat.col(i,j) = 1
-		  'end if
-		  'if (subs.item(i).auto <> 4) and subs.item(j).precede(subs.item(i)) then
-		  'mat.col(j,i) = 1
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
