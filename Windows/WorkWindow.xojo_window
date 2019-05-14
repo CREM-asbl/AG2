@@ -88,7 +88,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -261,7 +260,7 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   5
+         Left            =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
@@ -291,7 +290,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "StdBox"
-            Left            =   64
+            Left            =   59
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -319,7 +318,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
-            Left            =   8
+            Left            =   3
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -347,7 +346,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "StdBox"
-            Left            =   8
+            Left            =   3
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -375,7 +374,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "StdBox"
-            Left            =   64
+            Left            =   59
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -1559,7 +1558,7 @@ End
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
 			if mousedispo then
 			Formswindow.close
-			CurrentContent.CurrentOperation=new ChooseFinal
+			CurrentContent.CurrentOperation=New ChooseFinal
 			MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
 			refreshtitle
 			end if

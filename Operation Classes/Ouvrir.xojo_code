@@ -14,7 +14,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(f as folderitem)
-		  dim Doc as XmlDocument
+		  Dim Doc As XmlDocument
 		  dim Cfg as string
 		  dim v1, v2, v3 as integer
 		  dim version as string

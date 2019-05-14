@@ -500,7 +500,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function MakeXML() As XMLDocument
-		  dim Doc as XMLDocument
+		  Dim Doc As XMLDocument
 		  dim AG, TMP, EL as XMLElement
 		  dim i as integer
 		  dim s as shape
@@ -568,12 +568,12 @@ Protected Class WindContent
 		    TMP.SetAttribute("Align",can.FondsEcran.GetAlign)
 		    AG.AppendChild TMP
 		  end if
-		  if TheMacros.Count > 0 then
+		  If TheMacros.Count > 0 Then
 		    TMP = Doc.CreateElement("Macros")
 		    for i = 0 to TheMacros.count-1
 		      Mac =TheMacros.item(i)
 		      EL = XMLElement(Doc.importnode(mac.Histo,true))
-		      Mac.ToXML(Doc,EL)
+		      'Mac.ToXML(Doc,EL)
 		      TMP.AppendChild EL
 		    next
 		    AG.appendchild TMP

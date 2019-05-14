@@ -74,7 +74,7 @@ Protected Class MacrosList
 
 	#tag Method, Flags = &h0
 		Sub XMLLoadMacros(EL as XMLElement)
-		  dim List as XmlNodeList
+		  Dim List As XmlNodeList
 		  dim macr, temp as XMLElement
 		  dim doc as XMLDocument
 		  dim mac as macro
@@ -88,6 +88,7 @@ Protected Class MacrosList
 		      doc = new XMLDocument(temp.ToString)
 		      mac = new macro(doc)
 		      addmac(mac)
+		      currentcontent.themacros.addmac(mac)
 		    next
 		  end if
 		  WorkWindow.UpdateSousMenusMacros
