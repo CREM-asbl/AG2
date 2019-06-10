@@ -908,7 +908,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  
 		  isinconstruction = false
@@ -932,6 +932,9 @@ Protected Class Shape
 		  signaire = sign(aire)
 		  computeori
 		  dounselect
+		  If Self IsA polygon Then
+		    polygon(self).autoInter = coord.autointer
+		  End If
 		  currentcontent.optimize
 		  currentcontent.RemettreTsfAvantPlan
 		  
@@ -3736,7 +3739,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
-		  dim i as integer   // Utilisé pour lesmodifications
+		  Dim i As Integer   // Utilisé pour lesmodifications
 		  dim s1, s2 As shape
 		  dim inter as intersec
 		  dim p as point
@@ -3776,7 +3779,7 @@ Protected Class Shape
 		    next
 		  end if
 		  
-		  if not self isa lacet then
+		  if not hybrid then
 		    modified = true
 		    endmove
 		    updateconstructedshapes
@@ -4059,12 +4062,15 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  dim Form, Temp as XMLElement
+		  Dim Form, Temp As XMLElement
 		  dim i, n as integer
 		  
 		  Form = XMLPutIdInContainer(Doc)
 		  if fig <> nil and not self isa repere then
 		    Form.SetAttribute("FigId",str(fig.idfig))
+		  End If
+		  If Self IsA lacet And lacet(self).autointer <> Nil Then
+		    Form.SetAttribute("AutoInter",Str(1))
 		  end if
 		  if labs <> nil then
 		    for i = 0 to labs.count-1
@@ -4077,7 +4083,9 @@ Protected Class Shape
 		  end if
 		  if self.hybrid and not self isa arc then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
-		  end if
+		  End If
+		  'If Self IsA Lacet And lacet(Self).autointer <> Nil Then
+		  
 		  if constructedby <> nil then
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
 		  end if
@@ -4115,9 +4123,6 @@ Protected Class Shape
 		      Temp.SetAttribute("Value", str(0))
 		    end if
 		    Form.AppendChild Temp
-		    
-		    
-		    
 		  end if
 		  
 		  if Hidden then
@@ -4216,7 +4221,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfo(Temp as XMLElement)
-		  dim m, oper as integer
+		  Dim m, oper As Integer
 		  dim  Tmp, EL as XMLElement
 		  dim s as shape
 		  dim List As XMLNodelist
@@ -4253,6 +4258,8 @@ Protected Class Shape
 		      XMLReadConstructionInfoMerge(Tmp)
 		    case 10
 		      XMLReadConstructionInfoDuplPoint(Tmp)
+		    Case 45
+		      XMLReadConstructionInfoAutoInter(Tmp)
 		    end select
 		    if self isa point then
 		      point(self).mobility
@@ -4261,6 +4268,16 @@ Protected Class Shape
 		  end if
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub XMLReadConstructionInfoAutoInter(Tmp as XMLElement)
+		  
+		  If ubound(constructedby.data) = -1 Then
+		    constructedBy.data.append Val(Tmp.GetAttribute("Side1"))
+		    constructedBy.data.append Val(Tmp.GetAttribute("Side2"))
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -4325,7 +4342,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoDivPoint(Tmp as XMLElement, s as shape)
-		  dim n as integer
+		  Dim n As Integer
 		  
 		  if ubound(constructedby.data) = -1 then
 		    n = Val(Tmp.GetAttribute("Id0"))

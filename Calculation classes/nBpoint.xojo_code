@@ -83,7 +83,7 @@ Protected Class nBpoint
 		  dim comp as nbpoint
 		  dim poly as polygon
 		  dim i as integer
-		  dim aire as double
+		  Dim aire As Double
 		  
 		  autointer = new AutoIntersec(self)
 		  if autointer.combien = 0 then
@@ -92,7 +92,7 @@ Protected Class nBpoint
 		  arpobp()=completesides(arpolig(), arpocol())
 		  compos() = ComponentsCreation(arpobp(),arpolig(),arpocol())
 		  aire = compomesurer(compos)
-		  if WorkWindow.drapg and not decomp then
+		  If WorkWindow.drapg And Not decomp Then
 		    for i = 0 to ubound(compos)
 		      comp = compos(i)
 		      poly = new polygon(currentcontent.theobjects, comp)

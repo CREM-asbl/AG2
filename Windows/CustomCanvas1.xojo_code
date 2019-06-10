@@ -3,7 +3,7 @@ Protected Class CustomCanvas1
 Inherits Canvas
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
-		  dim p as BasicPoint
+		  Dim p As BasicPoint
 		  dim s as shape
 		  dim m as MenuItem
 		  
@@ -15,15 +15,16 @@ Inherits Canvas
 		    dret.enabled = false
 		    dret =nil
 		  else
-		    if CurrentContent.CurrentOperation isa ShapeConstruction and  CurrentContent.CurrentOperation.CurrentShape.isinconstruction and Shapeconstruction(CurrentContent.currentoperation).currentitemtoset > 1 then
+		    If CurrentContent.CurrentOperation IsA ShapeConstruction And  CurrentContent.CurrentOperation.CurrentShape.isinconstruction And Shapeconstruction(CurrentContent.currentoperation).currentitemtoset > 1 Then
 		      CurrentContent.abortconstruction
 		    end if
 		    if currentcontent.currentoperation isa modifier then
 		      currentcontent.currentoperation.endoperation
 		    end if
-		  end if
+		  End If
+		  
 		  if currentcontent.currentoperation isa readhisto or currentcontent.macrocreation   then
-		    return false
+		    Return False
 		  end if
 		  
 		  currentcontent.currentoperation = nil
@@ -68,6 +69,10 @@ Inherits Canvas
 		    base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
 		    base.append(New MenuItem(Dico.Value("ToolsARPlan")))
 		  end if
+		  
+		  If sctxt IsA polygon Then
+		    base.append(New MenuItem(Dico.Value("AutoIntersec")))
+		  End If
 		  
 		  if sctxt.borderwidth = config.thickness then
 		    base.append( New MenuItem(Dico.Value("Epais")))
@@ -130,7 +135,7 @@ Inherits Canvas
 
 	#tag Event
 		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
-		  dim col as color
+		  Dim col As Color
 		  dim coul as couleur
 		  dim txt as TextWindow
 		  dim dr as droite
@@ -201,10 +206,10 @@ Inherits Canvas
 		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
 		  case Dico.Value("Pointer"), Dico.Value("DePointer")
-		    currentcontent.currentoperation = new Pointer
+		    currentcontent.currentoperation = New Pointer
 		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
-		  case Dico.Value("Tracer"), Dico.Value("DeTracer")
+		  Case Dico.Value("Tracer"), Dico.Value("DeTracer")
 		    currentcontent.currentoperation = new Tracer
 		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    EndOperMenuContext
@@ -217,8 +222,14 @@ Inherits Canvas
 		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    currentoper.currenthighlightedshape = sctxt
 		    currentoper.selection
-		  case Dico.Value("Limiter")
-		    point(sctxt).surseg = true
+		  Case Dico.Value("Limiter")
+		    point(sctxt).surseg = True
+		  Case Dico.Value("AutoIntersec")
+		    polygon(sctxt).autointer.s = polygon(sctxt)
+		    currentcontent.currentoperation = polygon(sctxt).autointer 'New AutoIntersec(sctxt)
+		    currentoper = SelectOperation(currentcontent.currentoperation)
+		    currentoper.DoOperation
+		    'EndOperMenuContext           Instruction inutile et même nuisible dans ce cas
 		  case Dico.Value("Animer")
 		    currentcontent.currentoperation = new Modifier
 		    currentoper = Modifier(currentcontent.currentoperation)

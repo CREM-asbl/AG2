@@ -261,7 +261,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function CreerOperation(Temp as XMLElement) As Operation
-		  dim nop as integer
+		  Dim nop As Integer
 		  dim curoper as Operation
 		  dim EL as XMLElement
 		  dim n as integer
@@ -293,7 +293,7 @@ Protected Class WindContent
 		    curoper = new Delete
 		  case 10 //Delier
 		    curoper = new Delier
-		  case 11 //ChangePosition
+		  Case 11 //ChangePosition   'Changer de plan
 		    curoper = new ChangePosition
 		  case 12 //ColorChange
 		    curoper = new ColorChange
@@ -376,7 +376,9 @@ Protected Class WindContent
 		    end if
 		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide
-		    curoper = new HideTsf
+		    curoper = New HideTsf
+		  Case 45  //AutoIntersection
+		    curoper = New AuToIntersec
 		  end select
 		  
 		  

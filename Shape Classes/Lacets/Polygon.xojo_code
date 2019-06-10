@@ -777,11 +777,6 @@ Inherits Lacet
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		autointer As autointersec
-	#tag EndProperty
-
-
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="ArcAngle"

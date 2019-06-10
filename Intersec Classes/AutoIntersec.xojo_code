@@ -3,7 +3,7 @@ Protected Class AutoIntersec
 Inherits Intersec
 	#tag Method, Flags = &h0
 		Function combien() As integer
-		  dim i, j , n as integer
+		  Dim i, j , n As Integer
 		  
 		  n = 0
 		  
@@ -16,6 +16,39 @@ Inherits Intersec
 		  next i
 		  return n
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub computeinter()
+		  
+		  
+		  Dim i, j As Integer
+		  
+		  
+		  init
+		  nlig = t
+		  ncol = t
+		  drappara = False
+		  somevalidpoint = False
+		  
+		  computeinterlines
+		  
+		  For i = 0 To nlig
+		    For j = 0 To ncol
+		      somevalidpoint = somevalidpoint Or Val(i,j)
+		    Next
+		  Next
+		  
+		  If Not somevalidpoint Then
+		    Return
+		  Else
+		    positionfalseinterpoints
+		  End If  
+		  
+		  
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -35,6 +68,34 @@ Inherits Intersec
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub computeinterlines()
+		  Dim i, j,k As Integer
+		  dim bp as basicpoint
+		  dim d1, d2 as droite
+		  dim r1,r2 as double
+		  
+		  
+		  for i = 0 to nlig
+		    d1 = sh1.getside(i)
+		    for j = 0 to ncol
+		      If j <> i Then 
+		        bp = Nil
+		        d2 = sh2.getside(j)
+		        k = d1.inter(d2,bp,r1,r2)
+		        if bp <> nil then
+		          bptinters(i,j) = bp
+		        end if
+		        if k = 0 or r1 > 998 then
+		          val(i,j) = false
+		        End If
+		      End If
+		    Next
+		    
+		  Next
 		End Sub
 	#tag EndMethod
 
@@ -59,34 +120,9 @@ Inherits Intersec
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  // Calling the overridden superclass constructor.
-		  // Note that this may need modifications if there are multiple constructor choices.
-		  // Possible constructor calls:
-		  
-		  'Super.Constructor
-		  
-		  't = s.npts-1
-		  'self.s = s
-		  'sbpt = s.coord
-		  '
-		  'redim bptinters(t,t)
-		  'redim ids(t,t)
-		  'redim val(t,t)
-		  'redim pts(-1)
-		  '
-		  'computeinter
-		  's.autointer = self
-		  'if combien > 0 then
-		  'CurrentContent.TheIntersecs.AddObject(self)
-		  'end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(sbpt as nBpoint)
 		  
-		  'Super.Constructor
+		  Super.Constructor
 		  t = sbpt.taille -1
 		  self.sbpt = sbpt
 		  computeinterbpt
@@ -98,10 +134,82 @@ Inherits Intersec
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreatePoints(s as polygon)
-		  dim i, j as integer
+		Sub Constructor(s1 as Shape)
 		  
-		  dim p as point
+		  
+		  
+		  sh1 = polygon(s1)
+		  
+		  
+		  
+		  Super.Constructor(sh1,sh1)
+		  
+		  t = sh1.npts-1
+		  
+		  sbpt = sh1.coord
+		  
+		  'Redim bptinters(t,t)
+		  'Redim ids(t,t)
+		  'Redim Val(t,t)
+		  'Redim pts(-1)
+		  
+		  DoOperation
+		  polygon(sh1).autointer = Self
+		  If combien > 0 Then
+		    CurrentContent.TheIntersecs.AddObject(Self)
+		  End If
+		  
+		  
+		  polygon(s1).autointer.sh1 = polygon(s1)
+		  polygon(s1).autointer.sh2 = polygon(s1)
+		  
+		  polygon(s1).autointer.DoOperation
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub constructor(EL as XMLElement, s as Polygon)
+		  
+		  
+		  sh1 = polygon(s)
+		  Super.Constructor(sh1,sh1)
+		  t = sh1.npts-1
+		  sbpt = sh1.coord
+		  
+		  Redim bptinters(t,t)
+		  Redim ids(t,t)
+		  Redim Val(t,t)
+		  Redim pts(-1)
+		  
+		  'DoOperation
+		  'polygon(sh1).autointer = Self
+		  'If combien > 0 Then
+		  'CurrentContent.TheIntersecs.AddObject(Self)
+		  'End If
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CreatePoints(s as polygon)
+		  Dim i, j As Integer
+		  
+		  Dim p As point
+		  
+		  
+		  For i = 0 To t 
+		    bezet(i,i) = True
+		    Val(i,i) = False
+		  Next
+		  
+		  For i = 0 To t-1
+		    bezet(i,i+1) = True
+		    Val(i,i+1) = False
+		  Next
+		  bezet(t,0) = True
+		  Val(t,0) = False
 		  
 		  for i = 0 to t
 		    for j = i+1 to t
@@ -109,6 +217,8 @@ Inherits Intersec
 		        p = new point (objects,bptinters(i,j))
 		        p.forme=2
 		        p.setconstructedby s,45
+		        p.constructedby.data.append i
+		        p.constructedby.data.append j
 		        p.numside.append i
 		        p.numside.append j
 		        p.location.append bptinters(i,j).location(sh1,i)
@@ -125,24 +235,48 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  'currentshape = sh1
+		  'currentshape = polygon(sh1)
+		  'sh2 = polygon(sh1)
 		  'ComputeInter
-		  'createpoints(sh1)
-		  'polygon(sh1).autointer = self
+		  'createpoints(Polygon(sh1))
+		  'polygon(sh1).autointer = Self
 		  'EndOperation
+		  
+		  sh1 = s
+		  sh2 = sh1
+		  t = sh1.npts
+		  
+		  Redim bezet(t,t)
+		  Redim bptinters(t,t)
+		  redim val (t,t)
+		  
+		  createpoints(polygon(sh1))
+		  EndOperation
+		  
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub EndOperation()
+		  
+		  CurrentContent.addoperation(self)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub init()
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  
+		  If s <> Nil Then
+		    t = s.npts-1
+		  Elseif sh1 <> Nil Then
+		    t = sh1.npts-1
+		  End If
 		  
-		  
-		  redim bptinters(t,t)
-		  redim val(t,t)
+		  Redim bptinters(t,t)
+		  Redim Val(t,t)
 		  redim bezet(t,t)
 		  
 		  for i = 0 to t
@@ -180,6 +314,21 @@ Inherits Intersec
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToXML(Doc As XMLDocument) As XMLElement
+		  // Calling the overridden superclass method.
+		  // Note that this may need modifications if there are multiple  choices.
+		  // Possible calls:
+		  // result1 as XMLElement = ToXML(Doc As XMLDocument) -- From SelectOperation
+		  // result1 as XMLElement = ToXml(Doc as XMLDocument) -- From Operation
+		  
+		  Return s.XMLPutInContainer(Doc)
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

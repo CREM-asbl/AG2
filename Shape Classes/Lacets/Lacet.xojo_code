@@ -971,6 +971,10 @@ Inherits Shape
 
 
 	#tag Property, Flags = &h0
+		autointer As autointersec
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		prol() As Boolean
 	#tag EndProperty
 

@@ -54,7 +54,7 @@ Protected Class Figure
 		    next
 		    
 		    if tt then 'tout  point peut être modifié indépendamment des autres  
-		      f1.auto = 4
+		      f1.Auto = 4
 		      return
 		    end if
 		    
@@ -1619,7 +1619,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub concat1(f1 as figure, f2 as figure, n as integer)
-		  if f1.nbsommcommuns(f2) >= n then
+		  If f1.nbsommcommuns(f2) >= n Then
 		    f1.shapes.concat f2.shapes
 		    f1.somm.concat f2.somm
 		    f1.PtsConsted.concat f2.PtsConsted
@@ -3376,7 +3376,7 @@ Protected Class Figure
 		      elseif p.pointsur.count = 2 then
 		        n0 = val(Coord.GetAttribute("Side0"))
 		        n1 = val(Coord.GetAttribute("Side1"))
-		        inter= p.GetInter 'CurrentContent.Theintersecs.find(p.pointsur.item(0),p.pointsur.item(1))
+		        inter= p.GetInter 
 		        inter.update(p)
 		      end if
 		    next
@@ -3923,7 +3923,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub updateptsconsted(M as Matrix)
-		  dim i as integer
+		  Dim i As Integer
 		  dim p as point
 		  
 		  if shapes.item(0) isa arc and not shapes.item(0).invalid then
@@ -3931,7 +3931,7 @@ Protected Class Figure
 		  end if
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.item(i))
-		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 then
+		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 or p.constructedby.oper = 45 then
 		      p.repositioncstedpoint
 		    else
 		      if somm.getposition(p)=-1 then

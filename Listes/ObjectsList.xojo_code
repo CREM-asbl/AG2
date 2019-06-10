@@ -1017,7 +1017,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function XMLLoadObject(Temp as XMLElement) As Shape
-		  dim  fam, forme, id as Integer
+		  Dim  fam, forme, id As Integer
 		  dim a as integer
 		  dim fstd as String
 		  dim s as shape
@@ -1108,12 +1108,15 @@ Inherits Liste
 		    fstd = Temp.GetAttribute("StdFile")
 		    if fstd <> "" and fstd <> Config.stdfile then
 		      Config.ChargerStdForms(fstd)
-		    end if
+		    End If
 		    s = XMLLoadStdForm (temp)
-		  end select
-		  
+		  End Select
 		  s.id = id
 		  addshape(s)
+		  
+		  If ((s  IsA  Polygon) And (Temp.GetAttribute("AutoInter") = "1")) Then
+		    Polygon(s).autointer = New autointersec(Temp, Polygon(s))
+		  End If
 		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
 		    s.std = true
@@ -1141,7 +1144,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub XMLLoadObjects(Shapes as XMLElement)
-		  dim Obj As XMLElement
+		  Dim Obj As XMLElement
 		  dim List as XMLNodeList
 		  dim nobj, i, j as integer
 		  dim s as shape

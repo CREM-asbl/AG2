@@ -703,7 +703,7 @@ Protected Class Operation
 		Conditionner: 40
 		Unit : 41
 		HideTsf: 44
-		Inter : 45                  //N'est utilisé que pour les macros: on assimile l'intersection de deux objets à une opération
+		Inter : 45                  //N'est utilisé que pour les macros et les autointer: on assimile l'intersection de deux objets à une opération
 		PointSur: 46            // Idem pour la construction d'un Point Sur
 		SaveStd : 47 Pour mémoire
 		Decomposer: 48
@@ -724,6 +724,7 @@ Protected Class Operation
 		Fusion: 27
 		ChooseFinal : 42
 		MacroExe : 43
+		
 	#tag EndNote
 
 

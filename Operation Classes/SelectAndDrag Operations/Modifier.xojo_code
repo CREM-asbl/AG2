@@ -623,7 +623,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function test(p as Point) As Boolean
-		  dim t as boolean
+		  Dim t As Boolean
 		  'dim i, j as integer
 		  dim s as point
 		  dim q1 as BasicPoint

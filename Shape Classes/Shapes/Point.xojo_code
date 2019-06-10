@@ -2413,11 +2413,13 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub repositioncstedpoint()
-		  dim s as shape
+		  Dim s As shape
 		  dim a, b,bp as BasicPoint
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
-		  dim side as integer
+		  Dim side As Integer
+		  Dim i, j As Integer
+		  Dim inter As intersec
 		  
 		  s = constructedby.shape
 		  select case ConstructedBy.oper
@@ -2443,6 +2445,17 @@ Inherits Shape
 		      bp = Bib.subdiv(ConstructedBy.data(2), ConstructedBy.data(3))
 		    end if
 		    moveto bp
+		  Case 45
+		    i = Constructedby.data(0)
+		    j = constructedby.data(1)
+		    inter = lacet(s).autointer
+		    inter.computeinter
+		    If inter.Val(i,j) Then 
+		      invalid = False
+		      moveto inter.bptinters(i,j)
+		    Else
+		      invalid = true
+		    End If
 		  end select
 		End Sub
 	#tag EndMethod
@@ -3144,7 +3157,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function XMLPutConstructionInfoInContainer(Doc as XMLDocument) As XMLElement
-		  dim  Temp, EL as XMLElement
+		  Dim  Temp, EL As XMLElement
 		  dim i as integer
 		  dim M as Matrix
 		  dim tsf as Transformation
@@ -3184,7 +3197,10 @@ Inherits Shape
 		    end if
 		    Temp.appendchild EL
 		  case 10
-		    Temp.setattribute(Dico.value("Data0"), str(ConstructedBy.data(0)))
+		    Temp.setattribute(Dico.value("Data0"), Str(ConstructedBy.data(0)))
+		  Case 45
+		    Temp.SetAttribute("Side1", Str(constructedby.data(0)))
+		    Temp.SetAttribute("Side2", Str(constructedby.data(1)))
 		  end select
 		  
 		  Return Temp
