@@ -225,11 +225,10 @@ Inherits Canvas
 		  Case Dico.Value("Limiter")
 		    point(sctxt).surseg = True
 		  Case Dico.Value("AutoIntersec")
-		    polygon(sctxt).autointer.s = polygon(sctxt)
-		    currentcontent.currentoperation = polygon(sctxt).autointer 'New AutoIntersec(sctxt)
+		    'polygon(sctxt).autointer.s = polygon(sctxt)
+		    currentcontent.currentoperation = New AutoIntersec(sctxt)
 		    currentoper = SelectOperation(currentcontent.currentoperation)
-		    currentoper.DoOperation
-		    'EndOperMenuContext           Instruction inutile et même nuisible dans ce cas
+		    'EndOperMenuContext          ' Instruction inutile et même nuisible dans ce cas
 		  case Dico.Value("Animer")
 		    currentcontent.currentoperation = new Modifier
 		    currentoper = Modifier(currentcontent.currentoperation)

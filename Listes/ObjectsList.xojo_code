@@ -1114,10 +1114,6 @@ Inherits Liste
 		  s.id = id
 		  addshape(s)
 		  
-		  If ((s  IsA  Polygon) And (Temp.GetAttribute("AutoInter") = "1")) Then
-		    Polygon(s).autointer = New autointersec(Temp, Polygon(s))
-		  End If
-		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
 		    s.std = true
 		  else
@@ -1134,8 +1130,14 @@ Inherits Liste
 		    Groupes(s.IdGroupe).addShape s
 		  else
 		    s.IdGroupe = -1
+		  End If
+		  
+		  If s IsA Lacet And Val(Temp.GetAttribute("AutoInter")) = 1 Then
+		    Lacet(s).autointer = New AutoIntersec(Temp)
 		  end if
-		  s.signaire = sign(s.aire)
+		  
+		  
+		  
 		  
 		  return s
 		  

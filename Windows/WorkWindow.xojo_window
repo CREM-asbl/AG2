@@ -2211,7 +2211,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  if dret = nil then
+		  If dret = Nil Then
 		    if currentcontent.currentoperation <> nil then
 		      currentcontent.currentoperation.Annuler
 		      if CurrentContent.CurrentOp = 0 then

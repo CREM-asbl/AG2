@@ -322,15 +322,17 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub delete()
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  dim s as shape
 		  dim tsf as transformation
 		  dim inter as intersec
 		  dim macinfo as macconstructioninfo
+		  Dim code As Integer
 		  
-		  if constructedby <> nil then
-		    select case  constructedby.oper
-		    case 0, 3, 4,  5,10
+		  If constructedby <> Nil Then
+		    code = constructedby.oper
+		    Select Case  code
+		    Case 0, 3, 4,  5,10, 45
 		      constructedby.shape.removeconstructedshape self
 		    case 6
 		      tsf = transformation (constructedby.data(0))
@@ -344,12 +346,12 @@ Inherits Shape
 		        next
 		      else
 		        constructedby.shape.removeconstructedshape self
-		      end if
-		    end  select
+		      End If
+		    End  Select
 		    constructedby = nil
 		  end if
 		  
-		  if macconstructedby <> nil then
+		  If macconstructedby <> Nil Then
 		    macinfo = macConstructedby
 		    for i = 0 to ubound(macinfo.realinit)
 		      s = currentcontent.theobjects.getshape(macinfo.realinit(i))
@@ -366,7 +368,7 @@ Inherits Shape
 		  
 		  if conditioned.count > 0 then
 		    for i = 0 to conditioned.count-1
-		      conditioned.item(i).conditionedby = nil
+		      conditioned.item(i).conditionedby = Nil
 		    next
 		  end if
 		  
@@ -374,7 +376,7 @@ Inherits Shape
 		    conditionedby.conditioned.removeobject self
 		  end if
 		  
-		  if forme > 0 then
+		  If forme > 0 And code <> 45 Then  'cas des points qui sont d'intersection sans etre des autointer
 		    if forme = 2 then
 		      inter = GetInter 'CurrentContent.TheIntersecs.find(pointsur.item(0), pointsur.item(1))
 		      inter.removepoint self
@@ -2419,7 +2421,7 @@ Inherits Shape
 		  dim Trib as TriBPoint
 		  Dim side As Integer
 		  Dim i, j As Integer
-		  Dim inter As intersec
+		  Dim inter As autointersec
 		  
 		  s = constructedby.shape
 		  select case ConstructedBy.oper
@@ -2449,7 +2451,7 @@ Inherits Shape
 		    i = Constructedby.data(0)
 		    j = constructedby.data(1)
 		    inter = lacet(s).autointer
-		    inter.computeinter
+		    inter.computeinterlinesbpt
 		    If inter.Val(i,j) Then 
 		      invalid = False
 		      moveto inter.bptinters(i,j)

@@ -417,15 +417,15 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim f as integer
+		  Dim f As Integer
 		  dim s as shape
 		  dim EL as XMLElement
 		  dim liste as ObjectsList
 		  
 		  
 		  EL = XMLElement(Temp.child(0))
-		  F = val(EL.GetAttribute(Dico.Value("NrFam")))
-		  if f = -1 then
+		  f = Val(EL.GetAttribute(Dico.Value("NrFam")))
+		  If f <> -1 Then
 		    s = Objects.XMLLoadObject(EL)
 		    s.endconstruction
 		  else

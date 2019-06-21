@@ -485,6 +485,12 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function StrictBetween(a as BasicPoint, b as BasicPoint) As boolean
+		  return between(a,b) and (distance(a) > epsilon) and (distance(b) > epsilon)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function VecNorPerp() As basicpoint
 		  
 		  dim v as BasicPoint

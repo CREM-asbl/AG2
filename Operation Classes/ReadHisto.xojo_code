@@ -3,7 +3,7 @@ Protected Class ReadHisto
 Inherits Operation
 	#tag Method, Flags = &h0
 		Sub Constructor(f as folderitem)
-		  dim mitem as MenuItem
+		  Dim mitem As MenuItem
 		  dim i as integer
 		  
 		  Histfile = f
@@ -40,7 +40,7 @@ Inherits Operation
 		    HistMenu.Child("Fenetres").remove(HistMenu.Child("Fenetres").Count-1)
 		  Wend
 		  
-		  MsgBox str(Workwindow.MenuBar.Child("Fenetres").Count)
+		  'MsgBox str(Workwindow.MenuBar.Child("Fenetres").Count)
 		  for i = 0 to Workwindow.MenuBar.Child("Fenetres").Count-1
 		    mitem = new MenuItem
 		    mitem.Name = "winitem"

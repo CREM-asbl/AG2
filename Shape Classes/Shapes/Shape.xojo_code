@@ -277,7 +277,7 @@ Protected Class Shape
 		  n = ubound(q)+1
 		  
 		  if n=2 then
-		    if points(1) = fig.pointmobile then
+		    if points(1) = fig.pmobi then
 		      if   (amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1)))    then
 		        q(0) = q(1)
 		      end if
@@ -928,13 +928,14 @@ Protected Class Shape
 		    if CurrentContent.ForHisto or currentcontent.currentoperation isa macroexe then
 		      addtofigure
 		    end if
-		  end if
-		  signaire = sign(aire)
+		  End If
+		  
+		  signaire = Sign(aire)
 		  computeori
 		  dounselect
-		  If Self IsA polygon Then
-		    polygon(self).autoInter = coord.autointer
-		  End If
+		  'If Self IsA polygon Then
+		  'polygon(self).autoInter = coord.autointer
+		  'End If
 		  currentcontent.optimize
 		  currentcontent.RemettreTsfAvantPlan
 		  
@@ -968,6 +969,12 @@ Protected Class Shape
 		  ff.getoldnewpos(points(0),ep0,np0)
 		  ff.getoldnewpos(points(1),ep1,np1)
 		  ff.getoldnewpos(points(2),ep2,np2)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ExistAutoInterPoints()
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1473,7 +1480,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub HighLight()
-		  dim i as integer
+		  Dim i As Integer
 		  dim s as shape
 		  dim op as Operation
 		  
@@ -2097,7 +2104,7 @@ Protected Class Shape
 		    np0 = Bib.computefirstintersect(0,sh,p)
 		    points(0).moveto np0
 		  case 1
-		    if ff.supfig.pointmobile = points(2) then
+		    if ff.supfig.pmobi = points(2) then
 		      np2 = np2.projection(np0,np0.distance(np1))
 		      points(2).moveto np2
 		    else
@@ -2225,7 +2232,7 @@ Protected Class Shape
 		  
 		  
 		  ff = getsousfigure(fig)
-		  m = getindexpoint(fig.pointmobile)
+		  m = getindexpoint(fig.pmobi)
 		  
 		  select case ff.NbUnModif
 		  case 0
@@ -2236,7 +2243,7 @@ Protected Class Shape
 		    if m = -1 then
 		      return new Matrix(1)
 		    else
-		      return modifier2fixes(fig.pointmobile)
+		      return modifier2fixes(fig.pmobi)
 		    end if
 		  end select
 		  
@@ -4260,6 +4267,7 @@ Protected Class Shape
 		      XMLReadConstructionInfoDuplPoint(Tmp)
 		    Case 45
 		      XMLReadConstructionInfoAutoInter(Tmp)
+		      
 		    end select
 		    if self isa point then
 		      point(self).mobility
@@ -4278,6 +4286,8 @@ Protected Class Shape
 		    constructedBy.data.append Val(Tmp.GetAttribute("Side1"))
 		    constructedBy.data.append Val(Tmp.GetAttribute("Side2"))
 		  End If
+		  
+		  
 		End Sub
 	#tag EndMethod
 

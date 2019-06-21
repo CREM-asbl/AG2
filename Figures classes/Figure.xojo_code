@@ -435,7 +435,7 @@ Protected Class Figure
 		  dim r1, r2 as double
 		  dim n1,n2 as integer
 		  
-		  pmob = supfig.pointmobile
+		  pmob = supfig.pmobi
 		  if s1 isa droite then
 		    n1 = droite(s1).nextre
 		  else
@@ -559,7 +559,7 @@ Protected Class Figure
 		    t = replacerpoint(Point(somm.item(ListSommsur(1))))
 		    return autoaffupdate
 		  else
-		    p = supfig.pointmobile
+		    p = supfig.pmobi
 		    k = somm.getposition(p)
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 3
@@ -704,7 +704,7 @@ Protected Class Figure
 		    return DefaultMatrix
 		  case 1
 		    M = DefaultMatrix
-		    pmob = supfig.pointmobile
+		    pmob = supfig.pmobi
 		    npmob=  Somm.GetPosition(pmob)
 		    if npmob= -1 then
 		      return M
@@ -755,7 +755,7 @@ Protected Class Figure
 		  
 		  
 		  Choixpointsfixes
-		  p = supfig.pointmobile
+		  p = supfig.pmobi
 		  getoldnewpos(p,ep,np)
 		  k = somm.getposition(p)
 		  n = NbSommSur
@@ -936,7 +936,7 @@ Protected Class Figure
 		  
 		  select case  NbSommSur(n1,n2)
 		  case 0
-		    if p.guide = supfig.pointmobile then
+		    if p.guide = supfig.pmobi then
 		      return s.modifier1fixe(q,p)
 		    else
 		      return s.Modifier1fixe(p,q)
@@ -1012,12 +1012,12 @@ Protected Class Figure
 		    'end if
 		  case 2
 		    for i = 0 to 1
-		      if point(somm.item(ListSommSur(i))) <> supfig.pointmobile then
+		      If point(somm.item(ListSommSur(i))) <> supfig.pmobi Then
 		        t =replacerpoint (point(somm.item(Listsommsur(i))))
 		      end if
 		    next
 		  case 3
-		    p = supfig.pointmobile
+		    p = supfig.pmobi
 		    k = somm.getposition(p)
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2
@@ -1064,7 +1064,7 @@ Protected Class Figure
 		  select case n
 		  case 0, 1
 		    for i = 0 to 3
-		      if s.points(i).forme = 0 and s.points(i) <> s.fig.pointmobile then
+		      if s.points(i).forme = 0 and s.points(i) <> s.fig.pmobi then
 		        i0 = i
 		      end if
 		      s.points(i0).modified = false
@@ -1077,7 +1077,7 @@ Protected Class Figure
 		      return autoaffupdate
 		    end if
 		  case 3,4
-		    p = supfig.pointmobile
+		    p = supfig.pmobi
 		    k = somm.getposition(p)
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2
@@ -1586,8 +1586,8 @@ Protected Class Figure
 		  
 		  //classement par rapport au nombre de parents 
 		  
-		  if somm.getposition(supfig.pointmobile) <> -1 then
-		    p = supfig.pointmobile
+		  If somm.getposition(supfig.pmobi) <> -1 Then
+		    p = supfig.pmobi
 		  else
 		    p = Point(somm.item(ListPtsModifs(0)))
 		  end if
@@ -1945,7 +1945,7 @@ Protected Class Figure
 		  
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
-		    if s.duplicateorcut and s.constructedby.shape.getindexpoint(supfig.pointmobile)<> -1 then
+		    if s.duplicateorcut and s.constructedby.shape.getindexpoint(supfig.pmobi)<> -1 then
 		      return true
 		    end if
 		  next
@@ -2039,7 +2039,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function fusionsubfigs(f1 as figure, f2 as figure) As Boolean
 		  dim k as integer
-		  dim t, t1, t2, t3 as boolean
+		  dim t, t1 as boolean
 		  dim p as point
 		  
 		  if f1.auto = 1 and f2.auto = 3  then
@@ -2876,7 +2876,7 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p =somm.item(i)
-		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
+		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pmobi ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      'if p.pointsur.count <> 2 then
 		      NbUnModif = NbUnModif+1
@@ -2907,7 +2907,7 @@ Protected Class Figure
 		  
 		  
 		  // on recense les points  non modifiés et modifiables  absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
-		  pmob = supfig.pointmobile
+		  pmob = supfig.pmobi
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
@@ -3179,7 +3179,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function replacerpoint(p as point) As Boolean
 		  
-		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pointmobile then
+		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pmobi then
 		    unmodify p
 		    return true
 		  else
@@ -3850,7 +3850,7 @@ Protected Class Figure
 		    return false
 		  end if
 		  
-		  pointmobile = p  'p est le point guide du point sur lequel on a cliqué
+		  pmobi = p  'p est le point guide du point sur lequel on a cliqué
 		  t = true
 		  
 		  listersubfigs(p)
@@ -4233,7 +4233,7 @@ Protected Class Figure
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		pointmobile As point
+		pmobi As point
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

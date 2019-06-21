@@ -79,27 +79,25 @@ Protected Class nBpoint
 		  dim arpobp() as basicpoint
 		  dim arpolig() as integer
 		  dim arpocol() as integer
-		  dim compos() as nbpoint
-		  dim comp as nbpoint
-		  dim poly as polygon
-		  dim i as integer
+		  Dim compos() As nbpoint
 		  Dim aire As Double
 		  
-		  autointer = new AutoIntersec(self)
-		  if autointer.combien = 0 then
+		  computeinterlines
+		  validerinters
+		  If combieninters = 0 Then
 		    return abs(airealgepolygon)
-		  end if
+		  End If
 		  arpobp()=completesides(arpolig(), arpocol())
 		  compos() = ComponentsCreation(arpobp(),arpolig(),arpocol())
 		  aire = compomesurer(compos)
-		  If WorkWindow.drapg And Not decomp Then
-		    for i = 0 to ubound(compos)
-		      comp = compos(i)
-		      poly = new polygon(currentcontent.theobjects, comp)
-		      poly.endconstruction
-		    next
-		    decomp = true
-		  end if
+		  'If WorkWindow.drapg And Not decomp Then
+		  'for i = 0 to ubound(compos)
+		  'comp = compos(i)
+		  'poly = new polygon(currentcontent.theobjects, comp)
+		  'poly.endconstruction
+		  'next
+		  'decomp = true
+		  'end if
 		  return aire
 		End Function
 	#tag EndMethod
@@ -147,18 +145,33 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function combieninters() As integer
+		  Dim i, j As Integer
+		  Dim n As Integer
+		  
+		  n = 0
+		  
+		  For i = 0 To ubound(tab)-1
+		    For j = i+1 To ubound(tab)
+		      If Val(i,j) Then
+		        n =  n+1
+		      end if
+		    Next
+		  Next
+		  
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function completesides(byref arpolig() as integer, byref arpocol() as integer) As BasicPoint()
-		  dim i, j, k, t  as integer  
+		  Dim i, j, k, t  As Integer  
 		  dim  bp as Basicpoint
 		  dim arsidebp(-1) As BasicPoint
 		  dim arpobp() as basicpoint
 		  dim loc(-1) As double
 		  dim arsidelig(-1) as integer
-		  dim arsidecol(-1) as integer
-		  
-		  if autointer = nil then
-		    return nil
-		  end if
+		  Dim arsidecol(-1) As Integer
 		  
 		  t = taille 
 		  
@@ -171,14 +184,12 @@ Protected Class nBpoint
 		    redim arsidecol(-1)
 		    redim loc(-1)
 		    for j = 0 to t-1
-		      if autointer.bezet(i,j) = false then '(j <> i) and  (j <> ( (i+t - 1) mod t )) and ( j<> ((i+1) mod t )) then
-		        bp = autointer.bptinters(i,j)
-		        if  bp <> nil then
-		          arsidebp.append bp
-		          arsidelig.append i
-		          arsidecol.append j
-		          loc.append bp.location(tab(i),tab((i+1) mod t))
-		        end if
+		      If Val(i,j)  Then 
+		        bp = bptinters(i,j)
+		        arsidebp.append bp
+		        arsidelig.append i
+		        arsidecol.append j
+		        loc.append bp.location(tab(i),tab((i+1) mod t))
 		      end if
 		    next
 		    if ubound(loc) > 0 then
@@ -331,6 +342,27 @@ Protected Class nBpoint
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub computeinterlines()
+		  Dim i, j As Integer
+		  Dim d1, d2 As BiBPoint
+		  Dim t As Integer
+		  
+		  t = ubound(tab)
+		  Redim bptinters(t,t)
+		  Redim Val(t,t)
+		  
+		  For i = 0 To t-1
+		    d1 = getbibside(i)
+		    for j = i+1 to t
+		      d2 = getbibside(j)
+		      bptinters(i,j) =  d1.BiBInterBib(d2)
+		      bptinters(j,i) = bptinters(i,j)
+		    next
+		  Next
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -792,6 +824,27 @@ Protected Class nBpoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub validerinters()
+		  Dim i,j As Integer
+		  Dim t As Integer
+		  
+		  t = ubound(tab)
+		  Redim Val(t,t)
+		  
+		  For i = 0 To t-1
+		    For j = i+1 To t
+		      If bptinters(i,j) <> Nil Then
+		        Val(i,j) = (bptinters(i,j).strictbetween(tab(i),tab(i+1)) And bptinters(i,j).strictbetween(tab(j),(tab((j+1) mod t))))
+		      Else 
+		        Val(i,j) = False
+		      End If 
+		      Val(j,i) = Val(i,j)
+		    Next
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  dim temp as XMLElement
 		  dim i as integer
@@ -806,7 +859,7 @@ Protected Class nBpoint
 
 
 	#tag Property, Flags = &h0
-		autointer As autointersec
+		bptinters(-1,-1) As basicpoint
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -831,6 +884,10 @@ Protected Class nBpoint
 
 	#tag Property, Flags = &h0
 		Tab() As BasicPoint
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		val(-1,-1) As boolean
 	#tag EndProperty
 
 

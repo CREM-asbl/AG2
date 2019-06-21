@@ -282,7 +282,7 @@ Protected Class WindContent
 		  case 1
 		    curoper = new ParaperpConstruction
 		  case 3 //Lier
-		    curoper = new Lier
+		    curoper = New Lier
 		  case 4 //Selectionner
 		    curoper = new Selectionner(false)
 		  case 5 //Copier
@@ -378,7 +378,7 @@ Protected Class WindContent
 		  case 44 //TransfosHide
 		    curoper = New HideTsf
 		  Case 45  //AutoIntersection
-		    curoper = New AuToIntersec
+		    curoper = New AuToIntersec(Temp)
 		  end select
 		  
 		  
@@ -477,12 +477,12 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub InsertInHisto(o as operation)
-		  dim El as XMLElement
+		  Dim El As XMLElement
 		  
 		  El=Oplist.CreateElement(Dico.Value("Operation"))
 		  El.SetAttribute(Dico.Value("Numero"),str(TotalOperation))
 		  El.SetAttribute(Dico.Value("Type"), o.GetName)
-		  EL.SetAttribute("OpId", str(o.OpId))
+		  EL.SetAttribute("OpId", Str(o.OpId))
 		  El.AppendChild (o.ToXml(Oplist))
 		  if FigsCreated.childcount > 0 then
 		    EL.appendchild FigsCreated
@@ -880,11 +880,10 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub UndoLastOperation()
-		  dim El as XMLElement
+		  Dim El As XMLElement
 		  dim curoper as Operation
 		  
 		  isaundoredo = true
-		  'formswindow.close
 		  
 		  if currentop = 0 then
 		    return
