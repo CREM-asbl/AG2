@@ -111,12 +111,10 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function choixvalid(s as shape) As Boolean
-		  dim i, j , ind, n0, n1 as integer
-		  dim par, sh as shape
-		  dim t as Boolean
-		  dim p as point
-		  dim ff as figure
-		  
+		  Dim i, j , ind, n0, n1 As Integer
+		  Dim par, sh As shape
+		  Dim t As Boolean
+		  Dim p As point
 		  
 		  if s = nil or s.fig = nil  then
 		    return false
@@ -291,8 +289,8 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim i, Magnetism as integer
-		  dim np as basicpoint
+		  Dim i, Magnetism As Integer
+		  
 		  
 		  if pointmobile = nil then
 		    return
@@ -301,12 +299,11 @@ Inherits SelectAndDragOperation
 		  
 		  MagneticD = new BasicPoint(0,0)
 		  Magnetism= testmagnetisme(magneticD)
-		  
 		  if magnetism > 0 then
 		    pointmobile.drapmagn  = testfinal (magneticd)
 		    if pointmobile.drapmagn   then
 		      updatefigs(magneticd)
-		    end if
+		    End If
 		  end if
 		  
 		  pointmobile.drapmagn = false
@@ -319,7 +316,9 @@ Inherits SelectAndDragOperation
 		  next
 		  super.endoperation
 		  pointmobile = nil
-		  endpoint = nil
+		  endpoint = Nil
+		  workwindow.setFocus
+		  
 		End Sub
 	#tag EndMethod
 
@@ -666,9 +665,6 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Function testmagnetisme(byref magneticD as basicPoint) As integer
 		  dim Magnetism As Integer
-		  dim f1, f2 as figure
-		  dim i, j as integer
-		  dim pt as BasicPoint
 		  
 		  Magnetism= Magnetisme(pointmobile,MagneticD)
 		  
@@ -685,9 +681,8 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself, EL, Form as XMLElement
-		  dim i as integer
-		  dim p as point
+		  Dim Myself, EL As XMLElement
+		  
 		  
 		  
 		  

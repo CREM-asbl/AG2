@@ -2038,14 +2038,19 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function fusionsubfigs(f1 as figure, f2 as figure) As Boolean
-		  dim k as integer
+		  Dim k As Integer
 		  dim t, t1 as boolean
-		  dim p as point
+		  Dim p As point
+		  Dim a As Integer
 		  
 		  if f1.auto = 1 and f2.auto = 3  then
 		    concat1(f1,f2,3)
 		    return false 'false parce qu'on a déjà fait un remove de f2
 		  end if
+		  
+		  If f1.Auto = 6 or f2.Auto = 6 Then 
+		    Return False
+		  End If
 		  
 		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
 		    return false
@@ -2065,11 +2070,19 @@ Protected Class Figure
 		    t=true
 		  end if
 		  
+		  a =0
+		  If f1.Auto = 6 Or f2.Auto = 6 Then
+		    a = 6
+		  End If
+		  
 		  if t then
 		    f2.shapes.concat f1.shapes
 		    f2.somm.concat f1.somm
 		    f2.PtsSur.concat f1.PtsSur
 		    f2.PtsConsted.concat f1.PtsConsted
+		    If a = 6 Then
+		      f2.Auto = 6
+		    End If
 		    'Adapterautos(f2)
 		  end if
 		  
@@ -3842,7 +3855,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function update1(p As point) As Boolean
-		  dim t  as boolean
+		  Dim t  As Boolean
 		  dim i as integer
 		  dim sf as figure
 		  

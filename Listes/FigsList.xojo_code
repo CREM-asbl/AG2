@@ -760,26 +760,27 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub RemoveFigure(f as Figure)
-		  dim  EL1, EL2 as XMLElement
+		  Dim  EL1, EL2 As XMLElement
 		  dim i As Integer
 		  
-		  if getposition(f) = -1 then
+		  If f = Nil Or getposition(f) = -1 Then
 		    return
 		  end if
 		  
-		  if (self = CurrentContent.TheFigs) and (Currentcontent.FigsCreated.Childcount > 0)   then
+		  If (Self = CurrentContent.TheFigs) And (Currentcontent.FigsCreated.Childcount > 0)   Then
 		    EL1 = XMLElement(CurrentContent.FigsCreated.firstchild)
-		    for i = EL1.childcount-1 downto 0
+		    For i = EL1.childcount-1 DownTo 0
 		      EL2 = XMLElement(EL1.child(i))
-		      if val(EL2.GetAttribute("FigId")) = f.idfig then
+		      If Val(EL2.GetAttribute("FigId")) = f.idfig Then
 		        EL1.RemoveChild EL2
-		      end if
-		    next
-		  elseif f.idfig <> -1 and CurrentContent.ForHisto  then
-		    if (self = CurrentContent.TheFigs ) then 'and (CurrentContent.currentoperation.currentshape.indexconstructedpoint > 1) then
+		      End If
+		    Next
+		  Elseif f.idfig <> -1 And CurrentContent.ForHisto  Then
+		    If (Self = CurrentContent.TheFigs ) Then 'And (CurrentContent.currentoperation.currentshape.indexconstructedpoint > 1) Then
+		      'conserver ou non le "and" ci-dessus? Si on remet ce "and", octopus se plante
 		      f.XMLPutInContainer(0,CurrentContent.Oplist)
-		    end if
-		  end if
+		    End If
+		  End If
 		  
 		  RemoveObject f
 		  
