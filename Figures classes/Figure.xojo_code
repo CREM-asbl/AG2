@@ -25,7 +25,7 @@ Protected Class Figure
 		  'D'abord un cas simple: toutes les formes ont même auto (différent de 3 (autospe) et 5 (autotrap)
 		  'On attribue cet auto à la figure.
 		  for  n = 0 to 6
-		    t = true
+		    t = True
 		    for j = 0 to ubound(aut)
 		      t  = t and (aut(j) = n)
 		    next
@@ -107,26 +107,33 @@ Protected Class Figure
 		  for n = 2 to 6
 		    t = true
 		    for j = 0 to ubound(aut)
-		      t  = t and ( (f1.shapes.item(j) isa BiPoint ) or (aut(j) = n))
-		    next
+		      t  = t And ( (f1.shapes.item(j) IsA BiPoint ) Or (aut(j) = n))
+		      If t Then 
+		        f1.Auto = n
+		        exit
+		      End If
+		    Next
 		    
-		    if t then 
-		      j = 0
-		      while aut(j) <> n
-		        j = j+1
-		      wend
-		      Ob1 = new ObjectsList
-		      Ob1.addobject f1.shapes.item(j)
-		      for h = 0 to f1.shapes.count -1
-		        if h <> j then
-		          Ob1.addObject f1.shapes.item(h)
-		        end if
-		      next
-		      f1.shapes = Ob1
-		      f1.auto = n
-		      return
-		    end if
-		  next
+		  Next
+		  
+		  
+		  'if t then 
+		  'j = 0
+		  'while aut(j) <> n
+		  'j = j+1
+		  'wend
+		  'Ob1 = new ObjectsList
+		  'Ob1.addobject f1.shapes.item(j)
+		  'for h = 0 to f1.shapes.count -1
+		  'if h <> j then
+		  'Ob1.addObject f1.shapes.item(h)
+		  'end if
+		  'next
+		  'f1.shapes = Ob1
+		  'f1.auto = n
+		  'return
+		  'end if
+		  
 		  
 		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si 
 		  'une des formes est autoaff, etc

@@ -3,7 +3,7 @@ Protected Class FigsList
 Inherits Liste
 	#tag Method, Flags = &h0
 		Sub AddObject(Obj as Figure)
-		  dim i As integer
+		  Dim i As Integer
 		  
 		  
 		  if Obj = nil then
@@ -12,7 +12,7 @@ Inherits Liste
 		  
 		  if GetPosition(Obj)  <> -1 then
 		    return
-		  else
+		  Else
 		    Objects.append Obj
 		  end if
 		  
