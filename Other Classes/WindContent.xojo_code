@@ -192,13 +192,13 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub CreateHisto()
-		  dim fi as Folderitem
+		  Dim fi As Folderitem
 		  dim d as Date
 		  dim t as string
 		  dim m, n as integer
 		  d  = new Date
 		  
-		  fi = GetFolderHisto("Historiques/"+Config.username+"/"+str(d.day)+"-"+str(d.Month)+"-"+str(d.Year))
+		  fi = GetFolderHisto("Historiques/"+Config.username+"/"+Str(d.Month)+"-"+Str(d.Day)+"-"+Str(d.Year))
 		  
 		  if fi <> nil then
 		    if currentfile <> nil then
@@ -405,7 +405,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function GetFolderHisto(directory as string) As folderItem
-		  dim fi as FolderItem
+		  Dim fi As FolderItem
 		  dim childs(-1) as string
 		  dim i as Integer
 		  
@@ -782,11 +782,11 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub SaveAs()
-		  dim Titre, Ext, s as string
+		  Dim Titre, Ext, s As String
 		  dim n as integer
 		  
 		  Currentfile=GetSaveFolderItem(FileAGTypes.SAVE,"Figure_"+str(id)+".fag")
-		  If Currentfile<>Nil then
+		  If Currentfile<>Nil Then
 		    Titre = Currentfile.Name
 		    n = Titre.Instr(".")
 		    if n > 0 then
@@ -802,6 +802,9 @@ Protected Class WindContent
 		      CurrentFile.Name = Titre+"."+Ext
 		    end if
 		    save
+		    If FiHisto.Name <> s+".hag" Then
+		      CreateHisto
+		    End If
 		  end if
 		  
 		  
@@ -813,14 +816,15 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub SaveHisto()
-		  Dim fileStream as TextOutputStream
+		  Dim fileStream As TextOutputStream
 		  
 		  
-		  if TotalOperation = 1 then
+		  If TotalOperation = 1 Then
 		    CreateHisto
-		  end if
+		  End If
 		  
-		  if FiHisto <> nil and TotalOperation >1 then
+		  
+		  If  FiHisto <> Nil And TotalOperation >1  Then 
 		    fileStream= TextOutputStream.Create(FiHisto)
 		    if fileStream=nil then
 		      MsgBox Dico.Value("ErrorOnSave")

@@ -1963,7 +1963,7 @@ End
 
 	#tag MenuHandler
 		Function ToolsHide() As Boolean Handles ToolsHide.Action
-			if mousedispo then
+			If mousedispo Then
 			Formswindow.close
 			CurrentContent.CurrentOperation=new Hide()
 			Hide(CurrentContent.CurrentOperation).ImmediateDoOperation

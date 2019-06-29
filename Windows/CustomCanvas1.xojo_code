@@ -666,12 +666,15 @@ Inherits Canvas
 		  
 		  if CurrentContent.TheGrid<>nil then
 		    CurrentContent.TheGrid.Paint(BackgroundPicture.Graphics)
-		  end if
+		  End If
 		  
-		  
+		  op = CurrentContent.currentoperation
+		  If op = Nil Then 
+		    workwindow.drapshowall = False
+		  End If
 		  
 		  CurrentContent.TheObjects.paint(BackgroundPicture.Graphics)
-		  op = CurrentContent.currentoperation
+		  
 		  if op <> nil  then
 		    op.Paint(BackgroundPicture.Graphics)
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
