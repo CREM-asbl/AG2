@@ -42,7 +42,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim s as shape
+		  Dim s As shape
 		  dim i, n as integer
 		  
 		  
@@ -160,28 +160,28 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim i, n as integer
+		  Dim i, n As Integer
 		  dim s as shape
 		  dim bd as string
 		  dim EL, EL1, EL2 as XMLElement
 		  dim r, g, b as double
 		  
 		  
-		  EL = XMLElement(Temp.Child(0))
-		  bd =  EL.GetAttribute("Bord")
+		  Temp = XMLElement(Temp.Child(0))
+		  bd =  Temp.GetAttribute("Bord")
 		  
 		  if bd = "true" then
 		    Bord = true
 		  else
 		    Bord = false
-		  end if
+		  End If
 		  
-		  SelectIdForms(EL)
+		  SelectIdForms(Temp)
 		  n = tempshape.count-1
-		  EL1 = XMLElement(EL.child(1))
+		  EL1 = XMLElement(Temp.child(1))
 		  newcolor = new couleur(EL1)
-		  newfill = val(EL.GetAttribute("Newfill"))
-		  icot = Val(EL.getattribute("Icot"))
+		  newfill = Val(Temp.GetAttribute("Newfill"))
+		  icot = Val(Temp.getattribute("Icot"))
 		  
 		  for i = 0 to n
 		    s = tempshape.item(i)
@@ -197,6 +197,9 @@ Inherits SelectOperation
 		    end if
 		  next
 		  objects.unselectall
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -263,7 +266,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  Dim Myself , EL, EL1 as XMLElement
+		  Dim Temp, EL, EL1 As XMLElement
 		  dim i,j,n as integer
 		  dim s as shape
 		  
@@ -274,19 +277,19 @@ Inherits SelectOperation
 		    return nil
 		  end if
 		  
-		  Myself= Doc.CreateElement(GetName)
+		  Temp = Doc.CreateElement(GetName)
 		  if Bord then
-		    Myself.SetAttribute("Bord", "true")
+		    Temp.SetAttribute("Bord", "true")
 		  else
-		    Myself.SetAttribute("Bord", "false")
+		    Temp.SetAttribute("Bord", "false")
 		  end if
+		  Temp.setattribute("Icot", Str(icot))
+		  If Not Bord Then
+		    Temp.SetAttribute("Newfill",Str(newfill))
+		  End If
 		  
-		  Myself.appendchild tempshape.XMLPutIdInContainer(Doc)
-		  Myself.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
-		  Myself.setattribute("Icot", str(icot))
-		  if not Bord then
-		    Myself.SetAttribute("Newfill",str(newfill))
-		  end if
+		  Temp.appendchild tempshape.XMLPutIdInContainer(Doc)
+		  Temp.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
 		  
 		  EL = Doc.CreateElement("OldColors")
 		  if icot <> -1 then
@@ -314,8 +317,8 @@ Inherits SelectOperation
 		      EL.appendchild EL1
 		    next
 		  end if
-		  Myself.appendchild EL
-		  return Myself
+		  Temp.appendchild EL
+		  Return Temp
 		  
 		  
 		  
@@ -327,14 +330,14 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim i, j, n, f as integer
+		  Dim i, j, n, f As Integer
 		  dim s as shape
 		  dim bd as string
 		  dim EL, EL1, EL2, EL3 as XMLElement
 		  dim r, g, b as double
 		  dim c as couleur
 		  
-		  EL = XMLElement(Temp.Child(0)) 'EL est le Myself de ToXML
+		  EL = XMLElement(Temp.Child(0)) 
 		  bd =  EL.GetAttribute("Bord")
 		  
 		  if bd = "true" then
@@ -371,7 +374,7 @@ Inherits SelectOperation
 		          s.FixeCouleurTrait new couleur(EL2), s.border
 		        end if
 		      else
-		        EL3 = XMLElement(EL2.child(i))
+		        EL3 = XMLElement(EL2.child(0))
 		        c = new Couleur(EL3)
 		        f = Val(EL2.GetAttribute("Fill"))
 		        s.FixeCouleurFond c, f

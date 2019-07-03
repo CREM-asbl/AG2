@@ -428,7 +428,6 @@ Inherits MultipleSelectOperation
 		  If f <> -1 Then
 		    s = Objects.XMLLoadObject(EL)
 		    s.endconstruction
-		  else
 		    RedeleteDeletedFigures(Temp)
 		    RecreateCreatedFigures(Temp)
 		  end if

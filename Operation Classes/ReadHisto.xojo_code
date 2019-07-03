@@ -88,9 +88,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub FirstOper()
-		  dim i as integer
-		  
-		  dim EL as XMLElement
+		  Dim i As Integer
 		  
 		  if noper = 1 then
 		    MsgBox Dico.value("Empty_file")
@@ -130,7 +128,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub NextOper()
-		  dim EL as XMLElement
+		  Dim EL As XMLElement
 		  
 		  if currentop = Noper-1 then
 		    MsgBox Dico.Value("End_of_file")
@@ -151,6 +149,8 @@ Inherits Operation
 		  end if
 		  
 		  can.refreshbackground
+		  
+		  
 		End Sub
 	#tag EndMethod
 

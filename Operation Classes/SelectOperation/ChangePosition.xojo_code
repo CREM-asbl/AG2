@@ -15,19 +15,19 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i  as integer
+		  Dim i  As Integer
 		  dim s as shape
 		  
 		  
-		  for i = 0 to tempshape.count-1
-		    s = tempshape.item(i)
-		    pos.append currentcontent.plans.indexof(s.id)
-		    if foreground = 0 then
-		      currentcontent.moveback(s.id)
-		    else
-		      currentcontent.movefront(s.id)
-		    end if
-		  next
+		  'for i = 0 to tempshape.count-1
+		  s = tempshape.item(0)
+		  pos.append currentcontent.plans.indexof(s.id)
+		  if foreground = 0 then
+		    currentcontent.moveback(s.id)
+		  else
+		    currentcontent.movefront(s.id)
+		  end if
+		  'Next
 		  
 		  
 		  
@@ -74,23 +74,20 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim i as integer
+		  Dim i As Integer
 		  dim s as Shape
 		  dim EL, EL1 as XMLElement
 		  dim fg as string
 		  
 		  fg = Temp.GetAttribute(Dico.Value("Type"))
-		  
 		  if fg =Dico.Value("ToolsARPlan") then
 		    foreground = 0
 		  else
 		    foreground = 1
-		  end if
+		  End If
+		  Super.RedoOperation(Temp)
 		  
-		  Temp = XMLElement(Temp.child(0))
-		  SelectIdForms(Temp)
-		  DoOperation
-		  objects.unselectall
+		  
 		  
 		  
 		End Sub
@@ -138,7 +135,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim i as integer
+		  Dim i As Integer
 		  dim s as Shape
 		  dim EL, EL1 as XMLElement
 		  
@@ -147,15 +144,11 @@ Inherits SelectOperation
 		  SelectIdForms(Temp)
 		  EL = XMLElement(Temp.child(1))
 		  
-		  redim pos(-1)
-		  redim pos(tempshape.count-1)
-		  for i = tempshape.count - 1 downto 0
-		    EL1 = XMLElement(EL.Child(i))
-		    pos(i) = val(EL1.GetAttribute(Dico.Value("Old")))
-		    s=tempshape.item(i)
-		    currentcontent.setposition(s,pos(i))
-		  next
-		  
+		  Redim pos(0)
+		  EL1 = XMLElement(EL.Child(0))
+		  pos(0) = Val(EL1.GetAttribute(Dico.Value("Old")))
+		  s=tempshape.item(0)
+		  currentcontent.setposition(s,pos(0))
 		  objects.unselectall
 		End Sub
 	#tag EndMethod

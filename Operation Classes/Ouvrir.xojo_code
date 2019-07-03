@@ -101,9 +101,12 @@ Inherits Operation
 		  
 		  EL = Doc.CreateElement(Dico.value("ObjectsLus"))
 		  EL.SetAttribute("Fichier", FagTitle)
-		  Temp = Doc.CreateElement(Dico.value("Objects"))
+		  Temp = Doc.CreateElement(Dico.value("Forms"))
 		  
-		  List = FAG.XQL(Dico.Value("Objects"))
+		  List = FAG.XQL(Dico.Value("Forms"))
+		  If List.length = 0 Then
+		    List = FAG.XQL(Dico.Value("Objects"))
+		  end if
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
 		    for i = 0 to Obj.ChildCount-1

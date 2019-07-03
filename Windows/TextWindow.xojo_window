@@ -369,7 +369,7 @@ End
 
 	#tag Method, Flags = &h0
 		Function messconstructedby(s As shape) As string
-		  dim m as string
+		  Dim m As String
 		  dim tsf as transformation
 		  
 		  if s.constructedby.oper <> 9 then
@@ -383,7 +383,9 @@ End
 		      m = m+ ", Point de division"
 		    case 6
 		      tsf =  Transformation(s.constructedby.data(0))
-		      m = m + " , " + tsf.GetType + " " + "Support " +  Type(Tsf.Supp)
+		      m = m + ", " + tsf.GetType + " " + "Support " +  Type(Tsf.Supp)
+		    Case 45
+		      m = m+ ", AutoIntersection"
 		    end select
 		    m = m + chr(13)
 		    return m

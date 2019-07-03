@@ -139,21 +139,23 @@ Inherits Canvas
 		  dim coul as couleur
 		  dim txt as TextWindow
 		  dim dr as droite
+		  Dim ep As Double
 		  
 		  select case hitItem.Text
 		  case tit
 		    txt = new TextWindow
 		    txt.visible = true
 		  case Dico.value("ToolsLabel")
-		    currentoper = new AddLabel()
+		    currentoper = New AddLabel
 		    currentoper.currentshape = sctxt
 		    currentcontent.currentoperation = currentoper
 		    currentoper.MouseDown(MouseUser)
 		    currentoper.MouseUp(MouseUser)
-		  case Dico.Value("Epais")
-		    sctxt.borderwidth = 1.5*config.thickness
-		  case  Dico.Value("Mince")
-		    sctxt.borderwidth = config.thickness
+		  Case Dico.Value("Epais"), Dico.Value("Mince")
+		    currentoper = New Epaisseur
+		    currentoper.currentshape = sctxt
+		    currentcontent.currentoperation = currentoper
+		    EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
 		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))  then
 		      currentcontent.currentoperation = new ColorChange(true,new couleur(col))

@@ -379,7 +379,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
-		  if currenthighlightedshape = nil then
+		  If currenthighlightedshape = Nil Then
 		    Objects.unselectall
 		    return
 		  end if
@@ -477,6 +477,15 @@ Inherits Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub RedoOperation(Temp as XMLElement)
+		  Temp = XMLElement(Temp.child(0))
+		  SelectIdForms(Temp)
+		  DoOperation
+		  objects.unselectall
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub reputids(EL as XMLElement)
 		  dim EL2, EL3 as XMLElement
 		  dim i,j,n as integer
@@ -502,25 +511,24 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub SelectIdForms(Temp as XMLElement)
-		  dim List as XMLNodeList
+		  Dim List As XMLNodeList
 		  dim EL, EL1 as XMLElement
-		  dim i, n as integer
-		  
+		  Dim i, n As Integer
 		  
 		  objects.unselectall
 		  List = Temp.XQL(Dico.value("Forms"))
-		  if list.length > 0 then
+		  If list.length > 0 Then
 		    EL = XMLElement(List.Item(0))
-		    for i = 0 to EL.childcount-1
+		    For i = 0 To EL.childcount-1
 		      EL1 = XMLElement(EL.child(i))
-		      n = val(EL1.GetAttribute("Id"))
-		      if n <> 0 then
+		      n = Val(EL1.GetAttribute("Id"))
+		      If n <> 0 Then
 		        tempshape.addshape Objects.Getshape(n)
-		      else
+		      Else
 		        tempshape.addshape Objects.item(0)
-		      end if
-		    next
-		  end if
+		      End If
+		    Next
+		  End If
 		  
 		  
 		End Sub

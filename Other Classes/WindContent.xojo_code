@@ -582,7 +582,7 @@ Protected Class WindContent
 		  end if
 		  
 		  if TheObjects.item(0) isa repere then
-		    TMP = Doc.CreateElement(Dico.Value("Objects"))
+		    TMP = Doc.CreateElement(Dico.Value("Forms"))                  'Forms remplace Objects 
 		    TMP.AppendChild TheObjects.item(0).XMLPutInContainer(Doc)
 		  else
 		    MsgBox Dico.value("CorruptedFile")

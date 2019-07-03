@@ -65,9 +65,10 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp As XMLElement)
-		  SelectIdForms(Temp)
-		  DoOperation
-		  objects.unselectall
+		  Super.RedoOperation(Temp)
+		  'SelectIdForms(Temp)
+		  'DoOperation
+		  'objects.unselectall
 		End Sub
 	#tag EndMethod
 

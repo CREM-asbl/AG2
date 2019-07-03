@@ -6,16 +6,6 @@ Begin Menu MenuMenus
       Index = -2147483648
       AutoEnable = True
       Visible = True
-      Begin MenuItem EditUndo
-         SpecialMenu = 0
-         Text = "Annuler"
-         Index = -2147483648
-         ShortcutKey = "Z"
-         Shortcut = "Cmd+Z"
-         MenuModifier = True
-         AutoEnable = False
-         Visible = True
-      End
       Begin MenuItem EditRedo
          SpecialMenu = 0
          Text = "Refaire"
@@ -33,6 +23,16 @@ Begin Menu MenuMenus
          Text = "Select"
          Index = -2147483648
          AutoEnable = True
+         Visible = True
+      End
+      Begin MenuItem EditUndo
+         SpecialMenu = 0
+         Text = "Annuler"
+         Index = -2147483648
+         ShortcutKey = "Z"
+         Shortcut = "Cmd+Z"
+         MenuModifier = True
+         AutoEnable = False
          Visible = True
       End
       Begin MenuItem EditSelectall

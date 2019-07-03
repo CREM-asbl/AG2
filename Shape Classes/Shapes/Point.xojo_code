@@ -1294,7 +1294,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Mobility()
-		  dim i as integer
+		  Dim i As Integer
 		  dim p, p1 as point
 		  
 		  liberte = 2
@@ -1307,9 +1307,6 @@ Inherits Shape
 		    return
 		  end select
 		  
-		  if std then
-		    liberte = 0
-		  end if
 		  if constructedby <> nil then
 		    select case constructedby.oper
 		    case 0, 4, 6, 7
@@ -1340,7 +1337,9 @@ Inherits Shape
 		  if (forme <> 1) and (  (MacConstructedBy <>  nil )  or ( (ubound(parents) > -1) and (parents(0).macconstructedby <> nil)  and (parents(0).macconstructedby.RealInit.indexof(id) =-1) )   )   then
 		    liberte = 0
 		  end if
-		  
+		  If std Then
+		    liberte = 0
+		  end if
 		  for i = 0 to ubound(parents)
 		    if parents(i).std  then
 		      liberte = 0

@@ -30,12 +30,7 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub Annuler()
 		  FormsWindow.close
-		  if finished = true then
-		    'if self isa AppliquerTsf then
-		    'AppliquerTsf(self).tsf.highlighted = false
-		    'end if
-		    'CurrentContent.abortconstruction
-		    'else
+		  If finished = True Then
 		    CurrentContent.UndoLastOperation
 		  end if
 		  can.refreshBackground
@@ -660,7 +655,7 @@ Protected Class Operation
 	#tag Note, Name = Numeros des operations
 		
 		
-		28: Prolonger
+		
 		
 		Variable: OpId (Id d'opération)
 		Chaque classe d'opérations a un code.

@@ -1149,10 +1149,14 @@ Inherits Liste
 		  Dim Obj As XMLElement
 		  dim List as XMLNodeList
 		  dim nobj, i, j as integer
-		  dim s as shape
+		  Dim s As shape
 		  
-		  List = Shapes.XQL(Dico.Value("Objects"))
+		  'Voir note à propos de "Forms" et "Objects"  dans Figure.XMLPutInContainer(Doc)
 		  
+		  List = Shapes.XQL(Dico.Value("Forms"))
+		  If List.length = 0 Then
+		    List = shapes.XQL(Dico.Value("Objects"))
+		  end if
 		  If list.Length > 0 then
 		    Obj= XMLElement(List.Item(0))
 		    nobj = obj.childcount
@@ -1234,20 +1238,26 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  dim i  As  integer
+		  Dim i  As  Integer
 		  dim EL as XMLElement
 		  dim s as shape
 		  
 		  optimize
 		  
-		  EL =  Doc.CreateElement(Dico.Value("Objects"))
+		  EL =  Doc.CreateElement(Dico.Value("Forms"))
 		  
 		  for i=0 to UBound(Objects)
 		    s = shape(objects(i))
 		    EL.AppendChild(s.XMLPutInContainer(Doc))
 		  next
 		  
-		  return EL
+		  Return EL
+		  
+		  'Note: XMLPutIncontainer et XMLPutIdInContainer utilisent le premier Doc.CreateElement(Dico.Value("Objects")), le second Doc.CreateElement(Dico.Value("Forms"))
+		  'J'unifie en remplaçant Objects par Forms dans les deux cas
+		  'Mais pour que les anciens fichiers restent lisibles, j'ajoute une ligne dans ObjectsList.XMLLoadObjects qui renvoie à une recherche de "Objects" si "Forms" ne donne rien.
+		  
+		  '2 juillet 2019
 		End Function
 	#tag EndMethod
 

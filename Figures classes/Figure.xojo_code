@@ -4077,7 +4077,7 @@ Protected Class Figure
 		  end if
 		  
 		  if EL.childcount = 0 then
-		    Temp =  Doc.CreateElement(Dico.Value("Objects"))
+		    Temp =  Doc.CreateElement(Dico.Value("Forms"))
 		    EL.appendchild Temp
 		  end if
 		  
