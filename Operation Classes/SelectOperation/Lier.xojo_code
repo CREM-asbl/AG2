@@ -13,10 +13,13 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  super.Constructor
+		  Super.Constructor
 		  OpId = 3
 		  prem = true
-		  prembis = true
+		  prembis = True
+		  WorkWindow.refreshtitle
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -195,12 +198,33 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub MouseDown(p as BasicPoint)
+		  If currenthighlightedshape = Nil Then
+		    EndOperation
+		    Objects.unselectall
+		    Return
+		  End If
+		  
+		  selection
+		  Finished = False
+		  DoOperation
+		  'If dret = Nil  Then
+		  'endoperation
+		  'End If
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  
 		  if CurrentContent.currentoperation = self then
-		    display = choose + aform + alier
+		    display = choose + aform + alier + EndOfLine _ 
+		    +"Après avoir choisi la dernière forme à lier, cliquez du bouton droit " + EndOfLine _
+		    + "en dehors de toute forme"
 		  end if
 		  
 		  for i = 0 to ubound(objects.groupes)

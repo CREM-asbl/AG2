@@ -40,7 +40,8 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  WorkWindow.drapshowall = false
+		  
+		  WorkWindow.drapshowall = False
 		  Objects = CurrentContent.theobjects
 		  oldp = new BasicPoint(0,0)
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
@@ -71,14 +72,6 @@ Protected Class Operation
 		  end if
 		  CurrentContent.CreateFigs
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub endselect()
-		  if (not self isa selectionner) and (CurrentContent.currentoperation isa selectionner) then
-		    selectionner(CurrentContent.currentoperation).endoperation
-		  end if
 		End Sub
 	#tag EndMethod
 

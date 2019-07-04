@@ -2533,14 +2533,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub endselect()
-		  if CurrentContent.currentoperation isa selectionner then
-		    selectionner(CurrentContent.currentoperation).endoperation
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub EraseMenuBar()
 		  dim i, n as integer
 		  n = menubar.count
@@ -3254,12 +3246,12 @@ End
 #tag Events MouvBut
 	#tag Event
 		Sub Action(index as Integer)
-		  if CurrentContent.TheObjects.count = 1 then
+		  If CurrentContent.TheObjects.count = 1 Then
 		    return
 		  end if
 		  
 		  
-		  if mousedispo then
+		  If mousedispo Then
 		    Formswindow.close
 		    select case index
 		    case 0

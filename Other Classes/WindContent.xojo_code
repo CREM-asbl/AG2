@@ -24,7 +24,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub AddOperation(o as Operation)
-		  dim codes() as integer
+		  Dim codes() As Integer
 		  
 		  codes = Array(2,4,8,9,34,41,42) //SaveBitMap, SaveEps, Print, ReadHisto, Unit, ChooseFinal, Sélectionner
 		  // 34: on ne crée pas d'historique de la lecture d'un historique

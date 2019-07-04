@@ -94,6 +94,7 @@ Inherits Intersec
 		  End If
 		  
 		  s =  Polygon(Objects.GetShape(n))
+		  s.autointer = Self
 		  sh1 = polygon(s)
 		  sh2 = polygon(s)
 		  Super.Constructor(sh1,sh1)
@@ -103,6 +104,7 @@ Inherits Intersec
 		  Redim ids(t,t)
 		  Redim Val(t,t)
 		  Redim pts(-1)
+		  
 		  
 		  
 		  
@@ -258,7 +260,7 @@ Inherits Intersec
 		  
 		  Temp = Doc.CreateElement(GetName)
 		  Temp.appendchild s.XMLPutIdInContainer(Doc)
-		  EL = Doc.CreateElement(Dico.Value("Pts"))
+		  EL = Doc.CreateElement(Dico.Value("Formes"))
 		  For i = 0 to ubound(pts)
 		    EL.AppendChild pts(i).XMLPutINContainer(Doc)
 		  Next

@@ -278,20 +278,28 @@ Inherits Canvas
 
 	#tag Event
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
-		  dim p as BasicPoint
+		  Dim p, pp As BasicPoint
+		  Dim curop As operation
+		  
+		  p = New BasicPoint(x,y)
+		  pp = itransform(p)
+		  curop = currentcontent.currentoperation
 		  
 		  Formswindow.close
 		  if not IsContextualClick then
 		    if dret = nil then
 		      if CurrentContent.CurrentOperation<>nil then
-		        p = new BasicPoint(x,y)
-		        CurrentContent.CurrentOperation.MouseDown(itransform(p))
+		        p = New BasicPoint(x,y)
+		        CurrentContent.CurrentOperation.MouseDown(pp)
 		      end if
 		      return true
 		    end if
 		  else
-		    oldp = new BasicPoint(x,y)
-		    info = ""
+		    oldp = New BasicPoint(x,y)
+		    If curop <> Nil And curop IsA lier Then
+		      curop.MouseDown(pp)
+		      info = ""
+		    End If
 		  end if
 		  
 		  

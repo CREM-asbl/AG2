@@ -385,7 +385,6 @@ Inherits Operation
 		  end if
 		  
 		  selection
-		  
 		  Finished = false
 		  can.Mousecursor = System.Cursors.Wait
 		  
