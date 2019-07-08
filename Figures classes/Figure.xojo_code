@@ -100,7 +100,7 @@ Protected Class Figure
 		        f1.auto = 1
 		      end if
 		    next
-		    
+		    Return
 		  end if
 		  'Cinquième: s'il y a un mélange de droites  avec des formes de même auto
 		  
@@ -113,7 +113,7 @@ Protected Class Figure
 		        exit
 		      End If
 		    Next
-		    
+		    Return
 		  Next
 		  
 		  

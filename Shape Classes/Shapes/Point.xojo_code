@@ -1017,10 +1017,10 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function isolated() As boolean
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  if pointsur.count = 2 then
-		    return false
+		    Return True
 		  end if
 		  
 		  for i = 0 to ubound(parents)

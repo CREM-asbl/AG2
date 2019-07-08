@@ -308,7 +308,7 @@ Protected Class Shape
 		Sub Autos()
 		  If (constructedby <> Nil And constructedby.oper = 6)   Or std Then 'or (macconstructedby <> nil) then
 		    auto = 0
-		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA droite And Not Self.isaparaperp) Or   (Self IsA Freecircle)  Or (Self IsA HalfDsk)   Then
+		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA HalfDsk)  then '(Self IsA droite And Not Self.isaparaperp) Or   (Self IsA Freecircle)    Then
 		    auto = 1
 		  elseif  (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then '((self isa polyqcq and npts = 3) and (not Hybrid)) or
 		    auto = 2
