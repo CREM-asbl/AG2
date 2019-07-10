@@ -3135,26 +3135,28 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub QQupdateshapes()
-		  dim i as integer
+		  Dim i As Integer
 		  dim p as point
 		  dim ep, np as basicpoint
 		  dim s as shape
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
-		    getoldnewpos(p,ep,np)
-		    if ep <> nil and np <> nil and ep.distance(np) > epsilon then
-		      select case  p.pointsur.count
-		      case  1
-		        p.puton p.pointsur.item(0)
-		        'p.unmodifiable = true
-		      end select
-		    end if
-		    if p.isonasupphom(s) = 2 then
-		      p.resetonsupphom(s)
-		    end if
-		    p.updateshape
-		    p.modified = true // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
+		    If Not p.modified Then
+		      getoldnewpos(p,ep,np)
+		      If ep <> Nil And np <> Nil And ep.distance(np) > epsilon Then
+		        Select Case  p.pointsur.count
+		        case  1
+		          p.puton p.pointsur.item(0)
+		          'p.unmodifiable = true
+		        end select
+		      end if
+		      if p.isonasupphom(s) = 2 then
+		        p.resetonsupphom(s)
+		      end if
+		      p.updateshape
+		      p.modified = True // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
+		    End If
 		  next
 		  
 		  
@@ -4030,7 +4032,6 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
-		    p.first = false
 		    p.Transform(M)
 		    p.updateshape
 		    if  p.forme = 0 then

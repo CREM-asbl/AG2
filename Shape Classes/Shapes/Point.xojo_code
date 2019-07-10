@@ -3404,10 +3404,6 @@ Inherits Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		first As boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Guide As Point
 	#tag EndProperty
 
@@ -3535,11 +3531,6 @@ Inherits Shape
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="first"
-			Group="Behavior"
-			Type="boolean"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Fleche"

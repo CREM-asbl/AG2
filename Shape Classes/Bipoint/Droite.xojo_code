@@ -644,7 +644,7 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Function prppupdate1() As Matrix
-		  dim Bib1, BiB2 as BiBPoint
+		  Dim Bib1, BiB2 As BiBPoint
 		  dim sf as figure
 		  dim  p, q as Point
 		  dim n as integer
@@ -679,10 +679,14 @@ Inherits Bipoint
 		  else
 		    if q.forme = 0 then
 		      w = w.normer
+		      u = nq-np
+		      d = u.norme
 		      nq = np+w*d
+		      q.moveto nq
+		      q.modified = True
 		    else
 		      return prpupdate11(q,ep,eq,np,nq)
-		    end if
+		    End If
 		  end if
 		  return new SimilarityMatrix(ep,eq,np,nq)
 		  

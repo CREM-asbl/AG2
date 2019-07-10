@@ -306,9 +306,11 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  If (constructedby <> Nil And constructedby.oper = 6)   Or std Then 'or (macconstructedby <> nil) then
+		  If self isa repere Then
+		    Auto =-1
+		  Elseif (constructedby <> Nil And constructedby.oper = 6)   Or std Then 'or (macconstructedby <> nil) then
 		    auto = 0
-		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA HalfDsk)  then '(Self IsA droite And Not Self.isaparaperp) Or   (Self IsA Freecircle)    Then
+		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA HalfDsk)  Then '(Self IsA droite And Not Self.isaparaperp) Or   (Self IsA Freecircle)    Then
 		    auto = 1
 		  elseif  (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then '((self isa polyqcq and npts = 3) and (not Hybrid)) or
 		    auto = 2
@@ -2786,6 +2788,7 @@ Protected Class Shape
 		  
 		  ff = s2.getsousfigure(s2.fig)
 		  s2ci = s2.constructedby
+		  
 		  if s2ci <> nil and (s2ci.shape = self or (s2ci.shape = nil and s2ci.oper = 9 and (s2ci.data(0) = self or s2ci.data(2) =self))  ) then
 		    select case  s2ci.oper
 		    case 1, 2
@@ -2875,8 +2878,13 @@ Protected Class Shape
 		    next
 		  end if
 		  
-		  if isaparaperp and (s2.getindexpoint(points(1)) <> -1) and ( constructedby.shape <> s2 ) then
-		    return true
+		  
+		  'If s2.IsAparaperp And s2.constructedby.shape <> Self And getindexpoint(s2.points(1)) <> -1 Then
+		  'Return True
+		  'End If
+		  
+		  If isaparaperp And (s2.getindexpoint(points(1)) <> -1) And ( constructedby.shape <> s2 ) Then
+		    Return True
 		  end if
 		  
 		  if not (self isa arc) and  (self.auto = 3 or self.auto = 5) and s2.auto = 1 and NbPtsCommuns(s2) >= 2 then
