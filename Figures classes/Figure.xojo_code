@@ -88,51 +88,37 @@ Protected Class Figure
 		    t  = t and ((aut(j) =1 ) or (aut(j) = 4))
 		  next
 		  if t then
-		    tt = true
+		    'tt = true
 		    for j = 0 to ubound(aut)
 		      if aut(j) = 4 then
 		        s = f1.shapes.element(j)
+		        k = -1
 		        for h = 0 to s.npts-1
-		          tt = tt and s.points(h).HasAutosimParent(k) 
+		           s.points(h).HasAutosimParent(k) 
 		        next
 		      end if
-		      if tt then
+		      'if tt then
+		      If k <> -1 Then
 		        f1.auto = 1
 		      end if
 		    next
 		    Return
 		  end if
+		  
 		  'Cinquième: s'il y a un mélange de droites  avec des formes de même auto
 		  
-		  for n = 2 to 6
-		    t = true
-		    for j = 0 to ubound(aut)
-		      t  = t And ( (f1.shapes.item(j) IsA BiPoint ) Or (aut(j) = n))
+		  For n = 1 To 6
+		    If n <> 4 Then 'On élimine les droites
+		      t = true
+		      for j = 0 to ubound(aut)
+		        t  = t And ( (f1.shapes.item(j) IsA BiPoint ) Or aut(j) = n)
+		      Next
 		      If t Then 
 		        f1.Auto = n
-		        exit
+		        Return
 		      End If
-		    Next
-		    Return
+		    End If
 		  Next
-		  
-		  
-		  'if t then 
-		  'j = 0
-		  'while aut(j) <> n
-		  'j = j+1
-		  'wend
-		  'Ob1 = new ObjectsList
-		  'Ob1.addobject f1.shapes.item(j)
-		  'for h = 0 to f1.shapes.count -1
-		  'if h <> j then
-		  'Ob1.addObject f1.shapes.item(h)
-		  'end if
-		  'next
-		  'f1.shapes = Ob1
-		  'f1.auto = n
-		  'return
-		  'end if
 		  
 		  
 		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si 

@@ -686,17 +686,23 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function HasAutoSimParent(byref j as integer) As boolean
-		  dim i as integer
+		Sub HasAutoSimParent(byref j as integer)
+		  Dim i As Integer
 		  
 		  for i = 0 to ubound(parents)
 		    if parents(i).auto = 1 then
 		      j = i
-		      return true
+		      
 		    end if
-		  next
-		  return false
-		End Function
+		  Next
+		  For i = 0 To pointsur.count-1
+		    If pointsur.item(i).Auto=1 Then
+		      j = i
+		      
+		    End If
+		  Next
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

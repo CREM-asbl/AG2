@@ -306,7 +306,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Autos()
-		  If self isa repere Then
+		  If Self IsA repere Then
 		    Auto =-1
 		  Elseif (constructedby <> Nil And constructedby.oper = 6)   Or std Then 'or (macconstructedby <> nil) then
 		    auto = 0
@@ -2786,6 +2786,7 @@ Protected Class Shape
 		  dim s2ci As constructioninfo
 		  dim tsf as transformation
 		  
+		  
 		  ff = s2.getsousfigure(s2.fig)
 		  s2ci = s2.constructedby
 		  
@@ -2902,13 +2903,13 @@ Protected Class Shape
 		    return t
 		  end if
 		  
-		  If Auto <>4 And NbTrueSomCommuns(ff) > 0 And  s2.Auto = 4 Then   'Décommentarizé pour le cas d'un quadri inscrit à un cercle avec un sommet qui définit le cercle
+		  If Not Self IsA arc And Auto <>4 And NbTrueSomCommuns(ff) > 0 And  s2.Auto = 4 Then   'Décommentarizé pour le cas d'un quadri inscrit à un cercle avec un sommet qui définit le cercle
 		    Return True
-		  end if
+		  end if  'la contrante not self isa arc correspond à une figure du Type "carré abcd + pt p sur bc + segment ap + arc (dap)
 		  
-		  for i = 0 to ubound(childs)    // double emploi avec une autre condition ci-dessus
-		    if childs(i).id > id then
-		      for j = 0 to ubound (childs(i).constructedshapes)
+		  For i = 0 To ubound(childs)    // double emploi avec une autre condition ci-dessus
+		    If childs(i).id > id Then
+		      For j = 0 To ubound (childs(i).constructedshapes)
 		        if s2.getindex(point(childs(i).constructedshapes(j))) <>-1 and childs(i).constructedshapes(j).constructedby.oper = 6 then
 		          return true
 		        end if
