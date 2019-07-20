@@ -2375,24 +2375,28 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NbTrueSomCommuns(f as figure) As integer
-		  dim i, j, n, n0 as integer
+		Function NbTrueSomCommuns(s as shape) As integer
+		  Dim i, j, n, n0 As Integer  //Méthode utilisée uniquement par shape.precede(autre shape)
+		  //Précédemment  s'appelait NbTrueSomCommuns(ff as figure) Pas logique pour tester si une forme précède une autre forme!
+		  //Par prudence les j'ai simplement mis en commentaire les expressions utlisées auparavant.
 		  
 		  n0 = 0
 		  
 		  if not self isa point then
 		    for i = 0 to npts-1
-		      if f.somm.getposition(points(i)) <> -1  then
+		      'if f.somm.getposition(points(i)) <> -1  then
+		      If s.getindexpoint(points(i)) <> -1 Then
 		        n0 = n0+1
 		      end if
 		    next
 		  else
-		    if f.somm.getposition(self) <> -1  then
+		    'if f.somm.getposition(self) <> -1  then
+		    If s.getindexpoint(Point(Self)) <> -1 Then 
 		      n0 = 1
 		    end if
 		  end if
 		  
-		  return n0
+		  Return n0
 		End Function
 	#tag EndMethod
 
@@ -2893,19 +2897,21 @@ Protected Class Shape
 		  end if
 		  
 		  '''''''''''''''''''' Voir figurestest 1 et 2 : la méthode qui suit est un compromis pour satisfaire les deux (!?), les trois avec Varignon
-		  if not self isa point and  NbTrueSomCommuns(ff) = ubound(points)+1  and s2.auto = 4  then
+		  If Not Self IsA point And  NbTrueSomCommuns(s2) = ubound(points)+1  And s2.Auto = 4  Then
 		    t = True
 		    for i = 0 to ubound(points)
-		      if points(i).pointsur.count = 1 and points(i).pointsur.item(0).isaparaperp then
+		      if points(i).forme = 1 and points(i).pointsur.item(0).isaparaperp then
 		        t = false
 		      end if
 		    next
 		    return t
 		  end if
 		  
-		  If Not Self IsA arc And Auto <>4 And NbTrueSomCommuns(ff) > 0 And  s2.Auto = 4 Then   'Décommentarizé pour le cas d'un quadri inscrit à un cercle avec un sommet qui définit le cercle
-		    Return True
-		  end if  'la contrante not self isa arc correspond à une figure du Type "carré abcd + pt p sur bc + segment ap + arc (dap)
+		  'If Not Self IsA arc And Auto <>4 And NbTrueSomCommuns(s2) > 0 And  s2.Auto = 4 Then   'Décommentarizé pour le cas d'un quadri inscrit à un cercle avec un sommet qui définit le cercle
+		  'Return True
+		  'end if  'la contrainte not self isa arc correspond à une figure du Type "carré abcd + pt p sur bc + segment ap + arc (dap)
+		  'Recommentarizé le 20 juillet 2019  : le cas du quadri n'apparaît plus mais d'autres problèmes montrent que cette possibilité est inopportune
+		  'Exemple: parallèle à un côté d'un triangle passant par un sommet 
 		  
 		  For i = 0 To ubound(childs)    // double emploi avec une autre condition ci-dessus
 		    If childs(i).id > id Then

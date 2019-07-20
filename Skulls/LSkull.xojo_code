@@ -391,7 +391,7 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub update(s as shape)
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  dim p as BasicPoint
 		  
 		  p =s.getgravitycenter
@@ -401,8 +401,8 @@ Inherits NSkull
 		  
 		  if s isa Bande then
 		    updateBande(Bande(s))
-		  elseif s isa Secteur then
-		    updateSecteur(Secteur(s))
+		  Elseif s IsA Secteur  Then
+		    updateSecteur(secteur(s))
 		  else
 		    for i = 0 to s.npts-1
 		      if dret = nil then
@@ -482,7 +482,7 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub UpdateSecteur(s as Secteur)
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  dim p as BasicPoint
 		  
 		  p =s.getgravitycenter

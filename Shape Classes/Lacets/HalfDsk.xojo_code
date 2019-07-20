@@ -45,7 +45,6 @@ Inherits DSect
 		    Points(2).moveto Points(0).bpt * 2 -points(1).bpt
 		    updatecoord
 		    ori = 1
-		    TriBPoint(coord).HalfDskCreateExtreAndCtrlPoints(ori)
 		    computeradius
 		    startangle = coord.startangle         
 		  end select

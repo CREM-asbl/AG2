@@ -15,7 +15,7 @@ Protected Class Figure
 		    return
 		  end if
 		  
-		  redim aut(f1.shapes.count-1)
+		  Redim aut(f1.shapes.count-1)
 		  
 		  
 		  for  j = 0 to f1.Shapes.count-1
@@ -94,7 +94,7 @@ Protected Class Figure
 		        s = f1.shapes.element(j)
 		        k = -1
 		        for h = 0 to s.npts-1
-		           s.points(h).HasAutosimParent(k) 
+		          s.points(h).HasAutosimParent(k) 
 		        next
 		      end if
 		      'if tt then
@@ -110,8 +110,9 @@ Protected Class Figure
 		  For n = 1 To 6
 		    If n <> 4 Then 'On élimine les droites
 		      t = true
-		      for j = 0 to ubound(aut)
-		        t  = t And ( (f1.shapes.item(j) IsA BiPoint ) Or aut(j) = n)
+		      For j = 0 To ubound(aut)
+		        s = f1.shapes.item(j)
+		        t  = t And ( (s IsA BiPoint and not s.isaparaperp ) Or aut(j) = n)
 		      Next
 		      If t Then 
 		        f1.Auto = n
@@ -3299,8 +3300,8 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub RestoreInit(EL as XMLElement)
-		  dim i,j, n0, n1 as integer
-		  dim EL1, EL2, Coord as XMLElement
+		  Dim i,j, n0, n1 As Integer
+		  Dim EL1, EL2, EL3 As XMLElement
 		  dim List as XmlNodeList
 		  dim p as point
 		  dim Inter as Intersec
@@ -3312,9 +3313,9 @@ Protected Class Figure
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to Somm.count-1
 		      p = point(somm.item(i))
-		      Coord = XMLElement(EL1.child(i))
-		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		      EL3 = XMLElement(EL1.child(i))
+		      p.moveto New BasicPoint(Val(EL3.GetAttribute("X")), Val(EL3.GetAttribute("Y")))
+		      If Val(EL3.GetAttribute("Invalid")) = 0 Then
 		        p.valider
 		      else
 		        p.invalider
@@ -3327,9 +3328,9 @@ Protected Class Figure
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to PtsConsted.count-1
 		      p = point(PtsConsted.item(i))
-		      Coord = XMLElement(EL1.child(i))
-		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		      EL3 = XMLElement(EL1.child(i))
+		      p.moveto New BasicPoint(Val(EL3.GetAttribute("X")), Val(EL3.GetAttribute("Y")))
+		      if val(EL3.GetAttribute("Invalid")) = 0 then
 		        p.valider
 		      else
 		        p.invalider
@@ -3341,9 +3342,9 @@ Protected Class Figure
 		  for i = 0 to shapes.count-1
 		    EL2 = XMLElement(EL1.Child(i))
 		    s = shapes.item(i)
-		    s.updatecoord
-		    if s isa circle  then             //La reconstruction des points de controles est prise en charge par la routine de peinture
-		      s.coord.CreateExtreAndCtrlPoints(s.ori)
+		    s.updatecoord 'La reconstruction des données extre et ctrl est prise en charge par la routine de peinture
+		    If s IsA DSect Then
+		      s.coord.centres(1) = s.coord.tab(0)
 		    end if
 		    s.updatelab
 		    if s.duplicateorcut then
@@ -3361,16 +3362,16 @@ Protected Class Figure
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to EL1.Childcount-1
-		      Coord = XMLElement(EL1.child(i))
+		      EL3 = XMLElement(EL1.child(i))
 		      p = point(PtsSur.item(i))
-		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		      p.moveto New BasicPoint(Val(EL3.GetAttribute("X")), Val(EL3.GetAttribute("Y")))
+		      If Val(EL3.GetAttribute("Invalid")) = 0 Then
 		        p.valider
 		      else
 		        p.invalider
 		      end if
 		    next
-		  end if
+		  End If
 		  
 		  Restoretsf
 		  
@@ -3382,8 +3383,8 @@ Protected Class Figure
 		      if p.pointsur.count = 1 then
 		        p.puton(p.pointsur.item(0))
 		      elseif p.pointsur.count = 2 then
-		        n0 = val(Coord.GetAttribute("Side0"))
-		        n1 = val(Coord.GetAttribute("Side1"))
+		        n0 = Val(EL3.GetAttribute("Side0"))
+		        n1 = Val(EL3.GetAttribute("Side1"))
 		        inter= p.GetInter 
 		        inter.update(p)
 		      end if
