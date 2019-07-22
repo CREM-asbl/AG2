@@ -24,12 +24,19 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  Dim i,j As Integer
-		  
+		  Dim thin, thick, actual As Double
 		  setoldthicknesses
 		  
+		  thin = config.thickness
+		  thick = 1.5*thin
 		  for i = 0 to tempshape.count -1
-		    if not tempshape.item(i) isa cube then
-		      thickness  = 1.5*(config.thickness)*(config.thickness)/tempshape.item(i).borderwidth
+		    If Not tempshape.item(i) IsA cube Then
+		      actual = tempshape.item(i).borderwidth
+		      If actual = thin Or actual = thick Then
+		        thickness  = thin*thick/actual
+		      Else
+		        thickness = config.thickness
+		      end if
 		      tempshape.item(i).borderwidth = thickness
 		      for j = 0 to ubound(tempshape.item(i).childs)
 		        tempshape.item(i).childs(j).borderwidth = thickness
