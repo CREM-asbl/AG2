@@ -72,20 +72,13 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp As XMLElement)
-		  UndoOperation(Temp)
+		  super.RedoOperation(Temp)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp As XMLElement)
-		  dim EL as XMLElement
-		  
-		  EL = XMLElement(Temp.Child(0))
-		  objects.unselectall
-		  SelectIdForms(EL)
-		  DoOperation
-		  objects.unselectall
-		  
+		  Super.RedoOperation(Temp)
 		  
 		End Sub
 	#tag EndMethod

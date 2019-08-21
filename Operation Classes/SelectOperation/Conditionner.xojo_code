@@ -15,7 +15,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  if sctxt.conditionedby <> nil then   //On déconditionne
+		  If sctxt.conditionedby <> Nil Then   //On déconditionne
 		    oldcondby = sctxt.conditionedby
 		    sctxt.conditionedby.conditioned.removeobject sctxt
 		    sctxt.conditionedby = nil
@@ -91,24 +91,27 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim EL, EL1 as XMLElement
+		  Dim EL, EL1 As XMLElement
 		  dim List as XMLNodeList
 		  dim condby as point
 		  dim n as integer
 		  
-		  EL = XMLElement(Temp.FirstChild)
-		  List = EL.XQL(Dico.value("Form"))
+		  Temp = XMLElement(Temp.Child(0))
+		  List = Temp.XQL(Dico.value("Form"))
 		  if list.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    n = val(EL1.GetAttribute("Id"))
 		    sctxt  = currentcontent.TheObjects.Getshape(n)
-		    condby = point(currentcontent.TheObjects.Getshape(val(EL.GetAttribute("Point"))))
-		    if val(EL.GetAttribute("Condi"))=0 then
+		    condby = point(currentcontent.TheObjects.Getshape(Val(Temp.GetAttribute("Point"))))
+		    If Val(Temp.GetAttribute("Condi"))=0 Then
 		      sctxt.conditionedby = nil
 		      condby.conditioned.removeobject sctxt
 		    else
 		      sctxt.conditionedby = condby
 		      condby.conditioned.addshape sctxt
+		      If Not currentcontent.currentoperation IsA readhisto Then
+		        MsgBox "Le conditionnement a été rétabli"
+		      End If
 		    end if
 		  end if
 		  
@@ -118,10 +121,13 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc As XMLDocument) As XMLElement
-		  dim Temp As  XMLElement
+		  Dim Temp As  XMLElement
 		  
 		  Temp = Doc.CreateElement(GetName)
 		  Temp.appendchild sctxt.XMLPutIdInContainer(Doc)
+		  'On n'utilise pas Temp.appendchild tempshape.XMLPutIdInContainer(Doc) car sctxt a été highlighted mais non sélectionné
+		  'En conséquence, dans le fichier XML il n'y a pas de niveau "Forms", on passe directement à "Form" et il n'y en a qu'une. Pas de sélection multiple dans le cas du menu contextuel!
+		  
 		  if oldcondby <> nil then
 		    Temp.SetAttribute("Condi",str(0))
 		  else
@@ -139,21 +145,22 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim EL, EL1 as XMLElement
+		  Dim EL, EL1 As XMLElement
 		  dim List as XMLNodeList
 		  dim condby as point
 		  dim n as integer
 		  
-		  EL = XMLElement(Temp.FirstChild)
-		  List = EL.XQL(Dico.value("Form"))
+		  Temp = XMLElement(Temp.Child(0))
+		  List = Temp.XQL(Dico.value("Form"))
 		  if list.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    n = val(EL1.GetAttribute("Id"))
 		    sctxt  = currentcontent.TheObjects.Getshape(n)
-		    condby = point(currentcontent.TheObjects.Getshape(val(EL.GetAttribute("Point"))))
-		    if val(EL.GetAttribute("Condi"))=1 then
+		    condby = point(currentcontent.TheObjects.Getshape(Val(Temp.GetAttribute("Point"))))
+		    If Val(Temp.GetAttribute("Condi"))=1 Then
 		      sctxt.conditionedby = nil
 		      condby.conditioned.removeobject sctxt
+		      MsgBox "Le conditionnement a été annulé"
 		    else
 		      sctxt.conditionedby = condby
 		      condby.conditioned.addshape sctxt

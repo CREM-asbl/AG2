@@ -13,16 +13,19 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  super.Constructor
+		  Super.Constructor
 		  OpId = 3
 		  prem = true
-		  prembis = true
+		  prembis = True
+		  WorkWindow.refreshtitle
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(El as XMLElement)
-		  dim List as XmlNodeList
+		  Dim List As XmlNodeList
 		  
 		  Constructor()
 		  List = EL.XQL(Dico.value("Group"))
@@ -37,7 +40,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i , k, n1, n2 as integer
+		  Dim i , k, n1, n2 As Integer
 		  dim s as point
 		  
 		  for i = tempshape.count -1 downto 0
@@ -68,9 +71,9 @@ Inherits SelectOperation
 		      NumList = tempshape.item(i).IdGroupe
 		      prem = false
 		    else
-		      if k = -1 then
+		      If k = -1 Then
 		        adjoindre(tempshape.item(i), NumList)
-		      elseif  k <> NumList then
+		      Elseif  k <> NumList Then
 		        n1 = min(k, NumList)
 		        n2 = max(k, NumList)
 		        fusionner(n1, n2)
@@ -90,7 +93,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim i, n as integer
+		  Dim i, n As Integer
 		  
 		  if ubound(listids) > -1 then
 		    super.endoperation
@@ -113,7 +116,7 @@ Inherits SelectOperation
 		  CurrentContent.currentoperation = nil
 		  objects.unselectall
 		  objects.unhighlightall
-		  WorkWindow.refresh
+		  can.refreshbackground
 		  
 		End Sub
 	#tag EndMethod
@@ -195,12 +198,33 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub MouseDown(p as BasicPoint)
+		  If currenthighlightedshape = Nil Then
+		    EndOperation
+		    Objects.unselectall
+		    Return
+		  End If
+		  
+		  selection
+		  Finished = False
+		  DoOperation
+		  'If dret = Nil  Then
+		  'endoperation
+		  'End If
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  
 		  if CurrentContent.currentoperation = self then
-		    display = choose + aform + alier
+		    display = choose + aform + alier + EndOfLine _ 
+		    +"Après avoir choisi la dernière forme à lier, cliquez du bouton droit " + EndOfLine _
+		    + "en dehors de toute forme"
 		  end if
 		  
 		  for i = 0 to ubound(objects.groupes)

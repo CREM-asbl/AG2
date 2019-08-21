@@ -260,7 +260,7 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   5
+         Left            =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
@@ -290,7 +290,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "StdBox"
-            Left            =   64
+            Left            =   59
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -318,7 +318,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
-            Left            =   8
+            Left            =   3
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -346,7 +346,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "StdBox"
-            Left            =   8
+            Left            =   3
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -374,7 +374,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "StdBox"
-            Left            =   64
+            Left            =   59
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -1558,7 +1558,7 @@ End
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
 			if mousedispo then
 			Formswindow.close
-			CurrentContent.CurrentOperation=new ChooseFinal
+			CurrentContent.CurrentOperation=New ChooseFinal
 			MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
 			refreshtitle
 			end if
@@ -1962,7 +1962,7 @@ End
 
 	#tag MenuHandler
 		Function ToolsHide() As Boolean Handles ToolsHide.Action
-			if mousedispo then
+			If mousedispo Then
 			Formswindow.close
 			CurrentContent.CurrentOperation=new Hide()
 			Hide(CurrentContent.CurrentOperation).ImmediateDoOperation
@@ -2211,7 +2211,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  if dret = nil then
+		  If dret = Nil Then
 		    if currentcontent.currentoperation <> nil then
 		      currentcontent.currentoperation.Annuler
 		      if CurrentContent.CurrentOp = 0 then
@@ -2528,14 +2528,6 @@ End
 	#tag Method, Flags = &h0
 		Sub EnableToolbar()
 		  Tools.Enabled = true
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub endselect()
-		  if CurrentContent.currentoperation isa selectionner then
-		    selectionner(CurrentContent.currentoperation).endoperation
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -3253,12 +3245,12 @@ End
 #tag Events MouvBut
 	#tag Event
 		Sub Action(index as Integer)
-		  if CurrentContent.TheObjects.count = 1 then
+		  If CurrentContent.TheObjects.count = 1 Then
 		    return
 		  end if
 		  
 		  
-		  if mousedispo then
+		  If mousedispo Then
 		    Formswindow.close
 		    select case index
 		    case 0

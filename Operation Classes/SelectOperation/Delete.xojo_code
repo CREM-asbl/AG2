@@ -233,9 +233,12 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim i as integer
+		  Dim i As Integer
+		  Dim EL As XMLElement
+		  
 		  
 		  SelectIdForms(Temp)
+		  
 		  for i =  tempshape.count -1 downto 0
 		    tempshape.item(i).delete
 		  next
@@ -243,7 +246,7 @@ Inherits SelectOperation
 		  
 		  ReDeleteDeletedFigures(Temp)
 		  ReCreateCreatedFigures(Temp)
-		  WorkWindow.refresh
+		  can.RefreshBackground
 		End Sub
 	#tag EndMethod
 

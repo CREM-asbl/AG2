@@ -78,7 +78,7 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub CreateShape()
-		  dim ol as Objectslist
+		  Dim ol As Objectslist
 		  dim p as BasicPoint
 		  dim n as integer
 		  

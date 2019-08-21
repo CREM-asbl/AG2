@@ -197,7 +197,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Doc as XMLDocument)
-		  dim List as XMLNodeList
+		  Dim List As XMLNodeList
 		  dim Temp, EL1 As  XMLElement
 		  dim i as integer
 		  

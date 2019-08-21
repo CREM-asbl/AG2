@@ -24,7 +24,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub AddOperation(o as Operation)
-		  dim codes() as integer
+		  Dim codes() As Integer
 		  
 		  codes = Array(2,4,8,9,34,41,42) //SaveBitMap, SaveEps, Print, ReadHisto, Unit, ChooseFinal, Sélectionner
 		  // 34: on ne crée pas d'historique de la lecture d'un historique
@@ -192,13 +192,13 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub CreateHisto()
-		  dim fi as Folderitem
+		  Dim fi As Folderitem
 		  dim d as Date
 		  dim t as string
 		  dim m, n as integer
 		  d  = new Date
 		  
-		  fi = GetFolderHisto("Historiques/"+Config.username+"/"+str(d.day)+"-"+str(d.Month)+"-"+str(d.Year))
+		  fi = GetFolderHisto("Historiques/"+Config.username+"/"+Str(d.Month)+"-"+Str(d.Day)+"-"+Str(d.Year))
 		  
 		  if fi <> nil then
 		    if currentfile <> nil then
@@ -261,7 +261,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function CreerOperation(Temp as XMLElement) As Operation
-		  dim nop as integer
+		  Dim nop As Integer
 		  dim curoper as Operation
 		  dim EL as XMLElement
 		  dim n as integer
@@ -282,7 +282,7 @@ Protected Class WindContent
 		  case 1
 		    curoper = new ParaperpConstruction
 		  case 3 //Lier
-		    curoper = new Lier
+		    curoper = New Lier
 		  case 4 //Selectionner
 		    curoper = new Selectionner(false)
 		  case 5 //Copier
@@ -293,7 +293,7 @@ Protected Class WindContent
 		    curoper = new Delete
 		  case 10 //Delier
 		    curoper = new Delier
-		  case 11 //ChangePosition
+		  Case 11 //ChangePosition   'Changer de plan
 		    curoper = new ChangePosition
 		  case 12 //ColorChange
 		    curoper = new ColorChange
@@ -376,7 +376,9 @@ Protected Class WindContent
 		    end if
 		    curoper = new MacroExe(Mac)
 		  case 44 //TransfosHide
-		    curoper = new HideTsf
+		    curoper = New HideTsf
+		  Case 45  //AutoIntersection
+		    curoper = New AuToIntersec(Temp)
 		  end select
 		  
 		  
@@ -403,7 +405,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function GetFolderHisto(directory as string) As folderItem
-		  dim fi as FolderItem
+		  Dim fi As FolderItem
 		  dim childs(-1) as string
 		  dim i as Integer
 		  
@@ -475,12 +477,12 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub InsertInHisto(o as operation)
-		  dim El as XMLElement
+		  Dim El As XMLElement
 		  
 		  El=Oplist.CreateElement(Dico.Value("Operation"))
 		  El.SetAttribute(Dico.Value("Numero"),str(TotalOperation))
 		  El.SetAttribute(Dico.Value("Type"), o.GetName)
-		  EL.SetAttribute("OpId", str(o.OpId))
+		  EL.SetAttribute("OpId", Str(o.OpId))
 		  El.AppendChild (o.ToXml(Oplist))
 		  if FigsCreated.childcount > 0 then
 		    EL.appendchild FigsCreated
@@ -500,7 +502,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Function MakeXML() As XMLDocument
-		  dim Doc as XMLDocument
+		  Dim Doc As XMLDocument
 		  dim AG, TMP, EL as XMLElement
 		  dim i as integer
 		  dim s as shape
@@ -568,19 +570,19 @@ Protected Class WindContent
 		    TMP.SetAttribute("Align",can.FondsEcran.GetAlign)
 		    AG.AppendChild TMP
 		  end if
-		  if TheMacros.Count > 0 then
+		  If TheMacros.Count > 0 Then
 		    TMP = Doc.CreateElement("Macros")
 		    for i = 0 to TheMacros.count-1
 		      Mac =TheMacros.item(i)
 		      EL = XMLElement(Doc.importnode(mac.Histo,true))
-		      Mac.ToXML(Doc,EL)
+		      'Mac.ToXML(Doc,EL)
 		      TMP.AppendChild EL
 		    next
 		    AG.appendchild TMP
 		  end if
 		  
 		  if TheObjects.item(0) isa repere then
-		    TMP = Doc.CreateElement(Dico.Value("Objects"))
+		    TMP = Doc.CreateElement(Dico.Value("Forms"))                  'Forms remplace Objects 
 		    TMP.AppendChild TheObjects.item(0).XMLPutInContainer(Doc)
 		  else
 		    MsgBox Dico.value("CorruptedFile")
@@ -780,11 +782,11 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub SaveAs()
-		  dim Titre, Ext, s as string
+		  Dim Titre, Ext, s As String
 		  dim n as integer
 		  
 		  Currentfile=GetSaveFolderItem(FileAGTypes.SAVE,"Figure_"+str(id)+".fag")
-		  If Currentfile<>Nil then
+		  If Currentfile<>Nil Then
 		    Titre = Currentfile.Name
 		    n = Titre.Instr(".")
 		    if n > 0 then
@@ -800,6 +802,9 @@ Protected Class WindContent
 		      CurrentFile.Name = Titre+"."+Ext
 		    end if
 		    save
+		    If FiHisto.Name <> s+".hag" Then
+		      CreateHisto
+		    End If
 		  end if
 		  
 		  
@@ -811,14 +816,15 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub SaveHisto()
-		  Dim fileStream as TextOutputStream
+		  Dim fileStream As TextOutputStream
 		  
 		  
-		  if TotalOperation = 1 then
+		  If TotalOperation = 1 Then
 		    CreateHisto
-		  end if
+		  End If
 		  
-		  if FiHisto <> nil and TotalOperation >1 then
+		  
+		  If  FiHisto <> Nil And TotalOperation >1  Then 
 		    fileStream= TextOutputStream.Create(FiHisto)
 		    if fileStream=nil then
 		      MsgBox Dico.Value("ErrorOnSave")
@@ -878,11 +884,10 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub UndoLastOperation()
-		  dim El as XMLElement
+		  Dim El As XMLElement
 		  dim curoper as Operation
 		  
 		  isaundoredo = true
-		  'formswindow.close
 		  
 		  if currentop = 0 then
 		    return

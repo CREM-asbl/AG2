@@ -112,8 +112,8 @@ Inherits Parallelogram
 		  
 		  select case n
 		  case 0
-		    if getindexpoint(ff.supfig.pointmobile) <> -1 then
-		      return Modifier2fixes(ff.supfig.pointmobile)
+		    If getindexpoint(ff.supfig.pmobi) <> -1 Then
+		      Return Modifier2fixes(ff.supfig.pmobi)
 		    elseif  ubound(p.parents) = 0 and p.constructedby = nil then
 		      return Modifier2fixes(p)
 		    elseif ubound(q.parents) = 0 and q.constructedby = nil then
@@ -142,12 +142,12 @@ Inherits Parallelogram
 		    return new affinitymatrix(eps,ep2,ep3,nps,np2,np3)
 		  case 2
 		    for i = 0 to 1
-		      if point(ff.somm.item(ff.ListSommSur(i))) <> ff.supfig.pointmobile then
+		      If point(ff.somm.item(ff.ListSommSur(i))) <> ff.supfig.pmobi Then
 		        t =ff.replacerpoint (point(ff.somm.item(ff.Listsommsur(i))))
 		      end if
 		    next
 		  case 3
-		    p = ff.supfig.pointmobile
+		    p = ff.supfig.pmobi
 		    k = ff.somm.getposition(p)
 		    if ff.Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2

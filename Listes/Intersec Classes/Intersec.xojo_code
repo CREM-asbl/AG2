@@ -225,7 +225,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  super.constructor
+		  Super.constructor
 		  OpId = 45
 		  
 		End Sub

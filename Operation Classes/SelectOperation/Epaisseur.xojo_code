@@ -23,12 +23,20 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i,j as integer
-		  
+		  Dim i,j As Integer
+		  Dim thin, thick, actual As Double
 		  setoldthicknesses
 		  
+		  thin = config.thickness
+		  thick = 1.5*thin
 		  for i = 0 to tempshape.count -1
-		    if not tempshape.item(i) isa cube then
+		    If Not tempshape.item(i) IsA cube Then
+		      actual = tempshape.item(i).borderwidth
+		      If actual = thin Or actual = thick Then
+		        thickness  = thin*thick/actual
+		      Else
+		        thickness = config.thickness
+		      end if
 		      tempshape.item(i).borderwidth = thickness
 		      for j = 0 to ubound(tempshape.item(i).childs)
 		        tempshape.item(i).childs(j).borderwidth = thickness
@@ -50,7 +58,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim i, j, n as integer
+		  Dim i, j, n As Integer
 		  dim s as shape
 		  dim EL, EL1, EL2 as XMLElement
 		  dim r as double
@@ -72,6 +80,15 @@ Inherits SelectOperation
 		    next
 		  next
 		  objects.unselectall
+		  
+		  'For i = 0 To tempshape.count -1
+		  'If Not tempshape.item(i) IsA cube Then
+		  'tempshape.item(i).borderwidth = thickness
+		  'For j = 0 To ubound(tempshape.item(i).childs)
+		  'tempshape.item(i).childs(j).borderwidth = thickness
+		  'Next
+		  'End If
+		  'Next
 		  
 		End Sub
 	#tag EndMethod

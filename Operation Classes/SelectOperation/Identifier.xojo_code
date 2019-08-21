@@ -69,7 +69,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
-		  dim s, sh, nextsh as shape
+		  Dim s, sh, nextsh As shape
 		  dim i, mag as integer
 		  dim t, t1 as boolean
 		  dim MagneticD as BasicPoint
@@ -101,7 +101,6 @@ Inherits SelectOperation
 		        support = sh
 		      end if
 		    end if
-		    'next
 		  end if
 		  
 		  if remplacement <> nil then

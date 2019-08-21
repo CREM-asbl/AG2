@@ -55,20 +55,21 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  dim i, n as integer
+		  Dim i, n As Integer
 		  dim s as shape
-		  dim EL, EL1 as XMLElement
 		  
 		  
-		  EL = XMLElement(Temp.Child(0))
-		  SelectIdForms(EL)
+		  
+		  Temp = XMLElement(Temp.child(0))
+		  SelectIdForms(Temp)
 		  n = tempshape.count-1
-		  f = val(EL.GetAttribute("NewFill"))
+		  f = Val(Temp.GetAttribute("NewFill"))
 		  for i = 0 to n
 		    s = tempshape.element(i)
 		    s.fill = f
 		  next
 		  objects.unselectall
+		  
 		End Sub
 	#tag EndMethod
 
@@ -104,15 +105,15 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp As XMLElement)
-		  dim i, n as integer
+		  Dim i, n As Integer
 		  dim s as shape
-		  dim EL, EL1 as XMLElement
+		  dim EL as XMLElement
 		  
-		  EL1 = XMLElement(Temp.child(0))
-		  SelectIdForms(EL1)
+		  Temp = XMLElement(Temp.child(0))
+		  SelectIdForms(Temp)
 		  
 		  n = tempshape.count
-		  EL = XMLElement(EL1.child(1))
+		  EL = XMLElement(Temp.child(1))
 		  for i = 0 to n-1
 		    s = tempshape.element(i)
 		    s.fill= val(EL.GetAttribute("OldFill"+str(i)))

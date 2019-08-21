@@ -263,12 +263,12 @@ Inherits Parallelogram
 		    'end if
 		  case 2
 		    for i = 0 to 1
-		      if point(ff.somm.item(ff.ListSommSur(i))) <> ff.supfig.pointmobile then
+		      If point(ff.somm.item(ff.ListSommSur(i))) <> ff.supfig.pmobi Then
 		        t =ff.replacerpoint (point(ff.somm.item(ff.Listsommsur(i))))
 		      end if
 		    next
 		  case 3
-		    p = ff.supfig.pointmobile
+		    p = ff.supfig.pmobi
 		    k = ff.somm.getposition(p)
 		    if ff.Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2

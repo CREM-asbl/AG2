@@ -3,7 +3,7 @@ Protected Class AutoIntersec
 Inherits Intersec
 	#tag Method, Flags = &h0
 		Function combien() As integer
-		  dim i, j , n as integer
+		  Dim i, j , n As Integer
 		  
 		  n = 0
 		  
@@ -40,14 +40,16 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub computeinterlinesbpt()
-		  dim i, j as integer
+		  Dim i, j As Integer   'méthode valable uniquement pour autointersec
 		  dim d1, d2 as BiBPoint
-		  dim r1,r2 as double
+		  Dim r1,r2 As Double
+		  Dim sbpt As nbPoint
 		  
+		  sbpt = sh1.coord
 		  
-		  for i = 0 to t
+		  For i = 0 To t-1
 		    d1 = sbpt.getbibside(i)
-		    for j = i+1 to t
+		    For j = i+1 To t
 		      d2 = sbpt.getbibside(j)
 		      bptinters(i,j) =  d1.BiBInterDroites(d2,2,2,r1,r2)
 		      bptinters(j,i) = bptinters(i,j)
@@ -59,37 +61,49 @@ Inherits Intersec
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  // Calling the overridden superclass constructor.
-		  // Note that this may need modifications if there are multiple constructor choices.
-		  // Possible constructor calls:
+		Sub Constructor(s as Shape)
 		  
-		  'Super.Constructor
 		  
-		  't = s.npts-1
-		  'self.s = s
-		  'sbpt = s.coord
-		  '
-		  'redim bptinters(t,t)
-		  'redim ids(t,t)
-		  'redim val(t,t)
-		  'redim pts(-1)
-		  '
-		  'computeinter
-		  's.autointer = self
-		  'if combien > 0 then
-		  'CurrentContent.TheIntersecs.AddObject(self)
-		  'end if
+		  Self.s = polygon(s)
+		  sh1 = s
+		  sh2 = sh1
+		  Super.Constructor(sh1,sh1)
+		  t = sh1.npts-1
+		  DoOperation
+		  polygon(sh1).autointer = Self
+		  If combien > 0 Then
+		    CurrentContent.TheIntersecs.AddObject(Self)
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(sbpt as nBpoint)
+		Sub constructor(Temp as XMLElement)
+		  Dim EL, ELL As XMLElement
+		  dim n as integer
 		  
-		  'Super.Constructor
-		  t = sbpt.taille -1
-		  self.sbpt = sbpt
-		  computeinterbpt
+		  Super.constructor
+		  
+		  n = CDbl(Temp.GetAttribute("Id"))
+		  
+		  If n = 0 Then
+		    EL = XMLElement(Temp.Child(0))
+		    ELL = XMLElement( EL.Child(0))
+		    n = CDbl(ELL.GetAttribute("Id"))
+		  End If
+		  
+		  s =  Polygon(Objects.GetShape(n))
+		  s.autointer = Self
+		  sh1 = polygon(s)
+		  sh2 = polygon(s)
+		  Super.Constructor(sh1,sh1)
+		  t = sh1.npts-1
+		  sbpt = sh1.coord
+		  Redim bptinters(t,t)
+		  Redim ids(t,t)
+		  Redim Val(t,t)
+		  Redim pts(-1)
 		  
 		  
 		  
@@ -99,24 +113,35 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub CreatePoints(s as polygon)
-		  dim i, j as integer
+		  Dim i, j As Integer
+		  Dim p As point
 		  
-		  dim p as point
 		  
-		  for i = 0 to t
-		    for j = i+1 to t
-		      if  val(i,j) and  not bezet(i,j) and bptinters(i,j) <> nil  then
-		        p = new point (objects,bptinters(i,j))
-		        p.forme=2
-		        p.setconstructedby s,45
-		        p.numside.append i
-		        p.numside.append j
-		        p.location.append bptinters(i,j).location(sh1,i)
-		        p.location.append bptinters(i,j).location(sh1,j)
-		        'ids(i,j) =p.id
-		        p.endconstruction
-		        pts.append p
-		      end if
+		  computeinterlinesbpt
+		  For i = 0 To t 
+		    bezet(i,i) = True
+		    Val(i,i) = True
+		    bezet(i, (i+1) Mod t) = True
+		    Val(i, (i+1) Mod t) = False
+		  Next
+		  
+		  For i = 0 To t-1
+		    For j = i+2 To t
+		      If Not ( (i = 0) And (j = t)) Then
+		        if  val(i,j) and  not bezet(i,j) and bptinters(i,j) <> nil  then
+		          p = new point (objects,bptinters(i,j))
+		          p.forme=2
+		          p.setconstructedby s,45
+		          p.constructedby.data.append i
+		          p.constructedby.data.append j
+		          'p.numside.append i
+		          'p.numside.append j
+		          p.location.append bptinters(i,j).location(sh1,i)
+		          p.location.append bptinters(i,j).location(sh1,j)
+		          p.endconstruction
+		          pts.append p
+		        End If
+		      End If 
 		    next
 		  next
 		  
@@ -125,24 +150,37 @@ Inherits Intersec
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  'currentshape = sh1
-		  'ComputeInter
-		  'createpoints(sh1)
-		  'polygon(sh1).autointer = self
-		  'EndOperation
+		  
+		  
+		  createpoints(polygon(sh1))
+		  EndOperation
+		  
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub EndOperation()
+		  
+		  CurrentContent.addoperation(self)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub init()
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  
+		  If s <> Nil Then
+		    t = s.npts-1
+		    sh1 = s
+		    sh2 = s
+		  Elseif sh1 <> Nil Then
+		    t = sh1.npts-1
+		  End If
 		  
-		  
-		  redim bptinters(t,t)
-		  redim val(t,t)
+		  Redim bptinters(t,t)
+		  Redim Val(t,t)
 		  redim bezet(t,t)
 		  
 		  for i = 0 to t
@@ -179,6 +217,79 @@ Inherits Intersec
 		  next
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RedoOperation(Temp as XMLElement)
+		  'Temp est le XMLElement de nom "Operation"
+		  
+		  Dim f, i, j, n As Integer
+		  
+		  Dim EL , ELL As XMLElement
+		  Dim Pt As Point
+		  
+		  If Temp.GetAttribute("OpId") <> "45" Then
+		    Return
+		  End If
+		  
+		  EL = XMLElement(Temp.child(0))   'EL est le XMLElement de nom "intersection"
+		  ELL= XMLElement(EL.Child(1))       'ELL devient la liste des points d'autointer du polygone s
+		  For i = 0 To ELL.Childcount -1              'On recrée ces points   
+		    Pt = Point(s.XMLReadPoint(XMLElement(ELL.Child(i))))
+		    Pt.XMLReadConstructionInfo(XMLELement(ELL.Child(i)))
+		    Pt.AddToCurrentContent
+		    s.autointer.pts.append Pt
+		  Next
+		  
+		  ReDeleteDeletedFigures(Temp)
+		  ReCreateCreatedFigures(Temp)
+		  
+		  
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToXML(Doc As XMLDocument) As XMLElement
+		  Dim EL, Temp As XMLElement
+		  Dim i As Integer
+		  
+		  Temp = Doc.CreateElement(GetName)
+		  Temp.appendchild s.XMLPutIdInContainer(Doc)
+		  EL = Doc.CreateElement(Dico.Value("Formes"))
+		  For i = 0 to ubound(pts)
+		    EL.AppendChild pts(i).XMLPutINContainer(Doc)
+		  Next
+		  Temp.appendchild EL
+		  Return temp
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UndoOperation(Temp as XMLElement)
+		  
+		  Dim i As Integer
+		  Dim EL , ELL As XMLElement
+		  Dim Pt As point
+		  
+		  EL = XMLElement(Temp.Child(0))
+		  EL = XMLElement(Temp.child(0))   'EL est le XMLElement de nom "intersection"
+		  ELL= XMLElement(EL.Child(1))       'ELL devient la liste des points d'autointer du polygone s
+		  For i = 0 To ELL.Childcount -1              'On recrée ces points   
+		    Pt = Point(s.XMLReadPoint(XMLElement(ELL.Child(i))))
+		    Pt.delete
+		  Next
+		  ReDeleteCreatedFigures (Temp)
+		  ReCreateDeletedFigures(Temp)
 		End Sub
 	#tag EndMethod
 

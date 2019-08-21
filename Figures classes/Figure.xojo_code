@@ -15,7 +15,7 @@ Protected Class Figure
 		    return
 		  end if
 		  
-		  redim aut(f1.shapes.count-1)
+		  Redim aut(f1.shapes.count-1)
 		  
 		  
 		  for  j = 0 to f1.Shapes.count-1
@@ -25,7 +25,7 @@ Protected Class Figure
 		  'D'abord un cas simple: toutes les formes ont même auto (différent de 3 (autospe) et 5 (autotrap)
 		  'On attribue cet auto à la figure.
 		  for  n = 0 to 6
-		    t = true
+		    t = True
 		    for j = 0 to ubound(aut)
 		      t  = t and (aut(j) = n)
 		    next
@@ -54,7 +54,7 @@ Protected Class Figure
 		    next
 		    
 		    if tt then 'tout  point peut être modifié indépendamment des autres  
-		      f1.auto = 4
+		      f1.Auto = 4
 		      return
 		    end if
 		    
@@ -88,45 +88,39 @@ Protected Class Figure
 		    t  = t and ((aut(j) =1 ) or (aut(j) = 4))
 		  next
 		  if t then
-		    tt = true
+		    'tt = true
 		    for j = 0 to ubound(aut)
 		      if aut(j) = 4 then
 		        s = f1.shapes.element(j)
+		        k = -1
 		        for h = 0 to s.npts-1
-		          tt = tt and s.points(h).HasAutosimParent(k) 
+		          s.points(h).HasAutosimParent(k) 
 		        next
 		      end if
-		      if tt then
+		      'if tt then
+		      If k <> -1 Then
 		        f1.auto = 1
 		      end if
 		    next
-		    
+		    Return
 		  end if
+		  
 		  'Cinquième: s'il y a un mélange de droites  avec des formes de même auto
 		  
-		  for n = 2 to 6
-		    t = true
-		    for j = 0 to ubound(aut)
-		      t  = t and ( (f1.shapes.item(j) isa BiPoint ) or (aut(j) = n))
-		    next
-		    
-		    if t then 
-		      j = 0
-		      while aut(j) <> n
-		        j = j+1
-		      wend
-		      Ob1 = new ObjectsList
-		      Ob1.addobject f1.shapes.item(j)
-		      for h = 0 to f1.shapes.count -1
-		        if h <> j then
-		          Ob1.addObject f1.shapes.item(h)
-		        end if
-		      next
-		      f1.shapes = Ob1
-		      f1.auto = n
-		      return
-		    end if
-		  next
+		  For n = 1 To 6
+		    If n <> 4 Then 'On élimine les droites
+		      t = true
+		      For j = 0 To ubound(aut)
+		        s = f1.shapes.item(j)
+		        t  = t And ( (s IsA BiPoint and not s.isaparaperp ) Or aut(j) = n)
+		      Next
+		      If t Then 
+		        f1.Auto = n
+		        Return
+		      End If
+		    End If
+		  Next
+		  
 		  
 		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si 
 		  'une des formes est autoaff, etc
@@ -435,7 +429,7 @@ Protected Class Figure
 		  dim r1, r2 as double
 		  dim n1,n2 as integer
 		  
-		  pmob = supfig.pointmobile
+		  pmob = supfig.pmobi
 		  if s1 isa droite then
 		    n1 = droite(s1).nextre
 		  else
@@ -559,7 +553,7 @@ Protected Class Figure
 		    t = replacerpoint(Point(somm.item(ListSommsur(1))))
 		    return autoaffupdate
 		  else
-		    p = supfig.pointmobile
+		    p = supfig.pmobi
 		    k = somm.getposition(p)
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 3
@@ -704,7 +698,7 @@ Protected Class Figure
 		    return DefaultMatrix
 		  case 1
 		    M = DefaultMatrix
-		    pmob = supfig.pointmobile
+		    pmob = supfig.pmobi
 		    npmob=  Somm.GetPosition(pmob)
 		    if npmob= -1 then
 		      return M
@@ -755,7 +749,7 @@ Protected Class Figure
 		  
 		  
 		  Choixpointsfixes
-		  p = supfig.pointmobile
+		  p = supfig.pmobi
 		  getoldnewpos(p,ep,np)
 		  k = somm.getposition(p)
 		  n = NbSommSur
@@ -936,7 +930,7 @@ Protected Class Figure
 		  
 		  select case  NbSommSur(n1,n2)
 		  case 0
-		    if p.guide = supfig.pointmobile then
+		    if p.guide = supfig.pmobi then
 		      return s.modifier1fixe(q,p)
 		    else
 		      return s.Modifier1fixe(p,q)
@@ -1012,12 +1006,12 @@ Protected Class Figure
 		    'end if
 		  case 2
 		    for i = 0 to 1
-		      if point(somm.item(ListSommSur(i))) <> supfig.pointmobile then
+		      If point(somm.item(ListSommSur(i))) <> supfig.pmobi Then
 		        t =replacerpoint (point(somm.item(Listsommsur(i))))
 		      end if
 		    next
 		  case 3
-		    p = supfig.pointmobile
+		    p = supfig.pmobi
 		    k = somm.getposition(p)
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2
@@ -1064,7 +1058,7 @@ Protected Class Figure
 		  select case n
 		  case 0, 1
 		    for i = 0 to 3
-		      if s.points(i).forme = 0 and s.points(i) <> s.fig.pointmobile then
+		      if s.points(i).forme = 0 and s.points(i) <> s.fig.pmobi then
 		        i0 = i
 		      end if
 		      s.points(i0).modified = false
@@ -1077,7 +1071,7 @@ Protected Class Figure
 		      return autoaffupdate
 		    end if
 		  case 3,4
-		    p = supfig.pointmobile
+		    p = supfig.pmobi
 		    k = somm.getposition(p)
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2
@@ -1586,8 +1580,8 @@ Protected Class Figure
 		  
 		  //classement par rapport au nombre de parents 
 		  
-		  if somm.getposition(supfig.pointmobile) <> -1 then
-		    p = supfig.pointmobile
+		  If somm.getposition(supfig.pmobi) <> -1 Then
+		    p = supfig.pmobi
 		  else
 		    p = Point(somm.item(ListPtsModifs(0)))
 		  end if
@@ -1619,7 +1613,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub concat1(f1 as figure, f2 as figure, n as integer)
-		  if f1.nbsommcommuns(f2) >= n then
+		  If f1.nbsommcommuns(f2) >= n Then
 		    f1.shapes.concat f2.shapes
 		    f1.somm.concat f2.somm
 		    f1.PtsConsted.concat f2.PtsConsted
@@ -1812,24 +1806,17 @@ Protected Class Figure
 		    f1=Figure(subs.item(i))
 		    for j = i+1 to n-1
 		      f2 = Figure(subs.item(j))
-		      'if subs.item(i).auto <> 4 then 'and subs.item(j).auto <> 4 then
 		      if  f1.precede(f2) then
 		        mat.col(i,j) = 1
 		      end if
 		      if f2.precede(f1) then
 		        mat.col(j,i) = 1
 		      end if
-		      'end if
 		    next
 		  next
 		  
 		  
-		  'if (subs.item(i).auto <> 4) and subs.item(i).precede(subs.item(j)) then
-		  'mat.col(i,j) = 1
-		  'end if
-		  'if (subs.item(i).auto <> 4) and subs.item(j).precede(subs.item(i)) then
-		  'mat.col(j,i) = 1
-		  'end if
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1952,7 +1939,7 @@ Protected Class Figure
 		  
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
-		    if s.duplicateorcut and s.constructedby.shape.getindexpoint(supfig.pointmobile)<> -1 then
+		    if s.duplicateorcut and s.constructedby.shape.getindexpoint(supfig.pmobi)<> -1 then
 		      return true
 		    end if
 		  next
@@ -2045,14 +2032,19 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function fusionsubfigs(f1 as figure, f2 as figure) As Boolean
-		  dim k as integer
-		  dim t, t1, t2, t3 as boolean
-		  dim p as point
+		  Dim k As Integer
+		  dim t, t1 as boolean
+		  Dim p As point
+		  Dim a As Integer
 		  
 		  if f1.auto = 1 and f2.auto = 3  then
 		    concat1(f1,f2,3)
 		    return false 'false parce qu'on a déjà fait un remove de f2
 		  end if
+		  
+		  If f1.Auto = 6 or f2.Auto = 6 Then 
+		    Return False
+		  End If
 		  
 		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
 		    return false
@@ -2072,11 +2064,19 @@ Protected Class Figure
 		    t=true
 		  end if
 		  
+		  a =0
+		  If f1.Auto = 6 Or f2.Auto = 6 Then
+		    a = 6
+		  End If
+		  
 		  if t then
 		    f2.shapes.concat f1.shapes
 		    f2.somm.concat f1.somm
 		    f2.PtsSur.concat f1.PtsSur
 		    f2.PtsConsted.concat f1.PtsConsted
+		    If a = 6 Then
+		      f2.Auto = 6
+		    End If
 		    'Adapterautos(f2)
 		  end if
 		  
@@ -2883,7 +2883,7 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p =somm.item(i)
-		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pointmobile ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
+		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pmobi ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      'if p.pointsur.count <> 2 then
 		      NbUnModif = NbUnModif+1
@@ -2914,7 +2914,7 @@ Protected Class Figure
 		  
 		  
 		  // on recense les points  non modifiés et modifiables  absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
-		  pmob = supfig.pointmobile
+		  pmob = supfig.pmobi
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
@@ -3122,26 +3122,28 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub QQupdateshapes()
-		  dim i as integer
+		  Dim i As Integer
 		  dim p as point
 		  dim ep, np as basicpoint
 		  dim s as shape
 		  
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
-		    getoldnewpos(p,ep,np)
-		    if ep <> nil and np <> nil and ep.distance(np) > epsilon then
-		      select case  p.pointsur.count
-		      case  1
-		        p.puton p.pointsur.item(0)
-		        'p.unmodifiable = true
-		      end select
-		    end if
-		    if p.isonasupphom(s) = 2 then
-		      p.resetonsupphom(s)
-		    end if
-		    p.updateshape
-		    p.modified = true // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
+		    If Not p.modified Then
+		      getoldnewpos(p,ep,np)
+		      If ep <> Nil And np <> Nil And ep.distance(np) > epsilon Then
+		        Select Case  p.pointsur.count
+		        case  1
+		          p.puton p.pointsur.item(0)
+		          'p.unmodifiable = true
+		        end select
+		      end if
+		      if p.isonasupphom(s) = 2 then
+		        p.resetonsupphom(s)
+		      end if
+		      p.updateshape
+		      p.modified = True // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
+		    End If
 		  next
 		  
 		  
@@ -3186,7 +3188,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function replacerpoint(p as point) As Boolean
 		  
-		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pointmobile then
+		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pmobi then
 		    unmodify p
 		    return true
 		  else
@@ -3298,8 +3300,8 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub RestoreInit(EL as XMLElement)
-		  dim i,j, n0, n1 as integer
-		  dim EL1, EL2, Coord as XMLElement
+		  Dim i,j, n0, n1 As Integer
+		  Dim EL1, EL2, EL3 As XMLElement
 		  dim List as XmlNodeList
 		  dim p as point
 		  dim Inter as Intersec
@@ -3311,9 +3313,9 @@ Protected Class Figure
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to Somm.count-1
 		      p = point(somm.item(i))
-		      Coord = XMLElement(EL1.child(i))
-		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		      EL3 = XMLElement(EL1.child(i))
+		      p.moveto New BasicPoint(Val(EL3.GetAttribute("X")), Val(EL3.GetAttribute("Y")))
+		      If Val(EL3.GetAttribute("Invalid")) = 0 Then
 		        p.valider
 		      else
 		        p.invalider
@@ -3326,9 +3328,9 @@ Protected Class Figure
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to PtsConsted.count-1
 		      p = point(PtsConsted.item(i))
-		      Coord = XMLElement(EL1.child(i))
-		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		      EL3 = XMLElement(EL1.child(i))
+		      p.moveto New BasicPoint(Val(EL3.GetAttribute("X")), Val(EL3.GetAttribute("Y")))
+		      if val(EL3.GetAttribute("Invalid")) = 0 then
 		        p.valider
 		      else
 		        p.invalider
@@ -3340,9 +3342,9 @@ Protected Class Figure
 		  for i = 0 to shapes.count-1
 		    EL2 = XMLElement(EL1.Child(i))
 		    s = shapes.item(i)
-		    s.updatecoord
-		    if s isa circle  then             //La reconstruction des points de controles est prise en charge par la routine de peinture
-		      s.coord.CreateExtreAndCtrlPoints(s.ori)
+		    s.updatecoord 'La reconstruction des données extre et ctrl est prise en charge par la routine de peinture
+		    If s IsA DSect Then
+		      s.coord.centres(1) = s.coord.tab(0)
 		    end if
 		    s.updatelab
 		    if s.duplicateorcut then
@@ -3360,16 +3362,16 @@ Protected Class Figure
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
 		    for i = 0 to EL1.Childcount-1
-		      Coord = XMLElement(EL1.child(i))
+		      EL3 = XMLElement(EL1.child(i))
 		      p = point(PtsSur.item(i))
-		      p.moveto new BasicPoint(val(Coord.GetAttribute("X")), val(Coord.GetAttribute("Y")))
-		      if val(Coord.GetAttribute("Invalid")) = 0 then
+		      p.moveto New BasicPoint(Val(EL3.GetAttribute("X")), Val(EL3.GetAttribute("Y")))
+		      If Val(EL3.GetAttribute("Invalid")) = 0 Then
 		        p.valider
 		      else
 		        p.invalider
 		      end if
 		    next
-		  end if
+		  End If
 		  
 		  Restoretsf
 		  
@@ -3381,9 +3383,9 @@ Protected Class Figure
 		      if p.pointsur.count = 1 then
 		        p.puton(p.pointsur.item(0))
 		      elseif p.pointsur.count = 2 then
-		        n0 = val(Coord.GetAttribute("Side0"))
-		        n1 = val(Coord.GetAttribute("Side1"))
-		        inter= p.GetInter 'CurrentContent.Theintersecs.find(p.pointsur.item(0),p.pointsur.item(1))
+		        n0 = Val(EL3.GetAttribute("Side0"))
+		        n1 = Val(EL3.GetAttribute("Side1"))
+		        inter= p.GetInter 
 		        inter.update(p)
 		      end if
 		    next
@@ -3849,7 +3851,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function update1(p As point) As Boolean
-		  dim t  as boolean
+		  Dim t  As Boolean
 		  dim i as integer
 		  dim sf as figure
 		  
@@ -3857,7 +3859,7 @@ Protected Class Figure
 		    return false
 		  end if
 		  
-		  pointmobile = p  'p est le point guide du point sur lequel on a cliqué
+		  pmobi = p  'p est le point guide du point sur lequel on a cliqué
 		  t = true
 		  
 		  listersubfigs(p)
@@ -3930,7 +3932,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub updateptsconsted(M as Matrix)
-		  dim i as integer
+		  Dim i As Integer
 		  dim p as point
 		  
 		  if shapes.item(0) isa arc and not shapes.item(0).invalid then
@@ -3938,7 +3940,7 @@ Protected Class Figure
 		  end if
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.item(i))
-		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 then
+		    if p.constructedby.oper = 0 or p.constructedby.oper = 4 or p.constructedby.oper = 45 then
 		      p.repositioncstedpoint
 		    else
 		      if somm.getposition(p)=-1 then
@@ -4017,7 +4019,6 @@ Protected Class Figure
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
-		    p.first = false
 		    p.Transform(M)
 		    p.updateshape
 		    if  p.forme = 0 then
@@ -4064,7 +4065,7 @@ Protected Class Figure
 		  end if
 		  
 		  if EL.childcount = 0 then
-		    Temp =  Doc.CreateElement(Dico.Value("Objects"))
+		    Temp =  Doc.CreateElement(Dico.Value("Forms"))
 		    EL.appendchild Temp
 		  end if
 		  
@@ -4240,7 +4241,7 @@ Protected Class Figure
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		pointmobile As point
+		pmobi As point
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

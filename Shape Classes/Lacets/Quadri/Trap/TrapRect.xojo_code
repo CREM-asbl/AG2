@@ -302,7 +302,7 @@ Inherits Trap
 		  
 		  n1 = getindexpoint(p1)
 		  n2 = getindexpoint(p2)
-		  pp = ff.supfig.pointmobile
+		  pp = ff.supfig.pmobi
 		  n = getindexpoint(pp)
 		  
 		  if n <> n1 and n <> n2 then
@@ -357,7 +357,7 @@ Inherits Trap
 		  n3 = quatriemepoint(n0,n1,n2)
 		  //p0, p1 et p2 sont les trois points modifiés
 		  
-		  pp = fig.pointmobile
+		  pp = fig.pmobi
 		  m = getindexpoint(pp)
 		  
 		  if m<> -1 then

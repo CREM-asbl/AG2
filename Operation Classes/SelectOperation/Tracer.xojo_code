@@ -33,9 +33,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim EL as XMLElement
-		  EL = XMLElement(Temp.FirstChild)
-		  SelectIdForms(EL)
+		  Temp = XMLElement(Temp.child(0))
+		  SelectIdForms(Temp)
 		  currenthighlightedshape = tempshape.item(0)
 		  DoOperation
 		End Sub

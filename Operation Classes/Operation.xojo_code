@@ -30,12 +30,7 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub Annuler()
 		  FormsWindow.close
-		  if finished = true then
-		    'if self isa AppliquerTsf then
-		    'AppliquerTsf(self).tsf.highlighted = false
-		    'end if
-		    'CurrentContent.abortconstruction
-		    'else
+		  If finished = True Then
 		    CurrentContent.UndoLastOperation
 		  end if
 		  can.refreshBackground
@@ -45,7 +40,8 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  WorkWindow.drapshowall = false
+		  
+		  WorkWindow.drapshowall = False
 		  Objects = CurrentContent.theobjects
 		  oldp = new BasicPoint(0,0)
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
@@ -76,14 +72,6 @@ Protected Class Operation
 		  end if
 		  CurrentContent.CreateFigs
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub endselect()
-		  if (not self isa selectionner) and (CurrentContent.currentoperation isa selectionner) then
-		    selectionner(CurrentContent.currentoperation).endoperation
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -658,8 +646,9 @@ Protected Class Operation
 	#tag EndNote
 
 	#tag Note, Name = Numeros des operations
-		: Costruction d'un centre de gravité:
-		28: Prolonger
+		
+		
+		
 		
 		Variable: OpId (Id d'opération)
 		Chaque classe d'opérations a un code.
@@ -703,7 +692,7 @@ Protected Class Operation
 		Conditionner: 40
 		Unit : 41
 		HideTsf: 44
-		Inter : 45                  //N'est utilisé que pour les macros: on assimile l'intersection de deux objets à une opération
+		Inter : 45                  //N'est utilisé que pour les macros et les autointer: on assimile l'intersection de deux objets à une opération
 		PointSur: 46            // Idem pour la construction d'un Point Sur
 		SaveStd : 47 Pour mémoire
 		Decomposer: 48
@@ -724,6 +713,7 @@ Protected Class Operation
 		Fusion: 27
 		ChooseFinal : 42
 		MacroExe : 43
+		
 	#tag EndNote
 
 

@@ -316,6 +316,7 @@
     <atransformation Name=" une transformation" />
     <atriangle Name=" un triangle" />
     <attheinter Name=" à l'intersection" />
+    <autointersec Name= " Auto-Intersection" />
     <brancher Name="Brancher " />
     <debrancher Name="Débrancher " />
     <choose Name=" Choisis " />

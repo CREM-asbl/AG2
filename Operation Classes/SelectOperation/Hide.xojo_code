@@ -68,9 +68,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp As XMLElement)
-		  SelectIdForms(XMLElement(Temp.FirstChild))
-		  DoOperation
-		  objects.unselectall
+		  
+		  Super.RedoOperation(Temp)
 		  
 		  
 		End Sub

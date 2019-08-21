@@ -340,7 +340,7 @@ Inherits Quadri
 		  
 		  n3 = quatriemepoint(n,n1,n2)
 		  p3 = points(n3)
-		  q = fig.pointmobile
+		  q = fig.pmobi
 		  m = getindexpoint(q)
 		  
 		  select case m
@@ -380,7 +380,7 @@ Inherits Quadri
 		  
 		  n3 = quatriemepoint(n0,n1,n2)
 		  p3 = points(n3)
-		  q = fig.pointmobile
+		  q = fig.pmobi
 		  m = getindexpoint(q)
 		  
 		  select case m

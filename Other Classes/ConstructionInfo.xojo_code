@@ -9,13 +9,14 @@ Protected Class ConstructionInfo
 
 
 	#tag Note, Name = Explications
-		
+		Les codes "Oper" devraient être Identiques aux codes des opérations (voir la note dans "Operation")
 		Oper est un entier désignant la construction utilisée (pas nécessairement la classe de construction)
 		Les data doivent permettre de réexécuter la construction en interne
 		
 		
 		Codes
 		
+		Oper
 		0 : Calcul du Centre de gravité 
 		1: Bipoint parallele 
 		2: Bipoint perpendiculaire
@@ -27,6 +28,7 @@ Protected Class ConstructionInfo
 		8: Prolongement d'un segment ou côté de polygone 
 		9 : Fusion // shape = nil
 		10: Duplication d'un pointsur
+		45: Intersection et autointersection
 		
 		Data
 		0: aucun
@@ -40,6 +42,7 @@ Protected Class ConstructionInfo
 		8: si côté de polygone prolongé: data(0) = numéro du côté
 		9:  0: 1ere forme fusionnée 1: matrice correspondante 2: 2eme forme fusionnée 3: matrice correspondante 4: concordance d'orientation
 		10 : difference entre les  numéros de côté sur l'original et la copie (voir point.putduplicateon)
+		45: 1. Id du polygone 2. Oper:45, 3: Numero du 1er côté, 4 : Numéro du second côté (Autointersec)
 	#tag EndNote
 
 	#tag Note, Name = Licence
