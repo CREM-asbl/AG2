@@ -260,7 +260,7 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   0
+         Left            =   5
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
@@ -290,7 +290,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   1
             InitialParent   =   "StdBox"
-            Left            =   59
+            Left            =   64
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -318,7 +318,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
-            Left            =   3
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -346,7 +346,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   0
             InitialParent   =   "StdBox"
-            Left            =   3
+            Left            =   8
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
@@ -374,7 +374,7 @@ Begin Window WorkWindow
             HelpTag         =   ""
             Index           =   3
             InitialParent   =   "StdBox"
-            Left            =   59
+            Left            =   64
             LockBottom      =   False
             LockedInPosition=   False
             LockLeft        =   False
