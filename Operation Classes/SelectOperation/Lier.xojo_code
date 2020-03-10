@@ -38,9 +38,9 @@ Inherits SelectOperation
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit))
 		Sub DoOperation()
-		  Dim i , k, n1, n2 As Integer
+		  Dim i, selectedGroupId, n1, n2 As Integer
 		  dim s as point
 		  
 		  for i = tempshape.count -1 downto 0
@@ -49,8 +49,8 @@ Inherits SelectOperation
 		    end if
 		    if tempshape.item(i) isa point and UBound(point(tempshape.item(i)).parents) > -1 then
 		      s = point(tempshape.item(i))
-		      for k = 0 to UBound(s.parents)
-		        objects.selectobject s.parents(k)
+		      for selectedGroupId = 0 to UBound(s.parents)
+		        objects.selectobject s.parents(selectedGroupId)
 		      next
 		      objects.unselectobject s
 		    end if
@@ -61,9 +61,9 @@ Inherits SelectOperation
 		  end if
 		  
 		  for i =  tempshape.count-1 downto 0
-		    k =  tempshape.item(i).IDGroupe
+		    selectedGroupId =  tempshape.item(i).IDGroupe
 		    if prem then
-		      if k = -1 then
+		      if selectedGroupId = -1 then
 		        Objects.Groupes.append new ObjectsList
 		        Numlist = Ubound(Objects.Groupes)
 		        adjoindre(tempshape.item(i), NumList)
@@ -71,22 +71,17 @@ Inherits SelectOperation
 		      NumList = tempshape.item(i).IdGroupe
 		      prem = false
 		    else
-		      If k = -1 Then
+		      If selectedGroupId = -1 Then
 		        adjoindre(tempshape.item(i), NumList)
-		      Elseif  k <> NumList Then
-		        n1 = min(k, NumList)
-		        n2 = max(k, NumList)
+		      Elseif  selectedGroupId <> NumList Then
+		        n1 = min(selectedGroupId, NumList)
+		        n2 = max(selectedGroupId, NumList)
 		        fusionner(n1, n2)
 		        NumList = n1
 		      end if
-		    end if
-		    if Numlist = k then
-		      tempshape.objects.remove i
+		      EndOperation
 		    end if
 		  next
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -208,9 +203,6 @@ Inherits SelectOperation
 		  selection
 		  Finished = False
 		  DoOperation
-		  'If dret = Nil  Then
-		  'endoperation
-		  'End If
 		  
 		  
 		End Sub
@@ -475,12 +467,6 @@ Inherits SelectOperation
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="prem"
-			Group="Behavior"
-			InitialValue="0"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="prembis"
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"

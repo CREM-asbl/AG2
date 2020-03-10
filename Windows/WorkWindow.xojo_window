@@ -3249,7 +3249,6 @@ End
 		    return
 		  end if
 		  
-		  
 		  If mousedispo Then
 		    Formswindow.close
 		    select case index
