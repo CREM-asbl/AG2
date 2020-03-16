@@ -8,10 +8,12 @@
 		MacType=FAG
 		Name=SAVE
 		UTI=
-		UTIConformsTo=
+		UTIConformsTo=, public.data
 		Description=
 		MimeType=application/xml
 		Imported=False
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -23,10 +25,12 @@
 		MacType=MAG
 		Name=MACR
 		UTI=
-		UTIConformsTo=
+		UTIConformsTo=, public.data
 		Description=
 		MimeType=application/xml
 		Imported=False
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -38,10 +42,12 @@
 		MacType=HAG
 		Name=HIST
 		UTI=
-		UTIConformsTo=
+		UTIConformsTo=, public.data
 		Description=
 		MimeType=application/xml
 		Imported=False
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -52,10 +58,12 @@
 		MacType=EPS
 		Name=EPS
 		UTI=
-		UTIConformsTo=
+		UTIConformsTo=, public.data
 		Description=
 		MimeType=
 		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -66,10 +74,12 @@
 		MacType=
 		Name=STD
 		UTI=
-		UTIConformsTo=
+		UTIConformsTo=, public.data
 		Description=
 		MimeType=application/xml
 		Imported=False
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -80,10 +90,12 @@
 		MacType=JPEG
 		Name=jpegType
 		UTI=
-		UTIConformsTo=
+		UTIConformsTo=, public.data
 		Description=
 		MimeType=
 		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -98,6 +110,8 @@
 		Description=
 		MimeType=
 		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 	#tag FileType
@@ -108,10 +122,12 @@
 		MacType=TEXT
 		Name=application/rtf
 		UTI=public.rtf
-		UTIConformsTo=public.text
+		UTIConformsTo=public.text, public.data
 		Description=
 		MimeType=
 		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
 	#tag EndFileType
 
 #tag EndFileTypeSet
