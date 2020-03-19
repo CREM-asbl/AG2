@@ -31,7 +31,7 @@ Inherits Dictionary
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load(lang as string)
+		Function load(lang as string) As Boolean
 		  dim C as XMLDocument
 		  dim EL, EL1, EL2 as XMLElement
 		  dim Key as variant
@@ -39,6 +39,10 @@ Inherits Dictionary
 		  dim i, j as integer
 		  
 		  EL = getXML(lang)
+		  
+		  if EL = nil then
+		    return false
+		  end if
 		  
 		  for i = 0 to EL.Childcount -1
 		    EL1 = XMLElement(EL.Child(i))
@@ -50,8 +54,10 @@ Inherits Dictionary
 		    next j
 		  next i
 		  
+		  return true
 		  
-		End Sub
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -89,16 +95,20 @@ Inherits Dictionary
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="BinCount"
+			Name="KeyCount"
+			Visible=false
 			Group="Behavior"
-			InitialValue="0"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Count"
+			Name="BinCount"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -106,6 +116,7 @@ Inherits Dictionary
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -113,18 +124,23 @@ Inherits Dictionary
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -132,6 +148,7 @@ Inherits Dictionary
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
