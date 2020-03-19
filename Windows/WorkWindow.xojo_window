@@ -86,7 +86,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -744,11 +743,17 @@ End
 		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
 		      MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
 		      if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = true 
-		        pushbutton1.enabled = true 
+		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = B 
+		        pushbutton1.enabled = B 
 		      end if
 		      if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
 		        MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		      end if
+		      if MenuMenus.Child("EditMenu").Child("EditLink").Checked then
+		        MenuBar.Child("EditMenu").Child("EditLink").Enabled = CurrentContent.TheObjects.count > 2
+		      end if
+		      if MenuMenus.Child("EditMenu").Child("EditUnlink").Checked then
+		        MenuBar.Child("EditMenu").Child("EditUnlink").Enabled = CurrentContent.TheObjects.Groupes.count > 0
 		      end if
 		    else
 		      B = false
