@@ -2,7 +2,7 @@
 Protected Class Debug
 	#tag Method, Flags = &h0
 		Function getString() As String
-		  s = EndOfLine+s+"------"+EndOfLine
+		  s = EndOfLine+s+EndOfLine
 		  return s
 		End Function
 	#tag EndMethod
@@ -26,31 +26,30 @@ Protected Class Debug
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub setVariable(name as String, valeur As Variant)
-		  'dim Svaleur as String
+		Sub setVariable(name As String, valeur As Variant)
+		  dim sValeur as String
 		  
 		  s = s+"  $"+name+" :  "
 		  
-		  '#if not DebugBuild
-		  'if valeur <> nil then
-		  'try
-		  ''variant pouvant être retourné en string
-		  'Svaleur = valeur
-		  'catch err as TypeMismatchException
-		  ''variant ne pouvant pas retourner de string
-		  'if valeur isa StringProvider then
-		  'Svaleur = StringProvider(valeur).getString
-		  'else
-		  'Svaleur = "la donnée n'implémente pas encore StringProvider"
-		  'end if
-		  'end
-		  'else
-		  'Svaleur = "nil"
-		  'end if
-		  '#endif
+		  if valeur <> nil then
+		    try
+		      Svaleur = str(valeur)
+		    catch TypeMismatchException
+		      svaleur = "toString pas encore implémenté"
+		      var methods() as Introspection.MethodInfo
+		      methods = Introspection.GetType(valeur).getMethods
+		      for Each method as Introspection.MethodInfo in methods
+		        if method.Name = "getString" then
+		          sValeur = method.Invoke(valeur)
+		          exit
+		        end if
+		      next
+		    end 
+		  else
+		    Svaleur = "nil"
+		  end if
 		  
-		  
-		  's = s+Svaleur+EndOfLine
+		  s = s+Svaleur+EndOfLine
 		  
 		  
 		End Sub
@@ -69,6 +68,7 @@ Protected Class Debug
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -76,16 +76,21 @@ Protected Class Debug
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="s"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
@@ -93,7 +98,9 @@ Protected Class Debug
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -101,6 +108,7 @@ Protected Class Debug
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
