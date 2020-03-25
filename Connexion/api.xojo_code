@@ -120,7 +120,7 @@ Protected Module api
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"http://api.crem.be/AG/", Scope = Public
+	#tag Constant, Name = url, Type = String, Dynamic = False, Default = \"https://api.crem.be/AG/", Scope = Public
 	#tag EndConstant
 
 
@@ -131,6 +131,7 @@ Protected Module api
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -138,18 +139,23 @@ Protected Module api
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -157,6 +163,7 @@ Protected Module api
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Module
