@@ -69,7 +69,7 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Sub ComputeObject(ifmac as InfoMac)
-		  dim   MacId as integer
+		  dim MacId as integer
 		  dim s as shape
 		  dim nbp as new nBPoint
 		  dim i as integer
@@ -141,6 +141,16 @@ Protected Class Macro
 		    next
 		    s.repositionnerpoints
 		  end if
+		  
+		  Exception err
+		    var d As Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("MacID", MacId)
+		    d.setVariable("s", s)
+		    d.setVariable("nbp", nbp)
+		    d.setVariable("i", i)
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
@@ -937,13 +947,17 @@ Protected Class Macro
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Caption"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Expli"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
@@ -953,6 +967,7 @@ Protected Class Macro
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -960,18 +975,23 @@ Protected Class Macro
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -979,6 +999,7 @@ Protected Class Macro
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
