@@ -86,7 +86,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -1492,7 +1491,6 @@ End
 
 	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			
 			Formswindow.close
 			newcontent(true)
 			MenuMacros(true)
@@ -2617,20 +2615,20 @@ End
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =not t
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =not t
 		  MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =not t
-		  for i =0 to MenuBar.Child("ToolsMenu").count-1
+		  for i = 0 to MenuBar.Child("ToolsMenu").count-1
 		    MenuBar.Child("ToolsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("ToolsMenu").visible = not t
-		  for i =0 to MenuBar.Child("PrefsMenu").count-1
+		  for i = 0 to MenuBar.Child("PrefsMenu").count-1
 		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("PrefsMenu").visible = not t
-		  for i =0 to MenuBar.Child("PrefsMenu").count-1
+		  for i = 0 to MenuBar.Child("PrefsMenu").count-1
 		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("Cfg").visible = not t
 		  
-		  for i =0 to MenuBar.Child("EditMenu").count-2
+		  for i = 0 to MenuBar.Child("EditMenu").count-2
 		    MenuBar.Child("EditMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("EditMenu").visible = not t
@@ -2639,6 +2637,13 @@ End
 		  next
 		  PushButton1.visible=not t
 		  stdbox.visible = not t
+		  
+		  Exception err
+		    var d as Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i",i)
+		    err.message = err.message + d.getString
+		    Raise err
 		End Sub
 	#tag EndMethod
 

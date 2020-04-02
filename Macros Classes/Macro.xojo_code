@@ -149,6 +149,7 @@ Protected Class Macro
 		    d.setVariable("s", s)
 		    d.setVariable("nbp", nbp)
 		    d.setVariable("i", i)
+		    err.Message = err.message + d.getString
 		    Raise err
 		    
 		End Sub

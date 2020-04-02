@@ -322,6 +322,7 @@ Inherits MultipleSelectOperation
 		    d.setVariable("EL01", EL01)
 		    d.setVariable("EL02", EL02)
 		    d.setVariable("createdShape", createdshape)
+		    err.Message = err.Message + d.getString
 		    raise err
 		    
 		End Sub
