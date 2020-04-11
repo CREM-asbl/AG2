@@ -4465,14 +4465,14 @@ Protected Class Shape
 		  
 		  if not self isa point then
 		    EL0 = XMLElement(Temp.child(0))
-		    Fus1 = Polygon(Objects.Getshape(val(EL0.GetAttribute("Id"))))
+		    Fus1 = Objects.Getshape(val(EL0.GetAttribute("Id")))
 		    constructedby.data.append Fus1
 		    M1 =new Matrix(EL0)
 		    constructedby.data.append M1
 		    Fus1.AddConstructedShape self
 		    
 		    EL0 = XMLElement(Temp.child(1))
-		    Fus2 = Polygon(Objects.Getshape(val(EL0.GetAttribute("Id"))))
+		    Fus2 = Objects.Getshape(val(EL0.GetAttribute("Id")))
 		    constructedby.data.append Fus2
 		    M2 = new Matrix(EL0)
 		    constructedby.data.append new Matrix(EL0)
@@ -4480,7 +4480,7 @@ Protected Class Shape
 		    
 		  else
 		    
-		    Fus =  Polygon(Objects.Getshape(val(Temp.GetAttribute("IdParent"))))
+		    Fus = Polygon(Objects.Getshape(val(Temp.GetAttribute("IdParent"))))
 		    M1 = Matrix(Fus.Constructedby.data(1))
 		    M2 = Matrix(Fus.Constructedby.data(3))
 		    n = val(Temp.GetAttribute("Constructedby"))
@@ -4504,8 +4504,15 @@ Protected Class Shape
 		  end if
 		  
 		  
-		  
-		  
+		  Exception err
+		    var d as Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("Fus", Fus)
+		    d.setVariable("Fus1", Fus1)
+		    d.setVariable("Fus2", Fus2)
+		    err.message = err.message + d.getString
+		    raise err
+		    
 		End Sub
 	#tag EndMethod
 

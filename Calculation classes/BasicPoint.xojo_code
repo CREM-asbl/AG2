@@ -83,7 +83,7 @@ Protected Class BasicPoint
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod(getString,"Distance")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("a",a)
 		    d.setVariable("b",b)
 		    err.message = err.message+d.getString
@@ -106,7 +106,7 @@ Protected Class BasicPoint
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod(getString,"Distance")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("u",u)
 		    d.setVariable("v",v)
 		    d.setVariable("q",q)
@@ -563,6 +563,7 @@ Protected Class BasicPoint
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -570,18 +571,23 @@ Protected Class BasicPoint
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -589,18 +595,23 @@ Protected Class BasicPoint
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="x"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Double"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="y"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Double"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

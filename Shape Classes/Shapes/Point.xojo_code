@@ -332,7 +332,7 @@ Inherits Shape
 		  If constructedby <> Nil Then
 		    code = constructedby.oper
 		    Select Case  code
-		    Case 0, 3, 4,  5,10, 45
+		    Case 0, 3, 4, 5, 10, 45
 		      constructedby.shape.removeconstructedshape self
 		    case 6
 		      tsf = transformation (constructedby.data(0))
@@ -394,12 +394,12 @@ Inherits Shape
 		  end if
 		  
 		  Exception err
-		    dim d As Debug
+		    var d As Debug
 		    d = new Debug
-		    d.setMethod("Point","delete")
-		    d.setVariable("constructedby",constructedby)
-		    d.setVariable("macconstructedby",macconstructedby)
-		    d.setVariable("forme",forme)
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("constructedby", constructedby)
+		    d.setVariable("macconstructedby", macconstructedby)
+		    d.setVariable("forme", forme)
 		    err.message = err.message+d.getString
 		    
 		    Raise err

@@ -15,7 +15,7 @@ Inherits Canvas
 		    dret.enabled = false
 		    dret =nil
 		  else
-		    If CurrentContent.CurrentOperation IsA ShapeConstruction And  CurrentContent.CurrentOperation.CurrentShape.isinconstruction And Shapeconstruction(CurrentContent.currentoperation).currentitemtoset > 1 Then
+		    If CurrentContent.CurrentOperation isa ShapeConstruction and CurrentContent.CurrentOperation.CurrentShape.isinconstruction And Shapeconstruction(CurrentContent.currentoperation).currentitemtoset > 1 Then
 		      CurrentContent.abortconstruction
 		    end if
 		    if currentcontent.currentoperation isa modifier then
@@ -130,6 +130,17 @@ Inherits Canvas
 		  
 		  Return True//display the contextual menu
 		  
+		  Exception err
+		    var d as Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("currentContent", CurrentContent )
+		    d.setVariable("base", base)
+		    d.setVariable("x", x)
+		    d.setVariable("y", y)
+		    err.message = err.message + d.getString
+		    Raise err
+		    
 		End Function
 	#tag EndEvent
 
