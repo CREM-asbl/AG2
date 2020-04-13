@@ -219,12 +219,12 @@ Protected Class InfoMac
 
 	#tag Method, Flags = &h0
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
-		  dim EL, temp as XMLElement
+		  Dim EL, temp As XMLElement
 		  dim i as integer
 		  
 		  temp =  Doc.CreateElement("IfMac")
-		  temp.SetAttribute(Dico.Value("NrFam"), str(fa))
-		  temp.SetAttribute(Dico.Value("NrForm"),str(fo))
+		  temp.SetAttribute("NrFam", Str(fa))
+		  temp.SetAttribute("NrForm",Str(fo))
 		  if fa <> 0 then
 		    temp.Setattribute("Npts",str(Npts))
 		    temp.setattribute("Ncpts",str(Ncpts))
@@ -250,11 +250,11 @@ Protected Class InfoMac
 		    Temp.SetAttribute("Fin",str(1))
 		  else
 		    Temp.SetAttribute("Fin",str(0))
-		  end if
+		  End If
 		  if Init then
 		    Temp.SetAttribute("Ini",str(1))
 		  else
-		    Temp.SetAttribute("Ini",str(0))
+		    Temp.SetAttribute("Ini",Str(0))
 		  end if
 		  if Interm then
 		    Temp.SetAttribute("Int",str(1))
@@ -265,6 +265,9 @@ Protected Class InfoMac
 		    Temp.setattribute("Seg",str(1))
 		  else
 		    Temp.setattribute("Seg",str(0))
+		  End If
+		  If M <> Nil Then
+		    M.XMLPutAttribute(Temp)
 		  end if
 		  if ubound(childs) > -1 then
 		    EL = Doc.CreateElement("Childs")
@@ -276,9 +279,7 @@ Protected Class InfoMac
 		  if coord <> nil and not currentcontent.macrocreation  then
 		    Temp.AppendChild coord.XMLPutInContainer(Doc)
 		  end if
-		  if M <> nil then
-		    M.XMLPutAttribute(Temp)
-		  end if
+		  
 		  
 		  return temp
 		End Function
@@ -428,45 +429,59 @@ Protected Class InfoMac
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="fa"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="final"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="fo"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Forme0"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Forme1"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Forme2"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="idiv"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -474,18 +489,23 @@ Protected Class InfoMac
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="init"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="interm"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -493,102 +513,135 @@ Protected Class InfoMac
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="location"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="MacId"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Ncpts"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ndiv"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Npts"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="num"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="numside0"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="numside1"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="oper"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ori"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ptsur"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="RealId"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="RealSide"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="seg"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -596,12 +649,15 @@ Protected Class InfoMac
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="type"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

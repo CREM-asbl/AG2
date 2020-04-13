@@ -541,11 +541,11 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim i as integer
+		  Dim i As Integer
 		  dim o as shape
 		  
 		  tracept = false
-		  for i=0 to count-1
+		  For i=0 To count-1
 		    o = GetPlan(i)
 		    if o <> nil   then
 		      o.PaintAll(g)
@@ -1330,15 +1330,19 @@ Inherits Liste
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="CreerTrace"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="drapplan"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -1346,6 +1350,7 @@ Inherits Liste
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -1353,23 +1358,31 @@ Inherits Liste
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="PrevId"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -1377,12 +1390,15 @@ Inherits Liste
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tracept"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
