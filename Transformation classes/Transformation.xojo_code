@@ -258,10 +258,10 @@ Protected Class Transformation
 		    case 1
 		      if ori = 1 then
 		        a = can.transform(supp.points(index).bpt)
-		        b = can.transform(supp.points((index+1)mod supp.npts) .bpt)
+		        b = can.transform(supp.points((index+1)mod supp.npts).bpt)
 		      else
 		        b = can.transform(supp.points(index).bpt)
-		        a = can.transform(supp.points((index+1)mod supp.npts) .bpt)
+		        a = can.transform(supp.points((index+1)mod supp.npts).bpt)
 		      end if
 		    case 2
 		      b = can.transform(supp.points(2).bpt)
@@ -296,6 +296,17 @@ Protected Class Transformation
 		    T.updatetip(a,b,col)
 		    g.DrawObject T, b.x, b.y
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("a", a)
+		    d.setVariable("b", b)
+		    d.setVariable("col", col)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

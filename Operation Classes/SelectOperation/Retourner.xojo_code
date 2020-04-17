@@ -113,10 +113,6 @@ Inherits SelectOperation
 		  
 		  currentshape = tempshape.item(0)
 		  if currentshape isa point then
-		    if UBound(point(currentshape).parents) = -1 or point(currentshape).parents(0).MacConstructedBy <> nil then
-		      currentshape = point(currentshape).parents(0)
-		      return
-		    end if
 		    currentshape = point(currentshape).parents(0)
 		  end if
 		  if currentshape <> nil then
@@ -127,7 +123,7 @@ Inherits SelectOperation
 		    figs.addobject tempshape.item(i).fig
 		  next
 		  
-		  if  config.Trace  then
+		  if config.Trace  then
 		    dret = new RetTimer(tempshape,self)
 		  else
 		    DoOper
@@ -161,7 +157,7 @@ Inherits SelectOperation
 		  if visible.count > 0 then
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if (s isa cube)  or (s isa point and point(s).pointoncube) or not choixvalide(s)   then
+		      if (s isa cube) or (s isa point and point(s).pointoncube) or (s isa point and (UBound(point(s).parents) = -1 or point(s).parents(0).MacConstructedBy <> nil)) or not choixvalide(s) then
 		        Visible.removeobject(s)
 		        nobj = visible.count
 		        i = i-1
@@ -330,37 +326,51 @@ Inherits SelectOperation
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="angle"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="canceling"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="colsep"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Finished"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="HistId"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -368,24 +378,31 @@ Inherits SelectOperation
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="info"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="iobj"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="itsf"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -393,41 +410,55 @@ Inherits SelectOperation
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nobj"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ntsf"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="OpId"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="side"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -435,6 +466,7 @@ Inherits SelectOperation
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

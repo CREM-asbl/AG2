@@ -459,8 +459,6 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as shape)
-		  
-		  
 		  constructor(ol)
 		  Npts=s.Npts
 		  Ncpts = s.Ncpts
@@ -4127,7 +4125,7 @@ Protected Class Shape
 		        Form.AppendChild  colcotes(i).XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		      next
 		    else
-		      Form.AppendChild  BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
+		      Form.AppendChild BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		    end if
 		    if not self isa bipoint  then
 		      Temp = fillcolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorFill"))
@@ -4506,6 +4504,7 @@ Protected Class Shape
 		  
 		  Exception err
 		    var d as Debug
+		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("Fus", Fus)
 		    d.setVariable("Fus1", Fus1)

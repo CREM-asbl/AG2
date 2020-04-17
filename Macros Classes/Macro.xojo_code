@@ -144,6 +144,7 @@ Protected Class Macro
 		  
 		  Exception err
 		    var d As Debug
+		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("MacID", MacId)
 		    d.setVariable("s", s)

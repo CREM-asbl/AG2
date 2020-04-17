@@ -86,6 +86,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -2640,6 +2641,7 @@ End
 		  
 		  Exception err
 		    var d as Debug
+		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("i",i)
 		    err.message = err.message + d.getString

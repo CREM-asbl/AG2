@@ -917,6 +917,7 @@ Protected Class WindContent
 		  
 		  Exception err
 		    var d as Debug
+		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("EL", El)
 		    d.setVariable("curoper", curoper)

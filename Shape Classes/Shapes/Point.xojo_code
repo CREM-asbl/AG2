@@ -3271,7 +3271,9 @@ Inherits Shape
 		      Form.SetAttribute("BlueTrace",str(1))
 		    end if
 		    Form.AppendChild Bpt.XMLPutInContainer(Doc)
-		    Form.AppendChild Bordercolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorBorder"))
+		    if Bordercolor <> nil then
+		      Form.AppendChild Bordercolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorBorder"))
+		    end if
 		    Temp = Doc.CreateElement(Dico.Value("Thickness"))
 		    Temp.SetAttribute("Value", str(borderwidth))
 		    Form.AppendChild Temp

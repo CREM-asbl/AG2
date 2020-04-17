@@ -242,7 +242,7 @@ Inherits MultipleSelectOperation
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
 		  n = val(EL0.GetAttribute("Id"))
-		  if Mac.ObInit.indexof(n)  <> -1 then
+		  if Mac.ObInit.indexof(n) <> -1 then
 		    rid = GetRealId(n)
 		    createdshape = objects.getshape(rid)
 		    EL01 = XMLElement(EL0.Child(0))
@@ -298,12 +298,14 @@ Inherits MultipleSelectOperation
 		    MacId.Append n
 		    Real.Append createdshape.id
 		    RealSide.Append 0
+		    
 		    for i = 0 to EL0.ChildCount-1
 		      EL01 = XMLElement(EL0.Child(i))
 		      MacId.append val(EL01.GetAttribute("Id"))
 		      Real.Append createdshape.points(i).id
 		      RealSide.append -1
 		    next
+		    
 		    if curop <> nil then
 		      curop.endoperation
 		    end if
@@ -311,6 +313,7 @@ Inherits MultipleSelectOperation
 		  
 		  exception err
 		    var d as Debug
+		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("Curop", Curop)
 		    d.setVariable("i", i)
@@ -455,6 +458,14 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function GetRealId(n as integer) As integer
 		  return Real(MacId.indexof(n))
+		  
+		  Exception err
+		    var d as Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("n", n)
+		    err.message = err.message + d.getString
+		    Raise err
 		End Function
 	#tag EndMethod
 
