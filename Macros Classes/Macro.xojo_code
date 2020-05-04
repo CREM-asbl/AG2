@@ -788,6 +788,12 @@ Protected Class Macro
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function toString() As String
+		  return Histo.ToString
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ToXML(Docu as XMLDocument, EL as XMLElement)
 		  EL.AppendChild ToMac(Docu,0)
 		  EL.AppendChild ToMac(Docu,1)

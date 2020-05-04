@@ -78,15 +78,14 @@ Protected Module api
 
 	#tag Method, Flags = &h0
 		Sub SendBug()
-		  dim request, directory, file,date as String
+		  dim request, directory as String
 		  Dim form As Dictionary
 		  
 		  if http = Nil then
 		    return
 		  end if
 		  
-		  date = app.bugtime.LongDate+" "+str(app.bugtime.Hour)+"h"+str(app.bugtime.Minute)
-		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
+		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+app.bugtime+"/"
 		  
 		  form = New Dictionary
 		  form.Value("dir") = directory
@@ -108,6 +107,17 @@ Protected Module api
 		  
 		  http.SetFormData(form)
 		  request = http.post(url+"/bug.php",timeout)
+		  
+		  'if CurrentContent.CurrentOperation isa MacroExe then
+		  '
+		  'form.Value("file") = "bug.xmag"
+		  'form.Value("txt") = 
+		  '
+		  'http.SetFormData(form)
+		  'request = http.post(url+"/bug.php",timeout)
+		  '
+		  'end if
+		  
 		End Sub
 	#tag EndMethod
 

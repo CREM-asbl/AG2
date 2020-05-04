@@ -32,7 +32,6 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Macr as Macro)
-		  
 		  super.constructor()
 		  Mac = Macr
 		  OpId = 43
@@ -381,8 +380,6 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
-		  
 		  if currentcontent.macrocreation then   'on utilise une macro à l'intérieur de la construction d'une autre
 		    ExecuteMacro(Histo)
 		  else

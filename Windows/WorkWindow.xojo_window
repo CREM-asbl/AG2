@@ -1466,7 +1466,7 @@ End
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
 			if mousedispo then
 			Formswindow.close
-			CurrentContent.CurrentOperation=new MacroExe(index)
+			CurrentContent.CurrentOperation = new MacroExe(index)
 			refreshtitle
 			end if
 			return true
@@ -1577,7 +1577,7 @@ End
 			
 			if f <> nil then
 			Doc = new XmlDocument(f)
-			mac =new Macro(Doc)
+			mac = new Macro(Doc)
 			app.themacros.addmac mac
 			WorkWindow.updatesousmenusmacros
 			end if

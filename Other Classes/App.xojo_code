@@ -70,10 +70,9 @@ Inherits Application
 		    return true
 		  end if
 		  
-		  app.bugtime = new date()
+		  app.bugtime = DateTime.now.SQLDateTime
 		  
 		  curoper = CurrentContent.CurrentOperation
-		  
 		  
 		  log = "BuildDate : " + str(self.BuildDate) + EndOfLine +EndOfLine
 		  
@@ -351,7 +350,7 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		bugtime As Date
+		bugtime As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
