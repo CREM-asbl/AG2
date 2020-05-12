@@ -10,7 +10,7 @@ Protected Module api
 		    return
 		  end if
 		  
-		  data = http.Get(url+"info.xml",timeout)
+		  data = http.SendSync("GET",url+"info.xml")
 		  
 		  try
 		    doc = new XmlDocument(DefineEncoding(data,Encodings.UTF8))
@@ -30,8 +30,7 @@ Protected Module api
 
 	#tag Method, Flags = &h0
 		Sub checkUpdate()
-		  dim log,info,update As string
-		  Dim form As Dictionary
+		  dim log,info,update,request As string
 		  dim NWI as NetworkInterface
 		  
 		  init
@@ -42,19 +41,16 @@ Protected Module api
 		  
 		  NWI = System.GetNetworkInterface(0)
 		  
-		  form = New Dictionary
-		  form.Value("version") = app.FullVersion
-		  form.Value("os") = app.sys
-		  form.Value("mac") = NWI.MACAddress
+		  request = "version=" + app.FullVersion + "&os=" + app.sys +"&mac=" + NWI.MACAddress
 		  
-		  http.SetFormData(form)
-		  log = http.Post(url+"/log.php",timeout)
-		  
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  log = http.SendSync("POST",url+"/log.php")
 		  
 		  AfficherInfo
 		  
-		  
-		  update = http.Get(url+"version.xml", timeout)
+		  update = http.SendSync("GET",url+"version.xml")
+		  MsgBox update
+		  MsgBox app.LongVersion
 		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
 		    GetUpdateW.ShowModal
 		  end if
@@ -71,15 +67,15 @@ Protected Module api
 		  #endif
 		  
 		  if System.Network.IsConnected then
-		    http = New HTTPSocket
+		    http = New URLConnection
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SendBug()
-		  dim request, directory as String
-		  Dim form As Dictionary
+		  dim request, directory, response as String
+		  
 		  
 		  if http = Nil then
 		    return
@@ -87,43 +83,26 @@ Protected Module api
 		  
 		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+app.bugtime+"/"
 		  
-		  form = New Dictionary
-		  form.Value("dir") = directory
-		  form.Value("file") = "log.txt"
-		  form.Value("txt") = app.log
+		  request = "dir=" + directory + "&file=log.txt&txt=" + app.log
+		  MsgBox request
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  response = http.SendSync("POST",url+"/bug.php")
 		  
-		  http.SetFormData(form)
-		  request = http.post(url+"/bug.php",timeout)
+		  request = "dir=" + directory + "&file=bug.hag&txt=" + CurrentContent.Oplist.ToString
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  response = http.SendSync("POST",url+"/bug.php")
 		  
+		  request = "dir=" + directory + "&file=bug.fag&txt=" + CurrentContent.MakeXML.ToString
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  response = http.SendSync("POST",url+"/bug.php")
 		  
-		  form.Value("file") = "bug.hag"
-		  form.Value("txt") = currentContent.Oplist.toString
-		  
-		  http.SetFormData(form)
-		  request = http.post(url+"/bug.php",timeout)
-		  
-		  form.Value("file") = "bug.fag"
-		  form.Value("txt") = currentContent.MakeXML.toString
-		  
-		  http.SetFormData(form)
-		  request = http.post(url+"/bug.php",timeout)
-		  
-		  'if CurrentContent.CurrentOperation isa MacroExe then
-		  '
-		  'form.Value("file") = "bug.xmag"
-		  'form.Value("txt") = 
-		  '
-		  'http.SetFormData(form)
-		  'request = http.post(url+"/bug.php",timeout)
-		  '
-		  'end if
 		  
 		End Sub
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		http As HTTPSocket
+		http As URLConnection
 	#tag EndProperty
 
 
