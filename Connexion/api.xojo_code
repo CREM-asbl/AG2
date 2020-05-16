@@ -49,8 +49,6 @@ Protected Module api
 		  AfficherInfo
 		  
 		  update = http.SendSync("GET",url+"version.xml")
-		  MsgBox update
-		  MsgBox app.LongVersion
 		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
 		    GetUpdateW.ShowModal
 		  end if
@@ -84,7 +82,6 @@ Protected Module api
 		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+app.bugtime+"/"
 		  
 		  request = "dir=" + directory + "&file=log.txt&txt=" + app.log
-		  MsgBox request
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
 		  response = http.SendSync("POST",url+"/bug.php")
 		  
