@@ -577,7 +577,7 @@ Protected Class WindContent
 		      EL = XMLElement(Doc.importnode(mac.Histo,true))
 		      'Mac.ToXML(Doc,EL)
 		      TMP.AppendChild EL
-		    next
+		    Next
 		    AG.appendchild TMP
 		  end if
 		  
@@ -762,7 +762,7 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub Save()
-		  CurrentOperation=nil
+		  CurrentOperation=Nil
 		  
 		  if currentfile = nil then
 		    saveas

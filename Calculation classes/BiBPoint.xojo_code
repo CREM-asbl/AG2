@@ -543,59 +543,59 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Sub Interscreen(Byref mi as double, Byref ma as double)
-		  dim csg, csd, cig, cid, ext  as BasicPoint
+		  Dim csg, csd, cig, cid, ext  As BasicPoint
 		  dim BiB As BiBPoint
 		  dim r, r1, r2 as double
 		  
 		  
 		  can.coins(csg,csd,cig,cid)
 		  
-		  if abs(first.x-second.x) < can.magneticdist then
-		    r = second.y-first.y
-		    if r > 0 then
-		      ma = (csg.y-first.y)/r
-		      mi =  (cig.y - first.y)/r
-		    else
-		      ma = (cig.y-first.y)/r
-		      mi =  (csg.y - first.y)/r
-		    end if
-		    
-		  else
-		    mi = 9999
-		    ma = -9999
-		    
-		    Bib = new BiBPoint(cig, csg)
-		    ext = BiBInterdroites(Bib,0,0,r1,r2)
-		    
-		    if ext <> nil then
-		      mi = min (r1, mi)
-		      ma =max (r1, ma)
-		    end if
-		    
-		    Bib = new BiBPoint(csg, csd)
-		    ext = BiBInterdroites(Bib,0,0,r1,r2)
-		    
-		    if ext <> nil then
-		      mi = min (r1, mi)
-		      ma =max (r1, ma)
-		    end if
-		    
-		    Bib = new BiBPoint(csd, cid)
-		    ext = BiBInterdroites(Bib,0,0,r1,r2)
-		    
-		    if ext <> nil then
-		      mi = min (r1, mi)
-		      ma =max (r1, ma)
-		    end if
-		    
-		    Bib = new BiBPoint(csd, cid)
-		    ext = BiBInterdroites(Bib,0,0,r1,r2)
-		    
-		    if ext <> nil then
-		      mi = min (r1, mi)
-		      ma =max (r1, ma)
-		    end if
+		  'If Abs(first.x-second.x) < can.magneticdist Then
+		  'r = second.y-first.y
+		  'if r > 0 then
+		  'ma = (csg.y-first.y)/r
+		  'mi =  (cig.y - first.y)/r
+		  'else
+		  'ma = (cig.y-first.y)/r
+		  'mi =  (csg.y - first.y)/r
+		  'end if
+		  '
+		  'else
+		  mi = 9999
+		  ma = -9999
+		  
+		  Bib = new BiBPoint(cig, csg)
+		  ext = BiBInterdroites(Bib,0,0,r1,r2)
+		  
+		  if ext <> nil then
+		    mi = min (r1, mi)
+		    ma =max (r1, ma)
 		  end if
+		  
+		  Bib = new BiBPoint(csg, csd)
+		  ext = BiBInterdroites(Bib,0,0,r1,r2)
+		  
+		  if ext <> nil then
+		    mi = min (r1, mi)
+		    ma =max (r1, ma)
+		  end if
+		  
+		  Bib = new BiBPoint(csd, cid)
+		  ext = BiBInterdroites(Bib,0,0,r1,r2)
+		  
+		  if ext <> nil then
+		    mi = min (r1, mi)
+		    ma =max (r1, ma)
+		  end if
+		  
+		  Bib = New BiBPoint(cid, cig)
+		  ext = BiBInterdroites(Bib,0,0,r1,r2)
+		  
+		  if ext <> nil then
+		    mi = min (r1, mi)
+		    ma =max (r1, ma)
+		  end if
+		  'end if
 		  
 		  ma = ma +0.1
 		End Sub
@@ -776,8 +776,11 @@ Inherits nBpoint
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="decomp"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -785,6 +788,7 @@ Inherits nBpoint
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -792,30 +796,39 @@ Inherits nBpoint
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="longueur"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nextre"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -823,12 +836,15 @@ Inherits nBpoint
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="type"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

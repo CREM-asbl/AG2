@@ -539,11 +539,11 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim i as integer
+		  Dim i As Integer
 		  dim o as shape
 		  
 		  tracept = false
-		  for i=0 to count-1
+		  For i=0 To count-1
 		    o = GetPlan(i)
 		    if o <> nil   then
 		      o.PaintAll(g)

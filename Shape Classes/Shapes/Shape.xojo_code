@@ -308,7 +308,7 @@ Protected Class Shape
 		Sub Autos()
 		  If Self IsA repere Then
 		    Auto =-1
-		  Elseif (constructedby <> Nil And constructedby.oper = 6)   Or std Then 'or (macconstructedby <> nil) then
+		  Elseif (constructedby <> Nil And constructedby.oper = 6)   Or std  or (macconstructedby <> nil) then
 		    auto = 0
 		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA HalfDsk)  Then '(Self IsA droite And Not Self.isaparaperp) Or   (Self IsA Freecircle)    Then
 		    auto = 1
