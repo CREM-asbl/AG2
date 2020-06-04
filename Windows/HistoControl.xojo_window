@@ -1,16 +1,16 @@
 #tag Window
 Begin ContainerControl HistoControl
-   AcceptFocus     =   False
-   AcceptTabs      =   False
-   AutoDeactivate  =   True
-   BackColor       =   &cFFFFFF00
+   AllowAutoDeactivate=   True
+   AllowFocus      =   False
+   AllowFocusRing  =   False
+   AllowTabs       =   False
    Backdrop        =   0
+   BackgroundColor =   &cFFFFFF00
    DoubleBuffer    =   False
    Enabled         =   True
    EraseBackground =   True
-   HasBackColor    =   False
+   HasBackgroundColor=   False
    Height          =   30
-   HelpTag         =   ""
    InitialParent   =   ""
    Left            =   32
    LockBottom      =   True
@@ -20,9 +20,9 @@ Begin ContainerControl HistoControl
    TabIndex        =   0
    TabPanelIndex   =   0
    TabStop         =   True
+   Tooltip         =   ""
    Top             =   32
    Transparent     =   True
-   UseFocusRing    =   False
    Visible         =   False
    Width           =   800
    Begin BevelButton Stop

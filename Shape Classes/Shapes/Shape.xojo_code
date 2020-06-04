@@ -4610,7 +4610,7 @@ Protected Class Shape
 		  dim s as point
 		  
 		  
-		  for i = 0 to Temp.childCount-1
+		  for i = 0 to npts-1
 		    s = XMLreadpoint(XMLElement(Temp.Child(i)))
 		    setpoint(s)
 		    Points.append s
