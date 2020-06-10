@@ -619,8 +619,8 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prppupdate0() As Matrix
-		  dim u, w,ep,  np as BasicPoint
+		Function prppupdate0() As boolean
+		  Dim u, w,ep,  np As BasicPoint
 		  dim d as double
 		  dim ff as figure
 		  
@@ -635,7 +635,7 @@ Inherits Bipoint
 		  
 		  ff.getoldnewpos(Points(1),ep,np)
 		  np = firstp +w*d
-		  return new Similaritymatrix(points(0).bpt, ep, points(0).bpt, np)
+		  Return True 'New Similaritymatrix(points(0).bpt, ep, points(0).bpt, np)
 		  
 		  
 		  
@@ -643,7 +643,7 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prppupdate1() As Matrix
+		Function prppupdate1() As boolean
 		  Dim Bib1, BiB2 As BiBPoint
 		  dim sf as figure
 		  dim  p, q as Point
@@ -684,18 +684,18 @@ Inherits Bipoint
 		      nq = np+w*d
 		      q.moveto nq
 		      q.modified = True
-		    else
-		      return prpupdate11(q,ep,eq,np,nq)
+		      'else
+		      'Return prpupdate11(q,ep,eq,np,nq)
 		    End If
 		  end if
-		  return new SimilarityMatrix(ep,eq,np,nq)
+		  return true 'new SimilarityMatrix(ep,eq,np,nq)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prppupdate2() As Matrix
-		  dim sf as figure
+		Function prppupdate2() As boolean
+		  Dim sf As figure
 		  dim  p, q as Point
 		  dim  ep, np, eq, nq, w as Basicpoint
 		  dim t as Boolean
@@ -715,7 +715,7 @@ Inherits Bipoint
 		  case 0
 		    nq = nq.Projection(np,np+w)
 		    q.moveto nq
-		    return new SimilarityMatrix(ep,eq,np,nq)
+		    Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		  case 1
 		    n = sf.ListSommSur(0)
 		    t = sf.replacerpoint(points(n))
@@ -723,21 +723,21 @@ Inherits Bipoint
 		      if  q.forme = 0 then
 		        nq = nq.Projection(np,np+w)
 		        q.moveto nq
-		        return new SimilarityMatrix(ep,eq,np,nq)
+		        Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		      else
-		        return prpupdate11(p,eq,ep,nq,np)
+		        Return prpupdate11(p,eq,ep,nq,np)
 		      end if
 		    else
-		      return prpupdate11(q,ep,eq,np,nq)
+		      Return  prpupdate11(q,ep,eq,np,nq)
 		    end if
 		  case 2
 		    if check then
-		      return new SimilarityMatrix(ep,eq,np,nq)
+		      Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		    else
 		      t = sf.replacerpoint(q)
 		      sf.getoldnewpos(p,ep,np)
 		      sf.getoldnewpos(q,eq,nq)
-		      return prpupdate11(q,ep,eq,np,nq)
+		      Return  prpupdate11(q,ep,eq,np,nq)
 		    end if
 		  end select
 		  
@@ -750,8 +750,8 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prpupdate11(q as point, ep as basicpoint, eq as basicPoint, np as basicPoint, nq as basicPoint) As Matrix
-		  dim dr1, dr2 as droite
+		Function prpupdate11(q as point, ep as basicpoint, eq as basicPoint, np as basicPoint, nq as basicPoint) As Boolean
+		  Dim dr1, dr2 As droite
 		  dim Bib1, Bib2 as BiBPoint
 		  dim w as basicpoint
 		  dim M as Matrix
@@ -795,7 +795,7 @@ Inherits Bipoint
 		  if  nq <> nil then
 		    q.moveto nq
 		  end if
-		  return new similaritymatrix (ep, eq, np, nq)
+		  return true 'new similaritymatrix (ep, eq, np, nq)
 		  
 		End Function
 	#tag EndMethod
@@ -895,107 +895,147 @@ Inherits Bipoint
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="ArcAngle"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Double"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="area"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Attracting"
+			Visible=false
 			Group="Behavior"
 			InitialValue="True"
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="auto"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Biface"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Border"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Borderwidth"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="double"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="colsw"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="deleted"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="drapori"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="fam"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Fill"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Fleche"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="forme"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Hidden"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Highlighted"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="id"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="IDGroupe"
+			Visible=false
 			Group="Behavior"
 			InitialValue="-1"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -1003,30 +1043,39 @@ Inherits Bipoint
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="IndexConstructedPoint"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Invalid"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="IsInConstruction"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="labupdated"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -1034,100 +1083,135 @@ Inherits Bipoint
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Liberte"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Modified"
+			Visible=false
 			Group="Behavior"
 			InitialValue="false"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="narcs"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ncpts"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="nextre"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="npts"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Ori"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="plan"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Pointe"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="selected"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Side"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="signaire"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="std"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tobereconstructed"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -1135,30 +1219,39 @@ Inherits Bipoint
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="TracePt"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="tsp"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="unmodifiable"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Validating"
+			Visible=false
 			Group="Behavior"
 			InitialValue="0"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

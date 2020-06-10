@@ -310,7 +310,7 @@ Protected Class Shape
 		    Auto =-1
 		  Elseif (constructedby <> Nil And constructedby.oper = 6)   Or std  or (macconstructedby <> nil) then
 		    auto = 0
-		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA HalfDsk)  Then '(Self IsA droite And Not Self.isaparaperp) Or   (Self IsA Freecircle)    Then
+		  Elseif Self  IsA polreg Or Self IsA triangrectiso Or (Self IsA HalfDsk) Then
 		    auto = 1
 		  elseif  (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then '((self isa polyqcq and npts = 3) and (not Hybrid)) or
 		    auto = 2
@@ -321,7 +321,7 @@ Protected Class Shape
 		  elseif self.isaparaperp then
 		    auto = 6
 		  else
-		    auto = 4 // Points isolés, BiP, Polyqcq (npts > 3), y compris Lacets
+		    Auto = 4 // Points isolés, BiP, Polyqcq, Droites , FreeCircles y compris Lacets
 		  end if
 		  
 		  
@@ -2864,7 +2864,7 @@ Protected Class Shape
 		  end if
 		  
 		  
-		  if s2.haspointon(self, p)  and (not (s2.auto = 4)) then 'and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
+		  if s2.haspointon(self, p) then ' and (not (s2.auto = 4)) then 'and not (isaparaperp(sh)  and sh.NbPtsCommuns(s2) >= 2 and haspointsimages(s2))   then
 		    t =  (constructedby = nil or constructedby.shape <> s2)   ''si un sommet de s2 est pointsur self (sans que self soit construit par s2)
 		    for k = 0 to npts-1
 		      t = t or ( (points(k).constructedby = nil) or (points(k).constructedby.shape isa point and s2.getindex(point(points(k).constructedby.shape)) <> -1) )

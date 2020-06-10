@@ -577,7 +577,7 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function autoprppupdate() As Matrix
+		Function autoprppupdate() As boolean
 		  dim s as droite
 		  dim i as integer
 		  
@@ -3709,7 +3709,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
-		  dim M as Matrix
+		  Dim M As Matrix
 		  
 		  
 		  NbUnModif = 0
@@ -3743,7 +3743,9 @@ Protected Class Figure
 		      return false
 		    end if
 		  Case 6
-		    M = autoprppupdate
+		    If  autoprppupdate Then
+		      EndQQupdateshapes
+		    End If
 		  end select
 		  
 		  
