@@ -184,14 +184,14 @@ Inherits Canvas
 		    else
 		      coul = negcolor
 		    end if
-		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))
+		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor")) then
 		      currentcontent.currentoperation = New ColorChange(False, col)
 		      currentoper = colorchange(currentcontent.currentoperation)
 		    end if
 		    EndOperMenuContext
 		    
 		  Case Dico.Value("ToolsColorFill")
-		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor"))
+		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor")) then
 		      currentcontent.currentoperation = New ColorChange(False, col)
 		      currentoper = colorchange(currentcontent.currentoperation)
 		      colorchange(currentoper).icot = -1
