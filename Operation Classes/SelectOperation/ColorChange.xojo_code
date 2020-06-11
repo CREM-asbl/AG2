@@ -25,9 +25,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(B as boolean)
-		  
-		  
+		Sub Constructor(B As boolean, col As Color)
 		  Super.constructor
 		  OpId = 12
 		  Bord = B
@@ -37,7 +35,10 @@ Inherits SelectOperation
 		  else
 		    colsep = false
 		  End If
-		  Formswindow.close
+		  
+		  newcolor = New couleur(col)
+		  
+		  
 		  
 		  
 		End Sub
@@ -47,30 +48,10 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  Dim s As shape
 		  Dim i, n As Integer
-		  Dim col As Color
-		  Dim coul As couleur
-		  Dim res As Boolean
-		  Var Diag As New MessageDialog
-		  Var b As MessageDialogButton
-		  
 		  
 		  s = currenthighlightedshape
 		  n = tempshape.count-1
 		  setoldcolors
-		  
-		  
-		  Diag.Message = "Choisis une couleur"
-		  Diag.ActionButton.Caption = "OK"
-		  Diag.CancelButton.Visible = True
-		  b = Diag.ShowModal
-		  Select Case b
-		  Case Diag.ActionButton
-		    if Color.SelectedFromDialog(col,"Choisir une couleur") Then
-		      newcolor = New couleur(col)
-		    End If
-		  Case Diag.CancelButton
-		  End Select
-		  
 		  
 		  if s.side <> -1 then
 		    s = tempshape.item(0)
