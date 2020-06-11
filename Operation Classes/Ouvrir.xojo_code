@@ -15,20 +15,18 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub Constructor(f as folderitem)
 		  Dim Doc As XmlDocument
-		  dim Cfg as string
-		  dim v1, v2, v3 as integer
+		  Dim Cfg As String
 		  dim version as string
-		  dim msg as MessageDialog
-		  dim but as MessageDialogButton
+		  
 		  
 		  
 		  constructor()
 		  
-		  try
-		    Doc=new XMLDocument(f)
-		  catch err as XmlException
+		  Try
+		    Doc=New XMLDocument(f)
+		  Catch err As XmlException
 		    MsgBox Dico.Value("MsgNovalidFile")
-		    return
+		    Return
 		  end try
 		  
 		  

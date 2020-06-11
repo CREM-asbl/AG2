@@ -619,8 +619,8 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prppupdate0() As Matrix
-		  dim u, w,ep,  np as BasicPoint
+		Function prppupdate0() As boolean
+		  Dim u, w,ep,  np As BasicPoint
 		  dim d as double
 		  dim ff as figure
 		  
@@ -635,7 +635,7 @@ Inherits Bipoint
 		  
 		  ff.getoldnewpos(Points(1),ep,np)
 		  np = firstp +w*d
-		  return new Similaritymatrix(points(0).bpt, ep, points(0).bpt, np)
+		  Return True 'New Similaritymatrix(points(0).bpt, ep, points(0).bpt, np)
 		  
 		  
 		  
@@ -643,7 +643,7 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prppupdate1() As Matrix
+		Function prppupdate1() As boolean
 		  Dim Bib1, BiB2 As BiBPoint
 		  dim sf as figure
 		  dim  p, q as Point
@@ -684,18 +684,18 @@ Inherits Bipoint
 		      nq = np+w*d
 		      q.moveto nq
 		      q.modified = True
-		    else
-		      return prpupdate11(q,ep,eq,np,nq)
+		      'else
+		      'Return prpupdate11(q,ep,eq,np,nq)
 		    End If
 		  end if
-		  return new SimilarityMatrix(ep,eq,np,nq)
+		  return true 'new SimilarityMatrix(ep,eq,np,nq)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prppupdate2() As Matrix
-		  dim sf as figure
+		Function prppupdate2() As boolean
+		  Dim sf As figure
 		  dim  p, q as Point
 		  dim  ep, np, eq, nq, w as Basicpoint
 		  dim t as Boolean
@@ -715,7 +715,7 @@ Inherits Bipoint
 		  case 0
 		    nq = nq.Projection(np,np+w)
 		    q.moveto nq
-		    return new SimilarityMatrix(ep,eq,np,nq)
+		    Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		  case 1
 		    n = sf.ListSommSur(0)
 		    t = sf.replacerpoint(points(n))
@@ -723,21 +723,21 @@ Inherits Bipoint
 		      if  q.forme = 0 then
 		        nq = nq.Projection(np,np+w)
 		        q.moveto nq
-		        return new SimilarityMatrix(ep,eq,np,nq)
+		        Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		      else
-		        return prpupdate11(p,eq,ep,nq,np)
+		        Return prpupdate11(p,eq,ep,nq,np)
 		      end if
 		    else
-		      return prpupdate11(q,ep,eq,np,nq)
+		      Return  prpupdate11(q,ep,eq,np,nq)
 		    end if
 		  case 2
 		    if check then
-		      return new SimilarityMatrix(ep,eq,np,nq)
+		      Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		    else
 		      t = sf.replacerpoint(q)
 		      sf.getoldnewpos(p,ep,np)
 		      sf.getoldnewpos(q,eq,nq)
-		      return prpupdate11(q,ep,eq,np,nq)
+		      Return  prpupdate11(q,ep,eq,np,nq)
 		    end if
 		  end select
 		  
@@ -750,8 +750,8 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function prpupdate11(q as point, ep as basicpoint, eq as basicPoint, np as basicPoint, nq as basicPoint) As Matrix
-		  dim dr1, dr2 as droite
+		Function prpupdate11(q as point, ep as basicpoint, eq as basicPoint, np as basicPoint, nq as basicPoint) As Boolean
+		  Dim dr1, dr2 As droite
 		  dim Bib1, Bib2 as BiBPoint
 		  dim w as basicpoint
 		  dim M as Matrix
@@ -795,7 +795,7 @@ Inherits Bipoint
 		  if  nq <> nil then
 		    q.moveto nq
 		  end if
-		  return new similaritymatrix (ep, eq, np, nq)
+		  return true 'new similaritymatrix (ep, eq, np, nq)
 		  
 		End Function
 	#tag EndMethod

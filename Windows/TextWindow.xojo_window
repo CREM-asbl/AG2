@@ -238,31 +238,31 @@ End
 
 	#tag Method, Flags = &h0
 		Sub messages(f as Figure)
-		  dim i as integer
+		  Dim i As Integer
 		  
-		  EF.Text = EF.Text + "Figure "+ str(f.idfig)+chr(10)
+		  EF.Text = EF.Text + "Figure "+ Str(f.idfig) + Chr(10)
 		  EF.Text = EF.Text + "Formes: "
-		  for i = 0 to f.shapes.count-2
+		  For i = 0 To f.shapes.count-1
 		    EF.Text = EF.Text + mess(f.shapes.item(i))+",  "
 		  next
-		  EF.Text = EF.Text + mess(f.shapes.item(f.shapes.count-1))+"."+chr(10)
+		  EF.Text = EF.Text + Chr(10)
 		  EF.Text = EF.Text+"Sommets : "
-		  for i = 0 to f.somm.count -2
+		  For i = 0 To f.somm.count -2
 		    EF.Text = EF.Text + mess(f.somm.item(i))+", "
-		  next
-		  EF.Text = EF.Text + mess(f.somm.item(f.somm.count-1))+"."+chr(10)
-		  if  f.PtsSur.count > 0 then
-		    EF.Text = EF.Text+ chr(10)+"Points Sur : "
-		    for i = 0 to f.PtsSur.count -2
+		  Next
+		  EF.Text = EF.Text + mess(f.somm.item(f.somm.count-1))+"."+Chr(10)
+		  If  f.PtsSur.count > 0 Then
+		    EF.Text = EF.Text+ Chr(10)+"Points Sur : "
+		    For i = 0 To f.PtsSur.count -2
 		      EF.Text = EF.Text+ mess(f.PtsSur.item(i))+", "
-		    next
-		    EF.Text = EF.Text + mess(f.PtsSur.item(f.PtsSur.count-1))+"."+chr(10)
-		  end if
-		  if f.PtsConsted.count > 0 then
-		    EF.Text = EF.Text+ chr(10)+"Points Construits : "
-		    for i = 0 to f.PtsConsted.count -2
+		    Next
+		    EF.Text = EF.Text + mess(f.PtsSur.item(f.PtsSur.count-1))+"."+Chr(10)
+		  End If
+		  If f.PtsConsted.count > 0 Then
+		    EF.Text = EF.Text+ Chr(10)+"Points Construits : "
+		    For i = 0 To f.PtsConsted.count -2
 		      EF.Text = EF.Text+mess(f.PtsConsted.item(i))+",  "
-		    next
+		    Next
 		    EF.Text = EF.Text+mess(f.PtsConsted.item(f.PtsConsted.count-1))+"."
 		  end if
 		  EF.Text = EF.Text + chr(10)+chr(13)
