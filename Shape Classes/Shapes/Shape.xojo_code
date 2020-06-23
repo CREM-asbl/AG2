@@ -1997,8 +1997,8 @@ Protected Class Shape
 		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
 		    end if
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
-		    arc(self).computearcangle
-		    M = new RotationMatrix(Points(0).bpt, arc(self).arcangle)
+		    self.computearcangle
+		    M = new RotationMatrix(Points(0).bpt, self.arcangle)
 		    if points(2).forme <> 1 then
 		      points(2).moveto points(2).bpt.projection(Points(1).bpt, M*Points(1).bpt)
 		      return AffiOrSimili
@@ -2010,6 +2010,17 @@ Protected Class Shape
 		  end select
 		  
 		  return new Matrix(1)
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("self", self)
+		    d.setVariable("n0", n0)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Function
 	#tag EndMethod
 

@@ -3774,8 +3774,8 @@ Protected Class Figure
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("Figure","subfigupdate")
-		    d.setVariable("auto",auto)
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("auto", auto)
 		    d.setVariable("M",M)
 		    err.message = err.message+d.getString
 		    

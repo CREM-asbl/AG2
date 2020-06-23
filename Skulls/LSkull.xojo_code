@@ -560,6 +560,18 @@ Inherits NSkull
 		    item(k+2).controlx(1) = q.x
 		    item(k+2).controly(1) = q.y
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("self", self)
+		    d.setVariable("q", q)
+		    d.setVariable("k", k)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
