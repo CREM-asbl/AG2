@@ -79,7 +79,7 @@ Protected Module api
 		    return
 		  end if
 		  
-		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+app.bugtime+"/"
+		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"
 		  
 		  request = "dir=" + directory + "&file=log.txt&txt=" + app.log
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")

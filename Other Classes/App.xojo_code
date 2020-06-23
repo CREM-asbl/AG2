@@ -70,8 +70,6 @@ Inherits Application
 		    return true
 		  end if
 		  
-		  app.bugtime = DateTime.now.SQLDateTime
-		  
 		  curoper = CurrentContent.CurrentOperation
 		  
 		  log = "BuildDate : " + str(self.BuildDate) + EndOfLine +EndOfLine
@@ -350,10 +348,6 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		bugtime As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		currentfile As FolderItem
 	#tag EndProperty
 
@@ -473,14 +467,6 @@ Inherits Application
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="sys"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="bugtime"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
