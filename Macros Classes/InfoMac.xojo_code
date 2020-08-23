@@ -223,8 +223,8 @@ Protected Class InfoMac
 		  dim i as integer
 		  
 		  temp =  Doc.CreateElement("IfMac")
-		  temp.SetAttribute("NrFam", Str(fa))
-		  temp.SetAttribute("NrForm",Str(fo))
+		  temp.SetAttribute(Dico.Value("NrFam"), Str(fa))
+		  temp.SetAttribute(Dico.Value("NrForm"),Str(fo))
 		  if fa <> 0 then
 		    temp.Setattribute("Npts",str(Npts))
 		    temp.setattribute("Ncpts",str(Ncpts))

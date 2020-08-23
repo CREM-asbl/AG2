@@ -673,7 +673,7 @@ Inherits Liste
 		  
 		  for i=1 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
-		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
+		    fam = Val(Temp.GetAttribute(Dico.value("NrFam")))
 		    if fam > -1 then
 		      s = GetShape(val(Temp.GetAttribute("Id")))
 		      s.setfigconstructioninfos

@@ -1744,7 +1744,7 @@ Protected Class Figure
 		  EL1 = CurrentContent.Oplist.CreateElement("Shapes")
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
-		    EL2 = CurrentContent.Oplist.CreateElement(Dico.Value("Form"))
+		    EL2 = CurrentContent.Oplist.CreateElement(Dico.Value("NrForm"))
 		    EL2.SetAttribute("Id", str(s.id))
 		    EL2.SetAttribute("Npts", str(ubound(s.childs)+1))
 		    for j = 0 to ubound(s.childs)
@@ -3774,8 +3774,8 @@ Protected Class Figure
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("Figure","subfigupdate")
-		    d.setVariable("auto",auto)
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("auto", auto)
 		    d.setVariable("M",M)
 		    err.message = err.message+d.getString
 		    

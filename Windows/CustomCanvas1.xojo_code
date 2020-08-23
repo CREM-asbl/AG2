@@ -168,28 +168,34 @@ Inherits Canvas
 		    currentcontent.currentoperation = currentoper
 		    EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
-		    currentcontent.currentoperation = new ColorChange(true)
-		    currentoper = colorchange(currentcontent.currentoperation)
-		    if sctxt isa Lacet then
-		      colorchange(currentoper).icot = icot
-		    else
-		      colorchange(currentoper).icot = -1
+		    if Color.SelectedFromDialog(col,Dico.Value("choose")+Dico.Value("acolor")) then
+		      currentcontent.currentoperation = New ColorChange(True)
+		      currentoper = colorchange(currentcontent.currentoperation)
+		      if sctxt isa Lacet then
+		        colorchange(currentoper).icot = icot
+		      else
+		        colorchange(currentoper).icot = -1
+		      end if
 		    end if
 		    EndOperMenuContext
-		    
 		  case Dico.Value("ToolsColorFill")+Dico.Value("Fororientedarea")
 		    if sctxt.aire >0 then
 		      coul = poscolor
 		    else
 		      coul = negcolor
 		    end if
-		    currentcontent.currentoperation = New ColorChange(False)
-		    currentoper = colorchange(currentcontent.currentoperation)
+		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor")) then
+		      currentcontent.currentoperation = New ColorChange(False)
+		      currentoper = colorchange(currentcontent.currentoperation)
+		    end if
 		    EndOperMenuContext
+		    
 		  Case Dico.Value("ToolsColorFill")
-		    currentcontent.currentoperation = New ColorChange(False)
-		    currentoper = colorchange(currentcontent.currentoperation)
-		    colorchange(currentoper).icot = -1
+		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor")) then
+		      currentcontent.currentoperation = New ColorChange(False)
+		      currentoper = colorchange(currentcontent.currentoperation)
+		      colorchange(currentoper).icot = -1
+		    end if
 		    EndOperMenuContext
 		  case Dico.Value("ToolsOpq")
 		    currentcontent.currentoperation = new TransparencyChange(100)

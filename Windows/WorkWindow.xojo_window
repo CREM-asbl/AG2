@@ -1909,17 +1909,17 @@ End
 
 	#tag MenuHandler
 		Function ToolsColorBorder() As Boolean Handles ToolsColorBorder.Action
-			colorchange(true)
+			Formswindow.close
+			colorChange(true)
 			refreshtitle
-			return true
+			Return True
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsColorFill() As Boolean Handles ToolsColorFill.Action
-			
-			
-			CurrentContent.CurrentOperation=New ColorChange(false)
+			Formswindow.close
+			ColorChange(false)
 			refreshtitle
 			Return True
 		End Function
@@ -2288,7 +2288,11 @@ End
 
 	#tag Method, Flags = &h0
 		Sub colorchange(t as boolean)
-		  
+		  Formswindow.close
+		  var col as Color
+		  'If Color.SelectedFromDialog(col,"Choisir une couleur") Then
+		  'CurrentContent.CurrentOperation = New ColorChange(t, col)
+		  'End If
 		End Sub
 	#tag EndMethod
 
