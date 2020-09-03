@@ -53,7 +53,9 @@ Inherits SelectOperation
 		  n = tempshape.count-1
 		  setoldcolors
 		  
-		  if s.side <> -1 then
+		  
+		  
+		  if bord and s.side <> -1 then
 		    s = tempshape.item(0)
 		    s.Fixecouleurtrait(s.side, newcolor)
 		  else
