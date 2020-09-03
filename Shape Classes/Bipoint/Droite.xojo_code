@@ -635,6 +635,7 @@ Inherits Bipoint
 		  
 		  ff.getoldnewpos(Points(1),ep,np)
 		  np = firstp +w*d
+		  points(1).moveto np
 		  Return True 'New Similaritymatrix(points(0).bpt, ep, points(0).bpt, np)
 		  
 		  

@@ -239,7 +239,7 @@
     <DodecaReg Name="Dodécagone_régulier" />
     <FreeCircle Name="Cercle" />
     <Arc Name="Arc" />
-    <DSect Name="Secteur de disque" />
+    <dsect Name="Secteur de disque" />
     <HalfDsk Name="Demi-disque"/>
     <PolygStd Name="Polygone_Standard" />
     <Cube Name="Cube" />

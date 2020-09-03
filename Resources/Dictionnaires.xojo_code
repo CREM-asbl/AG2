@@ -272,6 +272,12 @@ Protected Module Dictionnaires
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function dsect() As string
+		  return dico.value("dsect")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ennea() As string
 		  return dico.value("ennea")
 		End Function
@@ -286,6 +292,12 @@ Protected Module Dictionnaires
 	#tag Method, Flags = &h0
 		Function fix() As string
 		  return dico.value("fix")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function halfDsk() As string
+		  return dico.value("HalfDsk")
 		End Function
 	#tag EndMethod
 
@@ -327,7 +339,7 @@ Protected Module Dictionnaires
 
 	#tag Method, Flags = &h0
 		Function identifier(fa as integer, fo as integer) As string
-		  select case fa
+		  Select Case fa
 		  case 0
 		    select case fo
 		    case 0
@@ -410,7 +422,11 @@ Protected Module Dictionnaires
 		    case 0
 		      return cerc
 		    case 1
-		      return arc
+		      Return arc
+		    Case 2
+		      Return  dsect
+		    Case 3
+		      Return HalfDsk
 		    end select
 		  case 6
 		    select case fo
