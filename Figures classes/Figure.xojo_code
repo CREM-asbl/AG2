@@ -3655,6 +3655,10 @@ Protected Class Figure
 		Sub SetConstructedBy(f as figure, tsf as transformation)
 		  dim i as integer
 		  
+		  if f = Nil then
+		    return
+		  end if
+		  
 		  for i = 0 to ubound(constructioninfos)
 		    if constructioninfos(i).sourcefig = f and constructioninfos(i).tsf = tsf then
 		      return
@@ -3666,7 +3670,7 @@ Protected Class Figure
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("Figure","SetConstructedBy")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("f",f)
 		    d.setVariable("tsf",tsf)
 		    err.message = err.message+d.getString
