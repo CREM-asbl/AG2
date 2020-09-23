@@ -257,6 +257,9 @@ Inherits SelectAndDragOperation
 		  niter = 60
 		  
 		  EL = XMLElement(Temp.child(0))
+		  if EL = nil then 
+		    return
+		  end if
 		  SelectIdForms(EL)
 		  currentshape = tempshape.item(0)
 		  ratio = val(EL.GetAttribute(Dico.value("Ratio")))
