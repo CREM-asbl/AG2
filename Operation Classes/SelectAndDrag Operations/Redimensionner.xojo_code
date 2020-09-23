@@ -204,6 +204,20 @@ Inherits SelectAndDragOperation
 		    end if
 		    super.mouseup(p)
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("M", M )
+		    d.setVariable("currentshape", currentshape)
+		    d.setVariable( "c", c)
+		    d.setVariable( "currentcontent", currentcontent)
+		    d.setVariable( "figs", figs)
+		    
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
