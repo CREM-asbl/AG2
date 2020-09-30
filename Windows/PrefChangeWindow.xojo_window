@@ -4,7 +4,7 @@ Begin Window PrefChangeWindow
    Backdrop        =   0
    CloseButton     =   False
    Composite       =   False
-   Frame           =   1
+   Frame           =   11
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False

@@ -224,7 +224,6 @@ Begin Window ConfigWindow
       Backdrop        =   1333702655
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   0
@@ -252,7 +251,6 @@ Begin Window ConfigWindow
       Backdrop        =   2141171711
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   1
@@ -280,7 +278,6 @@ Begin Window ConfigWindow
       Backdrop        =   326336511
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   2
@@ -308,7 +305,6 @@ Begin Window ConfigWindow
       Backdrop        =   834662399
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   3
@@ -336,7 +332,6 @@ Begin Window ConfigWindow
       Backdrop        =   419098623
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   4
@@ -364,7 +359,6 @@ Begin Window ConfigWindow
       Backdrop        =   1273780223
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   5
@@ -392,7 +386,6 @@ Begin Window ConfigWindow
       Backdrop        =   680357887
       DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   "True"
       Height          =   50
       HelpTag         =   ""
       Index           =   6
