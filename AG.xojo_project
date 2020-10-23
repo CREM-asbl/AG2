@@ -1,5 +1,5 @@
 Type=Desktop
-RBProjectVersion=2020.01
+RBProjectVersion=2020.012
 MinIDEVersion=20150400
 OrigIDEVersion=20190310
 Folder=Connexion;Connexion;&h00000000476F47FF;&h0000000000000000;false
@@ -240,7 +240,7 @@ MajorVersion=2
 MinorVersion=5
 SubVersion=9
 NonRelease=0
-Release=2
+Release=3
 InfoVersion=
 LongVersion=2.5.9
 ShortVersion=2
