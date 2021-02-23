@@ -44,6 +44,7 @@ Protected Class Debug
 		          exit
 		        end if
 		      next
+		      svaleur = "type " + str(valeur.Type)
 		    end 
 		  else
 		    Svaleur = "nil"

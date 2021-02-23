@@ -21,8 +21,6 @@ Inherits SelectAndDragOperation
 		  
 		  super.CompleteOperation(NewPoint)
 		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 

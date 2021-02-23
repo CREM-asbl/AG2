@@ -176,7 +176,7 @@ Inherits SelectAndDragOperation
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("Redimensionner","getShape")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("P",p)
 		    d.setVariable("Visible", Visible)
 		    d.setVariable("i",i)

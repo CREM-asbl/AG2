@@ -86,7 +86,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -1919,7 +1918,8 @@ End
 	#tag MenuHandler
 		Function ToolsColorFill() As Boolean Handles ToolsColorFill.Action
 			Formswindow.close
-			ColorChange(false)
+			currentcontent.currentoperation = nil
+			ColorChange(False)
 			refreshtitle
 			Return True
 		End Function
@@ -2290,9 +2290,11 @@ End
 		Sub colorchange(t as boolean)
 		  Formswindow.close
 		  var col as Color
-		  'If Color.SelectedFromDialog(col,"Choisir une couleur") Then
-		  'CurrentContent.CurrentOperation = New ColorChange(t, col)
-		  'End If
+		  
+		  if Color.SelectedFromDialog(col,"Choisir une couleur") Then
+		    CurrentContent.CurrentOperation = New ColorChange(t, col)
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 

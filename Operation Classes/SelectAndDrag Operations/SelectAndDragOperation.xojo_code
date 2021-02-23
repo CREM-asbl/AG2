@@ -280,8 +280,10 @@ Inherits SelectOperation
 		      EL2 = XMLElement(EL1.child(i))
 		      idf = val(EL2.GetAttribute("FigId"))
 		      ff = CurrentContent.Thefigs.getfigure(idf)
-		      ff.RestoreInit(EL2)
-		      ff.updatemacconstructedshapes
+		      if (ff <> nil) then
+		        ff.RestoreInit(EL2)
+		        ff.updatemacconstructedshapes
+		      end if
 		    next
 		  end if
 		  WorkWindow.refresh
@@ -289,7 +291,7 @@ Inherits SelectOperation
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("SelectAndDragOperation","UndoOperation")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("List",List)
 		    d.setVariable("EL",EL)
 		    d.setVariable("EL1",EL1)

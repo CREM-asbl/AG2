@@ -11,10 +11,24 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
+		  if CurrentHighlightedShape = nil then
+		    return
+		  end if
+		  
 		  currenthighlightedshape.tracept = not currenthighlightedshape.tracept
 		  if currenthighlightedshape.tracept then
 		    currentcontent.theobjects.tracept = true
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("currenthilightedshape", CurrentHighlightedShape)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
