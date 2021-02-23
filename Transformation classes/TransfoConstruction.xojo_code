@@ -44,6 +44,8 @@ Inherits MultipleSelectOperation
 		        else
 		          visremove(s)                         // index ne contient que des -1 Dans ce cas, index = -1 signifie que le support est une forme complète
 		        end if
+		      else
+		        visremove(s) 
 		      end if
 		    case 3 to 5                                               // demi-tour et quarts de tour
 		      if not s isa point then
@@ -101,7 +103,7 @@ Inherits MultipleSelectOperation
 		  next
 		  
 		  nobj = visible.count
-		  if nobj >0 then
+		  if nobj > 0 then
 		    return Visible.item(iobj)
 		  else
 		    return nil

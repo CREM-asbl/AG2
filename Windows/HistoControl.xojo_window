@@ -54,7 +54,6 @@ Begin ContainerControl HistoControl
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      MenuValue       =   "0"
       Scope           =   0
       TabIndex        =   0
       TabPanelIndex   =   0
@@ -99,7 +98,6 @@ Begin ContainerControl HistoControl
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      MenuValue       =   "0"
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
@@ -144,7 +142,6 @@ Begin ContainerControl HistoControl
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      MenuValue       =   "0"
       Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
@@ -189,7 +186,6 @@ Begin ContainerControl HistoControl
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      MenuValue       =   "0"
       Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
@@ -234,7 +230,6 @@ Begin ContainerControl HistoControl
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      MenuValue       =   "0"
       Scope           =   0
       TabIndex        =   4
       TabPanelIndex   =   0

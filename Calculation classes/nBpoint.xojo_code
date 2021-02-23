@@ -644,18 +644,30 @@ Protected Class nBpoint
 		Sub MoveExtreCtrl(M as Matrix)
 		  dim i as integer
 		  
-		  for i = 0 to ubound(extre)
+		  for i = 0 to extre.LastRowIndex
 		    extre(i) = M*extre(i)
 		  next
-		  for i = 0 to ubound(ctrl)
+		  for i = 0 to ctrl.LastRowIndex
 		    ctrl(i) = M*ctrl(i)
 		  next
 		  
-		  for i = 0 to ubound(centres)
+		  for i = 0 to centres.LastRowIndex
 		    if centres(i)<> nil then
 		      centres(i)=M*centres(i)
 		    end if
 		  next
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("extre", extre)
+		    d.setVariable("ctrl", ctrl)
+		    d.setVariable("centres", centres)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

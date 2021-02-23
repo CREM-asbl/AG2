@@ -3080,15 +3080,15 @@ End
 		  LibBox.Top = StdBox.top+StdBox.Height+espace
 		  st = config.menu
 		  if st = "Menu_A" then
-		    Tools.FillColor = &c000088
+		    Tools.FillColor = &cabcdef
 		  elseif st = "Menu_B" then
-		    Tools.FillColor = &c008800
+		    Tools.FillColor = &cabefcd
 		  elseif st = "Menu_C" then
-		    Tools.FillColor = &c880000
+		    Tools.FillColor = &cefabcd
 		  elseif st = "Menu_AB" then
-		    Tools.FillColor = &c888800
+		    Tools.FillColor = &cefefab
 		  elseif st = "Menu_AC" then
-		    Tools.FillColor = &c880088
+		    Tools.FillColor = &cefefef
 		  end if
 		  
 		  

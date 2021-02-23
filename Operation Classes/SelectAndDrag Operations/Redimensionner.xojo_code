@@ -204,6 +204,20 @@ Inherits SelectAndDragOperation
 		    end if
 		    super.mouseup(p)
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("M", M )
+		    d.setVariable("currentshape", currentshape)
+		    d.setVariable( "c", c)
+		    d.setVariable( "currentcontent", currentcontent)
+		    d.setVariable( "figs", figs)
+		    
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
@@ -243,6 +257,9 @@ Inherits SelectAndDragOperation
 		  niter = 60
 		  
 		  EL = XMLElement(Temp.child(0))
+		  if EL = nil then 
+		    return
+		  end if
 		  SelectIdForms(EL)
 		  currentshape = tempshape.item(0)
 		  ratio = val(EL.GetAttribute(Dico.value("Ratio")))
