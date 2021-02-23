@@ -35,7 +35,6 @@ Inherits SelectOperation
 		  else
 		    colsep = false
 		  End If
-		  
 		  newcolor = New couleur(col)
 		  
 		  
