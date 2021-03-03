@@ -730,12 +730,24 @@ Protected Class WindContent
 		  
 		  for i = 0 to TheTransfos.count-1
 		    s = TheTransfos.item(i).supp
-		    if s isa point and ubound(point(s).parents)> -1 then
+		    if s = nil then
+		      return
+		    elseif s isa point and ubound(point(s).parents)> -1 then
 		      point(s).parents(0).movetofront
 		    else
 		      s.MovetoFront
 		    end if
 		  next
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("s", s)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

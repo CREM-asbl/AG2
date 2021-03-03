@@ -37,6 +37,7 @@ Begin Window HistCmd
       HasBackColor    =   False
       Height          =   30
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True

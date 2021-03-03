@@ -357,7 +357,10 @@ Inherits SelectOperation
 		  if icot <> -1 then 
 		    s = tempshape.item(0)
 		    EL2 = XMLElement(EL1.child(0))
-		    s.colcotes(icot) = new Couleur(EL2)
+		    msgbox str(s.colcotes.count)
+		    if s.colcotes.count <> 0 then
+		      s.colcotes(icot) = new Couleur(EL2)
+		    end if 
 		  else
 		    for i = 0 to n-1
 		      s = tempshape.item(i)
@@ -387,7 +390,29 @@ Inherits SelectOperation
 		  end if
 		  objects.unselectall
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
+		    d.setVariable("n",n)
+		    d.setVariable("f",f)
+		    d.setVariable("s",s)
+		    d.setVariable("bd",bd)
+		    d.setVariable("c",c)
+		    d.setVariable("EL",EL)
+		    d.setVariable("EL1",EL1)
+		    d.setVariable("EL2",EL2)
+		    d.setVariable("EL3",EL3)
+		    d.setVariable("r",r)
+		    d.setVariable("g",g)
+		    d.setVariable("b",b)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
+		    
 		End Sub
 	#tag EndMethod
 

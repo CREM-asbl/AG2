@@ -111,6 +111,10 @@ Protected Class Transformation
 		  dim n as integer
 		  dim Ls as Lacet
 		  
+		  if supp = nil then
+		    return
+		  end if
+		  
 		  select case type
 		  case 1
 		    v = supp.points((index+1)mod supp.npts).bpt- supp.points(index) .bpt
@@ -181,6 +185,7 @@ Protected Class Transformation
 		    d.setVariable("w",w)
 		    d.setVariable("type",Type )
 		    d.setVariable("M",M)
+		    d.setVariable("supp", supp)
 		    err.message = err.message+d.getString
 		    
 		    Raise err

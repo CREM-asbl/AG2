@@ -653,6 +653,16 @@ Inherits Liste
 		  for i = 0 to figu.shapes.count-1
 		    selectobject(figu.shapes.item(i))
 		  next
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("figu.shapes", figu.shapes)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
