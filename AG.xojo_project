@@ -1,7 +1,7 @@
 Type=Desktop
-RBProjectVersion=2020.012
+RBProjectVersion=2020.021
 MinIDEVersion=20150400
-OrigIDEVersion=20190310
+OrigIDEVersion=20200201
 Folder=Connexion;Connexion;&h00000000476F47FF;&h0000000000000000;false
 Folder=Calculation classes;Calculation classes;&hFFFFFFFFBD6B81F9;&h0000000000000000;false
 Class=Angle;Calculation classes/Angle.xojo_code;&h00000000458777FF;&hFFFFFFFFBD6B81F9;false

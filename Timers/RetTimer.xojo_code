@@ -7,13 +7,12 @@ Inherits TsfTimer
 		  dim s as shape
 		  dim se as secteur
 		  dim t as TriDShape
-		  dim  p as BasicPoint
+		  dim p as BasicPoint
 		  dim v as TriDPoint
 		  dim M as Matrix
 		  
 		  
-		  
-		  for i = 0 to ncop
+		  for i = 0 to copies.count-1
 		    s = copies.item(i)
 		    t = TriDCopies(i)
 		    for j =0 to Ubound(t.TriDPts)
@@ -69,7 +68,7 @@ Inherits TsfTimer
 		  pas = pas -1
 		  
 		  if pas = 0 then
-		    for i = 0 to ncop
+		    for i = 0 to copies.count-1
 		      s = copies.item(i)
 		      s.ori = - s.ori
 		      s.unhighlight
@@ -85,7 +84,7 @@ Inherits TsfTimer
 		    enabled = false
 		    dret = nil
 		    if curoper isa retourner  then
-		      for i = 0 to ncop
+		      for i = 0 to copies.count-1
 		        s = copies.item(i)
 		        s.ori = - s.ori
 		      next
@@ -104,6 +103,16 @@ Inherits TsfTimer
 		  end if
 		  can.refreshbackground
 		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("s", s)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
