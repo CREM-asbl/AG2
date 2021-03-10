@@ -24,7 +24,6 @@ Protected Module api
 		    end if
 		  catch err as XmlException
 		  end try
-		  
 		End Sub
 	#tag EndMethod
 
@@ -48,13 +47,16 @@ Protected Module api
 		  
 		  AfficherInfo
 		  
-		  update = http.SendSync("GET",url+"version.xml")
+		  update = http.SendSync("GET",url+"version.xml", timeout)
 		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
 		    GetUpdateW.ShowModal
 		  end if
 		  
 		  
-		  
+		  'si la connexion ne s'établit pas le programme n'est plus bloqué
+		  Exception err
+		  Catch
+		    
 		End Sub
 	#tag EndMethod
 
@@ -93,7 +95,9 @@ Protected Module api
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
 		  response = http.SendSync("POST",url+"/bug.php")
 		  
-		  
+		  'si la connexion ne s'établit pas le programme n'est plus bloqué
+		  Exception err
+		  Catch
 		End Sub
 	#tag EndMethod
 
