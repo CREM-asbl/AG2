@@ -83,16 +83,6 @@ Inherits TsfTimer
 		    
 		    enabled = false
 		    dret = nil
-		    if curoper isa retourner  then
-		      for i = 0 to copies.count-1
-		        s = copies.item(i)
-		        s.ori = - s.ori
-		      next
-		      copies.inverserordre
-		      M = new SymmetryMatrix(fp, fp+sp)
-		      figs.movepoints(M)
-		      Retourner(curoper).DoOper
-		    end if
 		    
 		    if CurrentContent.ForHisto then
 		      curoper.endoperation
@@ -158,6 +148,7 @@ Inherits TsfTimer
 		      end if
 		    next
 		  next
+		  
 		  super.constructor(tempshape)
 		  fp = curop.c
 		  sp = curop.p

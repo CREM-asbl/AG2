@@ -71,6 +71,7 @@ Inherits SelectOperation
 		        s.fixecouleurfond(s.fillcolor.comp, s.fill)
 		      end if
 		    end if
+		    
 		    if s isa standardpolygon then
 		      standardpolygon(s).updateangle
 		      standardpolygon(s).inverserori
@@ -82,9 +83,11 @@ Inherits SelectOperation
 		        s.constructedshapes(j).ori = - s.constructedshapes(j).ori
 		      end if
 		    next
+		    
 		    if s isa arc or s isa DSect  then
 		      s.computearcangle
 		    end if
+		    
 		    if s isa circle or s.Hybrid then
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
@@ -106,7 +109,6 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i as integer
-		  
 		  if c = nil or p = nil then
 		    return
 		  end if
@@ -125,9 +127,8 @@ Inherits SelectOperation
 		  
 		  if config.Trace  then
 		    dret = new RetTimer(tempshape,self)
-		  else
-		    DoOper
 		  end if
+		  DoOper
 		  
 		  for i = 0 to tempshape.count-1
 		    if tempshape.item(i) isa standardpolygon then
