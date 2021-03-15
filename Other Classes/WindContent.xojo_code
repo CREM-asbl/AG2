@@ -901,7 +901,7 @@ Protected Class WindContent
 		  
 		  isaundoredo = true
 		  
-		  if currentop = 0 then
+		  if currentop = 0 or Histo.ChildCount = 0 then
 		    return
 		  end if
 		  
@@ -914,7 +914,7 @@ Protected Class WindContent
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
 		  
-		  while currentop > 0 and  Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
+		  while currentop > 0 and Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
 		    currentop = currentop-1
 		  wend
 		  
@@ -933,6 +933,8 @@ Protected Class WindContent
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("EL", El)
 		    d.setVariable("curoper", curoper)
+		    d.setVariable("currentop", currentop)
+		    d.setVariable("Histo.ChildCount", Histo.ChildCount)
 		    err.message = err.message + d.getString
 		    Raise err
 		End Sub
