@@ -159,7 +159,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(pc as BasicPoint)
-		  
 		  if  pointmobile = nil  or pc.distance(EndPoint) < epsilon  then
 		    return
 		  end if
@@ -764,7 +763,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub UpdateFigs(np as BAsicPoint)
-		  
 		  dim s as point
 		  dim bp as basicpoint
 		  

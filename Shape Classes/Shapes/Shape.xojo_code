@@ -1889,7 +1889,7 @@ Protected Class Shape
 		  case 1
 		    return Modifier11(n)
 		  case 2
-		    return Modifier12(n)
+		    return Modifier11(n)
 		  end select
 		  
 		  //Les deux derniers cas ne peuvent normalement pas se présenter (il y aurait plus d'un point modifié)
@@ -1924,7 +1924,7 @@ Protected Class Shape
 		  dim s as shape
 		  dim bp as BasicPoint
 		  
-		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  dim ep0, ep1, ep2, np0, np1, np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  
@@ -1935,33 +1935,8 @@ Protected Class Shape
 		  s = points(2).pointsur.item(0)
 		  
 		  if self isa arc or self isa DSect then
-		    bp =arc(self).ArcComputeFirstIntersect(s)
-		  end if
-		  
-		  
-		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier12(n as integer) As Matrix
-		  dim s as shape
-		  dim bp as BasicPoint
-		  
-		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
-		  epnp(ep0,ep1,ep2,np0,np1,np2)
-		  
-		  
-		  if points(2).forme <> 1 then
-		    return new Matrix(1)
-		  end if
-		  
-		  s = points(2).pointsur.item(0)
-		  
-		  if self isa arc or self isa DSect  then
 		    bp = arc(self).ArcComputeFirstIntersect(s)
 		  end if
-		  
 		  
 		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
 		End Function
@@ -3824,8 +3799,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub updateshape(M as Matrix)
 		  dim i as integer    //Ici on s'occupe des points autres que les sommets
-		  
-		  
 		  
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)

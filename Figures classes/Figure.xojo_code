@@ -3747,7 +3747,7 @@ Protected Class Figure
 		      return false
 		    end if
 		  Case 6
-		    If  autoprppupdate Then
+		    If autoprppupdate Then
 		      EndQQupdateshapes
 		    End If
 		  end select
@@ -3761,7 +3761,7 @@ Protected Class Figure
 		    end if
 		    return true                                      ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
-		    if  tobereconstructed then
+		    if tobereconstructed then
 		      reconstruct
 		    end if
 		    updatesomm(M)

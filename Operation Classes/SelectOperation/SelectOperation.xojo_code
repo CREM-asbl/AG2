@@ -40,7 +40,7 @@ Inherits Operation
 		  // idem si une des formes liées à s est dans le même cas
 		  // Il y a des exceptions
 		  
-		  if s = nil or not s.fig.PossibleDrag(self) or  s.macconstructedby <> nil then
+		  if s = nil or s.fig = nil or not s.fig.PossibleDrag(self) or s.macconstructedby <> nil then
 		    return false
 		  end if
 		  
