@@ -2619,7 +2619,9 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =not t
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =not t
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =not t
-		  MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =not t
+		  if MenuBar.Child("OperaMenu").Child("OperaIdentify") <> nil then
+		    MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =not t
+		  end if
 		  for i = 0 to MenuBar.Child("ToolsMenu").count-1
 		    MenuBar.Child("ToolsMenu").Item(i).visible = not t
 		  next
