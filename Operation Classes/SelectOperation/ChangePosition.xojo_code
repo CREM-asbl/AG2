@@ -18,16 +18,17 @@ Inherits SelectOperation
 		  Dim i  As Integer
 		  dim s as shape
 		  
-		  
-		  'for i = 0 to tempshape.count-1
 		  s = tempshape.item(0)
+		  if s = nil then 
+		    return
+		  end if
 		  pos.append currentcontent.plans.indexof(s.id)
 		  if foreground = 0 then
 		    currentcontent.moveback(s.id)
 		  else
 		    currentcontent.movefront(s.id)
 		  end if
-		  'Next
+		  
 		  
 		  
 		  
@@ -143,7 +144,9 @@ Inherits SelectOperation
 		  Temp = XMLElement(Temp.child(0))
 		  SelectIdForms(Temp)
 		  EL = XMLElement(Temp.child(1))
-		  
+		  if EL = nil then
+		    return
+		  end if
 		  Redim pos(0)
 		  EL1 = XMLElement(EL.Child(0))
 		  pos(0) = Val(EL1.GetAttribute(Dico.Value("Old")))
