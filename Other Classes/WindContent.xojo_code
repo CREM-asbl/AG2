@@ -179,9 +179,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub CreateFigs()
-		  
-		  
-		  
 		  FigsCreated = OpList.CreateElement("Created_Figures")
 		  FigsDeleted = OpList.CreateElement("Deleted_Figures")
 		  FigsMoved = OpList.CreateElement("MovedFigures")

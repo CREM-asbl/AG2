@@ -86,7 +86,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False

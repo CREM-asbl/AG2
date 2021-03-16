@@ -4145,7 +4145,7 @@ Protected Class Shape
 		  dim Temp as XMLElement
 		  
 		  Temp = Doc.CreateElement("MacConstructedBy")
-		  Temp.SetAttribute("Macro",MacConstructedBy.Mac.Caption)
+		  Temp.SetAttribute("Macro", MacConstructedBy.Mac.Caption)
 		  Temp.AppendChild MacConstructedBy.XMLPutInContainer(Doc)
 		  
 		  return Temp
