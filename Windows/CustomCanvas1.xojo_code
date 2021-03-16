@@ -138,6 +138,7 @@ Inherits Canvas
 		    d.setVariable("base", base)
 		    d.setVariable("x", x)
 		    d.setVariable("y", y)
+		    d.setVariable("sctxt", sctxt)
 		    err.message = err.message + d.getString
 		    Raise err
 		    

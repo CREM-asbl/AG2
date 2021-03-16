@@ -3723,7 +3723,7 @@ Protected Class Figure
 		  case 0
 		    if standard then
 		      M = autosimupdate
-		      if M<>nil and M.v1 <> nil and abs (M.det -1) > epsilon then
+		      if M <> nil and M.v1 <> nil and abs (M.det -1) > epsilon then
 		        M = new Matrix(1)
 		      end if
 		    else
@@ -3754,12 +3754,12 @@ Protected Class Figure
 		  
 		  
 		  if M = nil or M.v1 = nil then
-		    if auto = 0 or auto> 3 then
+		    if auto = 0 or auto > 3 then
 		      QQupdateshapes
 		    else
 		      tobereconstructed = true
 		    end if
-		    return true                                      ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
+		    return true               ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
 		  else
 		    if tobereconstructed then
 		      reconstruct
@@ -3781,6 +3781,7 @@ Protected Class Figure
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("auto", auto)
 		    d.setVariable("M",M)
+		    d.setVariable("tobereconstructed", tobereconstructed)
 		    err.message = err.message+d.getString
 		    
 		    Raise err
