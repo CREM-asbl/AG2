@@ -42,7 +42,6 @@ Inherits Matrix
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    err.message = err.message+d.getString
-		    
 		    Raise err
 		    
 		    
