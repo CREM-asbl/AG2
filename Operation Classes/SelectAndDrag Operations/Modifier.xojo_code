@@ -159,7 +159,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(pc as BasicPoint)
-		  if  pointmobile = nil  or pc.distance(EndPoint) < epsilon  then
+		  if pointmobile = nil or pc.distance(EndPoint) < epsilon  then
 		    return
 		  end if
 		  pointmobile.highlight
@@ -774,7 +774,7 @@ Inherits SelectAndDragOperation
 		  bp = decal(pointmobile, np)
 		  
 		  figs.save
-		  if not  figs.update(s, bp)  then
+		  if not figs.update(s, bp)  then
 		    figs.restore
 		  end if
 		  figs.canceloldbpts

@@ -2717,8 +2717,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Transform(M as Matrix)
-		  
-		  
 		  if (not modified)  or (pointsur.count =1 and  allparentsqcq)  then
 		    Move (M)
 		  end if
@@ -3020,11 +3018,7 @@ Inherits Shape
 		    return
 		  end if
 		  
-		  'if (invalid and ((conditionedby=nil)  or (not conditionedby.invalid)) )or deleted then   'l'invalidité éventuelle ne peut être due à un conditionnement
-		  'return                                    'controler d'éventuels effets pervers (recalculer des points invalides et trouver 'nil')
-		  'end if
-		  
-		  if  forme =1  then
+		  if forme = 1  then
 		    sh = pointsur.item(0)
 		    if not sh isa arc then
 		      puton sh
@@ -3036,24 +3030,20 @@ Inherits Shape
 		  
 		  for i = 0 to ubound(parents)
 		    parents(i).updatecoord
-		    if parents(i) isa circle  or parents(i) isa DSect then
+		    if parents(i) isa circle or parents(i) isa DSect then
 		      parents(i).coord.CreateExtreAndCtrlPoints(parents(i).ori)
 		    end if
 		  next
-		  if ifmac <>nil and forme = 1 then
+		  
+		  if ifmac <> nil and forme = 1 then
 		    ifmac.location = location(0)
 		  end if
-		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
-		  'ff = parents(0).getsousfigure(fig)
-		  'if ff.auto = 3 and first then
-		  'fig.pointmobile = self
-		  't = ff.subfigupdate
-		  'end if
+		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
 		  
 		  if ubound(constructedshapes) > -1 or constructedby <> nil then
 		    updateconstructedpoints
-		  end if
+		  end If
 		  
 		  if ubound(MacConstructedshapes) > -1 then
 		    updateMacConstructedShapes

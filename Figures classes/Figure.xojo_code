@@ -263,10 +263,6 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function Autoaffupdate() As Matrix
-		  
-		  
-		  
-		  
 		  select case NbPtsModif // Nombre de pointsmodifiés
 		  case 0
 		    return new Matrix(1)
@@ -318,7 +314,7 @@ Protected Class Figure
 		      bp1 = Somm.item(fx1).bpt
 		      bp2 = Somm.item(fx2).bpt
 		    end select
-		    return new Affinitymatrix (bp1, bp2, ep,bp1, bp2, np)
+		    return new Affinitymatrix (bp1, bp2, ep, bp1, bp2, np)
 		  case 1
 		    bp1 = Point(Somm.item(fx1)).bpt
 		    if Listsommsur(0) <> fx1 then
@@ -326,7 +322,7 @@ Protected Class Figure
 		    elseif fx2 <> fx1 then
 		      bp2 = somm.item(fx2).bpt
 		    end if
-		    return new Affinitymatrix (bp1, bp2, ep,bp1, bp2, np)
+		    return new Affinitymatrix (bp1, bp2, ep, bp1, bp2, np)
 		  case 2
 		    if NbUnModif < 2 then
 		      bp1 = Somm.item(fx1).bpt
@@ -401,10 +397,10 @@ Protected Class Figure
 		      end if
 		      r = somm.item(n3)
 		      getoldnewpos(r,er,nr)
-		      return new AffinityMatrix (er, ep, eq, nr,np, nq)
+		      return new AffinityMatrix (ep, er, eq, np, nr, nq)
 		    end if
 		  case 1
-		    if NbUnModif  = 0 then
+		    if NbUnModif = 0 then
 		      p1 = Point(somm.item(listsommsur(0)))
 		      getoldnewpos(p1,ep1,np1)
 		      return new AffinityMatrix(ep,eq,ep1,np,nq,np1)
@@ -4023,14 +4019,14 @@ Protected Class Figure
 		Sub updatesomm(M as Matrix)
 		  dim i as integer
 		  dim p as Point
+		  dim temp as BasicPoint
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
 		    p.Transform(M)
 		    p.updateshape
 		    if  p.forme = 0 then
-		      p.modified = true                //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
-		      'p.unmodifiable = true
+		      p.modified = true    //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		    end if
 		  next
 		  
