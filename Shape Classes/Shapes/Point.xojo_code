@@ -398,8 +398,13 @@ Inherits Shape
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("constructedby", constructedby)
+		    d.setVariable("code", code)
+		    d.setVariable("tsf", tsf)
 		    d.setVariable("macconstructedby", macconstructedby)
+		    d.setVariable("conditioned", conditioned)
+		    d.setVariable("conditionedby", conditionedby)
 		    d.setVariable("forme", forme)
+		    d.setVariable("isolated", isolated)
 		    err.message = err.message+d.getString
 		    
 		    Raise err

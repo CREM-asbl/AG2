@@ -616,7 +616,7 @@ Begin Window WorkWindow
          Index           =   0
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   1
+         Left            =   5
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   False
@@ -629,11 +629,11 @@ Begin Window WorkWindow
          TextFont        =   "System"
          TextSize        =   0.0
          TextUnit        =   0
-         Top             =   31
+         Top             =   33
          Transparent     =   False
          Underline       =   False
          Visible         =   True
-         Width           =   120
+         Width           =   112
       End
       Begin PushButton PushButton1
          AutoDeactivate  =   False
@@ -648,7 +648,7 @@ Begin Window WorkWindow
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
-         Left            =   1
+         Left            =   5
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   False
@@ -661,11 +661,11 @@ Begin Window WorkWindow
          TextFont        =   "System"
          TextSize        =   0.0
          TextUnit        =   0
-         Top             =   0
+         Top             =   3
          Transparent     =   False
          Underline       =   False
          Visible         =   True
-         Width           =   120
+         Width           =   112
       End
    End
 End
@@ -2621,17 +2621,21 @@ End
 		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =not t
 		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =not t
 		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =not t
+		  
 		  if MenuBar.Child("OperaMenu").Child("OperaIdentify") <> nil then
 		    MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =not t
 		  end if
+		  
 		  for i = 0 to MenuBar.Child("ToolsMenu").count-1
 		    MenuBar.Child("ToolsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("ToolsMenu").visible = not t
+		  
 		  for i = 0 to MenuBar.Child("PrefsMenu").count-1
 		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("PrefsMenu").visible = not t
+		  
 		  for i = 0 to MenuBar.Child("PrefsMenu").count-1
 		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
 		  next
@@ -2641,6 +2645,7 @@ End
 		    MenuBar.Child("EditMenu").Item(i).visible = not t
 		  next
 		  MenuBar.Child("EditMenu").visible = not t
+		  
 		  for i = 1 to 3
 		    MouvBut(i).visible =not t
 		  next
