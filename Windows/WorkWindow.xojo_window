@@ -86,7 +86,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -1206,6 +1205,9 @@ End
 			dlg.Filter = FileAGTypes.EPS
 			
 			f = dlg.ShowModal
+			if f = nil then 
+			return true
+			end if
 			s=  f.shellpath
 			if dlg.Result <> nil then
 			#if targetWindows then 
