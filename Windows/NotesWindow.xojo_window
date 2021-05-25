@@ -70,7 +70,7 @@ Begin Window NotesWindow
       Top             =   0
       Transparent     =   False
       Underline       =   False
-      UnicodeMode     =   "0"
+      UnicodeMode     =   0
       UseFocusRing    =   True
       Visible         =   True
       Width           =   625

@@ -2393,16 +2393,14 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub ListerPrecedences()
-		  Dim i, k, j, n, nc As Integer
+		  dim i, k, j, n, nc as integer
 		  
 		  n = subs.count
 		  
 		  
 		  if n <= 1 then
 		    return
-		  End If
-		  
-		  
+		  end if
 		  
 		  CreerMatricePrecedences(n)
 		  
@@ -3964,7 +3962,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub UpdatePtsSur(M as Matrix)
-		  Dim i As Integer
+		  dim i as integer
 		  dim p as point
 		  
 		  'Les pointssur doivent être considérés comme modifiés même si le déplacement est faible,(pour la mise à jour des formes dont ils sont sommets).

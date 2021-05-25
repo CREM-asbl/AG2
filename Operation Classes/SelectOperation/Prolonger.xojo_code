@@ -27,7 +27,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub deplacerptssur()
-		  dim s as shape
+		  Dim s As shape
 		  dim i,j, op as integer
 		  dim Bib1, Bib2 as BiBPoint
 		  dim r1, r2 as double
@@ -36,7 +36,6 @@ Inherits SelectOperation
 		  
 		  objects.unselectall
 		  
-		  'if Bip isa polygon then
 		  for i =  ubound(Bip.childs) downto Bip.npts
 		    p = Bip.Childs(i)
 		    j = p.PointSur.GetPosition(Bip)
@@ -81,7 +80,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  
 		  Bip = currenthighlightedshape
 		  if not currentcontent.macrocreation then
@@ -89,14 +88,13 @@ Inherits SelectOperation
 		  end if
 		  GetSide
 		  
-		  Dr = new Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
+		  Dr = New Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
+		  deplacerptssur
 		  if Bip isa Lacet then
 		    Lacet(Bip).prol(ibip) = true
 		  end if
 		  
-		  deplacerptssur
 		  Dr.endconstruction
-		  
 		  Dr.setconstructedby Bip, 8
 		  Dr.Constructedby.data.append ibip
 		  
@@ -106,7 +104,7 @@ Inherits SelectOperation
 		    for j = 0 to Dr.fig.subs.count - 1
 		      if Dr.fig.subs.item(j).shapes.getposition(Dr) <> -1 then
 		        Dr.fig.subs.item(j).PtsSur.addshape Dr.childs(i)
-		      end if
+		      End If
 		    next
 		  next
 		  

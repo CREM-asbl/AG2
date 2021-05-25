@@ -45,13 +45,16 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
-		  dim List0 as figslist
+		  Dim List0 As figslist
 		  dim i as integer
 		  
-		  if fig <> nil then
+		  If fig <> Nil And Not CurrentContent.currentoperation IsA prolonger Then
 		    return
 		  end if
 		  
+		  If CurrentContent.currentoperation IsA prolonger Then
+		    fig = Nil
+		  end if
 		  // Création de la liste (List0) des figures comprenant un sommet ou un point sur de la forme (self)
 		  
 		  List0 = Listerfigsneighbour

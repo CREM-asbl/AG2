@@ -190,6 +190,7 @@ Inherits Bipoint
 		  computeextre
 		  
 		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -297,7 +298,7 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  dim p0, p1 as point
+		  Dim p0, p1 As point
 		  dim sh(-1) as shape
 		  dim i as integer
 		  dim n0, n1, m as integer
@@ -324,7 +325,7 @@ Inherits Bipoint
 		        end if
 		        i = i+1
 		      wend
-		    end if
+		    End If
 		  end if
 		  super.endconstruction
 		End Sub

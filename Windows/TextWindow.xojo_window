@@ -70,7 +70,7 @@ Begin Window TextWindow
       Top             =   0
       Transparent     =   False
       Underline       =   False
-      UnicodeMode     =   "0"
+      UnicodeMode     =   0
       UseFocusRing    =   False
       Visible         =   True
       Width           =   822
