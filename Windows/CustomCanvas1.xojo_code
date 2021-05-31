@@ -169,8 +169,8 @@ Inherits Canvas
 		    currentcontent.currentoperation = currentoper
 		    EndOperMenuContext
 		  case Dico.Value("ToolsColorBorder")
-		    if Color.SelectedFromDialog(col,Dico.Value("choose")+Dico.Value("acolor")) then
-		      currentcontent.currentoperation = new ColorChange(true, col)
+		    If Color.SelectedFromDialog(col,Dico.Value("choose")+Dico.Value("acolor")) Then
+		      currentcontent.currentoperation = New ColorChange(True, col)
 		      currentoper = colorchange(currentcontent.currentoperation)
 		      if sctxt isa Lacet then
 		        colorchange(currentoper).icot = icot
@@ -192,7 +192,7 @@ Inherits Canvas
 		    EndOperMenuContext
 		    
 		  Case Dico.Value("ToolsColorFill")
-		    if selectcolor(col,Dico.Value("choose")+Dico.Value("acolor")) then
+		    If SelectColor(col,Dico.Value("choose")+Dico.Value("acolor")) Then
 		      currentcontent.currentoperation = New ColorChange(False, col)
 		      currentoper = colorchange(currentcontent.currentoperation)
 		      colorchange(currentoper).icot = -1

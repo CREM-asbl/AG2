@@ -2370,7 +2370,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub RemovePointSur(s as shape)
-		  dim k as integer
+		  Dim k As Integer
 		  
 		  k = pointsur.getposition(s)
 		  if k <> -1 then
@@ -2382,7 +2382,7 @@ Inherits Shape
 		  s.removechild self
 		  removeparent s
 		  mobility
-		  removefromfigure
+		  'removefromfigure
 		  
 		  
 		  
@@ -3014,7 +3014,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
-		  dim sh  as shape
+		  Dim sh  As shape
 		  dim i as integer
 		  dim ff as figure
 		  dim t as Boolean
@@ -3029,7 +3029,8 @@ Inherits Shape
 		      puton sh
 		    elseif not modified then
 		      Arc(sh).Positionner(self)  //Voir remarque dans Figure.updatePtssur
-		    end if
+		    End If
+		    modified = true
 		  end if
 		  
 		  

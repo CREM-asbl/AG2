@@ -351,7 +351,6 @@ Inherits SelectAndDragOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s = point(Visible.item(i))
-		    
 		    if not choixvalid(s) then
 		      visible.removeobject(s)
 		    end if
@@ -394,11 +393,11 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub InitFigs()
-		  dim i as integer
+		  Dim i As Integer
 		  dim figu as figure
 		  
 		  cancel = false
-		  figs.removeall
+		  figs.removeall  'figs est une propriété de SelectOperation
 		  
 		  figu = pointmobile.fig
 		  figu.listerassociatedfigures

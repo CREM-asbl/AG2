@@ -1921,7 +1921,8 @@ End
 	#tag MenuHandler
 		Function ToolsColorFill() As Boolean Handles ToolsColorFill.Action
 			Formswindow.close
-			ColorChange(false)
+			currentcontent.currentoperation = nil
+			ColorChange(False)
 			refreshtitle
 			Return True
 		End Function
@@ -2292,9 +2293,11 @@ End
 		Sub colorchange(t as boolean)
 		  Formswindow.close
 		  var col as Color
+		  
 		  if Color.SelectedFromDialog(col,"Choisir une couleur") Then
-		    CurrentContent.CurrentOperation = new ColorChange(t, col)
+		    CurrentContent.CurrentOperation = New ColorChange(t, col)
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 

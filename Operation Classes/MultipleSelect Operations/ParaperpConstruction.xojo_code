@@ -54,7 +54,7 @@ Inherits ShapeConstruction
 		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
 		    'voir remarque correspondante dans  macro.paraperp
 		    BiB1 =  BiBPoint(currentshape.coord)
-		    if val(EL.GetAttribute("NrForm"))  <> 1 then
+		    If Val(EL.GetAttribute(Dico.Value("NrForm")))  <> 1 Then
 		      pt.moveto pt.bpt.projection(BiB1)
 		      
 		      'b2) si l'extrémité est un point sur, il faut repositionner l'extrémité

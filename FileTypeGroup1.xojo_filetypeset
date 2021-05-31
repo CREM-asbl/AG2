@@ -1,0 +1,82 @@
+#tag FileTypeSet
+	#tag FileType
+		CodeName=XML
+		Extension=.xml;.fag;.hag;.xmag:
+		Flags=&h5
+		MacCreator=
+		MacType=XML
+		Name=AG
+		UTI=AG2.exe-AG
+		UTIConformsTo=, public.data
+		Description=
+		MimeType=application/xml
+		Imported=False
+		HandlerRank=&h11
+		UTIPhysicalType=public.data
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=Pdf
+		Extension=.pdf
+		Flags=&h2
+		MacCreator=
+		MacType=PDF
+		Name=application/pdf
+		UTI=com.adobe.pdf
+		UTIConformsTo=public.composite-content, public.data
+		Description=
+		MimeType=
+		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=Jpeg
+		Extension=.jfif;.jpe;.jpeg;.jpg
+		Flags=&h2
+		MacCreator=
+		MacType=JPEG
+		Name=image/jpeg
+		UTI=public.jpeg
+		UTIConformsTo=public.image, public.data
+		Description=
+		MimeType=
+		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=Png
+		Extension=.png
+		Flags=&h2
+		MacCreator=
+		MacType=PNGf
+		Name=image/png
+		UTI=public.png
+		UTIConformsTo=public.image, public.data
+		Description=
+		MimeType=
+		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
+	#tag EndFileType
+
+	#tag FileType
+		CodeName=eps
+		Extension=
+		Flags=&h2
+		MacCreator=
+		MacType=EPS
+		Name=text/eps
+		UTI=eps
+		UTIConformsTo=, public.data
+		Description=
+		MimeType=
+		Imported=True
+		HandlerRank=&h9
+		UTIPhysicalType=public.data
+	#tag EndFileType
+
+#tag EndFileTypeSet
