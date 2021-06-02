@@ -182,8 +182,6 @@ Inherits Application
 		  #else
 		    sys = "MacOsX"
 		  #endif
-		  
-		  msgbox System.Version.ToString
 		End Sub
 	#tag EndMethod
 

@@ -3368,7 +3368,6 @@ Inherits Shape
 
 
 	#tag Note, Name = Licence
-		
 		Copyright © Mars 2010 CREM
 		Noël Guy - Pliez Geoffrey
 		
