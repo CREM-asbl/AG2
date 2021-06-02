@@ -179,12 +179,11 @@ Inherits Application
 		    sys = "Windows"
 		  #elseif TargetLinux then
 		    sys="Linux"
-		  #elseif TargetMacOS then
-		    sys = "Mac"
 		  #else
 		    sys = "MacOsX"
 		  #endif
 		  
+		  msgbox System.Version.ToString
 		End Sub
 	#tag EndMethod
 
