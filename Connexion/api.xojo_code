@@ -10,7 +10,7 @@ Protected Module api
 		    return
 		  end if
 		  
-		  data = http.SendSync("GET",url+"info.xml")
+		  data = http.SendSync("GET",url+"info.xml", timeout)
 		  
 		  try
 		    doc = new XmlDocument(DefineEncoding(data,Encodings.UTF8))
@@ -43,7 +43,7 @@ Protected Module api
 		  request = "version=" + app.FullVersion + "&os=" + app.sys +"&mac=" + NWI.MACAddress
 		  
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  log = http.SendSync("POST",url+"/log.php")
+		  log = http.SendSync("POST",url+"/log.php", timeout)
 		  
 		  AfficherInfo
 		  
