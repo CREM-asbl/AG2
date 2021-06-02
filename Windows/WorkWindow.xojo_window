@@ -86,7 +86,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -734,7 +733,8 @@ End
 		  if currentcontent <> nil then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		    PushButton1.enabled = (currentcontent.currentop > 0) or (currentcontent.currentoperation <> nil)
+		    
+		    PushButton1.enabled = currentcontent.currentop > 0
 		    
 		    if can.rep <> nil then
 		      B =  CurrentContent.TheObjects.count > 1
@@ -794,7 +794,6 @@ End
 		      end if
 		    end if
 		  end if
-		  
 		  
 		End Sub
 	#tag EndEvent
@@ -2213,16 +2212,13 @@ End
 		  If dret = Nil Then
 		    if currentcontent.currentoperation <> nil then
 		      currentcontent.currentoperation.Annuler
-		      if CurrentContent.CurrentOp = 0 then
-		        PushButton1.Enabled = false
-		      end if
 		      currentcontent.currentoperation = nil
 		      refreshtitle
 		    else
 		      currentcontent.undolastoperation
 		    end if
+		    PushButton1.enabled = CurrentContent.CurrentOp > 0
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -2620,40 +2616,38 @@ End
 		  MenuMenus.Child("MacrosMenu").Child("MacrosCopy").checked = not t
 		  EraseMenuBar
 		  CopyMenuBar
-		  MenuBar.Child("FileMenu").Child("FileOpen").visible=not t
-		  MenuBar.Child("FileMenu").Child("FileSave").visible =not t
-		  MenuBar.Child("FileMenu").Child("FileSaveAs").visible =not t
-		  MenuBar.Child("OperaMenu").Child("OperaCut").visible =not t
-		  MenuBar.Child("OperaMenu").Child("OperaMerge").visible =not t
-		  
-		  if MenuBar.Child("OperaMenu").Child("OperaIdentify") <> nil then
-		    MenuBar.Child("OperaMenu").Child("OperaIdentify").visible =not t
-		  end if
-		  
-		  for i = 0 to MenuBar.Child("ToolsMenu").count-1
-		    MenuBar.Child("ToolsMenu").Item(i).visible = not t
-		  next
-		  MenuBar.Child("ToolsMenu").visible = not t
-		  
-		  for i = 0 to MenuBar.Child("PrefsMenu").count-1
-		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
-		  next
-		  MenuBar.Child("PrefsMenu").visible = not t
-		  
-		  for i = 0 to MenuBar.Child("PrefsMenu").count-1
-		    MenuBar.Child("PrefsMenu").Item(i).visible = not t
-		  next
-		  MenuBar.Child("Cfg").visible = not t
-		  
-		  for i = 0 to MenuBar.Child("EditMenu").count-2
-		    MenuBar.Child("EditMenu").Item(i).visible = not t
-		  next
-		  MenuBar.Child("EditMenu").visible = not t
+		  'MenuBar.Child("FileMenu").Child("FileOpen").visible = not t
+		  'MenuBar.Child("FileMenu").Child("FileSave").visible = not t
+		  'MenuBar.Child("FileMenu").Child("FileSaveAs").visible = not t
+		  'MenuBar.Child("OperaMenu").Child("OperaCut").visible = not t
+		  'MenuBar.Child("OperaMenu").Child("OperaMerge").visible = not t
+		  '
+		  'if MenuBar.Child("OperaMenu").Child("OperaIdentify") <> nil then
+		  'MenuBar.Child("OperaMenu").Child("OperaIdentify").visible = not t
+		  'end if
+		  '
+		  'for i = 0 to MenuBar.Child("ToolsMenu").count-1
+		  'MenuBar.Child("ToolsMenu").Item(i).visible = not t
+		  'next
+		  'MenuBar.Child("ToolsMenu").visible = not t
+		  '
+		  '
+		  'for i = 0 to MenuBar.Child("PrefsMenu").count-1
+		  'MenuBar.Child("PrefsMenu").Item(i).visible = not t
+		  'next
+		  'MenuBar.Child("PrefsMenu").visible = not t
+		  '
+		  'MenuBar.Child("Cfg").visible = false
+		  '
+		  'for i = 0 to MenuBar.Child("EditMenu").count-2
+		  'MenuBar.Child("EditMenu").Item(i).visible = not t
+		  'next
+		  'MenuBar.Child("EditMenu").visible = not t
 		  
 		  for i = 1 to 3
-		    MouvBut(i).visible =not t
+		    MouvBut(i).visible = not t
 		  next
-		  PushButton1.visible=not t
+		  PushButton1.visible = not t
 		  stdbox.visible = not t
 		  
 		  Exception err
