@@ -175,8 +175,8 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub CheckSystem()
-		  #if TargetWin32 then
-		    sys = "win32"
+		  #if TargetWindows then
+		    sys = "Windows"
 		  #elseif TargetLinux then
 		    sys="Linux"
 		  #elseif TargetMacOS then
