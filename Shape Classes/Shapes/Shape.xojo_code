@@ -4409,8 +4409,8 @@ Protected Class Shape
 		  dim tsf as Transformation
 		  
 		  n = val(Tmp.GetAttribute("SuppTsf"))
-		  if n<> 0 then
-		    s1 =objects.getshape(n)
+		  if n <> 0 then
+		    s1 = objects.getshape(n)
 		    j = val(Tmp.GetAttribute("Nr"))
 		    if j = -1 then
 		      j = 0
@@ -4422,7 +4422,7 @@ Protected Class Shape
 		    end if
 		  elseif self isa point and ubound(point(self).parents) > -1 then
 		    s1 = point(self).parents(0)
-		    if  s1.constructedby <> nil and s1.constructedby.oper = 6 then
+		    if s1.constructedby <> nil and s1.constructedby.oper = 6 then
 		      tsf = Transformation(s1.constructedby.data(0))
 		    end if
 		  else
@@ -4434,6 +4434,17 @@ Protected Class Shape
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  auto = 0
+		  
+		  Exception err
+		    var d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("n", n)
+		    d.setVariable("j", j)
+		    d.setVariable("tsf", tsf)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
