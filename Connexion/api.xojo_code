@@ -1,110 +1,70 @@
 #tag Module
 Protected Module api
 	#tag Method, Flags = &h0
-		Sub AfficherInfo()
-		  dim doc as XmlDocument
-		  dim El as XmlNode
-		  dim info, data, validite, version as String
-		  
-		  if http = Nil then
+		Sub init()
+		  #if DebugBuild then
 		    return
-		  end if
+		  #endif
 		  
-		  data = http.SendSync("GET",url+"info.xml", timeout)
-		  
-		  try
-		    doc = new XmlDocument(DefineEncoding(data,Encodings.UTF8))
-		    El = doc.FirstChild
-		    info = El.FirstChild.FirstChild.Value
-		    validite =  El.Child(1).FirstChild.Value
-		    version = app.LongVersion
-		    if version < validite and info<>Config.LastInfo  then
-		      MsgBox  El.LastChild.FirstChild.Value
-		      Config.LastInfo = info
-		    end if
-		  catch err as XmlException
-		  end try
+		  sendStat
+		  dim update as CheckUpdate = new CheckUpdate
+		  dim notification as Notification = new Notification
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub checkUpdate()
-		  dim log,info,update,request As string
-		  dim NWI as NetworkInterface
+		Sub SendBug()
+		  dim request, directory as String
+		  dim http as URLConnection
+		  Var d As DateTime = DateTime.Now(New TimeZone("Europe/Brussels"))
+		  var date as String
 		  
-		  init
+		  date = d.ToString().ReplaceAll(":", ".")
 		  
-		  if http = Nil then
-		    return
-		  end if
+		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
 		  
-		  NWI = System.GetNetworkInterface(0)
-		  
-		  request = "version=" + app.FullVersion + "&os=" + app.sys +"&mac=" + NWI.MACAddress
-		  
+		  http = new URLConnection
+		  request = "dir=" + directory + "&file=log.txt&txt=" + app.log
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  log = http.SendSync("POST",url+"/log.php", timeout)
+		  http.Send("POST",url+"/bug.php", timeout)
 		  
-		  AfficherInfo
+		  http = new URLConnection
+		  request = "dir=" + directory + "&file=bug.hag&txt=" + CurrentContent.Oplist.ToString
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  http.Send("POST",url+"/bug.php")
 		  
-		  update = http.SendSync("GET",url+"version.xml", timeout)
-		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
-		    GetUpdateW.ShowModal
-		  end if
+		  http = new URLConnection
+		  request = "dir=" + directory + "&file=bug.fag&txt=" + CurrentContent.MakeXML.ToString
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  http.Send("POST",url+"/bug.php")
 		  
-		  
-		  'si la connexion ne s'établit pas le programme n'est plus bloqué
 		  Exception err
+		    #if DebugBuild
+		      msgbox err.message
+		    #EndIf
 		  Catch
 		    
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub init()
-		  #if DebugBuild then
-		    return
-		  #endif
+		Sub sendStat()
+		  dim request As string
+		  dim NWI as NetworkInterface
 		  
-		  if System.Network.IsConnected then
-		    http = New URLConnection
-		  end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SendBug()
-		  dim request, directory, response as String
-		  
-		  
-		  if http = Nil then
+		  if System.Network.IsConnected = false then
 		    return
 		  end if
 		  
-		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"
+		  dim http as URLConnection = new URLConnection
+		  NWI = System.GetNetworkInterface(0)
 		  
-		  request = "dir=" + directory + "&file=log.txt&txt=" + app.log
+		  request = "version=" + app.FullVersion + "&os=" + app.sys +"&mac=" + NWI.MACAddress
+		  
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  response = http.SendSync("POST",url+"/bug.php")
-		  
-		  request = "dir=" + directory + "&file=bug.hag&txt=" + CurrentContent.Oplist.ToString
-		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  response = http.SendSync("POST",url+"/bug.php")
-		  
-		  request = "dir=" + directory + "&file=bug.fag&txt=" + CurrentContent.MakeXML.ToString
-		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  response = http.SendSync("POST",url+"/bug.php")
-		  
-		  'si la connexion ne s'établit pas le programme n'est plus bloqué
-		  Exception err
-		  Catch
+		  http.Send("POST",url+"/log.php")
 		End Sub
 	#tag EndMethod
-
-
-	#tag Property, Flags = &h0
-		http As URLConnection
-	#tag EndProperty
 
 
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public

@@ -26,7 +26,7 @@ Inherits Application
 		  Dico = new Dictionnaire
 		  Config = new Configuration
 		  autoquit = true
-		  api.checkUpdate 
+		  api.init 
 		  themacros = new macroslist
 		  initWindow.show
 		  
@@ -70,80 +70,84 @@ Inherits Application
 		    return true
 		  end if
 		  
-		  curoper = CurrentContent.CurrentOperation
-		  
-		  log = "BuildDate : " + str(self.BuildDate) + EndOfLine +EndOfLine
-		  
-		  log = log + "**** Runtime - Error Type****" + EndOfLine + EndOfLine
-		  log = log + str(Runtime.ObjectCount) + " éléments actifs" + EndOfLine
-		  log = log + str(Runtime.MemoryUsed/1000000) + " Mo en mémoire" + EndOfLine + EndOfLine
-		  
-		  if Config<>nil then
-		    log = log + "**** Configuration ****" + EndOfLine + EndOfLine
-		    log = log + "Formes standards : "+Config.stdfile + EndOfLine +EndOfLine
-		    log = log + "**** Operation ****" + EndOfLine + EndOfLine
+		  if System.Network.IsConnected then
+		    
+		    curoper = CurrentContent.CurrentOperation
+		    
+		    log = "BuildDate : " + str(self.BuildDate) + EndOfLine +EndOfLine
+		    
+		    log = log + "**** Runtime - Error Type****" + EndOfLine + EndOfLine
+		    log = log + str(Runtime.ObjectCount) + " éléments actifs" + EndOfLine
+		    log = log + str(Runtime.MemoryUsed/1000000) + " Mo en mémoire" + EndOfLine + EndOfLine
+		    
+		    if Config<>nil then
+		      log = log + "**** Configuration ****" + EndOfLine + EndOfLine
+		      log = log + "Formes standards : "+Config.stdfile + EndOfLine +EndOfLine
+		      log = log + "**** Operation ****" + EndOfLine + EndOfLine
+		      
+		    end if
+		    
+		    if curoper <>nil then
+		      CurrentContent.InsertInHisto(curoper)
+		      log = log+ "Opération active : "+curoper.GetName + EndOfLine
+		      if not curoper isa ReadHisto then
+		        if curoper.CurrentShape <> nil then
+		          log = log + "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id) + EndOfLine
+		        else
+		          log = log + "Curoper.CurrentShape = nil"+ EndOfLine
+		        end if
+		      end if
+		    else
+		      log = log + "Ouverture de Fichier ou Operation Nil" + EndOfLine
+		    end if
+		    
+		    log = log + EndOfLine
+		    
+		    log = log + "**** Debug message ****" + EndOfLine + EndOfLine
+		    if error isa OutOfMemoryException then
+		      log = log + "OutOfMemoryException" + EndOfLine
+		    elseif error isa FunctionNotFoundException then
+		      log = log + "FunctionNotFoundException" + EndOfLine
+		    elseif error isa IllegalCastException then
+		      log = log + "IllegalCastException" + EndOfLine
+		    elseif error isa NilObjectException then
+		      log = log + "NilObjectException" + EndOfLine
+		    elseif error isa OutOfBoundsException then
+		      log = log + "OutOfBoundsException" + EndOfLine
+		    elseif error isa StackOverflowException then
+		      log = log + "StackOverflowException" + EndOfLine
+		    elseif error isa XmlException then
+		      log = log + "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node + EndOfLine
+		    else
+		      log = log + "Autre erreur" + EndOfLine
+		    end if
+		    log = log+ error.message + EndOfLine
+		    log = log + "" + EndOfLine
+		    log = log + "**** fin Debug message ****" + EndOfLine + EndOfLine
+		    
+		    log = log + "**** Error Stack ****" + EndOfLine + EndOfLine
+		    st = error.Stack
+		    
+		    log = log + str(error.ErrorNumber) + EndOfLine
+		    for i = 0 to UBound(St)
+		      log = log + st(i) + EndOfLine
+		    next
+		    
+		    f = SpecialFolder.Documents.Parent
+		    if f <> nil then
+		      cre = f.Name
+		    end if
+		    log = log + "Createur : " + cre + EndOfLine
+		    NWI = System.GetNetworkInterface(0)
+		    log = log + NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress + EndOfLine
+		    
+		    CurrentContent.bugfound = true
+		    
+		    app.ErrorType = NthField(st(1),"%",1)
+		    app.log = log
+		    api.SendBug
 		    
 		  end if
-		  
-		  if curoper <>nil then
-		    CurrentContent.InsertInHisto(curoper)
-		    log = log+ "Opération active : "+curoper.GetName + EndOfLine
-		    if not curoper isa ReadHisto then
-		      if curoper.CurrentShape <> nil then
-		        log = log + "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id) + EndOfLine
-		      else
-		        log = log + "Curoper.CurrentShape = nil"+ EndOfLine
-		      end if
-		    end if
-		  else
-		    log = log + "Ouverture de Fichier ou Operation Nil" + EndOfLine
-		  end if
-		  
-		  log = log + EndOfLine
-		  
-		  log = log + "**** Debug message ****" + EndOfLine + EndOfLine
-		  if error isa OutOfMemoryException then
-		    log = log + "OutOfMemoryException" + EndOfLine
-		  elseif error isa FunctionNotFoundException then
-		    log = log + "FunctionNotFoundException" + EndOfLine
-		  elseif error isa IllegalCastException then
-		    log = log + "IllegalCastException" + EndOfLine
-		  elseif error isa NilObjectException then
-		    log = log + "NilObjectException" + EndOfLine
-		  elseif error isa OutOfBoundsException then
-		    log = log + "OutOfBoundsException" + EndOfLine
-		  elseif error isa StackOverflowException then
-		    log = log + "StackOverflowException" + EndOfLine
-		  elseif error isa XmlException then
-		    log = log + "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node + EndOfLine
-		  else
-		    log = log + "Autre erreur" + EndOfLine
-		  end if
-		  log = log+ error.message + EndOfLine
-		  log = log + "" + EndOfLine
-		  log = log + "**** fin Debug message ****" + EndOfLine + EndOfLine
-		  
-		  log = log + "**** Error Stack ****" + EndOfLine + EndOfLine
-		  st = error.Stack
-		  
-		  log = log + str(error.ErrorNumber) + EndOfLine
-		  for i = 0 to UBound(St)
-		    log = log + st(i) + EndOfLine
-		  next
-		  
-		  f = SpecialFolder.Documents.Parent
-		  if f <> nil then
-		    cre = f.Name
-		  end if
-		  log = log + "Createur : " + cre + EndOfLine
-		  NWI = System.GetNetworkInterface(0)
-		  log = log + NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress + EndOfLine
-		  
-		  CurrentContent.bugfound = true
-		  
-		  app.ErrorType = NthField(st(1),"%",1)
-		  app.log = log
-		  api.SendBug
 		  
 		  BugFindW.showModal
 		  
