@@ -144,7 +144,7 @@ Inherits SelectAndDragOperation
 		    sh = pt.pointsur.item(0)
 		    
 		    if pt.constructedby <> nil and pt.constructedby.oper = 10 then
-		      s1 =point(pt.constructedby.shape)
+		      s1 = point(pt.constructedby.shape)
 		      if s1.pointsur.item(0) = pt.pointsur.item(0)  and s1.numside(0) = pt.numside(0) then
 		        abort
 		      end if

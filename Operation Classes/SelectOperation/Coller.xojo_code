@@ -64,19 +64,18 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i, j, h, n, i0 as integer
 		  dim s,  s2, sj as shape
-		  dim p0, v as BasicPoint
+		  dim p0 as BasicPoint
 		  
 		  n = tempshape.count
 		  p0 = can.MouseUser
 		  s = tempshape.item(0)
-		  if not (s isa point)   then
-		    v = p0 - s.Points(0).bpt
-		  elseif s isa point then
-		    v = p0-Point(s).bpt
+		  
+		  if not (s isa point) and not (s isa StandardPolygon)   then
+		    p0 = p0 - s.Points(0).bpt
 		  end if
 		  
 		  if n=1 and s isa point then
-		    s2 = s.Paste(Objects,v,currenthighlightedshape)
+		    s2 = s.Paste(Objects, p0,currenthighlightedshape)
 		    tempshape.objects(0) = s2
 		    s2.endconstruction
 		    return
@@ -84,7 +83,7 @@ Inherits SelectOperation
 		  
 		  for i = 0 to n-1
 		    s = tempshape.item(i)
-		    s2 = s.Paste(Objects,v)
+		    s2 = s.Paste(Objects,p0)
 		    copies.addshape s2
 		    IdentifyPointsinCopies(s2,i) 'identification des sommets communs à deux formes
 		    if s.centerordivpoint and s.constructedby.oper <> 7 then

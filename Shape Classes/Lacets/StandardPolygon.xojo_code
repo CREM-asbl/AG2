@@ -242,6 +242,9 @@ Inherits Polygon
 		Function Paste(Obl as ObjectsList, p as BasicPoint) As StandardPolygon
 		  dim s as new StandardPolygon(Obl,self,p)
 		  Obl.addshape(s)
+		  
+		  var M as Translationmatrix = new Translationmatrix(p-points(0).bpt)
+		  s.Move(M)
 		  return s
 		End Function
 	#tag EndMethod
