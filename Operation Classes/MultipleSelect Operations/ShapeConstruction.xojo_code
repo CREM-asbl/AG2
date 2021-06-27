@@ -3,7 +3,7 @@ Protected Class ShapeConstruction
 Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AbortConstruction()
-		  currentcontent.drapabort = true
+		  currentcontent.drapabort = True
 		  if currentshape.isinconstruction and (currentshape.indexconstructedpoint = 0) then
 		    currentshape.points(0).delete
 		  end if
@@ -150,7 +150,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub CreateShape()
-		  dim p as BasicPoint
+		  Dim p As BasicPoint
 		  dim specs as StdPolygonSpecifications
 		  dim fam as integer
 		  

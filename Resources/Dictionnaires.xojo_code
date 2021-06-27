@@ -98,8 +98,8 @@ Protected Module Dictionnaires
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function arendretransparenteouopaque() As string
-		  return dico.value("arendretransparenteouopaque")
+		Function arenransparenteouopaque() As string
+		  return dico.value("arenransparenteouopaque")
 		End Function
 	#tag EndMethod
 

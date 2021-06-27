@@ -146,7 +146,8 @@ Protected Class BasicPoint
 
 	#tag Method, Flags = &h0
 		Function indice(nbp as nbpoint) As integer
-		  dim protab(2) as basicpoint
+		  'Calcul de l'indice de Cauchy (?)
+		  Dim protab(2) As basicpoint
 		  dim BiB as BiBPoint
 		  dim ang as angle
 		  dim i, orien, resucorrig as integer

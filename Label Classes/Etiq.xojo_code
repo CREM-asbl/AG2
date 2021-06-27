@@ -276,7 +276,7 @@ Inherits Label
 		  dim  q as BasicPoint
 		  dim  dat as string
 		  
-		  if (dret <> nil and dret isa rettimer and text =  "*")   then
+		  If (dret <> Nil And dret  IsA rettimer And Text =  "*")   Then
 		    return
 		  end if
 		  
@@ -715,6 +715,14 @@ Inherits Label
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="Text"
+			Visible=true
+			Group="Appearance"
+			InitialValue="Untitled"
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="AllowAutoDeactivate"
 			Visible=true
 			Group="Appearance"
@@ -742,14 +750,6 @@ Inherits Label
 				"2 - Center"
 				"3 - Right"
 			#tag EndEnumValues
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Value"
-			Visible=true
-			Group="Appearance"
-			InitialValue="Untitled"
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="FontName"

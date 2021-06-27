@@ -83,7 +83,7 @@ Inherits TsfTimer
 		    next
 		    
 		    enabled = false
-		    dret = nil
+		    dret  = nil
 		    if curoper isa retourner  then
 		      for i = 0 to ncop
 		        s = copies.item(i)
@@ -251,6 +251,30 @@ Inherits TsfTimer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Enabled"
+			Visible=false
+			Group="Behavior"
+			InitialValue="True"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="RunMode"
 			Visible=true

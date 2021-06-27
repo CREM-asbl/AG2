@@ -2,81 +2,6 @@
 Protected Class Modifier
 Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
-		Sub AccrocherInitial(p as point, temp as XMLElement)
-		  'Dim List As XmlNodeList
-		  'DIM MF, MFInit, MFFin, EL, EL1, EL2, EL3 as XMLElement
-		  'dim i, j, k, m, n, n0, sid as integer
-		  'dim t as Boolean
-		  'dim s as shape
-		  'dim ff as figure
-		  '
-		  'List = Temp.XQL("ModifiedFigures")
-		  'if List.length >0 then
-		  'MF = XMLElement(List.Item(0))
-		  'MFInit = XMLElement(MF.Child(0))
-		  'MFFin = XMLElement(MF.Child(1))
-		  'end if
-		  '
-		  'List = MFInit.XQL("PtSur")
-		  'if List.length > 0 then
-		  'EL2 = XMLElement(List.Item(0))
-		  'end if
-		  'List = MFFin.XQL("PtSur")
-		  'if List.length > 0 then
-		  'EL3 = XMLElement(List.Item(0))
-		  'end if
-		  '
-		  'if EL2 <> nil then
-		  'sid = val(XMLElement(EL2.child(0)).GetAttribute("Id"))
-		  's = objects.getshape(sid)
-		  'if FormeAbsente(sid, EL3) then
-		  'p.pointsur.addshape s
-		  'p.location.append val(XMLElement(EL2.child(i)).GetAttribute("Location"))
-		  'p.Numside.append val(XMLElement(EL2.child(i)).GetAttribute("Numside"))
-		  's.setpoint p
-		  'p.mobility
-		  'else
-		  'p.puton s
-		  'end if
-		  'end if
-		  '
-		  'List = MFInit.XQL("Parents")
-		  'if List.length > 0 then
-		  'EL2 = XMLElement(List.Item(0))
-		  'end if
-		  '
-		  'List = MFFin.XQL("Parents")
-		  'if List.length > 0 then
-		  'EL3 = XMLElement(List.Item(0))
-		  'end if
-		  '
-		  'if EL2 <> nil then
-		  'EL = XMLElement(Temp.child(0))
-		  'if EL.childcount > 1 then
-		  'EL1 = XMLElement(EL.child(1))
-		  'if not (EL1.GetAttribute("Rempl") = "Ini") then
-		  'EL1 = nil
-		  'end if
-		  'else
-		  'EL1 = nil
-		  'end if
-		  '
-		  'if EL1 <> nil then
-		  'sid = val(EL1.GetAttribute("Id"))
-		  'remplini =  point(objects.getshape(sid))
-		  'for i = 0 to EL2.childcount-1
-		  'sid = val(XMLElement(EL2.child(i)).GetAttribute("Id"))
-		  'if FormeAbsente (sid, EL3)  then // Parent à l'initial qui ne l'est plus au final Substituer p au sommet. qui l'a remplacé
-		  's = objects.getshape(sid)
-		  's.substitutepoint(p, remplini)
-		  'end if
-		  'next
-		  'end if
-		  'end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Animer(p as point)
 		  dim s as shape
 		  dim dep as BasicPoint
@@ -213,78 +138,6 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DecrocherInitial(p as point, temp as XMLElement)
-		  'dim List as XmlNodeList
-		  'DIM MF, MFInit, MFFin, EL, EL1, EL2, EL3 as XMLElement
-		  'dim i, j, k, m, n, n0, sid as integer
-		  'dim t as Boolean
-		  'dim s as shape
-		  'dim pt as point
-		  '
-		  'List = Temp.XQL("ModifiedFigures")
-		  'if List.length >0 then
-		  'MF = XMLElement(List.Item(0))
-		  'MFInit = XMLElement(MF.Child(0))
-		  'MFFin = XMLElement(MF.Child(1))
-		  'end if
-		  '
-		  'List = MFInit.XQL("PtSur")
-		  'if List.length > 0 then
-		  'EL2 = XMLElement(List.Item(0))
-		  'end if
-		  'List = MFFin.XQL("PtSur")
-		  'if List.length > 0 then
-		  'EL3 = XMLElement(List.Item(0))
-		  'end if
-		  '
-		  'if EL2 <> nil then
-		  'sid = val(XMLElement(EL2.child(0)).GetAttribute("Id"))
-		  's = objects.getshape(sid)
-		  'if  FormeAbsente(sid, EL3) then
-		  'p.removepointsur(p.pointsur.item(0))
-		  'end if
-		  'end if
-		  '
-		  'List = MFInit.XQL("Parents")
-		  'if List.length > 0 then
-		  'EL2 = XMLElement(List.Item(0))
-		  'end if
-		  'List = MFFin.XQL("Parents")
-		  'if List.length > 0 then
-		  'EL3 = XMLElement(List.Item(0))
-		  'end if
-		  '
-		  'if EL2 <> nil then
-		  'EL = XMLElement(Temp.child(0))
-		  'if EL.childcount > 1 then
-		  'EL1 = XMLElement(EL.child(1))
-		  'if not (EL1.GetAttribute("Rempl") = "Ini") then
-		  'EL1 = nil
-		  'end if
-		  'else
-		  'EL1 = nil
-		  'end if
-		  '
-		  'if EL1 <> nil then
-		  'remplini = Point(Objects.XMLLoadObject(EL1))
-		  'for i = 0 to EL2.childcount-1
-		  'sid = val(XMLElement(EL2.child(i)).GetAttribute("Id"))
-		  'if FormeAbsente( sid, EL3) then // Parent à l'initial qui ne l'est pas au final
-		  's = objects.getshape(sid)
-		  's.substitutepoint(remplini, p)
-		  'remplini.mobility
-		  'p.mobility
-		  'end if
-		  'next
-		  'end if
-		  'end if
-		  '
-		  '
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -722,13 +575,10 @@ Inherits SelectAndDragOperation
 		  pointmobile.drapmagn = true
 		  
 		  RedeleteCreatedFigures(temp)
-		  if not animation then
-		    AccrocherInitial(pointmobile,temp)
-		  end if
 		  RecreateDeletedFigures(temp)
 		  
 		  List = Temp.XQL("ModifiedFigures")
-		  if List.length >0 then
+		  If List.length >0 Then
 		    MF = XMLElement(List.Item(0))
 		    MFInit = XMLElement(MF.Child(0))
 		  end if

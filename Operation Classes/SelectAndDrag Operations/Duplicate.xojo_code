@@ -25,7 +25,7 @@ Inherits SelectAndDragOperation
 		  
 		  if copyptsur then
 		    cop.moveto newpoint
-		    if dret = nil then
+		    if  dret = nil then
 		      magnetism = Magnetisme(copies.item(0),MagneticD)
 		    end if
 		    endpoint = newpoint
@@ -189,7 +189,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p As BasicPoint) As shape
-		  dim s as shape
+		  Dim s As shape
 		  dim s1 as point
 		  dim i as integer
 		  
@@ -201,7 +201,7 @@ Inherits SelectAndDragOperation
 		      if s.constructedby <> nil and s.constructedby.oper = 6 then
 		        visible.removeobject s
 		      end if
-		      if s isa point and point(s).pointsur.count=1 and s.constructedby <> nil and s.constructedby.oper = 10 then
+		      If s IsA point And point(s).forme=1 And s.constructedby <> Nil And s.constructedby.oper = 10 Then
 		        s1 =point(s.constructedby.shape)
 		        if s1.pointsur.item(0) = point(s).pointsur.item(0)  and s1.numside(0) = point(s).numside(0) then
 		          visible.removeobject s
@@ -383,7 +383,7 @@ Inherits SelectAndDragOperation
 		    if Config.Trace and dep.norme > epsilon then
 		      oldtempshape = tempshape
 		      tempshape = copies
-		      dret = new ModifTimer(self)
+		      dret = New ModifTimer(Self)
 		    else
 		      figs.Bouger(M)
 		      EndOper1(M)

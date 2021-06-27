@@ -343,7 +343,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  if CurrentHighlightedShape= nil then
+		  If CurrentHighlightedShape= Nil Then
 		    info = ""
 		    return
 		  end if

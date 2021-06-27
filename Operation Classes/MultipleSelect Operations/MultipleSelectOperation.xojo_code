@@ -60,13 +60,8 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  super.Paint(g)
+		  Super.Paint(g)
 		  
-		  'if CurrentHighlightedShape<>nil then
-		  'CurrentHighlightedShape.HighLight
-		  'CurrentHighlightedShape.PaintAll(g)
-		  'CurrentHighlightedShape.UnHighLight
-		  'end if
 		  
 		End Sub
 	#tag EndMethod

@@ -51,7 +51,8 @@ Inherits SelectOperation
 		        p.permuterparam
 		        p.adjustinter(Dr,s)
 		      end select
-		    end if
+		    End If
+		    p.fig = Dr.fig
 		  next
 		  
 		  
@@ -88,7 +89,7 @@ Inherits SelectOperation
 		  end if
 		  GetSide
 		  
-		  Dr = New Droite(objects, Bip.points(ibip), bip.points(jbip), 0)
+		  Dr = New Droite(objects, Bip.points(ibip), Bip.points(jbip), 0)
 		  deplacerptssur
 		  if Bip isa Lacet then
 		    Lacet(Bip).prol(ibip) = true
@@ -133,7 +134,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
-		  dim s as shape
+		  Dim s As shape
 		  dim i as integer
 		  
 		  s = operation.GetShape(p)
@@ -170,7 +171,7 @@ Inherits SelectOperation
 		  
 		  iobj = 0
 		  
-		  for i = 0 to visible.count-1
+		  For i = 0 To visible.count-1
 		    s = visible.item(i)
 		    if s isa droite then
 		      index(i) = 0
@@ -210,7 +211,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  dim sh as shape
+		  Dim sh As shape
 		  
 		  sh = currenthighlightedshape
 		  display = ""
@@ -219,7 +220,7 @@ Inherits SelectOperation
 		  else
 		    super.paint(g)
 		    if sh isa Lacet then
-		      Lacet(sh).PaintSide(g,cot,2,config.highlightcolor)
+		      Lacet(sh).PaintSide(g,cot,2,config.HighlightColor)
 		      'end if
 		      'if currentcontent.macrocreation then
 		      if not sh isa cube and sh.coord.curved(cot)=1 then

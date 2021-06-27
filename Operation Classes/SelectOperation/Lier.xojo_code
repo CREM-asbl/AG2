@@ -193,7 +193,7 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub MouseDown(p as BasicPoint)
+		Sub MouseDown(p as Basicpoint)
 		  If currenthighlightedshape = Nil Then
 		    EndOperation
 		    Return

@@ -49,7 +49,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function Paint(g as graphics) As string
-		  Help g, choose + aform + arendretransparenteouopaque
+		  Help g, choose + aform + arenransparenteouopaque
 		End Function
 	#tag EndMethod
 

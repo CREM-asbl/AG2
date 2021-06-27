@@ -317,7 +317,7 @@ Inherits Circle
 		  
 		  dim i as integer
 		  
-		  if dret = nil then
+		  if  dret = nil then
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  
@@ -340,7 +340,7 @@ Inherits Circle
 		  end if
 		  
 		  
-		  if (not hidden ) and  (Ti <> nil) and not dret isa rettimer then
+		  if (not hidden ) and  (Ti <> nil) and not  dret isa rettimer then
 		    PaintTipOnArc(g, bordercolor)
 		  end if
 		  

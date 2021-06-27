@@ -284,7 +284,7 @@ Inherits Shape
 		  pointsur = new objectslist
 		  conditioned = new objectslist
 		  drapmagn = true
-		  fillcolor = bordercolor
+		  fillcolor = Config.fillcolor
 		  fill = 100
 		  Liberte = 2
 		  
@@ -1803,10 +1803,10 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As integer
-		  if pinshape(p) then
-		    return 0
+		  If pinshape(p) Then
+		    Return 0
 		  else
-		    return -1
+		    Return -1
 		  end if
 		End Function
 	#tag EndMethod
@@ -1981,7 +1981,7 @@ Inherits Shape
 		  
 		  q.puton s,r
 		  s1 = self
-		  if sh = s and q.numside(0) = numside(0) then
+		  If sh = s And q.numside(0) = numside(0) Then
 		    q.puton s, 1-r
 		    q.SetConstructedBy self,10
 		  else
@@ -2377,7 +2377,7 @@ Inherits Shape
 		  s.removechild self
 		  removeparent s
 		  mobility
-		  'removefromfigure
+		  'removefromfigure 
 		  
 		  
 		  
@@ -2728,7 +2728,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updateconstructedpoints()
-		  dim s as Point
+		  Dim s As Point
 		  dim M1 as Matrix
 		  dim i,j, side as integer
 		  dim tsf as Transformation
@@ -2738,7 +2738,7 @@ Inherits Shape
 		    s = Point(ConstructedShapes(i))
 		    if not s.modified  then
 		      select case s.constructedby.Oper
-		      case 3, 5 'duplication et découpage
+		      Case 3, 5 'duplication d'un point non ptsur et découpage
 		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.Moveto M1*bpt
@@ -2762,20 +2762,19 @@ Inherits Shape
 		            end if
 		          next
 		        end if
-		      case 10 'duplication de pointsur
-		        side = s.Numside(0)
-		        s.numside(0) = (numside(0)+s.ConstructedBy.data(0)) mod s.pointsur.item(0).npts
+		      Case 10 'duplication de pointsur
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
-		        end if
+		        End If
+		        
 		      end select
 		      
 		      s.modified = true
 		      s.updateshape
-		    end if
-		  next
+		    End If
+		  Next
 		  
 		  
 		  if constructedby <> nil and not centerordivpoint and constructedby.oper <> 9  then
@@ -2785,10 +2784,9 @@ Inherits Shape
 		      case 3, 5
 		        M1 = Matrix(constructedby.data(0))
 		        M1 = M1.inv
-		        s.Moveto M1*(self.bpt)
-		      case 10
-		        side = s.Numside(0)
-		        s.numside(0) = (numside(0)-ConstructedBy.data(0)+s.pointsur.item(0).npts) mod s.pointsur.item(0).npts
+		        s.Moveto M1*(Self.bpt)
+		      Case 10
+		        's.numside(0) = (numside(0)-ConstructedBy.data(0)+s.pointsur.item(0).npts) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
@@ -2797,7 +2795,7 @@ Inherits Shape
 		      end select
 		      s.modified = true
 		      s.updateshape
-		    end if
+		    End If
 		  elseif constructedby <> nil and constructedby.oper = 9 then
 		    if constructedby.shape <> nil then
 		      s = Point(ConstructedBy.Shape)
@@ -2840,7 +2838,7 @@ Inherits Shape
 		  delta = np-bpt
 		  d = delta.norme
 		  if pointsur.count = 1 and (constructedby <> nil or ubound(constructedshapes) > 0) then
-		    if d > 0.1 and dret = nil then
+		    if d > 0.1 and   dret = nil then
 		      np = bpt+ (delta.normer)*0.2 
 		    end if                   'On évite de faire des pas trop grands
 		  end if

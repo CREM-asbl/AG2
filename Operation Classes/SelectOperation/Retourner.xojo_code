@@ -123,7 +123,7 @@ Inherits SelectOperation
 		    figs.addobject tempshape.item(i).fig
 		  next
 		  
-		  if config.Trace  then
+		  If config.Trace  Then
 		    dret = new RetTimer(tempshape,self)
 		  else
 		    DoOper
@@ -186,7 +186,7 @@ Inherits SelectOperation
 		  dim Cercle as Circle
 		  
 		  SelectOperation.Paint(g)
-		  if dret = nil then
+		  if  dret = nil then
 		    if CurrentHighlightedShape = nil   or ((CurrentHighlightedShape isa point) and (Point(currenthighlightedshape).ispointoncube) ) then
 		      return
 		    end if

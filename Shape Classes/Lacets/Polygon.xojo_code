@@ -595,13 +595,13 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Function pInShape(p as BasicPoint) As Boolean
-		  dim i, i0, j0 as Integer
+		  Dim i, i0, j0 As Integer
 		  dim pp(3) as BasicPoint
 		  dim r as double
 		  
 		  if npts = 2 then
 		    return p.between(points(0).bpt, points(1).bpt) and p.distance(points(0).bpt, points(1).bpt)  < can.magneticdist
-		  elseif npts = 4 then
+		  Elseif npts = 4 Then  'Pourquoi ce cas particulier des quadrilatères?
 		    for i = 1  to 3
 		      pp(i) = coord.tab(i) - coord.tab(0)
 		      if pp(i).norme < epsilon then
@@ -626,7 +626,7 @@ Inherits Lacet
 		      end if
 		    end if
 		  end if
-		  return coord.pInShape(p)
+		  return coord.pInShape(p) 'si 0, p est extérieur au polygone, sinon le résultat est l'indice de Cauchy de p et est à l'interieur
 		  
 		End Function
 	#tag EndMethod
@@ -659,7 +659,7 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As integer
-		  dim i, imin as integer
+		  Dim i, imin As Integer
 		  dim distmin, dist, delta as double
 		  
 		  delta = can.MagneticDist
@@ -675,7 +675,10 @@ Inherits Lacet
 		      end if
 		    end if
 		  next
-		  return imin
+		  Return imin
+		  
+		  'Attention pointonside = -1 signifie p n'appartient pas au bord du polygone, alors que pour les changements de couleur, cela signifie est intérieur au polygone
+		  'et peut être encore dans d'autres circonstances
 		  
 		End Function
 	#tag EndMethod

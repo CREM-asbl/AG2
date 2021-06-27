@@ -750,7 +750,7 @@ Protected Class Transformation
 		      FixPt.moveto bp
 		    end if
 		  end if
-		  if   (dret <> nil or  op isa modifier)  or CurrentContent.isaundoredo or (op isa ReadHisto and ReadHisto(op).OpId=31) then
+		  if   ( dret <> nil or  op isa modifier)  or CurrentContent.isaundoredo or (op isa ReadHisto and ReadHisto(op).OpId=31) then
 		    ModifyImages
 		  end if
 		End Sub

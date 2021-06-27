@@ -119,9 +119,9 @@ Inherits MultipleSelectOperation
 		      'for i = 0 to copies.count-1
 		      'copies.item(i).ori =  -copies.item(i).ori
 		      'next
-		      dret = new RetTimer(copies,self)
+		      dret = New RetTimer(copies,Self)
 		    else
-		      dret=new TsfTimer(copies,self)
+		      dret =new TsfTimer(copies,self)
 		    end if
 		  else
 		    DoOper

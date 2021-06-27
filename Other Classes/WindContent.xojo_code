@@ -1,23 +1,26 @@
 #tag Class
 Protected Class WindContent
 	#tag Method, Flags = &h0
-		Sub abortConstruction()
-		  
+		Sub AbortConstruction()
+		  Var s As shape
 		  if currentoperation isa shapeconstruction then
-		    'drapabort = true
-		    's = currentoperation.currentshape
-		    'if s.isinconstruction and (s.indexconstructedpoint = 0) then
-		    's.points(0).delete
-		    'end if
-		    's.delete
-		    'if s.indexConstructedPoint >= 1 and  FigsDeleted.Childcount > 0 then
-		    'Theobjects.XMLLoadObjects(FigsDeleted)
-		    'end if
+		    drapabort = True
+		    s = currentoperation.currentshape
+		    If s.isinconstruction And (s.indexconstructedpoint = 0) Then
+		      s.points(0).delete
+		    End If
+		    s.delete
+		    If s.indexConstructedPoint >= 1 And  FigsDeleted.Childcount > 0 Then
+		      Theobjects.XMLLoadObjects(FigsDeleted)
+		    End If
+		  Elseif  currentoperation  <> Nil And currentoperation IsA lier Then
+		    currentoperation.MouseDown(new BasicPoint(0,0))
+		    
 		  elseif currentoperation isa macroexe and macroexe(currentoperation).mac.mw <> nil  then
 		    macroexe(currentoperation).mac.mw.close
 		  end if
 		  drapabort = false
-		  currentoperation = nil
+		  currentoperation = Nil
 		  WorkWindow.refreshtitle
 		End Sub
 	#tag EndMethod

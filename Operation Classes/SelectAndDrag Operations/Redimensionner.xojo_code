@@ -272,7 +272,7 @@ Inherits SelectAndDragOperation
 		  
 		  if  currentshape isa repere then
 		    if Config.Trace then
-		      dret = new ModifTimer(self)
+		      dret  = new ModifTimer(self)
 		    else
 		      M = new HomothetyMatrix(new BasicPoint(0,0),ratio)
 		      currentshape.Transform(M)

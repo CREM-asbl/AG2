@@ -21,8 +21,8 @@ Inherits NSkull
 		  dim i as integer
 		  
 		  
-		  if not (currentcontent.currentoperation isa retourner and dret <>nil) and not currentcontent.currentoperation isa Imprimer then
-		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
+		  If Not (currentcontent.currentoperation IsA retourner And dret  <>Nil) And Not currentcontent.currentoperation IsA Imprimer Then
+		    'si  dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
 		    update(skullof)
 		  end if
 		  if skullof isa freecircle or skullof isa stdcircle then

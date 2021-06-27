@@ -192,7 +192,7 @@ Inherits SelectAndDragOperation
 		  
 		  if  currentshape isa repere then
 		    'if Config.Trace then
-		    'dret = new ModifTimer(self)
+		    ' = new ModifTimer(self)
 		    'else
 		    Repere(currentshape).Origine = M*Repere(currentshape).Origine
 		    M = new Rotationmatrix(new BasicPoint(0,0),a) 

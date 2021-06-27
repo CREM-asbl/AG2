@@ -110,7 +110,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  super.Constructor
+		  Super.Constructor
 		  tempshape = Objects.selection
 		  Figs = new FigsList
 		  figsimges = new figslist
@@ -390,7 +390,7 @@ Inherits Operation
 		  
 		  WorkWindow.refreshtitle
 		  DoOperation
-		  if dret = nil  then
+		  if  dret = nil  then
 		    endoperation
 		  end if
 		  
@@ -535,7 +535,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub selection()
-		  dim i as integer
+		  
 		  
 		  if CurrentHighlightedshape <> nil  and currenthighlightedshape.selected = false then
 		    Objects.Unselectall

@@ -319,10 +319,8 @@ Inherits Liste
 		      if s1 <> nil and not s1.invalid and not s1.deleted then
 		        if s1 isa bipoint and not (s1 isa droite or s1 isa supphom)  then
 		          s1 = findpoint(p).item(0)
-		        end if
-		        'if  s1 <> nil  then
+		        End If
 		        Visible.addshape S1
-		        'end if
 		      end if
 		    end if
 		  next

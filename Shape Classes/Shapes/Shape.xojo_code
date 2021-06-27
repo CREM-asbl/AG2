@@ -324,7 +324,7 @@ Protected Class Shape
 		  elseif self.isaparaperp then
 		    auto = 6
 		  else
-		    Auto = 4 // Points isolés, BiP, Polyqcq, Droites , FreeCircles y compris Lacets
+		    Auto = 4 // Points isolés, BiP, Polyqcq, Triangles qcq, Droites , FreeCircles y compris Lacets
 		  end if
 		  
 		  
@@ -1017,7 +1017,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Fixecouleurtrait(i as integer, c as couleur)
-		  
+		  colcotes(i) = c
 		End Sub
 	#tag EndMethod
 
@@ -1517,7 +1517,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function Identifiant() As string
-		  dim m as string
+		  Dim m As String
 		  dim i as integer
 		  
 		  m = gettype + " "
@@ -1533,7 +1533,7 @@ Protected Class Shape
 		      if points(i).getlab <> "" then
 		        m  = m + points(i).getlab
 		      else
-		        m = m +"*"
+		        m = m + " "+ "*"
 		      end if
 		    next
 		  end if
@@ -3267,9 +3267,9 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function SelectShape(p as Basicpoint) As Shape
-		  dim i as Integer
+		  Dim i As Integer
 		  dim S as Shape
-		  
+		  'La forme est sélectionnée si p est à l'intérieur
 		  
 		  for i=0 to Ubound(Childs)
 		    if not Childs(i).Hidden or WorkWindow.DrapShowALL  then

@@ -732,7 +732,7 @@ Protected Class nBpoint
 		  dim n as integer
 		  
 		  n = p.indice(self)
-		  return n <> 0
+		  return n <> 0 'true: p intérieur au polygone sinon extérieur
 		  
 		  
 		  

@@ -150,7 +150,7 @@ Inherits SelectAndDragOperation
 		  
 		  if  currentshape isa repere then
 		    if Config.Trace then
-		      dret = new ModifTimer(self)
+		      dret  = New ModifTimer(Self)
 		    else
 		      currentshape.Transform(M)
 		    end if

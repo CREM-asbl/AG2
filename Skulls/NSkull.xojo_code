@@ -15,7 +15,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim loc, i, n, b as integer 'ne sert que pour les cercles et les arcs
+		  Dim loc, i, n, b As Integer 'ne sert que pour les cercles et les arcs
 		  dim col as color
 		  b = s.border
 		  
@@ -90,7 +90,7 @@ Inherits FigureShape
 		  dim i as integer
 		  
 		  if not (currentcontent.currentoperation isa retourner and dret <>nil) then
-		    'si dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
+		    'si  <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
 		    update(skullof)
 		  end if
 		  
@@ -205,7 +205,7 @@ Inherits FigureShape
 		réellement dessinés.
 		Lors de chaque exécution d'une routine "paint", les skulls doivent être mis à jour du point de vue des coordonnées de chacun des sommets,
 		(ou autres points significatifs), des couleurs et de l'épaisseur de chaque côté.  Les informations nécessaires sont extraites des objets de haut niveau correspondants.
-		Tous les côtés d'une forme ont même épaisseur mais pas nécessairement même épaisseur.
+		Tous les côtés d'une forme ont même épaisseur mais pas nécessairement même couleur.
 		
 		Il y a deux de classes de skulls. Toutes sont des sous-classes de la classe Object2D du langage RealBasic.
 		
@@ -214,7 +214,7 @@ Inherits FigureShape
 		Object2D --- FigureShape --- NSkull ---- ArcSkull  ------- Utilisé pour les classes ---- Arc, FreeCircle, StdCircle
 		                                                                ---- CubeSkull ----------------------------------  Cube
 		                                                                ---- Lskull     ------------------------------------- Bande,  DSect, Lacet, Polreg, Polygon (et sous-classes,
-		                                                                                                                                                     Polyqcq, Standardpölygon, etc, sauf Cube)                                                                                                                                                  
+		                                                                                                                                                     Polyqcq, Standardpolygon, etc, sauf Cube)                                                                                                                                                  
 		                                                                ---- SecteurSkull --------------------------------  Secteur
 		                                                                ---- SegSkull ------------------------------------  Droite
 		

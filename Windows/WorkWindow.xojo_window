@@ -37,6 +37,7 @@ Begin Window WorkWindow
       drapzone        =   False
       Enabled         =   True
       Height          =   595
+      HelpMess        =   False
       HelpTag         =   ""
       icot            =   0
       IdContent       =   0
@@ -55,6 +56,7 @@ Begin Window WorkWindow
       NeedsRefresh    =   False
       nobj            =   0
       OffscreenPicture=   0
+      OKMess          =   False
       scaling         =   0.0
       Scope           =   0
       TabIndex        =   0
@@ -669,6 +671,15 @@ Begin Window WorkWindow
          Width           =   120
       End
    End
+   Begin DesktopColorPicker ColorPicker1
+      Enabled         =   True
+      HasAlpha        =   True
+      Index           =   -2147483648
+      IsVisible       =   False
+      LockedInPosition=   False
+      Scope           =   0
+      TabPanelIndex   =   0
+   End
 End
 #tag EndWindow
 
@@ -713,7 +724,7 @@ End
 
 	#tag Event
 		Sub EnableMenuItems()
-		  if CurrentContent <> nil and ( not CurrentContent.currentoperation isa shapeconstruction) then
+		  If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
 		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
 		    setcross
@@ -766,13 +777,13 @@ End
 		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		    #if TargetWindows  then
-		      MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
-		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
-		    #else
-		      MenuBar.Child("FileMenu").Child("ViewEps").visible= true
-		      MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= true
-		    #Endif
+		    '#if TargetWindows  then
+		    'MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    '#else
+		    'MenuBar.Child("FileMenu").Child("ViewEps").visible= true
+		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= true
+		    '#Endif
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		    
 		    if MenuBar.Child("PrefsMenu") <> nil then
@@ -801,7 +812,7 @@ End
 
 	#tag Event
 		Function KeyDown(Key As String) As Boolean
-		  dim u(-1), s as integer
+		  Dim u(-1), s As Integer
 		  dim disp, nom as string
 		  dim sh as shape
 		  
@@ -980,13 +991,13 @@ End
 
 	#tag MenuHandler
 		Function DefinirDeplacement() As Boolean Handles DefinirDeplacement.Action
-			if mousedispo then
+			If mousedispo Then
 			Formswindow.close
 			CurrentContent.CurrentOperation = new TransfoConstruction(10)
 			refreshtitle
 			end if
 			return true
-			Return True
+			
 			
 		End Function
 	#tag EndMenuHandler
@@ -1910,8 +1921,8 @@ End
 	#tag MenuHandler
 		Function ToolsColorBorder() As Boolean Handles ToolsColorBorder.Action
 			Formswindow.close
-			colorChange(true)
 			refreshtitle
+			ConfigcolorChange(True)
 			Return True
 		End Function
 	#tag EndMenuHandler
@@ -1919,10 +1930,12 @@ End
 	#tag MenuHandler
 		Function ToolsColorFill() As Boolean Handles ToolsColorFill.Action
 			Formswindow.close
-			currentcontent.currentoperation = nil
-			ColorChange(False)
 			refreshtitle
+			configcolorChange(False)
+			
 			Return True
+			
+			
 		End Function
 	#tag EndMenuHandler
 
@@ -2150,7 +2163,8 @@ End
 
 	#tag MenuHandler
 		Function Vieweps() As Boolean Handles Vieweps.Action
-			dim sh as new shell
+			Dim sh As New shell
+			sh.ExecuteMode = Shell.ExecuteModes.Asynchronous
 			dim f as folderitem
 			dim s, S1 as string
 			
@@ -2159,7 +2173,7 @@ End
 			#if targetWindows then
 			sh.execute(f.shellpath)
 			#elseif targetMacOS then
-			sh.execute (f.name,  f.shellpath)
+			sh.execute ("gs",  f.shellpath)
 			#elseif targetlinux then
 			#Endif
 			end if
@@ -2207,7 +2221,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  If dret = Nil Then
+		  If dret  = Nil Then
 		    if currentcontent.currentoperation <> nil then
 		      currentcontent.currentoperation.Annuler
 		      if CurrentContent.CurrentOp = 0 then
@@ -2288,20 +2302,27 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub colorchange(t as boolean)
-		  Formswindow.close
-		  var col as Color
-		  
-		  if Color.SelectedFromDialog(col,"Choisir une couleur") Then
-		    CurrentContent.CurrentOperation = New ColorChange(t, col)
-		  End If
+		Sub config()
+		  ConfigWindow.showmodal
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub config()
-		  ConfigWindow.showmodal
+		Sub configcolorchange(t as boolean)
+		  Formswindow.close
+		  CurrentContent.CurrentOperation = Nil
+		  refreshtitle
+		  var col as Color
+		  
+		  If Color.SelectedFromDialog(col,"Choisir une couleur") Then
+		    If t  Then
+		      config.bordercolor = New couleur(col)
+		    Else
+		      config.FillColor = New Couleur(col)
+		      config.fill = 100
+		    End If
+		  End If
 		  
 		End Sub
 	#tag EndMethod
@@ -2565,6 +2586,8 @@ End
 		  AcceptFileDrop(FileAGTypes.SAVE)
 		  AcceptFileDrop(FileAGTypes.HIST)
 		  
+		  'Les couleurs sont au départ dans Config
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2658,7 +2681,7 @@ End
 
 	#tag Method, Flags = &h0
 		Function mousedispo() As Boolean
-		  return dret = nil and (CurrentContent.currentoperation = nil or CurrentContent.currentoperation.finished = true)
+		  return  dret = nil and (CurrentContent.currentoperation = nil or CurrentContent.currentoperation.finished = true)
 		End Function
 	#tag EndMethod
 
@@ -3459,6 +3482,13 @@ End
 		  if currentcontent.currentoperation <> nil then
 		    currentcontent.currentoperation.canceling = false
 		  end if
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ColorPicker1
+	#tag Event
+		Sub ColorSelected(selectedColor As Color)
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

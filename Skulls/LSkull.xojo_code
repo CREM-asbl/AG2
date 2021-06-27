@@ -154,7 +154,7 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub fixecouleurs(s as shape)
-		  dim i, j, n, b, f as integer
+		  Dim i, j, n, b, f As Integer
 		  dim col as color
 		  dim sideinsupport as boolean
 		  
@@ -185,7 +185,7 @@ Inherits NSkull
 		    col = bleu
 		    b = 100
 		  end if 
-		  ''
+		  
 		  'if ubound(s.tsfi) > -1 then
 		  'sideissupport = true
 		  'end if
@@ -405,15 +405,15 @@ Inherits NSkull
 		    updateSecteur(secteur(s))
 		  else
 		    for i = 0 to s.npts-1
-		      if dret = nil then
+		      if  dret = nil then
 		        ComputeExtreCtrl(i, s.coord)
 		      end if
 		      updateside(i, s.coord, p)
 		    next
 		  end if 
 		  
-		  'fixecouleurs(s)
-		  'fixeepaisseurs(s)
+		  fixecouleurs(s)
+		  fixeepaisseurs(s)
 		  
 		  
 		  
@@ -486,7 +486,7 @@ Inherits NSkull
 		  dim p as BasicPoint
 		  
 		  p =s.getgravitycenter
-		  if dret = nil then
+		  if dret  = nil then
 		    ComputeExtreCtrl(1, s.skullcoord)
 		  end if
 		  for i = 0 to 2
@@ -597,7 +597,7 @@ Inherits NSkull
 		  elseif s.highlighted and currentcontent.currentoperation <> nil and not currentcontent.currentoperation.colsep then
 		    updatecurvecolor(s,i, col,b)
 		  elseif s.highlighted then
-		    if s.side = -1  or s.side = i then  'cas des segments sélectionnés par une opération
+		    If s.side = -1 Then 'La forme est entièrement highlighted
 		      updatecurvecolor(s,i, col,b)
 		    else
 		      updatecurvecolor(s,i,s.colcotes(i).col,b)
@@ -607,7 +607,7 @@ Inherits NSkull
 		  end if
 		  
 		  
-		  '
+		  
 		  
 		End Sub
 	#tag EndMethod
