@@ -628,6 +628,8 @@ Inherits Canvas
 		        Lacet(s).nsk.paint(BackgroundPicture.graphics,Config.HighlightColor)
 		      End If
 		      refreshbackground
+		    Elseif s IsA Bipoint Then
+		      icot = -1
 		    else
 		      icot = -2
 		    end if

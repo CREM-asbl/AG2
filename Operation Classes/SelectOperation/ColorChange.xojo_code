@@ -70,7 +70,7 @@ Inherits SelectOperation
 		  
 		  
 		  
-		  If bord And icotcol <> -1 Then
+		  If bord And ( icotcol <> -1) Then
 		    currentshape.Fixecouleurtrait(icotcol, newcolor)
 		  Else
 		    if Bord then
@@ -231,16 +231,26 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub SetOldColors()
 		  Dim i, j, n, nmax As Integer
-		  dim s as shape
+		  Dim s As shape
+		  Dim sn As Integer
 		  
 		  
 		  
 		  s = tempshape.item(0)
+		  If s IsA BiPoint Then
+		    sn = 0
+		  Else
+		    sn =  s.npts-1
+		  End If
 		  If Bord Then
-		    Redim oldcolors(s.npts-1)
-		    For i = 0 To s.npts-1
-		      OldColors(i) = s.colcotes(i)
-		    Next
+		    Redim oldcolors(sn)
+		    If s IsA BiPoint Then
+		      OldColors(0) = s.GetBorderColor
+		    Else
+		      For i = 0 To sn
+		        OldColors(i) = s.colcotes(i)
+		      Next
+		    End If
 		  Else
 		    Redim oldcolors(0)
 		    OldColors (0) = s.GetFillColor
