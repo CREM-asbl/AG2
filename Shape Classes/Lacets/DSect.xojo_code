@@ -132,7 +132,7 @@ Inherits Lacet
 		    computeori
 		    coord.CreateExtreAndCtrlPoints(ori)
 		    computeradius
-		    startangle = coord.startangle         'GetAngle(Points(0).bpt, Points(1).bpt)
+		    startangle = coord.startangle        
 		  case 2
 		    constructshape
 		    updatecoord

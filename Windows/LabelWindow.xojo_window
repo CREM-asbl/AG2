@@ -710,8 +710,10 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Close()
-		  sizelabel = val(size.text)
+		  sizelabel = Val(size.Text)
+		  refresh
 		  WorkWindow.setfocus
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -719,6 +721,8 @@ End
 	#tag Event
 		Sub Open()
 		  Title = Dico.value("Nommer")
+		  
+		  
 		  
 		  
 		End Sub
@@ -859,7 +863,8 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Open()
-		  me.caption = Dico.value("Italic")
+		  Me.caption = Dico.value("Italic")
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1023,7 +1028,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Open()
-		  'me.Caption = Dico.value("Bold")
+		  Me.Caption = Dico.value("Bold")
+		  
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

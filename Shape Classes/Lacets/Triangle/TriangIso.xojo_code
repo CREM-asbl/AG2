@@ -50,29 +50,12 @@ Inherits Triangle
 
 	#tag Method, Flags = &h0
 		Function Modifier2(n1 as integer, n2 as integer) As Matrix
-		  dim ep0, ep1, ep2, np0, np1,np2 as BasicPoint
-		  dim n0, k as integer
-		  dim BiB as BiBPoint
-		  dim p as point
-		  dim u, v , bp as BasicPoint
-		  dim S as shape
+		  Dim ep0, ep1, ep2, np0, np1,np2 As BasicPoint
+		  
 		  
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
-		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
-		  v = points(1).bpt - points(0).bpt
-		  v = v.vecnorperp
-		  u = (points(0).bpt+points(1).bpt)/2
-		  BiB = new BiBPoint(u,u+v)
 		  
-		  if n0 = 2 and points(2).forme = 1 then
-		    S = points(2).pointsur.item(0)
-		    np2 = BiB.ComputeFirstIntersect(0, S, Points(2))
-		  else
-		    np2 = np2.projection(BiB)
-		    points(2).moveto np2
-		    points(2).modified = true
-		  end if
-		  return new affinitymatrix(ep0,ep1,ep2,np0,np1,np2)
+		  Return New Similaritymatrix(ep1,ep2,np1,np2)
 		  
 		  
 		  

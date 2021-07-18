@@ -600,9 +600,9 @@ End
 		  PrefsAjust.enable
 		  PrefsBiface.enable
 		  OperaIdentify.Enable
-		  ToolsColorBorder.Enable
-		  ToolsColorFill.Enable
-		  ToolsColorStdFam.Enable
+		  PrefsColorBorder.Enable
+		  PrefsColorFill.Enable
+		  PrefsColorStdFam.Enable
 		  ToolsColorTransparent.Enable
 		  ToolsThickness.enable
 		  ToolsThick1.enable
@@ -1009,6 +1009,24 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function PrefsColorBorder() As Boolean Handles PrefsColorBorder.Action
+			PrefsColorBorder.checked = not PrefsColorBorder.checked
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function PrefsColorFill() As Boolean Handles PrefsColorFill.Action
+			PrefsColorFill.checked = not PrefsColorFill.checked
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function PrefsColorStdFam() As Boolean Handles PrefsColorStdFam.Action
+			PrefsColorStdFam.checked = not PrefsColorStdFam.checked
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function PrefsFleches() As Boolean Handles PrefsFleches.Action
 			PrefsFleches.checked = not PrefsFleches.checked
 			
@@ -1093,24 +1111,6 @@ End
 	#tag MenuHandler
 		Function ToolsAVPlan() As Boolean Handles ToolsAVPlan.Action
 			ToolsAVPlan.checked = not ToolsAVPlan.checked
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function ToolsColorBorder() As Boolean Handles ToolsColorBorder.Action
-			ToolsColorBorder.checked = not ToolsColorBorder.checked
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function ToolsColorFill() As Boolean Handles ToolsColorFill.Action
-			ToolsColorFill.checked = not ToolsColorFill.checked
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function ToolsColorStdFam() As Boolean Handles ToolsColorStdFam.Action
-			ToolsColorStdFam.checked = not ToolsColorStdFam.checked
 		End Function
 	#tag EndMenuHandler
 

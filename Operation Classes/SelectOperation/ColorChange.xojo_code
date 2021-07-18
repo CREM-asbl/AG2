@@ -2,30 +2,7 @@
 Protected Class ColorChange
 Inherits SelectOperation
 	#tag Method, Flags = &h0
-		Function ComputeNSideMax() As integer
-		  Dim i, n As Integer
-		  'dim s as shape
-		  
-		  'n = 0
-		  
-		  if icotcol <> -1 then   'dans ce cas l'opération ne porte que sur un seul objet qui est un lacet et c'est la bordercolor qui est modifiée
-		    's = tempshape.item(0)
-		    n = 0
-		  else
-		    for i = 0 to tempshape.count -1
-		      if tempshape.element(i) isa Lacet then
-		        n = max(n, tempshape.item(i).npts-1)
-		      else 
-		        n = max(n,1)
-		      end if
-		    next
-		  end if
-		  return n
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(B as Boolean, col as Color)
+		Sub Constructor(B as Boolean, col as Color, side as integer)
 		  Super.constructor
 		  OpId = 12
 		  Bord = B
@@ -35,43 +12,19 @@ Inherits SelectOperation
 		    colsep = False
 		  End If
 		  newcolor = New couleur(col)
-		  'currentcontent.currentoperation = Self
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(B as boolean, col as Color, side as integer)
-		  Super.constructor
 		  currentcontent.currentoperation = Self
-		  OpId = 12
-		  Bord = B
-		  icotcol = side
-		  if B then
-		    colsep = True
-		  else
-		    colsep = False
-		  End If
-		  newcolor = New couleur(col)
-		  
-		  
-		  
-		  
+		  self.side = side
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  
-		  Dim i As Integer
 		  
-		  currentshape = currenthighlightedshape
+		  
 		  setoldcolors
-		  
-		  
-		  
-		  If bord And ( icotcol <> -1) Then
-		    currentshape.Fixecouleurtrait(icotcol, newcolor)
+		  If bord And ( side <> -1) Then
+		    currentshape.Fixecouleurtrait(side, newcolor)
 		  Else
 		    if Bord then
 		      currentshape.FixeCouleurTrait (newcolor, Config.Border)
@@ -84,8 +37,6 @@ Inherits SelectOperation
 		      currentshape.FixeCouleurFond (Newcolor, newfill)
 		      currentshape.tsp = False
 		    End If
-		    can.refreshBackGround
-		    
 		  End If
 		  
 		  
@@ -97,7 +48,7 @@ Inherits SelectOperation
 		  Super.EndOperation
 		  currentcontent.remettreTsfAvantPlan
 		  Redim Oldcolors(-1)
-		  'can.refreshbackground
+		  can.refreshbackground
 		End Sub
 	#tag EndMethod
 
@@ -112,7 +63,7 @@ Inherits SelectOperation
 		  dim s as shape
 		  dim i as integer
 		  
-		  icotcol = -1
+		  
 		  s = super.getshape(p)
 		  
 		  if visible.count = 0 then
@@ -129,7 +80,7 @@ Inherits SelectOperation
 		        s.side = -1
 		      end if
 		    next
-		    icotcol = Visible.item(iobj).side
+		    
 		  else
 		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
@@ -165,17 +116,10 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
-		  'Super.paint(g)
+		  Super.paint(g)
 		  
 		  If CurrentContent.currentoperation = Self Then
 		    display = choose + "d'abord la nouvelle couleur"
-		    
-		    
-		    
-		    
-		    'display = choose + aform + alier + EndOfLine _ 
-		    '+"Après avoir choisi la dernière forme à lier, cliquez du bouton droit " + EndOfLine _
-		    '+ "en dehors de toute forme"
 		  End If
 		  
 		  
@@ -184,43 +128,41 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  Dim i, n As Integer
-		  dim s as shape
-		  dim bd as string
-		  dim EL, EL1, EL2 as XMLElement
-		  dim r, g, b as double
+		  Dim s As shape
+		  Dim bd As String
+		  Dim EL, EL1 As XMLElement
+		  Dim oldcolor As couleur
 		  
 		  
-		  Temp = XMLElement(Temp.Child(0))
-		  bd =  Temp.GetAttribute("Bord")
+		  EL = XMLElement(Temp.Child(0)) 
+		  bd =  EL.GetAttribute("Bord")
 		  
-		  if bd = "true" then
-		    Bord = true
-		  else
-		    Bord = false
+		  If bd = "true" Then
+		    Bord = True
+		  Else
+		    Bord = False
 		  End If
 		  
-		  SelectIdForms(Temp)
-		  n = tempshape.count-1
-		  EL1 = XMLElement(Temp.child(1))
-		  newcolor = new couleur(EL1)
-		  newfill = Val(Temp.GetAttribute("Newfill"))
-		  icotcol = Val(Temp.getattribute("Icot"))
+		  side = Val(EL.GetAttribute("side"))
+		  SelectIdForms(EL)  'une seule forme à sélectionner
+		  s = tempshape.item(0)
 		  
-		  for i = 0 to n
-		    s = tempshape.item(i)
-		    if Bord then
-		      If s IsA polygon And icotcol <> -1 Then
-		        polygon(s).colcotes(icotcol) = newcolor
-		      else
-		        s.FixeCouleurTrait Newcolor, Config.Border
-		      end if
-		    else
-		      s.FixeCouleurFond newcolor,newfill
-		      s.tsp = false
-		    end if
-		  next
-		  objects.unselectall
+		  EL1 = XMLElement(EL.child(1))    'lecture de newcolor
+		  newcolor = New Couleur(EL1)
+		  If side <> -1 Then
+		    s.colcotes(side) = newcolor
+		  Else
+		    If Bord Then
+		      s.FixeCouleurTrait (newcolor, Config.Border)
+		    Else
+		      s.FixeCouleurFond (newcolor, s.fill)
+		      s.tsp = False
+		    End If
+		  End If
+		  can.refreshBackGround
+		  
+		  
+		  
 		  
 		  
 		  
@@ -254,8 +196,6 @@ Inherits SelectOperation
 		  Else
 		    Redim oldcolors(0)
 		    OldColors (0) = s.GetFillColor
-		    Redim OldFills(0)
-		    OldFills(0) = s.Fill
 		  end if
 		  
 		  
@@ -277,7 +217,7 @@ Inherits SelectOperation
 		    Myself.SetAttribute("Bord", "false")
 		  end if
 		  Myself.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
-		  Myself.setattribute("Icot", str(icotcol))
+		  Myself.setattribute("Icot", str(side))
 		  return Myself
 		  
 		End Function
@@ -287,22 +227,26 @@ Inherits SelectOperation
 		Function ToXml(Doc as XMLDocument) As XMLElement
 		  Dim Temp, EL, EL1 As XMLElement
 		  dim i,j,n as integer
-		  dim s as shape
+		  Dim s As shape
 		  
+		  'Comme on travaille uniquement dans le cadre du menu contextuel, il n'y a qu'au plus un élément dans tempshape
 		  
-		  
-		  n = tempshape.count
-		  if n=0 then
+		  If tempshape.count = 0 Then 
 		    return nil
 		  end if
 		  
+		  s = tempshape.item(0)
 		  Temp = Doc.CreateElement(GetName)
+		  
 		  if Bord then
 		    Temp.SetAttribute("Bord", "true")
+		    Temp.setattribute("side", Str(s.side))
 		  else
 		    Temp.SetAttribute("Bord", "false")
+		    Temp.setattribute("side", Str(-1))
+		    Temp.SetAttribute("OldFill", Str(s.Fill))
 		  end if
-		  Temp.setattribute("Icot", Str(icotcol))
+		  
 		  If Not Bord Then
 		    Temp.SetAttribute("Newfill",Str(newfill))
 		  End If
@@ -310,32 +254,22 @@ Inherits SelectOperation
 		  Temp.appendchild tempshape.XMLPutIdInContainer(Doc)
 		  Temp.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
 		  
-		  EL = Doc.CreateElement("OldColors")
-		  if icotcol <> -1 then
-		    EL.AppendChild Oldcolors(0).XMLPutInContainer(Doc, "OldColor")
+		  If s.side = -1  Then
+		    Temp.AppendChild Oldcolors(0).XMLPutInContainer(Doc, "OldColor")
 		  Else
-		    s = tempshape.item(0)
-		    EL1 = Doc.CreateElement("Objet")  'EL1 = EL.Child
-		    if Bord then
-		      if s isa Lacet and not s isa Secteur then
-		        for j = 0 to s.npts-1
-		          EL1.appendchild Oldcolors(j).XMLPutInContainer(Doc, "OldColor")
-		        next
-		      elseif s isa secteur then 
-		        for j = 0 to 1 
-		          EL1.appendchild Oldcolors(j).XMLPutInContainer(Doc, "OldColor")
-		        next
-		      else 
-		        EL1.appendchild Oldcolors(0).XMLPutInContainer(Doc, "OldColor")
-		      end if
-		    else
-		      EL1.appendchild Oldcolors(0).XMLPutInContainer(Doc, "OldColor")
-		      EL1.SetAttribute("Fill", str(OldFills))
-		    end if
-		    EL.appendchild EL1
-		    
-		  end if
-		  Temp.appendchild EL
+		    EL= Doc.CreateElement("OldColors")  
+		    If s IsA Lacet And Not s IsA Secteur Then
+		      for j = 0 to s.npts-1
+		        EL.appendchild Oldcolors(j).XMLPutInContainer(Doc, "OldColor")
+		      next
+		    elseif s isa secteur then 
+		      for j = 0 to 1 
+		        EL.appendchild Oldcolors(j).XMLPutInContainer(Doc, "OldColor")
+		      next
+		    End If
+		    Temp.appendchild EL
+		  End If
+		  
 		  Return Temp
 		  
 		  
@@ -348,59 +282,38 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  Dim i, j, n, f As Integer
-		  dim s as shape
+		  
+		  Dim s As shape
 		  dim bd as string
-		  dim EL, EL1, EL2, EL3 as XMLElement
-		  dim r, g, b as double
-		  dim c as couleur
+		  Dim EL, EL1 As XMLElement
+		  dim oldcolor as couleur
 		  
 		  EL = XMLElement(Temp.Child(0)) 
 		  bd =  EL.GetAttribute("Bord")
 		  
 		  if bd = "true" then
-		    Bord = true
+		    Bord = True
 		  else
 		    Bord = false
 		  end if
 		  
-		  icotcol = Val(EL.GetAttribute("Icot"))
-		  SelectIdForms(EL)
-		  n = tempshape.count
+		  side = Val(EL.GetAttribute("side"))
+		  SelectIdForms(EL)  'une seule forme à sélectionner
+		  s = tempshape.item(0)
 		  
-		  EL1 = XMLElement(EL.child(2))
-		  If icotcol <> -1 Then 
-		    s = tempshape.item(0)
-		    EL2 = XMLElement(EL1.child(0))
-		    s.colcotes(icotcol) = new Couleur(EL2)
-		  else
-		    for i = 0 to n-1
-		      s = tempshape.item(i)
-		      EL2 = XMLElement(EL1.child(i))
-		      if Bord then
-		        if s isa Lacet and not s isa secteur then
-		          for j = 0 to s.npts-1
-		            EL3 = XMLElement(EL2.child(j))
-		            lacet(s).colcotes(j) =new Couleur(EL3)
-		          next
-		        elseif s isa secteur then
-		          for j = 0 to 1
-		            EL3 = XMLElement(EL2.child(j))
-		            lacet(s).colcotes(j) =new Couleur(EL3)
-		          next
-		        else
-		          s.FixeCouleurTrait new couleur(EL2), s.border
-		        end if
-		      else
-		        EL3 = XMLElement(EL2.child(0))
-		        c = new Couleur(EL3)
-		        f = Val(EL2.GetAttribute("Fill"))
-		        s.FixeCouleurFond c, f
-		        s.tsp = false
-		      end if
-		    next
-		  end if
-		  objects.unselectall
+		  EL1 = XMLElement(EL.child(2))    'lecture de oldcolor
+		  oldcolor = New Couleur(EL1)
+		  If  side <> -1 Then
+		    s.colcotes(side) = oldcolor
+		  Else
+		    If Bord Then
+		      s.FixeCouleurTrait (oldcolor, Config.Border)
+		    Else
+		      s.FixeCouleurFond (oldcolor, s.fill)
+		      s.tsp = False
+		    End If
+		  End If
+		  can.refreshBackGround
 		  
 		  
 		End Sub
@@ -433,10 +346,6 @@ Inherits SelectOperation
 		Bord As boolean
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		icotcol As Integer
-	#tag EndProperty
-
 	#tag Property, Flags = &h1
 		Protected NewColor As Couleur
 	#tag EndProperty
@@ -450,7 +359,11 @@ Inherits SelectOperation
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		OldFills(-1) As Integer
+		OldFill As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
 	#tag EndProperty
 
 
@@ -504,7 +417,7 @@ Inherits SelectOperation
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="icotcol"
+			Name="side"
 			Visible=false
 			Group="Behavior"
 			InitialValue="0"
@@ -612,6 +525,14 @@ Inherits SelectOperation
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OldFill"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

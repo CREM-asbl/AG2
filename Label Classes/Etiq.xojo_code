@@ -468,8 +468,8 @@ Inherits Label
 		Sub ResetParam(g as graphics)
 		  g.ForeColor = OldCol
 		  g.TextSize=Oldsize
-		  g.bold =false
-		  g.Italic =false
+		  g.bold =False
+		  g.Italic =False
 		  g.TextFont = "System"
 		End Sub
 	#tag EndMethod

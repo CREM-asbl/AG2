@@ -3,12 +3,11 @@ Protected Class CustomCanvas1
 Inherits Canvas
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
-		  Dim p As BasicPoint
+		  dim p as BasicPoint
 		  dim s as shape
 		  Dim m As MenuItem
 		  Dim curop As operation
 		  
-		  'Formswindow.close
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
 		  CurrentContent.TheTransfos.ShowAll                     //On montre les autres
 		  currentcontent.thetransfos.unhighlightall
@@ -35,16 +34,22 @@ Inherits Canvas
 		    return false
 		  end if
 		  
-		  p = MouseUser
+		  p = mouseuser
 		  If  sctxt IsA Lacet  Then
-		    icot = sctxt.pointonside(p)
+		    side = sctxt.side
+		  Elseif sctxt IsA circle And (Not sctxt IsA arc) And circle(sctxt).inside(p) Then
+		    side = -1
+		  Elseif sctxt IsA arc And arc(sctxt).inside(p) Then
+		    side = 0
+		  Elseif sctxt IsA point Then
+		    side=-1
 		  End If
-		  sctxt.side = icot
+		  
 		  workwindow.refreshtitle
 		  Refreshbackground
 		  
 		  base.Name= sctxt.GetType
-		  If sctxt.side <> -1 Then
+		  If side <> -1   Then
 		    tit = "Côté n°"+Str(sctxt.side) + " du " + sctxt.identifiant 
 		  Else
 		    tit = sctxt.identifiant
@@ -55,13 +60,13 @@ Inherits Canvas
 		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
-		  if icot = -1 then
+		  If side = -1 Then
 		    if sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc) then
 		      base.append(New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
 		    end if
 		  end if
 		  
-		  if icot = -1 and  (not sctxt isa point) and (not sctxt isa droite) and (not sctxt isa arc) then
+		  If side = -1 And  (Not sctxt IsA point) And (Not sctxt IsA droite) And (Not sctxt IsA arc) Then
 		    m = new MenuItem(Dico.value("ToolsColorTransparent"))
 		    base.append m
 		    m.append(New MenuItem(Dico.value("ToolsOpq")))
@@ -132,7 +137,6 @@ Inherits Canvas
 		    base.append (New MenuItem("Rectifier l'horizontale"))
 		  end if
 		  
-		  
 		  Return True//display the contextual menu
 		  
 		  
@@ -145,9 +149,10 @@ Inherits Canvas
 		  Dim colo As Color
 		  dim coul as couleur
 		  dim txt as TextWindow
-		  dim dr as droite
-		  Dim ep As Double
-		  Var Mess As Boolean
+		  Dim dr As droite
+		  Dim oldside As Integer
+		  
+		  
 		  Select Case hitItem.Text
 		  case tit
 		    txt = new TextWindow
@@ -165,11 +170,12 @@ Inherits Canvas
 		    EndOperMenuContext
 		  Case Dico.Value("ToolsColorBorder")
 		    colo = sctxt.bordercolor.col
-		    If HelpMess Then
+		    oldside = side
+		    If HelpMess And TargetMacOS Then
 		      OKMess=Help("Choisis la nouvelle couleur, ensuite ferme la palette de couleurs en cliquant sur le point rouge, en haut à gauche") 
 		    End If
-		    If OKMess And Color.SelectedFromDialog(colo,"choose") Then
-		      currentcontent.currentoperation  =  New ColorChange(True, colo, icot)
+		    If  OKMess and Color.SelectedFromDialog(colo,"choose")  Then
+		      currentcontent.currentoperation  =  New ColorChange(True, colo, oldside) 
 		    End If
 		    currentoper = ColorChange(currentcontent.currentoperation)
 		    currentoper.currentshape = sctxt
@@ -181,17 +187,18 @@ Inherits Canvas
 		      coul = negcolor
 		    end if
 		    If SelectColor(colo,Dico.Value("choose")+Dico.Value("acolor")) Then
-		      currentcontent.currentoperation = New ColorChange(False, colo)
+		      currentcontent.currentoperation = New ColorChange(False, colo, side)
 		      currentoper = colorchange(currentcontent.currentoperation)
 		    end if
 		    EndOperMenuContext
 		  Case Dico.Value("ToolsColorFill")
 		    colo = sctxt.FillColor.col
+		    side =-1
 		    If HelpMess  Then
 		      OKMess=Help("Choisis la nouvelle couleur, ensuite ferme la palette en cliquant sur le point rouge, en haut à gauche") 
 		    End If
 		    If OKMess And Color.SelectedFromDialog(colo,"choose") Then
-		      currentcontent.currentoperation =  New ColorChange(False, colo)
+		      currentcontent.currentoperation =  New ColorChange(False, colo,side)
 		    End If
 		    currentoper = ColorChange(currentcontent.currentoperation)
 		    currentoper.currentshape = sctxt
@@ -245,7 +252,7 @@ Inherits Canvas
 		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    'EndOperMenuContext          ' Instruction inutile et même nuisible dans ce cas
 		  case Dico.Value("Animer")
-		    currentcontent.currentoperation = new Modifier
+		    currentcontent.currentoperation = New Modifier
 		    currentoper = Modifier(currentcontent.currentoperation)
 		    ClearOffscreen
 		    Modifier(currentoper).Animer(point(sctxt))
@@ -257,7 +264,7 @@ Inherits Canvas
 		  WorkWindow.refreshtitle
 		  RefreshBackground
 		  ctxt = false
-		  sctxt = nil
+		  sctxt = Nil
 		  if currentcontent.currentoperation <> nil and not (currentoper isa Conditionner) and not (currentoper isa modifier) then
 		    currentcontent.currentoperation = nil
 		  End If
@@ -303,7 +310,7 @@ Inherits Canvas
 		  Formswindow.close
 		  If Not IsContextualClick Then
 		    If dret = Nil And Curop<>Nil Then
-		      'p = New BasicPoint(x,y)
+		      p = New BasicPoint(x,y)
 		      Curop.MouseDown(pp)
 		    End If
 		    Return True
@@ -354,22 +361,17 @@ Inherits Canvas
 		    Return
 		  End If
 		  
-		  
-		  'oldp = p
-		  'if oldp <> nil and p.distance(oldp) >magneticdist  then
 		  oldp = p
 		  If currenthighlightedshape<> Nil Then
 		    currenthighlightedshape.unhighlight
 		  End If
 		  currenthighlightedshape = GetShape(p)
-		  If currenthighlightedshape <> Nil Then
+		  If currenthighlightedshape <> Nil  Then
 		    sctxt=currenthighlightedshape
-		    currenthighlightedshape.highlight
-		    currenthighlightedshape.side = icot
-		    refreshbackground
+		    sctxt.highlight
 		  End If
 		  
-		  
+		  refreshbackground
 		  
 		  if currenthighlightedshape <> nil and not currentcontent.macrocreation then
 		    AfficherChoixContext
@@ -426,7 +428,7 @@ Inherits Canvas
 		  OffscreenPicture.Transparent = 1
 		  HelpMess = True
 		  OKMess = True
-		  icot = -1
+		  
 		End Sub
 	#tag EndEvent
 
@@ -444,7 +446,7 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub AfficherChoixContext()
-		  If currenthighlightedshape <> Nil Then
+		  If sctxt <> Nil Then
 		    If sctxt.side =-1 Then
 		      info = sctxt.Identifiant 
 		    Else
@@ -619,25 +621,24 @@ Inherits Canvas
 		    nobj = vis.count
 		    s = vis.item(iobj)
 		    s.highlighted = False
+		    s.side = -2
 		    if s isa Lacet  or s isa Bande or s isa secteur then
-		      icot = s.pointonside(p)
-		      If icot <> -1 Then
-		        Lacet(s).nsk.paintside(BackgroundPicture.graphics,icot,2,Config.HighlightColor)
+		      s.side = s.pointonside(p)
+		      If s.side <> -1 Then
+		        Lacet(s).nsk.paintside(BackgroundPicture.graphics,s.side,2,Config.HighlightColor)
 		      Else
 		        s.highlighted = True
 		        Lacet(s).nsk.paint(BackgroundPicture.graphics,Config.HighlightColor)
 		      End If
 		      refreshbackground
-		    Elseif s IsA Bipoint Then
-		      icot = -1
-		    else
-		      icot = -2
-		    end if
+		    Elseif s IsA Bipoint  Or s IsA Circle  Or s IsA point Then
+		      s.side = -1
+		    End If
 		  else
 		    s = nil
 		  end if
 		  
-		  return s
+		  Return s
 		  
 		  
 		  
@@ -664,6 +665,7 @@ Inherits Canvas
 		    HelpMess = False
 		    Return True
 		  End Select
+		  
 		  
 		  
 		  
@@ -763,10 +765,11 @@ Inherits Canvas
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
 		    CurrentContent.curoper.paint(BackgroundPicture.graphics)
 		  Elseif currentcontent.curoper = Nil And currenthighlightedshape <> Nil Then
-		    If  icot = -1 Then
+		    side = currenthighlightedshape.side
+		    If side = -1 Then
 		      currenthighlightedshape.paintall(BackgroundPicture.graphics)
-		    Elseif  icot <> -1 Then
-		      currenthighlightedshape.PaintSide(BackgroundPicture.Graphics,icot,2,config.HighlightColor)
+		    Elseif  side <> -1 Then
+		      currenthighlightedshape.PaintSide(BackgroundPicture.Graphics,side,2,config.HighlightColor)
 		    end if
 		    if info <> "" then
 		      BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
@@ -928,6 +931,10 @@ Inherits Canvas
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		drapCH As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		drapzone As Boolean
 	#tag EndProperty
 
@@ -937,10 +944,6 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		HelpMess As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		icot As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1001,6 +1004,10 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		sctxt As shape
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		side As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1118,14 +1125,6 @@ Inherits Canvas
 			Visible=true
 			Group="Position"
 			InitialValue="100"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="icot"
-			Visible=false
-			Group="Behavior"
-			InitialValue="0"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
@@ -1351,6 +1350,22 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue=""
 			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="drapCH"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="side"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

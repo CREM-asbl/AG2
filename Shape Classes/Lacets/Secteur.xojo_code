@@ -214,29 +214,6 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function oldcomputeangle(q as Basicpoint) As double
-		  dim e, a as double
-		  
-		  q = q-points(0).bpt
-		  e = q.anglepolaire
-		  a = e - startangle
-		  
-		  if ori >0 then
-		    if a < 0 then
-		      a = a + 2*PI
-		    end if
-		  elseif ori <0 then
-		    if a >0 then
-		      a = a -2*PI
-		    end if
-		  end if
-		  
-		  return a
-		  'a a toujours meme signe que ori
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub oldcomputeori()
 		  ori = coord.orientation
 		End Sub

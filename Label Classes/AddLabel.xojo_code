@@ -3,11 +3,13 @@ Protected Class AddLabel
 Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  super.constructor
+		  Super.constructor
 		  colsep = true
 		  OpId = 33
 		  finished = true
 		  loc = -1
+		  
+		  
 		  
 		  
 		  

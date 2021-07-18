@@ -765,7 +765,7 @@ Inherits Shape
 		    return false
 		  end if
 		  BiB = new BiBpoint(Points(i).bpt,p)
-		  A = new Angle(Bib, coord.centres(i), ori)
+		  A = New Angle(Bib, coord.centres(i), ori)
 		  cx = p.distance(coord.centres(i))
 		  if cx <= coord.centres(i).distance(points(i).bpt)  and A.alpha <= GetArcAngle(i)  then
 		    return true

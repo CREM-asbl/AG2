@@ -296,7 +296,7 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics)
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  
 		  if fill > 0 then
@@ -306,7 +306,7 @@ Inherits NSkull
 		  
 		  if not self.skullof isa Secteur then
 		    for i = 0 to count-1
-		      g.drawobject item(i), x, y
+		      paintside(g,i)
 		    next
 		  else
 		    g.drawobject item(0),x,y
@@ -351,19 +351,19 @@ Inherits NSkull
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Paintside(g as graphics, i as integer, ep as double, coul as couleur)
-		  dim n, j as integer
+		Sub Paintside(g as graphics, i as integer)
+		  Dim n, j As Integer
 		  
 		  n = getside(i)
 		  
 		  if skullof.coord.curved(i) = 0 then
-		    item(n).borderwidth = ep*borderwidth
-		    item(n).bordercolor = coul.col
+		    'item(n).borderwidth = ep*borderwidth
+		    'item(n).bordercolor = coul.col
 		    g.drawobject item(n), ref.x, ref.y
 		  else
 		    for j = 0 to 2
-		      item(n+j).borderwidth = ep*borderwidth
-		      item(n+j).bordercolor = coul.col
+		      'item(n+j).borderwidth = ep*borderwidth
+		      'item(n+j).bordercolor = coul.col
 		      g.drawobject item(n+j), ref.x, ref.y
 		    next
 		  end if

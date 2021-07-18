@@ -27,9 +27,7 @@ Begin Window DivideWindow
    Width           =   122
    Begin PopupMenu PopupMenu1
       AutoDeactivate  =   True
-      BehaviorIndex   =   0
       Bold            =   False
-      ControlOrder    =   "0"
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
@@ -61,12 +59,10 @@ Begin Window DivideWindow
    End
    Begin PushButton PushButton1
       AutoDeactivate  =   False
-      BehaviorIndex   =   1
       Bold            =   False
       ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "OK"
-      ControlOrder    =   "1"
       Default         =   False
       Enabled         =   True
       Height          =   28

@@ -180,7 +180,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  ReinitAttraction
 		  Objects.ReAttractingAll
@@ -341,7 +341,7 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub ImmediateDoOperation()
-		  if tempshape.count > 0 then
+		  If tempshape.count > 0 Then
 		    can.Mousecursor = System.Cursors.Wait
 		    DoOperation
 		    endoperation
@@ -349,7 +349,7 @@ Inherits Operation
 		      currentcontent.currentoperation = nil
 		    end if
 		    WorkWindow.refreshtitle
-		  end if
+		  End If
 		End Sub
 	#tag EndMethod
 

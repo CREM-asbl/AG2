@@ -317,7 +317,7 @@ Protected Class Shape
 		    auto = 1
 		  elseif  (self isa parallelogram and not self isa rect and not self isa losange) or self isa bande or self isa secteur  then '((self isa polyqcq and npts = 3) and (not Hybrid)) or
 		    auto = 2
-		  elseif self isa triangiso or self isa triangrect or self isa rect or self isa losange or self isa arc or self isa DSect then
+		  elseif self  isa triangrect or self isa triangiso or self isa rect or self isa losange or self isa arc or self isa DSect then '
 		    auto = 3
 		  elseif self isa trap then
 		    auto = 5
@@ -1034,13 +1034,6 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetArcAngle() As double
-		  computearcangle
-		  return arcangle
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  dim Bib as BiBPoint
 		  
@@ -1533,7 +1526,7 @@ Protected Class Shape
 		      if points(i).getlab <> "" then
 		        m  = m + points(i).getlab
 		      else
-		        m = m + " "+ "*"
+		        m = m + "*"
 		      end if
 		    next
 		  end if
@@ -2541,7 +2534,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  
 		  if (self isa Bipoint and not self isa droite) or (not WorkWindow.drapshowall and hidden) or not noinvalidpoints then
@@ -2549,7 +2542,7 @@ Protected Class Shape
 		  end if
 		  
 		  if nsk <> nil then
-		    nsk.update(self)
+		    nsk.update(Self)
 		    nsk.fixecouleurs(self)
 		    nsk.fixeepaisseurs(self)
 		    nsk.paint(g)

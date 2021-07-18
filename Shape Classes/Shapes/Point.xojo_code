@@ -2822,7 +2822,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub updatefirstpoint(np as BasicPoint)
-		  dim delta as BasicPoint
+		  Dim delta As BasicPoint
 		  dim d as double
 		  dim sh as shape
 		  dim s as droite
@@ -2845,16 +2845,16 @@ Inherits Shape
 		  Moveto np  
 		  if  forme =1  then
 		    sh = pointsur.item(0)
-		    if not sh isa arc then
+		    If Not sh IsA arc Then
 		      puton sh
 		    else
 		      arc(sh).positionner(self)   //Voir remarque dans Figure.updatePtssur
 		    end if
 		  end if
 		  modified = true
-		  if ubound(parents)>-1 and parents(0).getsousfigure(fig).auto = 3 then
-		    return
-		  end if
+		  If ubound(parents)>-1 And parents(0).getsousfigure(fig).Auto = 3 Then
+		    Return
+		  End If
 		  updateshape
 		  
 		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; 

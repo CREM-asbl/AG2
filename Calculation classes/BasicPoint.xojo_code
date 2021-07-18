@@ -149,7 +149,7 @@ Protected Class BasicPoint
 		  'Calcul de l'indice de Cauchy (?)
 		  Dim protab(2) As basicpoint
 		  dim BiB as BiBPoint
-		  dim ang as angle
+		  Dim ang As angle
 		  dim i, orien, resucorrig as integer
 		  dim provi as nbpoint
 		  dim resu as double

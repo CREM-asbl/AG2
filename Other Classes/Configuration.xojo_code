@@ -155,7 +155,7 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Sub ChargerMenu(El As XMLElement)
-		  dim mmenubar as MenuItem
+		  Dim mmenubar As MenuItem
 		  
 		  'un moyen plus propre ?
 		  mmenubar = MenuMenus
@@ -171,9 +171,6 @@ Protected Class Configuration
 		  mmenubar.Child("EditMenu").Child("EditLink").checked = El.XQL("Link").length > 0
 		  mmenubar.Child("EditMenu").Child("EditUnlink").checked = El.XQL("Link").length > 0
 		  
-		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorBorder").checked = El.XQL("ColBorder").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorFill").checked = El.XQL("ColFill").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColor").Child("ToolsColorStdFam").checked = El.XQL("ColStdFam").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").checked = El.XQL("ColTsp").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").checked = El.XQL("ColTsp").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").checked = El.XQL("ColTsp").length > 0
@@ -221,6 +218,9 @@ Protected Class Configuration
 		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").checked = El.XQL("StdForms").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").checked = El.XQL("Traj").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").checked = El.XQL("DistanceMagnetisme").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorBorder").checked = El.XQL("ColBorder").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorFill").checked = El.XQL("ColFill").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorStdFam").checked = El.XQL("ColStdFam").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsThickness").checked = El.XQL("Thickness").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsPolyg").checked  = El.XQL("Pointer").length > 0
 		  mmenubar.Child("PrefsMenu").Child("PrefsBiface").checked =  El.XQL("Biface").length > 0

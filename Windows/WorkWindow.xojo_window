@@ -34,12 +34,12 @@ Begin Window WorkWindow
       Bkcol           =   &c00000000
       ctxt            =   False
       DoubleBuffer    =   True
+      drapCH          =   False
       drapzone        =   False
       Enabled         =   True
       Height          =   595
       HelpMess        =   False
       HelpTag         =   ""
-      icot            =   0
       IdContent       =   0
       Index           =   -2147483648
       info            =   ""
@@ -59,6 +59,7 @@ Begin Window WorkWindow
       OKMess          =   False
       scaling         =   0.0
       Scope           =   0
+      side            =   0
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -88,7 +89,7 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
+      TabStop         =   True
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -1765,6 +1766,40 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function PrefsColorBorder() As Boolean Handles PrefsColorBorder.Action
+			Formswindow.close
+			refreshtitle
+			ConfigcolorChange(True)
+			Return True
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function PrefsColorFill() As Boolean Handles PrefsColorFill.Action
+			Formswindow.close
+			refreshtitle
+			configcolorChange(False)
+			
+			Return True
+			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function PrefsColorStdFam() As Boolean Handles PrefsColorStdFam.Action
+			CurrentContent.currentoperation = Nil
+			Formswindow.close
+			refreshtitle
+			drapstdcolor = true
+			return true
+			
+			
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function PrefsFleches() As Boolean Handles PrefsFleches.Action
 			MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked = not MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
 			config.PolFleches = MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
@@ -1915,40 +1950,6 @@ End
 			refreshtitle
 			end if
 			return true
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function ToolsColorBorder() As Boolean Handles ToolsColorBorder.Action
-			Formswindow.close
-			refreshtitle
-			ConfigcolorChange(True)
-			Return True
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function ToolsColorFill() As Boolean Handles ToolsColorFill.Action
-			Formswindow.close
-			refreshtitle
-			configcolorChange(False)
-			
-			Return True
-			
-			
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function ToolsColorStdFam() As Boolean Handles ToolsColorStdFam.Action
-			CurrentContent.currentoperation = nil
-			Formswindow.close
-			refreshtitle
-			drapstdcolor = true
-			return true
-			
-			
-			
 		End Function
 	#tag EndMenuHandler
 
@@ -2313,7 +2314,9 @@ End
 		  Formswindow.close
 		  CurrentContent.CurrentOperation = Nil
 		  refreshtitle
-		  var col as Color
+		  Var col As Color
+		  
+		  
 		  
 		  If Color.SelectedFromDialog(col,"Choisir une couleur") Then
 		    If t  Then
@@ -3434,7 +3437,7 @@ End
 		      selshape = currentcontent.currentoperation.currentshape
 		    end if
 		    currentcontent.currentoperation.canceling = true
-		    return 
+		    Return 
 		  end if
 		  
 		  if currentcontent.currentop = 0  then

@@ -1368,7 +1368,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub ChoixSubfig(p as point, byref h0 As integer)
-		  dim h, i, n,m, m0, i0 as integer
+		  Dim h, i, n,m, m0, i0 As Integer
 		  dim sf as figure
 		  
 		  
@@ -1390,7 +1390,7 @@ Protected Class Figure
 		        while h < n and sommes(h,i) <> 0
 		          h=h+1
 		        wend
-		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i)
+		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i) 
 		          h0 = h          'sub(i) est à la racine du graphe si h = 0
 		          i0 = i
 		        end if

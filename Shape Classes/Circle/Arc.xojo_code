@@ -138,8 +138,8 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub ComputeArcAngle()
-		  startangle = coord.startangle    'GetAngle(Points(0).bpt, Points(1).bpt)
-		  endangle = coord.endangle     'GetAngle(Points(0).bpt, Points(2).bpt)
+		  startangle = coord.startangle   
+		  endangle = coord.endangle     
 		  // startangle et endangle  sont toujours entre 0 et 2 pi
 		  
 		  if not drapori then
@@ -259,7 +259,7 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
-		  dim i as Integer
+		  Dim i As Integer
 		  
 		  for i = n to 2
 		    Points(i).moveto(p)

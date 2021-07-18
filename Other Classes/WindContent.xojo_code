@@ -6,7 +6,7 @@ Protected Class WindContent
 		  if currentoperation isa shapeconstruction then
 		    drapabort = True
 		    s = currentoperation.currentshape
-		    If s.isinconstruction And (s.indexconstructedpoint = 0) Then
+		    If s.isinconstruction And (s.indexconstructedpoint = 0) and not s isa point Then
 		      s.points(0).delete
 		    End If
 		    s.delete

@@ -88,6 +88,27 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetType() As String
+		  // Calling the overridden superclass method.
+		  
+		  return Dico.value("Circle")
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function inside(p as basicpoint) As boolean
+		  Var c As basicpoint
+		  
+		  
+		  c = getgravitycenter
+		  Return p.distance(c) <= radius
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Inter(c as circle, byref intersec() as basicPoint) As integer
 		  dim B1, B2 as BiBPoint
 		  dim n as integer
