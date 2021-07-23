@@ -152,12 +152,6 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldConstructor(C as Circle, M as Matrix)
-		  Shape.Constructor(C, M)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
 		  dim i as integer
 		  dim b as Boolean

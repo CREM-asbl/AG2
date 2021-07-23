@@ -87,7 +87,7 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub paint(g as graphics, coul as couleur)
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  if not (currentcontent.currentoperation isa retourner and dret <>nil) then
 		    'si  <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
@@ -104,7 +104,8 @@ Inherits FigureShape
 
 	#tag Method, Flags = &h0
 		Sub paintside(g as graphics, n as integer, ep as double, coul as couleur)
-		  
+		  item(n).bordercolor = coul.col
+		  g.drawobject item(n), x, y
 		End Sub
 	#tag EndMethod
 

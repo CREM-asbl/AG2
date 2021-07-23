@@ -467,15 +467,6 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldConstructor(D as Droite, M as Matrix)
-		  Super.Constructor(D, M)
-		  nextre = D.nextre
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function OtherPoint(p as point) As point
 		  dim n as integer
 		  

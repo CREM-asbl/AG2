@@ -179,14 +179,14 @@ Inherits SelectOperation
 		  
 		  
 		  s = tempshape.item(0)
-		  If s IsA BiPoint Then
+		  If s IsA BiPoint Or s IsA circle Then
 		    sn = 0
 		  Else
 		    sn =  s.npts-1
 		  End If
+		  Redim oldcolors(sn)
 		  If Bord Then
-		    Redim oldcolors(sn)
-		    If s IsA BiPoint Then
+		    If s IsA BiPoint or s isa circle Then
 		      OldColors(0) = s.GetBorderColor
 		    Else
 		      For i = 0 To sn
@@ -241,7 +241,7 @@ Inherits SelectOperation
 		  if Bord then
 		    Temp.SetAttribute("Bord", "true")
 		    Temp.setattribute("side", Str(s.side))
-		  else
+		  Else
 		    Temp.SetAttribute("Bord", "false")
 		    Temp.setattribute("side", Str(-1))
 		    Temp.SetAttribute("OldFill", Str(s.Fill))

@@ -66,12 +66,13 @@ Inherits SelectOperation
 		    s.signaire = - s.signaire
 		    s.ori = -s.ori
 		    
-		    if not Config.Trace then
-		      if Config.biface or ( s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
-		        s.fixecouleurfond(s.fillcolor.comp, s.fill)
-		      end if
+		    If Not Config.Trace Then
+		      If Config.biface Then
+		        s.fixecouleurfond(s.FillColor.comp, s.fill)
+		      End If
 		    end if
-		    if s isa standardpolygon then
+		    
+		    If s IsA standardpolygon Then
 		      standardpolygon(s).updateangle
 		      standardpolygon(s).inverserori
 		      s.updatecoord

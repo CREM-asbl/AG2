@@ -220,13 +220,6 @@ Inherits DSect
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldConstructor(S as Secteur, M as Matrix)
-		  Super.Constructor(S,M)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub oldEndConstruction()
 		  drapori = true
 		  super.endconstruction

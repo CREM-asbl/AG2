@@ -1,6 +1,7 @@
 #tag Class
 Protected Class FreeCircle
 Inherits Circle
+	#tag CompatibilityFlags = (TargetDesktop and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(other as FreeCircle, NewId as integer)
 		  

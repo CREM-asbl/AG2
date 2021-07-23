@@ -172,7 +172,7 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Sub InitConstruction()
-		  super.InitConstruction
+		  Super.InitConstruction
 		  coord.curved(1)=1
 		  coord.centres(1) = coord.tab(0)
 		  InitCurvesOrders

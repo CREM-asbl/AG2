@@ -108,7 +108,7 @@ Inherits NSkull
 		  
 		  Super.Constructor(p)
 		  for i = 0 to n-1
-		    append new curveshape
+		    addcurve new curveshape
 		  next
 		End Sub
 	#tag EndMethod
@@ -305,7 +305,7 @@ Inherits NSkull
 		  end if
 		  
 		  if not self.skullof isa Secteur then
-		    for i = 0 to count-1
+		    for i = 0 to skullof.npts-1
 		      paintside(g,i)
 		    next
 		  else
@@ -357,13 +357,13 @@ Inherits NSkull
 		  n = getside(i)
 		  
 		  if skullof.coord.curved(i) = 0 then
-		    'item(n).borderwidth = ep*borderwidth
-		    'item(n).bordercolor = coul.col
+		    item(n).borderwidth = item(n).borderwidth
+		    item(n).bordercolor = item(n).bordercolor
 		    g.drawobject item(n), ref.x, ref.y
 		  else
 		    for j = 0 to 2
-		      'item(n+j).borderwidth = ep*borderwidth
-		      'item(n+j).bordercolor = coul.col
+		      item(n+j).borderwidth =  item(n).borderwidth
+		      item(n+j).bordercolor =   item(n).bordercolor
 		      g.drawobject item(n+j), ref.x, ref.y
 		    next
 		  end if
@@ -464,7 +464,7 @@ Inherits NSkull
 
 	#tag Method, Flags = &h0
 		Sub updatecurvewidth(s as shape, i as integer, c as double)
-		  dim j, m, n as integer
+		  Dim j, m, n As Integer
 		  
 		  n = getside(i)
 		  

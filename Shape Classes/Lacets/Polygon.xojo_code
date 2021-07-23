@@ -547,12 +547,6 @@ Inherits Lacet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub oldConstructor(P as Polygon, M as Matrix)
-		  Shape.constructor(P, M)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub OldInitConstruction()
 		  Super.InitConstruction
 		  

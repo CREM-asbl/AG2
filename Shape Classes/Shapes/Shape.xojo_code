@@ -2465,7 +2465,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub oldConstructor(s as shape, M as Matrix)
-		  dim i as integer
+		  Dim i As Integer
 		  dim p as BasicPoint
 		  
 		  npts = s.npts

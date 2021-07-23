@@ -3,7 +3,7 @@ Protected Class CustomCanvas1
 Inherits Canvas
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
-		  dim p as BasicPoint
+		  Dim p As BasicPoint
 		  dim s as shape
 		  Dim m As MenuItem
 		  Dim curop As operation
@@ -60,11 +60,11 @@ Inherits Canvas
 		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
-		  If side = -1 Then
-		    if sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc) then
-		      base.append(New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
-		    end if
-		  end if
+		  'If side = -1 Then
+		  'f sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc) then
+		  'base.append(New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
+		  'end if
+		  'end if
 		  
 		  If side = -1 And  (Not sctxt IsA point) And (Not sctxt IsA droite) And (Not sctxt IsA arc) Then
 		    m = new MenuItem(Dico.value("ToolsColorTransparent"))
@@ -169,28 +169,34 @@ Inherits Canvas
 		    currentcontent.currentoperation = currentoper
 		    EndOperMenuContext
 		  Case Dico.Value("ToolsColorBorder")
+		    If sctxt IsA circle Then
+		      side = -1
+		    End If
 		    colo = sctxt.bordercolor.col
 		    oldside = side
 		    If HelpMess And TargetMacOS Then
 		      OKMess=Help("Choisis la nouvelle couleur, ensuite ferme la palette de couleurs en cliquant sur le point rouge, en haut à gauche") 
 		    End If
-		    If  OKMess and Color.SelectedFromDialog(colo,"choose")  Then
-		      currentcontent.currentoperation  =  New ColorChange(True, colo, oldside) 
+		    If  OKMess And Color.SelectedFromDialog(colo,"choose")  Then
+		      side = oldside
+		      sctxt.side = oldside
+		      currentcontent.currentoperation  =  New ColorChange(True, colo, side) 
 		    End If
 		    currentoper = ColorChange(currentcontent.currentoperation)
 		    currentoper.currentshape = sctxt
 		    EndOperMenuContext
-		  case Dico.Value("ToolsColorFill")+Dico.Value("Fororientedarea")
-		    if sctxt.aire >0 then
-		      coul = poscolor
-		    Else
-		      coul = negcolor
-		    end if
-		    If SelectColor(colo,Dico.Value("choose")+Dico.Value("acolor")) Then
-		      currentcontent.currentoperation = New ColorChange(False, colo, side)
-		      currentoper = colorchange(currentcontent.currentoperation)
-		    end if
-		    EndOperMenuContext
+		    'case Dico.Value("ToolsColorFill")+Dico.Value("Fororientedarea")
+		    'if sctxt.aire >0 then
+		    'coul = poscolor
+		    'Else
+		    'coul = negcolor
+		    'End If
+		    'sctxt.FillColor = coul
+		    //If SelectColor(colo,Dico.Value("choose")+Dico.Value("acolor")) Then
+		    //currentcontent.currentoperation = New ColorChange(False, colo, side)
+		    //currentoper = colorchange(currentcontent.currentoperation)
+		    //end if
+		    //EndOperMenuContext
 		  Case Dico.Value("ToolsColorFill")
 		    colo = sctxt.FillColor.col
 		    side =-1
@@ -586,7 +592,8 @@ Inherits Canvas
 		  currentoper.currenthighlightedshape = sctxt 
 		  currentoper.selection
 		  currentoper.immediatedooperation
-		  currentoper.currenthighlightedshape = nil
+		  currentoper.currenthighlightedshape = Nil
+		  currentoper = nil
 		  workwindow.refreshtitle
 		End Sub
 	#tag EndMethod
