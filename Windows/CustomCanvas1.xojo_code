@@ -160,13 +160,11 @@ Inherits Canvas
 		  Case Dico.value("ToolsLabel")
 		    currentoper = New AddLabel
 		    currentoper.currentshape = sctxt
-		    currentcontent.currentoperation = currentoper
+		    'currentcontent.currentoperation = currentoper
 		    currentoper.MouseDown(MouseUser)
 		    currentoper.MouseUp(MouseUser)
 		  Case Dico.Value("Epais"), Dico.Value("Mince")
 		    currentoper = New Epaisseur
-		    currentoper.currentshape = sctxt
-		    currentcontent.currentoperation = currentoper
 		    EndOperMenuContext
 		  Case Dico.Value("ToolsColorBorder")
 		    If sctxt IsA circle Then
@@ -185,6 +183,7 @@ Inherits Canvas
 		    currentoper = ColorChange(currentcontent.currentoperation)
 		    currentoper.currentshape = sctxt
 		    EndOperMenuContext
+		    
 		    'case Dico.Value("ToolsColorFill")+Dico.Value("Fororientedarea")
 		    'if sctxt.aire >0 then
 		    'coul = poscolor
@@ -197,6 +196,7 @@ Inherits Canvas
 		    //currentoper = colorchange(currentcontent.currentoperation)
 		    //end if
 		    //EndOperMenuContext
+		    
 		  Case Dico.Value("ToolsColorFill")
 		    colo = sctxt.FillColor.col
 		    side =-1
@@ -253,7 +253,6 @@ Inherits Canvas
 		  Case Dico.Value("Limiter")
 		    point(sctxt).surseg = True
 		  Case Dico.Value("AutoIntersec")
-		    'polygon(sctxt).autointer.s = polygon(sctxt)
 		    currentcontent.currentoperation = New AutoIntersec(sctxt)
 		    currentoper = SelectOperation(currentcontent.currentoperation)
 		    'EndOperMenuContext          ' Instruction inutile et même nuisible dans ce cas
@@ -367,10 +366,13 @@ Inherits Canvas
 		    Return
 		  End If
 		  
+		  //Ce qui suit se déroule à condition qu'aucune opération ne soit définie
+		  
 		  oldp = p
 		  If currenthighlightedshape<> Nil Then
 		    currenthighlightedshape.unhighlight
 		  End If
+		  
 		  currenthighlightedshape = GetShape(p)
 		  If currenthighlightedshape <> Nil  Then
 		    sctxt=currenthighlightedshape
@@ -380,7 +382,7 @@ Inherits Canvas
 		  refreshbackground
 		  
 		  if currenthighlightedshape <> nil and not currentcontent.macrocreation then
-		    AfficherChoixContext
+		    'AfficherChoixContext
 		    ctxt = True    'Branche le "MouseWheel 
 		  Else
 		    info = Dico.value("click")+Dico.value("onabuttonoramenu")+EndOfLine+Dico.value("chgTextSize")
