@@ -96,6 +96,10 @@
     <PrefsStdForms Name="Formes Standard" />
     <PrefsStdFormsSize Name="Taille des formes standard" />
     <PrefsStdFormsFile Name="Fichier de formes standard" />
+    <PrefsColor Name="Couleurs par défaut" />
+    <PrefsColorBorder Name="Couleur du bord" />
+    <PrefsColorFill Name="Couleur du fond" />
+    <PrefsColorStdFam Name="Couleur des formes standard" />
     <PrefsFreeForms Name="Formes libres" />
     <PrefsMagDist Name="Distance de magnétisme" />
     <PrefsThickness Name="Epaisseur des traits" />
