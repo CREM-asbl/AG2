@@ -1,7 +1,7 @@
 Type=Desktop
 RBProjectVersion=2021.011
 MinIDEVersion=20150400
-OrigIDEVersion=20190310
+OrigIDEVersion=20200201
 Folder=Connexion;Connexion;&h00000000476F47FF;&h0000000000000000;false
 Folder=Figures classes;Figures classes;&h000000007460DFFF;&h0000000000000000;false
 Folder=Calculation classes;Calculation classes;&hFFFFFFFFBD6B81F9;&h0000000000000000;false
@@ -236,6 +236,8 @@ MultiImage=splash;Resources/splash.xojo_image;&h000000003D667FFF;&hFFFFFFFFBA3BB
 Window=PrefFondEcran;Windows/PrefFondEcran.xojo_window;&h00000000415C67FF;&hFFFFFFFFBA3BB9F4;false
 FileTypeSet=FileAGTypes;Windows/FileAGTypes.xojo_filetypeset;&h0000000049235FFF;&hFFFFFFFFBA3BB9F4;false
 Class=FondEcran;Other Classes/FondEcran.xojo_code;&h000000003A866FFF;&hFFFFFFFFBA3BB9BA;false
+Class=CheckUpdate;Connexion/CheckUpdate.xojo_code;&h000000007E775FFF;&h00000000476F47FF;false
+Class=Notification;Connexion/Notification.xojo_code;&h0000000002A86FFF;&h00000000476F47FF;false
 MajorVersion=2
 MinorVersion=6
 SubVersion=2

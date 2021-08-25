@@ -78,9 +78,6 @@ Protected Class Matrix
 		  v1 = M.v1
 		  v2 = M.v2
 		  v3 = M.v3
-		  'v1 = new BasicPoint(M.v1)
-		  'v2 = new BasicPoint (M.v2)
-		  'v3 = new BasicPoint(M.v3)
 		End Sub
 	#tag EndMethod
 

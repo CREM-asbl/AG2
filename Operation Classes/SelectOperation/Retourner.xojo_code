@@ -5,9 +5,9 @@ Inherits SelectOperation
 		Sub choisiraxe()
 		  dim q as BasicPoint
 		  dim alpha as double
-		  
+
 		  p = nil
-		  
+
 		  q = Muser
 		  q = q - c
 		  alpha = q.anglepolaire
@@ -24,10 +24,10 @@ Inherits SelectOperation
 		    angle = -PI/4
 		    P = new BasicPoint(sqrt(2),-sqrt(2))
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -35,7 +35,7 @@ Inherits SelectOperation
 		Sub Constructor()
 		  super.Constructor
 		  OPId=16
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -45,7 +45,7 @@ Inherits SelectOperation
 		  OPId=16
 		  self.C = C
 		  self.P = P
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -55,63 +55,64 @@ Inherits SelectOperation
 		  dim i, j as integer
 		  dim s as shape
 		  dim t as Boolean
-		  
+
 		  M = new SymmetryMatrix(c,c+p)
-		  
+
 		  figs.creerlistesfigures
 		  figs.Bouger(M)
-		  
+
 		  for i = 0 to tempshape.count -1
 		    s = tempshape.item(i)
 		    s.signaire = - s.signaire
 		    s.ori = -s.ori
-		    
+
 		    If Not Config.Trace Then
 		      If Config.biface Then
 		        s.fixecouleurfond(s.FillColor.comp, s.fill)
 		      End If
 		    end if
-		    
-		    If s IsA standardpolygon Then
+
+		    if s isa standardpolygon then
 		      standardpolygon(s).updateangle
 		      standardpolygon(s).inverserori
 		      s.updatecoord
 		    end if
-		    
+
 		    for j = 0 to ubound(s.constructedshapes)
 		      if s.constructedshapes(j).constructedby<> nil and s.constructedshapes(j).constructedby.oper =6  then
 		        s.constructedshapes(j).ori = - s.constructedshapes(j).ori
 		      end if
 		    next
+
 		    if s isa arc or s isa DSect  then
 		      s.computearcangle
 		    end if
+
 		    if s isa circle or s.Hybrid then
 		      s.coord.CreateExtreAndCtrlPoints(s.ori)
 		    end if
 		  next
-		  
+
 		  if s = currentcontent.SHUA then
 		    currentcontent.UA = - currentcontent.UA
 		  end if
-		  
+
 		  tempshape.inverserordre
 		  currentcontent.thefigs.enablemodifyall
 		  figs.updatematrixduplicatedshapes(M)
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i as integer
-		  
 		  if c = nil or p = nil then
 		    return
 		  end if
-		  
+
 		  currentshape = tempshape.item(0)
 		  if currentshape isa point then
 		    currentshape = point(currentshape).parents(0)
@@ -119,26 +120,25 @@ Inherits SelectOperation
 		  if currentshape <> nil then
 		    currentshape.selectneighboor
 		  end if
-		  
+
 		  for i = 0 to tempshape.count-1
 		    figs.addobject tempshape.item(i).fig
 		  next
-		  
+
 		  If config.Trace  Then
 		    dret = new RetTimer(tempshape,self)
-		  else
-		    DoOper
 		  end if
-		  
+		  DoOper
+
 		  for i = 0 to tempshape.count-1
 		    if tempshape.item(i) isa standardpolygon then
 		      standardpolygon(tempshape.item(i)).inverserori
 		      tempshape.item(i).updatecoord
 		    end if
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -152,9 +152,9 @@ Inherits SelectOperation
 		Function GetShape(P as BasicPoint) As shape
 		  dim s as shape
 		  dim i as integer
-		  
+
 		  s = super.getshape(p)
-		  
+
 		  if visible.count > 0 then
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
@@ -165,16 +165,16 @@ Inherits SelectOperation
 		      end if
 		    next
 		  end if
-		  
+
 		  if Visible.count > 0  then
 		    return visible.item(0)
 		  else
 		    return nil
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -185,7 +185,7 @@ Inherits SelectOperation
 		  dim i as integer
 		  dim pt As point
 		  dim Cercle as Circle
-		  
+
 		  SelectOperation.Paint(g)
 		  if  dret = nil then
 		    if CurrentHighlightedShape = nil   or ((CurrentHighlightedShape isa point) and (Point(currenthighlightedshape).ispointoncube) ) then
@@ -202,7 +202,7 @@ Inherits SelectOperation
 		    C =CurrentHighlightedShape.GetGravityCenter
 		    C.Paint(g)
 		    choisiraxe
-		    
+
 		    if p <> nil then
 		      g.forecolor = Config.Transfocolor.col
 		      P1 = C + P
@@ -214,9 +214,9 @@ Inherits SelectOperation
 		      Help g, display
 		    end if
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -229,24 +229,24 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim Temp as XMLElement
-		  
+
 		  Temp=Doc.CreateElement(GetName)
 		  Temp.appendchild tempshape.XMLPutIdInContainer(Doc)
-		  
+
 		  Temp.SetAttribute("CX", str(C.x))
 		  Temp.SetAttribute("CY", str(C.y))
-		  
+
 		  Temp.SetAttribute("PX", str(P.x))
 		  Temp.SetAttribute("PY", str(P.y))
-		  
+
 		  if Config.Trace then
 		    Temp.SetAttribute("Trace", "true")
 		  else
 		    Temp.setattribute("Trace","false")
 		  end if
-		  
+
 		  return Temp
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -255,8 +255,8 @@ Inherits SelectOperation
 		  dim EL, EL1, EL2 as XMLElement
 		  dim cx, cy, px, py as double
 		  dim tr as string
-		  
-		  
+
+
 		  EL = XMLElement(Temp.child(0))
 		  cx = val(EL.GetAttribute("CX"))
 		  cy = val(EL.GetAttribute("CY"))
@@ -264,7 +264,7 @@ Inherits SelectOperation
 		  px = val(EL.GetAttribute("PX"))
 		  py = val(EL.GetAttribute("PY"))
 		  p = new BasicPoint(px,py)
-		  
+
 		  if p.x = 2 then
 		    angle = 0
 		  elseif p.x = 0 then
@@ -272,14 +272,14 @@ Inherits SelectOperation
 		  else
 		    angle = (PI/4)*sign(p.y)
 		  end if
-		  
+
 		  tr = EL.GetAttribute("Trace")
 		  if tr = "true" then
 		    Config.Trace = true
 		  else
 		    Config.Trace = false
 		  end if
-		  
+
 		  SelectIdForms(EL)
 		  DoOperation
 		  if not Config.Trace then
@@ -290,22 +290,22 @@ Inherits SelectOperation
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

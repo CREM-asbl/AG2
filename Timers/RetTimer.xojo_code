@@ -7,13 +7,12 @@ Inherits TsfTimer
 		  dim s as shape
 		  dim se as secteur
 		  dim t as TriDShape
-		  dim  p as BasicPoint
+		  dim p as BasicPoint
 		  dim v as TriDPoint
 		  dim M as Matrix
-		  
-		  
-		  
-		  for i = 0 to ncop
+
+
+		  for i = 0 to copies.count-1
 		    s = copies.item(i)
 		    t = TriDCopies(i)
 		    for j =0 to Ubound(t.TriDPts)
@@ -28,12 +27,12 @@ Inherits TsfTimer
 		      next j
 		    end if
 		    s.updatecoord
-		    
+
 		    if s isa secteur then
 		      secteur(s).computeextre
 		    end if
-		    
-		    if (s isa circle or s.narcs >0)  then 
+
+		    if (s isa circle or s.narcs >0)  then
 		      for j = 0 to ubound(s.coord.extre)
 		        s.coord.extre(j) =  t.TriDPts(ntdbp+1+j).ProjPlan + fp
 		      next
@@ -45,7 +44,7 @@ Inherits TsfTimer
 		        end if
 		      next
 		    end if
-		    
+
 		    if s isa secteur then
 		      se = secteur(s)
 		      for j = 0 to ubound(se.skullcoord.extre)
@@ -55,21 +54,21 @@ Inherits TsfTimer
 		        se.skullcoord.ctrl(j) =  t.TriDPts(ntdbp+2*se.narcs+1+j).ProjPlan + fp
 		      next
 		    end if
-		    
+
 		    if pas = niter/2  then
 		      if Config.biface or (s.Ti <> nil and (s.fillcolor.equal(poscolor) or s.fillcolor.equal(negcolor) )) then
 		        s.fixecouleurfond(s.fillcolor.comp, s.fill)
 		      end if
 		    end if
 		  next i
-		  
+
 		  if pas = niter/2  and  copies.count > 1 then
 		    copies.inverserordre
 		  end if
 		  pas = pas -1
-		  
+
 		  if pas = 0 then
-		    for i = 0 to ncop
+		    for i = 0 to copies.count-1
 		      s = copies.item(i)
 		      s.ori = - s.ori
 		      s.unhighlight
@@ -81,20 +80,10 @@ Inherits TsfTimer
 		        standardpolygon(s).updateangle
 		      end if
 		    next
-		    
+
 		    enabled = false
-		    dret  = nil
-		    if curoper isa retourner  then
-		      for i = 0 to ncop
-		        s = copies.item(i)
-		        s.ori = - s.ori
-		      next
-		      copies.inverserordre
-		      M = new SymmetryMatrix(fp, fp+sp)
-		      figs.movepoints(M)
-		      Retourner(curoper).DoOper
-		    end if
-		    
+		    dret = nil
+
 		    if CurrentContent.ForHisto then
 		      curoper.endoperation
 		    end if
@@ -103,18 +92,28 @@ Inherits TsfTimer
 		    can.Mousecursor =System.Cursors.StandardPointer
 		  end if
 		  can.refreshbackground
-		  
+
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("s", s)
+		    err.message = err.message+d.getString
+
+		    Raise err
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(tempshape as objectslist, curop as appliquertsf)
-		  
+
 		  dim p as BasicPoint
-		  
+
 		  curoper = curop
 		  super.constructor(tempshape)
-		  
+
 		  curtsf = curop.tsf
 		  fp = curtsf.fp
 		  sp = curtsf.sp
@@ -130,18 +129,18 @@ Inherits TsfTimer
 		  type = 1
 		  Initialisation
 		  enabled = true
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(tempshape as Objectslist, curop As Retourner)
 		  dim i, j as integer
-		  
+
 		  for i = 0 to tempshape.count-1
 		    for j = 0 to ubound(tempshape.item(i).constructedshapes)
 		      if tempshape.item(i).constructedshapes(j).centerordivpoint then
@@ -149,6 +148,7 @@ Inherits TsfTimer
 		      end if
 		    next
 		  next
+
 		  super.constructor(tempshape)
 		  fp = curop.c
 		  sp = curop.p
@@ -160,9 +160,9 @@ Inherits TsfTimer
 		  Initialisation
 		  enabled = true
 		  tempshape.unhighlightall
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -173,7 +173,7 @@ Inherits TsfTimer
 		  dim s as shape
 		  dim r as double
 		  dim q as BasicPoint
-		  
+
 		  M3D = new Matrix3D(beta,alpha)
 		  pas = niter
 		  for i = 0 to ncop
@@ -186,28 +186,28 @@ Inherits TsfTimer
 		    end if
 		    TridCopies.append Td
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

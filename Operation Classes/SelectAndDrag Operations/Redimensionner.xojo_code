@@ -160,7 +160,7 @@ Inherits SelectAndDragOperation
 		          visible.removeobject(s)
 		        end if
 		      next
-		      if   s isa point  or  not choixvalide(s)  then
+		      if s isa point or not choixvalide(s)  then
 		        Visible.removeobject(s)
 		      end if
 		      nobj = visible.count
@@ -177,9 +177,10 @@ Inherits SelectAndDragOperation
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
-		    d.setVariable("P",p)
+		    d.setVariable("p",p)
 		    d.setVariable("Visible", Visible)
 		    d.setVariable("i",i)
+		    d.setVariable("j",j)
 		    d.setVariable("s",s)
 		    err.message = err.message+d.getString
 		    

@@ -93,7 +93,7 @@ End
 		  if can.sctxt = nil then
 		    Title = "Objets"
 		  elseif  currentcontent.Macrocreation then
-		    Title =currentcontent.Mac.GetName
+		    Title = currentcontent.Mac.GetName
 		    EF.ReadOnly = false
 		  else
 		    sc = can.sctxt

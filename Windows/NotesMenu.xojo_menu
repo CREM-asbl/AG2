@@ -2,7 +2,6 @@
 Begin Menu NotesMenu
    Begin MenuItem FileMenu
       SpecialMenu = 0
-      Value = "&Fichier"
       Index = -2147483648
       Text = "&Fichier"
       AutoEnabled = True
@@ -10,7 +9,6 @@ Begin Menu NotesMenu
       Visible = True
       Begin MenuItem FileOpen
          SpecialMenu = 0
-         Value = "Open"
          Index = -2147483648
          Text = "Open"
          AutoEnabled = True
@@ -19,7 +17,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem FileSave
          SpecialMenu = 0
-         Value = "Save"
          Index = -2147483648
          Text = "Save"
          AutoEnabled = True
@@ -28,7 +25,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem FileClose
          SpecialMenu = 0
-         Value = "Close"
          Index = -2147483648
          Text = "Close"
          AutoEnabled = True
@@ -37,7 +33,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem FilePrint
          SpecialMenu = 0
-         Value = "Print"
          Index = -2147483648
          Text = "Print"
          AutoEnabled = True
@@ -47,7 +42,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem EditMenu
       SpecialMenu = 0
-      Value = "&Editer"
       Index = -2147483648
       Text = "&Editer"
       AutoEnabled = True
@@ -55,7 +49,6 @@ Begin Menu NotesMenu
       Visible = True
       Begin MenuItem EditCopy
          SpecialMenu = 0
-         Value = "Copier"
          Index = -2147483648
          Text = "Copier"
          ShortcutKey = "C"
@@ -67,7 +60,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem EditPaste
          SpecialMenu = 0
-         Value = "Coller"
          Index = -2147483648
          Text = "Coller"
          ShortcutKey = "V"
@@ -80,7 +72,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem NormalMenu
       SpecialMenu = 0
-      Value = "Normal"
       Index = -2147483648
       Text = "Normal"
       AutoEnabled = True
@@ -89,7 +80,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem GrasMenu
       SpecialMenu = 0
-      Value = "Gras"
       Index = -2147483648
       Text = "Gras"
       AutoEnabled = True
@@ -98,7 +88,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem ItaliqueMenu
       SpecialMenu = 0
-      Value = "Italique"
       Index = -2147483648
       Text = "Italique"
       AutoEnabled = True
@@ -107,7 +96,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem CouleurMenu
       SpecialMenu = 0
-      Value = "Couleur"
       Index = -2147483648
       Text = "Couleur"
       AutoEnabled = True
@@ -115,7 +103,6 @@ Begin Menu NotesMenu
       Visible = True
       Begin MenuItem Col
          SpecialMenu = 0
-         Value = "Rouge"
          Index = 0
          Text = "Rouge"
          AutoEnabled = True
@@ -124,7 +111,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem Col
          SpecialMenu = 0
-         Value = "Vert"
          Index = 1
          Text = "Vert"
          AutoEnabled = True
@@ -133,7 +119,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem Col
          SpecialMenu = 0
-         Value = "Bleu"
          Index = 2
          Text = "Bleu"
          AutoEnabled = True
@@ -142,7 +127,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem Col
          SpecialMenu = 0
-         Value = "Noir"
          Index = 3
          Text = "Noir"
          AutoEnabled = True
@@ -152,7 +136,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem TailleMenu
       SpecialMenu = 0
-      Value = "Taille"
       Index = -2147483648
       Text = "Taille"
       AutoEnabled = True
@@ -160,7 +143,6 @@ Begin Menu NotesMenu
       Visible = True
       Begin MenuItem TItem
          SpecialMenu = 0
-         Value = "12"
          Index = 0
          Text = "12"
          AutoEnabled = True
@@ -169,7 +151,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem TItem
          SpecialMenu = 0
-         Value = "16"
          Index = 1
          Text = "16"
          AutoEnabled = True
@@ -178,7 +159,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem TItem
          SpecialMenu = 0
-         Value = "20"
          Index = 2
          Text = "20"
          AutoEnabled = True
@@ -187,7 +167,6 @@ Begin Menu NotesMenu
       End
       Begin MenuItem TItem
          SpecialMenu = 0
-         Value = "25"
          Index = 3
          Text = "25"
          AutoEnabled = True
@@ -197,7 +176,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem GaucheMenu
       SpecialMenu = 0
-      Value = "Gauche"
       Index = -2147483648
       Text = "Gauche"
       AutoEnabled = True
@@ -206,7 +184,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem CentrerMenu
       SpecialMenu = 0
-      Value = "Centrer"
       Index = -2147483648
       Text = "Centrer"
       AutoEnabled = True
@@ -215,7 +192,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem DroiteMenu
       SpecialMenu = 0
-      Value = "Droite"
       Index = -2147483648
       Text = "Droite"
       AutoEnabled = True
@@ -224,7 +200,6 @@ Begin Menu NotesMenu
    End
    Begin MenuItem FontMenu
       SpecialMenu = 0
-      Value = "Polices"
       Index = -2147483648
       Text = "Polices"
       AutoEnabled = True
@@ -232,7 +207,6 @@ Begin Menu NotesMenu
       Visible = True
       Begin MenuItem FontFontName
          SpecialMenu = 0
-         Value = "untitled"
          Index = 0
          Text = "untitled"
          AutoEnabled = True

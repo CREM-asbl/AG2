@@ -87,9 +87,11 @@ Protected Class Macro
 		        ifmac.location = point(s).location(0)  //On ne tient pas compte de la valeur figurant dans la macro
 		      end if
 		    end if
-		    for i = 0 to ifmac.npts-1
-		      ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
-		    next
+		    if ifmac.childs.Count > 0 then
+		      for i = 0 to ifmac.childs.Count-1
+		        ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
+		      next
+		    end if
 		  end if
 		  
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
@@ -316,17 +318,24 @@ Protected Class Macro
 		  
 		  ifm = MacInf.GetInfoMac(ifmac.Forme0, num)  //ifmac correspondant à l'objet constructeur
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme1,num1)
-		  if ifm1.macid = ifmac.forme1 then
-		    bp1 = ifm1.coord.tab(0)
-		  else
-		    bp1=ifm1.childs(num1).coord.tab(0)
+		  
+		  if ifm1 <> nil then
+		    if ifm1.macid = ifmac.forme1 then
+		      bp1 = ifm1.coord.tab(0)
+		    else
+		      bp1=ifm1.childs(num1).coord.tab(0)
+		    end if
 		  end if
+		  
 		  ifm2 = MacInf.GetInfoMac(ifmac.forme2,num2)
-		  if ifm2.macid = ifmac.forme2 then
-		    bp2 = ifm2.coord.tab(0)
-		  else
-		    bp2=ifm2.childs(num2).coord.tab(0)
+		  if ifm2 <> nil then
+		    if ifm2.macid = ifmac.forme2 then
+		      bp2 = ifm2.coord.tab(0)
+		    else
+		      bp2=ifm2.childs(num2).coord.tab(0)
+		    end if
 		  end if
+		  
 		  if ifm.fa <> 5 and ifm.fa <> 7 then
 		    Bib = new BiBPoint(bp1,bp2)
 		    nbp.append BiB.subdiv(ifmac.ndiv,ifmac.idiv)

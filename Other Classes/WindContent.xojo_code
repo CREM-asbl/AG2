@@ -182,9 +182,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub CreateFigs()
-		  
-		  
-		  
 		  FigsCreated = OpList.CreateElement("Created_Figures")
 		  FigsDeleted = OpList.CreateElement("Deleted_Figures")
 		  FigsMoved = OpList.CreateElement("MovedFigures")
@@ -733,12 +730,24 @@ Protected Class WindContent
 		  
 		  for i = 0 to TheTransfos.count-1
 		    s = TheTransfos.item(i).supp
-		    if s isa point and ubound(point(s).parents)> -1 then
+		    if s = nil then
+		      return
+		    elseif s isa point and ubound(point(s).parents)> -1 then
 		      point(s).parents(0).movetofront
 		    else
 		      s.MovetoFront
 		    end if
 		  next
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("s", s)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
@@ -892,7 +901,7 @@ Protected Class WindContent
 		  
 		  isaundoredo = true
 		  
-		  if currentop = 0 then
+		  if currentop = 0 or Histo.ChildCount = 0 then
 		    return
 		  end if
 		  
@@ -905,7 +914,7 @@ Protected Class WindContent
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
 		  
-		  while currentop > 0 and  Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
+		  while currentop > 0 and Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
 		    currentop = currentop-1
 		  wend
 		  
@@ -924,6 +933,8 @@ Protected Class WindContent
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("EL", El)
 		    d.setVariable("curoper", curoper)
+		    d.setVariable("currentop", currentop)
+		    d.setVariable("Histo.ChildCount", Histo.ChildCount)
 		    err.message = err.message + d.getString
 		    Raise err
 		End Sub

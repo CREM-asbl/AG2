@@ -1885,7 +1885,7 @@ Protected Class Shape
 		  case 1
 		    return Modifier11(n)
 		  case 2
-		    return Modifier12(n)
+		    return Modifier11(n)
 		  end select
 		  
 		  //Les deux derniers cas ne peuvent normalement pas se présenter (il y aurait plus d'un point modifié)
@@ -1920,7 +1920,7 @@ Protected Class Shape
 		  dim s as shape
 		  dim bp as BasicPoint
 		  
-		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  dim ep0, ep1, ep2, np0, np1, np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  
@@ -1931,33 +1931,8 @@ Protected Class Shape
 		  s = points(2).pointsur.item(0)
 		  
 		  if self isa arc or self isa DSect then
-		    bp =arc(self).ArcComputeFirstIntersect(s)
-		  end if
-		  
-		  
-		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Modifier12(n as integer) As Matrix
-		  dim s as shape
-		  dim bp as BasicPoint
-		  
-		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
-		  epnp(ep0,ep1,ep2,np0,np1,np2)
-		  
-		  
-		  if points(2).forme <> 1 then
-		    return new Matrix(1)
-		  end if
-		  
-		  s = points(2).pointsur.item(0)
-		  
-		  if self isa arc or self isa DSect  then
 		    bp = arc(self).ArcComputeFirstIntersect(s)
 		  end if
-		  
 		  
 		  return new AffinityMatrix(ep0,ep1,ep2,np0,np1,bp)
 		End Function
@@ -3821,8 +3796,6 @@ Protected Class Shape
 		Sub updateshape(M as Matrix)
 		  dim i as integer    //Ici on s'occupe des points autres que les sommets
 		  
-		  
-		  
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
 		      childs(i).updateshape(M)
@@ -4168,7 +4141,7 @@ Protected Class Shape
 		  dim Temp as XMLElement
 		  
 		  Temp = Doc.CreateElement("MacConstructedBy")
-		  Temp.SetAttribute("Macro",MacConstructedBy.Mac.Caption)
+		  Temp.SetAttribute("Macro", MacConstructedBy.Mac.Caption)
 		  Temp.AppendChild MacConstructedBy.XMLPutInContainer(Doc)
 		  
 		  return Temp
@@ -4429,8 +4402,8 @@ Protected Class Shape
 		  dim tsf as Transformation
 		  
 		  n = val(Tmp.GetAttribute("SuppTsf"))
-		  if n<> 0 then
-		    s1 =objects.getshape(n)
+		  if n <> 0 then
+		    s1 = objects.getshape(n)
 		    j = val(Tmp.GetAttribute("Nr"))
 		    if j = -1 then
 		      j = 0
@@ -4442,7 +4415,7 @@ Protected Class Shape
 		    end if
 		  elseif self isa point and ubound(point(self).parents) > -1 then
 		    s1 = point(self).parents(0)
-		    if  s1.constructedby <> nil and s1.constructedby.oper = 6 then
+		    if s1.constructedby <> nil and s1.constructedby.oper = 6 then
 		      tsf = Transformation(s1.constructedby.data(0))
 		    end if
 		  else
@@ -4454,6 +4427,17 @@ Protected Class Shape
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
 		  auto = 0
+		  
+		  Exception err
+		    var d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("n", n)
+		    d.setVariable("j", j)
+		    d.setVariable("tsf", tsf)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

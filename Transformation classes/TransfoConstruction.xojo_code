@@ -424,6 +424,10 @@ Inherits MultipleSelectOperation
 		    ReCreateCreatedFigures(Temp)
 		  end if
 		  tsf = new Transformation(supp,EL)
+		  
+		  if supp = nil then
+		    return
+		  end if
 		  supp.tsfi.addObject tsf
 		  if supp isa point then
 		    supp.borderwidth = 2.5

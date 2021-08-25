@@ -670,7 +670,7 @@ Protected Class Operation
 		Lier: 3  
 		Delier: 10 
 		Copier: 5  
-		Coller:6 
+		Coller: 6 
 		Delete: 7
 		SaveEPS: 8   Pour mémoire
 		Print : 9        Pour mémoire

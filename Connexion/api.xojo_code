@@ -1,106 +1,70 @@
 #tag Module
 Protected Module api
 	#tag Method, Flags = &h0
-		Sub AfficherInfo()
-		  dim doc as XmlDocument
-		  dim El as XmlNode
-		  dim info, data, validite, version as String
-		  
-		  if http = Nil then
-		    return
-		  end if
-		  
-		  data = http.SendSync("GET",url+"info.xml")
-		  
-		  try
-		    doc = new XmlDocument(DefineEncoding(data,Encodings.UTF8))
-		    El = doc.FirstChild
-		    info = El.FirstChild.FirstChild.Value
-		    validite =  El.Child(1).FirstChild.Value
-		    version = app.LongVersion
-		    if version < validite and info<>Config.LastInfo  then
-		      MsgBox  El.LastChild.FirstChild.Value
-		      Config.LastInfo = info
-		    end if
-		  catch err as XmlException
-		  end try
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub checkUpdate()
-		  dim log,info,update,request As string
-		  dim NWI as NetworkInterface
-		  
-		  init
-		  
-		  if http = Nil then
-		    return
-		  end if
-		  
-		  NWI = System.GetNetworkInterface(0)
-		  
-		  request = "version=" + app.FullVersion + "&os=" + app.sys +"&mac=" + NWI.MACAddress
-		  
-		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  log = http.SendSync("POST",url+"/log.php")
-		  
-		  AfficherInfo
-		  
-		  update = http.SendSync("GET",url+"version.xml")
-		  if update > app.LongVersion  or (app.StageCode <> 3 and update = app.LongVersion) then
-		    GetUpdateW.ShowModal
-		  end if
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub init()
 		  #if DebugBuild then
 		    return
 		  #endif
 		  
-		  if System.Network.IsConnected then
-		    http = New URLConnection
-		  end if
+		  sendStat
+		  dim update as CheckUpdate = new CheckUpdate
+		  dim notification as Notification = new Notification
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SendBug()
-		  dim request, directory, response as String
+		  dim request, directory as String
+		  dim http as URLConnection
+		  Var d As DateTime = DateTime.Now(New TimeZone("Europe/Brussels"))
+		  var date as String
 		  
+		  date = d.ToString().ReplaceAll(":", ".")
 		  
-		  if http = Nil then
-		    return
-		  end if
+		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
 		  
-		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"
-		  
+		  http = new URLConnection
 		  request = "dir=" + directory + "&file=log.txt&txt=" + app.log
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  response = http.SendSync("POST",url+"/bug.php")
+		  http.Send("POST",url+"/bug.php", timeout)
 		  
+		  http = new URLConnection
 		  request = "dir=" + directory + "&file=bug.hag&txt=" + CurrentContent.Oplist.ToString
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  response = http.SendSync("POST",url+"/bug.php")
+		  http.Send("POST",url+"/bug.php")
 		  
+		  http = new URLConnection
 		  request = "dir=" + directory + "&file=bug.fag&txt=" + CurrentContent.MakeXML.ToString
 		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
-		  response = http.SendSync("POST",url+"/bug.php")
+		  http.Send("POST",url+"/bug.php")
 		  
-		  
+		  Exception err
+		    #if DebugBuild
+		      msgbox err.message
+		    #EndIf
+		  Catch
+		    
 		End Sub
 	#tag EndMethod
 
-
-	#tag Property, Flags = &h0
-		http As URLConnection
-	#tag EndProperty
+	#tag Method, Flags = &h0
+		Sub sendStat()
+		  dim request As string
+		  dim NWI as NetworkInterface
+		  
+		  if System.Network.IsConnected = false then
+		    return
+		  end if
+		  
+		  dim http as URLConnection = new URLConnection
+		  NWI = System.GetNetworkInterface(0)
+		  
+		  request = "version=" + app.FullVersion + "&os=" + app.sys +"&mac=" + NWI.MACAddress
+		  
+		  http.SetRequestContent(request, "application/x-www-form-urlencoded")
+		  http.Send("POST",url+"/log.php")
+		End Sub
+	#tag EndMethod
 
 
 	#tag Constant, Name = timeout, Type = Double, Dynamic = False, Default = \"10", Scope = Public

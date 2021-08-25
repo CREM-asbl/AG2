@@ -48,7 +48,7 @@ Inherits Quadri
 		    if points((n1+1)mod 4).isptsur then
 		      pp(2) = points((n1+1) mod 4)
 		    else
-		      pp(2) = points((n1-1) mod 4)
+		      pp(2) = points((n1+3) mod 4)
 		    end if
 		    return ModifierTriIso1fixe(pp(),0,1)
 		  else

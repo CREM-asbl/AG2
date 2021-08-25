@@ -81,8 +81,20 @@ Inherits NSkull
 		  next
 		  
 		  
-		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("nbp", nbp)
+		    d.setVariable("tbp", tbp)
+		    d.setVariable("j", j)
+		    d.setVariable("ncurv",ncurv)
+		    d.setVariable("m",m)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 

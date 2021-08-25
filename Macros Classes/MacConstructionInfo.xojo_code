@@ -48,7 +48,7 @@ Protected Class MacConstructionInfo
 		        ifmac.seg = true
 		        ifmac.RealSide = GetRealSide(n)
 		      end if
-		      for j = 0 to ifmac.npts-1
+		      for j = 0 to ifmac.childs.Count-1
 		        ifmac.childs(j).RealId =s.points((j+ifmac.RealSide) mod s.npts).id
 		      next
 		      ifmac.ori = s.ori
@@ -57,6 +57,23 @@ Protected Class MacConstructionInfo
 		  next
 		  
 		  
+		  Exception err
+		    var d as Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("nrf", nrf)
+		    d.setVariable("nri", nri)
+		    d.setVariable("nrfs", nrs)
+		    d.setVariable("fa", fa)
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
+		    d.setVariable("n", n)
+		    d.setVariable("ifmac.npts", ifmac.npts)
+		    d.setVariable("s.npts", s.npts)
+		    err.message = err.message + d.getString
+		    Raise err
+		    
+		    
 		End Sub
 	#tag EndMethod
 
