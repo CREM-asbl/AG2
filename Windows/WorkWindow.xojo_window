@@ -89,7 +89,6 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   "True"
       Top             =   0
       TopLeftColor    =   &c00000000
       Transparent     =   False
@@ -671,15 +670,6 @@ Begin Window WorkWindow
          Visible         =   True
          Width           =   112
       End
-   End
-   Begin DesktopColorPicker ColorPicker1
-      Enabled         =   True
-      HasAlpha        =   True
-      Index           =   -2147483648
-      IsVisible       =   False
-      LockedInPosition=   False
-      Scope           =   0
-      TabPanelIndex   =   0
    End
 End
 #tag EndWindow
@@ -3490,13 +3480,6 @@ End
 		  if currentcontent.currentoperation <> nil then
 		    currentcontent.currentoperation.canceling = false
 		  end if
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events ColorPicker1
-	#tag Event
-		Sub ColorSelected(selectedColor As Color)
-		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
