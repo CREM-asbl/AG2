@@ -170,7 +170,6 @@ Inherits Canvas
 		  Case Dico.value("ToolsLabel")
 		    currentoper = New AddLabel
 		    currentoper.currentshape = sctxt
-		    'currentcontent.currentoperation = currentoper
 		    currentoper.MouseDown(MouseUser)
 		    currentoper.MouseUp(MouseUser)
 		  Case Dico.Value("Epais"), Dico.Value("Mince")
@@ -189,23 +188,12 @@ Inherits Canvas
 		      side = oldside
 		      sctxt.side = oldside
 		      currentcontent.currentoperation = New ColorChange(True, colo, side)
+		      currentoper = ColorChange(currentcontent.currentoperation)
+		      currentoper.currentshape = sctxt
+		      EndOperMenuContext
 		    End If
-		    currentoper = ColorChange(currentcontent.currentoperation)
-		    currentoper.currentshape = sctxt
-		    EndOperMenuContext
 		    
-		    'case Dico.Value("ToolsColorFill")+Dico.Value("Fororientedarea")
-		    'if sctxt.aire >0 then
-		    'coul = poscolor
-		    'Else
-		    'coul = negcolor
-		    'End If
-		    'sctxt.FillColor = coul
-		    //If SelectColor(colo,Dico.Value("choose")+Dico.Value("acolor")) Then
-		    //currentcontent.currentoperation = New ColorChange(False, colo, side)
-		    //currentoper = colorchange(currentcontent.currentoperation)
-		    //end if
-		    //EndOperMenuContext
+		    
 		    
 		  Case Dico.Value("ToolsColorFill")
 		    colo = sctxt.FillColor.col
@@ -215,10 +203,11 @@ Inherits Canvas
 		    End If
 		    If OKMess And Color.SelectedFromDialog(colo,"choose") Then
 		      currentcontent.currentoperation =  New ColorChange(False, colo,side)
+		      currentoper = ColorChange(currentcontent.currentoperation)
+		      currentoper.currentshape = sctxt
+		      EndOperMenuContext
 		    End If
-		    currentoper = ColorChange(currentcontent.currentoperation)
-		    currentoper.currentshape = sctxt
-		    EndOperMenuContext
+		    
 		  case Dico.Value("ToolsOpq")
 		    currentcontent.currentoperation = new TransparencyChange(100)
 		    currentoper = Transparencychange(currentcontent.currentoperation)
