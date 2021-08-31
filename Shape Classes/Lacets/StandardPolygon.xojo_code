@@ -36,7 +36,7 @@ Inherits Polygon
 		      pointe = false
 		    end if
 		    stdsize = config.stdsize
-		    Fixecouleurfond(specs.Coul,100)
+		    Fixecouleurfond(new Couleur(config.stdcolor(fam - 10).col), 100)
 		  else 
 		    points(0).moveto p
 		    angles.append 0
@@ -86,7 +86,7 @@ Inherits Polygon
 		  dim specs as StdPolygonSpecifications
 		  
 		  Super.Constructor(ol, EL)
-		  stdsize=Val(EL.GetAttribute("Taille"))
+		  stdsize = Val(EL.GetAttribute("Taille"))
 		  Ori = val(EL.GetAttribute("Ori"))
 		  pointe = (val(EL.GetAttribute("NonPointed")) = 0)
 		  if self isa cube then
@@ -100,7 +100,7 @@ Inherits Polygon
 		    end if
 		    specs = config.StdFamilies(fam-10,Forme)
 		    for i=0 to npts-2
-		      Angles(i) =  specs.Angles(i)
+		      Angles(i) = specs.Angles(i)
 		      Distances.Append specs.Distances(i)
 		    next
 		  end if

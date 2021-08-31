@@ -288,33 +288,6 @@ Begin Window WorkWindow
             Enabled         =   True
             Height          =   50
             HelpTag         =   ""
-            Index           =   1
-            InitialParent   =   "StdBox"
-            Left            =   64
-            LockBottom      =   False
-            LockedInPosition=   False
-            LockLeft        =   False
-            LockRight       =   False
-            LockTop         =   False
-            Scope           =   0
-            TabIndex        =   0
-            TabPanelIndex   =   0
-            TabStop         =   True
-            Top             =   240
-            Transparent     =   True
-            UseFocusRing    =   True
-            Visible         =   True
-            Width           =   50
-         End
-         Begin Canvas StdOutil
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
-            Backdrop        =   0
-            DoubleBuffer    =   True
-            Enabled         =   True
-            Height          =   50
-            HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
             Left            =   8
@@ -382,6 +355,33 @@ Begin Window WorkWindow
             TabPanelIndex   =   0
             TabStop         =   True
             Top             =   292
+            Transparent     =   True
+            UseFocusRing    =   True
+            Visible         =   True
+            Width           =   50
+         End
+         Begin Canvas StdOutil
+            AcceptFocus     =   True
+            AcceptTabs      =   False
+            AutoDeactivate  =   True
+            Backdrop        =   0
+            DoubleBuffer    =   True
+            Enabled         =   True
+            Height          =   50
+            HelpTag         =   ""
+            Index           =   1
+            InitialParent   =   "StdBox"
+            Left            =   64
+            LockBottom      =   False
+            LockedInPosition=   False
+            LockLeft        =   False
+            LockRight       =   False
+            LockTop         =   False
+            Scope           =   0
+            TabIndex        =   0
+            TabPanelIndex   =   0
+            TabStop         =   True
+            Top             =   240
             Transparent     =   True
             UseFocusRing    =   True
             Visible         =   True
@@ -2912,7 +2912,7 @@ End
 		    ico(fam).fill = 100
 		  end if
 		  if specs.family <> "Rods" then              'la couleur de fond d'une réglette varie avec la longueur, non la famille
-		    ico(fam).fillcolor=config.stdcolor(fam).col
+		    ico(fam).fillcolor = config.stdcolor(fam).col
 		  end if
 		  ico(fam).borderwidth= 1/h
 		  

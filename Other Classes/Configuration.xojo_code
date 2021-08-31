@@ -296,7 +296,7 @@ Protected Class Configuration
 		    List = EL1.XQL("Couleur")
 		    if List.length > 0 then
 		      EL2 = XMLElement(List.Item(0))
-		      StdColor(i)=new Couleur(EL2)
+		      StdColor(i) = new Couleur(EL2)
 		    end if
 		    FormList = EL1.XQL("Forme")
 		    Nstdf(i) = FormList.length
@@ -474,10 +474,10 @@ Protected Class Configuration
 	#tag Method, Flags = &h0
 		Sub initParams()
 		  HideColor = BleuPale
-		  HighLightColor=magenta
-		  WeightlessColor=Blue
-		  Bordercolor= Black
-		  Fillcolor=White
+		  HighLightColor = magenta
+		  WeightlessColor = Blue
+		  Bordercolor = Black
+		  Fillcolor = White
 		  TransfoColor = Green
 		  Border = 100
 		  Fill = 0
@@ -608,7 +608,7 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Function TooManyFiles(s as string) As string
-		  return thefile + stdfile +toomanyfamilies
+		  return thefile + stdfile + toomanyfamilies
 		End Function
 	#tag EndMethod
 
