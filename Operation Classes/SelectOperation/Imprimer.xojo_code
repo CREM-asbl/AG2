@@ -29,19 +29,19 @@ Inherits SelectOperation
 		  dim prtsetup As PrinterSetup
 		  
 		  prtsetup = new PrinterSetup
-		  dim PS as Boolean = prtsetup.PageSetupDialog 
+		  prtsetup.Landscape = true
 		  
-		  sw = prtsetup.Width/can.width
-		  sh = prtsetup.Height/can.height
+		  dim PS as Boolean = prtsetup.ShowPageSetupDialog
+		  
+		  sw = prtsetup.width/can.width
+		  sh = prtsetup.height/can.height
 		  sc = min(sw,sh)
-		  printLeft =  -prtsetup.PageLeft
-		  printTop =  -prtsetup.PageTop
 		  printWidth =  can.width*sc
 		  printHeight =  can.height*sc
+		  printLeft = prtsetup.Left + (prtsetup.Width-printwidth)/2
+		  printTop = prtsetup.Top + (prtsetup.Height-printheight)/2
 		  
-		  Pict = new Picture(printWidth,printHeight,Screen(0).Depth)
-		  
-		  gprint = OpenPrinterDialog(prtsetup)
+		  gprint = prtsetup.ShowPrinterDialog
 		  
 		  if gprint <> nil then
 		    if WorkWindow.backcolor = noir then
@@ -50,35 +50,10 @@ Inherits SelectOperation
 		    end if
 		    can.mousecursor = system.Cursors.Wait
 		    
-		    'le gprint.copies est-il nécessaire étant donné que l'on dessine que dans l'espace d'une page ?(prtsetup.width, prtsetup.height)
-		    for copies=1 to gprint.Copies
-		      for i=0 to tempshape.count-1
-		        o = tempshape.item(i)
-		        if (not o.invalid  and not o.hidden and not o.deleted) or o isa repere then
-		          o.print(Pict.Graphics, sc)
-		        end if
-		      next
-		      
-		      if CurrentContent.thegrid <> nil then
-		        CurrentContent.thegrid.print(Pict.Graphics, sc)
-		      end if
-		      
-		      'if CurrentContent.TheObjects.tracept then
-		      'Pict.Graphics.DrawPicture can.OffscreenPicture, 0, 0
-		      'end if
-		      
-		      d = new date
-		      
-		      gprint.DrawPicture Pict, printLeft, printTop+2, printWidth, printHeight, 0, 0, Pict.width, Pict.height
-		      gprint.drawstring  WorkWindow.Title+ " -- " + str(d.day)+"/"+str(d.month)+"/"+str(d.year), printLeft, printTop 
-		      gprint.drawrect printLeft, printTop+2, printWidth, printHeight-2
-		      
-		      if copies<gprint.Copies then
-		        gprint.NextPage
-		      end if
-		    next
+		    gprint.DrawPicture can.BackgroundPicture, printLeft, printTop, printWidth, printHeight, 0, 0, can.Width, can.Height
 		    can.mousecursor = System.Cursors.StandardPointer
 		  end if
+		  
 		  if switch then
 		    WorkWindow.switchcolors
 		  end if

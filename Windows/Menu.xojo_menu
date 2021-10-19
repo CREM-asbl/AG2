@@ -11,6 +11,10 @@ Begin Menu Menu
          SpecialMenu = 0
          Index = -2147483648
          Text = "Nouveau"
+         ShortcutKey = "N"
+         Shortcut = "Cmd+Control+N"
+         MenuModifier = True
+         MacControlKey = True
          AutoEnabled = True
          AutoEnable = True
          Visible = True
@@ -35,6 +39,10 @@ Begin Menu Menu
          SpecialMenu = 0
          Index = -2147483648
          Text = "Enregistrer"
+         ShortcutKey = "S"
+         Shortcut = "Cmd+Control+S"
+         MenuModifier = True
+         MacControlKey = True
          AutoEnabled = True
          AutoEnable = True
          Visible = True
@@ -75,6 +83,10 @@ Begin Menu Menu
          SpecialMenu = 0
          Index = -2147483648
          Text = "Imprimer "
+         ShortcutKey = "P"
+         Shortcut = "Cmd+Control+P"
+         MenuModifier = True
+         MacControlKey = True
          AutoEnabled = False
          AutoEnable = False
          Visible = True
