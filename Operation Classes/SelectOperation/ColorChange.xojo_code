@@ -19,9 +19,6 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
-		  
-		  
 		  setoldcolors
 		  If bord And ( side <> -1) Then
 		    currentshape.Fixecouleurtrait(side, newcolor)
@@ -47,7 +44,7 @@ Inherits SelectOperation
 		Sub EndOperation()
 		  Super.EndOperation
 		  currentcontent.remettreTsfAvantPlan
-		  Redim Oldcolors(-1)
+		  'Redim Oldcolors(-1)
 		  can.refreshbackground
 		End Sub
 	#tag EndMethod
@@ -176,17 +173,15 @@ Inherits SelectOperation
 		  Dim s As shape
 		  Dim sn As Integer
 		  
-		  
-		  
 		  s = tempshape.item(0)
-		  If s IsA BiPoint Or s IsA circle Then
+		  If s IsA BiPoint Or s IsA circle or s isA Point Then
 		    sn = 0
 		  Else
 		    sn =  s.npts-1
 		  End If
 		  Redim oldcolors(sn)
 		  If Bord Then
-		    If s IsA BiPoint or s isa circle Then
+		    If s IsA BiPoint or s isa circle or s isA Point Then
 		      OldColors(0) = s.GetBorderColor
 		    Else
 		      For i = 0 To sn
