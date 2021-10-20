@@ -829,7 +829,7 @@ End
 		    tw.visible = true
 		  case 26 'ctrl-shft z Afficher zone de magnétisme
 		    mycanvas1.drapzone = not mycanvas1.drapzone
-		  case 32   'barre d'espacement Remplace la mousewheel
+		  case 32 'barre d'espacement Remplace la mousewheel
 		    if  CurrentContent.CurrentOperation <> nil then
 		      CurrentContent.currentoperation.MouseWheel
 		    elseif Mycanvas1.ctxt then
@@ -851,6 +851,7 @@ End
 		    refresh
 		  case 48, 224 'touche 0 réinitialise taille textes
 		    ResetFont
+		    refresh
 		  case 59    ' ; Afficher fenetre de configuration 
 		    config
 		  case 99  'c Inverser couleurs
@@ -865,9 +866,6 @@ End
 		    drappt = not drappt
 		  case 113 'q ?
 		    app.quiet = not app.quiet 
-		  case 114  'r  Bug volontaire!! A déconnecter en temps opportun
-		    'MsgBox "Bug volontaire -- Ne jamais pousser sur la touche 'r'"
-		    's = u(0)
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info

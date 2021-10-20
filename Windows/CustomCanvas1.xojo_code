@@ -8,12 +8,20 @@ Inherits Canvas
 		  Dim m As MenuItem
 		  Dim curop As operation
 		  
+		  p = MouseUser
+		  currenthighlightedshape = GetShape(p)
+		  
+		  if(currenthighlightedshape = nil) then 
+		    return false
+		  end if
+		  
+		  info = ""
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
 		  CurrentContent.TheTransfos.ShowAll                     //On montre les autres
 		  currentcontent.thetransfos.unhighlightall
 		  
 		  curop =  currentcontent.currentoperation
-		  If  dret <> Nil Then
+		  If dret <> Nil Then
 		    dret.enabled = false
 		    dret = Nil
 		  else
@@ -34,8 +42,7 @@ Inherits Canvas
 		    return false
 		  end if
 		  
-		  p = mouseuser
-		  If  sctxt IsA Lacet  Then
+		  If sctxt IsA Lacet  Then
 		    side = sctxt.side
 		  Elseif sctxt IsA circle And (Not sctxt IsA arc) And circle(sctxt).inside(p) Then
 		    side = -1
@@ -49,7 +56,7 @@ Inherits Canvas
 		  Refreshbackground
 		  
 		  base.Name= sctxt.GetType
-		  If side <> -1   Then
+		  If side <> -1 Then
 		    tit = "Côté n°"+Str(sctxt.side) + " du " + sctxt.identifiant
 		  Else
 		    tit = sctxt.identifiant
@@ -60,13 +67,7 @@ Inherits Canvas
 		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
 		  
-		  'If side = -1 Then
-		  'f sctxt.Ti <> nil and (not sctxt isa droite) and (not sctxt isa arc) then
-		  'base.append(New MenuItem(Dico.value("ToolsColorFill") + Dico.value("Fororientedarea")))
-		  'end if
-		  'end if
-		  
-		  If side = -1 And  (Not sctxt IsA point) And (Not sctxt IsA droite) And (Not sctxt IsA arc) Then
+		  If side = -1 And (Not sctxt IsA point) And (Not sctxt IsA droite) And (Not sctxt IsA arc) Then
 		    m = new MenuItem(Dico.value("ToolsColorTransparent"))
 		    base.append m
 		    m.append(New MenuItem(Dico.value("ToolsOpq")))
@@ -137,7 +138,7 @@ Inherits Canvas
 		    base.append (New MenuItem("Rectifier l'horizontale"))
 		  end if
 		  
-		  Return True//display the contextual menu
+		  Return true 
 		  
 		  Exception err
 		    var d as Debug
@@ -296,7 +297,7 @@ Inherits Canvas
 
 	#tag Event
 		Function KeyDown(Key As String) As Boolean
-		  if asc(key)  = 32 then
+		  if asc(key) = 45 then
 		    choixcontextmenu
 		  end if
 		End Function
@@ -313,19 +314,13 @@ Inherits Canvas
 		  
 		  Formswindow.close
 		  If Not IsContextualClick Then
-		    If dret = Nil And Curop<>Nil Then
+		    If dret = Nil And Curop <> Nil Then
 		      p = New BasicPoint(x,y)
 		      Curop.MouseDown(pp)
 		    End If
 		    Return True
 		  End If
-		  
 		  CurrentContent.AbortConstruction
-		  refreshbackground
-		  If currenthighlightedshape <> Nil Then
-		    AfficherChoixContext
-		  End If
-		  
 		  
 		  
 		  
@@ -357,9 +352,9 @@ Inherits Canvas
 		    Return
 		  End If
 		  
-		  p =mouseuser
-		  Mousecursor =   System.Cursors.StandardPointer
-		  If dret = Nil And CurrentContent.CurrentOperation<>Nil Then
+		  p = mouseuser
+		  Mousecursor = System.Cursors.StandardPointer
+		  If dret = Nil And CurrentContent.CurrentOperation <> Nil and not currentContent.CurrentOperation isa Ouvrir Then
 		    currentcontent.currentoperation.mousemove(p)
 		    refreshbackground
 		    Return
@@ -368,24 +363,23 @@ Inherits Canvas
 		  //Ce qui suit se déroule à condition qu'aucune opération ne soit définie
 		  
 		  oldp = p
-		  If currenthighlightedshape<> Nil Then
+		  If currenthighlightedshape <> Nil Then
 		    currenthighlightedshape.unhighlight
 		  End If
 		  
 		  currenthighlightedshape = GetShape(p)
+		  
 		  If currenthighlightedshape <> Nil  Then
-		    sctxt=currenthighlightedshape
+		    sctxt = currenthighlightedshape
 		    sctxt.highlight
 		  End If
 		  
-		  refreshbackground
 		  
 		  if currenthighlightedshape <> nil and not currentcontent.macrocreation then
-		    'AfficherChoixContext
 		    ctxt = True    'Branche le "MouseWheel
 		  Else
 		    info = Dico.value("click")+Dico.value("onabuttonoramenu")+EndOfLine+Dico.value("chgTextSize")
-		    ctxt=False
+		    ctxt = False
 		  End If
 		  
 		  refreshbackground
@@ -452,23 +446,6 @@ Inherits Canvas
 
 
 	#tag Method, Flags = &h0
-		Sub AfficherChoixContext()
-		  If sctxt <> Nil Then
-		    If sctxt.side =-1 Then
-		      info = sctxt.Identifiant
-		    Else
-		      info = "Côté n°"+ " "+Str(sctxt.side) +" du "+ sctxt.identifiant
-		    End If
-		    info = info + ", " + Dico.Value("rightclick")+Dico.Value("toseecontextmenu")
-		    If nobj > 1 Then
-		      info = info + " (" + str(nobj) + "," + str(iobj+1) + ")"
-		    end if
-		    RefreshBackGround
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub alignFondEcran(align as String)
 		  FondsEcran.align = align
 		  RefreshBackground
@@ -492,14 +469,12 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub ChoixContextMenu()
-		  
 		  if vis <> nil and nobj > 1 then
 		    iobj = (iobj+1) mod nobj
 		    If sctxt<>Nil Then
 		      sctxt.UnHighLight
 		    end if
 		    sctxt = vis.item(iobj)
-		    AfficherChoixContext
 		  end if
 		End Sub
 	#tag EndMethod

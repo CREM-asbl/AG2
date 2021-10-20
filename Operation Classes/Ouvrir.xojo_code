@@ -50,7 +50,7 @@ Inherits Operation
 		  currentcontent.CurrentFileUpToDate=true
 		  
 		  CurrentContent.AddOperation(self)
-		  currentcontent.CurrentOperation=nil
+		  currentcontent.CurrentOperation = nil
 		  can.mousecursor = System.Cursors.StandardPointer
 		  Workwindow.refreshtitle
 		  can.refreshbackground
