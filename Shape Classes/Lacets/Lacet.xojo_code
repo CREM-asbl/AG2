@@ -276,10 +276,10 @@ Inherits Shape
 		  return d
 		  
 		  Exception err
-		    dim d As Debug
-		    d = new Debug
-		    d.setMessage(CurrentMethodName)
-		    d.setVariable("i", i)
+		    dim dbg As Debug
+		    dbg = new Debug
+		    dbg.setMessage(CurrentMethodName)
+		    dbg.setVariable("i", i)
 		    err.message = err.message+d.getString
 		    
 		    Raise err
