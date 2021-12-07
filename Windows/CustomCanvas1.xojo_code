@@ -519,6 +519,14 @@ Inherits Canvas
 		  dim fondLeft, fondTop, fondWidth, fondHeight as Double
 		  
 		  image= FondsEcran.image
+		  if image = nil then 
+		    dim msg As new MessageDialog
+		    msg.IconType = MessageDialog.IconTypes.Caution
+		    msg.Message = "L'image de fond d'écran " + FondsEcran.name + " n'est plus disponible"
+		    call msg.ShowModal
+		    FondsEcran = nil
+		    return
+		  end if 
 		  fondLeft = 0
 		  fondTop = 0
 		  fondWidth = image.width
