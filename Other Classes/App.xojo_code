@@ -224,9 +224,9 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Function FullVersion() As String
 		  if Target32Bit then
-		    return app.LongVersion  + " " + app.StageCodeToString  + " (32 bits)"
+		    Return app.Copyright  + " " + app.StageCodeToString  + " (32 bits)"
 		  else
-		    return app.LongVersion + " " + app.StageCodeToString + " (64 bits)"
+		    Return app.Copyright + " " + app.StageCodeToString + " (64 bits)"
 		  end if
 		End Function
 	#tag EndMethod
