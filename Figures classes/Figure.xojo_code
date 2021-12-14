@@ -8,7 +8,15 @@ Protected Class Figure
 		  dim k, h, j, n, amin as integer
 		  dim aut(-1) as integer
 		  dim Ob1 as objectslist
-		  dim s as shape
+		  Dim s As shape
+		  
+		  For n = 0 To f1.shapes.count-1
+		    s = f1.shapes.item(n)
+		    If s.constructedby <> Nil And s.isaparaperp Then
+		      f1.Auto = 6
+		      Return
+		    End If
+		  Next
 		  
 		  if f1.shapes.count = 1 then
 		    f1.auto = f1.shapes.item(0).auto
@@ -145,9 +153,10 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub addconstructedfigs(figs as figslist, s as shape)
-		  dim ci as constructioninfo
+		  Dim ci As constructioninfo
 		  dim k as integer
-		  dim sh as shape
+		  Dim sh As shape
+		  
 		  
 		  ci = s.constructedby
 		  if (ci <> nil) and (ci.shape <> nil) and (ci.oper = 3 or ci.oper = 5  or (ci.oper = 9 and  s isa point) )  then
@@ -162,12 +171,13 @@ Protected Class Figure
 		  for k = 0 to s.tsfi.count-1
 		    figs.appendlist s.tsfi.item(k).constructedfigs
 		  next
-		  for k = 0 to ubound(s.constructedshapes)
+		  For k = 0 To ubound(s.constructedshapes)
 		    'if s.constructedshapes(k).constructedby.oper = 6 then
 		    'figs.addfigure Transformation(s.constructedshapes(k).constructedby.data(0)).supp.fig
 		    'end if
 		    Figs.addobject s.constructedshapes(k).fig
-		  next
+		  Next
+		  
 		  for k = 0 to ubound(s.MacConstructedshapes)
 		    Figs.addobject s.MacConstructedshapes(k).fig
 		  next
@@ -1674,7 +1684,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
-		  dim ff as figure
+		  Dim ff As figure
+		  Var i, j As Integer
+		  Var p As point
 		  
 		  Constructor
 		  
@@ -1682,8 +1694,7 @@ Protected Class Figure
 		  ff.supfig = self
 		  ff.shapes.addshape s
 		  ff.insererpoints(s)
-		  ff.auto = s.auto
-		  
+		  ff.Auto = s.Auto
 		  subs.addobject ff
 		  Shapes.addshape s
 		  InsererPoints(s)
@@ -2033,12 +2044,14 @@ Protected Class Figure
 		  Dim p As point
 		  Dim a As Integer
 		  
+		  
+		  
 		  if f1.auto = 1 and f2.auto = 3  then
 		    concat1(f1,f2,3)
 		    return false 'false parce qu'on a déjà fait un remove de f2
 		  end if
 		  
-		  If f1.Auto = 6 or f2.Auto = 6 Then 
+		  If f1.Auto = 6 Or f2.Auto = 6 Then 
 		    Return False
 		  End If
 		  
@@ -3047,34 +3060,18 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function precede(f as figure) As Boolean
-		  dim s1, s2 as shape
+		  Dim s1, s2 As shape
 		  dim i, j as integer
 		  
-		  'if   currentcontent.currentoperation isa modifier then
-		  'op = modifier(currentcontent.currentoperation)
-		  'if (op.ptguide(op.pointmobile) <> op.pointmobile) and (somm.getposition(op.ptguide(op.pointmobile)) <> -1)   then
-		  'return true
-		  'end if
-		  'end if
+		  If f.Auto = 6 Then
+		    Return True
+		  end if
 		  
 		  for i = 0 to ptsconsted.count-1
 		    if f.somm.getposition(ptsconsted.item(i)) <> -1 then
 		      return true
 		    end if
-		  next
-		  
-		  'if (auto <> 4) and not (shapes.item(0) isa droite) and ((not shapes.item(0) isa Polyqcq )or (shapes.item(0).npts > 3)) and (NbTrueSommCommuns(f) >= 2) and (f.auto = 4) then
-		  'return true
-		  'end if // Commenté à cause de figuretest6.fag Attention à Figuretest2.fag, figuretest3.fag
-		  
-		  't = false   //introduit pour régler le cas du carré ayant deux sommets communs avec un losange et au moins une autre sommet sur
-		  'for i = 0 to somm.count-1  //sans empêcher le fonctionnemen t de la figure de Pythagore
-		  't = t or (point(somm.item(i)).pointsur.count > 0 and ptssur.getPosition(somm.item(i)) = -1)
-		  'next
-		  'if t and NbSommCommuns(f) > 0 then
-		  'return true
-		  'end if
-		  
+		  Next
 		  
 		  for i = 0 to ptsconsted.count -1
 		    s1 = ptsconsted.item(i)

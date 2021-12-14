@@ -186,7 +186,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function Concat() As Figure
-		  dim ff, sf as figure
+		  Dim ff, sf As figure
 		  dim temp as figslist
 		  dim i, j as integer
 		  dim pt as point

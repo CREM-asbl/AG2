@@ -115,8 +115,9 @@ Inherits Parallelogram
 		      d = ep1.distance(ep3)
 		      np3 = np1+w*d*ori
 		      M = new AffinityMatrix(ep,ep1,ep3,np,np1,np3)
-		    else
-		      M = new SimilarityMatrix(ep, ep1, np, np1)
+		    Else
+		      np2= np1.Projection(ep, ep2)
+		      M = New AffinityMatrix(ep, ep1, ep2, np, np1, np2)
 		    end if
 		  end if
 		  return M

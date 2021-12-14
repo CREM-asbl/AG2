@@ -3,7 +3,7 @@ Protected Class AffinityMatrix
 Inherits Matrix
 	#tag Method, Flags = &h0
 		Sub Constructor(u1 as basicpoint, u2 as basicpoint, u3 as basicpoint, p1 as basicpoint, p2 as basicpoint, p3 as basicpoint)
-		  dim w1,w2,q1,q2, a, b, c  as basicpoint
+		  Dim w1,w2,q1,q2, a, b, c  As basicpoint
 		  dim M as matrix
 		  
 		  
@@ -13,7 +13,6 @@ Inherits Matrix
 		    q1 = p2-p1
 		    q2 = p3-p1
 		    
-		    'if not (u1.alignes(u2,u3)) and not (p1.alignes(p2,p3)) then
 		    a = new basicpoint (w1.x, w2.x)
 		    b = new basicpoint (w1.y, w2.y)
 		    c = new basicpoint(0,0)
@@ -25,14 +24,7 @@ Inherits Matrix
 		    w2 = M*a
 		    v1 = new basicPoint(w1.x, w2.x)
 		    v2 = new BasicPoint(w1.y, w2.y)
-		    v3 = new BasicPoint(p1.x - w1.Mulp(u1),p1.y-w2.Mulp(u1))
-		    'else
-		    'M = new Matrix(1)
-		    'v1 = M.v1
-		    'v2 = M.v2
-		    'v3 = M.v3
-		    'end if
-		    
+		    v3 = New BasicPoint(p1.x - w1.Mulp(u1),p1.y-w2.Mulp(u1))
 		  end if
 		  
 		  //Matrice de l'affinité u1 u2 u3 -> p1 p2 p3

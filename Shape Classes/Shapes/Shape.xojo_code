@@ -32,7 +32,7 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub addpoint(p as BasicPoint)
+		Sub AddPoint(p As BasicPoint)
 		  
 		End Sub
 	#tag EndMethod
@@ -46,7 +46,12 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  Dim List0 As figslist
-		  dim i as integer
+		  Dim i, j, n As Integer
+		  Var s, s0, sh  As shape
+		  Var pt As point
+		  Var t As Boolean
+		  Var tsf As transformation
+		  Var Constru As ConstructionInfo
 		  
 		  If fig <> Nil And Not CurrentContent.currentoperation IsA prolonger Then
 		    return
@@ -59,10 +64,34 @@ Protected Class Shape
 		  
 		  List0 = Listerfigsneighbour
 		  CurrentContent.Thefigs.Removefigures List0
-		  List0.addobject new Figure(self)
-		  'if List0.count > 1 then
-		  '
-		  'end if
+		  
+		  n = Self.npts-1
+		  
+		  For i = 0 To n 
+		    pt = points(n)
+		    For j = 0 To pt.parents.ubound
+		      s = pt.parents(j)
+		      If s.constructedby <> Nil And s.isaparaperp Then
+		        t = True
+		        s0 = s
+		      End If
+		    Next
+		  Next
+		  
+		  If t  Then  
+		    sh = s0.constructedby.shape
+		    For i = 0 To sh.tsfi.count-1
+		      tsf = sh.tsfi.item(i)
+		      If tsf.type = 0 Then
+		        Constru = New ConstructionInfo(Self, 0)
+		        Constru.data.append tsf
+		        tsf.constructedshapes.addshape Self
+		        sh.addconstructedshape Self
+		      End If
+		    Next
+		  End If
+		  
+		  List0.addobject New Figure(Self)
 		  fig = List0.concat
 		  for i = 0 to fig.subs.count-1
 		    Fig.AdapterAutos(fig.subs.item(i))
@@ -82,7 +111,7 @@ Protected Class Shape
 		Sub AddToFigure(ff as figure, idf as integer)
 		  Dim List0 As figslist                                 //N'est utilisé que par ObjectsList.XMLLireIdFigs
 		  dim figu as figure
-		  dim o as shapeconstruction
+		  Dim o As shapeconstruction
 		  dim i, j, op as integer
 		  dim sh as shape
 		  dim tsf as transformation
@@ -92,7 +121,7 @@ Protected Class Shape
 		  end if
 		  
 		  figu = new Figure(self)
-		  if ff <> nil then
+		  If ff <> Nil Then
 		    List0 = new FigsList
 		    List0.addobject ff
 		    List0.addobject figu
@@ -109,31 +138,31 @@ Protected Class Shape
 		  CurrentContent.TheFigs.addobject fig
 		  
 		  
-		  'if Constructedby <> nil and isaparaperp and constructedby.shape.fig <> nil then //si constructedby.shape.fig a déjà été chargé
+		  'If Constructedby <> Nil And isaparaperp And constructedby.shape.fig <> Nil Then   //si constructedby.shape.fig a déjà été chargé
 		  'sh = constructedby.shape
-		  'for i = 0 to sh.tsfi.count-1
+		  'For i = 0 To sh.tsfi.count-1
 		  'tsf = sh.tsfi.item(i)
-		  'if tsf.type = 0 then
-		  'tsf.constructedshapes.addshape self
-		  'constructedby.data.append tsf
-		  'end if
-		  'next
-		  'end if
+		  'If tsf.type = 0 Then
+		  'tsf.constructedshapes.addshape Self
+		  'constructedby.data.append tsf'
+		  'End If
+		  'Next
+		  'End If
 		  '
-		  'if ubound(ConstructedShapes) > -1 then  // sinon on fait la même chose au moment ou on charge constructedby.shape.fig
-		  'for  i = 0 to ubound(constructedshapes)
+		  'If ubound(ConstructedShapes) > -1 Then  // sinon on fait la même chose au moment ou on charge constructedby.shape.fig
+		  'For  i = 0 To ubound(constructedshapes)
 		  'sh= constructedshapes(i)
-		  'if sh.isaparaperp and sh.fig <> nil and ubound(sh.constructedby.data) = 0 then
-		  'for j = 0 to tsfi.count-1
+		  'If sh.isaparaperp And sh.fig <> Nil And ubound(sh.constructedby.data) = 0 Then
+		  'For j = 0 To tsfi.count-1
 		  'tsf = tsfi.item(j)
-		  'if tsf.type = 0 and tsf.constructedshapes.count = 0 then
+		  'If tsf.type = 0 And tsf.constructedshapes.count = 0 Then
 		  'tsf.constructedshapes.addshape sh
 		  'sh.constructedby.data.append tsf
-		  'end if
-		  'next
+		  'End If
+		  'Next
 		  ''droite(sh).createtsf
-		  'end if
-		  'next
+		  'End If
+		  'Next
 		  'end if
 		End Sub
 	#tag EndMethod
@@ -2778,6 +2807,11 @@ Protected Class Shape
 		  dim s2ci As constructioninfo
 		  dim tsf as transformation
 		  
+		  If constructedby <> Nil And (constructedby.oper = 1 Or constructedby.oper =2) Then
+		    s = constructedby.shape 
+		    return s.precede(s2)
+		    Return t
+		  End If
 		  
 		  ff = s2.getsousfigure(s2.fig)
 		  s2ci = s2.constructedby

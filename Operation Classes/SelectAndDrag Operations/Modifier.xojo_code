@@ -84,7 +84,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(pc as BasicPoint)
-		  if pointmobile = nil or pc.distance(EndPoint) < epsilon  then
+		  If pointmobile = Nil Or pc.distance(EndPoint) < epsilon  Then
 		    return
 		  end if
 		  pointmobile.highlight

@@ -124,7 +124,7 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  if n = 0 then
-		    for i = 0 to ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
+		    For i = 0 To ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
 		      s.addpoint(CutPts(i).bpt)                 // ncpts augmente chaque fois de 1, npts aussi. Donc ncpts = ncutpt
 		    next
 		  else
