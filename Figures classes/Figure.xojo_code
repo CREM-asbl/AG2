@@ -2226,11 +2226,22 @@ Protected Class Figure
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
-		    if p.forme = 1 and p.pointsur.item(0).constructedby <> nil and  f.shapes.getposition(p.pointsur.item(0).constructedby.shape ) = -1 then
+		    if p.forme = 1 and p.pointsur.count > 0 and p.pointsur.item(0).constructedby <> nil and f.shapes.getposition(p.pointsur.item(0).constructedby.shape ) = -1 then
 		      t = false
 		    end if
 		  next
 		  return t
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("t", t)
+		    d.setVariable("i", i)
+		    d.setVariable("p", p)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Function
 	#tag EndMethod
 

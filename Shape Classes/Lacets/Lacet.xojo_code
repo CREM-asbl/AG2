@@ -269,11 +269,20 @@ Inherits Shape
 		  'Ne pas confondre avec le "GetSide" de Lskull
 		  dim d as Droite
 		  
-		  if coord.curved(i) = 0 then
+		  if coord.curved(i) = 0 and i < npts then
 		    d = new Droite(Points(i),Points((i+1) mod npts))
 		    d.nextre = 2
 		  end if
 		  return d
+		  
+		  Exception err
+		    dim dbg As Debug
+		    dbg = new Debug
+		    dbg.setMessage(CurrentMethodName)
+		    dbg.setVariable("i", i)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Function
 	#tag EndMethod
 

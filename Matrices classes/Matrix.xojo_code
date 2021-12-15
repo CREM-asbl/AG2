@@ -193,6 +193,13 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(v as BasicPoint) As BasicPoint
 		  return new BasicPoint(v1.x*v.x+v2.x*v.y+v3.x,v1.y*v.x+v2.y*v.y+v3.y)
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("v", v)
+		    Raise err
 		End Function
 	#tag EndMethod
 
@@ -207,12 +214,20 @@ Protected Class Matrix
 		  u2 = new BasicPoint(v1.x*w2.x+v2.x*w2.y, v1.y*w2.x+v2.y*w2.y)
 		  u3 = self*w3
 		  return new Matrix(u1,u2,u3)
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("M",M)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(r as double) As matrix
-		  
 		  dim u1, u2, u3 as basicPoint
 		  
 		  u1 = v1.Mulp(r)
@@ -221,7 +236,14 @@ Protected Class Matrix
 		  
 		  return new Matrix(u1, u2, u3)
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("r", r)
+		    Raise err
+		    
+		    
 		End Function
 	#tag EndMethod
 
