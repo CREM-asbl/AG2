@@ -2793,6 +2793,7 @@ End
 		      updatemenu
 		    end if
 		    updatetoolbar
+		    PushButton1.enabled = CurrentContent.CurrentOp > 0
 		    PushButton1.Visible = not draphisto
 		    can.RefreshBackground
 		    MoveBoxRefresh

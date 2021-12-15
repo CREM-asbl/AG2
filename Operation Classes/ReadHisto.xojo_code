@@ -74,12 +74,11 @@ Inherits Operation
 		  
 		  can.Mousecursor = system.Cursors.wait
 		  CurrentContent.CurrentOperation=nil
-		  Workwindow.closeHisto
-		  
 		  CurrentContent.SaveHisto
 		  CurrentContent.currentop = currentop
 		  CurrentContent.totaloperation = currentop+1
 		  Config.Trace = OldTrace
+		  Workwindow.closeHisto
 		  super.endoperation
 		  can.Mousecursor = System.Cursors.StandardPointer
 		End Sub

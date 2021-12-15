@@ -895,7 +895,7 @@ Inherits Liste
 		      List1 = Temp.XQL("Childs")
 		      if List1.length > 0 then
 		        Pt = List1.Item(0)
-		        for j = 0 to Pt.Childcount-1
+		        for j = 0 to min(s.childs.Count-1, Pt.Childcount-1)
 		          s.childs(j).XMLReadConstructionInfo(XMLElement(Pt.child(j)))
 		          s.childs(j).mobility
 		          s.childs(j).updateguides
@@ -958,7 +958,7 @@ Inherits Liste
 		      List1 = Temp.XQL("Childs")
 		      if List1.length > 0 then
 		        Pt = List1.Item(0)
-		        for j = 0 to Pt.Childcount-1
+		        for j = 0 to min(s.childs.count-1, Pt.Childcount-1)
 		          s.childs(j).XMLReadMacConstructionInfo(XMLElement(Pt.child(j)))
 		          s.childs(j).mobility
 		          s.childs(j).updateguides

@@ -4749,7 +4749,7 @@ Protected Class Shape
 		    List = Temp.XQL("Childs")
 		    if list.length > 0 then
 		      EL =  XMLElement(List.Item(0))
-		      for i = 0 to EL.ChildCount-1
+		      for i = 0 to min(EL.ChildCount-1, childs.Count-1)
 		        childs(i).XMLReadTsf(XMLElement(EL.child(i)))
 		      next
 		    end if
