@@ -100,10 +100,19 @@ Protected Class Shape
 		  fig.idfig = -1
 		  CurrentContent.TheFigs.addobject fig
 		  
-		  
-		  
-		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("fig", fig)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
+		    
+		    
+		    
+		    
 		End Sub
 	#tag EndMethod
 
@@ -164,6 +173,17 @@ Protected Class Shape
 		  'End If
 		  'Next
 		  'end if
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("ff", ff)µ
+		    d.setVariable("fig", fig)
+		    d.setVariable("idf",idf)
+		    d.setVariable("list0", List0)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

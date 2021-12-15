@@ -3512,7 +3512,7 @@ Protected Class Figure
 		  next
 		  
 		  
-		  for i =  somm.count-1 downto 0
+		  for i = somm.count-1 downto 0
 		    if ubound(point(somm.item(i)).parents) = -1 then
 		      p = point(somm.item(i))
 		      if p.tsfi.count > 0 or ubound(p.constructedshapes) > -1 or (p.constructedby <> nil and p.constructedby.oper = 6) then
@@ -3595,7 +3595,17 @@ Protected Class Figure
 		  next
 		  
 		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("figs", figs)
+		    d.setVariable("i",i)
+		    d.setVariable("t", t)
+		    d.setVariable("tsf", tsf)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
