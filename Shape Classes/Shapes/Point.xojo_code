@@ -2097,8 +2097,17 @@ Inherits Shape
 		  
 		  mobility
 		  
-		  
-		  
+		  Exception err
+		    dim debug As Debug
+		    debug = new Debug
+		    debug.setMessage(CurrentMethodName)
+		    debug.setVariable("s", s)
+		    err.message = err.message+debug.getString
+		    
+		    Raise err
+		    
+		    
+		    
 		End Sub
 	#tag EndMethod
 
@@ -2110,7 +2119,7 @@ Inherits Shape
 		  dim Bib as BibPoint
 		  dim angle as double
 		  
-		  if  not ispointon(s,k)  then
+		  if not ispointon(s,k)  then
 		    PointSur.addshape s
 		    location.append  r
 		    S.setpoint(self)
@@ -2148,6 +2157,17 @@ Inherits Shape
 		  end if
 		  Moveto q
 		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("s", s)
+		    d.setVariable("r", r)
+		    d.setVariable("ar", ar)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 

@@ -177,7 +177,7 @@ Protected Class Shape
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
-		    d.setVariable("ff", ff)µ
+		    d.setVariable("ff", ff)
 		    d.setVariable("fig", fig)
 		    d.setVariable("idf",idf)
 		    d.setVariable("list0", List0)
@@ -4195,7 +4195,9 @@ Protected Class Shape
 		  dim Temp as XMLElement
 		  
 		  Temp = Doc.CreateElement("MacConstructedBy")
-		  Temp.SetAttribute("Macro", MacConstructedBy.Mac.Caption)
+		  if MacConstructedby.Mac <> nil then
+		    Temp.SetAttribute("Macro", MacConstructedBy.Mac.Caption)
+		  end if
 		  Temp.AppendChild MacConstructedBy.XMLPutInContainer(Doc)
 		  
 		  return Temp

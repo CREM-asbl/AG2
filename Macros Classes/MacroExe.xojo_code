@@ -186,6 +186,19 @@ Inherits MultipleSelectOperation
 		  end if
 		  
 		  MacInfo.IfMacs.append ifmac
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("El", El)
+		    d.setVariable("oper", oper)
+		    d.setVariable("s", s)
+		    d.setVariable("i", i)
+		    d.setVariable("n", n)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

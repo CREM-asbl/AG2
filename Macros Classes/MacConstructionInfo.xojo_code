@@ -187,7 +187,7 @@ Protected Class MacConstructionInfo
 	#tag Method, Flags = &h0
 		Function GetRealSide(n as integer) As integer
 		  
-		  if Mac.ObInit.indexof(n) <> -1 then
+		  if Mac <> nil and Mac.ObInit.indexof(n) <> -1 then
 		    return RealInitSide(Mac.ObInit.indexof(n))
 		    'elseif Mac.ObInterm.indexof(n) <> -1 then
 		    'return RealIntermSide(Mac.ObInterm.indexof(n))
