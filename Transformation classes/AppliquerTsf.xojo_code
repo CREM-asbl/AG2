@@ -459,7 +459,7 @@ Inherits MultipleSelectOperation
 		  num = val(EL1.GetAttribute("NumTSF"))
 		  tsf = s.tsfi.item(num)
 		  
-		  EL1 = XMLElement(EL.Child(2))
+		  EL1 = XMLElement(EL.Child(1))
 		  for i = 0 to EL1.childcount-1
 		    EL2 = XMLElement(EL1.child(i))
 		    n =  val(EL2.GetAttribute("Id"))
@@ -469,6 +469,19 @@ Inherits MultipleSelectOperation
 		  next
 		  
 		  RedeleteCreatedFigures(Temp)
+		  
+		  Exception err
+		    var d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("Temp", Temp)
+		    d.setVariable("EL", EL)
+		    d.setVariable("EL1", EL1)
+		    d.setVariable("i", i)
+		    d.setVariable("tsf", tsf)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

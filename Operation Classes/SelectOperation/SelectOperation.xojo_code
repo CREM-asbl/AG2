@@ -489,6 +489,10 @@ Inherits Operation
 		  dim EL2, EL3 as XMLElement
 		  dim i,j,n as integer
 		  
+		  if(EL = nil) then
+		    return
+		  end if
+		   
 		  for i = 0 to EL.childcount-1
 		    EL2 = XMLElement(EL.child(i))
 		    copies.item(i).id =  val(EL2.GetAttribute("Id"))
@@ -505,6 +509,19 @@ Inherits Operation
 		    end if
 		  next
 		  currentcontent.TheObjects.updateids
+		  
+		  Exception err
+		    var d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("EL", El)
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
+		    d.setVariable("n", n)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 

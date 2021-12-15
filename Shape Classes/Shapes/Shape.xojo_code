@@ -4478,9 +4478,11 @@ Protected Class Shape
 		    app.abortread
 		  end if
 		  
-		  tsf.setconstructioninfos1(constructedby.shape,self)
-		  if (tsf.type = 9 or tsf.type = 11) and self isa freecircle then
-		    coord.CreateExtreAndCtrlPoints(ori)
+		  if tsf <> nil then
+		    tsf.setconstructioninfos1(constructedby.shape,self)
+		    if (tsf.type = 9 or tsf.type = 11) and self isa freecircle then
+		      coord.CreateExtreAndCtrlPoints(ori)
+		    end if
 		  end if
 		  auto = 0
 		  
@@ -4488,6 +4490,7 @@ Protected Class Shape
 		    var d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
+		    d.setVariable("Tmp", Tmp)
 		    d.setVariable("n", n)
 		    d.setVariable("j", j)
 		    d.setVariable("tsf", tsf)
