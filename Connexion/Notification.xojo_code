@@ -12,7 +12,7 @@ Inherits URLConnection
 		    El = doc.FirstChild
 		    info = El.FirstChild.FirstChild.Value
 		    validite =  El.Child(1).FirstChild.Value
-		    version = app.LongVersion
+		    version = app.copyright
 		    if version < validite and info<>Config.LastInfo  then
 		      MsgBox  El.LastChild.FirstChild.Value
 		      Config.LastInfo = info
