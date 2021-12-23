@@ -616,7 +616,7 @@ Inherits Canvas
 		    if s isa Lacet  or s isa Bande or s isa secteur then
 		      s.side = s.pointonside(p)
 		      If s.side <> -1 Then
-		        Lacet(s).nsk.paintside(BackgroundPicture.graphics,s.side,2,Config.HighlightColor)
+		        s.Paintside(BackgroundPicture.graphics,s.side,2,Config.HighlightColor)
 		      Else
 		        s.highlighted = True
 		        Lacet(s).nsk.paint(BackgroundPicture.graphics,Config.HighlightColor)
@@ -631,8 +631,19 @@ Inherits Canvas
 		  
 		  Return s
 		  
-		  
-		  
+		  Exception err
+		    dim dbg As Debug
+		    dbg = new Debug
+		    dbg.setMessage(CurrentMethodName)
+		    dbg.setVariable("p", p)
+		    dbg.setVariable("vis", vis)
+		    dbg.setVariable("s", s)
+		    err.message = err.message+dbg.getString
+		    
+		    Raise err
+		    
+		    
+		    
 		End Function
 	#tag EndMethod
 

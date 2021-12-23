@@ -3409,8 +3409,10 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub SetPoint(P as Point)
-		  P.setParent(self)
-		  SetChild P
+		  if p <> nil then
+		    P.setParent(self)
+		    SetChild P
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -3711,6 +3713,10 @@ Protected Class Shape
 		    MacInfo = s1.MacConstructedby
 		    
 		    Mac = Macinfo.Mac
+		    if Mac = nil then
+		      msgbox "La macro utilisée pour cette action est indisponible"
+		      return   
+		    end if
 		    Mac.Macexe(MacInfo)
 		    for j = 0 to s1.npts-1
 		      if s1.childs(j).MacConstructedShapes.indexof(s1) = -1 then

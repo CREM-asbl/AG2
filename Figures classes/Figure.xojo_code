@@ -3155,6 +3155,19 @@ Protected Class Figure
 		  
 		  EndQQupdateshapes
 		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("p",p)
+		    d.setVariable("ep",ep)
+		    d.setVariable("np",np)
+		    d.setVariable("s", s)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 

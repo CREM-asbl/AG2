@@ -280,7 +280,8 @@ Inherits Shape
 		    dbg = new Debug
 		    dbg.setMessage(CurrentMethodName)
 		    dbg.setVariable("i", i)
-		    err.message = err.message+d.getString
+		    dbg.setVariable("d", d)
+		    err.message = err.message+dbg.getString
 		    
 		    Raise err
 		End Function

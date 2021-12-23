@@ -298,7 +298,7 @@ Inherits StandardPolygon
 		  
 		  distmin = p.distance(Points(0).bpt,Points(1).bpt)
 		  imin = -1
-		  for i=0  to 5
+		  for i = 0  to 5
 		    dist = p.distance(Points(i).bpt,Points((i+1) mod 6).bpt)
 		    if dist <= distmin and dist <  delta and  p.between(Points(i).bpt,Points((i+1) mod 6).bpt) then
 		      distmin = dist
