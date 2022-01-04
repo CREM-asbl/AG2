@@ -8,7 +8,7 @@ Protected Class Figure
 		  dim k, h, j, n, amin as integer
 		  dim aut(-1) as integer
 		  Dim s As shape
-		  
+
 		  For n = 0 To f1.shapes.count-1
 		    s = f1.shapes.item(n)
 		    If s.constructedby <> Nil And s.isaparaperp Then
@@ -16,19 +16,19 @@ Protected Class Figure
 		      Return
 		    End If
 		  Next
-		  
+
 		  if f1.shapes.count = 1 then
 		    f1.auto = f1.shapes.item(0).auto
 		    return
 		  end if
-		  
+
 		  Redim aut(f1.shapes.count-1)
-		  
-		  
+
+
 		  for  j = 0 to f1.Shapes.count-1
 		    aut(j) = f1.shapes.item(j).auto
 		  next
-		  
+
 		  'D'abord un cas simple: toutes les formes ont même auto (différent de 3 (autospe) et 5 (autotrap)
 		  'On attribue cet auto à la figure.
 		  For  n = 0 To 7
@@ -44,30 +44,30 @@ Protected Class Figure
 		      return
 		    end if
 		  next
-		  
+
 		  ''Deuxième cas: toutes les formes sont autosim ou autoaff
 		  t = true
 		  for j = 0 to ubound(aut)
 		    t  = t and ((aut(j) =1 ) or (aut(j) = 2))
 		  next
-		  if t then   
+		  if t then
 		    tt = true
 		    for j = 0 to f1.shapes.count -1
 		      if aut(j) = 1 then
 		        tt = tt and ( (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
-		      else 
+		      else
 		        tt = false
 		      end if
 		    next
-		    
-		    if tt then 'tout point peut être modifié indépendamment des autres  
+
+		    if tt then 'tout point peut être modifié indépendamment des autres
 		      f1.Auto = 4
 		      return
 		    end if
-		    
+
 		    tt = true
 		    for j = 0 to f1.shapes.count -1
-		      tt = tt and (aut(j) = 2 or  (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) ) 
+		      tt = tt and (aut(j) = 2 or  (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
 		    next
 		    if tt then
 		      f1.auto = 2
@@ -75,9 +75,9 @@ Protected Class Figure
 		      f1.auto = 1
 		    end if
 		    return
-		    
+
 		  end if
-		  
+
 		  'Troisième cas: toutes les formes sont autosim ou paraperp
 		  t = true
 		  for j = 0 to ubound(aut)
@@ -87,9 +87,9 @@ Protected Class Figure
 		    f1.Auto = 7
 		    return
 		  end if
-		  
+
 		  'Quatrième cas toutes les formes sont autosim sauf une qcq dont tous les points sont sur les autres
-		  
+
 		  t = true
 		  for j = 0 to ubound(aut)
 		    t  = t and ((aut(j) =1 ) or (aut(j) = 4))
@@ -101,7 +101,7 @@ Protected Class Figure
 		        s = f1.shapes.element(j)
 		        k = -1
 		        for h = 0 to s.npts-1
-		          s.points(h).HasAutosimParent(k) 
+		          s.points(h).HasAutosimParent(k)
 		        next
 		      end if
 		      'if tt then
@@ -111,9 +111,9 @@ Protected Class Figure
 		    next
 		    Return
 		  end if
-		  
+
 		  'Cinquième: s'il y a un mélange de droites avec des formes de même auto
-		  
+
 		  For n = 1 To 7
 		    If n <> 4 Then 'On élimine les droites
 		      t = true
@@ -121,15 +121,15 @@ Protected Class Figure
 		        s = f1.shapes.item(j)
 		        t  = t And ( (s IsA BiPoint and not s.isaparaperp ) Or aut(j) = n)
 		      Next
-		      If t Then 
+		      If t Then
 		        f1.Auto = n
 		        Return
 		      End If
 		    End If
 		  Next
-		  
-		  
-		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si 
+
+
+		  'Sixième: si la variété est plus grande, on prend pour auto 1 si une des formes est autosim, sinon 2 si
 		  'une des formes est autoaff, etc
 		  for j = 0 to ubound(aut)
 		    if aut(j)<>0 then
@@ -141,12 +141,12 @@ Protected Class Figure
 		      amin = min(amin,aut(j))
 		    end if
 		  next
-		  if amin <> 4 then 
+		  if amin <> 4 then
 		    f1.auto = amin
 		  end if
 		  return
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -155,8 +155,8 @@ Protected Class Figure
 		  Dim ci As constructioninfo
 		  dim k as integer
 		  Dim sh As shape
-		  
-		  
+
+
 		  ci = s.constructedby
 		  if (ci <> nil) and (ci.shape <> nil) and (ci.oper = 3 or ci.oper = 5  or (ci.oper = 9 and  s isa point) )  then
 		    Figs.addobject ci.shape.fig
@@ -176,24 +176,24 @@ Protected Class Figure
 		    'end if
 		    Figs.addobject s.constructedshapes(k).fig
 		  Next
-		  
+
 		  for k = 0 to ubound(s.MacConstructedshapes)
 		    Figs.addobject s.MacConstructedshapes(k).fig
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function alignement() As boolean
 		  // Vérification qu'aucun point modifié n'est  aligné avec deux points fixes ou deux points sur
-		  
+
 		  dim i, j, k as integer
 		  dim bq1,bq2, ep, np as basicpoint
 		  dim p as point
-		  
+
 		  dim pfx(-1) As integer
-		  
+
 		  for i = 0 to somm.count-1
 		    if  ListPtsModifs.IndexOf(i) = -1 then
 		      if  ((somm.item(i).liberte = 0) and PtsConsted.getposition(somm.item(i)) = -1) or somm.item(i).liberte = 1 then
@@ -201,8 +201,8 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
-		  
+
+
 		  if (auto =2 or auto = 3) then
 		    for i = 0 to ubound(ListPtsModifs)
 		      p = somm.item(ListPtsModifs(i))
@@ -218,13 +218,13 @@ Protected Class Figure
 		      next
 		    next
 		  end if
-		  
+
 		  return false
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -233,17 +233,17 @@ Protected Class Figure
 		  dim i , k, h as integer
 		  dim figs as figslist
 		  dim p as point
-		  
+
 		  figs = new FigsList
-		  
+
 		  for i = 0 to shapes.count -1
 		    addconstructedfigs(figs, shapes.item(i))
 		  next
-		  
+
 		  for i = 0 to somm.count-1
 		    addconstructedfigs(figs, somm.item(i))
 		  next
-		  
+
 		  for h = 0 to PtsSur.count-1
 		    addconstructedfigs(figs, PtsSur.item(h) )
 		    if PtsSur.item(h).constructedby <> nil and Ptssur.item(h).constructedby.oper = 10 then
@@ -255,7 +255,7 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
+
 		  for h = 0 to PtsConsted.count-1
 		    p = point(PtsConsted.item(h))
 		    for k = 0 to  ubound(p.parents)
@@ -265,7 +265,7 @@ Protected Class Figure
 		      Figs.addobject p.constructedshapes(k).fig
 		    next
 		  next
-		  
+
 		  return figs
 		End Function
 	#tag EndMethod
@@ -286,12 +286,12 @@ Protected Class Figure
 		  else
 		    return new matrix(1)
 		  end select
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -300,18 +300,18 @@ Protected Class Figure
 		  dim p, p1,p2 as point
 		  dim bp1, bp2, ep, np as BasicPoint
 		  dim i, n, m1, m2, ns as integer
-		  
+
 		  n = ListPtsModifs(0)
 		  p = somm.item(n)
 		  getoldnewpos(p, ep, np)
-		  
+
 		  choixpointsfixes
-		  
+
 		  if  NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  
-		  
+
+
 		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
 		  case 0
 		    select case NbUnModif
@@ -357,37 +357,37 @@ Protected Class Figure
 		      return new AffinityMatrix(p1,p2,ep,bp1,np,bp1)
 		    end if
 		  end select
-		  
+
 		  return new Matrix(1)
-		  
+
 		  //A revoir pour déterminer les sommets qui ne sont ni modifiés, ni "sur" et les utiliser en cas de besoin comme points fixes
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Autoaffupdate2() As Matrix
-		  
-		  
+
+
 		  dim p, q, r, p1, p2 as point
 		  dim ep, eq, np, nq,ep1,np1, er, nr as BasicPoint
 		  dim i, n1, n2, n3 as integer
-		  
+
 		  if NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
-		  
+
 		  Choixpointsfixes
-		  
+
 		  select case NbSommSur(n1,n2)
 		  case 0
 		    if NbUnModif < 2 then
@@ -421,7 +421,7 @@ Protected Class Figure
 		      return AutoAffUpDate2Bis(p1.pointsur.item(0), p2.pointsur.item(0), p, q, p1, p2)
 		    end if
 		  end select
-		  
+
 		  return new Matrix(1)
 		End Function
 	#tag EndMethod
@@ -433,7 +433,7 @@ Protected Class Figure
 		  dim ep, np, bp, eq, nq as BasicPoint
 		  dim r1, r2 as double
 		  dim n1,n2 as integer
-		  
+
 		  pmob = supfig.pmobi
 		  if s1 isa droite then
 		    n1 = droite(s1).nextre
@@ -445,7 +445,7 @@ Protected Class Figure
 		  else
 		    n1 = 0
 		  end if
-		  
+
 		  if pmob <> p and pmob <> q then  'pmob est p ou q
 		    return nil
 		  elseif pmob <> p then
@@ -455,38 +455,38 @@ Protected Class Figure
 		  end if                                        'le point mobile est tjrs p le point d'inter est tjrs q
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
-		  
+
 		  BiB1 = p1.GetBiBPoint
 		  BiB2 = p2.GetBiBPoint
 		  bp = BiB2.first - Bib2.second
 		  BiB2 = new BiBPoint(np, np+bp)
 		  bp = BiB1.BiBInterdroites(BiB2,n1,n2,r1,r2)
-		  
+
 		  if bp <> nil then
 		    return new affinitymatrix(eq,p1.bpt,ep,nq,bp,np)
 		  else
 		    return new matrix(1)
 		  end if
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Autoaffupdate3() As Matrix
-		  
+
 		  dim p, q, r as point
 		  dim ep, eq, er, np, nq, nr As  BasicPoint
 		  dim n1, n2, n3, n4 as integer
 		  dim s as shape
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  n3 = ListPtsModifs(2)
@@ -496,14 +496,14 @@ Protected Class Figure
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
 		  getoldnewpos(r,er,nr)
-		  
-		  
+
+
 		  Choixpointsfixes
 		  if NbUnModif > 0 then
 		    return DefaultMatrix
 		  end if
-		  
-		  
+
+
 		  select case NbSommSur(n1,n2,n3)
 		  case 0
 		    s  = shapes.item(0)
@@ -520,8 +520,8 @@ Protected Class Figure
 		      return new Matrix(1)
 		    end if
 		  end select
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -530,14 +530,14 @@ Protected Class Figure
 		  dim p as point
 		  dim k, n, i as integer
 		  dim t as Boolean
-		  
+
 		  Choixpointsfixes
 		  'if NbUnModif > 0 then
 		  'return new Matrix(1)
 		  'end if
-		  
+
 		  n = NbSommSur
-		  
+
 		  select case n
 		  case 0
 		    'if shapes.item(0) isa parallelogram then
@@ -572,7 +572,7 @@ Protected Class Figure
 		      next
 		    end if
 		  end select
-		  
+
 		  if NbPtsModif > 3 then
 		    return new matrix(1)
 		  else
@@ -586,9 +586,9 @@ Protected Class Figure
 		  Dim s As droite
 		  Dim i As Integer
 		  Dim t As Boolean
-		  
+
 		  i = 0
-		  
+
 		  t = true
 		  For i = 0 To shapes.count-1
 		    If shapes.item(i).isaparaperp Then
@@ -613,15 +613,15 @@ Protected Class Figure
 		      End Select
 		    End If
 		  Next
-		  
+
 		  Return t
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function AutosimUpdate() As Matrix
-		  
-		  
+
+
 		  select case NbPtsModif
 		  case 0
 		    return new Matrix(1)
@@ -632,10 +632,10 @@ Protected Class Figure
 		  else
 		    return autosimupdate3
 		  end select
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -645,17 +645,17 @@ Protected Class Figure
 		  dim bp1, ep, np,ep1, np1 as BasicPoint
 		  dim n as integer
 		  dim M as Matrix
-		  
+
 		  n = ListPtsModifs(0)
 		  p = Point(somm.item(n))
 		  getoldnewpos(p, ep, np)
-		  
+
 		  Choixpointsfixes
-		  
+
 		  if  NbUnModif > 1 then
 		    return new Matrix(1)
 		  end if
-		  
+
 		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
 		  case 0
 		    bp1 = Point(Somm.item(fx1)).bpt
@@ -680,15 +680,15 @@ Protected Class Figure
 		      end if
 		    end if
 		  end select
-		  
+
 		  return M
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -700,14 +700,14 @@ Protected Class Figure
 		  dim k as double
 		  dim s as shape
 		  dim ep, eq, np, nq As BasicPoint
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
-		  
+
 		  choixpointsfixes
-		  
+
 		  select case NBSommSur(n1,n2)
 		  case 0, 2
 		    return DefaultMatrix
@@ -735,13 +735,13 @@ Protected Class Figure
 		    q.modified = true
 		    return M
 		  end select
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -753,7 +753,7 @@ Protected Class Figure
 		  dim t as boolean
 		  dim M as Matrix
 		  dim s as shape
-		  
+
 		  s = shapes.item(0)
 		  if s isa arc then
 		    getoldnewpos(s.points(1),ep1,np1)
@@ -761,14 +761,14 @@ Protected Class Figure
 		    t = replacerpoint(s.points(2))
 		    return  new similaritymatrix (ep1,ep,np1,np)
 		  end if
-		  
-		  
+
+
 		  Choixpointsfixes
 		  p = supfig.pmobi
 		  getoldnewpos(p,ep,np)
 		  k = somm.getposition(p)
 		  n = NbSommSur
-		  
+
 		  select case n
 		  case 0
 		    return DefaultMatrix
@@ -817,16 +817,16 @@ Protected Class Figure
 		    getoldnewpos(p2,ep2,np2)
 		    M = new SimilarityMatrix(ep1,ep2,np1,np2)
 		  end select
-		  
-		  
+
+
 		  if M = nil or M.v1 = nil then
 		    M = new Matrix(1)
 		  end if
 		  return M
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -844,8 +844,8 @@ Protected Class Figure
 		  case 4
 		    return autospeupdate4
 		  end select
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -855,28 +855,28 @@ Protected Class Figure
 		  dim s as shape
 		  dim n, n1, n2 as integer
 		  dim ep, np as BasicPoint
-		  
+
 		  n = ListPtsModifs(0)
 		  s = shapes.item(0)
-		  p = Point(somm.item(n)) 
-		  
+		  p = Point(somm.item(n))
+
 		  if s isa arc or s isa DSect  then
 		    return s.Modifier1(n)
 		  end if
-		  
+
 		  if s isa TriangRect then
 		    return s.Modifier2fixes(p)
 		  end if
-		  
-		  
+
+
 		  getoldnewpos(p, ep, np)
-		  
+
 		  choixpointsfixes
-		  
+
 		  if  NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  
+
 		  select case NbSommSur(n)
 		  case 0
 		    q = point(somm.item(fx1))  // q est le point fixe
@@ -895,7 +895,7 @@ Protected Class Figure
 		        return s.modifier1fixe(point(somm.item(fx2)),p)
 		      end if
 		    end if
-		    
+
 		  case 2
 		    n = s.Points.indexof(p)
 		    p1 = Point(Somm.item(ListSommSur(0)))
@@ -913,12 +913,12 @@ Protected Class Figure
 		      'else
 		      'return s.Modifier1fixe(p1,p)
 		      'end if
-		      
+
 		    else
 		      return nil
 		    end if
 		  end select
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -928,7 +928,7 @@ Protected Class Figure
 		  dim ep, eq, er, np, nq, nr As BasicPoint
 		  dim n1, n2 as integer
 		  dim s as shape
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  s = shapes.item(0)
@@ -937,12 +937,12 @@ Protected Class Figure
 		  elseif s isa Triangiso then
 		    return s.Modifier2(n1,n2)
 		  end if
-		  
+
 		  p = somm.item(n1)
 		  q = somm.item(n2)
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
-		  
+
 		  select case  NbSommSur(n1,n2)
 		  case 0
 		    if p.guide = supfig.pmobi then
@@ -963,7 +963,7 @@ Protected Class Figure
 		  else
 		    return s.Modify2(p,q)
 		  end select
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -974,32 +974,32 @@ Protected Class Figure
 		  dim i, k, n, n1, n2, n3 as integer
 		  dim t as boolean
 		  dim s as shape
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  n3 = ListPtsModifs(2)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
 		  r = Point(somm.item(n3))
-		  
+
 		  s = shapes.item(0)
 		  if s isa arc  or s isa DSect or s isa Triangiso  then
 		    return s.modifier3
 		  end if
-		  
-		  if s isa rect then 
+
+		  if s isa rect then
 		    return rect(s).modifier3(p,q,r)
 		  end if
-		  
+
 		  Choixpointsfixes
 		  if NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
-		  
-		  
-		  
+
+
+
 		  n = NbSommSur
-		  
+
 		  select case n
 		  case 0
 		    if s isa triangle then
@@ -1040,36 +1040,36 @@ Protected Class Figure
 		      't = replacerpoint (point(somm.item(Listsommsur(2))))
 		    end if
 		  end select
-		  
+
 		  return autospeupdate
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function autospeupdate4() As Matrix
 		  dim p As point
-		  
+
 		  dim i0, i, k, n as integer
 		  dim t as boolean
 		  dim s as shape
-		  
-		  
+
+
 		  choixpointsfixes
 		  'if NbUnModif > 2 then
 		  'return new Matrix(1)
 		  'end if
 		  s = shapes.item(0)
 		  n = NbSommSur
-		  
+
 		  select case n
 		  case 0, 1
 		    for i = 0 to 3
@@ -1099,7 +1099,7 @@ Protected Class Figure
 		      t = replacerpoint (point(somm.item(Listsommsur(1))))
 		    end if
 		  end select
-		  
+
 		  return autospeupdate
 		End Function
 	#tag EndMethod
@@ -1118,16 +1118,16 @@ Protected Class Figure
 		  case 4
 		    return autotrapupdate4
 		  end select
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMethod("Figure","autotrapupdate")
 		    d.setVariable("NbPtsModif ",NbPtsModif )
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
+
 		End Function
 	#tag EndMethod
 
@@ -1135,18 +1135,18 @@ Protected Class Figure
 		Function autotrapupdate1() As Boolean
 		  dim s as trap
 		  dim p, p1, p2 as point
-		  
+
 		  choixpointsfixes
-		  
+
 		  p = Point(somm.item(ListPtsModifs(0)))
 		  s = trap(shapes.item(0))
-		  
+
 		  if s isa trapiso and NbUnModif > 2 then
 		    return s.check
 		  else
 		    return s.trapupdate1 (p)
 		  end if
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -1156,10 +1156,10 @@ Protected Class Figure
 		    d.setVariable("p1",p1)
 		    d.setVariable("p2",p2)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
-		    
+
+
 		End Function
 	#tag EndMethod
 
@@ -1167,21 +1167,21 @@ Protected Class Figure
 		Function autotrapupdate2() As Boolean
 		  dim p,  q as point
 		  dim s as trap
-		  
+
 		  dim n1, n2 as integer
-		  
+
 		  if fx1 = -1 then
 		    choixpointsfixes
 		  end if
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
 		  s = trap(shapes.item(0))
-		  
+
 		  return s.trapupdate2(p,q)
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -1189,20 +1189,20 @@ Protected Class Figure
 		Function autotrapupdate3() As Boolean
 		  dim p,  q, r as point
 		  dim  n1, n2, n3 as integer
-		  
+
 		  dim s as trap
-		  
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  n3 = ListPtsModifs(2)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
 		  r = Point(somm.item(n3))
-		  
+
 		  s = trap(shapes.item(0))
-		  
+
 		  return s.trapupdate3(p, q, r)
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -1211,10 +1211,10 @@ Protected Class Figure
 		  dim s as trap
 		  dim i, n as integer
 		  dim u as BasicPoint
-		  
+
 		  s = trap(shapes.item(0))
-		  
-		  
+
+
 		  if NbSommSur > 0  and not s isa trapiso and not s isa traprect then
 		    i = ListSommSur(0)
 		    select case i
@@ -1234,9 +1234,9 @@ Protected Class Figure
 		      return s.check
 		    end if
 		  end if
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -1244,7 +1244,7 @@ Protected Class Figure
 		Sub bouclesasupprimer()
 		  dim n0 as integer
 		  dim t as Boolean
-		  
+
 		  t = true
 		  while t
 		    M1 = Mat
@@ -1261,52 +1261,52 @@ Protected Class Figure
 		    wend
 		    t = not t
 		  wend
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CancelfixedPoints()
 		  dim i as integer
-		  
-		  
+
+
 		  for i = 0 to subs.count-1
 		    figure(subs.item(i)).fx1 = -1
 		    figure(subs.item(i)).fx2 = -1
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub canceloldbpts()
 		  dim i as integer
-		  
-		  
+
+
 		  redim oldbpts(-1)
 		  redim oldptscsted(-1)
 		  redim oldptssur(-1)
 		  redim oldcentres(-1)
-		  
+
 		  for i = 0 to subs.count -1
 		    Figure(subs.item(i)).canceloldbpts
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Canceltrace()
 		  dim i As integer
-		  
+
 		  for i = 0 to shapes.count -1
 		    shapes.item(i).canceltrace
 		  next
-		  
+
 		  for i = 0 to PtsConsted.count - 1
 		    PtsConsted.item(i).tracept = false
 		  next
@@ -1320,11 +1320,11 @@ Protected Class Figure
 		  dim p as point
 		  dim t, tt as boolean
 		  dim d, d1 as double
-		  
+
 		  if shapes.item(0) = nil or  shapes.item(0) isa arc then
 		    return true
 		  end if
-		  
+
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
@@ -1349,24 +1349,24 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Choixpointsfixes()
 		  // Modif d'une sous-figure
-		  
+
 		  // 0) Par priorité, on choisit comme candidats points fixes les points non modifiables.
 		  // 1) Parmi les sommets de la sous-figure différents de p, déterminer les points modifiables qui appartiennent au plus grand nombre de sous-figures
 		  // 1bis) les classer par distance décroissante du point mobile
 		  // 2) placer ceux qui sont des points sur directement après les non modifiables dans la liste des candidats points fixes.
 		  // Mais on exclut tous les points déjà modifiés de la liste des candidats points fixes
-		  
+
 		  'if fx1 <> - 1 Then
 		  'return
 		  'end if
-		  
+
 		  redim pointsfixes(-1)
 		  redim ptfx0(-1)
-		  
+
 		  Phase0choixpointsfixes
 		  Phase1choixpointsfixes
 		  Phase2choixpointsfixes
-		  
+
 		  if ubound(Pointsfixes) > -1 then
 		    fx1 = PointsFixes(0)
 		    if ubound(PointsFixes) > 0 then
@@ -1375,9 +1375,9 @@ Protected Class Figure
 		      fx2 = -1
 		    end if
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1385,15 +1385,15 @@ Protected Class Figure
 		Sub ChoixSubfig(p as point, byref h0 As integer)
 		  Dim h, i, n,m, m0, i0 As Integer
 		  dim sf as figure
-		  
-		  
-		  
+
+
+
 		  n = subs.count -1
-		  
+
 		  //1ere étape: Insérer toutes les sous-figures contenant le point mobile plus celles qui les précèdent
 		  m0 = -2
 		  m = -1
-		  
+
 		  Do Until  m = m0 or m = n
 		    m0 = m
 		    h0 = 0
@@ -1405,7 +1405,7 @@ Protected Class Figure
 		        while h < n and sommes(h,i) <> 0
 		          h=h+1
 		        wend
-		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i) 
+		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i)
 		          h0 = h          'sub(i) est à la racine du graphe si h = 0
 		          i0 = i
 		        end if
@@ -1419,17 +1419,17 @@ Protected Class Figure
 		    end if
 		    m = ubound (rang)
 		  Loop
-		  
-		  
-		  
+
+
+
 		  if m = n then
 		    return
 		  end if
-		  
-		  
+
+
 		  //2eme etape: insérer  les sous-figures ne contenant pas le point mobile et précédées par au moins une autre  sous-figure
 		  m0 = -2
-		  
+
 		  Do Until  m = m0 or m = n
 		    m0 = m
 		    h0 = 0
@@ -1455,15 +1455,15 @@ Protected Class Figure
 		    end if
 		    m = ubound (rang)
 		  Loop
-		  
+
 		  if m = n then
 		    return
 		  end if
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1513,7 +1513,7 @@ Protected Class Figure
 		  'InsertPreceding(imax)
 		  'index.append imax
 		  'wend
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -1579,7 +1579,7 @@ Protected Class Figure
 		  'next
 		  'return iret
 		  '
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -1590,26 +1590,26 @@ Protected Class Figure
 		  dim dist(-1) as double
 		  dim p as point
 		  dim ep, np as basicpoint
-		  
-		  
-		  
-		  //classement par rapport au nombre de parents 
-		  
+
+
+
+		  //classement par rapport au nombre de parents
+
 		  If somm.getposition(supfig.pmobi) <> -1 Then
 		    p = supfig.pmobi
 		  else
 		    p = Point(somm.item(ListPtsModifs(0)))
 		  end if
-		  
+
 		  p.fig.getoldnewpos(p,ep,np)
-		  
+
 		  for i = 0 to somm.count-1
 		    if  nff(i) = nf then 'point(somm.item(i)).id  <> p.id and PointsFixes.IndexOf(i) = -1 and (PtsConsted.GetPosition(somm.item(i)) = -1) and nff(i) = nf and ListPtsModifs.IndexOf(i) = -1 then
 		      Ptfx.append i
 		      dist.append ubound(point(somm.item(i)).parents)
 		    end if
 		  next
-		  
+
 		  if auto = 3 and shapes.item(0) isa arc then
 		    for i = 0 to  ubound(ptfx)
 		      ptfx0.append ptfx(i)
@@ -1620,9 +1620,9 @@ Protected Class Figure
 		      ptfx0.append ptfx(i)
 		    next
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1649,8 +1649,8 @@ Protected Class Figure
 		  constructedfigs = new Figslist
 		  Mmove = new Matrix(1)
 		  idfig = -1
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1658,7 +1658,7 @@ Protected Class Figure
 		Sub Constructor(sf as figure)
 		  Constructor
 		  dim i as integer
-		  
+
 		  if sf.supfig <> nil then
 		    subs.addobject sf
 		    sf.supfig = self
@@ -1668,7 +1668,7 @@ Protected Class Figure
 		      Figure(sf.subs.item(i)).supfig = self
 		    next
 		  end if
-		  
+
 		  for i = 0 to sf.Shapes.count-1
 		    shapes.addShape sf.shapes.item(i)
 		    sf.shapes.item(i).fig = self
@@ -1685,18 +1685,18 @@ Protected Class Figure
 		    PtsSur.addShape sf.PtsSur.item(i)
 		    sf.PtsSur.item(i).fig = self
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
 		  Dim ff As figure
-		  
+
 		  Constructor
-		  
+
 		  ff = new Figure
 		  ff.supfig = self
 		  ff.shapes.addshape s
@@ -1706,15 +1706,15 @@ Protected Class Figure
 		  Shapes.addshape s
 		  InsererPoints(s)
 		  s.fig = self
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub constructshapes()
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count-1
 		    shapes.item(i).constructshape
 		  next
@@ -1725,8 +1725,8 @@ Protected Class Figure
 		Function containsmaccstedshapewithoutinitobjects() As Boolean
 		  dim s, sh as shape
 		  dim i,j as integer
-		  
-		  
+
+
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
 		    if s.macconstructedby <> nil then
@@ -1739,8 +1739,8 @@ Protected Class Figure
 		    end if
 		  next
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -1750,11 +1750,11 @@ Protected Class Figure
 		  dim EL0, EL1,EL2 As XMLElement
 		  dim s as shape
 		  dim M as Matrix
-		  
+
 		  EL0 = CurrentContent.OpList.CreateElement("Figure")
-		  
+
 		  EL0.setattribute ("FigId", str(idfig))
-		  
+
 		  EL1 = CurrentContent.Oplist.CreateElement("Shapes")
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
@@ -1779,13 +1779,13 @@ Protected Class Figure
 		    EL1.appendchild EL2
 		  next
 		  EL0.appendchild EL1
-		  
+
 		  EL1 = CurrentContent.Oplist.CreateElement("Somm")
 		  for i = 0 to somm.count-1
 		    EL1.appendchild point(somm.item(i)).PutInState(CurrentContent.OpList)
 		  next
 		  EL0.appendchild EL1
-		  
+
 		  if PtsConsted.count > 0 then
 		    EL1 = CurrentContent.Oplist.CreateElement("PtsConsted")
 		    for i = 0 to PtsConsted.count-1
@@ -1793,7 +1793,7 @@ Protected Class Figure
 		    next
 		    EL0.appendchild EL1
 		  end if
-		  
+
 		  if PtsSur.count > 0 then
 		    EL1 = CurrentContent.Oplist.CreateElement("PtsSur")
 		    for i = 0 to PtsSur.count-1
@@ -1801,11 +1801,11 @@ Protected Class Figure
 		    next
 		    EL0.appendchild EL1
 		  end if
-		  
-		  
+
+
 		  EL.appendchild EL0
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1813,9 +1813,9 @@ Protected Class Figure
 		Sub CreerMatricePrecedences(n as integer)
 		  dim i , j as integer
 		  dim f1, f2 as figure
-		  
+
 		  Mat = new MatrixnD(n)
-		  
+
 		  for i = 0 to n -2
 		    f1=Figure(subs.item(i))
 		    for j = i+1 to n-1
@@ -1828,9 +1828,9 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1839,17 +1839,17 @@ Protected Class Figure
 		  dim ep, eq, er, np, nq, nr as BasicPoint
 		  dim p, q, r as point
 		  dim  n1, n2, n3 as integer
-		  
-		  
+
+
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
-		  
-		  
-		  
+
+
+
 		  select case auto
 		  case 0,1
 		    return new SimilarityMatrix(ep,eq,np,nq)
@@ -1865,9 +1865,9 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Detectertsf()
 		  dim i as integer
-		  
+
 		  redim ListeSupportsTsf(-1)
-		  
+
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i).tsfi.count > 1 then
 		      ListeSupportsTsf.append i
@@ -1879,16 +1879,16 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub enablemodifyall()
 		  dim i as integer
-		  
+
 		  modified = false
 		  for i = 0 to somm.count-1
 		    point(somm.item(i)).enablemodify
 		  next
-		  
+
 		  for i = 0 to ptssur.count-1
 		    point(ptssur.item(i)).enablemodify
 		  next
-		  
+
 		  for i = 0 to ptsconsted.count-1
 		    point(ptsconsted.item(i)).enablemodify
 		  next
@@ -1900,8 +1900,8 @@ Protected Class Figure
 		  dim i as integer
 		  dim p as point
 		  dim inter as intersec
-		  
-		  
+
+
 		  for i = 0 to ptssur.count-1
 		    p = point(ptssur.item(i))
 		    if p.forme = 1 then
@@ -1915,17 +1915,17 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  for i = 0 to PtsConsted.count-1
 		    p = Point(Ptsconsted.item(i))
 		    p.repositioncstedpoint
 		    p.modified = true
 		    p.updateshape
 		  next
-		  
+
 		  updateshapes
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -1933,7 +1933,7 @@ Protected Class Figure
 		Sub EndTrapUpdateshapes()
 		  dim i as integer
 		  dim p as point
-		  
+
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
 		    select case  p.pointsur.count
@@ -1944,7 +1944,7 @@ Protected Class Figure
 		    p.modified = true
 		    p.updateshape
 		  next
-		  
+
 		  EndQQupdateshapes
 		End Sub
 	#tag EndMethod
@@ -1952,7 +1952,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function figduplicateorcut(byref s as shape) As Boolean
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
 		    if s.duplicateorcut and s.constructedby.shape.getindexpoint(supfig.pmobi)<> -1 then
@@ -1967,8 +1967,8 @@ Protected Class Figure
 		Sub fusionnerautosimaff()
 		  dim i, j as integer
 		  dim f1, f2 as figure
-		  
-		  
+
+
 		  for i = 0 to subs.count-2
 		    f1 = subs.item(i)
 		    for j =  subs.count-1 downto i+1
@@ -1983,9 +1983,9 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
+
 		  '' Ne pas fusionner de figures de modes de modification différents! (sauf cas particuliers avec une droite et une figure auto=4, par ex)
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -1993,7 +1993,7 @@ Protected Class Figure
 		Sub fusionnerinclusions()
 		  dim i, j as integer
 		  dim f1, f2 as figure
-		  
+
 		  for i = 0 to subs.count-2
 		    f1 = subs.item(i)
 		    for j =  subs.count-1 downto i+1
@@ -2005,10 +2005,10 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2016,11 +2016,11 @@ Protected Class Figure
 		Sub FusionnerSubfigs(pos() as integer)
 		  dim f1, sf as figure
 		  dim i as integer
-		  
-		  
-		  
+
+
+
 		  f1 = subs.item(pos(0))
-		  
+
 		  for i =  1 to ubound(pos)
 		    sf = subs.item(pos(i))
 		    f1.shapes.concat sf.shapes
@@ -2028,21 +2028,21 @@ Protected Class Figure
 		    f1.PtsConsted.concat sf.PtsConsted
 		    f1.PtsSur.concat sf.PtsSur
 		  next
-		  
+
 		  pos.remove 0
 		  for i =  subs.count-1 downto 0
 		    if pos.indexof(i) <> -1 then
 		      subs.removefigure subs.item(i)
 		    end if
 		  next
-		  
+
 		  Adapterautos(f1)
-		  
+
 		  return
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2051,46 +2051,46 @@ Protected Class Figure
 		  Dim k As Integer
 		  dim t, t1 as boolean
 		  Dim p As point
-		  
-		  
-		  
-		  
+
+
+
+
 		  if f1.auto = 1 and f2.auto = 3  then
 		    concat1(f1,f2,3)
 		    return false 'false parce qu'on a déjà fait un remove de f2
 		  end if
-		  
-		  If f1.Auto = 6 Or f2.Auto = 6 Then 
+
+		  If f1.Auto = 6 Or f2.Auto = 6 Then
 		    Return False
 		  End If
-		  
-		  If f1.Auto = 7 Or f2.Auto = 7 Then 
+
+		  If f1.Auto = 7 Or f2.Auto = 7 Then
 		    Return False
 		  End If
-		  
+
 		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
 		    return false
 		  end if
-		  
+
 		  t = true
 		  for k = 0 to f1.somm.count-1
 		    p = f1.somm.item(k)
 		    t1 = (p.forme = 2) and (f2.shapes.getposition(p.pointsur.item(0)) <> -1) and (f2.shapes.getposition(p.pointsur.item(1))<> -1)
 		    t = t and((f2.somm.getposition(p)<> -1) or t1)
 		  next
-		  
-		  
-		  
+
+
+
 		  'On fusionne f1 et f2 si tous les sommets de f1 sont soit des sommets de f2 soit des points d'inter de  deux formes de f2
 		  if f1.NbSommCommuns(f2) = f1.Somm.count or f2.NbSommCommuns(f1) = f2.Somm.count then
 		    t=true
 		  end if
-		  
+
 		  'a =0   Erreur grossiere: auto = 6 a été éliminé plus haut
 		  'If f1.Auto = 6 Or f2.Auto = 6 Then
 		  'a = 6
 		  'End If
-		  
+
 		  If t Then
 		    f2.shapes.concat f1.shapes
 		    f2.somm.concat f1.somm
@@ -2101,16 +2101,16 @@ Protected Class Figure
 		    'End If
 		    Adapterautos(f2)
 		  end if
-		  
+
 		  return t
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub fx1cancel()
 		  dim i as integer
-		  
+
 		  fx1 = -1
 		  for i = 0 to subs.count-1
 		    Figure(subs.item(i)).fx1=-1
@@ -2121,7 +2121,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub getoldnewpos(p as point, byref ep as BasicPoint, byref np as basicpoint)
 		  dim n as integer
-		  
+
 		  n = somm.getposition(p)
 		  if n <> -1 then
 		    ep = oldbpts(n)
@@ -2136,7 +2136,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  end if
-		  
+
 		  np = p.bpt
 		End Sub
 	#tag EndMethod
@@ -2144,7 +2144,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function GetRang(n as integer) As integer
 		  dim i as integer
-		  
+
 		  for i=0 to ubound(Rang)
 		    if Rang(i) = n then
 		      return i
@@ -2157,8 +2157,8 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function getString() As String
 		  return "Figure "+str(idfig)
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -2166,23 +2166,23 @@ Protected Class Figure
 		Function gettransfosto() As transfoslist
 		  dim i as integer
 		  dim tsfl as transfoslist
-		  
+
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i).constructedby <> nil and shapes.item(i).constructedby.oper = 6 then
 		      tsfl.addobject transformation(shapes.item(i).constructedby.data(0))
 		    end if
 		  next
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GridMagnetism(Byref d as BasicPoint, Byref AttractedPoint as Point) As integer
-		  
+
 		  dim td As BasicPoint
 		  dim i as integer
 		  dim currentmagnetism,StrongestMagnetism as integer
-		  
+
 		  td = new BasicPoint(0,0)
 		  for i=0 to somm.count-1
 		    Currentmagnetism=point(somm.item(i)).GridMagnetism(td)
@@ -2193,8 +2193,8 @@ Protected Class Figure
 		    end if
 		  next
 		  return StrongestMagnetism
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -2202,21 +2202,21 @@ Protected Class Figure
 		Function HasCommonPointWithPreceding(k as integer) As Boolean
 		  dim i,j, n as integer
 		  dim ff as figure
-		  
+
 		  for i = 0 to k
 		    n = supfig.rang(i)
 		    ff = supfig.subs.item(n)
-		    
+
 		    if NbPtsCommuns(ff) > 0 then
 		      return true
 		    end if
-		    
+
 		    for j = 0 to ff.PtsSur.count-1
 		      if Somm.getposition(ff.PtsSur.item(j)) <> -1 then
 		        return true
 		      end if
 		    next
-		    
+
 		    for j = 0 to PtsSur.count-1
 		      if ff.somm.getposition(PtsSur.item(j)) <> -1 then
 		        return true
@@ -2235,7 +2235,7 @@ Protected Class Figure
 		  dim t as Boolean
 		  dim i as integer
 		  dim p as point
-		  
+
 		  t = true
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
@@ -2244,7 +2244,7 @@ Protected Class Figure
 		    end if
 		  next
 		  return t
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -2253,7 +2253,7 @@ Protected Class Figure
 		    d.setVariable("i", i)
 		    d.setVariable("p", p)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Function
 	#tag EndMethod
@@ -2261,7 +2261,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub InsererPoints(s as shape)
 		  dim i as integer
-		  
+
 		  if s isa point then
 		    somm.addobject s
 		    s.fig = self
@@ -2271,12 +2271,12 @@ Protected Class Figure
 		      s.points(i).fig = self
 		    next
 		  end if
-		  
+
 		  for i = s.npts to ubound(s.childs)
 		    ptssur.addshape s.childs(i)
 		    s.childs(i).fig = self
 		  next
-		  
+
 		  for i = 0 to ubound(s.constructedshapes)
 		    if s.constructedshapes(i).centerordivpoint then
 		      ptsconsted.addshape s.constructedshapes(i)
@@ -2292,16 +2292,16 @@ Protected Class Figure
 		  // la méthode doit insérer dans l'index toutes les sous-figures qui précèdent subfig(i), en respectant les relations de précédence
 		  // on insérera d'abord celles pour lesquelles MP(1).Col(j,i) >0 et MP(2).Col(j,i) = MP(3).Col(j,i)= ... = 0
 		  //Puis celles pour lesquelles MP(2).Col(j,i) > 0  etc... On procède par récursivité
-		  
+
 		  dim j, h, n, s as integer
 		  dim f1, f2  as figure
-		  
+
 		  n = Mat.nc-1
 		  f1 = subs.item(i)
-		  
+
 		  for h = 0 to n
 		    f2 = subs.item(h)
-		    
+
 		    if rang.indexof(h)=-1 and Mat.Col(h,i) = 1 then
 		      if not( (f1.auto=2 ) and (f2.auto=1) and f1.NbTrueSommCommuns(f2) >=2) then
 		        s = 0
@@ -2315,19 +2315,19 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub invalider()
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count -1
 		    shapes.item(i).invalider
 		  next
-		  
+
 		  invalid = true
 		End Sub
 	#tag EndMethod
@@ -2337,7 +2337,7 @@ Protected Class Figure
 		  dim i, n, m as integer
 		  dim sh, sh0 as shape
 		  dim ff as figure
-		  
+
 		  for i = 0 to shapes.count-1
 		    sh = shapes.item(i)
 		    if  sh.constructedby <> nil then
@@ -2354,7 +2354,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  if m =  0 and  n = 1 then
 		    s = sh0
 		    return true
@@ -2362,8 +2362,8 @@ Protected Class Figure
 		    s = nil
 		    return false
 		  end if
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -2387,7 +2387,7 @@ Protected Class Figure
 		Sub lierpoint(p as point)
 		  dim t as boolean
 		  dim i as integer
-		  
+
 		  if p.pointsur.count = 0 and p.firstcurrentattractingshape <> nil then
 		    t = true
 		    for i = 0 to 2
@@ -2404,11 +2404,11 @@ Protected Class Figure
 		Sub listerassociatedfigures()
 		  dim j,  n0, n1 as integer
 		  dim ff as figure
-		  
+
 		  assocfigs = new FigsList
-		  
+
 		  assocfigs.appendlist associerfigs
-		  
+
 		  n0=-1
 		  n1 =  AssocFigs.count-1
 		  while n0 < n1
@@ -2419,44 +2419,44 @@ Protected Class Figure
 		    n0 = n1
 		    n1 =AssocFigs.count-1
 		  wend
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ListerPrecedences()
 		  Dim i, k, j, n, nc As Integer
-		  
+
 		  n = subs.count
-		  
+
 		  if n <= 1 then
 		    return
 		  End If
-		  
+
 		  CreerMatricePrecedences(n)
-		  
+
 		  if not Mat.Null then
 		    Bouclesasupprimer
 		  end if
-		  
+
 		  nc = Mat.nc
 		  redim MP(-1)
 		  redim MP(nc-1)
 		  for i = 0 to nc-1
 		    MP(i) = new MatrixnD(nc)
 		  next
-		  
+
 		  MP(0) = Mat
 		  for i = 1 to nc-1
 		    MP(i) = Mat*MP(i-1)
 		  next
-		  
+
 		  // MP(k) contient les connexions en k+1 étapes
 		  redim Sommes(-1,-1)
 		  redim Sommes(nc-1,nc-1)
-		  
-		  
+
+
 		  for k = 0 to nc-1
 		    for j = 0 to nc-1
 		      Sommes(k,j)=MP(k).SommCol(j)  //Sommes(k,j) est le nombre de connexions en k+1 étapes aboutissant en sub(j)
@@ -2468,18 +2468,18 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub listersubfigs(p as point)
 		  dim n, h0 as integer
-		  
+
 		  redim rang(-1)
-		  
+
 		  n =Subs.count-1
 		  if n = 0 then
 		    rang.append 0
 		    return
 		  end if
-		  
-		  
+
+
 		  choixsubfig(p, h0)    //on choisit une sous fig de départ Toutes les sous-fig qui la précèdent doivent ...
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2488,19 +2488,19 @@ Protected Class Figure
 		  dim CurrentMagnetism as Integer
 		  dim StrongestMagnetism as Integer
 		  dim NextStrongestMagnetism As Integer
-		  
+
 		  dim  s,s1,s2,s3  as Shape
 		  dim t as BasicPoint
 		  dim i as integer
-		  
-		  
+
+
 		  StrongestMagnetism=0
 		  NextStrongestMagnetism = 0
-		  
+
 		  for i = 0 to shapes.count -1
 		    s = shapes.item(i)
 		    CurrentMagnetism = s.Magnetisme(t,s1,s2,s3)
-		    
+
 		    if CurrentMagnetism >= StrongestMagnetism and s2 <> nil and s2.fig <> self  then
 		      NextStrongestMagnetism = StrongestMagnetism
 		      d=t
@@ -2512,14 +2512,14 @@ Protected Class Figure
 		      StrongestMagnetism=CurrentMagnetism
 		    end if
 		  next
-		  
+
 		  If StrongestMagnetism > 0 then
 		    if  attractingShape = nextattractingshape then
 		      Nextattractingshape = nil
 		    end if
 		  end if
 		  return StrongestMagnetism
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -2527,10 +2527,10 @@ Protected Class Figure
 		Sub Move(M as Matrix)
 		  dim i, j as integer
 		  dim s as shape
-		  
+
 		  Movepoints(M)
 		  Mmove = M
-		  
+
 		  for j = 0 to shapes.count -1
 		    s= shapes.item(j)
 		    s.Mmove = M
@@ -2549,11 +2549,11 @@ Protected Class Figure
 		    for i = 0 to ubound(s.childs)
 		      s.childs(i).updatemacconstructedshapes
 		    next
-		    
+
 		  next
-		  
+
 		  modified = true
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2561,26 +2561,26 @@ Protected Class Figure
 		Sub Movepoints(M as Matrix)
 		  dim j as integer
 		  dim s as shape
-		  
+
 		  for j = 0 to somm.count-1
 		    s = somm.item(j)
 		    Point(s).Move(M)
 		  next
-		  
+
 		  for j = 0 to PtsConsted.count-1
 		    s=PtsConsted.item(j)
 		    if somm.getposition(s) = -1 then
 		      Point(s).Move(M)
 		    end if
 		  next
-		  
+
 		  for j = 0 to PtsSur.count-1
 		    s = PtsSur.item(j)
 		    if somm.getposition(s) = - 1 then
 		      Point(s).Move(M)
 		    end if
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2588,14 +2588,14 @@ Protected Class Figure
 		Function NbPointsLimites() As integer
 		  dim i, n As Integer
 		  dim p as point
-		  
+
 		  for i = 0 to Somm.count-1
 		    p = Point(somm.item(i))
 		    if p.liberte < 2 then
 		      n = n+1
 		    end if
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2604,9 +2604,9 @@ Protected Class Figure
 		Function NbPtsCommuns(f as figure) As integer
 		  dim i,j,n as integer
 		  dim p as point
-		  
+
 		  n = NbSommCommuns(f)
-		  
+
 		  if supfig <> nil and f.supfig <> nil then
 		    for i = 0 to Somm.count-1
 		      for j = 0 to f.Ptssur.count -1
@@ -2618,7 +2618,7 @@ Protected Class Figure
 		        end if
 		      next
 		    next
-		    
+
 		    for i = 0 to f.Somm.count-1
 		      for j = 0 to Ptssur.count -1
 		        p = Point(ptssur.item(j))
@@ -2630,7 +2630,7 @@ Protected Class Figure
 		      next
 		    next
 		  end if
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2638,13 +2638,13 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function NbPtsModif() As integer
 		  dim i as integer
-		  dim p as point 
+		  dim p as point
 		  Redim ListPtsModifs(-1)
 		  //Décompte et liste les sommets de la figure qui ont déjà été modifiés
-		  
+
 		  NbModif = 0
-		  
-		  
+
+
 		  for i = 0 to Somm.count-1
 		    p = point(somm.item(i))
 		    if  p.modified   then
@@ -2652,9 +2652,9 @@ Protected Class Figure
 		      ListPtsModifs.append i
 		    end if
 		  next
-		  
+
 		  return NbModif
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -2662,20 +2662,20 @@ Protected Class Figure
 		Function NbPtsModifSurDr() As integer
 		  dim i as integer
 		  dim dr as shape
-		  
+
 		  Redim ListPtsModifs(-1)
 		  //Décompte et liste les sommets de la forme n°0 qui ont déjà été modifiés
-		  
+
 		  NbModif = 0
 		  Dr = Shapes.item(0)
-		  
+
 		  for i = 0 to ubound(Dr.points)
 		    if Dr.Points(i).modified   then
 		      NbModif = NbModif+1
 		      ListPtsModifs.append i
 		    end if
 		  next
-		  
+
 		  return NbModif
 		End Function
 	#tag EndMethod
@@ -2683,13 +2683,13 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function NbShapes(p as point) As integer
 		  dim i, n as integer
-		  
+
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i).getindexpoint(p) <> -1 then
 		      n = n+1
 		    end if
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2697,10 +2697,10 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function NbSommCommuns(f as figure) As integer
 		  dim i,j,n as integer
-		  
-		  
+
+
 		  n = NbTrueSommCommuns(f)
-		  
+
 		  for i = 0 to Somm.count-1
 		    for j = 0 to f.PtsConsted.count-1
 		      if Somm.item(i) = f.PtsConsted.item(j) then 'and (f.somm.getposition(f.ptsconsted.item(j)) =-1)    then
@@ -2708,7 +2708,7 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
+
 		  for i = 0 to PtsConsted.count-1
 		    for j = 0 to f.Somm.count-1
 		      if PtsConsted.item(i) = f.Somm.item(j) then 'and (somm.getposition(PtsConsted.item(i)) = -1) then
@@ -2716,7 +2716,7 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2726,7 +2726,7 @@ Protected Class Figure
 		  dim i, n as integer
 		  Redim ListSommSur(-1)
 		  dim p as point
-		  
+
 		  // Liste des "sommets sur" modifiables
 		  for i = 0 to Somm.count-1
 		    p = Point(somm.item(i))
@@ -2735,7 +2735,7 @@ Protected Class Figure
 		      ListSommSur.append i
 		    end if
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2745,7 +2745,7 @@ Protected Class Figure
 		  dim i, n as integer
 		  Redim ListSommSur(-1)
 		  dim p as point
-		  
+
 		  // Liste des "sommets sur"  non modifiés  différents du point modifié
 		  for i = 0 to Somm.count-1
 		    if i <> n0 then
@@ -2756,7 +2756,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2766,7 +2766,7 @@ Protected Class Figure
 		  dim i, n as integer
 		  Redim ListSommSur(-1)
 		  dim p as point
-		  
+
 		  // Liste des "sommets sur"  non modifiés  différents des points modifiés
 		  for i = 0 to Somm.count-1
 		    if i <> n1 and i <> n2 then
@@ -2777,7 +2777,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2787,7 +2787,7 @@ Protected Class Figure
 		  dim i, n as integer
 		  Redim ListSommSur(-1)
 		  dim p as point
-		  
+
 		  // Liste des "sommets sur"  non modifiés  différents des points modifiés
 		  for i = 0 to Somm.count-1
 		    if i <> n1 and i <> n2 and i <> n3 then
@@ -2798,7 +2798,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  return n
 		End Function
 	#tag EndMethod
@@ -2807,24 +2807,24 @@ Protected Class Figure
 		Function NbSubFig(p as point) As integer
 		  dim i, n as integer
 		  dim f as figure
-		  
+
 		  for i = 0 to subs.count-1
 		    f = Figure(subs.item(i))
 		    if f.somm.getposition(p) <> -1 or f.PtsConsted.getposition(p) <> - 1 or f.PtsSur.getposition(p) <> -1 then
 		      n = n+1
 		    end if
 		  next
-		  
+
 		  return n
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function NbTrueSommCommuns(f as figure) As integer
 		  Dim i, j, n As Integer
-		  
+
 		  for i = 0 to Somm.count-1
 		    For j = 0 To f.Somm.count-1
 		      If (somm.item(i).forme < 2) And (Somm.item(i) = f.Somm.item(j)) And (f.somm.item(j).constructedby = Nil) Then
@@ -2832,9 +2832,9 @@ Protected Class Figure
 		      end if
 		    Next
 		  next
-		  
+
 		  Return n
-		  
+
 		  'La condition f.somm.item(j).constructedby = Nil  a été ajoutée le 8-4-2022
 		End Function
 	#tag EndMethod
@@ -2843,38 +2843,38 @@ Protected Class Figure
 		Function OKToInsert(j as integer) As Boolean
 		  dim i as integer
 		  dim t as Boolean
-		  
-		  
-		  
+
+
+
 		  t = true
-		  
+
 		  for i = 0 to Mat.nc-1                              //Toutes les sous-fig qui précèdent sub(j) ont-elles été insérées?
 		    if  Mat.Col(i,j) = 1 then
 		      t = (t and rang.indexof(i) <> -1)
 		    end if
 		  next
-		  
+
 		  return t
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Phase0choixpointsfixes()
-		  
+
 		  dim i,  k, n as integer
 		  dim p as point
-		  
-		  
-		  
+
+
+
 		  // On dresse la liste des sommets de liberte nulle qui ne sont ni construits  par cette sous-figure ni modifiés
 		  // Ces points ne pourront être modifiés, on devra les prendre comme points fixes des matrices à calculer
 		  //Points de liberte nulle (routine "mobility") :
 		  //points d'intersection,  sommets de formes std ou sommets punaisés,
 		  // points construits par division, centre, image tsf, point fixe tsf
 		  // points ayant un prédécesseur (oper 3 ou 10) de liberté nulle
-		  
+
 		  // Un point sommet de l'angle droit de deux triangles rectangles ne peut être modifiable
-		  
+
 		  for i = 0 to somm.count-1
 		    p = somm.item(i)
 		    if p.forme = 2 and p.pointsur.item(0).modified and p.pointsur.item(1).modified then
@@ -2895,9 +2895,9 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  NbUnModif = 0
-		  
+
 		  for i = 0 to somm.count-1
 		    p =somm.item(i)
 		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pmobi ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
@@ -2907,12 +2907,12 @@ Protected Class Figure
 		      'end if
 		    end if
 		  next
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2920,35 +2920,35 @@ Protected Class Figure
 		Sub Phase1choixpointsfixes()
 		  // On choisit les points appartenant au plus grand nombre de sous-figures en les classant par valeur de distance décroissante
 		  //du premier point modifié
-		  
-		  
+
+
 		  dim i as integer
 		  dim p, pmob as point
-		  
+
 		  redim nff(-1)
 		  redim nff(somm.count-1)
-		  
-		  
-		  
+
+
+
 		  // on recense les points  non modifiés et modifiables  absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
 		  pmob = supfig.pmobi
-		  
+
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
 		    if (p.id <> pmob.id) and (PointsFixes.IndexOf(i) = -1) and  (PtsConsted.GetPosition(p) = -1) and (ListPtsModifs.indexof(i)=-1) then
 		      nff(i)=1
 		    end if
 		  next
-		  
+
 		  redim ptfx0(-1)
-		  
+
 		  classementptsfix(1)
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2957,30 +2957,30 @@ Protected Class Figure
 		  dim i, j, k, j0, j1 as integer
 		  dim p as point
 		  dim ep, np, bp1, bp2 as BasicPoint
-		  
+
 		  // on adjoint aux candidats points fixes les sommets pointssur  modifiables
-		  
-		  
+
+
 		  for i = 0  to  ubound(ptfx0)
 		    p = point(somm.item(ptfx0(i)))
 		    if supfig.ptssur.getposition(p) <> -1 or  (p.guide <>nil and  p.guide <> p) then
 		      PointsFixes.append ptfx0(i)
 		    end if
 		  next
-		  
-		  
+
+
 		  //puis  on adjoint aux candidats points fixes les autres sommets  modifiables
-		  
+
 		  for i = 0   to  ubound(ptfx0)
 		    if point(somm.item(ptfx0(i))).pointsur.count = 0 and pointsfixes.indexof(ptfx0(i)) = -1  then
 		      PointsFixes.append ptfx0(i)
 		    end if
 		  next
-		  
-		  
-		  
+
+
+
 		  // on enlève alors les candidats points fixes alignés avec un précédent et un point modifié
-		  
+
 		  for j = ubound(pointsfixes) downto NbUnmodif+1
 		    j0 = pointsfixes(j)
 		    bp1 = Point(somm.item(j0)).bpt
@@ -3000,12 +3000,12 @@ Protected Class Figure
 		      i = i+1
 		    wend
 		  next
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3016,24 +3016,24 @@ Protected Class Figure
 		  dim tsf as transformation
 		  dim sh as shape
 		  dim t  as Boolean // Le choix de cette figure est-il valide pour un mouvement?
-		  
-		  
+
+
 		  // on ne peut pas déplacer une figure dont une forme est image d'une autre par une transfo
 		  // sauf si
 		  // la source et le support de la transfo sont dans la même figure que l'image
 		  //ou si cette forme est une paraperp et on ne tourne pas ni ne retourne (t1)
 		  //ou si la transfo est une translation et le mouvement est glisser (t2)
-		  
+
 		  t = true
-		  
+
 		  for  i = 0 to ubound(constructioninfos) // on considère toutes les tsf qui appliquent au moins une forme dans self
 		    ffs = constructioninfos(i).sourcefig
 		    tsf = constructioninfos(i).tsf
-		    
+
 		    if  (( ffs <> self)  or (tsf.supp.fig <> self))  then  //on ne s'intéresse qu'aux cas où la figure source ou la figure du support de tsf diffèrent de self
 		      // il faut chercher des conditions qui interdisent le mouvement c'est-à-dire tester si on est dans une exception
 		      // exception notamment si tsf est une translation, l'oper est un glissement et la source est dans self
-		      
+
 		      if not (tsf.type = 1 and op isa glisser and ffs = self) and not (tsf.type = 2 and op isa tourner and tourner(op).c = tsf.supp.points(0).bpt and  ffs = self) then
 		        for j = 0 to shapes.count-1
 		          // test des formes de self
@@ -3044,10 +3044,10 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  // on ne peut pas non plus déplacer une figure ff contenant une forme qui supporte une tsf dont l'image et la source sont égales
 		  // sauf si la figure de l'image coïncide avec ff
-		  
+
 		  for i = 0 to shapes.count-1
 		    sh = shapes.item(i)
 		    t = t and sh.PossibleDrag
@@ -3055,12 +3055,12 @@ Protected Class Figure
 		      t = t and sh.childs(j).PossibleDrag
 		    next
 		  next
-		  
+
 		  return t
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -3068,18 +3068,18 @@ Protected Class Figure
 		Function precede(f as figure) As Boolean
 		  Dim s1, s2 As shape
 		  dim i, j as integer
-		  
+
 		  If f.Auto = 6 and self.auto <> 6 Then
 		    Return True
 		  end if
-		  
+
 		  for i = 0 to ptsconsted.count-1
 		    if f.somm.getposition(ptsconsted.item(i)) <> -1 then
 		      return true
 		    end if
 		  Next
-		  
-		  for i = 0 to ptsconsted.count-1 
+
+		  for i = 0 to ptsconsted.count-1
 		    s1 = ptsconsted.item(i)
 		    for j = 0 to f.somm.count-1
 		      s2 = f.somm.item(j)
@@ -3088,7 +3088,7 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
+
 		  for i = 0 to shapes.count -1
 		    s1 = shapes.item(i)
 		    for j = 0 to f.shapes.count-1
@@ -3098,26 +3098,26 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
+
 		  if (auto = 2 or auto = 3 or auto = 5) and f.auto = 4 and NbTrueSommCommuns(f) >= 3 then
 		    return true
 		  end if
-		  
+
 		  if auto = 1 and f.auto <> 3 and NbTrueSommCommuns(f) >= 2  then
 		    return true
 		  end if
-		  
+
 		  if auto = 3 and f.auto = 1 and NbTrueSommCommuns(f) >= 2  then
 		    return not HasPointOnConstructedshape (f)
 		  end if
-		  
+
 		  if auto = 1 and f.auto = 3 and NbTrueSommCommuns(f) >= 2  then
 		    return not  f.HasPointOnConstructedShape(self)
 		  end if
-		  
+
 		  Return false
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -3127,7 +3127,7 @@ Protected Class Figure
 		  dim p as point
 		  dim ep, np as basicpoint
 		  dim s as shape
-		  
+
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
 		    If Not p.modified Then
@@ -3146,10 +3146,10 @@ Protected Class Figure
 		      p.modified = True // doit être marqué modifié même s'il n'a pas bougé. (Cas des sommets d'arcs dans un angle de polygone)
 		    End If
 		  next
-		  
-		  
+
+
 		  EndQQupdateshapes
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -3160,9 +3160,9 @@ Protected Class Figure
 		    d.setVariable("np",np)
 		    d.setVariable("s", s)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
+
 		End Sub
 	#tag EndMethod
 
@@ -3170,7 +3170,7 @@ Protected Class Figure
 		Sub reconstruct()
 		  dim i, j  as integer
 		  dim diam as double
-		  
+
 		  for i = 0 to shapes.count-1
 		    diam = shapes.item(i).computediam
 		    if diam <= epsilon then
@@ -3190,7 +3190,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub removeconstructedby(ff as figure, tsff as transformation)
 		  dim i as integer
-		  
+
 		  for i =  ubound(constructioninfos) downto 0
 		    if constructioninfos(i).sourcefig = ff and constructioninfos(i).tsf = tsff then
 		      constructioninfos.remove i
@@ -3201,23 +3201,23 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function replacerpoint(p as point) As Boolean
-		  
+
 		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pmobi then
 		    unmodify p
 		    return true
 		  else
 		    return false
 		  end if
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Restore()
 		  dim i as integer
-		  
-		  
+
+
 		  if ubound(oldbpts) > -1 then
 		    Restorebpt
 		    RestoreLab
@@ -3227,9 +3227,9 @@ Protected Class Figure
 		      Figure(subs.item(i)).restore
 		    next
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3238,8 +3238,8 @@ Protected Class Figure
 		  dim i, j, i0 as integer
 		  dim p as point
 		  dim sh as shape
-		  
-		  
+
+
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
 		    p.moveto oldbpts(i)
@@ -3249,7 +3249,7 @@ Protected Class Figure
 		      p.valider
 		    end if
 		  next
-		  
+
 		  i0 = 0
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Lacet  then
@@ -3267,7 +3267,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  for i = 0 to PtsConsted.count-1
 		    p = point(PtsConsted.item(i))
 		    if somm.getposition(p) = -1 then
@@ -3279,7 +3279,7 @@ Protected Class Figure
 		      p.valider
 		    end if
 		  next
-		  
+
 		  for i = 0 to PtsSur.count-1
 		    p = point(PtsSur.item(i))
 		    p.moveto oldptssur(i)
@@ -3292,7 +3292,7 @@ Protected Class Figure
 		      p.valider
 		    end if
 		  next
-		  
+
 		  //Problème avec les cercles et calcul des exe et ctrl quand on se limite à exécuter les instructions qui suivent pour les figures et non les sous-figures!
 		  //Pas compris pourquoi...
 		  for i = 0 to shapes.count-1
@@ -3305,10 +3305,10 @@ Protected Class Figure
 		      sh.coord.CreateExtreAndCtrlPoints(sh.ori)
 		    end if
 		  next
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3321,7 +3321,7 @@ Protected Class Figure
 		  dim Inter as Intersec
 		  dim M as Matrix
 		  dim s as shape
-		  
+
 		  List = EL.XQL("Somm")
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
@@ -3336,7 +3336,7 @@ Protected Class Figure
 		      end if
 		    next
 		  end if
-		  
+
 		  List = EL.XQL("PtsConsted")
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
@@ -3351,7 +3351,7 @@ Protected Class Figure
 		      end if
 		    next
 		  end if
-		  
+
 		  EL1 = XMLElement(EL.Firstchild)
 		  for i = 0 to shapes.count-1
 		    EL2 = XMLElement(EL1.Child(i))
@@ -3371,7 +3371,7 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  List = EL.XQL("PtsSur")
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
@@ -3386,9 +3386,9 @@ Protected Class Figure
 		      end if
 		    next
 		  End If
-		  
+
 		  Restoretsf
-		  
+
 		  List = EL.XQL("PtsSur")
 		  if List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
@@ -3399,13 +3399,13 @@ Protected Class Figure
 		      elseif p.pointsur.count = 2 then
 		        n0 = Val(EL3.GetAttribute("Side0"))
 		        n1 = Val(EL3.GetAttribute("Side1"))
-		        inter= p.GetInter 
+		        inter= p.GetInter
 		        inter.update(p)
 		      end if
 		    next
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3413,7 +3413,7 @@ Protected Class Figure
 		Sub RestoreLab()
 		  dim i, j as integer
 		  dim la as Etiq
-		  
+
 		  for i = 0 to shapes.count-1
 		    for j = 0 to shapes.item(i).Labs.count-1
 		      la =shapes.item(i).labs.item(j)
@@ -3424,8 +3424,8 @@ Protected Class Figure
 		      shapes.item(i).updatelabel(1)
 		    next
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3433,24 +3433,24 @@ Protected Class Figure
 		Sub RestoreMmove()
 		  dim i as integer
 		  dim M as Matrix
-		  
+
 		  M = new Matrix(1)
-		  
+
 		  Mmove = M
-		  
+
 		  for i = 0 to somm.count-1
 		    somm.item(i).Mmove = M
 		  next
-		  
+
 		  for i = 0 to PtsConsted.count-1
 		    ptsconsted.item(i).Mmove = M
 		  next
-		  
+
 		  for i = 0 to PtsSur.count-1
 		    PtsSur.item(i).Mmove = M
 		  next
-		  
-		  
+
+
 		  for i = 0 to shapes.count-1
 		    shapes.item(i).Mmove = M
 		  next
@@ -3462,28 +3462,28 @@ Protected Class Figure
 		  dim i, j as integer
 		  dim p as point
 		  dim tsf as transformation
-		  
-		  
+
+
 		  for i = 0 to somm.count-1
 		    for j = 0 to somm.item(i).tsfi.count-1
 		      somm.item(i).tsfi.item(j).restore
 		    next
 		  next
-		  
+
 		  for i = 0 to PtsConsted.count-1
 		    for j = 0 to ptsconsted.item(i).tsfi.count-1
 		      ptsconsted.item(i).tsfi.item(j).restore
 		    next
 		  next
-		  
+
 		  for i = 0 to PtsSur.count-1
 		    p = point(PtsSur.item(i))
 		    for j = 0 to p.tsfi.count-1
 		      p.tsfi.item(j).restore
 		    next
 		  next
-		  
-		  
+
+
 		  for i = 0 to shapes.count-1
 		    for j = 0 to shapes.item(i).tsfi.count-1
 		      tsf = shapes.item(i).tsfi.item(j)
@@ -3492,11 +3492,11 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3511,15 +3511,15 @@ Protected Class Figure
 		  dim p as point
 		  dim ci as figconstructioninfo
 		  dim f as figure
-		  
+
 		  for i =  subs.count-1 downto 0
 		    f = Figure(subs.item(i))
 		    if f.isempty then
 		      subs.removeobject subs.item(i)
 		    end if
 		  next
-		  
-		  
+
+
 		  for i = somm.count-1 downto 0
 		    if ubound(point(somm.item(i)).parents) = -1 then
 		      p = point(somm.item(i))
@@ -3531,11 +3531,11 @@ Protected Class Figure
 		      end if
 		    end if
 		  next
-		  
+
 		  if shapes.count = 0 then
 		    return
 		  end if
-		  
+
 		  figs = new figslist
 		  if shapes.count = 1  then
 		    figs.addobject self
@@ -3548,7 +3548,7 @@ Protected Class Figure
 		          t = true
 		        end if
 		      next
-		      
+
 		      if not t then
 		        sfig = new Figure(s)
 		        List0 = new FigsList
@@ -3565,8 +3565,8 @@ Protected Class Figure
 		      end if
 		    next
 		  end if
-		  
-		  
+
+
 		  for k = 0 to CurrentContent.TheTransfos.count -1
 		    tsf = CurrentContent.TheTransfos.item(k)
 		    t = false
@@ -3584,7 +3584,7 @@ Protected Class Figure
 		        t = true
 		      end if
 		    next
-		    
+
 		    if t then
 		      for i = 0 to tsf.constructedshapes.count-1
 		        s2 = tsf.constructedshapes.item(i)
@@ -3596,13 +3596,13 @@ Protected Class Figure
 		      next
 		    end if
 		  next
-		  
+
 		  for i = 0 to figs.count-1
 		    Figure(figs.item(i)).idfig = -1
 		    CurrentContent.TheFigs.addobject figs.item(i)
 		  next
-		  
-		  
+
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -3612,7 +3612,7 @@ Protected Class Figure
 		    d.setVariable("t", t)
 		    d.setVariable("tsf", tsf)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Sub
 	#tag EndMethod
@@ -3621,38 +3621,38 @@ Protected Class Figure
 		Sub Save()
 		  dim i, j as integer
 		  dim s as shape
-		  
+
 		  redim invalidpts(-1)
 		  redim invalidptscsted(-1)
 		  redim invalidptssur(-1)
-		  
-		  
+
+
 		  if ubound(oldbpts) <> -1 then
 		    return
 		  end if
-		  
+
 		  for i = 0 to somm.count-1
 		    oldbpts.append point(somm.item(i)).bpt
 		    if point(somm.item(i)).invalid then
 		      InvalidPts.append i
 		    end if
 		  next
-		  
+
 		  for i = 0 to ptsconsted.count-1
 		    oldptscsted.append point(ptsconsted.item(i)).bpt
 		    if point(ptsconsted.item(i)).invalid then
 		      InvalidPtsCsted.append i
 		    end if
 		  next
-		  
-		  
+
+
 		  for i = 0 to ptssur.count-1
 		    oldptssur.append point(ptssur.item(i)).bpt
 		    if point(ptssur.item(i)).invalid then
 		      InvalidPtssur.append i
 		    end if
 		  next
-		  
+
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Lacet  or shapes.item(i) isa secteur  then
 		      s = shapes.item(i)
@@ -3663,26 +3663,26 @@ Protected Class Figure
 		      next
 		    end if
 		  next
-		  
-		  
+
+
 		  for i = 0 to subs.count - 1
 		    Figure(subs.item(i)).save
 		  next
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetConstructedBy(f as figure, tsf as transformation)
 		  dim i as integer
-		  
+
 		  if f = Nil then
 		    return
 		  end if
-		  
+
 		  for i = 0 to ubound(constructioninfos)
 		    if constructioninfos(i).sourcefig = f and constructioninfos(i).tsf = tsf then
 		      return
@@ -3690,7 +3690,7 @@ Protected Class Figure
 		  next
 		  ConstructionInfos.append  new FigConstructionInfo(f, tsf)
 		  f.Constructedfigs.addobject self
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -3698,9 +3698,9 @@ Protected Class Figure
 		    d.setVariable("f",f)
 		    d.setVariable("tsf",tsf)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
+
 		End Sub
 	#tag EndMethod
 
@@ -3709,7 +3709,7 @@ Protected Class Figure
 		  dim i as integer
 		  dim s as shape
 		  dim tsf as transformation
-		  
+
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
 		    if s.constructedby <> nil and s.constructedby.oper = 6 then
@@ -3717,15 +3717,15 @@ Protected Class Figure
 		      tsf.setconstructioninfos2(s.constructedby.shape,s)
 		    end if
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function standard() As Boolean
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count -1
 		    if shapes.item(i).std then
 		      return true
@@ -3738,8 +3738,8 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
 		  Dim M As Matrix
-		  
-		  
+
+
 		  NbUnModif = 0
 		  select case auto
 		  case -1
@@ -3776,8 +3776,8 @@ Protected Class Figure
 		      Return True
 		    End If
 		  end select
-		  
-		  
+
+
 		  if M = nil or M.v1 = nil then
 		    if auto = 0 or auto > 3 then
 		      QQupdateshapes
@@ -3799,7 +3799,7 @@ Protected Class Figure
 		    end if
 		    return checksimaff(M)
 		  end if
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -3808,10 +3808,10 @@ Protected Class Figure
 		    d.setVariable("M",M)
 		    d.setVariable("tobereconstructed", tobereconstructed)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
-		    
+
+
 		End Function
 	#tag EndMethod
 
@@ -3822,17 +3822,17 @@ Protected Class Figure
 		  dim f1, f2  as figure
 		  dim s1, s2 as shape
 		  dim t as boolean
-		  
+
 		  t = false
 		  for i = 0 to Mat.nc-1
 		    if M1.col(i,i) > 0 Then
 		      pos.append i
 		    end if
 		  next
-		  
-		  
+
+
 		  pos2.append pos(0)
-		  
+
 		  for i = 1 to n0-1
 		    j = 1
 		    while Mat.col(pos2(i-1), pos(j)) = 0
@@ -3840,7 +3840,7 @@ Protected Class Figure
 		    wend
 		    pos2.append pos(j)
 		  next
-		  
+
 		  if n0 = 2 then
 		    f1 = subs.item(pos(0))
 		    f2 = subs.item(pos(1))
@@ -3852,7 +3852,7 @@ Protected Class Figure
 		      t = false
 		    end if
 		  end if
-		  
+
 		  if not t then
 		    FusionnerSubfigs(pos2)
 		    CreerMatricePrecedences(subs.count)
@@ -3868,10 +3868,10 @@ Protected Class Figure
 		  dim i as integer
 		  dim ep, np as BasicPoint
 		  dim f as figure
-		  
+
 		  getoldnewpos(p,ep,np)
-		  
-		  
+
+
 		  p.modified = false
 		  p.moveto ep
 		  for i = 0 to ubound(p.constructedshapes)
@@ -3886,28 +3886,28 @@ Protected Class Figure
 		  Dim t  As Boolean
 		  dim i as integer
 		  dim sf as figure
-		  
+
 		  if p = nil then
 		    return false
 		  end if
-		  
+
 		  pmobi = p  'p est le point guide du point sur lequel on a cliqué
 		  t = true
-		  
+
 		  listersubfigs(p)
 		  for i = 0 to ubound(rang)
 		    sf = subs.item(rang(i))
 		    t = sf.subfigupdate and t
 		  next
 		  return t
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub updatemacconstructedshapes()
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count-1
 		    shapes.item(i).updatemacconstructedshapes
 		  next
@@ -3920,8 +3920,8 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub updatematrixduplicatedshapes(M as Matrix)
 		  dim i as integer
-		  
-		  
+
+
 		  for i = 0 to shapes.count-1
 		    shapes.item(i).updatematrixduplicatedshapes(M)
 		  next
@@ -3940,7 +3940,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub updateoldM()
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count-1
 		    shapes.item(i).updateoldM
 		  next
@@ -3960,7 +3960,7 @@ Protected Class Figure
 		Sub updateptsconsted(M as Matrix)
 		  Dim i As Integer
 		  dim p as point
-		  
+
 		  if shapes.item(0) isa arc and not shapes.item(0).invalid then
 		    arc(shapes.item(0)).computearcangle
 		  end if
@@ -3976,7 +3976,7 @@ Protected Class Figure
 		    p.modified = true
 		    p.updateshape
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -3984,7 +3984,7 @@ Protected Class Figure
 		Sub UpdatePtsSur(M as Matrix)
 		  Dim i As Integer
 		  dim p as point
-		  
+
 		  'Les pointssur doivent être considérés comme modifiés même si le déplacement est faible,(pour la mise à jour des formes dont ils sont sommets).
 		  for i = 0 to ptssur.count-1
 		    p = point(ptssur.item(i))
@@ -4006,25 +4006,25 @@ Protected Class Figure
 		Sub Updateshapes()
 		  dim i as integer
 		  dim s as shape
-		  
+
 		  for i = 0 to shapes.count-1
 		    s = shapes.item(i)
 		    if not s.invalid then
 		      s.updateshape
 		      s.modified = true
 		    end if
-		    
+
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Updateshapes(M as Matrix)
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Circle  then
 		      Circle(shapes.item(i)).UpdatePtsConsted
@@ -4032,9 +4032,9 @@ Protected Class Figure
 		    shapes.item(i).updateshape(M)
 		    shapes.item(i).modified = true
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -4042,8 +4042,8 @@ Protected Class Figure
 		Sub updatesomm(M as Matrix)
 		  dim i as integer
 		  dim p as Point
-		  
-		  
+
+
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
 		    p.Transform(M)
@@ -4052,26 +4052,26 @@ Protected Class Figure
 		      p.modified = true    //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		    end if
 		  next
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub valider()
 		  dim i as integer
-		  
+
 		  for i = 0 to shapes.count -1
 		    shapes.item(i).valider
 		  next
-		  
+
 		  invalid = false
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -4079,53 +4079,53 @@ Protected Class Figure
 		Sub XMLPutInContainer(k as integer, Doc As XMLDocument)
 		  dim EL, EL1, Temp as XMLElement
 		  dim i as integer
-		  
+
 		  if k = 0 and currentcontent.drapabort then
 		    return
 		  end if
-		  
+
 		  if k = 0  then
 		    EL = CurrentContent.FigsDeleted
 		  else
 		    EL = CurrentContent.FigsCreated
 		  end if
-		  
+
 		  if EL.childcount = 0 then
 		    Temp =  Doc.CreateElement(Dico.Value("Forms"))
 		    EL.appendchild Temp
 		  end if
-		  
+
 		  EL1 = XMLElement(EL.FirstChild)
-		  
+
 		  for i = 0 to shapes.count-1
 		    EL1.appendchild shapes.item(i).XMLPutInContainer(Doc)
 		  next
 		  for i = 0 to PtsConsted.count-1
 		    EL1.appendchild PtsConsted.item(i).XMLPutInContainer(Doc)
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
