@@ -64,6 +64,17 @@ Protected Class Macro
 		    s.tsfi.item(ifmac.num).setfpsp(s)
 		    s.tsfi.item(ifmac.num).M =  ifm.M
 		  end if
+		  
+		  Exception err
+		    var d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("m", m)
+		    d.setVariable("s", s)
+		    d.setVariable("nbp", nbp)
+		    d.setVariable("ifm", ifm)
+		    err.Message = err.message + d.getString
+		    Raise err
 		End Sub
 	#tag EndMethod
 
