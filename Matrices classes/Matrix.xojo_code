@@ -5,10 +5,10 @@ Protected Class Matrix
 		  dim i as integer
 		  dim t as boolean
 		  dim M as Matrix
-		  
+
 		  t = true
 		  M = self
-		  
+
 		  if not  S2 isa Point then
 		    for i= 0 to s1.npts-1
 		      s2.childs(i).bpt = M*(s1.childs(i).bpt)   //Avant 19/9/12: point(s2.childs(i)).moveto M*Point(s1.childs(i)).bpt
@@ -33,17 +33,17 @@ Protected Class Matrix
 		    s2.Modified = true
 		  end if
 		  s2.endmove
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Conjugate(M as Matrix) As Matrix
 		  // Calcul de M*self*M^-1
-		  
+
 		  dim M1 as Matrix
-		  
+
 		  if M.det = 0 then
 		    return nil
 		  else
@@ -90,8 +90,8 @@ Protected Class Matrix
 		  x = val(Tmp.GetAttribute("Data20"))
 		  y = val(Tmp.GetAttribute("Data21"))
 		  v3 = new BasicPoint(x,y)
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -104,7 +104,7 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Equal(M as Matrix) As Boolean
 		  dim t as boolean
-		  
+
 		  t = true
 		  t = t and (v1.x = M.v1.x)
 		  t = t and (v1.y = M.v1.y)
@@ -112,9 +112,9 @@ Protected Class Matrix
 		  t = t and (v2.y = M.v2.y)
 		  t = t and (v3.x = M.v3.x)
 		  t = t and (v3.y = M.v3.y)
-		  
+
 		  return t
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -122,11 +122,11 @@ Protected Class Matrix
 		Function FixPt() As BasicPoint
 		  dim MId, M1 as Matrix
 		  dim Pt as BasicPoint
-		  
+
 		  MId = new Matrix(1)
 		  M1 = self - MId
 		  M1 = M1.inv
-		  
+
 		  if M1 <> nil then
 		    pt = new BasicPoint(0,0)
 		    return  M1*pt
@@ -139,14 +139,14 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function getString() As String
 		  dim s as String
-		  
+
 		  s = "v1 "+ v1.getString+EndOfLine
 		  s = s+ "v2 "+ v2.getString+EndOfLine
 		  s = s+ "v3 "+ v3.getString+EndOfLine
 		  return s
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -154,7 +154,7 @@ Protected Class Matrix
 		Function inv() As Matrix
 		  dim u1,u2,u3, w1, w2, w3 as BasicPoint
 		  dim delta as double
-		  
+
 		  delta = det
 		  if delta <> 0 then
 		    delta = 1/delta
@@ -192,7 +192,7 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(v as BasicPoint) As BasicPoint
 		  return new BasicPoint(v1.x*v.x+v2.x*v.y+v3.x,v1.y*v.x+v2.y*v.y+v3.y)
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -205,7 +205,7 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(ByRef M As Matrix) As Matrix
 		  dim u1, u2, u3 , w1, w2, w3 as BasicPoint
-		  
+
 		  w1 = M.v1
 		  w2 = M.v2
 		  w3 = M.v3
@@ -213,14 +213,14 @@ Protected Class Matrix
 		  u2 = new BasicPoint(v1.x*w2.x+v2.x*w2.y, v1.y*w2.x+v2.y*w2.y)
 		  u3 = self*w3
 		  return new Matrix(u1,u2,u3)
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("M",M)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Function
 	#tag EndMethod
@@ -228,21 +228,21 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(r as double) As matrix
 		  dim u1, u2, u3 as basicPoint
-		  
+
 		  u1 = v1.Mulp(r)
 		  u2 = v2.Mulp(r)
 		  u3 = v3.Mulp(r)
-		  
+
 		  return new Matrix(u1, u2, u3)
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("r", r)
 		    Raise err
-		    
-		    
+
+
 		End Function
 	#tag EndMethod
 
@@ -264,7 +264,7 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Function Rapport() As double
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -277,9 +277,9 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Translater(p as Basicpoint) As Matrix
 		  // On suppose que la matrice donnée admet l'origine comme point fixe.
-		  
+
 		  dim T as TranslationMatrix
-		  
+
 		  T = new TranslationMatrix(p)
 		  return Conjugate(T)
 		End Function
@@ -288,11 +288,11 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function TranslaterOrigine() As Matrix
 		  dim u1, u2, u3 as BasicPoint
-		  
+
 		  u1 = v1
 		  u2 = v2
 		  u3 = new BasicPoint(0,0)
-		  
+
 		  return new Matrix(u1,u2,u3)
 		End Function
 	#tag EndMethod
@@ -310,22 +310,22 @@ Protected Class Matrix
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

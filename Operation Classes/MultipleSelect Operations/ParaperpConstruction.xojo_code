@@ -7,7 +7,7 @@ Inherits ShapeConstruction
 		  colsep = true
 		  OpId = 1
 		  NumberOfItemsToSelect = 3
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -17,7 +17,7 @@ Inherits ShapeConstruction
 		  dim pt as point
 		  dim EL as XMLElement
 		  dim sh as shape
-		  
+
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  constructor (fa,fo)
@@ -30,19 +30,19 @@ Inherits ShapeConstruction
 		  currentshape.constructedby.data.append side
 		  currentshape.constructedby.data.append nil
 		  currentshape.constructedby.data.append ori
-		  
+
 		  'Positionnement aisé du premier point
 		  EL =XMLElement(EL0.Child(0))
 		  Mid = val(XMLElement(EL.Child(0)).GetAttribute("Id"))  //Ids du premier point
 		  rid = MExe.GetRealId(Mid)
 		  pt = point(objects.GetShape(rid))
 		  currentshape.substitutepoint(pt,currentshape.points(0))
-		  
+
 		  'Deuxième point
 		  'a) Calculer la direction de la droite/segment
 		  Droite(currentshape).constructshape
 		  currentshape.updatecoord
-		  
+
 		  'b) Positionner le deuxième point
 		  ' si fo > 3 then  'pas de probleme rien à changer à ce qui précède : une droite n'a qu'un second point caché
 		  if fo <3 then
@@ -55,7 +55,7 @@ Inherits ShapeConstruction
 		    BiB1 =  BiBPoint(currentshape.coord)
 		    If Val(EL.GetAttribute(Dico.Value("NrForm")))  <> 1 Then
 		      pt.moveto pt.bpt.projection(BiB1)
-		      
+
 		      'b2) si l'extrémité est un point sur, il faut repositionner l'extrémité
 		    else
 		      EL = XMLElement(EL.Child(0))
@@ -70,7 +70,7 @@ Inherits ShapeConstruction
 		    currentshape.substitutepoint(pt,currentshape.points(1))
 		    'currentshape.Points(1).location(0) = pt.bpt.location(sh, 0)
 		  end if
-		  
+
 		  currentshape.endconstruction
 		End Sub
 	#tag EndMethod
@@ -80,13 +80,13 @@ Inherits ShapeConstruction
 		  Dim ol As Objectslist
 		  Dim p As BasicPoint
 		  Dim n As Integer
-		  
-		  
-		  
+
+
+
 		  if famille <> 1 then
 		    return
 		  end if
-		  
+
 		  p = new BasicPoint(0,0)
 		  ol = CurrentContent.TheObjects
 		  select case forme
@@ -112,11 +112,11 @@ Inherits ShapeConstruction
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedPoint = 0
 		  WorkWindow.setcross
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -124,7 +124,7 @@ Inherits ShapeConstruction
 		Sub DoOperation()
 		  Dim tsf As transformation
 		  dim u, v as BasicPoint
-		  
+
 		  currentshape.setconstructedby(Refe,op)
 		  currentshape.constructedby.data.append index(iobj)  'numéro de côté, sinon 0 pourquoi pas -1?
 		  tsf = refe.gettsf(0,index(iobj))
@@ -134,7 +134,7 @@ Inherits ShapeConstruction
 		  currentshape.constructedby.data.append tsf
 		  tsf.constructedshapes.addshape currentshape
 		  refe.tsfi.addObject tsf
-		  
+
 		  BiB2 = BiBPoint(currentshape.coord.GetBiBSide(0))
 		  u = BiB1.second-BiB1.first
 		  v = BiB2.second-BiB2.first
@@ -146,7 +146,7 @@ Inherits ShapeConstruction
 		  currentshape.constructedby.data.append ori  // ajouté le 15 juin 2014 (jour de la Trinité) pour les macros
 		  super.dooperation
 		  currentshape.setfigconstructioninfos
-		  
+
 		  'Infos de construction d'une paraperp:
 		  //constructedby.shape: droite source
 		  //constructedby.oper: 1 (dr //)  ou 2 (dr. perp)
@@ -174,9 +174,9 @@ Inherits ShapeConstruction
 		Sub MouseMove(p as BasicPoint)
 		  Dim magneticD As BasicPoint
 		  dim magnetism as Integer
-		  
+
 		  ReinitAttraction
-		  
+
 		  Select Case currentitemtoset
 		  Case 1
 		    Refe = GetBiPoint(p)
@@ -205,23 +205,23 @@ Inherits ShapeConstruction
 		      End If
 		    End If
 		  End Select
-		  
+
 		  ShowAttraction
 		  can.refreshbackground
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MouseWheel()
-		  
-		  
+
+
 		  if visible <> nil and visible.count <> 0 then
 		    nobj = visible.count
 		    iobj = (iobj+1) mod nobj
@@ -232,7 +232,7 @@ Inherits ShapeConstruction
 		    CurrentHighlightedShape.HighLight
 		    can.refreshbackground
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -240,10 +240,10 @@ Inherits ShapeConstruction
 		Sub Paint(g As Graphics)
 		  operation.paint(g)
 		  display = ""
-		  
+
 		  select case currentitemtoset
 		  case 1
-		    
+
 		    if CurrentAttractingShape = nil then
 		      display = choose + asegmentoraline
 		    else
@@ -254,7 +254,7 @@ Inherits ShapeConstruction
 		        display = sur + this (currentattractingshape.gettype) +"?"
 		      end if
 		    end if
-		    
+
 		  case 2, 3
 		    if CurrentAttractingShape = nil then
 		      display = fix + apoint
@@ -269,15 +269,15 @@ Inherits ShapeConstruction
 		      end if
 		    end if
 		  end select
-		  
-		  
+
+
 		  showattraction
 		  if currentshape <> nil and constructed then
 		    currentshape.paintall(g)
 		  end if
-		  
+
 		  Help g, display
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -285,16 +285,16 @@ Inherits ShapeConstruction
 		Function SetItem(s as shape) As Boolean
 		  dim magneticD, p As BasicPoint   // s est identique à "currentshape" (voir "shapeconstruction")
 		  dim curshape  as Point
-		  
+
 		  currentshape = s
-		  
+
 		  if Refe = nil then
 		    return false
 		  end
-		  
+
 		  p = can.mouseuser
 		  magneticD = new BasicPoint(0,0)
-		  
+
 		  select case  currentitemtoset
 		  case 1
 		    if forme >2 then
@@ -334,21 +334,21 @@ Inherits ShapeConstruction
 		    curshape.mobility
 		    ReinitAttraction
 		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
-		    
+
 		  end select
-		  
+
 		  return true
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
-		  
+
 		  Temp = super.ToMac(Doc,EL)
 		  Temp.Appendchild currentshape.XMLPutConstructionInfoInContainer(Doc)
-		  
+
 		  return Temp
 		End Function
 	#tag EndMethod
@@ -358,33 +358,33 @@ Inherits ShapeConstruction
 		  currentshape = SelectForm(Temp)
 		  currentshape.delete
 		  objects.unselectall
-		  
+
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
-		  
+
 		  WorkWindow.refresh
-		  
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

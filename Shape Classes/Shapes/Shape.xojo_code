@@ -2946,7 +2946,6 @@ Protected Class Shape
 		      next
 		    next
 		  end if
-
 		  '
 		  If isaparaperp And (s2.getindexpoint(points(1)) <> -1) And ( constructedby.shape <> s2 ) Then
 		    Return True
@@ -2966,7 +2965,6 @@ Protected Class Shape
 		    next
 		    return t
 		  end if
-
 		  For i = 0 To ubound(childs)    // double emploi avec une autre condition ci-dessus
 		    If childs(i).id > id Then
 		      For j = 0 To ubound (childs(i).constructedshapes)

@@ -1694,7 +1694,6 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
 		  Dim ff As figure
-
 		  Constructor
 
 		  ff = new Figure
@@ -2085,12 +2084,10 @@ Protected Class Figure
 		  if f1.NbSommCommuns(f2) = f1.Somm.count or f2.NbSommCommuns(f1) = f2.Somm.count then
 		    t=true
 		  end if
-
 		  'a =0   Erreur grossiere: auto = 6 a été éliminé plus haut
 		  'If f1.Auto = 6 Or f2.Auto = 6 Then
 		  'a = 6
 		  'End If
-
 		  If t Then
 		    f2.shapes.concat f1.shapes
 		    f2.somm.concat f1.somm
@@ -2824,7 +2821,6 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function NbTrueSommCommuns(f as figure) As integer
 		  Dim i, j, n As Integer
-
 		  for i = 0 to Somm.count-1
 		    For j = 0 To f.Somm.count-1
 		      If (somm.item(i).forme < 2) And (Somm.item(i) = f.Somm.item(j)) And (f.somm.item(j).constructedby = Nil) Then
