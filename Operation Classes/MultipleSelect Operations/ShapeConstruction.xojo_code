@@ -22,8 +22,8 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
 		  Dim p As point
-		  
-		  
+
+
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point then
@@ -38,7 +38,7 @@ Inherits MultipleSelectOperation
 		      curshape.mobility
 		    end if
 		  End If
-		  
+
 		  If Self IsA paraperpconstruction And currentattractingshape IsA lacet Then
 		    If curshape = currentshape.points(1) and curshape.forme = 1 Then
 		      Curshape.forme = 3
@@ -51,7 +51,7 @@ Inherits MultipleSelectOperation
 		Sub Annuler()
 		  if finished = false then
 		    AbortConstruction
-		  else 
+		  else
 		    currentcontent.UndoLastOperation
 		  end if
 		End Sub
@@ -62,9 +62,9 @@ Inherits MultipleSelectOperation
 		  dim Histo as XMLElement
 		  dim i as integer
 		  dim EL, EL1 as XMLElement
-		  
+
 		  Histo = currentcontent.Histo
-		  
+
 		  for i = 0 to Histo.ChildCount-1
 		    EL = XMLElement(Histo.child(i))
 		    EL1 = XMLElement(EL.Child(0))
@@ -84,11 +84,11 @@ Inherits MultipleSelectOperation
 		  Famille = Fam
 		  Forme = form
 		  CreateShape
-		  
+
 		  NumberOfItemsToSelect = currentshape.ncpts
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -99,14 +99,14 @@ Inherits MultipleSelectOperation
 		  dim EL as XMLElement
 		  dim sh as shape
 		  dim loc as double
-		  
+
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
-		  
+
 		  constructor(fa,fo)
-		  
+
 		  if fa = 0 then
-		    
+
 		    if fo = 1 then
 		      pt = point(currentshape)
 		      EL = XMLElement(EL1.Child(0))
@@ -132,7 +132,7 @@ Inherits MultipleSelectOperation
 		    currentshape.endconstruction
 		    currentshape.coord.Createextreandctrlpoints(currentshape.ori)
 		  end if
-		  
+
 		  Exception err
 		    var d as Debug
 		    d =  new Debug
@@ -141,13 +141,13 @@ Inherits MultipleSelectOperation
 		    d.setVariable("n", n)
 		    err.message = err.message + d.getString
 		    Raise err
-		    
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
-		  
+
 		  super.constructor()
 		  OpId = 0
 		  currentshape = s
@@ -159,12 +159,12 @@ Inherits MultipleSelectOperation
 		  Dim p As BasicPoint
 		  dim specs as StdPolygonSpecifications
 		  dim fam as integer
-		  
-		  
+
+
 		  if famille <> -1 then
 		    p = can.MouseUser
 		  end if
-		  
+
 		  if Famille <10 then
 		    select case Famille
 		    case -1
@@ -247,7 +247,7 @@ Inherits MultipleSelectOperation
 		  currentshape.forme = forme
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
-		  
+
 		  Workwindow.setcross
 		End Sub
 	#tag EndMethod
@@ -258,7 +258,7 @@ Inherits MultipleSelectOperation
 		  currentshape.constructshape
 		  currentshape.endconstruction  //insère la forme dans currentcontent.TheObjects et crée la figure
 		  finished = true
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -266,7 +266,7 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  dim i as integer
 		  dim pt as point
-		  
+
 		  if currentcontent.macrocreation then
 		    if currentshape isa point and point(currentshape).Forme > 0 then
 		      pt = point(currentshape)
@@ -306,7 +306,7 @@ Inherits MultipleSelectOperation
 		      EndOperation
 		    end if
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -314,11 +314,11 @@ Inherits MultipleSelectOperation
 		Sub MouseMove(p as BasicPoint)
 		  dim magneticD As BasicPoint
 		  dim magnetism as Integer
-		  
+
 		  if currentShape = nil then
 		    return
 		  end  if
-		  
+
 		  ReinitAttraction
 		  CurrentShape.Fixecoord(p, Currentshape.IndexConstructedPoint)
 		  magnetism = Magnetisme(currentshape,magneticD)
@@ -342,12 +342,12 @@ Inherits MultipleSelectOperation
 		      side = currentattractingshape.pointonside(p)
 		    end if
 		  end if
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -355,14 +355,14 @@ Inherits MultipleSelectOperation
 		Sub Paint(g As Graphics)
 		  dim curshape as point
 		  dim inter as intersec
-		  
+
 		  if (currentshape isa point and currentattractingshape <> nil and currentattractingshape isa point)  then
 		    return
 		  end if
-		  
+
 		  display = ""
-		  
-		  
+
+
 		  if currentshape <> nil and not currentshape isa repere then
 		    if not currentshape isa point then
 		      curshape = currentshape.points(currentshape.IndexConstructedPoint)
@@ -388,33 +388,33 @@ Inherits MultipleSelectOperation
 		        display =  fix + apoint
 		      end if
 		    end if
-		    
+
 		    showattraction
 		    Help g, display
-		    
+
 		    if  (not currentshape.std or WorkWindow.stdflag) then
 		      currentshape.paintall(g)
 		    else
 		      Currentshape.Points(0).Paint(g)
 		    end if
-		    
+
 		    if currentattractedshape <> nil then
 		      CurrentAttractedShape.paint(g)
 		    end if
-		    
-		    
+
+
 		    'super.paint(g)
-		    
-		    
+
+
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub PrepareXMLandMac(pt as point)
 		  dim oper as operation
-		  
+
 		  if checknoIntersec(pt) and pt.forme > 0  then
 		    select case Pt.forme
 		    case 1
@@ -435,8 +435,8 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim EL as XMLElement
 		  dim liste as ObjectsList
-		  
-		  
+
+
 		  EL = XMLElement(Temp.child(0))
 		  f = Val(EL.GetAttribute(Dico.Value("NrFam")))
 		  If f <> -1 Then
@@ -445,8 +445,8 @@ Inherits MultipleSelectOperation
 		    RedeleteDeletedFigures(Temp)
 		    RecreateCreatedFigures(Temp)
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -454,7 +454,7 @@ Inherits MultipleSelectOperation
 		Function SetItem(s as shape) As Boolean
 		  dim curshape as point
 		  dim i as integer
-		  
+
 		  if s <> nil  then
 		    if s isa point then
 		      curshape = point(s)
@@ -482,7 +482,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
-		  
+
 		  if currentshape isa point  then
 		    EL = Point(CurrentShape).XMLPutIdInContainer(Doc, EL)
 		  else
@@ -490,7 +490,7 @@ Inherits MultipleSelectOperation
 		    Temp.AppendChild currentshape.XMLPutChildsInContainer(Doc)
 		    EL.AppendChild Temp
 		  end if
-		  
+
 		  return EL
 		End Function
 	#tag EndMethod
@@ -502,14 +502,14 @@ Inherits MultipleSelectOperation
 		  else
 		    return CurrentShape.XMLPutInContainer(Doc)
 		  end if
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub TraitementIntersec()
 		  dim pt as Basicpoint
-		  
+
 		  pt = point(currentattractedshape).simulinter(CurrentAttractingShape,NextCurrentAttractingShape)
 		  if pt = nil then
 		    nextcurrentattractingshape.unhighlight
@@ -517,16 +517,16 @@ Inherits MultipleSelectOperation
 		  else
 		    CurrentShape.Fixecoord(pt, Currentshape.IndexConstructedPoint)
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
 		  dim s as shape
-		  
+
 		  s = SelectForm(Temp)
-		  
+
 		  if s <> nil then
 		    ReDeleteCreatedFigures (Temp)
 		    s.delete
@@ -537,22 +537,22 @@ Inherits MultipleSelectOperation
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
