@@ -172,8 +172,8 @@ Inherits nBpoint
 		  
 		  select case n
 		  case 0
-		    p(0) = nil
-		    p(1) = nil
+		    'p(0) = nil
+		    'p(1) = nil
 		  case 1
 		    p(1) = nil
 		    if not p(0).between(first,second) then

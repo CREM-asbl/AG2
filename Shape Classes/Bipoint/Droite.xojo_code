@@ -755,7 +755,7 @@ Inherits Bipoint
 		  sh = q.pointsur.item(0)
 		  w = constructbasis
 		  
-		  if not sh isa circle then
+		  If Not (sh = Nil) And Not (sh  IsA circle) Then
 		    dr2 = sh.getside(q.numside(0))
 		    Bib2 = new BiBPoint(dr2.firstp, dr2.secondp)
 		    dr1 = constructedby.shape.getside(constructedby.data(0))
@@ -775,8 +775,10 @@ Inherits Bipoint
 		    else
 		      nq = nil
 		    end if
-		  else
-		    if w.norme > epsilon then
+		  ElseIf sh =  Nil   Then
+		    nq =  firstp + w
+		  Else
+		    If w.norme > epsilon Then
 		      Bib1 = new BibPoint(firstp, firstp+w)
 		      nq  = Bib1.ComputeFirstIntersect(0,sh,q)
 		      if (nq = nil) or (sh.pointonside(nq) = -1) then
@@ -790,7 +792,7 @@ Inherits Bipoint
 		  if  nq <> nil then
 		    q.moveto nq
 		  end if
-		  return true 'new similaritymatrix (ep, eq, np, nq)
+		  Return True 'new similaritymatrix (ep, eq, np, nq)
 		  
 		End Function
 	#tag EndMethod
