@@ -492,7 +492,7 @@ Inherits Operation
 		  if(EL = nil) then
 		    return
 		  end if
-		   
+		  
 		  for i = 0 to EL.childcount-1
 		    EL2 = XMLElement(EL.child(i))
 		    copies.item(i).id =  val(EL2.GetAttribute("Id"))

@@ -59,9 +59,10 @@ Inherits Polygon
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Obl as ObjectsList, other as StandardPolygon, p As BasicPoint)
-		  dim i as integer
+		  Dim i As Integer
 		  
 		  Polygon.constructor(obl, other, p)
+		  std = true
 		  ncpts = 1
 		  file = other.file
 		  stdsize=other.getStdsize

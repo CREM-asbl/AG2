@@ -3,7 +3,7 @@ Protected Class Intersec
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
-		  dim i1, j1, h, k as integer  //Utilisé dans Point.adjustinter et shape.valider
+		  dim i1, j1 as integer  //Utilisé dans Point.adjustinter et shape.valider
 		  dim d as Double
 		  
 		  if pts.indexof(p) <> -1 then

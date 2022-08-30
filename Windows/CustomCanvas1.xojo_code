@@ -341,7 +341,7 @@ Inherits Canvas
 
 	#tag Event
 		Sub MouseMove(X As Integer, Y As Integer)
-		  //On passe d'abord dans le mousemove du canvas, puis dans celui de la fenêtre (qui n'existe plus)
+		  'On passe d'abord dans le mousemove du canvas, puis dans celui de la fenêtre (qui n'existe plus)
 		  dim p as BasicPoint
 		  
 		  'Note: CurrentOper n'est <>  nil que dans les méthodes ReadHisto.NextOper, RedHisto.PrecOper, Windcontent.RedoLastOperation et

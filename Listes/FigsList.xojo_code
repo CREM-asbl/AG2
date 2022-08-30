@@ -270,7 +270,7 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  'ff.fusionnerautosimaff
+		  
 		  ff.fusionnerinclusions
 		  
 		  temp.adjustconstructioninfos(ff)

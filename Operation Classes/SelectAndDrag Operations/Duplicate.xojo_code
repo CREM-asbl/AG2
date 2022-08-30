@@ -138,7 +138,7 @@ Inherits SelectAndDragOperation
 		    if (startpoint.distance(endpoint) < Epsilon)  or (currentattractingshape = nil) then
 		      abort
 		      return
-		    end if
+		    End If
 		    pt = point(tempshape.item(0))
 		    q = point(copies.item(0))
 		    sh = pt.pointsur.item(0)
@@ -481,12 +481,14 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub SetCopies(p As BasicPoint)
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  dim s1,s2 as Shape
 		  dim ffigs as Figslist
-		  dim ff as figure
+		  Dim ff As figure
 		  
-		  p = new BasicPoint(0,0)
+		  Vect = p
+		  
+		  p = New BasicPoint(0,0)
 		  
 		  if copyPtSur then
 		    s1 = tempshape.item(0)
@@ -495,13 +497,17 @@ Inherits SelectAndDragOperation
 		    cop.surseg = point(s1).surseg
 		    copies.addshape cop
 		  else
-		    for i = 0 to tempshape.count-1
+		    For i = 0 To tempshape.count-1
 		      s1=tempshape.item(i)
 		      if s1 isa point then
 		        s2 = s1.paste(objects,point(s1).bpt)
-		      else
-		        s2 = s1.paste(objects,p)
-		      end if
+		      Else
+		        If s1.std Then  
+		          s2 = s1.paste(objects,Vect)
+		        Else
+		          s2 = s1.paste(objects,p)
+		        End If
+		      End If
 		      copies.addshape s2
 		      setconstedpoint(i,s2)
 		      IdentifyPointsinCopies(s2,i)

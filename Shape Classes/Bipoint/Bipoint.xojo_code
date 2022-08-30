@@ -2,7 +2,7 @@
 Protected Class Bipoint
 Inherits Shape
 	#tag Method, Flags = &h0
-		Sub computeextre()
+		Sub ComputeExtre()
 		  
 		End Sub
 	#tag EndMethod
@@ -151,6 +151,14 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false

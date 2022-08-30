@@ -471,7 +471,7 @@ Protected Class Transformation
 		  
 		  select case type
 		  case 1, 2,3,4,5,7,71,72,8,81,82, 10
-		    M1 = M.RacN(niter)
+		    'M1 = M.RacN(niter)
 		  case 9
 		    u1= supp.points(0).bpt
 		    u2= supp.points(1).bpt

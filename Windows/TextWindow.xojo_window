@@ -121,7 +121,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Afficher()
-		  dim  i, j as integer
+		  Dim  i, j As Integer
 		  dim f , ff as figure
 		  dim Doc as XMLDocument
 		  dim FAG As XMLElement
@@ -142,7 +142,7 @@ End
 		    f = Figs.item(i)
 		    messages(f)
 		    if f.subs.count > 0 then
-		      for j=0 to f.subs.count -1
+		      For j=0 To f.subs.count -1
 		        EF.Text =  EF.Text +chr(10)+chr(13)
 		        ff = f.subs.item(j)
 		        messages(ff,j)
@@ -174,10 +174,10 @@ End
 
 	#tag Method, Flags = &h0
 		Function mess(f as figure, i as integer) As string
-		  dim m as string
+		  Dim m As String
 		  
 		  m = chr(13)+"Sous-Figure nr "+ str(i)
-		  return messauto(f,m) + chr(10)
+		  return messauto(f,m) + " Auto = " + str(f.auto) + chr(10)
 		  
 		  
 		  
@@ -276,9 +276,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub messages(f as figure, j as integer)
-		  dim s as shape
+		  Dim s As shape
 		  dim i as integer
-		  EF.Text = EF.Text+mess(f,j)
+		  EF.Text = EF.Text+mess(f,j) 
 		  
 		  for i = 0 to f.shapes.count -1
 		    EF.Text = EF.Text + chr(10)+ "Forme : "

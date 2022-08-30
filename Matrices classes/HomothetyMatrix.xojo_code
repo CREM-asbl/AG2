@@ -20,11 +20,6 @@ Inherits SimilarityMatrix
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s1 as BasicPoint, s2 as BasicPoint, b1 as BasicPoint, b2 as BasicPoint)
-		  dim M1 as TranslationMatrix
-		  dim M3 as HomothetyMatrix
-		  dim M as matrix
-		  dim k, alpha as double
-		  dim b3 as BasicPoint
 		  
 		  
 		  if s1 <> nil and s2 <> nil and b1 <> nil and b2 <> nil then

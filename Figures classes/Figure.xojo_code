@@ -7,13 +7,12 @@ Protected Class Figure
 		  dim t, tt as boolean
 		  dim k, h, j, n, amin as integer
 		  dim aut(-1) as integer
-		  dim Ob1 as objectslist
 		  Dim s As shape
 		  
 		  For n = 0 To f1.shapes.count-1
 		    s = f1.shapes.item(n)
 		    If s.constructedby <> Nil And s.isaparaperp Then
-		      f1.Auto = 6
+		      f1.Auto = 7
 		      Return
 		    End If
 		  Next
@@ -32,14 +31,14 @@ Protected Class Figure
 		  
 		  'D'abord un cas simple: toutes les formes ont même auto (différent de 3 (autospe) et 5 (autotrap)
 		  'On attribue cet auto à la figure.
-		  for  n = 0 to 6
+		  For  n = 0 To 7
 		    t = True
 		    for j = 0 to ubound(aut)
 		      t  = t and (aut(j) = n)
 		    next
 		    if t then
 		      select case n
-		      case 0, 1, 2, 4, 6
+		      Case 0, 1, 2, 4, 6, 7
 		        f1.auto = n
 		      end select
 		      return
@@ -82,10 +81,10 @@ Protected Class Figure
 		  'Troisième cas: toutes les formes sont autosim ou paraperp
 		  t = true
 		  for j = 0 to ubound(aut)
-		    t  = t and ((aut(j) =1 ) or (aut(j) = 6))
+		    t  = t And ((aut(j) =1 ) Or (aut(j) = 7))
 		  next
 		  if t then
-		    f1.auto = 6
+		    f1.Auto = 7
 		    return
 		  end if
 		  
@@ -115,7 +114,7 @@ Protected Class Figure
 		  
 		  'Cinquième: s'il y a un mélange de droites  avec des formes de même auto
 		  
-		  For n = 1 To 6
+		  For n = 1 To 7
 		    If n <> 4 Then 'On élimine les droites
 		      t = true
 		      For j = 0 To ubound(aut)
@@ -584,28 +583,50 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autoprppupdate() As boolean
-		  dim s as droite
-		  dim i as integer
+		  Dim s As droite
+		  Dim i As Integer
+		  Dim t As Boolean
 		  
 		  i = 0
-		  while not shapes.item(i).isaparaperp
+		  While Not shapes.item(i).paraperp
 		    i=i+1
-		  wend
+		  Wend
 		  
 		  s = droite(shapes.item(i))
 		  
-		  if s <> nil then
-		    select case NbPtsModif  'Et si les points modifiés sont sur une autre droite?
-		    case 0
-		      return s.prppupdate0
-		    case 1
-		      return s.prppupdate1
-		    case 2
-		      return s.prppupdate2
-		    end select
+		  If s <> Nil Then
+		    Select Case NbPtsModif  'Et si les points modifiés sont sur une autre droite?
+		    Case 0
+		      Return s.prppupdate0
+		    Case 1
+		      Return s.prppupdate1
+		    Else
+		      Return s.prppupdate2
+		    End Select
 		  end if
 		  
+		  't = True
+		  'For i = 0 To shapes.count-1
+		  'If shapes.item(i).isaparaperp Then
+		  's = droite(shapes.item(i))
+		  'n = 0
+		  'For j = 0 To 1
+		  'If s.points(j).modified Then 
+		  'n = n+1
+		  'End If
+		  'Next
+		  'Select Case n
+		  'Case 0
+		  't = t And s.prppupdate0
+		  'Case 1
+		  't = t And s.prppupdate1
+		  'Case 2
+		  't = t And s.prppupdate2
+		  'End Select
+		  'End If
+		  'Next
 		  
+		  Return t
 		End Function
 	#tag EndMethod
 
@@ -1685,8 +1706,6 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Constructor(s as shape)
 		  Dim ff As figure
-		  Var i, j As Integer
-		  Var p As point
 		  
 		  Constructor
 		  
@@ -2042,7 +2061,7 @@ Protected Class Figure
 		  Dim k As Integer
 		  dim t, t1 as boolean
 		  Dim p As point
-		  Dim a As Integer
+		  
 		  
 		  
 		  
@@ -2052,6 +2071,10 @@ Protected Class Figure
 		  end if
 		  
 		  If f1.Auto = 6 Or f2.Auto = 6 Then 
+		    Return False
+		  End If
+		  
+		  If f1.Auto = 7 Or f2.Auto = 7 Then 
 		    Return False
 		  End If
 		  
@@ -2073,20 +2096,20 @@ Protected Class Figure
 		    t=true
 		  end if
 		  
-		  a =0
-		  If f1.Auto = 6 Or f2.Auto = 6 Then
-		    a = 6
-		  End If
+		  'a =0   Erreur grossiere: auto = 6 a été éliminé plus haut
+		  'If f1.Auto = 6 Or f2.Auto = 6 Then
+		  'a = 6
+		  'End If
 		  
-		  if t then
+		  If t Then
 		    f2.shapes.concat f1.shapes
 		    f2.somm.concat f1.somm
 		    f2.PtsSur.concat f1.PtsSur
 		    f2.PtsConsted.concat f1.PtsConsted
-		    If a = 6 Then
-		      f2.Auto = 6
-		    End If
-		    'Adapterautos(f2)
+		    'If a = 6 Then
+		    'f2.Auto = 6
+		    'End If
+		    Adapterautos(f2)
 		  end if
 		  
 		  return t
@@ -2514,39 +2537,6 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Modifaffine() As Boolean
-		  dim M as Matrix
-		  
-		  M= autoaffupdate
-		  if M = nil or M.v1 = nil then
-		    return true
-		  end if
-		  updatesomm(M)
-		  updateshapes(M)
-		  return checksimaff(M)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function ModifEucli() As Boolean
-		  dim M as Matrix
-		  
-		  M= autosimupdate
-		  if M = nil or M.v1 = nil then
-		    return false
-		  else
-		    updatesomm(M)
-		    updateshapes(M)
-		    return checksimaff(M)
-		  end if
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Move(M as Matrix)
 		  dim i, j as integer
 		  dim s as shape
@@ -2830,17 +2820,19 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function NbTrueSommCommuns(f as figure) As integer
-		  dim i, j, n as integer
+		  Dim i, j, n As Integer
 		  
 		  for i = 0 to Somm.count-1
-		    for j = 0 to f.Somm.count-1
-		      if somm.item(i).forme < 2 and (Somm.item(i) = f.Somm.item(j)) then
+		    For j = 0 To f.Somm.count-1
+		      If (somm.item(i).forme < 2) And (Somm.item(i) = f.Somm.item(j)) And (f.somm.item(j).constructedby = Nil) Then
 		        n = n+1
 		      end if
-		    next
+		    Next
 		  next
 		  
-		  return n
+		  Return n
+		  
+		  'La condition f.somm.item(j).constructedby = Nil  a été ajoutée le 8-4-2022
 		End Function
 	#tag EndMethod
 
@@ -3074,7 +3066,7 @@ Protected Class Figure
 		  Dim s1, s2 As shape
 		  dim i, j as integer
 		  
-		  If f.Auto = 6 Then
+		  If f.Auto = 6 and self.auto <> 6 Then
 		    Return True
 		  end if
 		  
@@ -3775,9 +3767,10 @@ Protected Class Figure
 		    else
 		      return false
 		    end if
-		  Case 6
-		    If autoprppupdate Then
+		  Case 7
+		    If Autoprppupdate Then
 		      EndQQupdateshapes
+		      Return True
 		    End If
 		  end select
 		  
@@ -3901,13 +3894,7 @@ Protected Class Figure
 		  listersubfigs(p)
 		  for i = 0 to ubound(rang)
 		    sf = subs.item(rang(i))
-		    if currentcontent.drapaff then
-		      t = sf.Modifaffine
-		    elseif currentcontent.drapeucli then
-		      t = sf.Modifeucli
-		    else
-		      t = sf.subfigupdate and t
-		    end if
+		    t = sf.subfigupdate and t
 		  next
 		  return t
 		  
@@ -4052,7 +4039,7 @@ Protected Class Figure
 		Sub updatesomm(M as Matrix)
 		  dim i as integer
 		  dim p as Point
-		  dim temp as BasicPoint
+		  
 		  
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))

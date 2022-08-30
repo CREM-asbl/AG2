@@ -3405,6 +3405,16 @@ Inherits Shape
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
+	#tag Note, Name = Types de point
+		Le paramètre fam vaut toujuours 0 pour un point
+		Le paramètre forme peut valoir
+		0: le point est libre
+		1: c'est un "pointsur"
+		2: c'est un point d'intersection
+		3: c'est un point construit
+		
+	#tag EndNote
+
 
 	#tag Property, Flags = &h0
 		Bpt As BasicPoint
@@ -3468,6 +3478,14 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false

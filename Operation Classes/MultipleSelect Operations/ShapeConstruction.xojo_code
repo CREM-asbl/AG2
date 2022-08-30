@@ -21,7 +21,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub AdjustMagnetism(curshape as point)
-		  dim p as point
+		  Dim p As point
 		  
 		  
 		  if CurrentAttractingShape<>nil  then
@@ -37,7 +37,13 @@ Inherits MultipleSelectOperation
 		      end if
 		      curshape.mobility
 		    end if
-		  end if
+		  End If
+		  
+		  If Self IsA paraperpconstruction And currentattractingshape  IsA lacet Then
+		    If curshape = currentshape.points(1) and curshape.forme = 1 Then
+		      Curshape.forme = 3
+		    End If
+		  End If
 		End Sub
 	#tag EndMethod
 

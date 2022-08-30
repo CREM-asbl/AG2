@@ -77,15 +77,15 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Function GetBiPoint(p as BasicPoint) As Shape
-		  dim s as shape
+		  Dim s As shape
 		  dim i,ind as integer
 		  
 		  redim index(-1)
-		  if self isa prolonger then
-		    visible = Objects.findbipoint(p)
-		  else
+		  If Self IsA prolonger Then
+		    Visible = Objects.findbipoint(p)
+		  Else
 		    Visible = Objects.findobject(p)
-		  end if
+		  End If
 		  
 		  for i = visible.count-1  downto 0
 		    s = Visible.item(i)
@@ -575,24 +575,31 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub ShowAttraction()
 		  
-		  dim icot as integer
+		  Dim icot As Integer
+		  Dim Ope As Operation
+		  Ope = currentcontent.currentoperation 
 		  
 		  if CurrentAttractedShape<>nil then
 		    CurrentAttractedShape.HighLight
 		  end if
 		  
-		  if CurrentAttractingShape<>nil then
-		    if currentcontent.currentoperation isa duplicate and   duplicate(currentcontent.currentoperation).copyptsur and currentattractingshape isa polygon  then
-		      icot = currentattractingshape.pointonside(point(duplicate(currentcontent.currentoperation).copies.item(0)).bpt)
-		      if icot <> -1 then
-		        Lacet(currentattractingshape).Paintside(can.BackgroundPicture.graphics,icot,2,Config.highlightcolor)
+		  If CurrentAttractingShape<>Nil Then
+		    If Ope IsA duplicate And   duplicate(Ope).copyptsur And currentattractingshape IsA polygon  Then
+		      icot = currentattractingshape.pointonside(point(duplicate(Ope).copies.item(0)).bpt)
+		      If icot <> -1 Then
+		        Lacet(currentattractingshape).Paintside(can.BackgroundPicture.graphics,icot,2,Config.HighlightColor)
 		      end if
-		    else
+		    ElseIf Ope IsA ParaperpConstruction Then
+		      icot = ParaperpConstruction(Ope).Refe.side
+		      If icot <> -1 Then
+		        ParaperpConstruction(Ope).Refe.Paintside(can.BackgroundPicture.graphics,icot,2,Config.HighlightColor)
+		      End If
+		    Else
 		      CurrentAttractingShape.HighLight
 		    end if
 		  end if
 		  
-		  if CurrentAttractingShape isa point or NextCurrentAttractingShape isa point then
+		  If CurrentAttractingShape IsA point Or NextCurrentAttractingShape IsA point Then
 		    NextCurrentAttractingShape = nil
 		  end if
 		  if NextCurrentAttractingShape<>nil   then

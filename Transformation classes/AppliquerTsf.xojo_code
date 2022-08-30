@@ -227,7 +227,7 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  select case currentitemtoset
+		  Select Case currentitemtoset
 		  case 1
 		    colsep = true
 		    MouseMoveTsf(p)

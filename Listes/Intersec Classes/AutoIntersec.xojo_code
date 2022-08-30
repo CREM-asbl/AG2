@@ -224,7 +224,7 @@ Inherits Intersec
 		Sub RedoOperation(Temp as XMLElement)
 		  'Temp est le XMLElement de nom "Operation"
 		  
-		  Dim f, i, j, n As Integer
+		  Dim i As Integer
 		  
 		  Dim EL , ELL As XMLElement
 		  Dim Pt As Point

@@ -233,7 +233,7 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Function CreateSpecs() As StdPolygonSpecifications
 		  
-		  dim specs as new StdPolygonSpecifications
+		  Dim specs As New StdPolygonSpecifications
 		  dim alpha, beta as double
 		  dim j as integer
 		  dim BiB as BiBPoint

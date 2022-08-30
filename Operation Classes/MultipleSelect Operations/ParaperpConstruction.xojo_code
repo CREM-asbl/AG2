@@ -3,10 +3,9 @@ Protected Class ParaperpConstruction
 Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub Constructor(fam as integer, form As integer)
-		  super.constructor(fam,form)
+		  Super.constructor(fam,form)
 		  colsep = true
 		  OpId = 1
-		  
 		  NumberOfItemsToSelect = 3
 		  
 		End Sub
@@ -14,7 +13,7 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Mexe as MacroExe, EL0 as XMLElement, EL1 as XMLElement)
-		  dim  fa, fo, rid, side, Mid, i , num as integer
+		  dim  fa, fo, rid, side, Mid, num as integer
 		  dim pt as point
 		  dim EL as XMLElement
 		  dim sh as shape
@@ -79,8 +78,9 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Sub CreateShape()
 		  Dim ol As Objectslist
-		  dim p as BasicPoint
-		  dim n as integer
+		  Dim p As BasicPoint
+		  Dim n As Integer
+		  
 		  
 		  
 		  if famille <> 1 then
@@ -91,26 +91,29 @@ Inherits ShapeConstruction
 		  ol = CurrentContent.TheObjects
 		  select case forme
 		  case 1
-		    n = 2 'currentshape = new Droite(ol, p,2)  // segment parallele
+		    n = 2 ' segment parallele
 		    op = 1
 		  case 2
-		    n = 2 'currentshape = new Droite(ol, p,2)  //segment perpendiculaire
+		    n = 2 'segment perpendiculaire
 		    op = 2
 		  case 4
-		    n = 0 'currentshape = new Droite(ol,p,0) // droite parallele
+		    n = 0 'droite parallele
 		    op = 1
 		  case 5
-		    n = 0 'currentshape = new Droite(ol,p,0) // droite perpendiculaire
+		    n = 0 'droite perpendiculaire
 		    op = 2
 		  end select
-		  currentshape = new Droite(ol,p,n)
+		  currentshape = New Droite(ol,p,n)
 		  currentshape.fam = 1
 		  currentshape.forme = forme
-		  currentshape.auto = 6
+		  currentshape.Auto = 7
 		  currentshape.liberte = 3
+		  currentshape.paraperp = True
 		  Currentshape.InitConstruction
-		  CurrentShape.IndexConstructedPoint = 0
+		  Currentshape.IndexConstructedPoint = 0
 		  WorkWindow.setcross
+		  
+		  
 		  
 		  
 		  
@@ -119,7 +122,7 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim tsf as transformation
+		  Dim tsf As transformation
 		  dim u, v as BasicPoint
 		  
 		  currentshape.setconstructedby(Refe,op)
@@ -131,6 +134,7 @@ Inherits ShapeConstruction
 		  currentshape.constructedby.data.append tsf
 		  tsf.constructedshapes.addshape currentshape
 		  refe.tsfi.addObject tsf
+		  
 		  BiB2 = BiBPoint(currentshape.coord.GetBiBSide(0))
 		  u = BiB1.second-BiB1.first
 		  v = BiB2.second-BiB2.first
@@ -169,35 +173,47 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub MouseMove(p as BasicPoint)
-		  dim magneticD As BasicPoint
+		  Dim magneticD As BasicPoint
 		  dim magnetism as Integer
 		  
 		  ReinitAttraction
 		  
-		  select case currentitemtoset
-		  case 1
+		  Select Case currentitemtoset
+		  Case 1
 		    Refe = GetBiPoint(p)
-		    currentattractingshape = Refe
-		    if Refe <> nil then
+		    CurrentAttractingShape = Refe
+		    If Refe <> Nil Then
 		      Refe.side = Refe.PointOnSide(p)
-		    end if
-		  else
+		      If Refe IsA Lacet Then
+		        If Refe.Side <> -1 Then
+		          Lacet(Refe).Paintside(can.BackgroundPicture.graphics,Refe.side,2,Config.HighlightColor)
+		        End If
+		      Else
+		        Refe.highlight
+		      End If
+		    End If
+		  Else
 		    CurrentShape.Fixecoord(p, currentshape.IndexConstructedPoint)
-		    constructed = true
+		    constructed = True
 		    magnetism = Magnetisme(currentshape,magneticD)
-		    if magnetism>0  then
+		    If magnetism>0  Then
 		      currentattractedshape = currentshape.points(currentshape.IndexConstructedPoint)
 		      ShowAttraction
-		      
-		      if nextcurrentattractingshape = nil then
+		      If nextcurrentattractingshape = Nil Then
 		        CurrentShape.Fixecoord(magneticD, Currentshape.IndexConstructedPoint)
-		      elseif not(currentattractingshape isa point) and not(nextcurrentattractingshape isa point) then
+		      ElseIf Not(currentattractingshape IsA point) And Not(nextcurrentattractingshape IsA point) Then
 		        TraitementIntersec()
-		      end if
-		    end if
-		  end select
-		  showattraction
+		      End If
+		    End If
+		  End Select
+		  
+		  ShowAttraction
 		  can.refreshbackground
+		  
+		  
+		  
+		  
+		  
 		  
 		  
 		End Sub
@@ -253,7 +269,6 @@ Inherits ShapeConstruction
 	#tag Method, Flags = &h0
 		Function SetItem(s as shape) As Boolean
 		  dim magneticD, p As BasicPoint   // s est identique à "currentshape" (voir "shapeconstruction")
-		  dim magnetism, i as Integer
 		  dim curshape  as Point
 		  
 		  currentshape = s
@@ -325,9 +340,9 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  dim s, s1 as shape
-		  dim i, j as integer
-		  dim tsf as Transformation
+		  
+		  
+		  
 		  
 		  currentshape = SelectForm(Temp)
 		  currentshape.delete

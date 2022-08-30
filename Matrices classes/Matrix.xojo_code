@@ -3,7 +3,6 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Sub Appliquer(s1 as shape, s2 as shape)
 		  dim i as integer
-		  dim oldpt as BasicPoint
 		  dim t as boolean
 		  dim M as Matrix
 		  
@@ -73,7 +72,7 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Sub Constructor(M as Matrix)
-		  dim u1,u2,u3 as BasicPoint
+		  
 		  
 		  v1 = M.v1
 		  v2 = M.v2
@@ -259,7 +258,7 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Function RACN(n as integer) As Matrix
-		  
+		  'NE PAS SUPPRIMER
 		End Function
 	#tag EndMethod
 

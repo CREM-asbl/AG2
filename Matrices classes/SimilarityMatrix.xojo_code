@@ -108,8 +108,8 @@ Inherits AffinityMatrix
 		  // p1 et p2 sont des pointssur, ep, np correspondent au point modifié
 		  dim Bip1,  Bip2, Bip3 as BiBPoint
 		  dim M as Matrix
-		  dim q, q1,  bp1, bp2, bp3,a, b As BasicPoint
-		  dim s1, s2 as shape
+		  Dim q,   bp1, bp2, bp3 As BasicPoint
+		  Dim  s2 As shape
 		  dim r1, r2 as double
 		  dim t as boolean
 		  

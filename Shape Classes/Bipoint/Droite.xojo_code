@@ -3,9 +3,9 @@ Protected Class Droite
 Inherits Bipoint
 	#tag Method, Flags = &h0
 		Function check() As Boolean
-		  dim v, w as BasicPoint
+		  Dim v, w As BasicPoint
 		  
-		  if not self.isaparaperp then
+		  if not paraperp then
 		    return true
 		  end if
 		  
@@ -82,12 +82,12 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub Constructor(Obj as Objectslist, dr as droite, q as Basicpoint)
-		  dim i, j as integer
+		  Dim i, j As Integer
 		  dim M as Matrix
 		  
 		  Super.Constructor(obj,dr)
 		  ncpts = 2
-		  if dr.isaparaperp then
+		  if dr.paraperp then
 		    auto = 1
 		    if dr.forme = 1 or dr.forme = 2 then
 		      forme  = 0
@@ -222,12 +222,12 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub ConstructShape()
-		  dim i, index, ori as integer
+		  Dim i, index, ori As Integer
 		  dim s as shape
 		  
 		  'Ne concerne que les paraperp
 		  
-		  if constructedby <> nil and (constructedby.oper < 3) then
+		  If paraperp Then
 		    updatecoord
 		    if ubound(constructedby.data) >  -1 then
 		      index = constructedby.data(0)
@@ -677,8 +677,8 @@ Inherits Bipoint
 		      nq = np+w*d
 		      q.moveto nq
 		      q.modified = True
-		      'else
-		      'Return prpupdate11(q,ep,eq,np,nq)
+		    Else
+		      Return prpupdate11(q,ep,eq,np,nq)
 		    End If
 		  end if
 		  return true 'new SimilarityMatrix(ep,eq,np,nq)
@@ -723,8 +723,8 @@ Inherits Bipoint
 		    else
 		      Return  prpupdate11(q,ep,eq,np,nq)
 		    end if
-		  case 2
-		    if check then
+		  else
+		    If check Then
 		      Return True 'new SimilarityMatrix(ep,eq,np,nq)
 		    else
 		      t = sf.replacerpoint(q)
@@ -886,6 +886,14 @@ Inherits Bipoint
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false
