@@ -1,5 +1,5 @@
 Type=Desktop
-RBProjectVersion=2021.031
+RBProjectVersion=2022.02
 MinIDEVersion=20150400
 OrigIDEVersion=20200201
 Folder=Connexion;Connexion;&h00000000476F47FF;&h0000000000000000;false
@@ -269,6 +269,7 @@ UseGDIPlus=True
 UseBuildsFolder=True
 HiDPI=True
 CopyRedistNextToWindowsEXE=False
+IncludePDB=False
 IsWebProject=False
 LinuxBuildArchitecture=1
 MacBuildArchitecture=1

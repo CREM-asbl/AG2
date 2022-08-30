@@ -522,6 +522,7 @@ Protected Class Transformation
 		    removefigconstructioninfos(s)
 		  end if
 		  
+		  if (s.ConstructedBy = nil) then return
 		  s1 = s.Constructedby.shape
 		  ff = s1.fig
 		  t = true

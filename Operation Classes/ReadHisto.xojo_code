@@ -186,6 +186,9 @@ Inherits Operation
 		  HistCmd.HistCtrl.Prec.Enabled = currentop > 0
 		  HistCmd.HistCtrl.BNext.Enabled = currentop < Noper-1
 		  HistCmd.HistCtrl.Last.Enabled = currentop < Noper-1
+		  if(curoper <> nil) then
+		    HistCmd.title = curoper.GetName
+		  end if
 		End Sub
 	#tag EndMethod
 

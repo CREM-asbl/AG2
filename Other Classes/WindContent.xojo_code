@@ -198,7 +198,7 @@ Protected Class WindContent
 		  dim m, n as integer
 		  d  = new Date
 		  
-		  fi = GetFolderHisto("Historiques/"+Config.username+"/"+Str(d.Month)+"-"+Str(d.Day)+"-"+Str(d.Year))
+		  fi = GetFolderHisto("Historiques/"+Config.username+"/"+Str(d.Year)+"-"+Str(d.Month)+"-"+Str(d.Day))
 		  
 		  if fi <> nil then
 		    if currentfile <> nil then
@@ -836,9 +836,9 @@ Protected Class WindContent
 		  End If
 		  
 		  
-		  If  FiHisto <> Nil And TotalOperation >1  Then 
-		    fileStream= TextOutputStream.Create(FiHisto)
-		    if fileStream=nil then
+		  If  FiHisto <> Nil And TotalOperation > 1 Then 
+		    fileStream = TextOutputStream.Create(FiHisto)
+		    if fileStream = nil then
 		      MsgBox Dico.Value("ErrorOnSave")
 		      return
 		    else

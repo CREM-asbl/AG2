@@ -1040,7 +1040,7 @@ Inherits Liste
 		  fam = Val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  forme = Val(Temp.GetAttribute(Dico.Value("NrForm")))
 		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version 2.3.8) qui étaient incorrects
-		  select case  fam
+		  select case fam
 		  case -1
 		    s = new Repere(self,temp)
 		    CurrentContent.OpenOpList                                     // remplacement de la liste d'opérations pour éliminer la création précédente du repère

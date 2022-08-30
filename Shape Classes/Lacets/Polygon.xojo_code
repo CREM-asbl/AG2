@@ -172,10 +172,11 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList, Temp as XMLElement)
 		  Shape.constructor(ol,Temp)
+		  if Points.Count = 0 then return
 		  redim prol(-1)
-		  redim prol(npts-1)
+		  redim prol(Points.count-1)
 		  redim coord.curved(-1)
-		  redim coord.curved(npts-1)
+		  redim coord.curved(Points.count-1)
 		  createskull(Points(0).bpt)
 		  
 		End Sub

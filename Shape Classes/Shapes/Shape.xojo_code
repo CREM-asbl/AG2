@@ -1487,7 +1487,7 @@ Protected Class Shape
 		    return false
 		  end if
 		  
-		  for i = 0 to npts-1
+		  for i = 0 to Points.Count-1
 		    if points(i).pointsur.count >0 and  points(i).pointsur.getposition(s) <> -1 then
 		      p = points(i)
 		      return true
@@ -2417,14 +2417,12 @@ Protected Class Shape
 		  
 		  
 		  if not self isa point then
-		    for i = 0 to npts-1
-		      'if f.somm.getposition(points(i)) <> -1  then
+		    for i = 0 to Points.count-1
 		      If s.getindexpoint(points(i)) <> -1 Then
 		        n0 = n0+1
 		      end if
 		    next
 		  else
-		    'if f.somm.getposition(self) <> -1  then
 		    If s.getindexpoint(Point(Self)) <> -1 Then
 		      n0 = 1
 		    end if
@@ -2852,7 +2850,7 @@ Protected Class Shape
 		  end if
 		  
 		  if not s2 isa point then
-		    for i = 0 to s2.npts-1
+		    for i = 0 to s2.Points.count-1
 		      if (s2.points(i).constructedby <> nil) and (s2.points(i).constructedby.shape isa point) then
 		        //un point de s2 est image d'un point de self
 		        p = point(s2.points(i).constructedby.shape)
@@ -2881,7 +2879,7 @@ Protected Class Shape
 		  next
 		  
 		  if not s2 isa point then
-		    for h = 0 to s2.npts-1
+		    for h = 0 to s2.Points.Count-1
 		      if s2.points(h).constructedby <> nil and s2.points(h).constructedby.oper = 6  then
 		        sh = Transformation(s2.points(h).constructedby.data(0)).supp
 		        if sh = self or (sh isa point and  sh.id > id and (( getindex(point(sh)) <> -1) or  (sh.constructedby <> nil and sh.constructedby.shape = self )  ) ) then
@@ -2911,9 +2909,9 @@ Protected Class Shape
 		  end if
 		  
 		  if s2 isa polygon then
-		    for i = 0 to s2.npts-1
+		    for i = 0 to s2.Points.count-1
 		      p = s2.points(i)
-		      q = s2.points((i+1) mod s2.npts)
+		      q = s2.points((i+1) mod s2.Points.count)
 		      for k = 0 to ubound(P.parents)
 		        s = p.parents(k)
 		        if s <> s2 and s.getindexpoint(q) <> -1 and s isa droite then
