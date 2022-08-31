@@ -144,6 +144,10 @@ Inherits SelectOperation
 		  SelectIdForms(EL)  'une seule forme à sélectionner
 		  s = tempshape.item(0)
 		  
+		  if(s = nil) then 
+		    return 
+		  end if
+		  
 		  EL1 = XMLElement(EL.child(1))    'lecture de newcolor
 		  newcolor = New Couleur(EL1)
 		  If side <> -1 Then
