@@ -459,7 +459,7 @@ Inherits MultipleSelectOperation
 		  num = val(EL1.GetAttribute("NumTSF"))
 		  tsf = s.tsfi.item(num)
 		  
-		  EL1 = XMLElement(EL.Child(1))
+		  EL1 = XMLElement(EL.Child(2))
 		  for i = 0 to EL1.childcount-1
 		    EL2 = XMLElement(EL1.child(i))
 		    n =  val(EL2.GetAttribute("Id"))

@@ -196,7 +196,7 @@ Inherits ShapeConstruction
 		    CurrentShape.Fixecoord(p, currentshape.IndexConstructedPoint)
 		    constructed = True
 		    magnetism = Magnetisme(currentshape,magneticD)
-		    If magnetism>0  Then
+		    If magnetism > 0 Then
 		      currentattractedshape = currentshape.points(currentshape.IndexConstructedPoint)
 		      ShowAttraction
 		      If nextcurrentattractingshape = Nil Then

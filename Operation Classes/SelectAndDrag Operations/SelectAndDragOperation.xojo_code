@@ -296,6 +296,7 @@ Inherits SelectOperation
 		    d.setVariable("EL",EL)
 		    d.setVariable("EL1",EL1)
 		    d.setVariable("EL2",EL2)
+		    d.setVariable("idf", idf)
 		    d.setVariable("ff",ff)
 		    err.message = err.message+d.getString
 		    
