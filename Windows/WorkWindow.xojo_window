@@ -1,28 +1,27 @@
 #tag Window
 Begin Window WorkWindow
-   BackColor       =   &cFFFFFF00
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   True
-   Frame           =   0
+   DefaultLocation =   0
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackgroundColor=   True
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   595
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   -1173617590
    MenuBarVisible  =   True
-   MinHeight       =   595
-   MinimizeButton  =   True
-   MinWidth        =   800
-   Placement       =   0
+   MinimumHeight   =   595
+   MinimumWidth    =   800
    Resizeable      =   True
    Title           =   "Sans Titre"
+   Type            =   0
    Visible         =   True
    Width           =   800
    Begin CustomCanvas1 MyCanvas1

@@ -18,7 +18,7 @@
 
 	#tag FileType
 		CodeName=MACR
-		DocIcon=AG.xojo_resources;&h55465C
+		DocIcon=AG.xojo_resources;&h680F9
 		Extension=.xmag
 		Flags=&h9
 		MacCreator=CREM
@@ -35,7 +35,7 @@
 
 	#tag FileType
 		CodeName=HIST
-		DocIcon=AG.xojo_resources;&hAA8CB8
+		DocIcon=AG.xojo_resources;&hD01F2
 		Extension=.hag
 		Flags=&h9
 		MacCreator=CREM
