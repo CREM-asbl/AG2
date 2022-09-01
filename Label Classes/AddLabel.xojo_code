@@ -88,9 +88,9 @@ Inherits SelectAndDragOperation
 		        loc = (loc -6)*2
 		      end if
 		    elseif loc > 7 then
-		      loc  =(loc-9)*2
+		      loc = (loc-9)*2
 		    end if
-		  elseif s isa Lacet  or s isa Freecircle  then
+		  elseif s isa Lacet or s isa Freecircle  then
 		    loc = s.PointOnSide(p)
 		  end if
 		  return s

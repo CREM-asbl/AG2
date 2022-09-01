@@ -212,6 +212,7 @@ Inherits SelectAndDragOperation
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("M", M )
 		    d.setVariable("currentshape", currentshape)
+		    d.setVariable("oldvisible", Oldvisible)
 		    d.setVariable( "c", c)
 		    d.setVariable( "currentcontent", currentcontent)
 		    d.setVariable( "figs", figs)
@@ -328,6 +329,11 @@ Inherits SelectAndDragOperation
 		  dim EL as XMLElement
 		  
 		  EL = XMLElement(Temp.child(0))
+		  
+		  if EL = nil then 
+		    return 
+		  end if
+		  
 		  SelectIdForms(EL)
 		  
 		  r = val(EL.GetAttribute(Dico.value("Ratio")))

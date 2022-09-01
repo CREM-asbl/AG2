@@ -764,10 +764,12 @@ Inherits Bipoint
 		    if M <> nil and M.v1 <> nil then
 		      nq = M*np
 		      q.moveto nq
-		      if q.ProjectionOnAttractingDroite(dr2) = nil then
+		      dim projection as BasicPoint
+		      projection = q.ProjectionOnAttractingDroite(dr2)
+		      if projection = nil then
 		        q.invalider
 		      else
-		        q.moveto eq
+		        q.moveto projection
 		        q.valider
 		      end if
 		    else

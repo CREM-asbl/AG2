@@ -588,43 +588,31 @@ Protected Class Figure
 		  Dim t As Boolean
 		  
 		  i = 0
-		  While Not shapes.item(i).paraperp
-		    i=i+1
-		  Wend
 		  
-		  s = droite(shapes.item(i))
-		  
-		  If s <> Nil Then
-		    Select Case NbPtsModif  'Et si les points modifiés sont sur une autre droite?
-		    Case 0
-		      Return s.prppupdate0
-		    Case 1
-		      Return s.prppupdate1
-		    Else
-		      Return s.prppupdate2
-		    End Select
-		  end if
-		  
-		  't = True
-		  'For i = 0 To shapes.count-1
-		  'If shapes.item(i).isaparaperp Then
-		  's = droite(shapes.item(i))
-		  'n = 0
-		  'For j = 0 To 1
-		  'If s.points(j).modified Then 
-		  'n = n+1
-		  'End If
-		  'Next
-		  'Select Case n
-		  'Case 0
-		  't = t And s.prppupdate0
-		  'Case 1
-		  't = t And s.prppupdate1
-		  'Case 2
-		  't = t And s.prppupdate2
-		  'End Select
-		  'End If
-		  'Next
+		  t = true
+		  For i = 0 To shapes.count-1
+		    If shapes.item(i).isaparaperp Then
+		      s = droite(shapes.item(i))
+		      dim n, j as Integer
+		      n = 0
+		      For j = 0 To 1
+		        If s.points(j).modified Then
+		          n = n+1
+		        End If
+		        if n = 0 and s.points(j).pointSur.count > 0 then
+		          n = n+1
+		        end if
+		      Next
+		      Select Case n
+		      Case 0
+		        t = t And s.prppupdate0
+		      Case 1
+		        t = t And s.prppupdate1
+		      Case 2
+		        t = t And s.prppupdate2
+		      End Select
+		    End If
+		  Next
 		  
 		  Return t
 		End Function
@@ -1922,7 +1910,9 @@ Protected Class Figure
 		      p.updateshape
 		    elseif p.forme = 2 then
 		      inter = p.GetInter
-		      inter.update(p)
+		      if inter <> nil then
+		        inter.update(p)
+		      end if
 		    end if
 		  next
 		  

@@ -158,7 +158,6 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub endoperation()
-		  
 		  refe = nil
 		  super.endoperation
 		  constructed = false
@@ -241,11 +240,25 @@ Inherits ShapeConstruction
 		Sub Paint(g As Graphics)
 		  operation.paint(g)
 		  display = ""
+		  
 		  select case currentitemtoset
 		  case 1
-		    display = choose + asegmentoraline
-		  else
-		    if currentattractingshape <> nil then
+		    
+		    if CurrentAttractingShape = nil then
+		      display = choose + asegmentoraline
+		    else
+		      currentattractingshape.paint(g)
+		      If CurrentAttractingShape IsA Lacet Then
+		        display = sur + thissegment +"?"
+		      else
+		        display = sur + this (currentattractingshape.gettype) +"?"
+		      end if
+		    end if
+		    
+		  case 2, 3
+		    if CurrentAttractingShape = nil then
+		      display = fix + apoint
+		    else
 		      currentattractingshape.paint(g)
 		      if currentattractingshape isa point or currentattractingshape isa repere then
 		        display  = thispoint + "?"
@@ -255,11 +268,13 @@ Inherits ShapeConstruction
 		        display = sur + this (currentattractingshape.gettype) +"?"
 		      end if
 		    end if
-		    showattraction
-		    if currentshape <> nil and constructed then
-		      currentshape.paintall(g)
-		    end if
 		  end select
+		  
+		  
+		  showattraction
+		  if currentshape <> nil and constructed then
+		    currentshape.paintall(g)
+		  end if
 		  
 		  Help g, display
 		  

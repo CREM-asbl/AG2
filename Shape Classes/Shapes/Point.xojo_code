@@ -1076,8 +1076,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function isPointOn(S as Shape, byref k as integer) As boolean
 		  
-		  
-		  for k=0 to pointsur.count-1
+		  for k = 0 to pointsur.count-1
 		    if pointsur.item(k).id = s.id then
 		      return true
 		    end if

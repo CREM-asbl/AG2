@@ -846,7 +846,7 @@ Inherits Liste
 		  p.updatefirstpoint(np)
 		  t = true
 		  for i = 0 to count-1
-		    t =item(index(i)).update1(p) and t
+		    t = item(index(i)).update1(p) and t
 		  next
 		  
 		  return t
