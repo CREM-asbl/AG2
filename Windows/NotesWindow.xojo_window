@@ -1,28 +1,27 @@
-#tag Window
-Begin Window NotesWindow
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow NotesWindow
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   0
+   DefaultLocation =   1
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   600
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   1246849023
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   True
-   MinWidth        =   64
-   Placement       =   1
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   True
    Title           =   "Notes"
+   Type            =   0
    Visible         =   False
    Width           =   625
    Begin TextArea EF
@@ -76,11 +75,11 @@ Begin Window NotesWindow
       Width           =   625
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Function CancelClose(appQuitting as Boolean) As Boolean
+		Function CancelClosing(appQuitting As Boolean) As Boolean
 		  dim conf as Confirmation
 		  dim n as integer
 		  
@@ -108,17 +107,7 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub EnableMenuItems()
-		  Dim i as Integer
-		  
-		  For i=0 to nf
-		    FontFontName(i).enable
-		  Next
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Open()
+		Sub Opening()
 		  
 		  Dim m as MenuItem
 		  Dim i,n as Integer
@@ -133,10 +122,10 @@ End
 		    For i=0 to n
 		      If Font(i)="Arial"  or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol" Then
 		        nf = nf+1
-		        FontMenu.Append(New MenuItem)
-		        FontMenu.Item(nf).index = nf
-		        FontMenu.Item(nf).Name= "FontFontName"
-		        FontMenu.Item(nf).Text =  Font(i)
+		        FontMenu.AddMenu(New MenuItem)
+		        FontMenu.MenuAt(nf).index = nf
+		        FontMenu.MenuAt(nf).Name= "FontFontName"
+		        FontMenu.MenuAt(nf).Text =  Font(i)
 		      end if
 		    Next
 		  end if
@@ -162,149 +151,149 @@ End
 
 	#tag MenuHandler
 		Function CentrerMenu() As Boolean Handles CentrerMenu.Action
-			EF.Selalignment = 2
+		  EF.Selalignment = 2
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Charmap() As Boolean Handles Charmap.Action
-			dim s as shell
-			s = new shell
-			s.Execute "%SystemRoot%\System32\charmap.exe"
+		  dim s as shell
+		  s = new shell
+		  s.Execute "%SystemRoot%\System32\charmap.exe"
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Col(index as Integer) As Boolean Handles Col.Action
-			select case index
-			case 0
-			EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(255,0,0)
-			case 1
-			EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(0,255,0)
-			case 2
-			EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(0,0,255)
-			case 3
-			EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(0,0,0)
-			end select
-			
-			
+		  select case index
+		  case 0
+		    EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(255,0,0)
+		  case 1
+		    EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(0,255,0)
+		  case 2
+		    EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(0,0,255)
+		  case 3
+		    EF.StyledText.TextColor(EF.SelStart,  EF.SelLength ) = RGB(0,0,0)
+		  end select
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DroiteMenu() As Boolean Handles DroiteMenu.Action
-			EF.Selalignment = 3
+		  EF.Selalignment = 3
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditColler() As Boolean Handles EditColler.Action
-			EF.Paste
+		  EF.Paste
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditCopier() As Boolean Handles EditCopier.Action
-			EF.Copy
+		  EF.Copy
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileClose() As Boolean Handles FileClose.Action
-			close
+		  close
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
-			dim f as folderitem
-			dim t as textinputstream 
-			dim st as new StyledText
-			
-			
-			
-			
-			f =GetOpenFolderItem("Rtf")
-			if f <> nil then
-			title = f.name
-			t = TextInputStream.Open(f)
-			if t <> nil then
-			St.RTFData = t.ReadAll
-			EF.StyledText.Text = st.Text
-			end if
-			else 
-			MsgBox Dico.value("MsgNoValidFile")
-			end if
+		  dim f as folderitem
+		  dim t as textinputstream 
+		  dim st as new StyledText
+		  
+		  
+		  
+		  
+		  f =GetOpenFolderItem("Rtf")
+		  if f <> nil then
+		    title = f.name
+		    t = TextInputStream.Open(f)
+		    if t <> nil then
+		      St.RTFData = t.ReadAll
+		      EF.StyledText.Text = st.Text
+		    end if
+		  else 
+		    MsgBox Dico.value("MsgNoValidFile")
+		  end if
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
-			Dim stp as StyledTextPrinter
-			Dim g as Graphics
-			
-			g= OpenPrinterDialog()
-			If g <> Nil then
-			stp=EF.StyledTextPrinter(g,72*7.5)
-			stp.DrawBlock 14,14,72*10
-			End if
-			
-			
+		  Dim stp as StyledTextPrinter
+		  Dim g as Graphics
+		  
+		  g= OpenPrinterDialog()
+		  If g <> Nil then
+		    stp=EF.StyledTextPrinter(g,72*7.5)
+		    stp.DrawBlock 14,14,72*10
+		  End if
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileSave() As Boolean Handles FileSave.Action
-			Save
-			
+		  Save
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FontFontName(index as Integer) As Boolean Handles FontFontName.Action
-			EF.StyledText.Font(EF.SelStart,  EF.SelLength) =  FontFontName(Index).Text
+		  EF.StyledText.Font(EF.SelStart,  EF.SelLength) =  FontFontName(Index).Text
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function GaucheMenu() As Boolean Handles GaucheMenu.Action
-			EF.Selalignment = 1
+		  EF.Selalignment = 1
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function GrasMenu() As Boolean Handles GrasMenu.Action
-			
-			
-			EF.StyledText.Bold(EF.SelStart,  EF.SelLength ) = true
+		  
+		  
+		  EF.StyledText.Bold(EF.SelStart,  EF.SelLength ) = true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ItaliqueMenu() As Boolean Handles ItaliqueMenu.Action
-			EF.StyledText.Italic (EF.SelStart,  EF.SelLength ) = true
+		  EF.StyledText.Italic (EF.SelStart,  EF.SelLength ) = true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function NormalMenu() As Boolean Handles NormalMenu.Action
-			EF.StyledText.Bold(EF.SelStart,  EF.SelLength ) = false
-			EF.StyledText.Italic(EF.SelStart,  EF.SelLength ) = false
+		  EF.StyledText.Bold(EF.SelStart,  EF.SelLength ) = false
+		  EF.StyledText.Italic(EF.SelStart,  EF.SelLength ) = false
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TItem(index as Integer) As Boolean Handles TItem.Action
-			select case index
-			case 0
-			EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 12
-			case 1
-			EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 16
-			case 2
-			EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 20
-			case 3
-			EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 25
-			end select
+		  select case index
+		  case 0
+		    EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 12
+		  case 1
+		    EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 16
+		  case 2
+		    EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 20
+		  case 3
+		    EF.StyledText.Size (EF.SelStart,  EF.SelLength ) = 25
+		  end select
 		End Function
 	#tag EndMenuHandler
 
@@ -405,7 +394,7 @@ End
 		  me.Styled = true
 		  me.width = self.width-10
 		  me.height = self.height-1
-		  me.BackColor = blanc
+		  me.BackgroundColor = blanc
 		  'me.AcceptPictureDrop
 		  'me.AcceptFileDrop
 		End Sub
@@ -525,8 +514,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -589,7 +578,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

@@ -1,13 +1,13 @@
 #tag Menu
 Begin Menu Menu
-   Begin MenuItem FileMenu
+   Begin DesktopMenuItem FileMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Fichier"
       AutoEnabled = False
       AutoEnable = False
       Visible = True
-      Begin MenuItem FileNew
+      Begin DesktopMenuItem FileNew
          SpecialMenu = 0
          Index = -2147483648
          Text = "Nouveau"
@@ -19,7 +19,7 @@ Begin Menu Menu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileOpen
+      Begin DesktopMenuItem FileOpen
          SpecialMenu = 0
          Index = -2147483648
          Text = "Ouvrir..."
@@ -27,7 +27,7 @@ Begin Menu Menu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileClose
+      Begin DesktopMenuItem FileClose
          SpecialMenu = 0
          Index = -2147483648
          Text = "Fermer"
@@ -35,7 +35,7 @@ Begin Menu Menu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileSave
+      Begin DesktopMenuItem FileSave
          SpecialMenu = 0
          Index = -2147483648
          Text = "Enregistrer"
@@ -47,7 +47,7 @@ Begin Menu Menu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileSaveAs
+      Begin DesktopMenuItem FileSaveAs
          SpecialMenu = 0
          Index = -2147483648
          Text = "Enregistrer sous..."
@@ -55,7 +55,7 @@ Begin Menu Menu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileSaveEps
+      Begin DesktopMenuItem FileSaveEps
          SpecialMenu = 0
          Index = -2147483648
          Text = "Sauver comme Fichier Eps..."
@@ -63,7 +63,7 @@ Begin Menu Menu
          AutoEnable = False
          Visible = True
       End
-      Begin MenuItem FileSaveBitmap
+      Begin DesktopMenuItem FileSaveBitmap
          SpecialMenu = 0
          Index = -2147483648
          Text = "Sauver comme Image..."
@@ -71,7 +71,7 @@ Begin Menu Menu
          AutoEnable = False
          Visible = True
       End
-      Begin MenuItem FileSaveStd
+      Begin DesktopMenuItem FileSaveStd
          SpecialMenu = 0
          Index = -2147483648
          Text = "Standardiser"
@@ -79,7 +79,7 @@ Begin Menu Menu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FilePrint
+      Begin DesktopMenuItem FilePrint
          SpecialMenu = 0
          Index = -2147483648
          Text = "Imprimer "
@@ -91,7 +91,7 @@ Begin Menu Menu
          AutoEnable = False
          Visible = True
       End
-      Begin QuitMenuItem FileQuit
+      Begin DesktopQuitMenuItem FileQuit
          SpecialMenu = 0
          Index = -2147483648
          Text = "Quitter"
@@ -100,7 +100,7 @@ Begin Menu Menu
          Visible = True
       End
    End
-   Begin MenuItem Fenetres
+   Begin DesktopMenuItem Fenetres
       SpecialMenu = 0
       Index = -2147483648
       Text = "Fenêtres"

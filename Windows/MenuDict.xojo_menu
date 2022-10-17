@@ -1,6 +1,6 @@
 #tag Menu
 Begin Menu MenuDict
-   Begin MenuItem UntitledMenu0
+   Begin DesktopMenuItem UntitledMenu0
       SpecialMenu = 0
       Index = -2147483648
       Text = ""
@@ -8,14 +8,14 @@ Begin Menu MenuDict
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem Dict
+   Begin DesktopMenuItem Dict
       SpecialMenu = 0
       Index = -2147483648
       Text = "Dictionnaires"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem ChargerDict
+      Begin DesktopMenuItem ChargerDict
          SpecialMenu = 0
          Index = -2147483648
          Text = "Charger"
@@ -23,7 +23,7 @@ Begin Menu MenuDict
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem CreerDict
+      Begin DesktopMenuItem CreerDict
          SpecialMenu = 0
          Index = -2147483648
          Text = "Créer"
@@ -31,7 +31,7 @@ Begin Menu MenuDict
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem SauverDict
+      Begin DesktopMenuItem SauverDict
          SpecialMenu = 0
          Index = -2147483648
          Text = "Sauvegarder"
@@ -39,7 +39,7 @@ Begin Menu MenuDict
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FinDict
+      Begin DesktopMenuItem FinDict
          SpecialMenu = 0
          Index = -2147483648
          Text = "Fin"
@@ -48,7 +48,7 @@ Begin Menu MenuDict
          Visible = True
       End
    End
-   Begin MenuItem Untitled1
+   Begin DesktopMenuItem Untitled1
       SpecialMenu = 0
       Index = -2147483648
       Text = ""

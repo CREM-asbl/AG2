@@ -1,5 +1,5 @@
-#tag Window
-Begin Window WorkWindow
+#tag DesktopWindow
+Begin DesktopWindow WorkWindow
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   True
@@ -69,14 +69,14 @@ Begin Window WorkWindow
       Visible         =   True
       Width           =   678
    End
-   Begin Rectangle Tools
-      AutoDeactivate  =   False
-      BorderWidth     =   1.0
-      BottomRightColor=   &c00000000
+   Begin DesktopRectangle Tools
+      AllowAutoDeactivate=   True
+      BorderColor     =   &c000000
+      BorderThickness =   1.0
+      CornerSize      =   16.0
       Enabled         =   True
       FillColor       =   &c80808000
       Height          =   595
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -88,18 +88,20 @@ Begin Window WorkWindow
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
+      Tooltip         =   ""
       Top             =   0
-      TopLeftColor    =   &c00000000
       Transparent     =   False
       Visible         =   True
       Width           =   122
-      Begin GroupBox MoveBox
-         AutoDeactivate  =   True
+      Begin DesktopGroupBox MoveBox
+         AllowAutoDeactivate=   True
          Bold            =   True
          Caption         =   "Mouvements"
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   152
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
@@ -113,24 +115,23 @@ Begin Window WorkWindow
          TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   59
          Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
-         Begin PushButton MouvBut
-            AutoDeactivate  =   True
+         Begin DesktopButton MouvBut
+            AllowAutoDeactivate=   True
             Bold            =   True
-            ButtonStyle     =   0
             Cancel          =   False
             Caption         =   "Tourner"
             Default         =   False
             Enabled         =   True
+            FontName        =   "System"
+            FontSize        =   0.0
+            FontUnit        =   0
             Height          =   30
-            HelpTag         =   ""
             Index           =   2
             InitialParent   =   "MoveBox"
             Italic          =   False
@@ -140,29 +141,29 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
+            MacButtonStyle  =   0
             Scope           =   0
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
-            TextFont        =   "System"
-            TextSize        =   0.0
-            TextUnit        =   0
+            Tooltip         =   ""
             Top             =   112
             Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
          End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   True
+         Begin DesktopButton MouvBut
+            AllowAutoDeactivate=   True
             Bold            =   True
-            ButtonStyle     =   0
             Cancel          =   False
             Caption         =   "Retourner"
             Default         =   False
             Enabled         =   True
+            FontName        =   "System"
+            FontSize        =   0.0
+            FontUnit        =   0
             Height          =   30
-            HelpTag         =   ""
             Index           =   3
             InitialParent   =   "MoveBox"
             Italic          =   False
@@ -172,29 +173,29 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
+            MacButtonStyle  =   0
             Scope           =   0
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
-            TextFont        =   "System"
-            TextSize        =   0.0
-            TextUnit        =   0
+            Tooltip         =   ""
             Top             =   142
             Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
          End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   True
+         Begin DesktopButton MouvBut
+            AllowAutoDeactivate=   True
             Bold            =   True
-            ButtonStyle     =   0
             Cancel          =   False
             Caption         =   "Zoomer"
             Default         =   False
             Enabled         =   True
+            FontName        =   "System"
+            FontSize        =   0.0
+            FontUnit        =   0
             Height          =   30
-            HelpTag         =   ""
             Index           =   4
             InitialParent   =   "MoveBox"
             Italic          =   False
@@ -204,29 +205,29 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
+            MacButtonStyle  =   0
             Scope           =   0
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
-            TextFont        =   "System"
-            TextSize        =   0.0
-            TextUnit        =   0
+            Tooltip         =   ""
             Top             =   172
             Transparent     =   False
             Underline       =   False
             Visible         =   True
             Width           =   108
          End
-         Begin PushButton MouvBut
-            AutoDeactivate  =   True
+         Begin DesktopButton MouvBut
+            AllowAutoDeactivate=   True
             Bold            =   True
-            ButtonStyle     =   0
             Cancel          =   False
             Caption         =   "Glisser"
             Default         =   False
             Enabled         =   True
+            FontName        =   "System"
+            FontSize        =   0.0
+            FontUnit        =   0
             Height          =   30
-            HelpTag         =   ""
             Index           =   1
             InitialParent   =   "MoveBox"
             Italic          =   False
@@ -236,13 +237,12 @@ Begin Window WorkWindow
             LockLeft        =   False
             LockRight       =   False
             LockTop         =   False
+            MacButtonStyle  =   0
             Scope           =   0
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
-            TextFont        =   "System"
-            TextSize        =   0.0
-            TextUnit        =   0
+            Tooltip         =   ""
             Top             =   82
             Transparent     =   False
             Underline       =   False
@@ -250,13 +250,15 @@ Begin Window WorkWindow
             Width           =   108
          End
       End
-      Begin GroupBox StdBox
-         AutoDeactivate  =   True
+      Begin DesktopGroupBox StdBox
+         AllowAutoDeactivate=   True
          Bold            =   True
          Caption         =   "Formes Standard"
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   135
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
@@ -270,23 +272,20 @@ Begin Window WorkWindow
          TabIndex        =   1
          TabPanelIndex   =   0
          TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   215
          Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
-         Begin Canvas StdOutil
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas StdOutil
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   0
-            DoubleBuffer    =   True
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   2
             InitialParent   =   "StdBox"
             Left            =   8
@@ -299,21 +298,20 @@ Begin Window WorkWindow
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   292
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas StdOutil
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   False
+         Begin DesktopCanvas StdOutil
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   0
-            DoubleBuffer    =   True
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   0
             InitialParent   =   "StdBox"
             Left            =   8
@@ -326,21 +324,20 @@ Begin Window WorkWindow
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   240
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas StdOutil
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas StdOutil
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   0
-            DoubleBuffer    =   True
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   3
             InitialParent   =   "StdBox"
             Left            =   64
@@ -353,21 +350,20 @@ Begin Window WorkWindow
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   292
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas StdOutil
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas StdOutil
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   0
-            DoubleBuffer    =   True
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   1
             InitialParent   =   "StdBox"
             Left            =   64
@@ -380,20 +376,22 @@ Begin Window WorkWindow
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   240
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
       End
-      Begin GroupBox LibBox
-         AutoDeactivate  =   True
+      Begin DesktopGroupBox LibBox
+         AllowAutoDeactivate=   True
          Bold            =   True
          Caption         =   "Formes Libres"
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   238
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
@@ -407,23 +405,20 @@ Begin Window WorkWindow
          TabIndex        =   3
          TabPanelIndex   =   0
          TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   352
          Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   326336511
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   2
             InitialParent   =   "LibBox"
             Left            =   8
@@ -436,21 +431,20 @@ Begin Window WorkWindow
             TabIndex        =   0
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   433
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   419098623
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   4
             InitialParent   =   "LibBox"
             Left            =   8
@@ -463,21 +457,20 @@ Begin Window WorkWindow
             TabIndex        =   3
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   485
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   1273780223
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   5
             InitialParent   =   "LibBox"
             Left            =   8
@@ -490,21 +483,20 @@ Begin Window WorkWindow
             TabIndex        =   6
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   537
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   2141171711
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   1
             InitialParent   =   "LibBox"
             Left            =   64
@@ -517,21 +509,20 @@ Begin Window WorkWindow
             TabIndex        =   1
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   381
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   834662399
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   3
             InitialParent   =   "LibBox"
             Left            =   64
@@ -544,21 +535,20 @@ Begin Window WorkWindow
             TabIndex        =   2
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   433
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   680357887
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   6
             InitialParent   =   "LibBox"
             Left            =   64
@@ -571,21 +561,20 @@ Begin Window WorkWindow
             TabIndex        =   4
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   485
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
-         Begin Canvas LibOutils
-            AcceptFocus     =   True
-            AcceptTabs      =   False
-            AutoDeactivate  =   True
+         Begin DesktopCanvas LibOutils
+            AllowAutoDeactivate=   True
+            AllowFocus      =   False
+            AllowFocusRing  =   True
+            AllowTabs       =   False
             Backdrop        =   1333702655
-            DoubleBuffer    =   False
             Enabled         =   True
             Height          =   50
-            HelpTag         =   ""
             Index           =   0
             InitialParent   =   "LibBox"
             Left            =   8
@@ -598,23 +587,24 @@ Begin Window WorkWindow
             TabIndex        =   5
             TabPanelIndex   =   0
             TabStop         =   True
+            Tooltip         =   ""
             Top             =   381
             Transparent     =   True
-            UseFocusRing    =   True
             Visible         =   True
             Width           =   50
          End
       End
-      Begin PushButton MouvBut
-         AutoDeactivate  =   False
+      Begin DesktopButton MouvBut
+         AllowAutoDeactivate=   True
          Bold            =   True
-         ButtonStyle     =   0
          Cancel          =   False
          Caption         =   "Modifier"
          Default         =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   30
-         HelpTag         =   ""
          Index           =   0
          InitialParent   =   "Tools"
          Italic          =   False
@@ -624,29 +614,29 @@ Begin Window WorkWindow
          LockLeft        =   False
          LockRight       =   False
          LockTop         =   False
+         MacButtonStyle  =   0
          Scope           =   0
          TabIndex        =   4
          TabPanelIndex   =   0
          TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   33
          Transparent     =   False
          Underline       =   False
          Visible         =   True
          Width           =   112
       End
-      Begin PushButton PushButton1
-         AutoDeactivate  =   False
+      Begin DesktopButton PushButton1
+         AllowAutoDeactivate=   True
          Bold            =   True
-         ButtonStyle     =   0
          Cancel          =   False
          Caption         =   "Annuler"
          Default         =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   30
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tools"
          Italic          =   False
@@ -656,13 +646,12 @@ Begin Window WorkWindow
          LockLeft        =   False
          LockRight       =   False
          LockTop         =   False
+         MacButtonStyle  =   0
          Scope           =   0
          TabIndex        =   5
          TabPanelIndex   =   0
          TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   3
          Transparent     =   False
          Underline       =   False
@@ -671,11 +660,11 @@ Begin Window WorkWindow
       End
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Function CancelClose(appQuitting as Boolean) As Boolean
+		Function CancelClosing(appQuitting As Boolean) As Boolean
 		  dim i as integer
 		  
 		  'if appQuitting then
@@ -695,14 +684,13 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Close()
+		Sub Closing()
 		  HistCmd.close
-		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
-		Sub DropObject(obj As DragItem, action As Integer)
+		Sub DropObject(obj As DragItem, action As DragItem.Types)
 		  if obj.FolderItem <> nil then
 		    OpenFile(obj.FolderItem)
 		  else
@@ -713,95 +701,7 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub EnableMenuItems()
-		  If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
-		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
-		  else
-		    setcross
-		  end if
-		  
-		  dim B, B1, B2 as boolean
-		  dim item as MenuItem
-		  dim i as integer
-		  
-		  if MenuBar.Child("Fenetres").Count > GetNumWindow then
-		    MenuBar.Child("Fenetres").Item(GetNumWindow).Checked = true
-		  end if
-		  
-		  if (MenuBar = HistMenu) then
-		    return
-		  end if
-		  
-		  if currentcontent <> nil then
-		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
-		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		    
-		    PushButton1.enabled = currentcontent.currentop > 0
-		    
-		    if can.rep <> nil then
-		      B =  CurrentContent.TheObjects.count > 1
-		      B1 = CurrentContent.TheGrid <> nil
-		      B2 = can.rep.labs.count > 0
-		      B = (B or B1 or B2) and not currentcontent.macrocreation
-		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
-		      MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
-		      if MenuMenus.Child("EditMenu").Child("EditUndo").Checked then
-		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = B 
-		        pushbutton1.enabled = B 
-		      end if
-		      if MenuMenus.Child("EditMenu").Child("EditRedo").Checked then
-		        MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
-		      end if
-		      if MenuMenus.Child("EditMenu").Child("EditLink").Checked then
-		        MenuBar.Child("EditMenu").Child("EditLink").Enabled = CurrentContent.TheObjects.count > 2
-		      end if
-		      if MenuMenus.Child("EditMenu").Child("EditUnlink").Checked then
-		        MenuBar.Child("EditMenu").Child("EditUnlink").Enabled = CurrentContent.TheObjects.Groupes.count > 0
-		      end if
-		    else
-		      B = false
-		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
-		      MenuBar.Child("FileMenu").Child("FileClose").enabled = false
-		    end if
-		    
-		    MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
-		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
-		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
-		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		    '#if TargetWindows  then
-		    'MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
-		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
-		    '#else
-		    'MenuBar.Child("FileMenu").Child("ViewEps").visible= true
-		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= true
-		    '#Endif
-		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
-		    
-		    if MenuBar.Child("PrefsMenu") <> nil then
-		      
-		      if MenuBar.Child("PrefsMenu").child("Fonds") <> nil then
-		        MenuBar.Child("PrefsMenu").child("Fonds").child("FondEcranConfigurer").enabled = MyCanvas1.FondsEcran <> nil
-		      end if
-		      
-		      if MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
-		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = Config.PolFleches
-		      end if
-		      if MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
-		        MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
-		      end if
-		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked  = config.trace
-		      if MenuBar.Child("PrefsMenu").Child("PrefsArea")<> nil then
-		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = (config.area = 0)
-		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = (config.area = 1)
-		      end if
-		    end if
-		  end if
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Function KeyDown(Key As String) As Boolean
+		Function KeyDown(key As String) As Boolean
 		  Dim u(-1), s As Integer
 		  dim disp, nom as string
 		  dim sh as shape
@@ -889,8 +789,97 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Maximize()
+		Sub Maximized()
 		  UpdateToolBar
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub MenuBarSelected()
+		  If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
+		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
+		  else
+		    setcross
+		  end if
+		  
+		  dim B, B1, B2 as boolean
+		  dim item as MenuItem
+		  dim i, c, n as integer
+		  
+		  c = MenuBar.Child("Fenetres").Count
+		  n = GetNumWindow
+		  if GetNumWindow > -1 and MenuBar.Child("Fenetres").Count > GetNumWindow then
+		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
+		  end if
+		  
+		  if (MenuBar = HistMenu) then
+		    return
+		  end if
+		  
+		  if currentcontent <> nil then
+		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
+		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
+		    
+		    PushButton1.enabled = currentcontent.currentop > 0
+		    
+		    if can.rep <> nil then
+		      B =  CurrentContent.TheObjects.count > 1
+		      B1 = CurrentContent.TheGrid <> nil
+		      B2 = can.rep.labs.count > 0
+		      B = (B or B1 or B2) and not currentcontent.macrocreation
+		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
+		      MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
+		      if MenuMenus.Child("EditMenu").Child("EditUndo").HasCheckMark then
+		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = B 
+		        pushbutton1.enabled = B 
+		      end if
+		      if MenuMenus.Child("EditMenu").Child("EditRedo").HasCheckMark then
+		        MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
+		      end if
+		      if MenuMenus.Child("EditMenu").Child("EditLink").HasCheckMark then
+		        MenuBar.Child("EditMenu").Child("EditLink").Enabled = CurrentContent.TheObjects.count > 2
+		      end if
+		      if MenuMenus.Child("EditMenu").Child("EditUnlink").HasCheckMark then
+		        MenuBar.Child("EditMenu").Child("EditUnlink").Enabled = CurrentContent.TheObjects.Groupes.count > 0
+		      end if
+		    else
+		      B = false
+		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
+		      MenuBar.Child("FileMenu").Child("FileClose").enabled = false
+		    end if
+		    
+		    MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
+		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
+		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
+		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
+		    '#if TargetWindows  then
+		    'MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
+		    '#else
+		    'MenuBar.Child("FileMenu").Child("ViewEps").visible= true
+		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= true
+		    '#Endif
+		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
+		    
+		    if MenuBar.Child("PrefsMenu") <> nil then
+		      
+		      if MenuBar.Child("PrefsMenu").child("Fonds") <> nil then
+		        MenuBar.Child("PrefsMenu").child("Fonds").child("FondEcranConfigurer").enabled = MyCanvas1.FondsEcran <> nil
+		      end if
+		      
+		      if MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
+		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark  = Config.PolFleches
+		      end if
+		      if MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
+		        MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark  = config.polpointes
+		      end if
+		      MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark  = config.trace
+		      if MenuBar.Child("PrefsMenu").Child("PrefsArea")<> nil then
+		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = (config.area = 0)
+		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = (config.area = 1)
+		      end if
+		    end if
+		  end if
 		  
 		End Sub
 	#tag EndEvent
@@ -902,24 +891,16 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  InitParams()
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
 		  
-		  if MenuMenus.Child("EditMenu").Child("EditCopy").checked  then
-		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").checked
+		  if MenuMenus.Child("EditMenu").Child("EditCopy").HasCheckMark  then
+		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark
 		  end if
 		  maximize
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
@@ -940,7 +921,7 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Restore()
+		Sub Restored()
 		  UpdateToolBar
 		End Sub
 	#tag EndEvent
@@ -948,1264 +929,1264 @@ End
 
 	#tag MenuHandler
 		Function CfgOpen() As Boolean Handles CfgOpen.Action
-			config
-			return true
+		  config
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(11)
-			refreshtitle
-			end if
-			return true
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(11)
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirDemiTour() As Boolean Handles DefinirDemiTour.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(3)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(3)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirDeplacement() As Boolean Handles DefinirDeplacement.Action
-			If mousedispo Then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(10)
-			refreshtitle
-			end if
-			return true
-			
-			
+		  If mousedispo Then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(10)
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirEtirement() As Boolean Handles DefinirEtirement.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(9)
-			refreshtitle
-			end if
-			Return True
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(9)
+		    refreshtitle
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirHomothetie() As Boolean Handles DefinirHomothetie.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(7)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(7)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirQuartD() As Boolean Handles DefinirQuartD.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(5)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(5)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirQuartG() As Boolean Handles DefinirQuartG.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(4)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(4)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirRotation() As Boolean Handles DefinirRotation.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(2)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(2)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirSimilitude() As Boolean Handles DefinirSimilitude.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(8)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(8)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirSymetrieaxiale() As Boolean Handles DefinirSymetrieaxiale.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(6)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(6)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirTranslation() As Boolean Handles DefinirTranslation.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new TransfoConstruction(1)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new TransfoConstruction(1)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditCopy() As Boolean Handles EditCopy.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new Copier
-			Copier(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new Copier
+		    Copier(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditDelete() As Boolean Handles EditDelete.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.theobjects.unselectall
-			CurrentContent.CurrentOperation=new Delete()
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.theobjects.unselectall
+		    CurrentContent.CurrentOperation=new Delete()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditLink() As Boolean Handles EditLink.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new Lier
-			Lier(CurrentContent.CurrentOPeration).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new Lier
+		    Lier(CurrentContent.CurrentOPeration).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditPaste() As Boolean Handles EditPaste.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new Coller
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new Coller
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditRedo() As Boolean Handles EditRedo.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.RedoLastOperation
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.RedoLastOperation
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditReselect() As Boolean Handles EditReselect.Action
-			MenuBar.Child("EditMenu").Child("EditReselect").checked = not MenuBar.Child("EditMenu").Child("EditReselect").checked
-			Drapresel = MenuBar.Child("EditMenu").Child("EditReselect").checked
-			return true
+		  MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark = not MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark
+		  Drapresel = MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditSelectall() As Boolean Handles EditSelectall.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Selectionner(true)
-			CurrentContent.Currentoperation.Dooperation
-			CurrentContent.Currentoperation.endoperation
-			CurrentContent.CurrentOperation = nil
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Selectionner(true)
+		    CurrentContent.Currentoperation.Dooperation
+		    CurrentContent.Currentoperation.endoperation
+		    CurrentContent.CurrentOperation = nil
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditSelection() As Boolean Handles EditSelection.Action
-			if mousedispo then
-			Formswindow.close
-			if not CurrentContent.CurrentOperation isa selectionner or selectionner(CurrentContent.currentoperation).all = true  then
-			CurrentContent.CurrentOperation=new Selectionner()
-			end if
-			refreshtitle
-			end if
-			return true
-			
+		  if mousedispo then
+		    Formswindow.close
+		    if not CurrentContent.CurrentOperation isa selectionner or selectionner(CurrentContent.currentoperation).all = true  then
+		      CurrentContent.CurrentOperation=new Selectionner()
+		    end if
+		    refreshtitle
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
-			Annuler
-			return true
+		  Annuler
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditUnlink() As Boolean Handles EditUnlink.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.currentoperation = nil
-			refreshtitle
-			CurrentContent.CurrentOperation = new Delier
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.currentoperation = nil
+		    refreshtitle
+		    CurrentContent.CurrentOperation = new Delier
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EpsConvertToPdf() As Boolean Handles EpsConvertToPdf.Action
-			dim sh as new shell
-			dim f, f1 as folderitem
-			dim s, S1 as string
-			dim dlg as new OpenDialog
-			
-			
-			dlg.ActionButtonCaption = "Convertir"
-			dlg.Title = "Choisis un fichier .eps"
-			dlg.Filter = FileAGTypes.EPS
-			
-			f = dlg.ShowModal
-			if f = nil then 
-			return true
-			end if
-			s=  f.shellpath
-			if dlg.Result <> nil then
-			#if targetWindows then 
-			sh.Execute(f.shellpath)
-			s1 = s.replace(f.name,"")
-			sh.execute("cd "+ s1)
-			sh.execute("epstopdf --nosafer "+s)
-			#elseif targetMacOS then
-			s1 = s.replace("eps","pdf") 
-			sh.execute ("pstopdf "+ s +" -o "+s1, f.shellpath)
-			#elseif targetlinux then
-			#Endif
-			s1 = s.replace("eps","pdf") 
-			sh.execute(s1)
-			end if
-			Return True
-			
+		  dim sh as new shell
+		  dim f, f1 as folderitem
+		  dim s, S1 as string
+		  dim dlg as new OpenDialog
+		  
+		  
+		  dlg.ActionButtonCaption = "Convertir"
+		  dlg.Title = "Choisis un fichier .eps"
+		  dlg.Filter = FileAGTypes.EPS
+		  
+		  f = dlg.ShowModal
+		  if f = nil then 
+		    return true
+		  end if
+		  s=  f.shellpath
+		  if dlg.Result <> nil then
+		    #if targetWindows then 
+		      sh.Execute(f.shellpath)
+		      s1 = s.replace(f.name,"")
+		      sh.execute("cd "+ s1)
+		      sh.execute("epstopdf --nosafer "+s)
+		    #elseif targetMacOS then
+		      s1 = s.replace("eps","pdf") 
+		      sh.execute ("pstopdf "+ s +" -o "+s1, f.shellpath)
+		    #elseif targetlinux then
+		    #Endif
+		    s1 = s.replace("eps","pdf") 
+		    sh.execute(s1)
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileClose() As Boolean Handles FileClose.Action
-			
-			deletecontent
-			if UBound (wcontent) = -1 then
-			NewContent(false)
-			end if
+		  
+		  deletecontent
+		  if UBound (wcontent) = -1 then
+		    NewContent(false)
+		  end if
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileNew() As Boolean Handles FileNew.Action
-			if mousedispo then
-			Formswindow.close
-			NewContent(false)
-			refresh
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    NewContent(false)
+		    refresh
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
-			Dim f As FolderItem
-			
-			if mousedispo then
-			Formswindow.close
-			f=GetOpenFolderItem(FileAGTypes.All)
-			if f=nil then
-			return true
-			else
-			OpenFile(f)
-			end if
-			end if
-			setfocus
-			return true
-			
-			
-			
-			
+		  Dim f As FolderItem
+		  
+		  if mousedispo then
+		    Formswindow.close
+		    f=GetOpenFolderItem(FileAGTypes.All)
+		    if f=nil then
+		      return true
+		    else
+		      OpenFile(f)
+		    end if
+		  end if
+		  setfocus
+		  return true
+		  
+		  
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.currentoperation = nil
-			refreshtitle
-			CurrentContent.CurrentOperation = new Imprimer
-			CurrentContent.currentoperation.finished = false
-			Imprimer(CurrentContent.CurrentOPeration).ImmediateDoOperation
-			CurrentContent.currentoperation = nil
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.currentoperation = nil
+		    refreshtitle
+		    CurrentContent.CurrentOperation = new Imprimer
+		    CurrentContent.currentoperation.finished = false
+		    Imprimer(CurrentContent.CurrentOPeration).ImmediateDoOperation
+		    CurrentContent.currentoperation = nil
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileSave() As Boolean Handles FileSave.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.Save
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.Save
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileSaveAs() As Boolean Handles FileSaveAs.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.SaveAs
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.SaveAs
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileSaveBitmap() As Boolean Handles FileSaveBitmap.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new SaveBitMap
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new SaveBitMap
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileSaveEps() As Boolean Handles FileSaveEps.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new SaveEPS
-			CurrentContent.currentoperation.finished = false
-			SaveEPS(CurrentContent.CurrentOPeration).ImmediateDoOperation
-			CurrentContent.currentoperation = nil
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new SaveEPS
+		    CurrentContent.currentoperation.finished = false
+		    SaveEPS(CurrentContent.CurrentOPeration).ImmediateDoOperation
+		    CurrentContent.currentoperation = nil
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileSaveStd() As Boolean Handles FileSaveStd.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new SaveStd
-			CurrentContent.currentoperation.finished = false
-			SaveStd(CurrentContent.CurrentOPeration).ImmediateDoOperation
-			CurrentContent.currentoperation = nil
-			refreshtitle
-			end if
-			return true
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new SaveStd
+		    CurrentContent.currentoperation.finished = false
+		    SaveStd(CurrentContent.CurrentOPeration).ImmediateDoOperation
+		    CurrentContent.currentoperation = nil
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FondEcranConfigurer() As Boolean Handles FondEcranConfigurer.Action
-			PrefFondEcran.ShowModal
-			Return True
-			
+		  PrefFondEcran.ShowModal
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpAbout() As Boolean Handles HelpAbout.Action
-			if mousedispo then
-			dim md as MessageDialog
-			Dim b as MessageDialogButton
-			Dim mois() as string
-			dim mess as string 
-			
-			mois.Append ("Janvier")
-			mois.Append ("Février")
-			mois.Append ("Mars")
-			mois.Append ("Avril")
-			mois.Append ("Mai")
-			mois.Append ("Juin")
-			mois.Append ("Juillet")
-			mois.Append ("Août")
-			mois.Append ("Septembre")
-			mois.Append ("Octobre")
-			mois.Append ("Novembre")
-			mois.Append ("Décembre")
-			
-			
-			Formswindow.close
-			md = New MessageDialog
-			md.Title = Dico.value("HelpAbout")
-			md.Icon = 0
-			mess = "Apprenti géomètre v."+App.FullVersion
-			md.Message = mess+EndOfLine+EndofLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
-			b = md.ShowModal
-			end if
-			return true
-			
-			
+		  if mousedispo then
+		    dim md as MessageDialog
+		    Dim b as MessageDialogButton
+		    Dim mois() as string
+		    dim mess as string 
+		    
+		    mois.Append ("Janvier")
+		    mois.Append ("Février")
+		    mois.Append ("Mars")
+		    mois.Append ("Avril")
+		    mois.Append ("Mai")
+		    mois.Append ("Juin")
+		    mois.Append ("Juillet")
+		    mois.Append ("Août")
+		    mois.Append ("Septembre")
+		    mois.Append ("Octobre")
+		    mois.Append ("Novembre")
+		    mois.Append ("Décembre")
+		    
+		    
+		    Formswindow.close
+		    md = New MessageDialog
+		    md.Title = Dico.value("HelpAbout")
+		    md.Icon = 0
+		    mess = "Apprenti géomètre v."+App.FullVersion
+		    md.Message = mess+EndOfLine+EndofLine+"Copyright CREM "+ App.BuildDate.LongDate + EndofLine +EndofLine+ "Programmation: G. Noël et G. Pliez"
+		    b = md.ShowModal
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpUG() As Boolean Handles HelpUG.Action
-			dim fi as Folderitem
-			
-			'fi = getfolderitem(Dico.Value("UserGuide")) pas utile pour l'instant car un seul guide et en plus pose problème
-			
-			fi = getfolderitem("Guide Utilisateur AG2.pdf")
-			
-			if fi.exists then
-			fi.launch
-			else
-			MsgBox Dico.Value("MsgUnfoundable")
-			end if
-			Return True
-			
-			
+		  dim fi as Folderitem
+		  
+		  'fi = getfolderitem(Dico.Value("UserGuide")) pas utile pour l'instant car un seul guide et en plus pose problème
+		  
+		  fi = getfolderitem("Guide Utilisateur AG2.pdf")
+		  
+		  if fi.exists then
+		    fi.launch
+		  else
+		    MsgBox Dico.Value("MsgUnfoundable")
+		  end if
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpView() As Boolean Handles HelpView.Action
-			if mousedispo then
-			Formswindow.close
-			Config.ShowHelp=not Config.ShowHelp
-			can.RefreshBackground
-			MenuBar.Child("HelpMenu").Child("HelpView").checked = Config.showhelp
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    Config.ShowHelp=not Config.ShowHelp
+		    can.RefreshBackground
+		    MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpVisit() As Boolean Handles HelpVisit.Action
-			if mousedispo then
-			Formswindow.close
-			ShowURL "http://www.crem.be/"
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    ShowURL "http://www.crem.be/"
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Histclose() As Boolean Handles Histclose.Action
-			if mousedispo then
-			close
-			end if
-			return true
-			
+		  if mousedispo then
+		    close
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Install() As Boolean Handles Install.Action
-			Dim f As FolderItem
-			
-			if mousedispo then
-			Formswindow.close
-			f=GetOpenFolderItem(FileAGTypes.Image)
-			if f=nil then
-			return true
-			else
-			mycanvas1.setFondEcran(Picture.Open(f), f.Name)
-			PrefFondEcran.ShowModal
-			end if
-			end if
-			
-			Return True
-			
+		  Dim f As FolderItem
+		  
+		  if mousedispo then
+		    Formswindow.close
+		    f=GetOpenFolderItem(FileAGTypes.Image)
+		    if f=nil then
+		      return true
+		    else
+		      mycanvas1.setFondEcran(Picture.Open(f), f.Name)
+		      PrefFondEcran.ShowModal
+		    end if
+		  end if
+		  
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new MacroExe(index)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new MacroExe(index)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosClose2(index as Integer) As Boolean Handles MacrosClose2.Action
-			
-			app.themacros.RemoveMac app.themacros.item(index)
-			Return True
-			
+		  
+		  app.themacros.RemoveMac app.themacros.item(index)
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosCopy2(index as Integer) As Boolean Handles MacrosCopy2.Action
-			app.themacros.item(index).CopyMacroToFile
-			Return True
-			
+		  app.themacros.item(index).CopyMacroToFile
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			Formswindow.close
-			newcontent(true)
-			MenuMacros(true)
-			can.resize
-			WorkWindow.refreshtitle
-			config.trace = false
-			can.refreshbackground
-			currentcontent.mac = nil
-			return true
-			
-			
+		  Formswindow.close
+		  newcontent(true)
+		  MenuMacros(true)
+		  can.resize
+		  WorkWindow.refreshtitle
+		  config.trace = false
+		  can.refreshbackground
+		  currentcontent.mac = nil
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosDescri2(index as Integer) As Boolean Handles MacrosDescri2.Action
-			dim Mac as Macro
-			
-			Mac = app.themacros.item(index)
-			Mac.OpenDescripWindow
-			Return True
-			
+		  dim Mac as Macro
+		  
+		  Mac = app.themacros.item(index)
+		  Mac.OpenDescripWindow
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosErase2(index as Integer) As Boolean Handles MacrosErase2.Action
-			Dim f As FolderItem
-			dim mac as macro
-			dim cf as Confirmation
-			
-			Formswindow.close
-			currentcontent.currentoperation = nil
-			refreshtitle
-			
-			mac= app.themacros.item(index)
-			f = app.MacFolder.Child(mac.caption+".xmag")
-			
-			if f <> nil then
-			cf = new Confirmation("Voulez-vous vraiment supprimer cette macro du disque dur?")
-			cf.showmodal
-			
-			if cf.result = 1 then
-			app.themacros.RemoveMac app.themacros.item(index)
-			f.delete
-			end if
-			cf.close
-			end if
-			
-			return true
-			
-			
+		  Dim f As FolderItem
+		  dim mac as macro
+		  dim cf as Confirmation
+		  
+		  Formswindow.close
+		  currentcontent.currentoperation = nil
+		  refreshtitle
+		  
+		  mac= app.themacros.item(index)
+		  f = app.MacFolder.Child(mac.caption+".xmag")
+		  
+		  if f <> nil then
+		    cf = new Confirmation("Voulez-vous vraiment supprimer cette macro du disque dur?")
+		    cf.showmodal
+		    
+		    if cf.result = 1 then
+		      app.themacros.RemoveMac app.themacros.item(index)
+		      f.delete
+		    end if
+		    cf.close
+		  end if
+		  
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=New ChooseFinal
-			MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
-			refreshtitle
-			end if
-			Return True
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=New ChooseFinal
+		    MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
+		    refreshtitle
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosLoad() As Boolean Handles MacrosLoad.Action
-			Dim f As FolderItem
-			dim Doc as XmlDocument
-			dim mac as macro
-			dim dlg as OpenDialog
-			
-			Formswindow.close
-			currentcontent.currentoperation = nil
-			refreshtitle
-			dlg = new OpenDialog
-			dlg.InitialDirectory = App.MacFolder
-			dlg.Filter = FileAGTypes.MACR
-			f = dlg.ShowModal
-			
-			if f <> nil then
-			Doc = new XmlDocument(f)
-			mac = new Macro(Doc)
-			app.themacros.addmac mac
-			WorkWindow.updatesousmenusmacros
-			end if
-			return true
-			
+		  Dim f As FolderItem
+		  dim Doc as XmlDocument
+		  dim mac as macro
+		  dim dlg as OpenDialog
+		  
+		  Formswindow.close
+		  currentcontent.currentoperation = nil
+		  refreshtitle
+		  dlg = new OpenDialog
+		  dlg.InitialDirectory = App.MacFolder
+		  dlg.Filter = FileAGTypes.MACR
+		  f = dlg.ShowModal
+		  
+		  if f <> nil then
+		    Doc = new XmlDocument(f)
+		    mac = new Macro(Doc)
+		    app.themacros.addmac mac
+		    WorkWindow.updatesousmenusmacros
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
-			
-			CloseMacro
-			return true
+		  
+		  CloseMacro
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
-			dim op as operation
-			
-			Formswindow.close
-			op = currentcontent.currentoperation
-			if op isa choosefinal then
-			choosefinal(op).endoperation
-			end if
-			currentcontent.currentoperation = nil
-			CloseMacro
-			return true
+		  dim op as operation
+		  
+		  Formswindow.close
+		  op = currentcontent.currentoperation
+		  if op isa choosefinal then
+		    choosefinal(op).endoperation
+		  end if
+		  currentcontent.currentoperation = nil
+		  CloseMacro
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function NotesOpen() As Boolean Handles NotesOpen.Action
-			if mousedispo then
-			Formswindow.close
-			NotesWindow.visible = true
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    NotesWindow.visible = true
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaClone() As Boolean Handles OperaClone.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Duplicate()
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Duplicate()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaCreateCenter() As Boolean Handles OperaCreateCenter.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new GCConstruction()
-			GCConstruction(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new GCConstruction()
+		    GCConstruction(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaCut() As Boolean Handles OperaCut.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Decouper()
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Decouper()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaDivide() As Boolean Handles OperaDivide.Action
-			dim diw as DivideWindow
-			
-			if mousedispo then
-			Formswindow.close
-			diw = new DivideWindow
-			diw.ShowModal
-			CurrentContent.CurrentOperation=new Divide(ntemp)
-			refreshtitle
-			end if
-			return true
+		  dim diw as DivideWindow
+		  
+		  if mousedispo then
+		    Formswindow.close
+		    diw = new DivideWindow
+		    diw.ShowModal
+		    CurrentContent.CurrentOperation=new Divide(ntemp)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaIdentify() As Boolean Handles OperaIdentify.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Identifier()
-			refreshtitle
-			end if
-			return true
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Identifier()
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaMerge() As Boolean Handles OperaMerge.Action
-			
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Fusion()
-			refreshtitle
-			end if
-			return true
+		  
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Fusion()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaProl() As Boolean Handles OperaProl.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Prolonger()
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Prolonger()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsAjust() As Boolean Handles PrefsAjust.Action
-			MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = not MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked
-			Config.Ajust = MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked
-			Return True
-			
+		  MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark
+		  Config.Ajust = MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsAreaAlg() As Boolean Handles PrefsAreaAlg.Action
-			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked 
-			if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked then
-			config.area = 1
-			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = false
-			else
-			config.area = 0
-			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = true
-			end if
-			Return True
-			
-			
+		  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark
+		  if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark then
+		    config.area = 1
+		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = false
+		  else
+		    config.area = 0
+		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = true
+		  end if
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsAreaArith() As Boolean Handles PrefsAreaArith.Action
-			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked 
-			if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked then
-			config.area = 0
-			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = false
-			else
-			config.area = 1
-			MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = true
-			end if
-			Return True
-			
+		  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark 
+		  if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark then
+		    config.area = 0
+		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = false
+		  else
+		    config.area = 1
+		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = true
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsBiface() As Boolean Handles PrefsBiface.Action
-			MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked = not MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
-			Config.Biface = MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked
-			Return True
-			
+		  MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark
+		  Config.Biface = MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsColorBorder() As Boolean Handles PrefsColorBorder.Action
-			Formswindow.close
-			refreshtitle
-			ConfigcolorChange(True)
-			Return True
+		  Formswindow.close
+		  refreshtitle
+		  ConfigcolorChange(True)
+		  Return True
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsColorFill() As Boolean Handles PrefsColorFill.Action
-			Formswindow.close
-			refreshtitle
-			configcolorChange(False)
-			
-			Return True
-			
-			
+		  Formswindow.close
+		  refreshtitle
+		  configcolorChange(False)
+		  
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsColorStdFam() As Boolean Handles PrefsColorStdFam.Action
-			CurrentContent.currentoperation = Nil
-			Formswindow.close
-			refreshtitle
-			drapstdcolor = true
-			return true
-			
-			
-			
+		  CurrentContent.currentoperation = Nil
+		  Formswindow.close
+		  refreshtitle
+		  drapstdcolor = true
+		  return true
+		  
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsFleches() As Boolean Handles PrefsFleches.Action
-			MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked = not MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
-			config.PolFleches = MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked
-			return true
+		  MenuBar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark
+		  config.PolFleches = MenuBar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsMagDist() As Boolean Handles PrefsMagDist.Action
-			dim mw as MagDistWindow
-			dim d as double
-			
-			mw = new MagDistWindow
-			mw.ShowModal
-			if mw.result=1 then
-			d = val(mw.editfield1.text)
-			Config.magneticdist = d
-			MyCanvas1.SetMagneticDist
-			Mycanvas1.zone.width = 2*d
-			Mycanvas1.zone.height=2*d
-			mw.close
-			end if
-			return true
-			
-			
+		  dim mw as MagDistWindow
+		  dim d as double
+		  
+		  mw = new MagDistWindow
+		  mw.ShowModal
+		  if mw.result=1 then
+		    d = val(mw.editfield1.text)
+		    Config.magneticdist = d
+		    MyCanvas1.SetMagneticDist
+		    Mycanvas1.zone.width = 2*d
+		    Mycanvas1.zone.height=2*d
+		    mw.close
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsPolyg() As Boolean Handles PrefsPolyg.Action
-			'"Formes pointees dans le menu et PrefsPolyg dans XojoProject
-			MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = not MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked
-			config.PolPointes = MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked
-			return true
+		  '"Formes pointees dans le menu et PrefsPolyg dans XojoProject
+		  MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark
+		  config.PolPointes = MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsStdForms() As Boolean Handles PrefsStdForms.Action
-			if mousedispo then
-			CurrentContent.CurrentOperation = nil
-			refreshtitle
-			Formswindow.close
-			StdFormsWindow.ShowModal
-			Refresh
-			end if
-			return true
-			
+		  if mousedispo then
+		    CurrentContent.CurrentOperation = nil
+		    refreshtitle
+		    Formswindow.close
+		    StdFormsWindow.ShowModal
+		    Refresh
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsThickness() As Boolean Handles PrefsThickness.Action
-			dim mw as ThickWindow
-			dim d as double
-			
-			mw = new ThickWindow
-			mw.ShowModal
-			if mw.result=1 then
-			d = val(mw.TF.text)
-			Config.Thickness = d
-			mw.close
-			end if
-			Return True
-			
+		  dim mw as ThickWindow
+		  dim d as double
+		  
+		  mw = new ThickWindow
+		  mw.ShowModal
+		  if mw.result=1 then
+		    d = val(mw.TF.text)
+		    Config.Thickness = d
+		    mw.close
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsTrace() As Boolean Handles PrefsTrace.Action
-			'Le menu correspondant s'appelle "trajectoire"
-			MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked = not MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
-			Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
-			return true
+		  'Le menu correspondant s'appelle "trajectoire"
+		  MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark
+		  Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsUAChoix() As Boolean Handles PrefsUAChoix.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Unit(1)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Unit(1)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsUADef() As Boolean Handles PrefsUADef.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Unit(3)
-			refreshtitle
-			end if
-			return true
-			
-			
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Unit(3)
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsULChoix() As Boolean Handles PrefsULChoix.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Unit(0)
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Unit(0)
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsULDef() As Boolean Handles PrefsULDef.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Unit(2)
-			refreshtitle
-			end if
-			return true
-			
-			
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Unit(2)
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsARPlan() As Boolean Handles ToolsARPlan.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new ChangePosition(0)
-			ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new ChangePosition(0)
+		    ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsAvPlan() As Boolean Handles ToolsAvPlan.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new ChangePosition(1)
-			ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new ChangePosition(1)
+		    ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsColorTransparent() As Boolean Handles ToolsColorTransparent.Action
-			return true
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsGrid() As Boolean Handles ToolsGrid.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new CreateGrid()
-			Refresh
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new CreateGrid()
+		    Refresh
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsHide() As Boolean Handles ToolsHide.Action
-			If mousedispo Then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new Hide()
-			Hide(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
-			
+		  If mousedispo Then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new Hide()
+		    Hide(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsHisto() As Boolean Handles ToolsHisto.Action
-			Dim f As FolderItem
-			Dim dlg as OpenDialog
-			
-			if mousedispo then
-			Formswindow.close
-			MyCanvas1.Mousecursor = system.cursors.wait
-			if not (Config.username = "Enseignant") then
-			OpenHistWindow.ShowModal
-			f = OpenHistWindow.file
-			OpenHistWindow.close
-			else
-			dlg = new OpenDialog
-			dlg.InitialDirectory = App.DocFolder.Child("Historiques")
-			dlg.Filter = FileAGTypes.HIST
-			f = dlg.ShowModal
-			end if
-			
-			if f<>nil  then
-			OpenFile(f)
-			end if
-			
-			MyCanvas1.Mousecursor = System.Cursors.StandardPointer
-			end if
-			return true
-			
+		  Dim f As FolderItem
+		  Dim dlg as OpenDialog
+		  
+		  if mousedispo then
+		    Formswindow.close
+		    MyCanvas1.Mousecursor = system.cursors.wait
+		    if not (Config.username = "Enseignant") then
+		      OpenHistWindow.ShowModal
+		      f = OpenHistWindow.file
+		      OpenHistWindow.close
+		    else
+		      dlg = new OpenDialog
+		      dlg.InitialDirectory = App.DocFolder.Child("Historiques")
+		      dlg.Filter = FileAGTypes.HIST
+		      f = dlg.ShowModal
+		    end if
+		    
+		    if f<>nil  then
+		      OpenFile(f)
+		    end if
+		    
+		    MyCanvas1.Mousecursor = System.Cursors.StandardPointer
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsLabel() As Boolean Handles ToolsLabel.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new AddLabel()
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new AddLabel()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsOpq() As Boolean Handles ToolsOpq.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new TransparencyChange(100)
-			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new TransparencyChange(100)
+		    TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsRigid() As Boolean Handles ToolsRigid.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new Rigidifier()
-			Rigidifier(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new Rigidifier()
+		    Rigidifier(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsSTsp() As Boolean Handles ToolsSTsp.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new TransparencyChange(50)
-			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			Return True
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new TransparencyChange(50)
+		    TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsThick1() As Boolean Handles ToolsThick1.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new Epaisseur(Config.Thickness)
-			Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
-			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = true
-			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = false
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new Epaisseur(Config.Thickness)
+		    Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark = true
+		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").HasCheckMark = false
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsThick2() As Boolean Handles ToolsThick2.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation = new Epaisseur(1.5*Config.Thickness)
-			Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
-			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = false
-			MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = true
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation = new Epaisseur(1.5*Config.Thickness)
+		    Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark = false
+		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").HasCheckMark = true
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsTrace() As Boolean Handles ToolsTrace.Action
-			if mousedispo then
-			Formswindow.close
-			MyCanvas1.ClearOffscreen
-			CurrentContent.CurrentOperation = new Tracer()
-			Tracer(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			return true
-			
-			
+		  if mousedispo then
+		    Formswindow.close
+		    MyCanvas1.ClearOffscreen
+		    CurrentContent.CurrentOperation = new Tracer()
+		    Tracer(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  return true
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsTsp() As Boolean Handles ToolsTsp.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new TransparencyChange(0)
-			TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
-			refreshtitle
-			end if
-			Return True
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new TransparencyChange(0)
+		    TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    refreshtitle
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TransfosAppliquer() As Boolean Handles TransfosAppliquer.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new AppliquerTsf()
-			refreshtitle
-			end if
-			return true
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new AppliquerTsf()
+		    refreshtitle
+		  end if
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TransfosFixedPoints() As Boolean Handles TransfosFixedPoints.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new FixPConstruction
-			refreshtitle
-			end if
-			Return True
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new FixPConstruction
+		    refreshtitle
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TransfosHide() As Boolean Handles TransfosHide.Action
-			if mousedispo then
-			Formswindow.close
-			CurrentContent.CurrentOperation=new HideTsf
-			refreshtitle
-			end if
-			Return True
-			
+		  if mousedispo then
+		    Formswindow.close
+		    CurrentContent.CurrentOperation=new HideTsf
+		    refreshtitle
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function UnInstall() As Boolean Handles UnInstall.Action
-			mycanvas1.FondsEcran = nil
-			Return False
-			
+		  mycanvas1.FondsEcran = nil
+		  Return False
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Vieweps() As Boolean Handles Vieweps.Action
-			Dim sh As New shell
-			sh.ExecuteMode = Shell.ExecuteModes.Asynchronous
-			dim f as folderitem
-			dim s, S1 as string
-			
-			f = GetOpenFolderItem(FileAGTypes.eps)
-			if f <> nil then
-			#if targetWindows then
-			sh.execute(f.shellpath)
-			#elseif targetMacOS then
-			sh.execute ("gs",  f.shellpath)
-			#elseif targetlinux then
-			#Endif
-			end if
-			Return True
-			
+		  Dim sh As New shell
+		  sh.ExecuteMode = Shell.ExecuteModes.Asynchronous
+		  dim f as folderitem
+		  dim s, S1 as string
+		  
+		  f = GetOpenFolderItem(FileAGTypes.eps)
+		  if f <> nil then
+		    #if targetWindows then
+		      sh.execute(f.shellpath)
+		    #elseif targetMacOS then
+		      sh.execute ("gs",  f.shellpath)
+		    #elseif targetlinux then
+		    #Endif
+		  end if
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function winitem(index as Integer) As Boolean Handles winitem.Action
-			dim i as integer
-			dim oldOp as Operation
-			
-			if mousedispo then
-			Formswindow.close
-			if index <> GetNumWindow then
-			oldOp = CurrentContent.CurrentOperation
-			MenuBar.Child("Fenetres").Item(GetNumWindow).checked = false
-			CurrentContent = wcontent(index)
-			if oldOp isa ReadHisto then
-			if not CurrentContent.CurrentOperation isa ReadHisto then
-			MenuBar = Menu
-			HistCmd.visible = false
-			WorkWindow.draphisto = false
-			WorkWindow.refreshtitle
-			end if
-			elseif CurrentContent.CurrentOperation isa ReadHisto then
-			MenuBar = HistMenu
-			HistCmd.visible = true
-			WorkWindow.draphisto = true
-			WorkWindow.DisableToolBar
-			elseif CurrentContent.Macrocreation then
-			MenuMacros(true)
-			end if
-			MenuBar.Child("Fenetres").Item(index).checked = true
-			can.sctxt = nil
-			refresh
-			end if
-			end if
-			return true
-			
+		  dim i as integer
+		  dim oldOp as Operation
+		  
+		  if mousedispo then
+		    Formswindow.close
+		    if index <> GetNumWindow then
+		      oldOp = CurrentContent.CurrentOperation
+		      MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = false
+		      CurrentContent = wcontent(index)
+		      if oldOp isa ReadHisto then
+		        if not CurrentContent.CurrentOperation isa ReadHisto then
+		          MenuBar = Menu
+		          HistCmd.visible = false
+		          WorkWindow.draphisto = false
+		          WorkWindow.refreshtitle
+		        end if
+		      elseif CurrentContent.CurrentOperation isa ReadHisto then
+		        MenuBar = HistMenu
+		        HistCmd.visible = true
+		        WorkWindow.draphisto = true
+		        WorkWindow.DisableToolBar
+		      elseif CurrentContent.Macrocreation then
+		        MenuMacros(true)
+		      end if
+		      MenuBar.Child("Fenetres").MenuAt(index).HasCheckMark = true
+		      can.sctxt = nil
+		      refresh
+		    end if
+		  end if
+		  return true
+		  
 		End Function
 	#tag EndMenuHandler
 
@@ -2257,23 +2238,23 @@ End
 		  
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
-		  Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked
+		  Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CloseSousMenu(mitem as menuitem)
+		Sub CloseSousMenu(mitem as DesktopMenuItem)
 		  dim i as integer
 		  
 		  for i =  mitem.count-1 downto 0
-		    mitem.remove i
+		    mitem.RemoveMenuAt i
 		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CloseSousMenusMacros()
-		  dim mitem as menuitem
+		  dim mitem as Desktopmenuitem
 		  
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosExecute")
 		  CloseSousMenu(mitem)
@@ -2319,17 +2300,17 @@ End
 
 	#tag Method, Flags = &h0
 		Sub CopyCFGMenu()
-		  dim mitem,sm as MenuItem
+		  dim mitem,sm as DesktopMenuItem
 		  
 		  if Config.pwok then
 		    mitem = new MenuItem
 		    mitem.Name = "Cfg"
 		    mitem.Text = Dico.Value("Cfg")
-		    sm = new MenuItem 'sous-menu nécessaire pour fonctionner sur Mac
+		    sm = new DesktopMenuItem 'sous-menu nécessaire pour fonctionner sur Mac
 		    sm.Name = "CfgOpen"
 		    sm.Text = Dico.Value("Customize")
-		    mitem.append sm
-		    MenuBar.append mitem
+		    mitem.AddMenu sm
+		    MenuBar.AddMenu mitem
 		  end if
 		  
 		  
@@ -2339,40 +2320,40 @@ End
 	#tag Method, Flags = &h0
 		Sub CopyMenuBar()
 		  dim i, nmen as integer
-		  dim mitem as MenuItem
+		  dim mitem as DesktopMenuItem
 		  
 		  nmen = MenuMenus.count
 		  for i = 0 to nmen-1
-		    mitem = CopyMenuItem(MenuMenus.item(i))
+		    mitem = CopyMenuItem(MenuMenus.MenuAt(i))
 		    if mitem <> nil then
-		      MenuBar.append mitem
+		      MenuBar.AddMenu mitem
 		    end if
 		  next
 		  CopyCFGMenu
 		  
 		  if config.ajust then
-		    menubar.Child("PrefsMenu").Child("PrefsAjust").checked = true
+		    menubar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = true
 		  end if
 		  
 		  if config.menu = "Menu_C" or config.menu = "Menu_AC" then
 		    if config.area = 0  then
-		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").checked = true
+		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = true
 		    else
-		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").checked = true
+		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = true
 		    end if
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CopyMenuItem(mitem as menuitem) As menuitem
-		  dim item, jtem as menuitem
+		Function CopyMenuItem(mitem as DesktopMenuItem) As DesktopMenuItem
+		  dim item, jtem as DesktopMenuitem
 		  dim i, nitem as integer
 		  
 		  
 		  item = new MenuItem
 		  item.Name = mitem.Name
-		  item.KeyboardShortCut = mitem.KeyboardShortCut
+		  item.ShortCut = mitem.ShortCut
 		  item.index = mitem.index
 		  
 		  item.Text = Dico.Value(item.Name)
@@ -2388,16 +2369,16 @@ End
 		  nitem = mitem.count
 		  
 		  if nitem = 0 then
-		    if mitem.checked then
+		    if mitem.HasCheckMark then
 		      return item
 		    else
 		      return nil
 		    end if
 		  else
 		    for i = 0 to nitem-1
-		      jtem = CopyMenuItem(mitem.item(i))
+		      jtem = CopyMenuItem(mitem.MenuAt(i))
 		      if jtem <> nil then
-		        item.append jtem
+		        item.AddMenu jtem
 		      end if
 		    next
 		    if item.count > 0 then
@@ -2417,16 +2398,16 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CreateSousMenu(muitem as menuitem, nom as string)
+		Sub CreateSousMenu(muitem as DesktopMenuItem, nom as string)
 		  dim i as integer
-		  dim mitem as MenuItem
+		  dim mitem as DesktopMenuItem
 		  
 		  for i = 0 to app.themacros.count-1
-		    mitem = new MenuItem
+		    mitem = new desktopMenuItem
 		    mitem.Name = nom
 		    mitem.index  = i
-		    mitem.checked = true
-		    muitem.append mitem
+		    mitem.HasCheckMark = true
+		    muitem.AddMenu mitem
 		    mitem.Text = app.TheMacros.item(i).caption
 		  next
 		  
@@ -2436,7 +2417,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub CreateSousMenusMacros()
-		  dim mitem as MenuItem
+		  dim mitem as DesktopMenuItem
 		  
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosExecute")
 		  CreateSousMenu(mitem, "MacrosChoose")
@@ -2483,12 +2464,12 @@ End
 		  wcontent.Remove(n)
 		  
 		  if n < MenuBar.Child("Fenetres").Count then
-		    MenuBar.Child("Fenetres").Remove(n)
+		    MenuBar.Child("Fenetres").RemoveMenuAt(n)
 		  end if
 		  
 		  if ubound(wcontent) >= n then
 		    for i=n to UBound (wcontent)
-		      MenuBar.Child("Fenetres").item(i).index = i
+		      MenuBar.Child("Fenetres").MenuAt(i).index = i
 		    next
 		    CurrentContent = wcontent(n)
 		  elseif ubound(wcontent) >-1 then
@@ -2497,7 +2478,7 @@ End
 		    CurrentContent = nil
 		  end if
 		  if CurrentContent <> nil then
-		    MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
+		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
 		    refresh
 		  end if
 		  
@@ -2541,14 +2522,14 @@ End
 		  n = menubar.count
 		  
 		  for i = n-1 downto 2
-		    menubar.remove i
+		    menubar.RemoveMenuAt i
 		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetMenuItem(menu as string, sousmenu as string) As Boolean
-		  Return MenuMenus.Child(menu).Child(sousmenu).checked
+		  Return MenuMenus.Child(menu).Child(sousmenu).HasCheckMark
 		End Function
 	#tag EndMethod
 
@@ -2596,20 +2577,20 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Manageprefs()
-		  if menumenus.Child("PrefsMenu").Child("PrefsTrace").checked  then
-		    MenuBar.Child("PrefsMenu").Child("PrefsTrace").checked = config.trace
+		  if menumenus.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark  then
+		    MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark = config.trace
 		  end if
-		  if menumenus.Child("PrefsMenu").Child("PrefsPolyg").checked  then
-		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = config.polpointes
+		  if menumenus.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark  then
+		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark = config.polpointes
 		  end if
-		  if menumenus.Child("PrefsMenu").Child("PrefsBiface").checked  then
-		    MenuBar.Child("PrefsMenu").Child("PrefsBiface").checked = config.biface
+		  if menumenus.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark  then
+		    MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark = config.biface
 		  end if
-		  if menumenus.Child("PrefsMenu").Child("PrefsAjust").checked  then
-		    MenuBar.Child("PrefsMenu").Child("PrefsAjust").checked = config.Ajust
+		  if menumenus.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark  then
+		    MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = config.Ajust
 		  end if
-		  if menumenus.Child("HelpMenu").Child("HelpView").checked  then
-		    MenuBar.Child("HelpMenu").Child("HelpView").checked = Config.showhelp
+		  if menumenus.Child("HelpMenu").Child("HelpView").HasCheckMark  then
+		    MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
 		  end if
 		  
 		  
@@ -2620,14 +2601,14 @@ End
 		Sub MenuMacros(t as Boolean)
 		  dim i as integer
 		  
-		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").checked = t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").checked = t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").checked = not t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosErase").checked = not t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosDescri").checked = not t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosClose").checked = not t
-		  MenuMenus.Child("MacrosMenu").Child("MacrosCopy").checked = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").HasCheckMark = t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").HasCheckMark = t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").HasCheckMark = t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosExecute").HasCheckMark = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosErase").HasCheckMark = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosDescri").HasCheckMark = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosClose").HasCheckMark = not t
+		  MenuMenus.Child("MacrosMenu").Child("MacrosCopy").HasCheckMark = not t
 		  EraseMenuBar
 		  CopyMenuBar
 		  'MenuBar.Child("FileMenu").Child("FileOpen").visible = not t
@@ -2698,7 +2679,7 @@ End
 		  dim mitem as MenuItem
 		  
 		  if (GetNumWindow<>-1) then
-		    MenuBar.Child("Fenetres").Item(GetNumWindow).checked = false
+		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = false
 		  end if
 		  
 		  
@@ -2711,8 +2692,8 @@ End
 		  mitem.Name = "winitem"
 		  mitem.index = GetNumWindow
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
-		  MenuBar.Child("Fenetres").append mitem
-		  MenuBar.Child("Fenetres").Item(GetNumWindow).checked = true
+		  MenuBar.Child("Fenetres").AddMenu mitem
+		  MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
 		  
 		End Sub
 	#tag EndMethod
@@ -2747,7 +2728,7 @@ End
 	#tag Method, Flags = &h0
 		Sub PointerPolyg()
 		  if not CurrentContent.currentoperation isa readhisto and MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
-		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked = true
+		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark = true
 		  end if
 		  config.PolPointes = true
 		  refresh
@@ -2766,9 +2747,9 @@ End
 		  MouvBut(4).Caption = Dico.Value("Zoom")
 		  
 		  for i=0 to 4
-		    MouvBut(i).HelpTag = MouvBut(i).Caption
+		    MouvBut(i).Tooltip = MouvBut(i).Caption
 		  next
-		  PushButton1.HelpTag = PushButton1.caption
+		  PushButton1.Tooltip = PushButton1.caption
 		  
 		  
 		  
@@ -2834,7 +2815,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setcross()
-		  if backcolor = blanc then
+		  if BackgroundColor = blanc then
 		    can.mousecursor = cross
 		  else
 		    can.mousecursor = whitecross
@@ -2970,10 +2951,10 @@ End
 		  config.highlightcolor = config.highlightcolor.comp
 		  config.weightlesscolor = config.weightlesscolor.comp
 		  config.TransfoColor = config.TransfoColor.comp
-		  if backcolor = blanc then
-		    backcolor = noir
+		  if BackgroundColor = blanc then
+		    BackgroundColor = noir
 		  else
-		    backcolor = blanc
+		    BackgroundColor = blanc
 		  end if
 		  
 		  s = can.rep
@@ -3069,10 +3050,10 @@ End
 		Protected Sub updateTextSize()
 		  dim i as integer
 		  
-		  PushButton1.TextSize = Config.TextSize
+		  PushButton1.FontSize = Config.TextSize
 		  
 		  for i = 0 to 4
-		    MouvBut(i).TextSize = config.TextSize
+		    MouvBut(i).FontSize = config.TextSize
 		  next
 		  
 		  MyCanvas1.Refresh
@@ -3084,16 +3065,16 @@ End
 		  dim espace as integer
 		  dim st as string
 		  
-		  espace = min((me.Height-me.MinHeight)/3,5)
-		  if(me.Height = me.MinHeight) then
-		    MoveBox.TextSize = 8
-		    StdBox.TextSize = 8
-		    LibBox.TextSize = 8
+		  espace = min((me.Height-me.MinimumHeight)/3,5)
+		  if(me.Height = me.MinimumHeight) then
+		    MoveBox.FontSize = 8
+		    StdBox.FontSize = 8
+		    LibBox.FontSize = 8
 		    espace = espace+2
 		  else
-		    MoveBox.TextSize = 0
-		    StdBox.TextSize = 0
-		    LibBox.TextSize = 0
+		    MoveBox.FontSize = 0
+		    StdBox.FontSize = 0
+		    LibBox.FontSize = 0
 		  end if
 		  MoveBox.Top = 60+espace
 		  StdBox.top = MoveBox.top+MoveBox.Height+espace
@@ -3141,7 +3122,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		Base As Menuitem
+		Base As DesktopMenuItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -3257,14 +3238,14 @@ End
 
 #tag Events MoveBox
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  MoveBoxRefresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events MouvBut
 	#tag Event
-		Sub Action(index as Integer)
+		Sub Pressed(index as Integer)
 		  If CurrentContent.TheObjects.count = 1 Then
 		    return
 		  end if
@@ -3298,14 +3279,14 @@ End
 #tag EndEvents
 #tag Events StdBox
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  StdBoxRefresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events StdOutil
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, x As Integer, y As Integer)
 		  dim c as color
 		  
 		  if app.quitting then
@@ -3337,14 +3318,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, x As Integer, y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As Rect)
 		  
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
@@ -3359,7 +3340,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open(index as Integer)
+		Sub Opening(index as Integer)
 		  setIco(index,0)
 		  
 		  
@@ -3368,21 +3349,21 @@ End
 #tag EndEvents
 #tag Events LibBox
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  LibBoxRefresh
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events LibOutils
 	#tag Event
-		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
+		Function MouseDown(index as Integer, x As Integer, y As Integer) As Boolean
 		  if mousedispo then
 		    return true
 		  end if
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(index as Integer, X As Integer, Y As Integer)
+		Sub MouseUp(index as Integer, x As Integer, y As Integer)
 		  if mousedispo then
 		    Me.SetFocus
 		    selectedTool = index
@@ -3393,7 +3374,6 @@ End
 		      Formswindow.close
 		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
 		    end if
-		    me.invalidate
 		  end if
 		End Sub
 	#tag EndEvent
@@ -3403,14 +3383,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Paint(index as Integer, g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(index as Integer, g As Graphics, areas() As Rect)
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events PushButton1
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  Annuler
 		  
 		End Sub
@@ -3424,7 +3404,7 @@ End
 		  dim s as shape
 		  
 		  if currentcontent.currentoperation <> nil then
-		    me.helptag =Dico.Value("Cancel") + " " + currentcontent.currentoperation.GetName
+		    me.Tooltip = Dico.Value("Cancel") + " " + currentcontent.currentoperation.GetName
 		    if currentcontent.currentoperation.currentshape <> nil then
 		      currentcontent.currentoperation.currentshape.side = -1
 		      selshape = currentcontent.currentoperation.currentshape
@@ -3448,7 +3428,7 @@ End
 		  
 		  op = val(EL.GetAttribute("OpId"))
 		  Name = EL.GetAttribute(Dico.Value("Type")) + " "+ EL1.GetAttribute("Type")
-		  me.Helptag = Dico.Value("Cancel") + " " + lowercase(Name)
+		  me.Tooltip = Dico.Value("Cancel") + " " + lowercase(Name)
 		  n1 =val(EL1.GetAttribute("Id"))
 		  s = currentcontent.TheObjects.GetShape(n1)
 		  s.side = -1
@@ -3465,7 +3445,7 @@ End
 		    end if
 		  end select
 		  selshape.highlight
-		  me.Helptag = me.Helptag + " "+  lowercase(Dico.value(Type))
+		  me.Tooltip = me.Tooltip + " "+  lowercase(Dico.value(Type))
 		  can.refreshbackground
 		End Sub
 	#tag EndEvent
@@ -3595,8 +3575,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -3739,7 +3719,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

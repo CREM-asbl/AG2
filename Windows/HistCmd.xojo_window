@@ -1,42 +1,40 @@
-#tag Window
-Begin Window HistCmd
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow HistCmd
    Backdrop        =   0
-   CloseButton     =   False
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   3
+   DefaultLocation =   1
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   False
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
    Height          =   30
    ImplicitInstance=   True
-   LiveResize      =   "False"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   30
-   MinimizeButton  =   False
-   MinWidth        =   800
-   Placement       =   3
+   MinimumHeight   =   30
+   MinimumWidth    =   800
    Resizeable      =   False
    Title           =   ""
+   Type            =   11
    Visible         =   True
    Width           =   800
    Begin HistoControl HistCtrl
-      AcceptFocus     =   False
-      AcceptTabs      =   False
-      AutoDeactivate  =   True
-      BackColor       =   &c00FFFFFF
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   False
+      AllowTabs       =   True
       Backdrop        =   0
-      DoubleBuffer    =   False
+      BackgroundColor =   &cFFFFFF
+      Composited      =   False
       Enabled         =   True
-      EraseBackground =   True
-      HasBackColor    =   False
+      HasBackgroundColor=   False
       Height          =   30
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -49,22 +47,19 @@ Begin Window HistCmd
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
+      Tooltip         =   ""
       Top             =   0
       Transparent     =   True
-      UseFocusRing    =   False
       Visible         =   True
       Width           =   800
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
-		  Left = WorkWindow.Tools.Width 
-		  Left = left + (WorkWindow.Width - Left - 800)/2
-		  Top = WorkWindow.Height - 30
-		  
+		Sub Opening()
+		  me.top = WorkWindow.top + WorkWindow.Height - me.Height - 16
 		End Sub
 	#tag EndEvent
 
@@ -122,7 +117,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function KeyDown(Key As String) As Boolean
+		Function KeyDown(key As String) As Boolean
 		  if asc(key) = 20 then
 		    tw = new TextWindow
 		    tw.visible = true
@@ -244,8 +239,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -308,7 +303,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

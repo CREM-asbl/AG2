@@ -155,91 +155,91 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Sub ChargerMenu(El As XMLElement)
-		  Dim mmenubar As MenuItem
+		  Dim mmenubar As DesktopMenuItem
 		  
 		  'un moyen plus propre ?
 		  mmenubar = MenuMenus
 		  
-		  mmenubar.Child("EditMenu").Child("EditUndo").checked = El.XQL("Undo").length > 0
-		  mmenubar.Child("EditMenu").Child("EditRedo").checked = El.XQL("Redo").length > 0
-		  mmenubar.Child("EditMenu").Child("EditCopy").checked = El.XQL("Copy").length > 0
-		  mmenubar.Child("EditMenu").Child("EditPaste").checked = El.XQL("Paste").length > 0
-		  mmenubar.Child("EditMenu").Child("EditSelection").checked = El.XQL("Selection").length > 0
-		  mmenubar.Child("EditMenu").Child("EditReSelect").checked = El.XQL("Reselect").length > 0
-		  mmenubar.Child("EditMenu").Child("EditSelectall").checked = El.XQL("Selectall").length > 0
-		  mmenubar.Child("EditMenu").Child("EditDelete").checked = El.XQL("Delete").length > 0
-		  mmenubar.Child("EditMenu").Child("EditLink").checked = El.XQL("Link").length > 0
-		  mmenubar.Child("EditMenu").Child("EditUnlink").checked = El.XQL("Link").length > 0
+		  mmenubar.Child("EditMenu").Child("EditUndo").HasCheckMark = El.XQL("Undo").length > 0
+		  mmenubar.Child("EditMenu").Child("EditRedo").HasCheckMark = El.XQL("Redo").length > 0
+		  mmenubar.Child("EditMenu").Child("EditCopy").HasCheckMark = El.XQL("Copy").length > 0
+		  mmenubar.Child("EditMenu").Child("EditPaste").HasCheckMark = El.XQL("Paste").length > 0
+		  mmenubar.Child("EditMenu").Child("EditSelection").HasCheckMark = El.XQL("Selection").length > 0
+		  mmenubar.Child("EditMenu").Child("EditReSelect").HasCheckMark = El.XQL("Reselect").length > 0
+		  mmenubar.Child("EditMenu").Child("EditSelectall").HasCheckMark = El.XQL("Selectall").length > 0
+		  mmenubar.Child("EditMenu").Child("EditDelete").HasCheckMark = El.XQL("Delete").length > 0
+		  mmenubar.Child("EditMenu").Child("EditLink").HasCheckMark = El.XQL("Link").length > 0
+		  mmenubar.Child("EditMenu").Child("EditUnlink").HasCheckMark = El.XQL("Link").length > 0
 		  
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").checked = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").checked = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").checked = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsTsp").checked = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked = El.XQL("Thickness").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").checked = El.XQL("Thickness").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsHide").checked = El.XQL("Hide").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsRigid").checked = El.XQL("Rigid").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsGrid").checked = El.XQL("Grid").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsHisto").checked = El.XQL("Histo").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsARPlan").checked = El.XQL("AVPlan").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsAVPlan").checked = El.XQL("AVPlan").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsLabel").checked = El.XQL("Label").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").HasCheckMark = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").HasCheckMark = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").HasCheckMark = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsTsp").HasCheckMark = El.XQL("ColTsp").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark = El.XQL("Thickness").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").HasCheckMark = El.XQL("Thickness").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsHide").HasCheckMark = El.XQL("Hide").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsRigid").HasCheckMark = El.XQL("Rigid").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsGrid").HasCheckMark = El.XQL("Grid").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsHisto").HasCheckMark = El.XQL("Histo").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsARPlan").HasCheckMark = El.XQL("AVPlan").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsAVPlan").HasCheckMark = El.XQL("AVPlan").length > 0
+		  mmenubar.Child("ToolsMenu").Child("ToolsLabel").HasCheckMark = El.XQL("Label").length > 0
 		  
-		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").checked = El.XQL("Macros").length > 0
-		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").checked = El.XQL("Macros").length > 0
+		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").HasCheckMark = El.XQL("Macros").length > 0
+		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").HasCheckMark = El.XQL("Macros").length > 0
 		  
-		  mmenubar.Child("OperaMenu").Child("OperaDivide").checked = El.XQL("Divide").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaCut").checked = El.XQL("Cut").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaMerge").checked = El.XQL("Merge").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaClone").checked = El.XQL("Cloner").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaIdentify").checked = El.XQL("Identify").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaProl").checked = El.XQL("Prolonger").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").checked = El.XQL("CreateCenter").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaDivide").HasCheckMark = El.XQL("Divide").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaCut").HasCheckMark = El.XQL("Cut").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaMerge").HasCheckMark = El.XQL("Merge").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaClone").HasCheckMark = El.XQL("Cloner").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaIdentify").HasCheckMark = El.XQL("Identify").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaProl").HasCheckMark = El.XQL("Prolonger").length > 0
+		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").HasCheckMark = El.XQL("CreateCenter").length > 0
 		  
-		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").checked = El.XQL("Transformations").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").child("DefinirTranslation").checked = El.XQL("Translation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").checked = El.XQL("Rotation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").checked = El.XQL("Rot90D").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").checked = El.XQL("Rot90G").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").checked = El.XQL("SymCentrale").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").checked = El.XQL("SymOrtho").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").checked = El.XQL("Similitude").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").checked = El.XQL("Homothetie").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").checked = El.XQL("Etirement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").checked = El.XQL("Deplacement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").checked = El.XQL("Cisaillement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosHide").checked = El.XQL("HideTsf").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").checked = El.XQL("PtsFix").length > 0
-		  mmenubar.Child("TransfosMenu").Child("InvCurve").checked = El.XQL("InvCurve").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").HasCheckMark = El.XQL("Transformations").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").child("DefinirTranslation").HasCheckMark = El.XQL("Translation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").HasCheckMark = El.XQL("Rotation").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").HasCheckMark = El.XQL("Rot90D").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").HasCheckMark = El.XQL("Rot90G").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").HasCheckMark = El.XQL("SymCentrale").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").HasCheckMark = El.XQL("SymOrtho").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").HasCheckMark = El.XQL("Similitude").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").HasCheckMark = El.XQL("Homothetie").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").HasCheckMark = El.XQL("Etirement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").HasCheckMark = El.XQL("Deplacement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").HasCheckMark = El.XQL("Cisaillement").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosHide").HasCheckMark = El.XQL("HideTsf").length > 0
+		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").HasCheckMark = El.XQL("PtsFix").length > 0
+		  mmenubar.Child("TransfosMenu").Child("InvCurve").HasCheckMark = El.XQL("InvCurve").length > 0
 		  
-		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").checked =true
-		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("FondEcranConfigurer").checked =true
-		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").checked =true
-		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").checked = El.XQL("StdForms").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").checked = El.XQL("Traj").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").checked = El.XQL("DistanceMagnetisme").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorBorder").checked = El.XQL("ColBorder").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorFill").checked = El.XQL("ColFill").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorStdFam").checked = El.XQL("ColStdFam").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsThickness").checked = El.XQL("Thickness").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsPolyg").checked  = El.XQL("Pointer").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsBiface").checked =  El.XQL("Biface").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsAjust").checked =  El.XQL("Ajuster").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsFleches").checked = El.XQL("Flecher").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULDef").checked = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULChoix").checked = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUADef").checked = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUAChoix").checked = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsArea").checked = El.XQL("Area").length >0
-		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").checked= El.XQL("Area").length >0
-		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").checked = El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").HasCheckMark =true
+		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("FondEcranConfigurer").HasCheckMark =true
+		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").HasCheckMark =true
+		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").HasCheckMark = El.XQL("StdForms").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark = El.XQL("Traj").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").HasCheckMark = El.XQL("DistanceMagnetisme").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorBorder").HasCheckMark = El.XQL("ColBorder").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorFill").HasCheckMark = El.XQL("ColFill").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorStdFam").HasCheckMark = El.XQL("ColStdFam").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsThickness").HasCheckMark = El.XQL("Thickness").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark  = El.XQL("Pointer").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark =  El.XQL("Biface").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark =  El.XQL("Ajuster").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark = El.XQL("Flecher").length > 0
+		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULDef").HasCheckMark = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULChoix").HasCheckMark = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUADef").HasCheckMark = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUAChoix").HasCheckMark = true
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").HasCheckMark = El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").HasCheckMark= El.XQL("Area").length >0
+		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").HasCheckMark = El.XQL("Area").length >0
 		  
-		  mmenubar.Child("HelpMenu").Child("HelpView").checked = true
-		  mmenubar.Child("HelpMenu").Child("HelpVisit").checked = true
-		  mmenubar.Child("HelpMenu").Child("HelpAbout").checked = true
-		  mmenubar.Child("HelpMenu").Child("HelpUG").checked = true
+		  mmenubar.Child("HelpMenu").Child("HelpView").HasCheckMark = true
+		  mmenubar.Child("HelpMenu").Child("HelpVisit").HasCheckMark = true
+		  mmenubar.Child("HelpMenu").Child("HelpAbout").HasCheckMark = true
+		  mmenubar.Child("HelpMenu").Child("HelpUG").HasCheckMark = true
 		  
-		  mmenubar.Child("NotesMenu").Child("NotesOpen").checked = El.XQL("Notes").length > 0
+		  mmenubar.Child("NotesMenu").Child("NotesOpen").HasCheckMark = El.XQL("Notes").length > 0
 		End Sub
 	#tag EndMethod
 
@@ -335,7 +335,7 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Function ConfigElem(m as string, sm as string, tag as string) As XMLNode
-		  if MenuMenus.Child(m).Child(sm).checked then
+		  if MenuMenus.Child(m).Child(sm).HasCheckMark then
 		    return CFG.CreateElement(tag)
 		  else
 		    return nil
@@ -345,7 +345,7 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Function ConfigElem3(m as string, sm as string, ssm as string, tag as string) As XMLNode
-		  if MenuMenus.Child(m).Child(sm).Child(ssm).checked then
+		  if MenuMenus.Child(m).Child(sm).Child(ssm).HasCheckMark then
 		    return CFG.CreateElement(tag)
 		  else
 		    return nil
@@ -467,7 +467,7 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h1
 		Protected Function GetMenuItem(menu as string, sousmenu as string) As boolean
-		  return MenuMenus.Child(menu).Child(sousmenu).checked
+		  return MenuMenus.Child(menu).Child(sousmenu).HasCheckMark
 		End Function
 	#tag EndMethod
 
@@ -637,7 +637,7 @@ Protected Class Configuration
 		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorFill","ColFill")
 		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorStdFam","ColStdFam")
 		  
-		  if  MenuMenus.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").checked  then
+		  if  MenuMenus.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark  then
 		    temp.appendchild CFG.CreateElement("Thickness")
 		  end if
 		  temp.AppendChild ConfigElem("ToolsMenu","ToolsRigid","Rigid")

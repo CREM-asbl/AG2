@@ -1,31 +1,30 @@
-#tag Window
-Begin Window TextWindow
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow TextWindow
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   True
-   Frame           =   0
+   DefaultLocation =   0
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackgroundColor=   True
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   607
    ImplicitInstance=   False
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   True
-   MinWidth        =   64
-   Placement       =   0
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   True
    Title           =   ""
+   Type            =   0
    Visible         =   False
    Width           =   822
-   Begin TextArea EF
+   Begin DesktopTextArea EF
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
@@ -76,11 +75,11 @@ Begin Window TextWindow
       Width           =   822
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  left = 2*WorkWindow.width/3-5
 		  width = WorkWindow.width/3
 		  height = WorkWindow.height/3
@@ -89,7 +88,7 @@ End
 		  Macs = app.TheMacros
 		  EF.height = height
 		  EF.ReadOnly = true
-		  EF.Backcolor=&cFFFFFF
+		  EF.BackgroundColor=&cFFFFFF
 		  if can.sctxt = nil then
 		    Title = "Objets"
 		  elseif  currentcontent.Macrocreation then
@@ -530,7 +529,7 @@ End
 
 #tag Events EF
 	#tag Event
-		Sub TextChange()
+		Sub TextChanged()
 		  self.Afficher
 		End Sub
 	#tag EndEvent

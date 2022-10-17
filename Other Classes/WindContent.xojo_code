@@ -126,7 +126,7 @@ Protected Class WindContent
 		    ndec = 2
 		  end if
 		  BkCol = FAG.GetAttribute("BkCol")
-		  if BkCol = "noir" and WorkWindow.BackColor = &cFFFFFF then
+		  if BkCol = "noir" and WorkWindow.BackgroundColor = &cFFFFFF then
 		    WorkWindow.switchcolors
 		  end if
 		  
@@ -526,7 +526,7 @@ Protected Class WindContent
 		  AG.SetAttribute(Dico.Value("Langage"),Config.Langue)
 		  AG.SetAttribute(Dico.value("Config"),Config.Menu)
 		  AG.SetAttribute("Plans", str(1))
-		  if WorkWindow.backcolor = noir then
+		  if WorkWindow.BackgroundColor = noir then
 		    AG.SetAttribute("BkCol","noir")
 		  end if
 		  if SHUA <> nil then
@@ -857,7 +857,7 @@ Protected Class WindContent
 		    config.PolFleches = false
 		  end if
 		  if WorkWindow.MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
-		    WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsFleches").checked  = config.PolFleches
+		    WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark = config.PolFleches
 		  end if
 		  
 		End Sub
@@ -871,7 +871,7 @@ Protected Class WindContent
 		    config.polpointes = false
 		  end if
 		  if WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsPolyg")<> nil then
-		    WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").checked  = config.polpointes
+		    WorkWindow.MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark  = config.polpointes
 		  end if
 		  
 		  Exception err

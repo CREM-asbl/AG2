@@ -37,15 +37,15 @@ Inherits Operation
 		  
 		  
 		  While (HistMenu.Child("Fenetres").Count > 0)
-		    HistMenu.Child("Fenetres").remove(HistMenu.Child("Fenetres").Count-1)
+		    HistMenu.Child("Fenetres").RemoveMenuAt(HistMenu.Child("Fenetres").Count-1)
 		  Wend
 		  
 		  for i = 0 to Workwindow.MenuBar.Child("Fenetres").Count-1
 		    mitem = new MenuItem
 		    mitem.Name = "winitem"
-		    mitem.Text = Workwindow. MenuBar.Child("Fenetres").item(i).text
-		    mitem.index =Workwindow. MenuBar.Child("Fenetres").item(i).index
-		    HistMenu.Child("Fenetres").append mitem
+		    mitem.Text = Workwindow. MenuBar.Child("Fenetres").menuAt(i).text
+		    mitem.index =Workwindow. MenuBar.Child("Fenetres").menuAt(i).index
+		    HistMenu.Child("Fenetres").AddMenu mitem
 		  next
 		  
 		  
@@ -55,7 +55,7 @@ Inherits Operation
 		  
 		  XMLLoadOperations(CurrentContent.OpList)
 		  can.mousecursor = System.Cursors.StandardPointer
-		  HistCmd.ShowWithin(Workwindow)
+		  HistCmd.Show(Workwindow)
 		  HistCmd.HistCtrl.rh = self
 		  
 		End Sub

@@ -297,7 +297,7 @@ End
 #tag Events Stop
 	#tag Event
 		Sub Action()
-		  if dret  = nil then
+		  if dret = nil then
 		    BAction(me.Name)
 		  end if
 		End Sub

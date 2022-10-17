@@ -1,31 +1,30 @@
-#tag Window
-Begin Window BugFindW
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow BugFindW
    Backdrop        =   0
-   CloseButton     =   False
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   0
+   DefaultLocation =   2
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackgroundColor=   True
+   HasCloseButton  =   False
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
    Height          =   144
    ImplicitInstance=   True
-   LiveResize      =   "False"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   False
-   MinWidth        =   64
-   Placement       =   2
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   False
    Title           =   "Bug découvert"
+   Type            =   0
    Visible         =   True
    Width           =   421
-   Begin Label StaticText2
+   Begin DesktopLabel StaticText2
       AutoDeactivate  =   True
       Bold            =   True
       DataField       =   ""
@@ -49,7 +48,7 @@ Begin Window BugFindW
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Cette figure a provoqué une erreur et va être fermée.\r\nNous nous excusons de ce désagrément.\r\n"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "SmallSystem"
       TextSize        =   12.0
@@ -60,7 +59,7 @@ Begin Window BugFindW
       Visible         =   True
       Width           =   381
    End
-   Begin PushButton Accepter
+   Begin DesktopButton Accepter
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   0
@@ -93,11 +92,11 @@ Begin Window BugFindW
       Width           =   80
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  StaticText2.text = dico.value("bugfound")+ EndOfLine + dico.value( "bugsorry") + EndOfLine + dico.value("bugcontinue") 
 		  
 		End Sub
@@ -130,7 +129,7 @@ End
 
 #tag Events Accepter
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  Close
 		  
 		  

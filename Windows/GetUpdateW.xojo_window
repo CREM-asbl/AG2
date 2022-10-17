@@ -1,28 +1,27 @@
-#tag Window
-Begin Window GetUpdateW
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow GetUpdateW
    Backdrop        =   0
-   CloseButton     =   False
+   BackgroundColor =   &cFFFFFF00
    Composite       =   True
-   Frame           =   3
+   DefaultLocation =   2
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   False
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
    Height          =   172
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   False
-   MinWidth        =   64
-   Placement       =   2
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   False
    Title           =   "Update"
+   Type            =   3
    Visible         =   True
    Width           =   438
    Begin PushButton PushButton1
@@ -125,14 +124,12 @@ Begin Window GetUpdateW
       Width           =   438
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  Label1.Text = "Une nouvelle version d'AG est disponible"
-		  
-		  
 		End Sub
 	#tag EndEvent
 

@@ -1,38 +1,37 @@
-#tag Window
-Begin Window PrefChangeWindow
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow PrefChangeWindow
    Backdrop        =   0
-   CloseButton     =   False
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   11
+   DefaultLocation =   1
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   False
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
    Height          =   115
    ImplicitInstance=   True
-   LiveResize      =   "False"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   False
-   MinWidth        =   64
-   Placement       =   3
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   False
    Title           =   "Choix Config"
+   Type            =   11
    Visible         =   True
    Width           =   314
-   Begin Label StaticText1
-      AutoDeactivate  =   True
+   Begin DesktopLabel StaticText1
+      AllowAutoDeactivate=   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   25
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -49,59 +48,56 @@ Begin Window PrefChangeWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Configuration :"
-      TextAlign       =   0
+      TextAlignment   =   0
       TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   100
    End
-   Begin PopupMenu PopupMenu1
-      AutoDeactivate  =   True
+   Begin DesktopPopupMenu PopupMenu1
+      AllowAutoDeactivate=   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   25
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
       Left            =   140
-      ListIndex       =   0
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
       Scope           =   0
+      SelectedRowIndex=   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   150
    End
-   Begin PushButton PushButton1
-      AutoDeactivate  =   True
+   Begin DesktopButton PushButton1
+      AllowAutoDeactivate=   True
       Bold            =   False
-      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "OK"
       Default         =   True
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   28
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -111,29 +107,29 @@ Begin Window PrefChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   75
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   69
    End
-   Begin PushButton PushButton2
-      AutoDeactivate  =   True
+   Begin DesktopButton PushButton2
+      AllowAutoDeactivate=   True
       Bold            =   False
-      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "Annuler"
       Default         =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   28
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -143,13 +139,12 @@ Begin Window PrefChangeWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   12.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   75
       Transparent     =   False
       Underline       =   False
@@ -157,11 +152,11 @@ Begin Window PrefChangeWindow
       Width           =   69
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  Title=Dico.value("PrefsChange")
 		  oldMenu = Config.Menu
 		End Sub
@@ -208,42 +203,40 @@ End
 
 #tag Events StaticText1
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  me.Text = Dico.value("Configuration")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events PopupMenu1
 	#tag Event
-		Sub Change()
-		  Config.Menu = PopupMenu1.text
+		Sub SelectionChanged(item As DesktopMenuItem)
+		  Config.Menu = PopupMenu1.SelectedRowValue
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  dim i as integer
 		  dim menus(-1) as string
 		  
 		  menus = app.MenusDispo
-		  for i=0 to UBound(menus)
+		  for i = 0 to UBound(menus)
 		    me.addRow(menus(i))
-		    if menus(i) = config.Menu then
-		      me.ListIndex = i
-		    end if
 		  next
+		  me.SelectRowWithValue(config.menu)
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events PushButton1
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  me.Caption = Dico.value("OK")
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  update
 		  close
 		End Sub
@@ -251,7 +244,7 @@ End
 #tag EndEvents
 #tag Events PushButton2
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  Config.Menu = oldMenu
 		  update
 		  Close
@@ -372,8 +365,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -436,7 +429,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

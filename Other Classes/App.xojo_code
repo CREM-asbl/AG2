@@ -1,41 +1,8 @@
 #tag Class
 Protected Class App
-Inherits Application
+Inherits DesktopApplication
 	#tag Event
-		Function CancelClose() As Boolean
-		  
-		End Function
-	#tag EndEvent
-
-	#tag Event
-		Sub Close()
-		  'try
-		  'mut.Leave
-		  'Catch
-		  '
-		  'end try
-		  
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Open()
-		  CheckSystem
-		  InitFolders
-		  Dico = new Dictionnaire
-		  Config = new Configuration
-		  autoquit = true
-		  api.init 
-		  themacros = new macroslist
-		  initWindow.show
-		  
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub OpenDocument(item As FolderItem)
+		Sub DocumentOpened(item As FolderItem)
 		  dim s As string
 		  
 		  #if TargetWindows then
@@ -54,6 +21,19 @@ Inherits Application
 		    WorkWindow.OpenFile(item)
 		    initWindow.close
 		  end if
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Opening()
+		  CheckSystem
+		  InitFolders
+		  Dico = new Dictionnaire
+		  Config = new Configuration
+		  api.init 
+		  themacros = new macroslist
+		  initWindow.show
+		  
 		End Sub
 	#tag EndEvent
 

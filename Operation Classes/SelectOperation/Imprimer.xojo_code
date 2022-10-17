@@ -44,7 +44,7 @@ Inherits SelectOperation
 		  gprint = prtsetup.ShowPrinterDialog
 		  
 		  if gprint <> nil then
-		    if WorkWindow.backcolor = noir then
+		    if WorkWindow.BackgroundColor = noir then
 		      switch = true
 		      WorkWindow.switchcolors
 		    end if

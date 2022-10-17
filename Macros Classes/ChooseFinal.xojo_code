@@ -144,7 +144,7 @@ Inherits MultipleSelectOperation
 		  mw = new  MacWindow(mac)
 		  mw.ShowModal
 		  mac.SaveFileMacro
-		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").checked = false
+		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").hasCheckMark = false
 		  WorkWindow.EraseMenuBar
 		  WorkWindow.CopyMenuBar
 		  

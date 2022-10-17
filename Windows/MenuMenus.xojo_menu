@@ -1,13 +1,13 @@
 #tag Menu
 Begin Menu MenuMenus
-   Begin MenuItem EditMenu
+   Begin DesktopMenuItem EditMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "&Edit"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem EditRedo
+      Begin DesktopMenuItem EditRedo
          SpecialMenu = 0
          Index = -2147483648
          Text = "Refaire"
@@ -20,7 +20,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditSelection
+      Begin DesktopMenuItem EditSelection
          SpecialMenu = 0
          Index = -2147483648
          Text = "Select"
@@ -28,7 +28,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditUndo
+      Begin DesktopMenuItem EditUndo
          SpecialMenu = 0
          Index = -2147483648
          Text = "Annuler"
@@ -39,7 +39,7 @@ Begin Menu MenuMenus
          AutoEnable = False
          Visible = True
       End
-      Begin MenuItem EditSelectall
+      Begin DesktopMenuItem EditSelectall
          SpecialMenu = 0
          Index = -2147483648
          Text = "Selectall"
@@ -50,7 +50,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditReselect
+      Begin DesktopMenuItem EditReselect
          SpecialMenu = 0
          Index = -2147483648
          Text = "Reselect"
@@ -59,7 +59,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditLink
+      Begin DesktopMenuItem EditLink
          SpecialMenu = 0
          Index = -2147483648
          Text = "Lier"
@@ -67,7 +67,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditUnlink
+      Begin DesktopMenuItem EditUnlink
          SpecialMenu = 0
          Index = -2147483648
          Text = "Délier"
@@ -75,7 +75,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditCopy
+      Begin DesktopMenuItem EditCopy
          SpecialMenu = 0
          Index = -2147483648
          Text = "Copier"
@@ -83,7 +83,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditPaste
+      Begin DesktopMenuItem EditPaste
          SpecialMenu = 0
          Index = -2147483648
          Text = "Coller"
@@ -91,7 +91,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditDelete
+      Begin DesktopMenuItem EditDelete
          SpecialMenu = 0
          Index = -2147483648
          Text = "Supprimer"
@@ -100,14 +100,14 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuItem ToolsMenu
+   Begin DesktopMenuItem ToolsMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Outils"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem ToolsLabel
+      Begin DesktopMenuItem ToolsLabel
          SpecialMenu = 0
          Index = -2147483648
          Text = "Label"
@@ -115,7 +115,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ToolsColorTransparent
+      Begin DesktopMenuItem ToolsColorTransparent
          SpecialMenu = 0
          Index = -2147483648
          Text = "Transparence"
@@ -123,7 +123,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem ToolsOpq
+         Begin DesktopMenuItem ToolsOpq
             SpecialMenu = 0
             Index = -2147483648
             Text = "Opaque"
@@ -131,7 +131,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem ToolsSTsp
+         Begin DesktopMenuItem ToolsSTsp
             SpecialMenu = 0
             Index = -2147483648
             Text = "SemiTsp"
@@ -139,7 +139,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem ToolsTsp
+         Begin DesktopMenuItem ToolsTsp
             SpecialMenu = 0
             Index = -2147483648
             Text = "Tsp"
@@ -148,7 +148,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem ToolsThickness
+      Begin DesktopMenuItem ToolsThickness
          SpecialMenu = 0
          Index = -2147483648
          Text = "Epaisseur trait"
@@ -156,7 +156,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem ToolsThick1
+         Begin DesktopMenuItem ToolsThick1
             SpecialMenu = 0
             Index = -2147483648
             Text = "1"
@@ -164,7 +164,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem ToolsThick2
+         Begin DesktopMenuItem ToolsThick2
             SpecialMenu = 0
             Index = -2147483648
             Text = "2"
@@ -173,7 +173,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem ToolsRigid
+      Begin DesktopMenuItem ToolsRigid
          SpecialMenu = 0
          Index = -2147483648
          Text = "Rigidifier/Dérigidifier"
@@ -181,7 +181,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ToolsHide
+      Begin DesktopMenuItem ToolsHide
          SpecialMenu = 0
          Index = -2147483648
          Text = "Cacher"
@@ -189,7 +189,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ToolsAVPlan
+      Begin DesktopMenuItem ToolsAVPlan
          SpecialMenu = 0
          Index = -2147483648
          Text = "Avant-Plan"
@@ -197,7 +197,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ToolsARPlan
+      Begin DesktopMenuItem ToolsARPlan
          SpecialMenu = 0
          Index = -2147483648
          Text = "Arrière-Plan"
@@ -205,7 +205,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ToolsGrid
+      Begin DesktopMenuItem ToolsGrid
          SpecialMenu = 0
          Index = -2147483648
          Text = "Grille"
@@ -213,7 +213,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem ToolsHisto
+      Begin DesktopMenuItem ToolsHisto
          SpecialMenu = 0
          Index = -2147483648
          Text = "Historique"
@@ -222,14 +222,14 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuItem OperaMenu
+   Begin DesktopMenuItem OperaMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Opérations"
       AutoEnabled = True
       AutoEnable = True
       Visible = False
-      Begin MenuItem OperaDivide
+      Begin DesktopMenuItem OperaDivide
          SpecialMenu = 0
          Index = -2147483648
          Text = "Diviser"
@@ -237,7 +237,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem OperaCut
+      Begin DesktopMenuItem OperaCut
          SpecialMenu = 0
          Index = -2147483648
          Text = "Decouper"
@@ -245,7 +245,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem OperaMerge
+      Begin DesktopMenuItem OperaMerge
          SpecialMenu = 0
          Index = -2147483648
          Text = "Fusionner"
@@ -253,7 +253,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem OperaClone
+      Begin DesktopMenuItem OperaClone
          SpecialMenu = 0
          Index = -2147483648
          Text = "Dupliquer"
@@ -261,7 +261,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem OperaProl
+      Begin DesktopMenuItem OperaProl
          SpecialMenu = 0
          Index = -2147483648
          Text = "Prolonger"
@@ -269,7 +269,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem OperaCreateCenter
+      Begin DesktopMenuItem OperaCreateCenter
          SpecialMenu = 0
          Index = -2147483648
          Text = "Creer Centre"
@@ -277,7 +277,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem OperaIdentify
+      Begin DesktopMenuItem OperaIdentify
          SpecialMenu = 0
          Index = -2147483648
          Text = "Identify"
@@ -285,7 +285,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem UntitledMenu0
+      Begin DesktopMenuItem UntitledMenu0
          SpecialMenu = 0
          Index = -2147483648
          Text = ""
@@ -294,14 +294,14 @@ Begin Menu MenuMenus
          Visible = False
       End
    End
-   Begin MenuItem TransfosMenu
+   Begin DesktopMenuItem TransfosMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Transformations"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem TransfosDefine
+      Begin DesktopMenuItem TransfosDefine
          SpecialMenu = 0
          Index = -2147483648
          Text = "Définir"
@@ -309,7 +309,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem DefinirTranslation
+         Begin DesktopMenuItem DefinirTranslation
             SpecialMenu = 0
             Index = -2147483648
             Text = "Translation"
@@ -317,7 +317,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirRotation
+         Begin DesktopMenuItem DefinirRotation
             SpecialMenu = 0
             Index = -2147483648
             Text = "Rotation"
@@ -325,7 +325,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirDemiTour
+         Begin DesktopMenuItem DefinirDemiTour
             SpecialMenu = 0
             Index = -2147483648
             Text = "Demi-tour"
@@ -333,7 +333,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirQuartG
+         Begin DesktopMenuItem DefinirQuartG
             SpecialMenu = 0
             Index = -2147483648
             Text = "Quart de tour à gauche"
@@ -341,7 +341,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirQuartD
+         Begin DesktopMenuItem DefinirQuartD
             SpecialMenu = 0
             Index = -2147483648
             Text = "Quart de tour à droite"
@@ -349,7 +349,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirDeplacement
+         Begin DesktopMenuItem DefinirDeplacement
             SpecialMenu = 0
             Index = -2147483648
             Text = "Déplacement"
@@ -357,7 +357,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirSymetrieaxiale
+         Begin DesktopMenuItem DefinirSymetrieaxiale
             SpecialMenu = 0
             Index = -2147483648
             Text = "Symétrie axiale"
@@ -365,7 +365,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem DefinirHomothetie
+         Begin DesktopMenuItem DefinirHomothetie
             SpecialMenu = 0
             Index = -2147483648
             Text = "Homothétie"
@@ -374,7 +374,7 @@ Begin Menu MenuMenus
             SubMenu = True
             Visible = True
          End
-         Begin MenuItem DefinirSimilitude
+         Begin DesktopMenuItem DefinirSimilitude
             SpecialMenu = 0
             Index = -2147483648
             Text = "Similitude directe"
@@ -383,7 +383,7 @@ Begin Menu MenuMenus
             SubMenu = True
             Visible = True
          End
-         Begin MenuItem DefinirEtirement
+         Begin DesktopMenuItem DefinirEtirement
             SpecialMenu = 0
             Index = -2147483648
             Text = "Etirement"
@@ -392,7 +392,7 @@ Begin Menu MenuMenus
             SubMenu = True
             Visible = True
          End
-         Begin MenuItem DefinirCisaillement
+         Begin DesktopMenuItem DefinirCisaillement
             SpecialMenu = 0
             Index = -2147483648
             Text = "Cisaillement"
@@ -402,7 +402,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem TransfosAppliquer
+      Begin DesktopMenuItem TransfosAppliquer
          SpecialMenu = 0
          Index = -2147483648
          Text = "Appliquer"
@@ -410,7 +410,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem TransfosFixedPoints
+      Begin DesktopMenuItem TransfosFixedPoints
          SpecialMenu = 0
          Index = -2147483648
          Text = "Points fixes"
@@ -418,7 +418,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem TransfosHide
+      Begin DesktopMenuItem TransfosHide
          SpecialMenu = 0
          Index = -2147483648
          Text = "HideTsf"
@@ -426,7 +426,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem InvCurve
+      Begin DesktopMenuItem InvCurve
          SpecialMenu = 0
          Index = -2147483648
          Text = "CourbeInvariante"
@@ -435,14 +435,14 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuItem MacrosMenu
+   Begin DesktopMenuItem MacrosMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Macros"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem MacrosLoad
+      Begin DesktopMenuItem MacrosLoad
          SpecialMenu = 0
          Index = -2147483648
          Text = "Charger"
@@ -450,7 +450,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem MacrosCreate
+      Begin DesktopMenuItem MacrosCreate
          SpecialMenu = 0
          Index = -2147483648
          Text = "Creer"
@@ -458,7 +458,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem MacrosFinaux
+      Begin DesktopMenuItem MacrosFinaux
          SpecialMenu = 0
          Index = -2147483648
          Text = "Choix final"
@@ -466,7 +466,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem MacrosSave
+      Begin DesktopMenuItem MacrosSave
          SpecialMenu = 0
          Index = -2147483648
          Text = "Sauvegarder"
@@ -474,7 +474,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem MacrosQuit
+      Begin DesktopMenuItem MacrosQuit
          SpecialMenu = 0
          Index = -2147483648
          Text = "Abandonner"
@@ -482,7 +482,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem MacSeparator
+      Begin DesktopMenuItem MacSeparator
          SpecialMenu = 0
          Index = -2147483648
          Text = "-"
@@ -491,7 +491,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem MacrosDescri
+      Begin DesktopMenuItem MacrosDescri
          SpecialMenu = 0
          Index = 0
          Text = "Afficher la description d'une macro"
@@ -499,7 +499,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem MacrosDescri2
+         Begin DesktopMenuItem MacrosDescri2
             SpecialMenu = 0
             Index = 0
             Text = "Sans_titre"
@@ -508,7 +508,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem MacrosExecute
+      Begin DesktopMenuItem MacrosExecute
          SpecialMenu = 0
          Index = 0
          Text = "Exécuter une macro"
@@ -516,7 +516,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem MacrosChoose
+         Begin DesktopMenuItem MacrosChoose
             SpecialMenu = 0
             Index = 0
             Text = "Sans_titre"
@@ -526,7 +526,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem MacrosClose
+      Begin DesktopMenuItem MacrosClose
          SpecialMenu = 0
          Index = 0
          Text = "Fermer une macro"
@@ -534,7 +534,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem MacrosClose2
+         Begin DesktopMenuItem MacrosClose2
             SpecialMenu = 0
             Index = 0
             Text = "Sans_titre"
@@ -543,7 +543,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem MacrosErase
+      Begin DesktopMenuItem MacrosErase
          SpecialMenu = 0
          Index = 0
          Text = "Supprimer une macro"
@@ -552,7 +552,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem MacrosErase2
+         Begin DesktopMenuItem MacrosErase2
             SpecialMenu = 0
             Index = 0
             Text = "Sans_titre"
@@ -561,7 +561,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem MacrosCopy
+      Begin DesktopMenuItem MacrosCopy
          SpecialMenu = 0
          Index = 0
          Text = "Copier une macro"
@@ -569,7 +569,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem MacrosCopy2
+         Begin DesktopMenuItem MacrosCopy2
             SpecialMenu = 0
             Index = 0
             Text = "Sans Titre"
@@ -579,14 +579,14 @@ Begin Menu MenuMenus
          End
       End
    End
-   Begin MenuItem PrefsMenu
+   Begin DesktopMenuItem PrefsMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Préférences"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem Fonds
+      Begin DesktopMenuItem Fonds
          SpecialMenu = 0
          Index = -2147483648
          Text = "Fonds d'écran"
@@ -594,7 +594,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem Install
+         Begin DesktopMenuItem Install
             SpecialMenu = 0
             Index = -2147483648
             Text = "Installer"
@@ -602,7 +602,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem FondEcranConfigurer
+         Begin DesktopMenuItem FondEcranConfigurer
             SpecialMenu = 0
             Index = -2147483648
             Text = "Configurer"
@@ -610,7 +610,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem UnInstall
+         Begin DesktopMenuItem UnInstall
             SpecialMenu = 0
             Index = -2147483648
             Text = "Retirer"
@@ -619,7 +619,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem PrefsStdForms
+      Begin DesktopMenuItem PrefsStdForms
          SpecialMenu = 0
          Index = -2147483648
          Text = "StdForms"
@@ -627,7 +627,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsColor
+      Begin DesktopMenuItem PrefsColor
          SpecialMenu = 0
          Index = -2147483648
          Text = "Couleurs par défaut"
@@ -635,7 +635,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem PrefsColorBorder
+         Begin DesktopMenuItem PrefsColorBorder
             SpecialMenu = 0
             Index = -2147483648
             Text = "Couleur du bord"
@@ -643,7 +643,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem PrefsColorFill
+         Begin DesktopMenuItem PrefsColorFill
             SpecialMenu = 0
             Index = -2147483648
             Text = "Couleur du fond"
@@ -651,7 +651,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem PrefsColorStdFam
+         Begin DesktopMenuItem PrefsColorStdFam
             SpecialMenu = 0
             Index = -2147483648
             Text = "Couleur des formes standard"
@@ -660,7 +660,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem PrefsMagDist
+      Begin DesktopMenuItem PrefsMagDist
          SpecialMenu = 0
          Index = -2147483648
          Text = "Mag Dist"
@@ -668,7 +668,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsThickness
+      Begin DesktopMenuItem PrefsThickness
          SpecialMenu = 0
          Index = -2147483648
          Text = "Epaisseur des traits"
@@ -676,7 +676,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsTrace
+      Begin DesktopMenuItem PrefsTrace
          SpecialMenu = 0
          Index = -2147483648
          Text = "Trajectoires"
@@ -684,7 +684,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsAjust
+      Begin DesktopMenuItem PrefsAjust
          SpecialMenu = 0
          Index = -2147483648
          Text = "Ajustement automatique"
@@ -692,7 +692,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsPolyg
+      Begin DesktopMenuItem PrefsPolyg
          SpecialMenu = 0
          Index = -2147483648
          Text = "Formes pointées"
@@ -700,7 +700,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsFleches
+      Begin DesktopMenuItem PrefsFleches
          SpecialMenu = 0
          Index = -2147483648
          Text = "Formes fléchées"
@@ -708,7 +708,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsBiface
+      Begin DesktopMenuItem PrefsBiface
          SpecialMenu = 0
          Index = -2147483648
          Text = "Formes bifaces"
@@ -716,7 +716,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrefsArea
+      Begin DesktopMenuItem PrefsArea
          SpecialMenu = 0
          Index = -2147483648
          Text = "Aire"
@@ -724,7 +724,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem PrefsAreaArith
+         Begin DesktopMenuItem PrefsAreaArith
             SpecialMenu = 0
             Index = -2147483648
             Text = "Aire arithmétique"
@@ -732,7 +732,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem PrefsAreaAlg
+         Begin DesktopMenuItem PrefsAreaAlg
             SpecialMenu = 0
             Index = -2147483648
             Text = "Aire algébrique"
@@ -741,7 +741,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem PrefsUL
+      Begin DesktopMenuItem PrefsUL
          SpecialMenu = 0
          Index = -2147483648
          Text = "UL"
@@ -749,7 +749,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem PrefsULDef
+         Begin DesktopMenuItem PrefsULDef
             SpecialMenu = 0
             Index = -2147483648
             Text = "Defaut"
@@ -757,7 +757,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem PrefsULChoix
+         Begin DesktopMenuItem PrefsULChoix
             SpecialMenu = 0
             Index = -2147483648
             Text = "Choisir"
@@ -766,7 +766,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem PrefsUA
+      Begin DesktopMenuItem PrefsUA
          SpecialMenu = 0
          Index = -2147483648
          Text = "UA"
@@ -774,7 +774,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem PrefsUADef
+         Begin DesktopMenuItem PrefsUADef
             SpecialMenu = 0
             Index = -2147483648
             Text = "Defaut"
@@ -782,7 +782,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             Visible = True
          End
-         Begin MenuItem PrefsUAChoix
+         Begin DesktopMenuItem PrefsUAChoix
             SpecialMenu = 0
             Index = -2147483648
             Text = "Choisir"
@@ -791,7 +791,7 @@ Begin Menu MenuMenus
             Visible = True
          End
       End
-      Begin MenuItem PrefsPolice
+      Begin DesktopMenuItem PrefsPolice
          SpecialMenu = 0
          Index = 1
          Text = "Polices de caractères"
@@ -799,7 +799,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          SubMenu = True
          Visible = True
-         Begin MenuItem PrefsPolNom
+         Begin DesktopMenuItem PrefsPolNom
             SpecialMenu = 0
             Index = -2147483648
             Text = "Nom"
@@ -807,7 +807,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             SubMenu = True
             Visible = True
-            Begin MenuItem UntitledItem0
+            Begin DesktopMenuItem UntitledItem0
                SpecialMenu = 0
                Index = -2147483648
                Text = "Untitled"
@@ -815,7 +815,7 @@ Begin Menu MenuMenus
                AutoEnable = True
                SubMenu = True
                Visible = True
-               Begin MenuItem Untitled
+               Begin DesktopMenuItem Untitled
                   SpecialMenu = 0
                   Index = -2147483648
                   Text = ""
@@ -824,7 +824,7 @@ Begin Menu MenuMenus
                   Visible = True
                End
             End
-            Begin MenuItem UntitledItem1
+            Begin DesktopMenuItem UntitledItem1
                SpecialMenu = 0
                Index = -2147483648
                Text = "Untitled"
@@ -833,7 +833,7 @@ Begin Menu MenuMenus
                Visible = True
             End
          End
-         Begin MenuItem PrefsPolItal
+         Begin DesktopMenuItem PrefsPolItal
             SpecialMenu = 0
             Index = -2147483648
             Text = "Aspect"
@@ -842,7 +842,7 @@ Begin Menu MenuMenus
             SubMenu = True
             Visible = True
          End
-         Begin MenuItem PrefsPolTai
+         Begin DesktopMenuItem PrefsPolTai
             SpecialMenu = 0
             Index = -2147483648
             Text = "Taille"
@@ -850,7 +850,7 @@ Begin Menu MenuMenus
             AutoEnable = True
             SubMenu = True
             Visible = True
-            Begin MenuItem UntitledItem2
+            Begin DesktopMenuItem UntitledItem2
                SpecialMenu = 0
                Index = -2147483648
                Text = "Untitled"
@@ -858,7 +858,7 @@ Begin Menu MenuMenus
                AutoEnable = True
                SubMenu = True
                Visible = True
-               Begin MenuItem UntitledSeparator
+               Begin DesktopMenuItem UntitledSeparator
                   SpecialMenu = 0
                   Index = -2147483648
                   Text = "-"
@@ -866,7 +866,7 @@ Begin Menu MenuMenus
                   AutoEnable = True
                   Visible = True
                End
-               Begin MenuItem UntitledItem3
+               Begin DesktopMenuItem UntitledItem3
                   SpecialMenu = 0
                   Index = -2147483648
                   Text = "Untitled"
@@ -876,7 +876,7 @@ Begin Menu MenuMenus
                End
             End
          End
-         Begin MenuItem PrefsPolFin
+         Begin DesktopMenuItem PrefsPolFin
             SpecialMenu = 0
             Index = -2147483648
             Text = "Finesse"
@@ -887,14 +887,14 @@ Begin Menu MenuMenus
          End
       End
    End
-   Begin MenuItem NotesMenu
+   Begin DesktopMenuItem NotesMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Notes"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem NotesOpen
+      Begin DesktopMenuItem NotesOpen
          SpecialMenu = 0
          Index = -2147483648
          Text = "Ouvrir"
@@ -903,14 +903,14 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuItem HelpMenu
+   Begin DesktopMenuItem HelpMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Aide"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem HelpView
+      Begin DesktopMenuItem HelpView
          SpecialMenu = 0
          Index = -2147483648
          Text = "Aide"
@@ -918,7 +918,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem HelpUG
+      Begin DesktopMenuItem HelpUG
          SpecialMenu = 0
          Index = -2147483648
          Text = "Guide Utilisateur"
@@ -926,7 +926,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem HelpVisit
+      Begin DesktopMenuItem HelpVisit
          SpecialMenu = 0
          Index = -2147483648
          Text = "CREM"
@@ -935,7 +935,7 @@ Begin Menu MenuMenus
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem HelpAbout
+      Begin DesktopMenuItem HelpAbout
          SpecialMenu = 0
          Index = -2147483648
          Text = "A propos"
@@ -944,7 +944,7 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin MenuItem UntitledItem
+   Begin DesktopMenuItem UntitledItem
       SpecialMenu = 0
       Index = -2147483648
       Text = "Untitled"

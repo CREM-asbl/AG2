@@ -1,13 +1,13 @@
 #tag Menu
 Begin Menu NotesMenu
-   Begin MenuItem FileMenu
+   Begin DesktopMenuItem FileMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "&Fichier"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem FileOpen
+      Begin DesktopMenuItem FileOpen
          SpecialMenu = 0
          Index = -2147483648
          Text = "Open"
@@ -15,7 +15,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileSave
+      Begin DesktopMenuItem FileSave
          SpecialMenu = 0
          Index = -2147483648
          Text = "Save"
@@ -23,7 +23,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileClose
+      Begin DesktopMenuItem FileClose
          SpecialMenu = 0
          Index = -2147483648
          Text = "Close"
@@ -31,7 +31,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FilePrint
+      Begin DesktopMenuItem FilePrint
          SpecialMenu = 0
          Index = -2147483648
          Text = "Print"
@@ -40,14 +40,14 @@ Begin Menu NotesMenu
          Visible = True
       End
    End
-   Begin MenuItem EditMenu
+   Begin DesktopMenuItem EditMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "&Editer"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem EditCopy
+      Begin DesktopMenuItem EditCopy
          SpecialMenu = 0
          Index = -2147483648
          Text = "Copier"
@@ -58,7 +58,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem EditPaste
+      Begin DesktopMenuItem EditPaste
          SpecialMenu = 0
          Index = -2147483648
          Text = "Coller"
@@ -70,7 +70,7 @@ Begin Menu NotesMenu
          Visible = True
       End
    End
-   Begin MenuItem NormalMenu
+   Begin DesktopMenuItem NormalMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Normal"
@@ -78,7 +78,7 @@ Begin Menu NotesMenu
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem GrasMenu
+   Begin DesktopMenuItem GrasMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Gras"
@@ -86,7 +86,7 @@ Begin Menu NotesMenu
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem ItaliqueMenu
+   Begin DesktopMenuItem ItaliqueMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Italique"
@@ -94,14 +94,14 @@ Begin Menu NotesMenu
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem CouleurMenu
+   Begin DesktopMenuItem CouleurMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Couleur"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem Col
+      Begin DesktopMenuItem Col
          SpecialMenu = 0
          Index = 0
          Text = "Rouge"
@@ -109,7 +109,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem Col
+      Begin DesktopMenuItem Col
          SpecialMenu = 0
          Index = 1
          Text = "Vert"
@@ -117,7 +117,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem Col
+      Begin DesktopMenuItem Col
          SpecialMenu = 0
          Index = 2
          Text = "Bleu"
@@ -125,7 +125,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem Col
+      Begin DesktopMenuItem Col
          SpecialMenu = 0
          Index = 3
          Text = "Noir"
@@ -134,14 +134,14 @@ Begin Menu NotesMenu
          Visible = True
       End
    End
-   Begin MenuItem TailleMenu
+   Begin DesktopMenuItem TailleMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Taille"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem TItem
+      Begin DesktopMenuItem TItem
          SpecialMenu = 0
          Index = 0
          Text = "12"
@@ -149,7 +149,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem TItem
+      Begin DesktopMenuItem TItem
          SpecialMenu = 0
          Index = 1
          Text = "16"
@@ -157,7 +157,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem TItem
+      Begin DesktopMenuItem TItem
          SpecialMenu = 0
          Index = 2
          Text = "20"
@@ -165,7 +165,7 @@ Begin Menu NotesMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem TItem
+      Begin DesktopMenuItem TItem
          SpecialMenu = 0
          Index = 3
          Text = "25"
@@ -174,7 +174,7 @@ Begin Menu NotesMenu
          Visible = True
       End
    End
-   Begin MenuItem GaucheMenu
+   Begin DesktopMenuItem GaucheMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Gauche"
@@ -182,7 +182,7 @@ Begin Menu NotesMenu
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem CentrerMenu
+   Begin DesktopMenuItem CentrerMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Centrer"
@@ -190,7 +190,7 @@ Begin Menu NotesMenu
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem DroiteMenu
+   Begin DesktopMenuItem DroiteMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Droite"
@@ -198,14 +198,14 @@ Begin Menu NotesMenu
       AutoEnable = True
       Visible = True
    End
-   Begin MenuItem FontMenu
+   Begin DesktopMenuItem FontMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Polices"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem FontFontName
+      Begin DesktopMenuItem FontFontName
          SpecialMenu = 0
          Index = 0
          Text = "untitled"

@@ -1,51 +1,62 @@
-#tag Window
-Begin Window DictWindow
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow DictWindow
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   True
-   Frame           =   1
+   DefaultLocation =   1
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackgroundColor=   True
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   True
    Height          =   607
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   -1100719104
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   True
-   MinWidth        =   64
-   Placement       =   1
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   True
    Title           =   "Créer ou modifier un dictionnaire"
+   Type            =   1
    Visible         =   True
    Width           =   822
-   Begin ListBox ListBox1
-      AutoDeactivate  =   True
-      AutoHideScrollbars=   True
+   Begin DesktopListBox ListBox1
+      AllowAutoDeactivate=   True
+      AllowAutoHideScrollbars=   True
+      AllowExpandableRows=   False
+      AllowFocusRing  =   True
+      AllowResizableColumns=   False
+      AllowRowDragging=   False
+      AllowRowReordering=   False
+      AutoDeactivate  =   "True"
+      AutoHideScrollbars=   "True"
       Bold            =   False
-      Border          =   True
+      Border          =   "True"
       ColumnCount     =   1
-      ColumnsResizable=   True
+      ColumnsResizable=   "True"
       ColumnWidths    =   ""
-      DataField       =   ""
-      DataSource      =   ""
       DefaultRowHeight=   -1
+      DropIndicatorVisible=   False
       Enabled         =   True
-      EnableDrag      =   False
-      EnableDragReorder=   False
-      GridLinesHorizontal=   3
-      GridLinesVertical=   3
-      HasHeading      =   True
+      EnableDrag      =   "False"
+      EnableDragReorder=   "False"
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      GridLineStyle   =   0
+      HasBorder       =   True
+      HasHeader       =   False
+      HasHeading      =   "True"
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
       HeadingIndex    =   0
       Height          =   693
       HelpTag         =   ""
-      Hierarchical    =   False
+      Hierarchical    =   "False"
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
@@ -57,59 +68,57 @@ Begin Window DictWindow
       LockRight       =   False
       LockTop         =   False
       RequiresSelection=   False
+      RowSelectionType=   0
       Scope           =   0
-      ScrollbarHorizontal=   False
-      ScrollBarVertical=   True
-      SelectionType   =   1
-      ShowDropIndicator=   False
+      ScrollbarHorizontal=   "False"
+      ScrollBarVertical=   "True"
+      SelectionType   =   "1"
+      ShowDropIndicator=   "False"
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "Arial"
-      TextSize        =   12.0
-      TextUnit        =   0
+      TextSize        =   "12.0"
+      TextUnit        =   "0"
+      Tooltip         =   ""
       Top             =   1
       Transparent     =   False
       Underline       =   False
-      UseFocusRing    =   False
+      UseFocusRing    =   "False"
       Visible         =   True
       Width           =   819
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub EnableMenuItems()
-		  chargerdict.enable
-		  creerdict.enabled=enablecreer
-		  findict.enable
-		  SauverDict.enabled=enablecreer
+		Sub MenuBarSelected()
+		  chargerdict.enabled = true
+		  creerdict.enabled = enablecreer
+		  findict.enabled = true
+		  SauverDict.enabled = enablecreer
 		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
 		  return false
 		End Function
 	#tag EndEvent
 
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  Title = Dico.value("NewDictWindow")
 		  Listbox1.width = width
 		  Listbox1.height = height
-		  Listbox1.heading(0) = Dico.value("Code")
+		  Listbox1.HeaderAt(0) = Dico.value("Code")
 		  ndict = 0
 		  
 		  ChargerLangRef(config.langue)
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
@@ -123,115 +132,115 @@ End
 
 	#tag MenuHandler
 		Function ChargerDict() As Boolean Handles ChargerDict.Action
-			
-			dim n as integer
-			
-			LanguageWindow.showmodal
-			Lang = Languagewindow.langue
-			LanguageWindow.Close
-			
-			if language.indexof(lang)= -1 then  //on ne recharge pas un dictionnaire déjà chargé
-			ndict = ndict+1
-			Language.append Lang
-			ListBox1.ColumnCount = ListBox1.ColumnCount + 1
-			Listbox1.heading(ndict) = Language(ndict-1)
-			ChargerLang(Lang)
-			end if
-			return false
+		  
+		  dim n as integer
+		  
+		  LanguageWindow.showmodal
+		  Lang = Languagewindow.langue
+		  LanguageWindow.Close
+		  
+		  if language.indexof(lang)= -1 then  //on ne recharge pas un dictionnaire déjà chargé
+		    ndict = ndict+1
+		    Language.append Lang
+		    ListBox1.ColumnCount = ListBox1.ColumnCount + 1
+		    Listbox1.headerAt(ndict) = Language(ndict-1)
+		    ChargerLang(Lang)
+		  end if
+		  return false
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function CreerDict() As Boolean Handles CreerDict.Action
-			if NewLanguage then
-			ListBox1.ColumnCount = ListBox1.ColumnCount + 1
-			ndict = ndict+1
-			ListBox1.Heading(ndict) = Language(ndict-1)
-			end if
+		  if NewLanguage then
+		    ListBox1.ColumnCount = ListBox1.ColumnCount + 1
+		    ndict = ndict+1
+		    ListBox1.HeaderAt(ndict) = Language(ndict-1)
+		  end if
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FinDict() As Boolean Handles FinDict.Action
-			self.close
+		  self.close
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ModifDict() As Boolean Handles ModifDict.Action
-			ListBox1.setfocus
+		  ListBox1.setfocus
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function SauverDict() As Boolean Handles SauverDict.Action
-			dim Doc as new XMLDocument
-			dim Langue, EL, EL1 as XMLnode
-			dim fi as folderitem
-			dim tos as TextOutputStream
-			dim i, n as integer
-			dim msg as MessageDialog
-			dim but as MessageDialogButton
-			
-			msg = new MessageDialog
-			msg.Message = Dico.Value("ClickInTheColumnToSave")
-			msg.AlternateActionButton.visible = true
-			msg.AlternateActionButton.Caption = Dico.Value("Cancel")
-			but = msg.ShowModal
-			if but <> msg.ActionButton then
-			return false
-			end if
-			
-			Dim DctType as New FileType
-			DctType.Name = "dictionnaire"
-			DctType.MacType = "DCT"
-			DctType.Extensions = "dct"
-			
-			Dim dlg as New SaveAsDialog
-			n = Listbox1.Listcount
-			Doc = new XMLDocument
-			Doc.Preservewhitespace = true
-			
-			if colonne = 0 then
-			MsgBox Dico.value("messdico2")
-			return false
-			end if
-			Langue = Doc.AppendChild(Doc.CreateElement(Language(colonne-1)))
-			
-			for i = 0 to n-1
-			if ListBox1.Cell(i,1) = "" or ListBox1.Cell(i,1) = " " then
-			EL = Langue.AppendChild(Doc.CreateElement(ListBox1.Cell(i,0)))
-			else
-			EL1 = Doc.CreateElement(ListBox1.Cell(i,0))
-			if ListBox1.Cell(i,colonne) <> "" and ListBox1.Cell(i,colonne) <> " " then
-			EL1.SetAttribute("Name",ListBox1.Cell(i,colonne))
-			else
-			EL1.SetAttribute("Name","---")
-			end if
-			EL.AppendChild EL1
-			end if
-			next
-			
-			if Language(colonne-1) = "Francais" or Language(colonne-1) = "English" then
-			dlg.InitialDirectory = app.appfolder
-			else
-			dlg.InitialDirectory=app.Dctfolder
-			end if
-			dlg.promptText=""
-			dlg.SuggestedFileName=Language(colonne-1)+".dct"
-			dlg.Title= ""
-			dlg.filter=DctType
-			
-			fi=dlg.ShowModal()
-			If fi <> Nil then
-			tos=fi.CreateTextFile
-			tos.write(Doc.ToString)
-			tos.close
-			return true
-			Else
-			return false
-			End if
-			
+		  dim Doc as new XMLDocument
+		  dim Langue, EL, EL1 as XMLnode
+		  dim fi as folderitem
+		  dim tos as TextOutputStream
+		  dim i, n as integer
+		  dim msg as MessageDialog
+		  dim but as MessageDialogButton
+		  
+		  msg = new MessageDialog
+		  msg.Message = Dico.Value("ClickInTheColumnToSave")
+		  msg.AlternateActionButton.visible = true
+		  msg.AlternateActionButton.Caption = Dico.Value("Cancel")
+		  but = msg.ShowModal
+		  if but <> msg.ActionButton then
+		    return false
+		  end if
+		  
+		  Dim DctType as New FileType
+		  DctType.Name = "dictionnaire"
+		  DctType.MacType = "DCT"
+		  DctType.Extensions = "dct"
+		  
+		  Dim dlg as New SaveAsDialog
+		  n = Listbox1.RowCount
+		  Doc = new XMLDocument
+		  Doc.Preservewhitespace = true
+		  
+		  if colonne = 0 then
+		    MsgBox Dico.value("messdico2")
+		    return false
+		  end if
+		  Langue = Doc.AppendChild(Doc.CreateElement(Language(colonne-1)))
+		  
+		  for i = 0 to n-1
+		    if ListBox1.CellTextAt(i,1) = "" or ListBox1.CellTextAt(i,1) = " " then
+		      EL = Langue.AppendChild(Doc.CreateElement(ListBox1.CellTextAt(i,0)))
+		    else
+		      EL1 = Doc.CreateElement(ListBox1.CellTextAt(i,0))
+		      if ListBox1.CellTextAt(i,colonne) <> "" and ListBox1.CellTextAt(i,colonne) <> " " then
+		        EL1.SetAttribute("Name",ListBox1.CellTextAt(i,colonne))
+		      else
+		        EL1.SetAttribute("Name","---")
+		      end if
+		      EL.AppendChild EL1
+		    end if
+		  next
+		  
+		  if Language(colonne-1) = "Francais" or Language(colonne-1) = "English" then
+		    dlg.InitialDirectory = app.appfolder
+		  else
+		    dlg.InitialDirectory=app.Dctfolder
+		  end if
+		  dlg.promptText=""
+		  dlg.SuggestedFileName=Language(colonne-1)+".dct"
+		  dlg.Title= ""
+		  dlg.filter=DctType
+		  
+		  fi=dlg.ShowModal()
+		  If fi <> Nil then
+		    tos=fi.CreateTextFile
+		    tos.write(Doc.ToString)
+		    tos.close
+		    return true
+		  Else
+		    return false
+		  End if
+		  
 		End Function
 	#tag EndMenuHandler
 
@@ -254,16 +263,16 @@ End
 		  for i = 0 to  EL.ChildCount -1
 		    j = j+1
 		    EL1 = EL.Child(i)
-		    while j < Listbox1.ListCount and  listbox1.cell(j,1) <> "" and listbox1.cell(j,1) <> " "
-		      Key = listbox1.cell(j,0)
+		    while j < Listbox1.RowCount and  listbox1.CellTextAt(j,1) <> "" and listbox1.CellTextAt(j,1) <> " "
+		      Key = listbox1.CellTextAt(j,0)
 		      List = EL1.XQL(Key)
 		      if List.length > 0 then
-		        EL2 = XMLElement(List.Item(0))
+		        EL2 = XMLElement(List.item(0))
 		        Txt = EL2.GetAttribute("Name")
 		        if txt = "---" then
 		          txt = ""
 		        end if
-		        listbox1.cell(j,ndict) = Txt
+		        listbox1.CellTextAt(j,ndict) = Txt
 		      end if
 		      j = j+1
 		    wend
@@ -292,14 +301,14 @@ End
 		  Language.Append  EL.Name
 		  ListBox1.ColumnCount = ListBox1.ColumnCount + 1
 		  ndict = ndict+1
-		  Listbox1.heading(ndict) = Language(ndict-1)
+		  Listbox1.headerAt(ndict) = Language(ndict-1)
 		  
 		  j=0
 		  EL1 = EL.FirstChild
 		  for i = 0 to  EL.ChildCount -1
 		    if ndict = 1 then
-		      listbox1.addfolder(EL1.name)
-		      ListBox1.cellalignment(j,0)=ListBox.AlignCenter
+		      listbox1.AddExpandableRow(EL1.name)
+		      ListBox1.CellAlignmentAt(j,0) = DesktopListBox.Alignments.Center
 		    end if
 		    j = j+1
 		    EL2 = XMLElement(EL1.FirstChild)
@@ -312,7 +321,7 @@ End
 		      if ndict = 1 then
 		        listbox1.addrow Key
 		      end if
-		      listbox1.cell(j,ndict) = Txt
+		      listbox1.CellTextAt(j,ndict) = Txt
 		      j = j+1
 		      EL2= XMLElement(EL2.NextSibling)
 		    next
@@ -350,10 +359,10 @@ End
 		Protected Function oldGetSelect() As integer
 		  dim i, n as integer
 		  
-		  if ListBox1.selcount = 1 then
-		    n = ListBox1.ListCount
+		  if ListBox1.SelectedRowCount = 1 then
+		    n = ListBox1.RowCount
 		    for i = 0 to n-1
-		      if Listbox1.Selected(i) then
+		      if Listbox1.RowSelectedAt(i) then
 		        return i
 		      end if
 		    next
@@ -408,7 +417,7 @@ End
 
 #tag Events ListBox1
 	#tag Event
-		Function SortColumn(column As Integer) As Boolean
+		Function ColumnSorted(column As Integer) As Boolean
 		  return true
 		End Function
 	#tag EndEvent
@@ -418,9 +427,9 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Function CellClick(row as Integer, column as Integer, x as Integer, y as Integer) As Boolean
+		Function CellPressed(row As Integer, column As Integer, x As Integer, y As Integer) As Boolean
 		  if column>0 then
-		    me.EditCell(row,column)
+		    me.EditCellAt(row,column)
 		    self.colonne = column
 		  end if
 		  return false
@@ -433,15 +442,15 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  dim i, n as integer
 		  dim k as string
 		  
-		  me.scrollbarvertical = true
-		  me.hasheading = true
+		  me.HasVerticalScrollbar = true
+		  me.HasHeader = true
 		  me.setfocus
-		  me.columnalignment(0)= ListBox.AlignLeft
-		  me.SelectionType = ListBox.SelectionSingle
+		  me.ColumnAlignmentAt(0) = DesktopListBox.Alignments.Left
+		  me.RowSelectionType = DesktopListBox.RowSelectionTypes.Single
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -559,8 +568,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -631,7 +640,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

@@ -1,5 +1,5 @@
-#tag Window
-Begin Window ConfigWindow
+#tag DesktopWindow
+Begin DesktopWindow ConfigWindow
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   True
@@ -566,79 +566,79 @@ Begin Window ConfigWindow
       Width           =   80
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub EnableMenuItems()
-		  EditCopy.Enable
-		  EditDelete.Enable
-		  EditPaste.Enable
-		  EditRedo.Enable
-		  EditSelectAll.Enable
-		  EditReselect.Enable
-		  EditSelection.Enable
-		  EditUndo.Enable
-		  HelpAbout.Enable
-		  HelpView.Enable
-		  HelpVisit.Enable
-		  OperaClone.Enable
-		  OperaCut.Enable
-		  OperaDivide.Enable
-		  EditLink.Enable
-		  EditUnlink.Enable
-		  NotesMenu.enable
-		  NotesOpen.enable
-		  OperaMerge.Enable
-		  OperaProl.Enable
-		  PrefsTrace.Enable
-		  PrefsMagDist.Enable
-		  PrefsStdForms.Enable
-		  PrefsFleches.Enable
-		  PrefsPolyg.enable
-		  PrefsAjust.enable
-		  PrefsBiface.enable
-		  OperaIdentify.Enable
-		  PrefsColorBorder.Enable
-		  PrefsColorFill.Enable
-		  PrefsColorStdFam.Enable
-		  ToolsColorTransparent.Enable
-		  ToolsThickness.enable
-		  ToolsThick1.enable
-		  ToolsThick2.enable
-		  ToolsRigid.Enable
-		  ToolsGrid.Enable
-		  ToolsHide.Enable
-		  ToolsARPlan.enable
-		  ToolsAVPlan.enable
-		  ToolsLabel.enable
-		  OperaCreateCenter.Enable
-		  ToolsHisto.Enable
-		  'ToolsTrace.Enable
-		  'MacrosMenu.Enable
-		  'MacrosCreate.Enable
-		  'MacrosSave.enable
-		  'MacrosLoad.Enable
-		  'MacrosQuit.Enable
-		  'MacrosChoose.Enable
-		  DefinirTranslation.Enable
-		  DefinirRotation.Enable
-		  DefinirDemiTour.Enable
-		  DefinirQuartD.Enable
-		  DefinirQuartG.Enable
-		  DefinirSymetrieAxiale.Enable
-		  DefinirHomothetie.enable
-		  DefinirSimilitude.enable
-		  DefinirEtirement.enable
-		  DefinirDeplacement.enable
-		  DefinirCisaillement.enable
-		  TransfosAppliquer.enable
-		  TransfosFixedPoints.enable
-		  TransfosHide.enable
-		  PrefsULDef.enable
-		  PrefsUADef.enable
-		  PrefsULChoix.enable
-		  PrefsUAChoix.enable
+		Sub MenuBarSelected()
+		  EditCopy.enabled = true
+		  EditDelete.enabled = true
+		  EditPaste.enabled = true
+		  EditRedo.enabled = true
+		  EditSelectAll.enabled = true
+		  EditReselect.enabled = true
+		  EditSelection.enabled = true
+		  EditUndo.enabled = true
+		  HelpAbout.enabled = true
+		  HelpView.enabled = true
+		  HelpVisit.enabled = true
+		  OperaClone.enabled = true
+		  OperaCut.enabled = true
+		  OperaDivide.enabled = true
+		  EditLink.enabled = true
+		  EditUnlink.enabled = true
+		  NotesMenu.enabled = true
+		  NotesOpen.enabled = true
+		  OperaMerge.enabled = true
+		  OperaProl.enabled = true
+		  PrefsTrace.enabled = true
+		  PrefsMagDist.enabled = true
+		  PrefsStdForms.enabled = true
+		  PrefsFleches.enabled = true
+		  PrefsPolyg.enabled = true
+		  PrefsAjust.enabled = true
+		  PrefsBiface.enabled = true
+		  OperaIdentify.enabled = true
+		  PrefsColorBorder.enabled = true
+		  PrefsColorFill.enabled = true
+		  PrefsColorStdFam.enabled = true
+		  ToolsColorTransparent.enabled = true
+		  ToolsThickness.enabled = true
+		  ToolsThick1.enabled = true
+		  ToolsThick2.enabled = true
+		  ToolsRigid.enabled = true
+		  ToolsGrid.enabled = true
+		  ToolsHide.enabled = true
+		  ToolsARPlan.enabled = true
+		  ToolsAVPlan.enabled = true
+		  ToolsLabel.enabled = true
+		  OperaCreateCenter.enabled = true
+		  ToolsHisto.enabled = true
+		  'ToolsTrace.enabled = true
+		  'MacrosMenu.enabled = true
+		  'MacrosCreate.enabled = true
+		  'MacrosSave.enabled = true
+		  'MacrosLoad.enabled = true
+		  'MacrosQuit.enabled = true
+		  'MacrosChoose.enabled = true
+		  DefinirTranslation.enabled = true
+		  DefinirRotation.enabled = true
+		  DefinirDemiTour.enabled = true
+		  DefinirQuartD.enabled = true
+		  DefinirQuartG.enabled = true
+		  DefinirSymetrieAxiale.enabled = true
+		  DefinirHomothetie.enabled = true
+		  DefinirSimilitude.enabled = true
+		  DefinirEtirement.enabled = true
+		  DefinirDeplacement.enabled = true
+		  DefinirCisaillement.enabled = true
+		  TransfosAppliquer.enabled = true
+		  TransfosFixedPoints.enabled = true
+		  TransfosHide.enabled = true
+		  PrefsULDef.enabled = true
+		  PrefsUADef.enabled = true
+		  PrefsULChoix.enabled = true
+		  PrefsUAChoix.enabled = true
 		  
 		  
 		  
@@ -665,7 +665,7 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As Rect)
 		  ReadNomsBut
 		  setMenuBar
 		End Sub
@@ -674,537 +674,537 @@ End
 
 	#tag MenuHandler
 		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
-			DefinirCisaillement.checked = not DefinirCisaillement.checked
-			Return True
-			
+		  DefinirCisaillement.hasCheckMark = not DefinirCisaillement.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirDemiTour() As Boolean Handles DefinirDemiTour.Action
-			DefinirDemiTour.checked = not DefinirDemiTour.checked
-			
+		  DefinirDemiTour.hasCheckMark = not DefinirDemiTour.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirDeplacement() As Boolean Handles DefinirDeplacement.Action
-			DefinirDeplacement.checked = not  DefinirDeplacement.checked
-			Return True
-			
+		  DefinirDeplacement.hasCheckMark = not  DefinirDeplacement.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirEtirement() As Boolean Handles DefinirEtirement.Action
-			DefinirEtirement.checked = not  DefinirEtirement.checked
-			'MsgBox "Routine non encore implémentée"
-			Return True
-			
+		  DefinirEtirement.hasCheckMark = not  DefinirEtirement.hasCheckMark
+		  'MsgBox "Routine non encore implémentée"
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirHomothetie() As Boolean Handles DefinirHomothetie.Action
-			DefinirHomothetie.checked = not  DefinirHomothetie.checked
+		  DefinirHomothetie.hasCheckMark = not  DefinirHomothetie.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirQuartD() As Boolean Handles DefinirQuartD.Action
-			DefinirQuartD.checked = not  DefinirQuartD.checked
-			
+		  DefinirQuartD.hasCheckMark = not  DefinirQuartD.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirQuartG() As Boolean Handles DefinirQuartG.Action
-			DefinirQuartG.checked = not DefinirQuartG.checked
-			
+		  DefinirQuartG.hasCheckMark = not DefinirQuartG.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirRotation() As Boolean Handles DefinirRotation.Action
-			DefinirRotation.checked = not DefinirRotation.checked
-			
+		  DefinirRotation.hasCheckMark = not DefinirRotation.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirSimilitude() As Boolean Handles DefinirSimilitude.Action
-			DefinirSimilitude.checked = not  DefinirSimilitude.checked
+		  DefinirSimilitude.hasCheckMark = not  DefinirSimilitude.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirSymetrieAxiale() As Boolean Handles DefinirSymetrieAxiale.Action
-			DefinirSymetrieAxiale.checked = not DefinirSymetrieAxiale.checked
-			
+		  DefinirSymetrieAxiale.hasCheckMark = not DefinirSymetrieAxiale.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function DefinirTranslation() As Boolean Handles DefinirTranslation.Action
-			DefinirTranslation.checked = not  DefinirTranslation.checked
-			
+		  DefinirTranslation.hasCheckMark = not  DefinirTranslation.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditCopy() As Boolean Handles EditCopy.Action
-			Editcopy.checked = not Editcopy.checked
-			return true
+		  Editcopy.hasCheckMark = not Editcopy.hasCheckMark
+		  return true
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditDelete() As Boolean Handles EditDelete.Action
-			Editdelete.checked = not editdelete.checked
-			
+		  Editdelete.hasCheckMark = not editdelete.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditLink() As Boolean Handles EditLink.Action
-			EditLink.checked = not EditLink.checked
-			
+		  EditLink.hasCheckMark = not EditLink.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditPaste() As Boolean Handles EditPaste.Action
-			Editpaste.checked = not editpaste.checked
-			
+		  Editpaste.hasCheckMark = not editpaste.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditRedo() As Boolean Handles EditRedo.Action
-			Editredo.checked = true
-			
+		  Editredo.hasCheckMark = true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditReselect() As Boolean Handles EditReselect.Action
-			EditReselect.checked = not EditReselect.checked
+		  EditReselect.hasCheckMark = not EditReselect.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditSelectall() As Boolean Handles EditSelectall.Action
-			Editselectall.checked = not editselectall.checked
-			
+		  Editselectall.hasCheckMark = not editselectall.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditSelection() As Boolean Handles EditSelection.Action
-			EditSelection.checked = not editselection.checked
-			
+		  EditSelection.hasCheckMark = not editselection.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditUndo() As Boolean Handles EditUndo.Action
-			EditUndo.checked = true
-			
+		  EditUndo.hasCheckMark = true
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function EditUnlink() As Boolean Handles EditUnlink.Action
-			EditUnlink.checked = not EditUnlink.checked
+		  EditUnlink.hasCheckMark = not EditUnlink.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpAbout() As Boolean Handles HelpAbout.Action
-			HelpAbout.checked = not HelpAbout.checked
-			
+		  HelpAbout.hasCheckMark = not HelpAbout.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpUG() As Boolean Handles HelpUG.Action
-			HelpUG.checked = not HelpUG.checked
-			Return True
-			
+		  HelpUG.hasCheckMark = not HelpUG.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpView() As Boolean Handles HelpView.Action
-			HelpView.checked = not HelpView.checked
-			
+		  HelpView.hasCheckMark = not HelpView.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpVisit() As Boolean Handles HelpVisit.Action
-			HelpVisit.checked = not HelpVisit.checked
-			
+		  HelpVisit.hasCheckMark = not HelpVisit.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Install() As Boolean Handles Install.Action
-			Install.checked = not Install.Checked
-			Return True
-			
+		  Install.hasCheckMark = not Install.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
-			MacrosChoose(index).checked = not MacrosChoose(index).checked
-			Return True
-			
+		  MacrosChoose(index).hasCheckMark = not MacrosChoose(index).hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosClose2(index as Integer) As Boolean Handles MacrosClose2.Action
-			MacrosClose2(index).checked = not MacrosClose2(index).checked
-			Return True
-			
-			
+		  MacrosClose2(index).hasCheckMark = not MacrosClose2(index).hasCheckMark
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-			MacrosCreate.checked = not MacrosCreate.checked
-			Return True
-			
-			
+		  MacrosCreate.hasCheckMark = not MacrosCreate.hasCheckMark
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosDescri2(index as Integer) As Boolean Handles MacrosDescri2.Action
-			MacrosDescri2(index).checked = not MacrosDescri2(index).checked
-			Return True
-			
-			
+		  MacrosDescri2(index).hasCheckMark = not MacrosDescri2(index).hasCheckMark
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosErase2(index as Integer) As Boolean Handles MacrosErase2.Action
-			MacrosErase2(index).checked = not MacrosErase2(index).checked
-			Return True
-			
+		  MacrosErase2(index).hasCheckMark = not MacrosErase2(index).hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
-			MacrosFinaux.checked = not MacrosFinaux.checked
-			Return True
-			
+		  MacrosFinaux.hasCheckMark = not MacrosFinaux.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosLoad() As Boolean Handles MacrosLoad.Action
-			MacrosLoad.checked = not MacrosLoad.checked
-			Return True
+		  MacrosLoad.hasCheckMark = not MacrosLoad.hasCheckMark
+		  Return True
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
-			MacrosQuit.checked = not MacrosQuit.checked
-			Return True
+		  MacrosQuit.hasCheckMark = not MacrosQuit.hasCheckMark
+		  Return True
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
-			MacrosSave.checked = not MacrosSave.checked
-			Return True
+		  MacrosSave.hasCheckMark = not MacrosSave.hasCheckMark
+		  Return True
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function NotesMenu() As Boolean Handles NotesMenu.Action
-			NotesMenu.checked = not NotesMenu.Checked
+		  NotesMenu.hasCheckMark = not NotesMenu.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function NotesOpen() As Boolean Handles NotesOpen.Action
-			NotesOpen.checked=not NotesOpen.checked
-			
+		  NotesOpen.hasCheckMark=not NotesOpen.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaClone() As Boolean Handles OperaClone.Action
-			OperaClone.checked = not OperaClone.checked
-			
+		  OperaClone.hasCheckMark = not OperaClone.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaCreateCenter() As Boolean Handles OperaCreateCenter.Action
-			OperaCreateCenter.checked = not OperaCreateCenter.checked
+		  OperaCreateCenter.hasCheckMark = not OperaCreateCenter.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaCut() As Boolean Handles OperaCut.Action
-			OperaCut.checked = not OperaCut.checked
-			
+		  OperaCut.hasCheckMark = not OperaCut.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaDivide() As Boolean Handles OperaDivide.Action
-			OperaDivide.checked = not OperaDivide.checked
-			
+		  OperaDivide.hasCheckMark = not OperaDivide.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaIdentify() As Boolean Handles OperaIdentify.Action
-			OperaIdentify.checked = not OperaIdentify.checked
-			
-			
-			
+		  OperaIdentify.hasCheckMark = not OperaIdentify.hasCheckMark
+		  
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaMerge() As Boolean Handles OperaMerge.Action
-			OperaMerge.checked = not OperaMerge.checked
-			
+		  OperaMerge.hasCheckMark = not OperaMerge.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaProl() As Boolean Handles OperaProl.Action
-			OperaProl.checked = not OperaProl.checked
-			
+		  OperaProl.hasCheckMark = not OperaProl.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsAjust() As Boolean Handles PrefsAjust.Action
-			PrefsAjust.checked = not PrefsAjust.checked
-			Return True
-			
+		  PrefsAjust.hasCheckMark = not PrefsAjust.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsBiface() As Boolean Handles PrefsBiface.Action
-			PrefsBiface.checked = not PrefsBiface.checked
-			Return True
-			
+		  PrefsBiface.hasCheckMark = not PrefsBiface.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsColorBorder() As Boolean Handles PrefsColorBorder.Action
-			PrefsColorBorder.checked = not PrefsColorBorder.checked
+		  PrefsColorBorder.hasCheckMark = not PrefsColorBorder.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsColorFill() As Boolean Handles PrefsColorFill.Action
-			PrefsColorFill.checked = not PrefsColorFill.checked
+		  PrefsColorFill.hasCheckMark = not PrefsColorFill.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsColorStdFam() As Boolean Handles PrefsColorStdFam.Action
-			PrefsColorStdFam.checked = not PrefsColorStdFam.checked
+		  PrefsColorStdFam.hasCheckMark = not PrefsColorStdFam.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsFleches() As Boolean Handles PrefsFleches.Action
-			PrefsFleches.checked = not PrefsFleches.checked
-			
-			
+		  PrefsFleches.hasCheckMark = not PrefsFleches.hasCheckMark
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsMagDist() As Boolean Handles PrefsMagDist.Action
-			PrefsMagDist.checked = not PrefsMagDist.checked
+		  PrefsMagDist.hasCheckMark = not PrefsMagDist.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsPolyg() As Boolean Handles PrefsPolyg.Action
-			PrefsPolyg.checked = not PrefsPolyg.checked
+		  PrefsPolyg.hasCheckMark = not PrefsPolyg.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsStdForms() As Boolean Handles PrefsStdForms.Action
-			PrefsStdForms.checked = not PrefsStdForms.checked
-			
+		  PrefsStdForms.hasCheckMark = not PrefsStdForms.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsThickness() As Boolean Handles PrefsThickness.Action
-			PrefsThickness.checked = not PrefsThickness.checked
-			Return True
-			
+		  PrefsThickness.hasCheckMark = not PrefsThickness.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsTrace() As Boolean Handles PrefsTrace.Action
-			PrefsTrace.checked = not PrefsTrace.checked
-			
+		  PrefsTrace.hasCheckMark = not PrefsTrace.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsUAChoix() As Boolean Handles PrefsUAChoix.Action
-			PrefsUAChoix.checked = not PrefsUAChoix.checked
-			Return True
-			
+		  PrefsUAChoix.hasCheckMark = not PrefsUAChoix.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsUADef() As Boolean Handles PrefsUADef.Action
-			PrefsUADef.checked = not PrefsUADef.checked
-			Return True
-			
+		  PrefsUADef.hasCheckMark = not PrefsUADef.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsULChoix() As Boolean Handles PrefsULChoix.Action
-			PrefsULChoix.checked = not PrefsULChoix.checked
-			Return True
-			
+		  PrefsULChoix.hasCheckMark = not PrefsULChoix.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsULDef() As Boolean Handles PrefsULDef.Action
-			PrefsULDef.checked = not PrefsULDef.checked
-			
-			Return True
-			
+		  PrefsULDef.hasCheckMark = not PrefsULDef.hasCheckMark
+		  
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsARPlan() As Boolean Handles ToolsARPlan.Action
-			ToolsARPlan.checked = not ToolsARPlan.checked
-			
+		  ToolsARPlan.hasCheckMark = not ToolsARPlan.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsAVPlan() As Boolean Handles ToolsAVPlan.Action
-			ToolsAVPlan.checked = not ToolsAVPlan.checked
+		  ToolsAVPlan.hasCheckMark = not ToolsAVPlan.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsColorTransparent() As Boolean Handles ToolsColorTransparent.Action
-			ToolsColorTransparent.checked = not ToolsColorTransparent.checked
+		  ToolsColorTransparent.hasCheckMark = not ToolsColorTransparent.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsGrid() As Boolean Handles ToolsGrid.Action
-			ToolsGrid.checked = not ToolsGrid.checked
-			
+		  ToolsGrid.hasCheckMark = not ToolsGrid.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsHide() As Boolean Handles ToolsHide.Action
-			ToolsHide.checked = not ToolsHide.checked
-			
-			
+		  ToolsHide.hasCheckMark = not ToolsHide.hasCheckMark
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsHisto() As Boolean Handles ToolsHisto.Action
-			ToolsHisto.checked = not ToolsHisto.checked
-			
+		  ToolsHisto.hasCheckMark = not ToolsHisto.hasCheckMark
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsLabel() As Boolean Handles ToolsLabel.Action
-			ToolsLabel.Checked = Not ToolsLabel.Checked
+		  ToolsLabel.hasCheckMark = Not ToolsLabel.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsRigid() As Boolean Handles ToolsRigid.Action
-			ToolsRigid.checked = not ToolsRigid.checked
+		  ToolsRigid.hasCheckMark = not ToolsRigid.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsThick1() As Boolean Handles ToolsThick1.Action
-			ToolsThick1.checked = not ToolsThick1.checked
+		  ToolsThick1.hasCheckMark = not ToolsThick1.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function ToolsThick2() As Boolean Handles ToolsThick2.Action
-			ToolsThick2.checked = not ToolsThick2.checked
+		  ToolsThick2.hasCheckMark = not ToolsThick2.hasCheckMark
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TransfosAppliquer() As Boolean Handles TransfosAppliquer.Action
-			Transfosappliquer.checked = not Transfosappliquer.checked
-			if not transfosappliquer.checked then
-			DefinirDemiTour.checked = false
-			DefinirQuartD.checked = false
-			DefinirQuartG.checked = false
-			DefinirRotation.checked = false
-			DefinirSymetrieAxiale.checked = false
-			DefinirTranslation.checked = false
-			DefinirHomothetie.checked = false
-			DefinirSimilitude.checked = false
-			DefinirDeplacement.checked = false
-			end if
-			
+		  Transfosappliquer.hasCheckMark = not Transfosappliquer.hasCheckMark
+		  if not transfosappliquer.hasCheckMark then
+		    DefinirDemiTour.hasCheckMark = false
+		    DefinirQuartD.hasCheckMark = false
+		    DefinirQuartG.hasCheckMark = false
+		    DefinirRotation.hasCheckMark = false
+		    DefinirSymetrieAxiale.hasCheckMark = false
+		    DefinirTranslation.hasCheckMark = false
+		    DefinirHomothetie.hasCheckMark = false
+		    DefinirSimilitude.hasCheckMark = false
+		    DefinirDeplacement.hasCheckMark = false
+		  end if
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TransfosFixedPoints() As Boolean Handles TransfosFixedPoints.Action
-			TransfosFixedPoints.checked = not TransfosFixedPoints.checked
-			Return True
-			
+		  TransfosFixedPoints.hasCheckMark = not TransfosFixedPoints.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function TransfosHide() As Boolean Handles TransfosHide.Action
-			TransfosHide.checked = not TransfosHide.checked
-			Return True
-			
+		  TransfosHide.hasCheckMark = not TransfosHide.hasCheckMark
+		  Return True
+		  
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function UnInstall() As Boolean Handles UnInstall.Action
-			UnInstall.checked = not UnInstall.Checked
-			Return True
-			
-			
+		  UnInstall.hasCheckMark = not UnInstall.hasCheckMark
+		  Return True
+		  
+		  
 		End Function
 	#tag EndMenuHandler
 
@@ -1229,21 +1229,21 @@ End
 		Sub setMenuBar()
 		  dim i, j, k as integer
 		  dim ni, nj, nk as integer
-		  dim item, jtem, ktem As  menuitem
+		  dim item, jtem, ktem As DesktopMenuItem
 		  dim w, h as integer
 		  dim c as BasicPoint
 		  
 		  ni = menubar.count
 		  for i = 0 to ni-1
-		    item = menubar.item(i)
+		    item = menubar.MenuAt(i)
 		    item.Text = Dico.Value(item.name)
 		    nj = item.count
 		    for j = 0 to nj-1
-		      jtem = item.item(j)
+		      jtem = item.MenuAt(j)
 		      jtem.Text = Dico.Value(jtem.Name)
 		      nk = jtem.count
 		      for k = 0 to nk-1
-		        ktem = jtem.item(k)
+		        ktem = jtem.MenuAt(k)
 		        ktem.Text = Dico.Value(ktem.Name)
 		      next
 		    next
@@ -1507,8 +1507,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -1571,7 +1571,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

@@ -1,51 +1,53 @@
-#tag Window
-Begin Window OpenHistWindow
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow OpenHistWindow
    Backdrop        =   0
-   CloseButton     =   False
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   2
+   DefaultLocation =   1
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   True
+   HasBackgroundColor=   True
+   HasCloseButton  =   False
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
    Height          =   334
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   False
-   MinWidth        =   64
-   Placement       =   0
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   True
    Title           =   "Sans_titre"
+   Type            =   2
    Visible         =   True
    Width           =   434
-   Begin ListBox ListFiles
-      AutoDeactivate  =   True
-      AutoHideScrollbars=   True
+   Begin DesktopListBox ListFiles
+      AllowAutoDeactivate=   True
+      AllowAutoHideScrollbars=   True
+      AllowExpandableRows=   False
+      AllowFocusRing  =   True
+      AllowResizableColumns=   False
+      AllowRowDragging=   False
+      AllowRowReordering=   False
       Bold            =   True
-      Border          =   True
       ColumnCount     =   3
-      ColumnsResizable=   False
       ColumnWidths    =   "100,100,150"
-      DataField       =   ""
-      DataSource      =   ""
       DefaultRowHeight=   -1
+      DropIndicatorVisible=   False
       Enabled         =   True
-      EnableDrag      =   False
-      EnableDragReorder=   True
-      GridLinesHorizontal=   0
-      GridLinesVertical=   0
-      HasHeading      =   False
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      GridLineStyle   =   0
+      HasBorder       =   True
+      HasHeader       =   False
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
       HeadingIndex    =   -1
       Height          =   280
-      HelpTag         =   ""
-      Hierarchical    =   True
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
@@ -57,36 +59,31 @@ Begin Window OpenHistWindow
       LockRight       =   False
       LockTop         =   False
       RequiresSelection=   True
+      RowSelectionType=   0
       Scope           =   0
-      ScrollbarHorizontal=   False
-      ScrollBarVertical=   True
-      SelectionType   =   0
-      ShowDropIndicator=   False
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   14
       Transparent     =   False
       Underline       =   False
-      UseFocusRing    =   True
       Visible         =   True
       Width           =   350
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin PushButton ActionB
-      AutoDeactivate  =   True
+   Begin DesktopButton ActionB
+      AllowAutoDeactivate=   True
       Bold            =   False
-      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "OK"
       Default         =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   28
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -96,29 +93,29 @@ Begin Window OpenHistWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   298
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   80
    End
-   Begin PushButton Cancel
-      AutoDeactivate  =   True
+   Begin DesktopButton Cancel
+      AllowAutoDeactivate=   True
       Bold            =   False
-      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "Annuler"
       Default         =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   28
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -128,13 +125,12 @@ Begin Window OpenHistWindow
       LockLeft        =   False
       LockRight       =   False
       LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   298
       Transparent     =   False
       Underline       =   False
@@ -142,17 +138,9 @@ Begin Window OpenHistWindow
       Width           =   80
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
-	#tag Event
-		Sub Open()
-		  
-		  
-		End Sub
-	#tag EndEvent
-
-
 	#tag Method, Flags = &h0
 		Sub SetList(dir As folderItem, row as integer)
 		  dim i as integer
@@ -160,11 +148,11 @@ End
 		  if dir <> nil and dir.Directory then
 		    for i=1 to dir.Count
 		      if dir.item(i).Directory then
-		        ListFiles.AddFolder(dir.item(i).name)
+		        ListFiles.AddExpandableRow(dir.item(i).name)
 		      elseif dir.Item(i).Type = "HIST" then
 		        ListFiles.AddRow(dir.item(i).name)
 		      end if
-		      ListFiles.cell(row+i,1)=dir.item(i).NativePath
+		      ListFiles.CellTextAt(row+i,1) = dir.item(i).NativePath
 		    next
 		  end if
 		  
@@ -212,7 +200,7 @@ End
 
 #tag Events ListFiles
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  dim Dir as FolderItem
 		  
 		  Title = Dico.Value("Chooseafile")
@@ -234,20 +222,20 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Change()
-		  file = GetFolderItem(me.cell(me.ListIndex,1))
+		Sub SelectionChanged()
+		  file = GetFolderItem(me.CellTextAt(me.SelectedRowIndex,1))
 		  if file.Directory then
 		    file =nil
 		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub ExpandRow(row As Integer)
-		  SetList(GetFolderItem(me.cell(row,1)),row)
+		Sub RowExpanded(row As Integer)
+		  SetList(GetFolderItem(me.CellTextAt(row,1)),row)
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub DoubleClick()
+		Sub DoublePressed()
 		  if file <> nil then
 		    hide
 		  end if
@@ -256,7 +244,7 @@ End
 #tag EndEvents
 #tag Events ActionB
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  if file <> nil then
 		    hide
 		  else
@@ -266,21 +254,21 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  me.caption = Dico.value("FileOpen")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events Cancel
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  file = nil
 		  hide
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  me.caption = Dico.value("cancel")
 		  
 		End Sub
@@ -400,8 +388,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -464,7 +452,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

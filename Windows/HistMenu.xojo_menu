@@ -1,13 +1,13 @@
 #tag Menu
 Begin Menu HistMenu
-   Begin MenuItem FileMenu
+   Begin DesktopMenuItem FileMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "&File"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem FileSaveEPs
+      Begin DesktopMenuItem FileSaveEPs
          SpecialMenu = 0
          Index = -2147483648
          Text = "untitled"
@@ -15,7 +15,7 @@ Begin Menu HistMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileSaveBitMap
+      Begin DesktopMenuItem FileSaveBitMap
          SpecialMenu = 0
          Index = -2147483648
          Text = "untitled"
@@ -23,7 +23,7 @@ Begin Menu HistMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem PrintSetUp
+      Begin DesktopMenuItem PrintSetUp
          SpecialMenu = 0
          Index = -2147483648
          Text = "untitled"
@@ -31,7 +31,7 @@ Begin Menu HistMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FilePrint
+      Begin DesktopMenuItem FilePrint
          SpecialMenu = 0
          Index = -2147483648
          Text = "untitled"
@@ -39,7 +39,7 @@ Begin Menu HistMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem FileAfficher
+      Begin DesktopMenuItem FileAfficher
          SpecialMenu = 0
          Index = -2147483648
          Text = "Afficher Op"
@@ -47,7 +47,7 @@ Begin Menu HistMenu
          AutoEnable = True
          Visible = True
       End
-      Begin MenuItem HistClose
+      Begin DesktopMenuItem HistClose
          SpecialMenu = 0
          Index = -2147483648
          Text = "Close"
@@ -56,14 +56,14 @@ Begin Menu HistMenu
          Visible = True
       End
    End
-   Begin MenuItem Fenetres
+   Begin DesktopMenuItem Fenetres
       SpecialMenu = 0
       Index = -2147483648
       Text = "Fenêtres"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem winitem
+      Begin DesktopMenuItem winitem
          SpecialMenu = 0
          Index = 0
          Text = "untitled"
@@ -72,14 +72,14 @@ Begin Menu HistMenu
          Visible = True
       End
    End
-   Begin MenuItem NotesMenu
+   Begin DesktopMenuItem NotesMenu
       SpecialMenu = 0
       Index = -2147483648
       Text = "Notes"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem NotesOpen
+      Begin DesktopMenuItem NotesOpen
          SpecialMenu = 0
          Index = -2147483648
          Text = "Ouvrir"

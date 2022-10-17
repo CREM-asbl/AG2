@@ -1,31 +1,30 @@
-#tag Window
-Begin Window PrefFondEcran
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow PrefFondEcran
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   1
+   DefaultLocation =   0
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
    Height          =   192
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   False
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   False
-   MinWidth        =   64
-   Placement       =   0
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   False
    Title           =   "Fond d'écran"
+   Type            =   1
    Visible         =   True
    Width           =   362
-   Begin PushButton PushButton2
+   Begin DesktopButton PushButton2
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   0
@@ -57,7 +56,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   80
    End
-   Begin Label Label1
+   Begin DesktopLabel Label1
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
@@ -92,7 +91,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   100
    End
-   Begin RadioButton stretched
+   Begin DesktopRadioButton stretched
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   "Plein écran"
@@ -122,7 +121,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   93
    End
-   Begin RadioButton bottomRight
+   Begin DesktopRadioButton bottomRight
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -152,7 +151,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   18
    End
-   Begin RadioButton bottomCenter
+   Begin DesktopRadioButton bottomCenter
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -182,7 +181,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   30
    End
-   Begin RadioButton bottomLeft
+   Begin DesktopRadioButton bottomLeft
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -212,7 +211,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   30
    End
-   Begin RadioButton centerLeft
+   Begin DesktopRadioButton centerLeft
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -242,7 +241,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   30
    End
-   Begin RadioButton topLeft
+   Begin DesktopRadioButton topLeft
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -272,7 +271,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   30
    End
-   Begin RadioButton centerRight
+   Begin DesktopRadioButton centerRight
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -302,7 +301,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   18
    End
-   Begin RadioButton centerCenter
+   Begin DesktopRadioButton centerCenter
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -332,7 +331,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   30
    End
-   Begin RadioButton topRight
+   Begin DesktopRadioButton topRight
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -362,7 +361,7 @@ Begin Window PrefFondEcran
       Visible         =   True
       Width           =   18
    End
-   Begin RadioButton topCenter
+   Begin DesktopRadioButton topCenter
       AutoDeactivate  =   True
       Bold            =   False
       Caption         =   ""
@@ -465,84 +464,84 @@ Begin Window PrefFondEcran
       Y2              =   110.0
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 #tag EndWindowCode
 
 #tag Events PushButton2
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events stretched
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events bottomRight
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events bottomCenter
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events bottomLeft
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events centerLeft
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events topLeft
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events centerRight
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events centerCenter
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events topRight
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events topCenter
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  WorkWindow.MyCanvas1.alignFondEcran(me.Name)
 		End Sub
 	#tag EndEvent
