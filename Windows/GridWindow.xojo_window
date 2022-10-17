@@ -3,7 +3,7 @@ Begin DesktopWindow GridWindow
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   DefaultLocation =   0
+   DefaultLocation =   1
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   False
@@ -21,7 +21,7 @@ Begin DesktopWindow GridWindow
    MinimumWidth    =   64
    Resizeable      =   False
    Title           =   ""
-   Type            =   1
+   Type            =   11
    Visible         =   True
    Width           =   394
    Begin Label StaticText1
@@ -499,8 +499,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -563,7 +563,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

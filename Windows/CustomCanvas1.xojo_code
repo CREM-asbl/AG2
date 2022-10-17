@@ -773,10 +773,10 @@ Inherits Canvas
 		    Elseif  side <> -1 Then
 		      currenthighlightedshape.PaintSide(BackgroundPicture.Graphics,side,2,config.HighlightColor)
 		    end if
-		    if info <> "" then
-		      BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
-		    end if
+		  elseif config.ShowHelp and info <> "" then
+		    BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		  end if
+		  
 		  
 		  refresh
 		  

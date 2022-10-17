@@ -852,13 +852,6 @@ End
 		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
-		    '#if TargetWindows  then
-		    'MenuBar.Child("FileMenu").Child("ViewEps").Enabled= (Config.username = Dico.Value("Enseignant"))
-		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").Enabled= (Config.username = Dico.Value("Enseignant"))
-		    '#else
-		    'MenuBar.Child("FileMenu").Child("ViewEps").visible= true
-		    'MenuBar.Child("FileMenu").Child("EpsConvertToPdf").visible= true
-		    '#Endif
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
 		    
 		    if MenuBar.Child("PrefsMenu") <> nil then
@@ -878,6 +871,10 @@ End
 		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = (config.area = 0)
 		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = (config.area = 1)
 		      end if
+		    end if
+		    
+		    if MenuBar.child("HelpMenu") <> nil and MenuBar.Child("HelpMenu").Child("HelpView") <> nil then
+		      MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
 		    end if
 		  end if
 		  
@@ -1397,7 +1394,7 @@ End
 		Function HelpView() As Boolean Handles HelpView.Action
 		  if mousedispo then
 		    Formswindow.close
-		    Config.ShowHelp=not Config.ShowHelp
+		    Config.ShowHelp = not Config.ShowHelp
 		    can.RefreshBackground
 		    MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
 		  end if
