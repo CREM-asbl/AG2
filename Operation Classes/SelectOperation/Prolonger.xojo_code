@@ -144,7 +144,6 @@ Inherits SelectOperation
 		  end if
 		  dim n as integer
 		  
-		  nobj = visible.count-1
 		  for i = visible.count-1 downto 0
 		    s = Visible.item(i)
 		    if s isa Bande or s isa Secteur then

@@ -33,6 +33,17 @@ Inherits Matrix
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
+		    d.setVariable("u1", u1)
+		    d.setVariable("u2", u2)
+		    d.setVariable("u3", u3)
+		    d.setVariable("p1", p1)
+		    d.setVariable("p2", p2)
+		    d.setVariable("p3", p3)
+		    d.setVariable("v1", v1)
+		    d.setVariable("v2", v2)
+		    d.setVariable("v3", v3)
+		    d.setVariable("w1", w1)
+		    d.setVariable("w2", w2)
 		    err.message = err.message+d.getString
 		    Raise err
 		    
