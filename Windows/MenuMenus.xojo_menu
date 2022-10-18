@@ -944,13 +944,5 @@ Begin Menu MenuMenus
          Visible = True
       End
    End
-   Begin DesktopMenuItem UntitledItem
-      SpecialMenu = 0
-      Index = -2147483648
-      Text = "Untitled"
-      AutoEnabled = False
-      AutoEnable = False
-      Visible = False
-   End
 End
 #tag EndMenu
