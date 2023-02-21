@@ -39,7 +39,7 @@ Inherits MultipleSelectOperation
 		    end if
 		  End If
 		  
-		  If Self IsA paraperpconstruction And currentattractingshape  IsA lacet Then
+		  If Self IsA paraperpconstruction And currentattractingshape IsA lacet Then
 		    If curshape = currentshape.points(1) and curshape.forme = 1 Then
 		      Curshape.forme = 3
 		    End If

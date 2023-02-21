@@ -2874,7 +2874,7 @@ Inherits Shape
 		    end if
 		  end if
 		  modified = true
-		  If ubound(parents)>-1 And parents(0).getsousfigure(fig).Auto = 3 Then
+		  If parents.Count > 0 and parents(0).getsousfigure(fig) <> nil And parents(0).getsousfigure(fig).Auto = 3 Then
 		    Return
 		  End If
 		  updateshape
@@ -3376,10 +3376,18 @@ Inherits Shape
 		    next
 		    mobility
 		  end if
-		  forme = pointsur.count
 		  if forme = 2 then
 		    adjustinter(pointsur.item(0),pointsur.item(1))
 		  end if
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("forme",forme )
+		    err.message = err.message+d.getString
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 
