@@ -44,6 +44,7 @@ Inherits Matrix
 		    d.setVariable("v3", v3)
 		    d.setVariable("w1", w1)
 		    d.setVariable("w2", w2)
+		    d.setVariable("M", M)
 		    err.message = err.message+d.getString
 		    Raise err
 		    

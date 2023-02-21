@@ -72,8 +72,6 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Sub Constructor(M as Matrix)
-		  
-		  
 		  v1 = M.v1
 		  v2 = M.v2
 		  v3 = M.v3
@@ -158,7 +156,7 @@ Protected Class Matrix
 		  dim delta as double
 		  
 		  delta = det
-		  if delta <>0 then
+		  if delta <> 0 then
 		    delta = 1/delta
 		    u1 = new BasicPoint(v2.y, -v1.y)
 		    w1 = u1.Mulp(delta)
@@ -166,10 +164,12 @@ Protected Class Matrix
 		    w2 = u2.Mulp(delta)
 		    u3 = new BasicPoint(v2.x*v3.y-v2.y*v3.x,v1.y*v3.x-v1.x*v3.y)
 		    w3 = u3.Mulp(delta)
-		    return new Matrix(w1,w2,w3)
 		  else
-		    return nil
+		    w1 = new BasicPoint(1,0)
+		    w2 = new BasicPoint(0,1)
+		    w3 = new BasicPoint(0,0)
 		  end if
+		  return new Matrix(w1,w2,w3)
 		End Function
 	#tag EndMethod
 
