@@ -2375,6 +2375,10 @@ Protected Class Shape
 		  
 		  n0 = 0
 		  
+		  if f = nil then 
+		    return 0
+		  end if
+		  
 		  if not self isa point then
 		    for i = 0 to npts-1
 		      if f.somm.getposition(points(i)) <> -1 or f.PtsConsted.getposition(points(i)) <> -1 then
@@ -2388,6 +2392,18 @@ Protected Class Shape
 		  end if
 		  
 		  return n0
+		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
+		    d.setVariable("n", n)
+		    d.setVariable("n0", n0)
+		    d.setVariable("f", f)
+		    err.message = err.message+d.getString
+		    Raise err
 		End Function
 	#tag EndMethod
 
