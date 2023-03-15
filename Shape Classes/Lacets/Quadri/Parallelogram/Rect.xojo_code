@@ -21,9 +21,6 @@ Inherits Parallelogram
 
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
-		  
-		  
-		  
 		  'for i = 0 to 3
 		  'for j =0 to ubound(points(i).parents)
 		  's = points(i).parents(j)
@@ -186,21 +183,26 @@ Inherits Parallelogram
 		  dim  p1, p2, p3 As point 'Dans bcp de cas, p et q doivent rester fixes, r est modifiable
 		  dim ep1,ep2,ep3,np1,np2,np3, u, v, pp as BasicPoint
 		  dim ep, eq, er , np, nq, nr as BasicPoint
-		  dim i, k, n, n1, n2, n3 as integer
+		  dim i, k, n, n1, n2, n3, last as integer
 		  dim t as boolean
 		  dim ff as figure
 		  dim Bib as BiBpoint
-		  
 		  dim dist as double
+		  dim l as point
 		  
 		  ff= GetSousFigure(fig)
 		  ff.getoldnewpos(p,ep,np)
 		  ff.getoldnewpos(q,eq,nq)
 		  ff.getoldnewpos(r,er,nr)
-		  n =ff. NbSommSur
+		  n = ff.NbSommSur
 		  n1 = getindexpoint(p)
 		  n2 = getindexpoint(q)
 		  n3 = getindexpoint(r)
+		  last = 6-n1-n2-n3
+		  
+		  if Points(last).liberte = 2 then 
+		    n = 0
+		  end if
 		  
 		  select case n
 		  case 0   'convient pour deux points fixes p et q et un point mobile r
@@ -347,6 +349,14 @@ Inherits Parallelogram
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false

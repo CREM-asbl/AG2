@@ -980,7 +980,7 @@ Protected Class Figure
 		  n3 = ListPtsModifs(2)
 		  p = Point(somm.item(n1))
 		  q = Point(somm.item(n2))
-		  r =Point(somm.item(n3))
+		  r = Point(somm.item(n3))
 		  
 		  s = shapes.item(0)
 		  if s isa arc  or s isa DSect or s isa Triangiso  then
@@ -2588,6 +2588,22 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function NbPointsLimites() As integer
+		  dim i, n As Integer
+		  dim p as point
+		  
+		  for i = 0 to Somm.count-1
+		    p = Point(somm.item(i))
+		    if p.liberte < 2 then
+		      n = n+1
+		    end if
+		  next
+		  
+		  return n
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function NbPtsCommuns(f as figure) As integer
 		  dim i,j,n as integer
 		  dim p as point
@@ -2714,10 +2730,10 @@ Protected Class Figure
 		  Redim ListSommSur(-1)
 		  dim p as point
 		  
-		  // Liste des "sommets sur"  modifiables
+		  // Liste des "sommets sur" modifiables
 		  for i = 0 to Somm.count-1
 		    p = Point(somm.item(i))
-		    if (p.forme = 1  ) and P.liberte = 1 and not p.unmodifiable  then
+		    if (p.forme = 1) and P.liberte = 1 and not p.unmodifiable then
 		      n = n+1
 		      ListSommSur.append i
 		    end if
