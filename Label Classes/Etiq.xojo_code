@@ -173,7 +173,12 @@ Inherits Label
 		  end if
 		  Text = chr(Etiquette)
 		  loc = n
-		  TextSize = sizelabel
+		  TextFont = LabelDefault.font
+		  TextSize = LabelDefault.size
+		  TextColor = LabelDefault.FillColor
+		  Bold = LabelDefault.bold
+		  Italic = LabelDefault.italic
+		  fixe = LabelDefault.fixe
 		  Selectable = true
 		  
 		End Sub
@@ -503,7 +508,6 @@ Inherits Label
 	#tag Method, Flags = &h0
 		Sub SetItalic(it As boolean)
 		  Italic = it
-		  
 		End Sub
 	#tag EndMethod
 

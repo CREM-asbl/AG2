@@ -985,7 +985,7 @@ Protected Module Globals
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		SizeLabel As Integer = 18
+		LabelDefault As LabelParams
 	#tag EndProperty
 
 
@@ -1069,14 +1069,6 @@ Protected Module Globals
 			Group="ID"
 			InitialValue=""
 			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SizeLabel"
-			Visible=false
-			Group="Behavior"
-			InitialValue="18"
-			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty

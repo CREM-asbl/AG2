@@ -10,6 +10,7 @@ Class=Figure;Figures classes/Figure.xojo_code;&h000000001AC40FFF;&h000000007460D
 Class=AutoIntersec;Listes/Intersec Classes/AutoIntersec.xojo_code;&h000000005D6B67FF;&h000000005C00AFFF;false
 Class=Intersec;Listes/Intersec Classes/Intersec.xojo_code;&h000000001BDB57FF;&h000000005C00AFFF;false
 Folder=Label Classes;Label Classes;&h0000000071D6E7FF;&h0000000000000000;false
+Class=LabelParams;Label Classes/LabelParams.xojo_code;&h000000002B95AFFF;&h0000000071D6E7FF;false
 Folder=Listes;Listes;&h00000000126707FF;&h0000000000000000;false
 Folder=Intersec Classes;Listes/Intersec Classes;&h000000005C00AFFF;&h00000000126707FF;false
 Class=FigsList;Listes/FigsList.xojo_code;&h000000001BF07FFF;&h00000000126707FF;false

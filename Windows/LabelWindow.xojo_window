@@ -708,7 +708,6 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Closing()
-		  sizelabel = Val(size.Text)
 		  refresh
 		  WorkWindow.setfocus
 		End Sub
@@ -730,7 +729,7 @@ End
 		  Lab = addlab.lab
 		  Texte.Text = lab.Text
 		  size.Text = str(lab.Textsize)
-		  RecColor.FillColor = Lab.TextColor
+		  RecColor.FillColor = Lab.TextColor 
 		  
 		  corr = can.dtransform(lab.correction)
 		  CoordX.text = str(corr.X)
@@ -740,16 +739,8 @@ End
 		  fixe.value = lab.fixe
 		  bold.value = lab.bold
 		  
-		  if Lab.TextFont = "" then
-		    Lab.TextFont =  Polices.List(0)
-		    Polices.ListIndex = 0
-		  else
-		    for i = 0 to Polices.ListCount-1
-		      if Polices.List(i) = Lab.TextFont then
-		        Polices.ListIndex = i
-		      end if
-		    next
-		  end if
+		  Polices.SelectRowWithValue(Lab.textFont)
+		  
 		  
 		  Delete.visible = not addlab.drapnew
 		  
@@ -763,6 +754,7 @@ End
 		  dim n as integer
 		  
 		  n = val(size.text)
+		  LabelDefault.size = n
 		  
 		  if lab <> nil and n <> lab.TextSize then
 		    lab.SetSize(n)
@@ -832,7 +824,7 @@ End
 #tag Events Size
 	#tag Event
 		Sub Open()
-		  me.text = str(sizelabel)
+		  me.text = str(LabelDefault.size)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -850,6 +842,7 @@ End
 	#tag Event
 		Sub Action()
 		  lab.SetItalic(me.Value)
+		  LabelDefault.italic = me.value
 		  can.refreshBackground
 		End Sub
 	#tag EndEvent
@@ -888,6 +881,7 @@ End
 		  if selectcolor(col,"Choisis une couleur") then
 		    RecColor.FillColor = col
 		    lab.SetColor( col)
+		    LabelDefault.FillColor = col
 		  end if
 		End Function
 	#tag EndEvent
@@ -980,7 +974,11 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Change()
+		  if(Lab = nil) then 
+		    return 
+		  end if
 		  Lab.Textfont = me.text
+		  LabelDefault.font  = me.text
 		  can.refreshBackground
 		End Sub
 	#tag EndEvent
@@ -1003,6 +1001,7 @@ End
 	#tag Event
 		Sub Action()
 		  lab.setfixe(me.value)
+		  LabelDefault.fixe = me.value
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -1015,6 +1014,7 @@ End
 	#tag Event
 		Sub Action()
 		  lab.setBold(me.value)
+		  LabelDefault.bold = me.value
 		  can.refreshBackground
 		End Sub
 	#tag EndEvent
@@ -1140,8 +1140,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -1204,7 +1204,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
