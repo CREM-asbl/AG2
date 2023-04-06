@@ -355,10 +355,6 @@ Inherits ShapeConstruction
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  
-		  
-		  
-		  
 		  currentshape = SelectForm(Temp)
 		  currentshape.delete
 		  objects.unselectall

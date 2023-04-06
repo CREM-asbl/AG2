@@ -2,7 +2,7 @@
 Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub AdapterAutos(f1 as figure)
-		  // Une figure a été construite par fusion de plusieurs autres.  Les formes sont de types différents.
+		  // Une figure a été construite par fusion de plusieurs autres. Les formes sont de types différents.
 		  //Il faut trouver une valeur de auto qui ne crée pas de déformations et provoque le moins de blocages possibles.
 		  dim t, tt as boolean
 		  dim k, h, j, n, amin as integer
@@ -60,7 +60,7 @@ Protected Class Figure
 		      end if
 		    next
 		    
-		    if tt then 'tout  point peut être modifié indépendamment des autres  
+		    if tt then 'tout point peut être modifié indépendamment des autres  
 		      f1.Auto = 4
 		      return
 		    end if
@@ -88,7 +88,7 @@ Protected Class Figure
 		    return
 		  end if
 		  
-		  'Quatrième cas toutes les formes sont autosim  sauf une qcq dont tous les points sont sur les autres
+		  'Quatrième cas toutes les formes sont autosim sauf une qcq dont tous les points sont sur les autres
 		  
 		  t = true
 		  for j = 0 to ubound(aut)
@@ -112,7 +112,7 @@ Protected Class Figure
 		    Return
 		  end if
 		  
-		  'Cinquième: s'il y a un mélange de droites  avec des formes de même auto
+		  'Cinquième: s'il y a un mélange de droites avec des formes de même auto
 		  
 		  For n = 1 To 7
 		    If n <> 4 Then 'On élimine les droites
@@ -1246,13 +1246,13 @@ Protected Class Figure
 		  dim t as Boolean
 		  
 		  t = true
-		  while  t
+		  while t
 		    M1 = Mat
 		    n0 = 2
 		    if M1.Null then
 		      return
 		    end if
-		    while n0 <= subs.count and   t
+		    while n0 <= subs.count and t
 		      M1 = Mat*M1
 		      if M1.Trace > 0 then
 		        t = not supprimerboucles(n0)
@@ -2430,12 +2430,9 @@ Protected Class Figure
 		  
 		  n = subs.count
 		  
-		  
 		  if n <= 1 then
 		    return
 		  End If
-		  
-		  
 		  
 		  CreerMatricePrecedences(n)
 		  
@@ -3082,7 +3079,7 @@ Protected Class Figure
 		    end if
 		  Next
 		  
-		  for i = 0 to ptsconsted.count -1
+		  for i = 0 to ptsconsted.count-1 
 		    s1 = ptsconsted.item(i)
 		    for j = 0 to f.somm.count-1
 		      s2 = f.somm.item(j)
@@ -3102,7 +3099,7 @@ Protected Class Figure
 		    next
 		  next
 		  
-		  if (auto = 2 or auto = 3 or auto = 5) and  f.auto = 4 and NbTrueSommCommuns(f) >= 3 then
+		  if (auto = 2 or auto = 3 or auto = 5) and f.auto = 4 and NbTrueSommCommuns(f) >= 3 then
 		    return true
 		  end if
 		  
@@ -3114,7 +3111,7 @@ Protected Class Figure
 		    return not HasPointOnConstructedshape (f)
 		  end if
 		  
-		  if auto = 1 and f.auto=3  and NbTrueSommCommuns(f) >= 2  then
+		  if auto = 1 and f.auto = 3 and NbTrueSommCommuns(f) >= 2  then
 		    return not  f.HasPointOnConstructedShape(self)
 		  end if
 		  
@@ -3838,7 +3835,7 @@ Protected Class Figure
 		  
 		  for i = 1 to n0-1
 		    j = 1
-		    while  Mat.col(pos2(i-1), pos(j)) = 0
+		    while Mat.col(pos2(i-1), pos(j)) = 0
 		      j = j+1
 		    wend
 		    pos2.append pos(j)

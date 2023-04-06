@@ -78,7 +78,7 @@ Protected Class Shape
 		    Next
 		  Next
 		  
-		  If t  Then
+		  If t Then
 		    sh = s0.constructedby.shape
 		    For i = 0 To sh.tsfi.count-1
 		      tsf = sh.tsfi.item(i)
@@ -968,7 +968,7 @@ Protected Class Shape
 		  
 		  if constructedby <> nil then
 		    pointe = constructedby.shape.pointe
-		  else 'if not self isa cube then
+		  else
 		    pointe =  config.PolPointes
 		  end if
 		  if not (currentcontent.currentoperation isa ouvrir) or not (self isa stdcircle) then  //::Béquille pour le cas des stdcircles
@@ -981,9 +981,6 @@ Protected Class Shape
 		  signaire = Sign(aire)
 		  computeori
 		  dounselect
-		  'If Self IsA polygon Then
-		  'polygon(self).autoInter = coord.autointer
-		  'End If
 		  currentcontent.optimize
 		  currentcontent.RemettreTsfAvantPlan
 		  
@@ -1490,7 +1487,7 @@ Protected Class Shape
 		  end if
 		  
 		  for i = 0 to Points.Count-1
-		    if points(i).pointsur.count >0 and  points(i).pointsur.getposition(s) <> -1 then
+		    if points(i).pointsur.count > 0 and points(i).pointsur.getposition(s) <> -1 then
 		      p = points(i)
 		      return true
 		    end if
@@ -1780,7 +1777,7 @@ Protected Class Shape
 		  list0 = new figslist
 		  
 		  for i = 0 to ubound(childs)
-		    if childs(i).fig <>nil  then
+		    if childs(i).fig <> nil  then
 		      List0.addobject childs(i).fig
 		    else
 		      for j = 0 to ubound(childs(i).parents)
@@ -2853,18 +2850,18 @@ Protected Class Shape
 		  Dim tsf As transformation
 		  
 		  'Un paraperp ne peut pas être modifié avant  son générateur
-		  If auto=7 And  Self  = constructedby.shape Then
-		    Return  False
+		  If auto=7 And s2=constructedby.shape Then
+		    Return false
 		  End If
 		  
 		  
 		  ff = s2.getsousfigure(s2.fig)
 		  s2ci = s2.constructedby
 		  
-		  if s2ci <> nil and (s2ci.shape = self or (s2ci.shape = nil and s2ci.oper = 9 and (s2ci.data(0) = self or s2ci.data(2) =self))  ) then
+		  if s2ci <> nil and (s2ci.shape = self or (s2ci.shape = nil and s2ci.oper = 9 and (s2ci.data(0) = self or s2ci.data(2) = self))) then
 		    select case  s2ci.oper
 		    case 1, 2
-		      if not haspointon(s2,p) then
+		      if not haspointon(s2, p) then
 		        return true
 		      end if
 		    case 3, 5, 6, 8, 9

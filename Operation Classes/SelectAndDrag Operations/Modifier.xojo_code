@@ -259,7 +259,7 @@ Inherits SelectAndDragOperation
 		    figs.addobject figu.assocfigs.item(i)
 		  next
 		  
-		  if figs.ordonner  then
+		  if figs.ordonner then
 		    figs.cancelfixedpoints
 		  else
 		    cancel = true

@@ -26,7 +26,7 @@ Inherits MultipleSelectOperation
 		  
 		  if CurrentAttractingShape<>nil  then
 		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
-		    if CurrentAttractingShape isa Point  then
+		    if CurrentAttractingShape isa Point then
 		      curShape.Identify1(Point(CurrentAttractingshape))
 		    elseif  currentattractingshape.fam < 10 and currentshape.fam < 10  then
 		      if NextCurrentAttractingShape <> nil then
@@ -301,7 +301,7 @@ Inherits MultipleSelectOperation
 		    Formswindow.close
 		    finished = false
 		    NextItem
-		    if CurrentItemToSet>NumberOfItemsToSelect then
+		    if CurrentItemToSet > NumberOfItemsToSelect then
 		      DoOperation
 		      EndOperation
 		    end if
@@ -322,12 +322,12 @@ Inherits MultipleSelectOperation
 		  ReinitAttraction
 		  CurrentShape.Fixecoord(p, Currentshape.IndexConstructedPoint)
 		  magnetism = Magnetisme(currentshape,magneticD)
-		  if currentshape isa point and currentattractingshape  isa point then
-		    magnetism =0
+		  if currentshape isa point and currentattractingshape isa point then
+		    magnetism = 0
 		    return
 		  end if
-		  if magnetism>0 then
-		    if currentshape isa point   then
+		  if magnetism > 0 then
+		    if currentshape isa point then
 		      currentattractedshape = currentshape
 		    else
 		      currentattractedshape = currentshape.points(Currentshape.IndexConstructedPoint)
@@ -342,7 +342,6 @@ Inherits MultipleSelectOperation
 		      side = currentattractingshape.pointonside(p)
 		    end if
 		  end if
-		  'can.refreshbackground
 		  
 		  
 		  
@@ -456,7 +455,7 @@ Inherits MultipleSelectOperation
 		  dim curshape as point
 		  dim i as integer
 		  
-		  if s<>nil  then
+		  if s <> nil  then
 		    if s isa point then
 		      curshape = point(s)
 		    else

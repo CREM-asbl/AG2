@@ -186,7 +186,7 @@ Inherits Operation
 		  Objects.ReAttractingAll
 		  objects.unhighlightall
 		  
-		  if not self isa saveeps and not self isa  savestd then
+		  if not self isa saveeps and not self isa savestd then
 		    if CurrentContent.ForHisto and  CurrentContent.currentoperation <> nil  then
 		      CurrentContent.AddOperation(self)  // Ne faut-il pas tester si l'opération est finie?
 		    end if
