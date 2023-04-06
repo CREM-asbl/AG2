@@ -2967,12 +2967,6 @@ Protected Class Shape
 		    return t
 		  end if
 		  
-		  If Not Self IsA arc And Auto <>4 And NbTrueSomCommuns(s2) > 0 And  s2.Auto = 4 Then   'Décommentarizé pour le cas d'un quadri inscrit à un cercle avec un sommet qui définit le cercle
-		    Return True
-		  end if  'la contrainte not self isa arc correspond à une figure du Type "carré abcd + pt p sur bc + segment ap + arc (dap)
-		  'Recommentarizé le 20 juillet 2019  : le cas du quadri n'apparaît plus mais d'autres problèmes montrent que cette possibilité est inopportune
-		  'Exemple: parallèle à un côté d'un triangle passant par un sommet
-		  
 		  For i = 0 To ubound(childs)    // double emploi avec une autre condition ci-dessus
 		    If childs(i).id > id Then
 		      For j = 0 To ubound (childs(i).constructedshapes)
