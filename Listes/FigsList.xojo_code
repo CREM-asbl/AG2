@@ -10,7 +10,7 @@ Inherits Liste
 		    return
 		  end if
 		  
-		  if GetPosition(Obj)  <> -1 then
+		  if GetPosition(Obj) <> -1 then
 		    return
 		  Else
 		    Objects.append Obj
@@ -20,7 +20,7 @@ Inherits Liste
 		  super.AddObject(obj)
 		  
 		  
-		  if (self = CurrentContent.TheFigs) and  Obj.idfig = -1 then
+		  if (self = CurrentContent.TheFigs) and Obj.idfig = -1 then
 		    Obj.idfig = newIdFig
 		    for i = 0 to Obj.subs.count-1
 		      if Obj.subs.item(i).supfig <> Obj then

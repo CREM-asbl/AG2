@@ -1319,9 +1319,9 @@ Protected Class Figure
 		  dim ep, np as basicpoint
 		  dim p as point
 		  dim t, tt as boolean
-		  dim d, d1 as double
+		  dim d as double
 		  
-		  if shapes.item(0) = nil or  shapes.item(0) isa arc then
+		  if shapes.item(0) = nil or shapes.item(0) isa arc then
 		    return true
 		  end if
 		  
@@ -1329,17 +1329,14 @@ Protected Class Figure
 		  for i = 0 to somm.count-1
 		    p = Point(somm.item(i))
 		    tt = true
-		    tt = tt and (not p.invalid)  and  (p.pointsur.count < 2)
-		    tt = tt and (p.constructedby = nil or (p.pointsur.count=1 and ( p.duplicateorcut or p.constructedby.oper = 10)))
-		    tt = tt and not  ( (p.parents(0).isaparaperp) and (p.forme = 0))
-		    if   tt   then
+		    tt = tt and (not p.invalid) and (p.pointsur.count < 2)
+		    tt = tt and (p.constructedby = nil or (p.pointsur.count=1 and (p.duplicateorcut or p.constructedby.oper = 10)))
+		    tt = tt and not ((p.parents(0).isaparaperp) and (p.forme = 0))
+		    if tt then
 		      ep = oldbpts(i)
 		      np = p.bpt
-		      d =np.distance(M*ep)
+		      d = np.distance(M*ep)
 		      t = (d < epsilon) and t
-		      if not t then
-		        d1 = d
-		      end if
 		    end if
 		  next
 		  return t
@@ -1427,7 +1424,7 @@ Protected Class Figure
 		  end if
 		  
 		  
-		  //2eme etape: insérer  les sous-figures ne contenant pas le point mobile et précédées par au moins une autre  sous-figure
+		  //2eme etape: insérer  les sous-figures ne contenant pas le point mobile et précédées par au moins une autre sous-figure
 		  m0 = -2
 		  
 		  Do Until  m = m0 or m = n
@@ -1996,11 +1993,11 @@ Protected Class Figure
 		  
 		  for i = 0 to subs.count-2
 		    f1 = subs.item(i)
-		    for j =  subs.count-1 downto i+1
+		    for j = subs.count-1 downto i+1
 		      f2 = subs.item(j)
-		      if fusionsubfigs(f2,f1) then
+		      if fusionsubfigs(f1,f2) then
 		        subs.removefigure f2
-		      elseif fusionsubfigs(f1,f2) then
+		      elseif fusionsubfigs(f2,f1) then
 		        subs.removefigure f1
 		      end if
 		    next
@@ -2021,7 +2018,7 @@ Protected Class Figure
 		  
 		  f1 = subs.item(pos(0))
 		  
-		  for i =  1 to ubound(pos)
+		  for i = 1 to ubound(pos)
 		    sf = subs.item(pos(i))
 		    f1.shapes.concat sf.shapes
 		    f1.somm.concat sf.somm
@@ -2068,6 +2065,7 @@ Protected Class Figure
 		    Return False
 		  End If
 		  
+		  
 		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
 		    return false
 		  end if
@@ -2086,20 +2084,12 @@ Protected Class Figure
 		    t=true
 		  end if
 		  
-		  'a =0   Erreur grossiere: auto = 6 a été éliminé plus haut
-		  'If f1.Auto = 6 Or f2.Auto = 6 Then
-		  'a = 6
-		  'End If
-		  
 		  If t Then
-		    f2.shapes.concat f1.shapes
-		    f2.somm.concat f1.somm
-		    f2.PtsSur.concat f1.PtsSur
-		    f2.PtsConsted.concat f1.PtsConsted
-		    'If a = 6 Then
-		    'f2.Auto = 6
-		    'End If
-		    Adapterautos(f2)
+		    f1.shapes.concat f2.shapes
+		    f1.somm.concat f2.somm
+		    f1.PtsSur.concat f2.PtsSur
+		    f1.PtsConsted.concat f2.PtsConsted
+		    Adapterautos(f1)
 		  end if
 		  
 		  return t
@@ -2459,7 +2449,7 @@ Protected Class Figure
 		  
 		  for k = 0 to nc-1
 		    for j = 0 to nc-1
-		      Sommes(k,j)=MP(k).SommCol(j)  //Sommes(k,j) est le nombre de connexions en k+1 étapes aboutissant en sub(j)
+		      Sommes(k,j) = MP(k).SommCol(j)  //Sommes(k,j) est le nombre de connexions en k+1 étapes aboutissant en sub(j)
 		    next                                                        //Pour une subfig(j) à la racine du graphe, toutes les sommes(k,j) valent 0
 		  next
 		End Sub
@@ -2471,12 +2461,11 @@ Protected Class Figure
 		  
 		  redim rang(-1)
 		  
-		  n =Subs.count-1
+		  n = Subs.count-1
 		  if n = 0 then
 		    rang.append 0
 		    return
 		  end if
-		  
 		  
 		  choixsubfig(p, h0)    //on choisit une sous fig de départ Toutes les sous-fig qui la précèdent doivent ...
 		  
@@ -2644,10 +2633,9 @@ Protected Class Figure
 		  
 		  NbModif = 0
 		  
-		  
 		  for i = 0 to Somm.count-1
 		    p = point(somm.item(i))
-		    if  p.modified   then
+		    if p.modified then
 		      NbModif = NbModif+1
 		      ListPtsModifs.append i
 		    end if

@@ -108,9 +108,9 @@ Inherits Triangle
 		  ff = GetSousFigure(fig)
 		  t = false
 		  
-		  if points(2).forme > 0 then
+		  if points(2).forme = 0 then
 		    points(2).modified = false
-		    t = true
+		    return Modifier2fixes(points(2))
 		  else
 		    for i = 0 to 2
 		      t = t or  ff.replacerpoint (points(i))
@@ -156,6 +156,14 @@ Inherits Triangle
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false
