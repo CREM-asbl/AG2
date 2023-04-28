@@ -1380,7 +1380,7 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub ChoixSubfig(p as point, byref h0 As integer)
-		  Dim h, i, n,m, m0, i0 As Integer
+		  Dim h, i, n, m, m0, i0 As Integer
 		  dim sf as figure
 		  
 		  
@@ -1397,12 +1397,15 @@ Protected Class Figure
 		    i0 = -1
 		    for i = 0 to n
 		      sf = subs.item(i)
-		      if  GetRang(i) = -1 and  ((sf.somm.getposition(p) <> -1 ) or (sf.ptssur.getposition(p) <> -1)) then
+		      if  GetRang(i) = -1 and ((sf.somm.getposition(p) <> -1 ) or (sf.ptssur.getposition(p) <> -1)) then
 		        h = 0
+		        if i0 = -1 then
+		          i0 = i
+		        end if
 		        while h < n and sommes(h,i) <> 0
 		          h=h+1
 		        wend
-		        if h >= h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i) 
+		        if h > h0 then  'h est la longueur de la connexion la plus longue d'une subfig située à la racine du graphe vers sub(i) 
 		          h0 = h          'sub(i) est à la racine du graphe si h = 0
 		          i0 = i
 		        end if
@@ -1414,7 +1417,7 @@ Protected Class Figure
 		      end if
 		      rang.append i0
 		    end if
-		    m = ubound (rang)
+		    m = rang.Count-1
 		  Loop
 		  
 		  
