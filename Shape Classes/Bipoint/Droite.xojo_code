@@ -55,6 +55,9 @@ Inherits Bipoint
 		  
 		  dr = constructedby.shape.getside(constructedby.data(0))
 		  w0 = dr.secondp-dr.firstp
+		  if dr.longueur < Epsilon then
+		    w0 = w0
+		  end if 
 		  w=w0.normer
 		  if constructedby.oper = 2 Then
 		    w=w.VecNorPerp
@@ -626,9 +629,13 @@ Inherits Bipoint
 		  end if
 		  
 		  ff.getoldnewpos(Points(1),ep,np)
-		  np = firstp +w*d
+		  np = firstp + w*d
+		  
+		  if firstp.distance(np) < Epsilon then
+		    return true
+		  end if
 		  points(1).moveto np
-		  Return True 'New Similaritymatrix(points(0).bpt, ep, points(0).bpt, np)
+		  Return True
 		  
 		  
 		  

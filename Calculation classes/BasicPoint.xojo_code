@@ -318,7 +318,7 @@ Protected Class BasicPoint
 	#tag Method, Flags = &h0
 		Function normer() As basicpoint
 		  dim r as double
-		  r= norme
+		  r = norme
 		  if r > Epsilon  then
 		    return new basicpoint (x/r,y/r)
 		  else
@@ -496,7 +496,7 @@ Protected Class BasicPoint
 		  
 		  dim v as BasicPoint
 		  
-		  if x =0 and y = 0 then
+		  if x = 0 and y = 0 then
 		    return new BasicPoint(0,0)
 		  end if
 		  
