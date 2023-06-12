@@ -11,7 +11,7 @@ Begin DesktopWindow TextWindow
    HasMaximizeButton=   True
    HasMinimizeButton=   True
    Height          =   607
-   ImplicitInstance=   False
+   ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
@@ -21,29 +21,31 @@ Begin DesktopWindow TextWindow
    MinimumWidth    =   64
    Resizeable      =   True
    Title           =   ""
-   Type            =   0
+   Type            =   3
    Visible         =   False
    Width           =   822
    Begin DesktopTextArea EF
-      AcceptTabs      =   False
-      Alignment       =   0
-      AutoDeactivate  =   True
-      AutomaticallyCheckSpelling=   True
-      BackColor       =   &c00FFFFFF
+      AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   True
+      AllowStyledText =   True
+      AllowTabs       =   False
+      BackgroundColor =   &cFFFFFF
       Bold            =   False
-      Border          =   True
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Format          =   ""
+      HasBorder       =   True
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
       Height          =   607
-      HelpTag         =   ""
       HideSelection   =   True
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
       Left            =   0
-      LimitText       =   0
       LineHeight      =   0.0
       LineSpacing     =   1.0
       LockBottom      =   True
@@ -51,26 +53,22 @@ Begin DesktopWindow TextWindow
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      Mask            =   ""
+      MaximumCharactersAllowed=   0
       Multiline       =   True
       ReadOnly        =   False
       Scope           =   0
-      ScrollbarHorizontal=   True
-      ScrollbarVertical=   True
-      Styled          =   False
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
+      TextAlignment   =   0
       TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   0
       Transparent     =   False
       Underline       =   False
       UnicodeMode     =   0
-      UseFocusRing    =   False
+      ValidationMask  =   ""
       Visible         =   True
       Width           =   822
    End
@@ -89,15 +87,6 @@ End
 		  EF.height = height
 		  EF.ReadOnly = true
 		  EF.BackgroundColor=&cFFFFFF
-		  if can.sctxt = nil then
-		    Title = "Objets"
-		  elseif  currentcontent.Macrocreation then
-		    Title = currentcontent.Mac.GetName
-		    EF.ReadOnly = false
-		  else
-		    sc = can.sctxt
-		    Title = can.tit
-		  end if
 		  
 		  Afficher
 		End Sub
@@ -125,8 +114,18 @@ End
 		  dim Doc as XMLDocument
 		  dim FAG As XMLElement
 		  
+		  if can.sctxt = nil then
+		    Title = "Objets"
+		  elseif  currentcontent.Macrocreation then
+		    Title = currentcontent.Mac.GetName
+		    EF.ReadOnly = false
+		  else
+		    sc = can.sctxt
+		    Title = can.tit
+		  end if
+		  
 		  tab = 0
-		  if sc  <> nil then
+		  if sc <> nil then
 		    EF.text = messages(sc)
 		    return
 		  end if
@@ -648,8 +647,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -712,7 +711,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
