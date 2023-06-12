@@ -10,11 +10,11 @@ Inherits Canvas
 		  
 		  p = MouseUser
 		  currenthighlightedshape = GetShape(p)
-		  sctxt currenthighlightedshape
 		  
 		  if(currenthighlightedshape = nil) then 
 		    return false
 		  end if
+		  sctxt = currenthighlightedshape
 		  
 		  info = ""
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
