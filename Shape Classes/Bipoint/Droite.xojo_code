@@ -836,6 +836,17 @@ Inherits Bipoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ValidSegment(p as BasicPoint, byref side as integer) As Boolean
+		  if self.nextre = 2 then
+		    side = 0
+		    return true
+		  end if 
+		  
+		  return false
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Vecteurdirecteur() As BasicPoint
 		  return secondp - firstp
 		End Function

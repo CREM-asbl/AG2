@@ -92,6 +92,9 @@ Inherits SelectOperation
 		  Dr = New Droite(objects, Bip.points(ibip), Bip.points(jbip), 0)
 		  deplacerptssur
 		  if Bip isa Lacet then
+		    if Lacet(Bip).prol.count = 0 then
+		      redim Lacet(Bip).prol(Bip.npts-1)
+		    end if 
 		    Lacet(Bip).prol(ibip) = true
 		  end if
 		  
@@ -148,7 +151,7 @@ Inherits SelectOperation
 		    s = Visible.item(i)
 		    if s isa Bande or s isa Secteur then
 		      visible.removeobject(s)
-		    elseif not s.ValidSegment(p,ibip) or ( s isa Lacet and Lacet(s).prol(ibip) ) then  //le côté a déjà été prolongé
+		    elseif not s.ValidSegment(p,ibip) or (s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(ibip) ) then  //le côté a déjà été prolongé
 		      visible.removeobject(s)
 		    end if
 		    if s isa Bande then
@@ -197,7 +200,7 @@ Inherits SelectOperation
 		  
 		  if Bip isa cube then
 		    cube(Bip).GetIbipJbip(cot,ibip,jbip)
-		  elseif Bip isa Lacet  then
+		  elseif Bip isa Lacet then
 		    ibip = cot
 		    jbip = (cot+1) mod Bip.npts
 		  elseif Bip isa droite then
