@@ -100,6 +100,9 @@ Inherits nBpoint
 		  
 		  B1 = self
 		  p = B1.VecteurDirecteur
+		  if p = nil then
+		    return nil
+		  end if  
 		  p = p.VecNorPerp
 		  q = B2.VecteurDirecteur
 		  if p = nil or q = nil then
