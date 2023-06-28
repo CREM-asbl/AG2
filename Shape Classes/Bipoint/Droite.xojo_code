@@ -25,7 +25,7 @@ Inherits Bipoint
 		    return
 		  end if
 		  
-		  if firstp.distance(secondp) < can.magneticdist  then
+		  if firstp.distance(secondp) < Epsilon  then
 		    extre1= firstp
 		    extre2= secondp
 		  else
@@ -681,7 +681,7 @@ Inherits Bipoint
 		      w = w.normer
 		      u = nq-np
 		      d = u.norme
-		      nq = np+w*d
+		      nq = np + w*d
 		      q.moveto nq
 		      q.modified = True
 		    Else
