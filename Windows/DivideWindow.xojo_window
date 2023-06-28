@@ -21,7 +21,7 @@ Begin DesktopWindow DivideWindow
    MinimumWidth    =   64
    Resizeable      =   False
    Title           =   "Diviser en"
-   Type            =   11
+   Type            =   1
    Visible         =   True
    Width           =   122
    Begin PopupMenu PopupMenu1

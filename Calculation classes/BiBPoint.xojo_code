@@ -116,6 +116,7 @@ Inherits nBpoint
 		  end if 
 		  
 		  
+		  
 		End Function
 	#tag EndMethod
 

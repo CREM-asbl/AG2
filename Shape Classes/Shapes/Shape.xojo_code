@@ -553,6 +553,7 @@ Protected Class Shape
 		  tsfi = new transfosList
 		  plan = val(EL.GetAttribute("Plan"))
 		  autos
+		  ChargerParam
 		  
 		  if val(EL.GetAttribute("Auto")) <> 0 then 'Ne pas tenir compte des "autos enregistrés"
 		    auto = val(EL.GetAttribute("Auto"))
@@ -609,7 +610,7 @@ Protected Class Shape
 		  List = EL.XQL(Dico.Value("ToolsColorBorder"))
 		  if list.length = 1 then
 		    if XMLReadcoloritem (Dico.Value("ToolsColorBorder"),EL,c, Temp) then
-		      FixeCouleurTrait(c,Config.Border)
+		      FixeCouleurTrait(c, Config.Border)
 		    end if
 		  elseif self isa lacet then
 		    if List.length = npts or List.length = 9 then
@@ -628,11 +629,11 @@ Protected Class Shape
 		    end if
 		  end if
 		  
-		  if XMLReadcoloritem (Dico.Value("ToolsColorFill"),EL,c,Temp) then
+		  if XMLReadcoloritem(Dico.Value("ToolsColorFill"),EL,c,Temp) then
 		    fill = Val(Temp.GetAttribute("Opacity"))
-		    border=Val(Temp.GetAttribute("OpacityBorder"))
+		    border = Val(Temp.GetAttribute("OpacityBorder"))
+		    FixeCouleurFond(c, Fill)
 		  end if
-		  FixeCouleurFond(c,Fill)
 		  
 		  List = EL.XQL(Dico.Value("Thickness"))
 		  if list.length = 0 then
@@ -4152,7 +4153,6 @@ Protected Class Shape
 		  if self.hybrid and not self isa arc then
 		    form.AppendChild (Lacet(self).XMLPutInfosArcs(Doc))
 		  End If
-		  'If Self IsA Lacet And lacet(Self).autointer <> Nil Then
 		  
 		  if constructedby <> nil then
 		    form.appendchild XMLPutConstructionInfoInContainer(Doc)
@@ -4170,12 +4170,12 @@ Protected Class Shape
 		        n = npts-1
 		      end if
 		      for i = 0 to n
-		        Form.AppendChild  colcotes(i).XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
+		        Form.AppendChild colcotes(i).XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		      next
 		    else
 		      Form.AppendChild BorderColor.XMLPutIncontainer(Doc, Dico.Value("ToolsColorBorder"))
 		    end if
-		    if not self isa bipoint  then
+		    if not self isa bipoint then
 		      Temp = fillcolor.XMLPutInContainer(Doc, Dico.Value("ToolsColorFill"))
 		      Temp.SetAttribute("Opacity", str(fill))
 		      Temp.SetAttribute("OpacityBorder", str(border))
@@ -4260,7 +4260,7 @@ Protected Class Shape
 		  
 		  List = EL.XQL(Dico.Value(S))
 		  if List.length > 0 then
-		    temp  = XMLElement(List.Item(0))
+		    temp = XMLElement(List.Item(0))
 		    c = new couleur(temp)
 		    return true
 		  else

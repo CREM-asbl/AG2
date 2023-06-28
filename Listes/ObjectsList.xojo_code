@@ -1032,7 +1032,6 @@ Inherits Liste
 		  id = Val(Temp.GetAttribute("Id"))
 		  s = getshape(id)
 		  
-		  
 		  if s <> nil then
 		    return s
 		  end if
@@ -1141,9 +1140,6 @@ Inherits Liste
 		  If s IsA Lacet And Val(Temp.GetAttribute("AutoInter")) = 1 Then
 		    Lacet(s).autointer = New AutoIntersec(Temp)
 		  end if
-		  
-		  
-		  
 		  
 		  return s
 		  
