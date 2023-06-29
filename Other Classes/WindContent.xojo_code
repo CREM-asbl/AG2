@@ -71,10 +71,6 @@ Protected Class WindContent
 		    Plans(s.plan) = s.id
 		  end if
 		  
-		  #if TargetLinux then
-		    RefreshMenuBar
-		  #endif
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -765,10 +761,6 @@ Protected Class WindContent
 		  end if
 		  TheObjects.removeobject s
 		  UpdatePlans
-		  
-		  #if TargetLinux then
-		    RefreshMenuBar
-		  #endif
 		End Sub
 	#tag EndMethod
 

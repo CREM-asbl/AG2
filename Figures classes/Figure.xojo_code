@@ -1126,7 +1126,7 @@ Protected Class Figure
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("Figure","autotrapupdate")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("NbPtsModif ",NbPtsModif )
 		    err.message = err.message+d.getString
 		    

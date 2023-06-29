@@ -79,8 +79,19 @@ Inherits nBpoint
 		    end if
 		  next
 		  
-		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("alpha", alpha)
+		    d.setVariable("Bib", Bib)
+		    d.setVariable("M", M)
+		    d.setVariable("i", i)
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
+		    
 		End Sub
 	#tag EndMethod
 
