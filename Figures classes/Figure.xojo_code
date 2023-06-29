@@ -514,7 +514,7 @@ Protected Class Figure
 		    end if
 		    return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		  case 1
-		    if  replacerpoint(p) or  replacerpoint(q) or   replacerpoint(r) then
+		    if replacerpoint(p) or replacerpoint(q) or replacerpoint(r) then
 		      return autoaffupdate // on passe à 2 pts modif, 2 pts sur ou 2 pts modif, 3 pts sur
 		    else
 		      return new Matrix(1)
@@ -989,6 +989,10 @@ Protected Class Figure
 		  
 		  if s isa rect then 
 		    return rect(s).modifier3(p,q,r)
+		  end if
+		  
+		  if s isa Losange then
+		    return Losange(s).Modifier3(p,q,r)
 		  end if
 		  
 		  Choixpointsfixes
@@ -3193,7 +3197,7 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function replacerpoint(p as point) As Boolean
 		  
-		  if p.forme = 1 and p.modified and  not p.unmodifiable and p <> supfig.pmobi then
+		  if p.forme = 1 and p.modified and not p.unmodifiable and p <> supfig.pmobi then
 		    unmodify p
 		    return true
 		  else
@@ -3861,7 +3865,6 @@ Protected Class Figure
 		  dim f as figure
 		  
 		  getoldnewpos(p,ep,np)
-		  
 		  
 		  p.modified = false
 		  p.moveto ep

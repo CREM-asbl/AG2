@@ -72,7 +72,7 @@ Protected Class WindContent
 		  end if
 		  
 		  #if TargetLinux then
-		    EnableMenuItems
+		    RefreshMenuBar
 		  #endif
 		  
 		  
@@ -767,7 +767,7 @@ Protected Class WindContent
 		  UpdatePlans
 		  
 		  #if TargetLinux then
-		    EnableMenuItems
+		    RefreshMenuBar
 		  #endif
 		End Sub
 	#tag EndMethod
