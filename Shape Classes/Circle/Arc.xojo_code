@@ -564,6 +564,14 @@ Inherits Circle
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="angle"
 			Visible=false
 			Group="Behavior"

@@ -48,7 +48,7 @@ Inherits SelectAndDragOperation
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod(GetName,"CompleteOperation")
+		    d.setMessage(currentMethodName)
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString
 		    
@@ -126,7 +126,7 @@ Inherits SelectAndDragOperation
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod(getName,"EndOperation")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("CurrentShape",CurrentShape)
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString

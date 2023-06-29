@@ -14,6 +14,7 @@ Inherits Canvas
 		  if(currenthighlightedshape = nil) then 
 		    return false
 		  end if
+		  sctxt = currenthighlightedshape
 		  
 		  info = ""
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
@@ -37,10 +38,6 @@ Inherits Canvas
 		    Return False
 		  End If
 		  
-		  
-		  if sctxt = nil then
-		    return false
-		  end if
 		  
 		  If sctxt IsA Lacet  Then
 		    side = sctxt.side
@@ -159,15 +156,13 @@ Inherits Canvas
 		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
 		  Dim colo As Color
 		  dim coul as couleur
-		  dim txt as TextWindow
 		  Dim dr As droite
 		  Dim oldside As Integer
 		  
 		  
 		  Select Case hitItem.Text
 		  case tit
-		    txt = new TextWindow
-		    txt.visible = true
+		    TextWindow.show
 		  Case Dico.value("ToolsLabel")
 		    currentoper = New AddLabel
 		    currentoper.currentshape = sctxt
@@ -193,8 +188,6 @@ Inherits Canvas
 		      currentoper.currentshape = sctxt
 		      EndOperMenuContext
 		    End If
-		    
-		    
 		    
 		  Case Dico.Value("ToolsColorFill")
 		    colo = sctxt.FillColor.col
@@ -777,6 +770,9 @@ Inherits Canvas
 		    BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		  end if
 		  
+		  if(TextWindow.Visible) then
+		    textWindow.Afficher
+		  end if
 		  
 		  refresh
 		  

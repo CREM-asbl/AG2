@@ -50,10 +50,12 @@ Inherits Triangle
 
 	#tag Method, Flags = &h0
 		Function Modifier2(n1 as integer, n2 as integer) As Matrix
-		  Dim ep0, ep1, ep2, np0, np1,np2 As BasicPoint
+		  Dim ep0, ep1, ep2, np0, np1, np2 As BasicPoint
+		  dim ff as figure
 		  
-		  
-		  epnp(ep0,ep1,ep2,np0,np1,np2)
+		  ff = getsousfigure(fig)
+		  ff.getoldnewpos(points(n1),ep1,np1)
+		  ff.getoldnewpos(points(n2),ep2,np2)
 		  
 		  Return New Similaritymatrix(ep1,ep2,np1,np2)
 		  
@@ -66,7 +68,7 @@ Inherits Triangle
 		Function Modifier2fixes(p as point) As Matrix
 		  // Routine qui modifie le triangle  dans le cas où le point n est seul à pouvoir être déplacé (pas arbitrairement)
 		  // Trois cas possibles selon l'index de p
-		  
+		  dim ff as figure
 		  dim  n as integer
 		  dim pp(2) as point
 		  
@@ -108,9 +110,9 @@ Inherits Triangle
 		  ff = GetSousFigure(fig)
 		  t = false
 		  
-		  if points(2).forme > 0 then
+		  if points(2).forme = 0 then
 		    points(2).modified = false
-		    t = true
+		    return Modifier2fixes(points(2))
 		  else
 		    for i = 0 to 2
 		      t = t or  ff.replacerpoint (points(i))
@@ -156,6 +158,14 @@ Inherits Triangle
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false

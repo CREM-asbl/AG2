@@ -880,6 +880,16 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ValidSegment(p as BasicPoint, byref side as integer) As Boolean
+		  side = pointonside(p)
+		  if side <> -1 then
+		    return true
+		  end if
+		  return false
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function XMLPutInfosArcs(Doc as XMLDocument) As XMLElement
 		  dim  Form, EL, EL1 as XMLElement
 		  dim i as integer
@@ -990,6 +1000,14 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false

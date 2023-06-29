@@ -3369,7 +3369,7 @@ End
 		      Formswindow.setParams(1, SelectedTool, false)
 		    else
 		      Formswindow.close
-		      CurrentContent.CurrentOperation=new ShapeConstruction(selectedtool, 0)  'cas du point
+		      CurrentContent.CurrentOperation = new ShapeConstruction(selectedtool, 0)  'cas du point
 		    end if
 		  end if
 		End Sub
