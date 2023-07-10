@@ -118,8 +118,8 @@ Inherits Shape
 		  c1 =c.getgravitycenter
 		  c2 = getgravitycenter
 		  
-		  B1 = new BibPoint (c.GetGravityCenter, c.GetGravityCenter+ new BasicPoint(0,c.GetRadius))
-		  B2 = new BibPoint (GetGravityCenter, GetGravityCenter+ new BasicPoint(0,GetRadius))
+		  B1 = new BibPoint (c.GetGravityCenter, c.GetGravityCenter + new BasicPoint(0,c.GetRadius))
+		  B2 = new BibPoint (GetGravityCenter, GetGravityCenter + new BasicPoint(0,GetRadius))
 		  
 		  if c1.distance(c2) < epsilon and abs(c.getradius-getradius) < epsilon then
 		    return 3
@@ -340,6 +340,14 @@ Inherits Shape
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="angle"
 			Visible=false

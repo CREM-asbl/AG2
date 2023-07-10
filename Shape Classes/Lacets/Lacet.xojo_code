@@ -227,8 +227,8 @@ Inherits Shape
 		  
 		  g = new BasicPoint(0,0)
 		  
-		  for i = 0 to UBound(points)
-		    g = g + points(i).bpt
+		  for i = 0 to childs.count-1
+		    g = g + childs(i).bpt
 		  next
 		  
 		  if self isa polygon then

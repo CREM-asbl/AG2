@@ -60,7 +60,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub Addshape(s as shape)
-		  
 		  TheObjects.addshape s
 		  
 		  if s.plan = -1 then

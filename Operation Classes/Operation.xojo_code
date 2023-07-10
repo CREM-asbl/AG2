@@ -174,18 +174,18 @@ Protected Class Operation
 		    return 0
 		  end if
 		  
-		  magnetism=Cfig.Magnetisme(d,AttractedShape,AttractingShape, NextAttractingShape)
+		  magnetism = Cfig.Magnetisme(d, AttractedShape, AttractingShape, NextAttractingShape)
 		  
 		  
-		  CurrentAttractingShape=AttractingShape
+		  CurrentAttractingShape = AttractingShape
 		  NextCurrentAttractingShape = NextAttractingShape
-		  CurrentAttractedShape=AttractedShape
+		  CurrentAttractedShape = AttractedShape
 		  if magnetism > 0 then
 		    magneticD = d -Point(AttractedShape).bpt
 		  end if
 		  
 		  if CurrentContent.TheGrid<>nil then
-		    GridMagnetism=Cfig.GridMagnetism(gridd,AttractedPoint)
+		    GridMagnetism = Cfig.GridMagnetism(gridd,AttractedPoint)
 		    
 		    if GridMagnetism>magnetism then
 		      magnetism=GridMagnetism
@@ -221,7 +221,7 @@ Protected Class Operation
 		  
 		  
 		  ReinitAttraction
-		  magnetism=Currentpoint.Magnetisme(d,AttractingShape, NextAttractingShape)
+		  magnetism = Currentpoint.Magnetisme(d, AttractingShape, NextAttractingShape)
 		  
 		  if attractingshape <>nil and  attractingshape.fam > 9 then
 		    attractingshape = nil
@@ -653,10 +653,6 @@ Protected Class Operation
 	#tag EndNote
 
 	#tag Note, Name = Numeros des operations
-		
-		
-		
-		
 		Variable: OpId (Id d'opération)
 		Chaque classe d'opérations a un code.
 		

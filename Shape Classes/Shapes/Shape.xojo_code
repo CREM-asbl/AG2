@@ -1196,11 +1196,11 @@ Protected Class Shape
 		  elseif self isa circle then
 		    return Points(0)
 		  else
-		    for i = 0 to Ubound(constructedshapes)
-		      if constructedshapes(i).constructedby.oper = 0 then
-		        return Point(constructedshapes(i))
-		      end if
-		    next
+		    'for i = 0 to Ubound(constructedshapes)
+		    'if constructedshapes(i).constructedby.oper = 0 then
+		    'return Point(constructedshapes(i))
+		    'end if
+		    'next
 		    GC = new Point(objects, getgravitycenter)
 		    GC.setconstructedby(self,0)
 		    GC.endconstruction

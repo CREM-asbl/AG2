@@ -1137,17 +1137,17 @@ Inherits Shape
 		  StrongestMagnetism=0
 		  
 		  for i=0 to Ubound(s.Childs)
-		    if s.childs(i).attracting and  s.childs(i)<> self and (not s.childs(i).hidden or s.std)  and not s.Childs(i).invalid  and not s.childs(i).deleted then
-		      CurrentMagnetism=Magnetism3(s.Childs(i),td)
-		      if CurrentMagnetism>StrongestMagnetism then
-		        StrongestMagnetism=CurrentMagnetism
-		        d=td
-		        attractingShape=s.childs(i)
+		    if s.childs(i).attracting and s.childs(i) <> self and (not s.childs(i).hidden or s.std) and not s.Childs(i).invalid and not s.childs(i).deleted then
+		      CurrentMagnetism = Magnetism3(s.Childs(i),td)
+		      if CurrentMagnetism > StrongestMagnetism then
+		        StrongestMagnetism = CurrentMagnetism
+		        d = td
+		        attractingShape = s.childs(i)
 		      end if
 		    end if
 		  next
 		  
-		  if StrongestMagnetism>0 then
+		  if StrongestMagnetism > 0 then
 		    return StrongestMagnetism
 		  end if
 		  
@@ -1248,7 +1248,7 @@ Inherits Shape
 		  dist = bpt.distance(s.bpt)
 		  if s <> self and dist < delta then
 		    d = s.bpt
-		    return pointpriority- dist*can.scaling
+		    return pointpriority - dist*can.scaling
 		  else
 		    return 0
 		  end if
@@ -1289,7 +1289,7 @@ Inherits Shape
 		          d=t
 		          Nextattractingshape = attractingshape
 		          AttractingShape=s2
-		          StrongestMagnetism=CurrentMagnetism
+		          StrongestMagnetism = CurrentMagnetism
 		        end if
 		      end if
 		    end if
