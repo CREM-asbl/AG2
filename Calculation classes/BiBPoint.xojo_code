@@ -61,10 +61,14 @@ Inherits nBpoint
 	#tag Method, Flags = &h0
 		Function BibDroiteInterCercle(D as BiBPoint, Byref p() as BasicPoint, byref q as Basicpoint, byref v as basicpoint) As integer
 		  dim ray, dist, cot as Double
+		  dim ori As Integer
 		  
 		  
-		  q = D.second - D.First                       // D est le cercle
+		  q = D.second - D.First                      // D est le cercle
 		  ray = q.norme
+		  if (q.x < 0) then 
+		    ori = -1
+		  end if
 		  dist = D.first.Distance(First,Second) //distance du centre du cercle à la droite 
 		  q = D.First.Projection(First,Second)  // q est le milieu de la corde
 		  redim p(-1)
@@ -77,7 +81,7 @@ Inherits nBpoint
 		    p.append q
 		    p.append q
 		    return 1
-		  elseif ray> dist  then
+		  elseif ray > dist  then
 		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
 		    p.append q+v
 		    return 2

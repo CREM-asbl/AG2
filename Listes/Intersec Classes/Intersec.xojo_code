@@ -77,7 +77,7 @@ Inherits SelectOperation
 		        next
 		      end if
 		    end if
-		  elseif  sh1 isa circle then '( sh1 est un cercle, sh2 aussi))
+		  elseif sh1 isa circle then '( sh1 est un cercle, sh2 aussi))
 		    k = computeintercercles
 		    if k = 3 then
 		      somevalidpoint = false
@@ -171,7 +171,7 @@ Inherits SelectOperation
 		  dim i, j,k as integer
 		  dim   b, w, p() as basicpoint
 		  dim d1 as droite
-		  dim  g2 as circle
+		  dim g2 as circle
 		  
 		  
 		  
@@ -194,8 +194,8 @@ Inherits SelectOperation
 		      if w.norme > epsilon then
 		        bptinters(i,0) = b-w
 		        bptinters(i,1) = b+w
-		        val(i,0) =false
-		        val(i,1)= false
+		        val(i,0) = false
+		        val(i,1) = false
 		      else
 		        bptinters(i,0) = b
 		        bptinters(i,1) = b
@@ -203,7 +203,7 @@ Inherits SelectOperation
 		    case 2
 		      bptinters(i,0) = p(0)
 		      bptinters(i,1) = p(1)
-		      select case  d1.nextre
+		      select case d1.nextre
 		      case 1
 		        for j = 0 to 1
 		          if not p(j).audela(d1.firstp, d1.secondp) then
@@ -564,7 +564,7 @@ Inherits SelectOperation
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
 		  
-		  d =nearest(pt,i1,j1)
+		  d = nearest(pt,i1,j1)
 		  
 		  if pt.invalid then          'cas des points invalides
 		    if val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
