@@ -770,8 +770,8 @@ Inherits Canvas
 		    BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		  end if
 		  
-		  if(TextWindow.Visible) then
-		    textWindow.Afficher
+		  if TextWindow.Visible then
+		    TextWindow.Afficher
 		  end if
 		  
 		  refresh
