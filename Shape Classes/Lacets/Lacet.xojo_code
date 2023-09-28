@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Lacet
 Inherits Shape
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Sub AddPoint(p as BasicPoint)
 		  'Sert à introduire les points correspondants aux points de découpe. Les  côtés correspondants sont nécessairement rectilignes sauf ptet le dernier.
@@ -87,8 +88,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as Lacet, q as BasicPoint)
-		  dim i as integer
-		  dim P As Point
 		  dim M as Matrix
 		  
 		  Shape.constructor(ol,s)
@@ -108,8 +107,7 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub createskull(p as BasicPoint)
 		  
-		  dim i as integer
-		  dim ncurv, n as integer
+		  dim ncurv as integer
 		  
 		  ncurv = 2*narcs + npts  'Chaque arc (côté incurvé) comporte trois sous-arcs
 		  nsk = new LSkull(ncurv,p)
@@ -360,38 +358,11 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub InsertPoint(k as integer, Pt as Point)
-		  dim Q as Point
-		  dim s as shape
-		  
 		  Points.Insert(k,Pt)
 		  Childs.Insert(k,Pt)
 		  Pt.setParent(self)
 		  
 		  npts = npts+1
-		  '
-		  'Q= Point(Pt.Constructedby.shape)
-		  's = constructedby.shape
-		  
-		  'if s.Hybrid then
-		  'k = s.getindexpoint(Q)
-		  'if k = -1 then
-		  'k =Lacet(s).pointoncurvedside(Q.bpt)
-		  'end if
-		  'end if
-		  
-		  
-		  'if  s.pointonside(Q.bpt) = -1 or (not (s.Hybrid)) or (s.Hybrid and ( (k = -1) or( Lacet(s).coord.curved(k) = 0) ) ) then
-		  'coord.curved.append 0
-		  'coord.centres.append nil
-		  'else
-		  'coord.curved.append 1
-		  'if s isa circle then
-		  'coord.centres.append s.getgravitycenter
-		  'elseif s.Hybrid then
-		  'coord.centres.append Lacet(s).Getcentre(k)
-		  'end if
-		  'end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -617,7 +588,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function PointOnSide(p as BasicPoint) As integer
-		  dim i, n as integer
+		  dim i as integer
 		  dim delta, cx as double
 		  dim Bib as BiBPoint
 		  dim A as angle
@@ -646,11 +617,10 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Positionner(p as point)
-		  dim a,b, q as BasicPoint
-		  dim alpha,angle as double
+		  dim a,b as BasicPoint
+		  dim angle as double
 		  dim i, k, n,num as integer
 		  dim CutPt as Boolean
-		  dim r as double
 		  
 		  n = p.Pointsur.getposition(self)
 		  i=0
@@ -698,7 +668,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function PossibleFusionWith(S as Lacet, byref i0 as integer, byref j0 as integer, byref dir as integer) As boolean
-		  dim i, j,k,l as integer
+		  dim i, j as integer
 		  dim delta as double
 		  dim dr1, dr2 as BiBPoint
 		  
@@ -741,8 +711,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub PrepareSkull(p as BasicPoint)
-		  dim i, n as integer
-		  
 		  redim coord.extre(-1)
 		  redim coord.ctrl(-1)
 		  redim coord.extre(2*narcs-1)
@@ -788,7 +756,6 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub ToEPS(tos as textoutputStream)
 		  dim Source as Shape
-		  dim M as Matrix
 		  dim i as integer
 		  dim s as string
 		  dim r as double
@@ -828,9 +795,8 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub updateshape()
 		  dim i, k as integer   // Utilisé pour lesmodifications
-		  dim s1, s2 As shape
+		  dim s1 As shape
 		  dim p as point
-		  dim  f2 as figure
 		  dim M as Matrix
 		  
 		  
@@ -869,9 +835,6 @@ Inherits Shape
 		  if hybrid then'Lacet(self).
 		    coord.CreateExtreAndCtrlPoints(ori)
 		  end if
-		  'elseif not self isa bipoint then
-		  'coord.CreateExtreAndCtrlPoints(ori)
-		  'end if
 		  
 		  modified = true
 		  endmove

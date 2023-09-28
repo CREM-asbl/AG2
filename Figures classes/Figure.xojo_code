@@ -1068,21 +1068,18 @@ Protected Class Figure
 		  
 		  
 		  choixpointsfixes
-		  'if NbUnModif > 2 then
-		  'return new Matrix(1)
-		  'end if
 		  s = shapes.item(0)
 		  n = NbSommSur
 		  
 		  select case n
 		  case 0, 1
-		    for i = 0 to 3
-		      if s.points(i).forme = 0 and s.points(i) <> s.fig.pmobi then
-		        i0 = i
-		      end if
-		      s.points(i0).modified = false
-		    next
-		    return autospeupdate3
+		    dim M as Matrix
+		    M = s.modifier4
+		    if M <> nil then
+		      return s.modifier4 
+		    else
+		      return autospeupdate3
+		    end if
 		  case 2
 		    t =replacerpoint (point(somm.item(Listsommsur(0))))
 		    t = replacerpoint (point(somm.item(Listsommsur(1))))

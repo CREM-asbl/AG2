@@ -2252,6 +2252,20 @@ Protected Class Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Modifier4() As Matrix
+		  dim i, i0 As Integer
+		  for i = 0 to 3
+		    if points(i).forme = 0 and points(i) <> fig.pmobi then
+		      i0 = i
+		    end if
+		    points(i0).modified = false
+		  next
+		  
+		  return nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Modify2(p1 as point, p2 as point) As Matrix
 		  dim m as integer
 		  dim  ep1, np1, ep2, np2  as BasicPoint

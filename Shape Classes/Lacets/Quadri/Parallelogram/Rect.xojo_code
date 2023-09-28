@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Rect
 Inherits Parallelogram
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, p as basicpoint)
 		  shape.constructor(ol,3,4)
@@ -286,6 +287,20 @@ Inherits Parallelogram
 		  end select
 		  return ff.autospeupdate
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Modifier4() As Matrix
+		  dim ff as figure
+		  dim ep, eq, er, np, nq, nr as BasicPoint
+		  
+		  ff = GetSousFigure(fig)
+		  ff.getoldnewpos(points(0),ep,np)
+		  ff.getoldnewpos(points(1),eq,nq)
+		  ff.getoldnewpos(points(2),er,nr)
+		  
+		  return new AffinityMatrix(ep,eq,er,np,nq,nr)
 		End Function
 	#tag EndMethod
 
