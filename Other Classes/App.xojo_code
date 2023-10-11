@@ -33,7 +33,12 @@ Inherits DesktopApplication
 		  api.init 
 		  LabelDefault = new LabelParams
 		  themacros = new macroslist
-		  initWindow.show
+		  initWindow.ShowModal
+		  Config.ChargerConfig
+		  Tampon = new ObjectsList
+		  WorkWindow.Show
+		  
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -167,18 +172,6 @@ Inherits DesktopApplication
 		  #else
 		    sys = "MacOsX"
 		  #endif
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Continuer()
-		  Config.ChargerConfig
-		  Tampon = new ObjectsList
-		  WorkWindow.Show
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 

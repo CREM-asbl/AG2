@@ -365,10 +365,7 @@ End
 		Sub Action()
 		  Config.setMenu(PopupMenu1.Text)
 		  Config.save
-		  App.Continuer
 		  close
-		  
-		  
 		  
 		End Sub
 	#tag EndEvent
@@ -467,7 +464,7 @@ End
 	#tag Event
 		Function KeyDown(Key As String) As Boolean
 		  if Key = chr(13) and  me.text <> "" then
-		    app.Continuer
+		    close
 		  end if
 		  
 		End Function
@@ -541,8 +538,7 @@ End
 			"6 - Rounded Window"
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
-			"9 - Metal Window"
-			"11 - Modeless Dialog"
+			"9 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
