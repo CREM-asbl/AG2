@@ -296,11 +296,11 @@ Protected Class Shape
 		    Bib =S.getBiBside(k)
 		    select case BiB.nextre
 		    case 0
-		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)
+		      n = Bib.BiBDroiteInterCercle(BiB0, q(), bq, v)
 		    case 1
-		      n = Bib.BiBDemiDroiteInterCercle(Bib0,q(), bq, v)
+		      n = Bib.BiBDemiDroiteInterCercle(Bib0, q(), bq, v)
 		    case 2
-		      n = Bib.BiBSegmentInterCercle(Bib0,q(), bq, v)
+		      n = Bib.BiBSegmentInterCercle(Bib0, q(), bq, v)
 		    end select
 		    n = ubound(q)+1
 		  end if
@@ -320,18 +320,18 @@ Protected Class Shape
 		  next
 		  n = ubound(q)+1
 		  
-		  if n=2 then
+		  if n = 2 then
 		    if points(1) = fig.pmobi then
-		      if   (amplitude(points(1).bpt, points(0).bpt, q(0)) >  amplitude(points(1).bpt, points(0).bpt, q(1)))    then
+		      if (amplitude(points(1).bpt, points(0).bpt, q(0)) > amplitude(points(1).bpt, points(0).bpt, q(1)))    then
 		        q(0) = q(1)
 		      end if
 		    else
 		      if ep2.distance(q(0)) > ep2.distance(q(1)) then
-		        q(0)=q(1)
+		        q(0) = q(1)
 		      end if
 		    end if
 		  end if
-		  if n>0 and ubound(q) > -1 then
+		  if n > 0 and ubound(q) > -1 then
 		    return q(0)
 		  else
 		    return nil
@@ -2066,7 +2066,6 @@ Protected Class Shape
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  n = ff.NbSommSur
-		  
 		  select case n
 		  case 0
 		    return Modifier30
@@ -2181,19 +2180,19 @@ Protected Class Shape
 		  select case k
 		  case 0, 1                 'on adapte points(2)
 		    if n = 1-k  then   'alors m = 2
-		      np2  =Arccomputefirstintersect(shm)
+		      np2 = Arccomputefirstintersect(shm)
 		    else                  'n = 2, m = 1
-		      np2  = Arccomputefirstintersect(shn)
+		      np2 = Arccomputefirstintersect(shn)
 		    end if
 		    if np2 <> nil then
-		      points(2).bpt  = np2
+		      points(2).bpt = np2
 		      points(2).modified = true
 		    end if
 		    
 		  case 2
 		    Bib = new BiBPoint(np0,np2)
 		    if n = 1 then   'alors m = 0
-		      np1  = Bib.computefirstintersect(1,shn,points(1))
+		      np1 = Bib.computefirstintersect(1,shn,points(1))
 		    else                  'n = 0, m = 1
 		      np1  = Bib.computefirstintersect(1,shm,points(1))
 		    end if
@@ -2208,9 +2207,10 @@ Protected Class Shape
 		  else
 		    p = points(2)
 		  end if
+		  
 		  if np1 <> nil and np2 <> nil then
 		    p.valider
-		    return  AffiOrSimili  'new AffinityMatrix(ep0,ep1,ep2,np0,np1,np2)
+		    return  AffiOrSimili
 		  else
 		    p.invalider
 		    return new Matrix(1)

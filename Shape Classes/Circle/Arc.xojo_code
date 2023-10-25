@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Arc
 Inherits Circle
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Function aire() As double
 		  return arcangle*Pow(getradius,2)/2
@@ -29,18 +30,21 @@ Inherits Circle
 		  k = p.numside(0)
 		  ff = p.GetSousFigure(fig)
 		  
-		  BiB0 =  new BiBPoint(points(0).bpt, points(1).bpt)
+		  BiB0 = new BiBPoint(points(0).bpt, points(1).bpt)
 		  if S isa Droite or S isa Lacet  then
-		    Bib =S.getBiBside(k)
+		    Bib = S.getBiBside(k)
 		    select case BiB.nextre
 		    case 0
-		      n = Bib.BiBDroiteInterCercle(BiB0,q(), bq, v)
+		      n = Bib.BiBDroiteInterCercle(BiB0, q(), bq, v)
 		    case 1
-		      n = Bib.BiBDemiDroiteInterCercle(Bib0,q(), bq, v)
+		      n = Bib.BiBDemiDroiteInterCercle(Bib0, q(), bq, v)
 		    case 2
-		      n = Bib.BiBSegmentInterCercle(Bib0,q(), bq, v)
+		      n = Bib.BiBSegmentInterCercle(Bib0, q(), bq, v)
 		    end select
-		    n = ubound(q)+1
+		    'n = ubound(q)+1
+		  end if
+		  if (n = 0) then
+		    return nil
 		  end if
 		  
 		  if S isa Circle then
@@ -67,11 +71,6 @@ Inherits Circle
 		    if ff.replacerpoint(p) then
 		      b1 = amplitude(np1,np0,q(0))
 		      b2 = amplitude(np1,np0,q(1))
-		      'if ep2.distance(q(0)) <= ep2.distance(q(1)) then 'moins efficace que ci-dessous mais moins général
-		      'return q(0)
-		      'else
-		      'return q(1)
-		      'end if
 		      if ori > 0 then
 		        if b1 <= b2 then
 		          np2 = q(0)
@@ -88,7 +87,7 @@ Inherits Circle
 		      return np2
 		    else
 		      if ep2.distance(q(0)) > ep2.distance(q(1)) then
-		        q(0)=q(1)
+		        q(0) = q(1)
 		        return q(0)
 		      else
 		        return nil
@@ -309,6 +308,26 @@ Inherits Circle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Modifier33() As Matrix
+		  dim s as Shape
+		  dim np2 as BasicPoint
+		  dim p as Point
+		  
+		  s = points(2).pointsur.item(0)
+		  np2 = Arccomputefirstintersect(s)
+		  if np2 <> nil then
+		    points(2).bpt = np2
+		    points(2).modified = true
+		    points(2).valider
+		    return  AffiOrSimili
+		  else
+		    points(2).invalider
+		    return new Matrix(1)
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub paint(g as Graphics)
 		  if abs(arcangle) < 0.01  then
 		    return
@@ -392,7 +411,7 @@ Inherits Circle
 		Function PointOnSide(p as BasicPoint) As integer
 		  
 		  if inside(p) then
-		    return  super.pointonside(p)
+		    return super.pointonside(p)
 		  end if
 		  
 		  return -1
