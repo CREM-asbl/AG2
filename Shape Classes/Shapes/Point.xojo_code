@@ -1136,7 +1136,7 @@ Inherits Shape
 		  delta = can.MagneticDist
 		  StrongestMagnetism=0
 		  
-		  for i=0 to Ubound(s.Childs)
+		  for i = 0 to Ubound(s.Childs)
 		    if s.childs(i).attracting and s.childs(i) <> self and (not s.childs(i).hidden or s.std) and not s.Childs(i).invalid and not s.childs(i).deleted then
 		      CurrentMagnetism = Magnetism3(s.Childs(i),td)
 		      if CurrentMagnetism > StrongestMagnetism then
@@ -1173,30 +1173,20 @@ Inherits Shape
 		    i = Bande(s).pointonside(bpt)
 		    if d = nil and i <> -1 then
 		      BiB =  s.GetBibSide(i)
-		      'if i = 0 then
-		      'p3 = Bande(s).points(1).bpt
-		      'else
-		      'p3 = Bande(s).point3
-		      'end if
-		      d =  bpt.projection(BiB) 'Bande(s).points(i).bpt, p3)
+		      d =  bpt.projection(BiB)
 		    end if
 		  elseif s isa secteur then
 		    i = Secteur(s).pointonside(bpt)
 		    if d = nil  and i <> -1 then
 		      BiB =  s.GetBibSide(i)
-		      'if i = 0 then
-		      'p3 = Secteur(s).points(1).bpt
-		      'else
-		      'p3 = Secteur(s).points(2).bpt
-		      'end if
-		      d = bpt.projection(BiB) 'Secteur(s).points(0).bpt, p3) '  Secteur(s).PointMagnetism2(bpt) 
+		      d = bpt.projection(BiB)
 		    end if
 		  elseif s isa polygon and not s isa cube then
 		    i = Polygon(S).PointOnSide(bpt)
 		    if d = nil and i <> -1 then
 		      d = ProjectionOnAttractingSide(Polygon(s),i)
 		    end if
-		  elseif s isa cube  then
+		  elseif s isa cube then
 		    for i = 0 to 5
 		      if d = nil and bpt.distance (s.Points(i).bpt,s.Points((i+1) mod 6).bpt) < delta  then
 		        d = ProjectionOnAttractingSegment(s.Points(i).bpt,s.Points((i+1) mod 6).bpt)

@@ -225,8 +225,8 @@ Inherits Shape
 		  
 		  g = new BasicPoint(0,0)
 		  
-		  for i = 0 to childs.count-1
-		    g = g + childs(i).bpt
+		  for i = 0 to points.count-1
+		    g = g + points(i).bpt
 		  next
 		  
 		  if self isa polygon then
@@ -234,13 +234,12 @@ Inherits Shape
 		    return g
 		  else
 		    for i = 0 to ubound(coord.extre)
-		      g = g+ coord.extre(i)
+		      g = g + coord.extre(i)
 		    next
 		    g = g/(npts+ubound(coord.extre)+1)
 		    return g
 		  end if
 		  
-		  'return coord.getgravitycenter
 		  Exception err
 		    dim d As Debug
 		    d = new Debug

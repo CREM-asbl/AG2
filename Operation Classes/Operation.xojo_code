@@ -176,7 +176,6 @@ Protected Class Operation
 		  
 		  magnetism = Cfig.Magnetisme(d, AttractedShape, AttractingShape, NextAttractingShape)
 		  
-		  
 		  CurrentAttractingShape = AttractingShape
 		  NextCurrentAttractingShape = NextAttractingShape
 		  CurrentAttractedShape = AttractedShape
@@ -184,10 +183,10 @@ Protected Class Operation
 		    magneticD = d -Point(AttractedShape).bpt
 		  end if
 		  
-		  if CurrentContent.TheGrid<>nil then
+		  if CurrentContent.TheGrid <> nil then
 		    GridMagnetism = Cfig.GridMagnetism(gridd,AttractedPoint)
 		    
-		    if GridMagnetism>magnetism then
+		    if GridMagnetism > magnetism then
 		      magnetism=GridMagnetism
 		      magneticD=gridd - AttractedPoint.bpt
 		      CurrentAttractedShape=AttractedPoint
@@ -481,26 +480,24 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub ReinitAttraction()
 		  
-		  'currentcontent.TheObjects.UnHighlightall
-		  
-		  if CurrentAttractedShape<>nil then
+		  if CurrentAttractedShape <> nil then
 		    CurrentAttractedShape.UnHighLight
-		    CurrentAttractedShape=nil
+		    CurrentAttractedShape = nil
 		  end if
 		  
-		  if CurrentAttractingShape<>nil then
+		  if CurrentAttractingShape <> nil then
 		    CurrentAttractingShape.UnHighLight
-		    CurrentAttractingShape=nil
+		    CurrentAttractingShape = nil
 		  end if
 		  
-		  if NextCurrentAttractingShape<>nil then
+		  if NextCurrentAttractingShape <> nil then
 		    NextCurrentAttractingShape.UnHighLight
-		    NextCurrentAttractingShape=nil
+		    NextCurrentAttractingShape = nil
 		  end if
 		  
 		  if CurrentHighlightedShape <> nil then
 		    CurrentHighlightedShape.UnHighLight
-		    CurrentHighlightedShape=nil
+		    CurrentHighlightedShape = nil
 		  end if
 		End Sub
 	#tag EndMethod
@@ -579,12 +576,12 @@ Protected Class Operation
 		  Dim Ope As Operation
 		  Ope = currentcontent.currentoperation 
 		  
-		  if CurrentAttractedShape<>nil then
+		  if CurrentAttractedShape <> nil then
 		    CurrentAttractedShape.HighLight
 		  end if
 		  
-		  If CurrentAttractingShape<>Nil Then
-		    If Ope IsA duplicate And   duplicate(Ope).copyptsur And currentattractingshape IsA polygon  Then
+		  If CurrentAttractingShape <> Nil Then
+		    If Ope IsA duplicate And duplicate(Ope).copyptsur And currentattractingshape IsA polygon Then
 		      icot = currentattractingshape.pointonside(point(duplicate(Ope).copies.item(0)).bpt)
 		      If icot <> -1 Then
 		        Lacet(currentattractingshape).Paintside(can.BackgroundPicture.graphics,icot,2,Config.HighlightColor)
@@ -602,7 +599,7 @@ Protected Class Operation
 		  If CurrentAttractingShape IsA point Or NextCurrentAttractingShape IsA point Then
 		    NextCurrentAttractingShape = nil
 		  end if
-		  if NextCurrentAttractingShape<>nil   then
+		  if NextCurrentAttractingShape <> nil then
 		    NextCurrentAttractingShape.HighLight
 		  end if
 		End Sub
