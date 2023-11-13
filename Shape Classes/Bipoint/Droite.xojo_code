@@ -93,7 +93,7 @@ Inherits Bipoint
 		  if dr.paraperp then
 		    auto = 1
 		    if dr.forme = 1 or dr.forme = 2 then
-		      forme  = 0
+		      forme = 0
 		    elseif dr.forme = 4 or dr.forme = 5 then
 		      forme = 3
 		    end if

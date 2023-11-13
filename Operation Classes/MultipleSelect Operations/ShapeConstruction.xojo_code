@@ -24,11 +24,11 @@ Inherits MultipleSelectOperation
 		  Dim p As point
 		  
 		  
-		  if CurrentAttractingShape<>nil  then
-		    CurrentContent.thefigs.removefigure   CurrentAttractingShape.fig
+		  if CurrentAttractingShape <> nil then
+		    CurrentContent.thefigs.removefigure CurrentAttractingShape.fig
 		    if CurrentAttractingShape isa Point then
 		      curShape.Identify1(Point(CurrentAttractingshape))
-		    elseif  currentattractingshape.fam < 10 and currentshape.fam < 10  then
+		    elseif currentattractingshape.fam < 10 and currentshape.fam < 10  then
 		      if NextCurrentAttractingShape <> nil then
 		        CurrentContent.thefigs.removefigure NextCurrentAttractingShape.fig
 		        curShape.adjustinter(CurrentAttractingShape,NextCurrentAttractingShape)
@@ -39,11 +39,11 @@ Inherits MultipleSelectOperation
 		    end if
 		  End If
 		  
-		  If Self IsA paraperpconstruction And currentattractingshape IsA lacet Then
-		    If curshape = currentshape.points(1) and curshape.forme = 1 Then
-		      Curshape.forme = 3
-		    End If
-		  End If
+		  'If Self IsA paraperpconstruction And currentattractingshape IsA lacet Then
+		  'If curshape = currentshape.points(1) and curshape.forme = 1 Then
+		  'Curshape.forme = 3
+		  'End If
+		  'End If
 		End Sub
 	#tag EndMethod
 

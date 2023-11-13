@@ -1,6 +1,7 @@
 #tag Class
 Protected Class ParaperpConstruction
 Inherits ShapeConstruction
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(fam as integer, form As integer)
 		  Super.constructor(fam,form)
@@ -297,12 +298,12 @@ Inherits ShapeConstruction
 		  
 		  select case  currentitemtoset
 		  case 1
-		    if forme >2 then
+		    if forme > 2 then
 		      currentshape.Points(1).hide
 		    end if
 		    currentshape.setconstructedby(Refe,op)
 		    currentshape.constructedby.data.append index(iobj)
-		    BiB1=BiBPoint(Refe.coord.GetBiBSide(index(iobj)))
+		    BiB1 = BiBPoint(Refe.coord.GetBiBSide(index(iobj)))
 		  case 2
 		    curshape = currentshape.points(0)
 		    AdjustMagnetism(curshape)
@@ -321,7 +322,7 @@ Inherits ShapeConstruction
 		    droite(currentshape).constructshape
 		    curshape = currentshape.points(1)
 		    AdjustMagnetism(curshape)
-		    if curshape.invalid or currentshape.points(0).distanceto(curshape.bpt)< epsilon   then
+		    if curshape.invalid or currentshape.points(0).distanceto(curshape.bpt) < epsilon   then
 		      CurrentContent.abortconstruction
 		      return false
 		    end if
@@ -334,7 +335,6 @@ Inherits ShapeConstruction
 		    curshape.mobility
 		    ReinitAttraction
 		    currentshape.IndexConstructedPoint = currentshape.IndexConstructedPoint+1
-		    
 		  end select
 		  
 		  return true

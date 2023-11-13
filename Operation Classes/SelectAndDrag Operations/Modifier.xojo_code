@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Modifier
 Inherits SelectAndDragOperation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Animer(p as point)
 		  dim s as shape
@@ -36,9 +37,8 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function choixvalid(s as shape) As Boolean
-		  Dim i, j , ind, n0, n1 As Integer
-		  Dim par, sh As shape
-		  Dim t As Boolean
+		  Dim i, j, n0, n1 As Integer
+		  Dim sh As shape
 		  Dim p As point
 		  
 		  if s = nil or s.fig = nil  then
@@ -48,7 +48,7 @@ Inherits SelectAndDragOperation
 		  p = point(s)
 		  p.mobility
 		  
-		  if   p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
+		  if p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
 		    return false
 		  end if
 		  
@@ -56,9 +56,10 @@ Inherits SelectAndDragOperation
 		    return false
 		  end if
 		  
-		  if p.forme=1 and p.isextremityofaparaperpseg then
+		  if p.forme = 1 and p.isextremityofaparaperpseg then
 		    return false
 		  end if
+		  
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
 		    if (sh isa arc) then
@@ -72,7 +73,6 @@ Inherits SelectAndDragOperation
 		      end if
 		    next
 		  next
-		  
 		  
 		  return true
 		  
@@ -184,14 +184,10 @@ Inherits SelectAndDragOperation
 		Function GetShape(p as basicpoint) As Shape
 		  Dim i As Integer
 		  dim S As point
-		  dim t as boolean
-		  
 		  dim tableau() as integer
 		  redim tableau(-1)
 		  
-		  nobj = 0
 		  iobj = 0
-		  
 		  drapchoix = false
 		  visible = objects.findpoint(p)
 		  nobj = visible.count
@@ -203,33 +199,33 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  for i = visible.count-1 downto 0
-		    s = point(Visible.item(i))
+		    s = Point(Visible.item(i))
 		    if not choixvalid(s) then
 		      visible.removeobject(s)
 		    end if
 		  next
 		  
 		  nobj = visible.count
+		  
 		  if nobj = 0 then
-		    drapchoix = true
+		    s.highlight
+		    drapchoix = false
 		    return nil
 		  end if
 		  
-		  s = point(visible.item(iobj))
-		  
 		  if s <> nil then
-		    for i = 0 to ubound(point(s).parents)
-		      if not point(s).parents(i).pointe then
+		    for i = 0 to s.parents.count-1
+		      if not s.parents(i).pointe then
 		        tableau.append i
-		        point(s).parents(i).pointe = true
+		        s.parents(i).pointe = true
 		      end if
 		    next
-		    currenthighlightedshape = point(s)
-		    point(s).highlight
-		    drapchoix = test(point(s))
-		    for i = 0 to ubound(point(s).parents)
+		    currenthighlightedshape = s
+		    s.highlight
+		    drapchoix = test(s)
+		    for i = 0 to s.parents.count-1
 		      if tableau.indexof(i) <> -1 then
-		        point(s).parents(i).pointe = false
+		        s.parents(i).pointe = false
 		      end if
 		    next
 		    if drapchoix then
