@@ -96,7 +96,7 @@ Inherits MultipleSelectOperation
 		    Trib = new TriBPoint(s.getgravitycenter, firstpoint.bpt, secondpoint.bpt)
 		  end if
 		  
-		  for i= 1 to Numberofdivisions-1
+		  for i = 1 to Numberofdivisions-1
 		    if s isa lacet then
 		      if lacet(s).coord.curved(side) = 0 then
 		        p = Bib.subdiv(NumberofDivisions,i)
@@ -108,14 +108,14 @@ Inherits MultipleSelectOperation
 		    elseif s isa circle then
 		      p = Trib.subdiv(s.ori, NumberofDivisions,i)
 		    end if
-		    Q=new Point(Objects,p)
+		    Q = new Point(Objects,p)
 		    Q.setconstructedby S, 4
 		    Q.constructedBy.data.append firstpoint
 		    Q.constructedBy.data.append secondpoint
 		    Q.ConstructedBy.data.append numberofdivisions
 		    Q.ConstructedBy.data.append i
 		    Q.ConstructedBy.data.append side
-		    CreatedShapes.addshape  Q
+		    CreatedShapes.addshape Q
 		    Q.mobility
 		  next
 		  

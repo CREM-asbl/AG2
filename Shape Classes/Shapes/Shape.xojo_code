@@ -3239,12 +3239,12 @@ Protected Class Shape
 		  
 		  dim i,j as integer
 		  
-		  for i=0 to Ubound(P1.parents)
-		    for j=0 to Ubound(P2.parents)
+		  for i = 0 to Ubound(P1.parents)
+		    for j = 0 to Ubound(P2.parents)
 		      if P1.parents(i)=P2.parents(j) then
 		        if P1.Parents(i) isa Droite and droite(P1.Parents(i)).nextre = 2  then
 		          return true
-		        elseif  P1.Parents(i) isa polygon then
+		        elseif P1.Parents(i) isa polygon then
 		          return Polygon(P1.Parents(i)).IsSide(P1,P2)
 		        end if
 		      end if

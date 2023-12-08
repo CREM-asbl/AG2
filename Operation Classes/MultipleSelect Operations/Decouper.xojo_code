@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Decouper
 Inherits MultipleSelectOperation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub addtofigurecutinfos()
 		  dim i as integer
@@ -30,21 +31,27 @@ Inherits MultipleSelectOperation
 		Function Choixvalide(pt as point) As Boolean
 		  select case currentitemtoset
 		  case 2
-		    if not currentshape.std then
-		      return  currentshape.PointOnSide (Pt.bpt) <> -1
-		    else
-		      return  (currentshape.getindexpoint(pt) <> -1) or ((pt.constructedby <> nil) and (pt.constructedby.shape = currentshape) )
-		    end if
+		    return  currentshape.PointOnSide (Pt.bpt) <> -1
 		  else
-		    if  (Pt = CutPts(ncutpt-1) or Pt = CutPts(0))  or CurrentShape.sameSegment(Pt, CutPts(ncutpt-1)) then
-		      return false
-		    end if
+		    dim precSide, currentSide, precIndex, currentIndex As integer
+		    dim sameSegment As Boolean
+		    precSide = currentshape.PointOnSide(CutPts(ncutpt-1).bpt)
+		    precIndex = currentShape.GetIndexPoint(CutPts(ncutpt-1))
+		    currentSide = currentshape.PointOnSide(Pt.bpt)
+		    currentindex = CurrentShape.GetIndexPoint(Pt)
 		    
-		    if currentshape.std then
-		      return  (currentshape.getindexpoint(pt) <> -1) or ((pt.constructedby <> nil) and (pt.constructedby.shape = currentshape) )
+		    if currentShape isa Circle then 
+		      sameSegment = false
+		    elseif CurrentIndex <> -1 and precIndex <> -1 then
+		      sameSegment = abs(precIndex-currentIndex) = 1 or abs(precIndex-currentIndex) = currentShape.npts-1
+		    elseif  currentIndex <> -1 then
+		      sameSegment = (currentIndex = precSide) or (precSide = (currentShape.npts - 1 + currentIndex) mod CurrentShape.npts)  
+		    elseif precIndex <> -1 then
+		      sameSegment = (currentSide = precIndex) or (currentSide = (currentShape.npts - 1 + precIndex) mod CurrentShape.npts)  
 		    else
-		      return true
+		      sameSegment = (currentSide = precSide)
 		    end if
+		    return (currentside <> -1 or pt.bpt = CurrentShape.GetGC.bpt) and Pt <> CutPts(ncutpt-1) and Pt <> CutPts(0) and not sameSegment
 		  end select
 		  
 		End Function
@@ -64,11 +71,10 @@ Inherits MultipleSelectOperation
 		Sub DoOperation()
 		  dim i as integer                          'Cut(0) et Cut(1) sont les deux pièces
 		  
-		  
 		  currentshape.movetoback
 		  
 		  for i = 0 to 1
-		    Cut(i) = GetCutShape (i)                                                                   //Cut(i) = GetCutShape (i+1,true)
+		    Cut(i) = GetCutShape(i)                                                                   //Cut(i) = GetCutShape (i+1,true)
 		  next
 		  
 		  addtofigurecutinfos
@@ -241,7 +247,7 @@ Inherits MultipleSelectOperation
 		  else
 		    visible = objects.findpoint(p)
 		    if visible.count > 0 then
-		      for i =visible.count-1 downto 0
+		      for i = visible.count-1 downto 0
 		        pt = point(visible.item(i))
 		        if not choixvalide(pt) then
 		          visible.objects.remove i
@@ -255,9 +261,6 @@ Inherits MultipleSelectOperation
 		      return nil
 		    end if
 		  end if
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 
@@ -381,7 +384,7 @@ Inherits MultipleSelectOperation
 		    Pt = Point(S)
 		    If ValidPointOnSide(Pt) then
 		      P1 = Pt
-		    elseif not currentshape.std and currentshape.PointOnSide(Pt.bpt) <> -1  then
+		    elseif currentshape.PointOnSide(Pt.bpt) <> -1  then
 		      P1 = new Point(Objects, Pt.bpt)
 		      P1.PutOn currentshape
 		      P1.placerptsursurfigure
