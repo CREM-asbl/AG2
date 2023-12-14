@@ -632,10 +632,6 @@ Protected Class Figure
 		  else
 		    return autosimupdate3
 		  end select
-		  
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 
@@ -1902,6 +1898,10 @@ Protected Class Figure
 		  dim p as point
 		  dim inter as intersec
 		  
+		  for i = 0 to Somm.count - 1
+		    p = point(Somm.item(i))
+		    p.updateShape
+		  next 
 		  
 		  for i = 0 to ptssur.count-1
 		    p = point(ptssur.item(i))

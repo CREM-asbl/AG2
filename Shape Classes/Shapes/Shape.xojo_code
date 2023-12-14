@@ -514,9 +514,9 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, s as shape)
 		  constructor(ol)
-		  Npts=s.Npts
+		  Npts= s.Npts
 		  Ncpts = s.Ncpts
-		  fam =s.fam
+		  fam = s.fam
 		  forme = s.forme
 		  narcs = s.narcs
 		  auto = s.auto
@@ -4999,6 +4999,10 @@ Protected Class Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		name As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		narcs As Integer
 	#tag EndProperty
 
@@ -5297,7 +5301,7 @@ Protected Class Shape
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Name"
+			Name="name"
 			Visible=true
 			Group="ID"
 			InitialValue=""

@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Droite
 Inherits Bipoint
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function check() As Boolean
 		  Dim v, w As BasicPoint
@@ -876,7 +877,7 @@ Inherits Bipoint
 
 	#tag Note, Name = Suggestion
 		
-		Créer une sous-classe de roite our les paraperp 
+		Créer une sous-classe de droite pour les paraperp et le perpendiculaires
 	#tag EndNote
 
 

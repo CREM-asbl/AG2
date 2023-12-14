@@ -81,7 +81,7 @@ Inherits ShapeConstruction
 		  Dim ol As Objectslist
 		  Dim p As BasicPoint
 		  Dim n As Integer
-		  
+		  dim name as String
 		  
 		  
 		  if famille <> 1 then
@@ -92,19 +92,24 @@ Inherits ShapeConstruction
 		  ol = CurrentContent.TheObjects
 		  select case forme
 		  case 1
-		    n = 2 ' segment parallele
+		    n = 2 
+		    name = "segment parallele"
 		    op = 1
 		  case 2
-		    n = 2 'segment perpendiculaire
+		    n = 2 
+		    name = "segment perpendiculaire"
 		    op = 2
 		  case 4
-		    n = 0 'droite parallele
+		    n = 0 
+		    name = "droite parallele"
 		    op = 1
 		  case 5
-		    n = 0 'droite perpendiculaire
+		    n = 0 
+		    name = "droite perpendiculaire"
 		    op = 2
 		  end select
 		  currentshape = New Droite(ol,p,n)
+		  currentshape.name = name
 		  currentshape.fam = 1
 		  currentshape.forme = forme
 		  currentshape.Auto = 7

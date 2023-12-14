@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Point
 Inherits Shape
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  dim List0, list1 as figslist
@@ -1389,7 +1390,6 @@ Inherits Shape
 		      labs.item(0).SetPosition
 		    end if
 		  end if
-		  
 		End Sub
 	#tag EndMethod
 
@@ -2746,7 +2746,8 @@ Inherits Shape
 		  dim tsf as Transformation
 		  dim sh as Point
 		  
-		  for i=0 to UBound(ConstructedShapes)
+		  
+		  for i = 0 to UBound(ConstructedShapes)
 		    s = Point(ConstructedShapes(i))
 		    if not s.modified  then
 		      select case s.constructedby.Oper
@@ -2761,7 +2762,7 @@ Inherits Shape
 		        if M1 <> nil and M1.v1 <> nil then
 		          s.Moveto M1*bpt
 		        end if
-		      case 9  ' fusion
+		      case 9 'fusion
 		        if s.constructedby.shape <> nil then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.MoveTo M1*bpt
@@ -2782,7 +2783,6 @@ Inherits Shape
 		        End If
 		        
 		      end select
-		      
 		      s.modified = true
 		      s.updateshape
 		    End If
@@ -2796,9 +2796,8 @@ Inherits Shape
 		      case 3, 5
 		        M1 = Matrix(constructedby.data(0))
 		        M1 = M1.inv
-		        s.Moveto M1*(Self.bpt)
+		        s.Moveto M1*(self.bpt)
 		      Case 10
-		        's.numside(0) = (numside(0)-ConstructedBy.data(0)+s.pointsur.item(0).npts) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
