@@ -4607,8 +4607,7 @@ Protected Class Shape
 		  end if
 		  constructedby.data.append tsf
 		  constructedby.data.append o  //15 juin 2014
-		  
-		  
+		  paraperp = true
 		End Sub
 	#tag EndMethod
 

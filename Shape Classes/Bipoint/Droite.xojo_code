@@ -117,7 +117,7 @@ Inherits Bipoint
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, k as integer, temp as XMLElement)
-		  Shape.Constructor(ol , temp)
+		  Shape.Constructor(ol, temp)
 		  ncpts = 2
 		  select case k
 		  case 0 to 2
