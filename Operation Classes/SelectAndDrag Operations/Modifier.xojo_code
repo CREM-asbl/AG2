@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Modifier
 Inherits SelectAndDragOperation
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub Animer(p as point)
 		  dim s as shape
@@ -212,6 +212,8 @@ Inherits SelectAndDragOperation
 		    drapchoix = false
 		    return nil
 		  end if
+		  
+		   s = point(visible.item(0))
 		  
 		  if s <> nil then
 		    for i = 0 to s.parents.count-1
