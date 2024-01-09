@@ -2724,9 +2724,6 @@ End
 
 	#tag Method, Flags = &h0
 		Sub PointerPolyg()
-		  if not CurrentContent.currentoperation isa readhisto and MenuBar.Child("PrefsMenu").Child("PrefsPolyg") <> nil then
-		    MenuBar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark = true
-		  end if
 		  config.PolPointes = true
 		  refresh
 		End Sub
