@@ -20,7 +20,6 @@ Inherits NSkull
 		Sub paint(g as graphics)
 		  dim i as integer
 		  
-		  
 		  If Not (currentcontent.currentoperation IsA retourner And dret  <>Nil) And Not currentcontent.currentoperation IsA Imprimer Then
 		    'si  dret <> nil et currentop est une des opérations mentionnées, le calcul des extre et ctrl est fait par le timer
 		    update(skullof)
@@ -77,7 +76,7 @@ Inherits NSkull
 		  dim i as integer
 		  dim p, q as BasicPoint
 		  
-		  p =s.getgravitycenter
+		  p = s.getgravitycenter
 		  ref = can.transform(p)
 		  x = ref.x
 		  y = ref.y
@@ -106,14 +105,6 @@ Inherits NSkull
 		  for i = 0 to 5
 		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p))
 		  next
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 

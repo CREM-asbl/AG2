@@ -1,15 +1,15 @@
 #tag Class
 Protected Class StdCircle
 Inherits Circle
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, p as basicpoint, s as stdcircle)
 		  Shape.Constructor(ol,s)
 		  
-		  radius=s.radius
+		  radius = s.radius
 		  angles.append s.angles(0)
 		  file = s.file
-		  nsk = new ArcSkull(can.transform(p))
-		  nsk.updatesize(1)
+		  createskull
 		  
 		  
 		End Sub
@@ -26,7 +26,7 @@ Inherits Circle
 		  self.fam = fam
 		  forme = form
 		  Myspecs = config.StdFamilies(fam-10,Form)
-		  radius=Myspecs.distances(0)
+		  radius = Myspecs.distances(0)
 		  radius = radius*Config.StdSize
 		  angles.append Myspecs.angles(0)
 		  file = config.stdfile
@@ -46,7 +46,7 @@ Inherits Circle
 		    points. append new point(ol,points(0).bpt)
 		    setpoint points(1)
 		  end if //pour pouvoir relire d'anciens fichiers
-		  radius=Val(El.getAttribute("Rayon"))
+		  radius = Val(El.getAttribute("Rayon"))
 		  angles.append Val(EL.getAttribute("Angle"))
 		  
 		  nsk = new ArcSkull(can.transform(Points(0).bpt))
@@ -64,13 +64,13 @@ Inherits Circle
 		  Points(1).Moveto Points(0).bpt + new BasicPoint(radius,0)
 		  updatecoord
 		  if nsk = nil then
-		    createskull(coord.tab(0))
+		    createskull
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub createskull(p as BasicPoint)
+		Sub createskull()
 		  coord.CreateExtreAndCtrlPoints(1)
 		  
 		  nsk = new ArcSkull(can.transform(points(0).bpt))
@@ -94,7 +94,6 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Sub Fixecoord(p as BasicPoint, n as integer)
 		  points(0).moveto p
-		  'coord.centres(1) = p
 		  updatecoord
 		  
 		End Sub
@@ -115,8 +114,6 @@ Inherits Circle
 	#tag Method, Flags = &h0
 		Function Paste(Obl as ObjectsList, p as BasicPoint) As shape
 		  dim s as StdCircle
-		  dim a,b as shape
-		  dim j as integer
 		  
 		  s = new StdCircle(Obl,p+Points(0).bpt,self)
 		  s.radius  = radius
@@ -150,6 +147,14 @@ Inherits Circle
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="angle"
 			Visible=false

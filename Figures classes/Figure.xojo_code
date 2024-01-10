@@ -2525,9 +2525,12 @@ Protected Class Figure
 		  Mmove = M
 		  
 		  for j = 0 to shapes.count -1
-		    s= shapes.item(j)
+		    s = shapes.item(j)
 		    s.Mmove = M
-		    if (s isa Circle or s.Hybrid) and not s isa secteur   then
+		    'if s isa StdCircle then
+		    'continue
+		    'end if 
+		    if (s isa Circle or s.Hybrid) and not s isa secteur then
 		      s.coord.MoveExtreCtrl(M)
 		    end if
 		    if s isa secteur then

@@ -2651,8 +2651,6 @@ Protected Class Shape
 		      next
 		    next
 		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 

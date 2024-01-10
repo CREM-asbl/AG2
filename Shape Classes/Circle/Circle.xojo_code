@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Circle
 Inherits Shape
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Function airealge() As double
 		  dim r as double
@@ -36,7 +37,6 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(bp1 as BasicPoint, bp2 as BasicPoint)
-		  
 		  Points.append new Point(bp1)
 		  Points.append new Point(bp2)
 		End Sub
@@ -49,8 +49,6 @@ Inherits Shape
 		  SetPoint(Points(0))
 		  angle = 0
 		  arcangle = 2*PI
-		  
-		  
 		End Sub
 	#tag EndMethod
 
