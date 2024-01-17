@@ -69,12 +69,12 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i as integer                          'Cut(0) et Cut(1) sont les deux pièces
+		  dim i as integer
 		  
 		  currentshape.movetoback
 		  
 		  for i = 0 to 1
-		    Cut(i) = GetCutShape(i)                                                                   //Cut(i) = GetCutShape (i+1,true)
+		    Cut(i) = GetCutShape(i)      
 		  next
 		  
 		  addtofigurecutinfos
@@ -87,8 +87,8 @@ Inherits MultipleSelectOperation
 		Sub EndOperation()
 		  super.endoperation
 		  redim CutPts(-1)
-		  Cut(0)=nil
-		  Cut(1)=nil
+		  Cut(0) = nil
+		  Cut(1) = nil
 		  ncutpt = 0
 		  
 		End Sub
@@ -203,7 +203,7 @@ Inherits MultipleSelectOperation
 		  s.forme = s.npts-2
 		  s.initconstruction
 		  recopiercouleurs (s)
-		  if s.Hybrid  then
+		  if s.Hybrid then
 		    s.coord.centres = centres
 		    s.coord.curved = curved
 		  end if

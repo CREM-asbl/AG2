@@ -505,7 +505,6 @@ Protected Class WindContent
 		  dim d as Date
 		  dim st as string
 		  dim f as FolderItem
-		  dim FEName As string
 		  
 		  d = new Date
 		  
@@ -654,7 +653,6 @@ Protected Class WindContent
 
 	#tag Method, Flags = &h0
 		Sub Optimize()
-		  
 		  //Retire de la liste les points qui ont des parents
 		  dim pt as point
 		  dim i as Integer

@@ -389,9 +389,8 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub RecreateFigures(k as integer, liste as objectslist, Temp as XMLElement)
-		  dim  j as integer
 		  dim List as XMLNodeList
-		  dim EL, EL1 as XMLElement
+		  dim EL as XMLElement
 		  
 		  if k = 0 then
 		    List = Temp.XQL("Deleted_Figures")

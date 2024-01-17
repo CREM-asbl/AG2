@@ -1,6 +1,7 @@
 #tag Class
 Protected Class ObjectsList
 Inherits Liste
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
 		  
@@ -138,7 +139,6 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub Constructor(initSelection As Boolean)
-		  
 		  if initSelection then
 		    selection = new ObjectsList(false)
 		  end if
@@ -1117,6 +1117,7 @@ Inherits Liste
 		    s = XMLLoadStdForm (temp)
 		  End Select
 		  s.id = id
+		  s.createskull(s.Points(0).bpt)
 		  addshape(s)
 		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
@@ -1163,13 +1164,13 @@ Inherits Liste
 		    Obj= XMLElement(List.Item(0))
 		    nobj = obj.childcount
 		    if nobj >0 then
-		      XMLLireobjets(Obj)                                  //ne met pas en cause les figures
+		      XMLLireobjets(Obj)                        
 		      XMLLirePointsSur(Obj)
-		      XMLReadTsf(Obj)                                    //non plus
+		      XMLReadTsf(Obj)                                   
 		      XMLLireCondi(Obj)
-		      XMLLireConstructionInfos(Obj)           //non plus
+		      XMLLireConstructionInfos(Obj)           
 		      XMLLireMacConstructionInfos(Obj)
-		      XMLLireIdFigs(Obj)                                   //Les figures apparaissent ici
+		      XMLLireIdFigs(Obj)                                
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
 		      CurrentContent.optimize
@@ -1178,8 +1179,8 @@ Inherits Liste
 		    updateids
 		  end if
 		  for i = 0 to CurrentContent.TheObjects.count-1
-		    s=  CurrentContent.TheObjects.item(i)
-		    if s.id =0 and not s isa repere then
+		    s = CurrentContent.TheObjects.item(i)
+		    if s.id = 0 and not s isa repere then
 		      s.id = newid
 		    end if
 		    for j = 0 to ubound(s.childs)
@@ -1192,8 +1193,6 @@ Inherits Liste
 		  if List.length > 0 then
 		    XMLLoadGrille(List)
 		  end if
-		  
-		  
 		End Sub
 	#tag EndMethod
 

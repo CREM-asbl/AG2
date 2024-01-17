@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Duplicate
 Inherits SelectAndDragOperation
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub abort()
 		  dim i as integer
@@ -20,9 +20,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(NewPoint as BasicPoint)
-		  dim AttractedShape,AttractingShape,NextAttractingShape as Shape
-		  dim Magnetism,tempm As  Integer
-		  dim Mp as BasicPoint
+		  dim Magnetism As  Integer
 		  
 		  if copyptsur then
 		    cop.moveto newpoint
@@ -114,8 +112,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOper2()
-		  
-		  dim p0, p1 as point
 		  dim M as Matrix
 		  
 		  
@@ -194,7 +190,7 @@ Inherits SelectAndDragOperation
 		  dim s1 as point
 		  dim i as integer
 		  
-		  s =super.getshape(p)
+		  s = super.getshape(p)
 		  
 		  if visible.count > 0 then
 		    for i = visible.count-1 downto 0
@@ -434,11 +430,9 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub setconstructioninfo(i as integer, M as Matrix)
-		  dim j, n, k,op as integer
-		  dim P, qq as Point
+		  dim j, n, k as integer
 		  dim s, s1, q  As  shape
 		  dim M1 as Matrix
-		  dim ff as figure
 		  
 		  s = tempshape.item(i)
 		  q =copies.item(i)
@@ -556,7 +550,7 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
-		  dim Myself, Temp, EL as XMLElement
+		  dim Myself, Temp as XMLElement
 		  
 		  
 		  Myself= Doc.CreateElement(GetName)

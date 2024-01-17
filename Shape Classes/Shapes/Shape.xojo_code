@@ -120,10 +120,7 @@ Protected Class Shape
 		Sub AddToFigure(ff as figure, idf as integer)
 		  Dim List0 As figslist                                 //N'est utilisé que par ObjectsList.XMLLireIdFigs
 		  dim figu as figure
-		  Dim o As shapeconstruction
-		  dim i, j, op as integer
-		  dim sh as shape
-		  dim tsf as transformation
+		  dim i, op as integer
 		  
 		  if fig <> nil and ff <> nil and fig = ff then
 		    return
@@ -535,17 +532,14 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList, El as XMLElement)
 		  dim  EL1, Temp as XMLElement
-		  dim i, n as integer
-		  dim num as integer
+		  dim i as integer
 		  dim List as XMLNodelist
-		  dim s as shape
 		  dim c as couleur
-		  dim pos as string
 		  dim lab as etiq
 		  
-		  objects=ol
+		  objects = ol
 		  id = Val(EL.GetAttribute("Id"))
-		  Npts= Val(EL.GetAttribute(Dico.value("Npts")))
+		  Npts = Val(EL.GetAttribute(Dico.value("Npts")))
 		  fam = Val(EL.GetAttribute(Dico.value("Nrfam")))
 		  forme = Val(EL.GetAttribute(Dico.value("Nrform")))
 		  TracePt = (val(EL.GetAttribute("BlueTrace")) = 1)
@@ -650,10 +644,6 @@ Protected Class Shape
 		  if List.length > 0 then
 		    Invalid = true
 		  end if
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -958,7 +948,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
 		  Dim i As Integer
-		  
 		  
 		  isinconstruction = false
 		  updatecoord
@@ -1407,7 +1396,6 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function GetTsf(n as integer, m as integer) As transformation
-		  dim tsf as transformation
 		  dim i as integer
 		  
 		  for i = 0 to tsfi.count-1
@@ -1426,9 +1414,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function GridMagnetism(Byref d as BasicPoint, Byref AttractedPoint as Point) As integer
-		  
 		  dim td As BasicPoint
-		  dim Gm as Integer
 		  dim i as integer
 		  dim currentmagnetism,StrongestMagnetism as integer
 		  dim CurAttractedPoint as Point
@@ -1481,7 +1467,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function haspointon(s as shape, byref p as point) As Boolean
-		  dim i,j as integer
+		  dim i as integer
 		  
 		  if self isa point then
 		    return false
@@ -1522,7 +1508,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub HighLight()
 		  Dim i As Integer
-		  dim s as shape
 		  dim op as Operation
 		  
 		  
@@ -1650,8 +1635,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub Invalider()
-		  dim i, j, k as integer
-		  dim t as boolean
+		  dim i, j as integer
 		  dim s as shape
 		  
 		  if not invalid then
@@ -1772,8 +1756,6 @@ Protected Class Shape
 		Function Listerfigsneighbour() As figslist
 		  dim i, j as integer
 		  dim List0 as FigsList
-		  dim macinf as MacConstructionInfo
-		  dim ifm as InfoMac
 		  
 		  list0 = new figslist
 		  
@@ -1832,7 +1814,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function Magnetism2(s as Shape, Byref d as basicpoint, Byref AttractedShape as Shape, Byref AttractingShape as Shape) As integer
-		  dim s1,s2 as shape
+		  dim s2 as shape
 		  dim td as BasicPoint
 		  dim i as Integer
 		  dim StrongestMagnetism,CurrentMagnetism as Integer
@@ -1998,7 +1980,6 @@ Protected Class Shape
 		  dim n0 as integer
 		  dim r as double
 		  dim M as Matrix
-		  dim arcangle As double
 		  
 		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
@@ -2106,9 +2087,9 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Function Modifier31(n as integer) As Matrix
 		  // Trois sommets modifiés Un seul est un point "sur". C'est le sommet de n° n.
-		  dim k, i,  n1, n2 as integer
-		  dim ep, np, u, v as BasicPoint
-		  dim Bib, Bib2 As  BiBPoint
+		  dim i,  n1, n2 as integer
+		  dim np, u, v as BasicPoint
+		  dim Bib As  BiBPoint
 		  dim sh As shape
 		  dim p As point
 		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
@@ -2166,7 +2147,7 @@ Protected Class Shape
 		Function Modifier32(n as integer, m as integer) As Matrix
 		  // Trois sommets modifiés Deux sont "sur". Ce sont les sommets de n° n0 et n1.
 		  dim k as integer
-		  dim p, p0, p1, p2 as point
+		  dim p as point
 		  dim shn, shm as shape
 		  dim Bib as BiBPoint
 		  
@@ -2332,7 +2313,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function NbInterPts(s as shape, byref interpts() as point, q as point) As integer
-		  dim i, j, n , nn as integer
+		  dim i, j, nn as integer
 		  dim cote1, cote2 as integer
 		  dim p1, p2 as point
 		  
@@ -2542,7 +2523,7 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Function oldGetIndexSide() As integer
 		  dim op as operation
-		  dim i, n as integer
+		  dim n as integer
 		  
 		  n=-1
 		  
@@ -2770,7 +2751,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub pointer()
-		  dim i, n as integer
+		  dim i as integer
 		  pointe = true
 		  for i = 0 to ubound(points)
 		    points(i).pointe = true
@@ -2797,7 +2778,7 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Function PossibleAttractionWith(other as Shape) As Boolean
 		  
-		  dim gc1,gc2,bp as basicpoint
+		  dim gc1, gc2 as basicpoint
 		  dim dist,b1,b2 as double
 		  dim magdist as double
 		  magdist = can.MagneticDist
@@ -2854,7 +2835,7 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function precede(s2 as shape) As boolean
-		  Dim h, k, m, i, j  As Integer
+		  Dim h, k, i, j  As Integer
 		  Dim ff As figure
 		  dim p, q as point
 		  Dim s, sh As shape
@@ -3099,8 +3080,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub RemoveFromFigure()
 		  dim ff as figure
-		  dim i as integer
-		  
 		  
 		  if fig = nil then
 		    return
@@ -3132,9 +3111,6 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub RemovePoint(index as integer)
-		  dim s as shape
-		  dim i as integer
-		  
 		  RemovePoint(Points(index))
 		  Points.Remove(index)
 		  nsk.RemovePoint(index)
@@ -3682,7 +3658,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub updatelab()
 		  dim i as integer
-		  dim pos as basicPoint
 		  
 		  if labs <> nil then
 		    for i = 0 to labs.count-1
@@ -3704,7 +3679,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub updatelabel(k as double)
 		  dim i as integer
-		  dim r as double
 		  
 		  if labupdated then
 		    return
@@ -3735,7 +3709,7 @@ Protected Class Shape
 		  dim Mac as Macro
 		  dim MacInfo as MacConstructionInfo
 		  dim i, j as integer
-		  dim s1, s2 as shape
+		  dim s1 as shape
 		  
 		  
 		  for i = 0 to ubound(MacConstructedShapes)
@@ -3767,7 +3741,7 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub UpdateMatrixDuplicatedshapes(M as Matrix)
 		  
-		  dim j, k as integer
+		  dim j as integer
 		  dim s as shape
 		  dim M1, M2 as matrix
 		  dim op as operation
@@ -3922,8 +3896,6 @@ Protected Class Shape
 		Sub Valider()
 		  dim i, j as integer
 		  dim t, t2 as Boolean
-		  dim inter as intersec
-		  dim s1, s2 as shape
 		  
 		  
 		  if  (conditionedby<>nil and conditionedby.invalid)  or (constructedby <> nil and (constructedby.shape.invalid or (constructedby.oper = 6 and (transformation(constructedby.data(0)).supp.invalid)) )) then
@@ -4030,8 +4002,6 @@ Protected Class Shape
 		  dim i as integer
 		  dim M as Matrix
 		  dim tsf as Transformation
-		  dim n as integer
-		  dim s as shape
 		  
 		  // Exists routine speciale pour les points
 		  
@@ -4103,7 +4073,6 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Function XMLPutIdINContainer(Doc as XMLDocument) As XMLElement
 		  dim Form as XMLElement
-		  dim n as integer
 		  
 		  Form = Doc.CreateElement(Dico.value("Form"))
 		  Form.SetAttribute("Id",str(id))
@@ -4304,10 +4273,9 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfo(Temp as XMLElement)
 		  Dim m, oper As Integer
-		  dim  Tmp, EL as XMLElement
+		  dim  Tmp as XMLElement
 		  dim s as shape
 		  dim List As XMLNodelist
-		  dim p as point
 		  
 		  
 		  List = Temp.XQL("ConstructedBy")
@@ -4320,7 +4288,9 @@ Protected Class Shape
 		      s = nil
 		    end if
 		    oper = Val(Tmp.GetAttribute("Oper"))
-		    setconstructedby s,oper
+		    if s <> nil then
+		      setconstructedby s, oper
+		    end if
 		    select case oper //lecture des infos supplémentaires (data)
 		    case 1,2
 		      XMLReadConstructionInfoParaperp(Tmp)
@@ -4342,7 +4312,6 @@ Protected Class Shape
 		      XMLReadConstructionInfoDuplPoint(Tmp)
 		    Case 45
 		      XMLReadConstructionInfoAutoInter(Tmp)
-		      
 		    end select
 		    if self isa point then
 		      point(self).mobility
@@ -4445,21 +4414,12 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoDuplicate(Tmp as XMLElement)
-		  dim x, y as double
 		  dim Mat as Matrix
-		  dim j as integer
 		  
 		  Mat = new Matrix(Tmp)
 		  
 		  constructedby.data.append Mat
-		  'if not self isa point then
-		  'for j = 0 to npts-1
-		  'points(j).setconstructedby constructedby.shape.points(j), 3
-		  'points(j).constructedby.data.append Mat
-		  'points(j).mobility
-		  'points(j).updateguides
-		  'next
-		  'end if
+		  
 		  if self isa droite then
 		    if forme = 1 or forme = 2 then
 		      forme = 0
@@ -4528,10 +4488,10 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub XMLReadConstructionInfoMerge(Temp as XMLElement)
-		  dim EL0, EL1, EL2 as XMLElement
+		  dim EL0 as XMLElement
 		  dim Fus1, Fus2, Fus as shape
-		  dim pt, q as point
-		  dim n, i as integer
+		  dim q as point
+		  dim n as integer
 		  dim M1, M2 as Matrix
 		  
 		  //Temp est le "constructedby", Deux "childs", de 0 à 1
@@ -4659,11 +4619,9 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Function XMLReadPoint(EL as XMLElement) As point
-		  dim  i, num as integer
+		  dim num as integer
 		  dim s as point
 		  dim sh as shape
-		  dim List as XMLNodeList
-		  dim lab as label
 		  
 		  num = Val(EL.GetAttribute("Id"))
 		  sh = CurrentContent.theobjects.GetShape(num)
@@ -4717,10 +4675,10 @@ Protected Class Shape
 
 	#tag Method, Flags = &h0
 		Sub XMLReadPtsSur(Temp as XMLElement)
-		  dim i , IdPoint3 as integer
+		  dim i as integer
 		  dim EL,  EL1 as XMLElement
 		  dim List As XMLNodelist
-		  dim pt, pt3 as point
+		  dim pt as point
 		  
 		  List = Temp.XQL("Childs")
 		  if List.Length  > 0 then
@@ -4733,24 +4691,6 @@ Protected Class Shape
 		      end if
 		    next
 		  end if
-		  
-		  'if self isa supphom then
-		  'IdPoint3 = val(EL.GetAttribute("IdPoint3"))
-		  'if IdPoint3 <> 0 then
-		  'pt3 = Point(currentcontent.theobjects.getshape(IdPoint3))
-		  'if pt3.pointsur.count<> 1 then
-		  'return
-		  'end if
-		  'if pt3.pointsur.item(0) = self then
-		  'supphom(self).DRAP = false
-		  'supphom(self).Bip = nil
-		  'else
-		  'supphom(self).DRAP = true
-		  'supphom(self).Bip = BiPoint(pt3.pointsur.item(0))
-		  'end if
-		  'supphom(self).Point3 = pt3
-		  'end if
-		  'end if
 		End Sub
 	#tag EndMethod
 
