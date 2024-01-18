@@ -1117,7 +1117,6 @@ Inherits Liste
 		    s = XMLLoadStdForm (temp)
 		  End Select
 		  s.id = id
-		  s.createskull(s.Points(0).bpt)
 		  addshape(s)
 		  
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then

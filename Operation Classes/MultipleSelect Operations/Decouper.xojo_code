@@ -334,7 +334,6 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  
 		  ReCreateCreatedFigures(Temp)
 		  WorkWindow.refresh
 		End Sub

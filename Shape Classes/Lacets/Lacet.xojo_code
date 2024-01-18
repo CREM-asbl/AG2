@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Lacet
 Inherits Shape
-	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddPoint(p as BasicPoint)
 		  'Sert à introduire les points correspondants aux points de découpe. Les  côtés correspondants sont nécessairement rectilignes sauf ptet le dernier.
@@ -105,8 +105,15 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub createskull(p as BasicPoint)
+		Sub Constructor(ol as ObjectsList, El as XMLElement)
+		  Super.Constructor(ol, El)
+		  createskull(Points(0).bpt)
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub createskull(p as BasicPoint)
 		  dim ncurv as integer
 		  
 		  ncurv = 2*narcs + npts  'Chaque arc (côté incurvé) comporte trois sous-arcs
