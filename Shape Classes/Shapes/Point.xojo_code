@@ -1383,7 +1383,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub MoveTo(d as BasicPoint)
-		  // Surtout ne pas tester si  (bpt.distance(d) > epsilon)
+		  // Surtout ne pas tester si (bpt.distance(d) > epsilon)
 		  if d <> nil then
 		    bpt = d                       'On déplace même les points modifiés
 		    if labs <> nil and labs.count = 1 and not(labs.item(0).LockRight and labs.item(0).LockBottom) then
@@ -1984,13 +1984,13 @@ Inherits Shape
 		    wend
 		    q.setconstructedby s1, 10
 		  end if
-		  k =q.numside(0) - s1.numside(0)
-		  if k < 0 and  s isa polygon then
-		    k =  k+ s.npts
+		  k = q.numside(0) - s1.numside(0)
+		  if k < 0 and s isa polygon then
+		    k =  k + s.npts
 		  end if
 		  q.constructedby.data.append k
 		  q.mobility
-		  'q.updateguides
+		  
 		  
 		  
 		  
@@ -2262,12 +2262,12 @@ Inherits Shape
 		  dim CutPt as Boolean
 		  
 		  n = Pointsur.getposition(pol)
-		  i=0
-		  while (i<= UBound(ConstructedShapes) and not Cutpt)   'si c'est un point de découpe, on le maintient sur le même côté
+		  i = 0
+		  while (i <= UBound(ConstructedShapes) and not Cutpt)   'si c'est un point de découpe, on le maintient sur le même côté
 		    if ConstructedShapes(i).ConstructedBy.Oper=5 or  point(constructedshapes(i)).surseg  or surseg then
-		      CutPt =true
+		      CutPt = true
 		    else
-		      i=i+1
+		      i = i+1
 		    end if
 		  wend
 		  
@@ -2284,7 +2284,7 @@ Inherits Shape
 		    b = Pol.Points((numside(n)+1) mod Pol.npts).bpt
 		    location(n) = bpt.location(a,b)
 		    if pieddeperp then                            'Pour les pieds de hauteur
-		      if location(n) <0 or location(n) >1 then
+		      if location(n) < 0 or location(n) > 1 then
 		        invalider
 		      else
 		        valider
@@ -2776,12 +2776,12 @@ Inherits Shape
 		          next
 		        end if
 		      Case 10 'duplication de pointsur
+		        s.numside(0) = (numside(0) + s.constructedBy.data(0)) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
 		        End If
-		        
 		      end select
 		      s.modified = true
 		      s.updateshape
@@ -2798,6 +2798,7 @@ Inherits Shape
 		        M1 = M1.inv
 		        s.Moveto M1*(self.bpt)
 		      Case 10
+		        s.numside(0) = (numside(0) - constructedBy.data(0) + pointsur.item(0).npts) mod pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
@@ -2854,7 +2855,7 @@ Inherits Shape
 		    end if                   'On évite de faire des pas trop grands
 		  end if
 		  Moveto np  
-		  if  forme =1  then
+		  if forme = 1  then
 		    sh = pointsur.item(0)
 		    If Not sh IsA arc Then
 		      puton sh
@@ -2868,7 +2869,7 @@ Inherits Shape
 		  End If
 		  updateshape
 		  
-		  //Si le point mobile possède un ou des duplicata, ceux-ci  sont modifiés dès le départ; 
+		  //Si le point mobile possède un ou des duplicata, ceux-ci sont modifiés dès le départ; 
 		  //on initialise ainsi la modification de toutes les figures
 		  // ... et ce n'est pas une bonne idée car le point mobile peut à ce moment être déplacé en un endroit 
 		  // où il ne peut aller! exemple: sommet de l'angle droit d'un triangle rectangle

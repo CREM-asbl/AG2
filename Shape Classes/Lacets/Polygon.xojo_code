@@ -661,7 +661,7 @@ Inherits Lacet
 		  
 		  distmin = 1000
 		  imin = -1
-		  for i=0  to npts-1
+		  for i = 0  to npts-1
 		    dist = p.distance(Points(i).bpt,Points((i+1) mod npts).bpt)
 		    if dist <= distmin then
 		      if dist <  delta and  p.between(Points(i).bpt,Points((i+1) mod npts).bpt) then
@@ -744,7 +744,6 @@ Inherits Lacet
 		    for j = ubound(points) +1 to ubound(childs)
 		      childs(j).ToEps(tos)
 		    next
-		    
 		  end if
 		  
 		  

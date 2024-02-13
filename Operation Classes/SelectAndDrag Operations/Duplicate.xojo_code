@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Duplicate
 Inherits SelectAndDragOperation
-	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub abort()
 		  dim i as integer
@@ -126,7 +126,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  
 		  dim pt, q, s1 as point
 		  dim M as Matrix
 		  dim sh as shape
@@ -149,7 +148,7 @@ Inherits SelectAndDragOperation
 		    
 		    if sh.sametype(CurrentAttractingShape) or q.surseg or (sh isa circle and currentattractingshape isa droite and droite(currentattractingshape).nextre = 2) then
 		      CurrentContent.Thefigs.RemoveFigure Currentattractingshape.fig
-		      pt.putduplicateon(Currentattractingshape,q)
+		      pt.putduplicateon(Currentattractingshape, q)
 		      q.addtofigure
 		    else
 		      abort
@@ -267,7 +266,7 @@ Inherits SelectAndDragOperation
 		  
 		  dim M as Matrix
 		  
-		  if  tempshape.count = 0 then
+		  if tempshape.count = 0 then
 		    return
 		  end if
 		  if endpoint.distance(startpoint) < epsilon then
@@ -282,7 +281,7 @@ Inherits SelectAndDragOperation
 		      figs.move(M)
 		    end if
 		    CurrentContent.theobjects.enablemodifyall
-		    EndPoint=Endpoint+magneticD
+		    EndPoint = Endpoint + magneticD
 		  elseif copyptsur then
 		    abort
 		  end if
