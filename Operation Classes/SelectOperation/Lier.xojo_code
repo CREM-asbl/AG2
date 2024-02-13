@@ -60,8 +60,8 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
-		  for i =  tempshape.count-1 downto 0
-		    selectedGroupId =  tempshape.item(i).IDGroupe
+		  for i = tempshape.count-1 downto 0
+		    selectedGroupId = tempshape.item(i).IDGroupe
 		    if prem then
 		      if selectedGroupId = -1 then
 		        Objects.Groupes.append new ObjectsList
@@ -79,9 +79,9 @@ Inherits SelectOperation
 		        fusionner(n1, n2)
 		        NumList = n1
 		      end if
-		      EndOperation
 		    end if
 		  next
+		  EndOperation
 		  
 		End Sub
 	#tag EndMethod

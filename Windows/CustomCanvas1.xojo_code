@@ -1,6 +1,7 @@
 #tag Class
 Protected Class CustomCanvas1
 Inherits Canvas
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
 		  Dim p As BasicPoint
@@ -792,7 +793,7 @@ Inherits Canvas
 		  me.width = WorkWindow.width - me.left
 		  me.height = WorkWindow.height
 		  
-		  BackgroundPicture=New Picture(width,height,screen(0).depth)
+		  BackgroundPicture = New Picture(width,height,screen(0).depth)
 		  BackgroundPicture.graphics.ForeColor= &cFFFFFF
 		  BackgroundPicture.graphics.FillRect(0,0,width,height)
 		  if config <> nil then
@@ -802,7 +803,7 @@ Inherits Canvas
 		  end if
 		  BackgroundPicture.graphics.Bold = true
 		  
-		  OffscreenPicture=New Picture(width,height,screen(0).depth)
+		  OffscreenPicture = New Picture(width,height,screen(0).depth)
 		  OffscreenPicture.Transparent = 1
 		  
 		  

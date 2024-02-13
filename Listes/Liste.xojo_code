@@ -29,7 +29,7 @@ Protected Class Liste
 
 	#tag Method, Flags = &h0
 		Function count() As integer
-		  return ubound(objects)+1
+		  return objects.count
 		End Function
 	#tag EndMethod
 
