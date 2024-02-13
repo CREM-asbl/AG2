@@ -737,7 +737,7 @@ Inherits Lacet
 		    end if
 		    
 		    if pointe then
-		      for j = 0 to ubound(points)
+		      for j = 0 to childs.count-1
 		        childs(j).ToEps(tos)
 		      next
 		    end if
@@ -776,6 +776,14 @@ Inherits Lacet
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false
