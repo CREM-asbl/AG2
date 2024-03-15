@@ -200,6 +200,12 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function isSameAs(b as Basicpoint) As Boolean
+		  return distance(b) < Epsilon 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Location(a as BasicPoint, b as BasicPoint) As double
 		  dim r,d as double
 		  

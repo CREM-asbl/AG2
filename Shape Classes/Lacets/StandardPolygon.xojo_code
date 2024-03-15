@@ -1,6 +1,7 @@
 #tag Class
 Protected Class StandardPolygon
 Inherits Polygon
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as ObjectsList)
 		  
@@ -156,29 +157,73 @@ Inherits Polygon
 		Function Fusionner(Fus2 as Lacet, start1 as integer, start2 as integer, dir as integer) As Polygon
 		  dim specs as StdPolygonSpecifications
 		  dim Fus as StandardPolygon
-		  dim i as integer
+		  dim i, j as integer
+		  dim dr1, dr2 as BiBPoint
+		  dim segments1(), segments2() As BiBPoint
+		  dim pts() As BasicPoint
 		  
-		  Fus = new StandardPolygon(Objects, 14, npts+fus2.npts-5, Points((start1+1)mod npts).bpt)
-		  Fus.npts=1
-		  
-		  for i = 2 to npts-1
-		    Fus.AddPoint Points((start1+i) mod npts).bpt
+		  for i = 0 to npts-1
+		    segments1.Add(getBiBside(i))
 		  next
-		  if  dir = -1  then
-		    for  i = 1 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
+		  
+		  for i = 0 to Fus2.npts-1
+		    segments2.Add(Fus2.getBiBside(i))
+		  next
+		  
+		  
+		  for i = segments1.LastIndex downto 0
+		    dr1 = segments1(i)
+		    for j = segments2.LastIndex downto 0
+		      dr2 = segments2(j)
+		      if dr1.sufficientlynear(dr2) then
+		        segments1.RemoveAt(i)
+		        segments2.RemoveAt(j)
+		      elseif dr1.sufficientlynear(dr2.returned) then
+		        segments1.RemoveAt(i)
+		        segments2.RemoveAt(j)                    
+		      end if
 		    next
-		  elseif dir = 1 then
-		    for i = 0 to Fus2.npts-2
-		      Fus.AddPoint Fus2.Points((start2+Fus2.npts-i) mod Fus2.npts).bpt
-		    next
-		  end if
-		  Fus.coord= new nBPoint(Fus)
+		  next
+		  
+		  for i = 0 to segments2.LastIndex
+		    segments1.Add segments2(i)
+		  next 
+		  
+		  pts.add(segments1(0).First)
+		  pts.add(segments1(0).Second)
+		  segments1.RemoveAt(0)
+		  i = 0 
+		  
+		  do
+		    dim pt as BasicPoint
+		    pt = pts(pts.LastIndex)
+		    if Segments1(i).First.isSameAs(pt) then
+		      pts.add(segments1(i).second)
+		      segments1.RemoveAt(i)
+		      i = 0
+		    elseif Segments1(i).Second.isSameAs(pt) then
+		      pts.add(segments1(i).First)
+		      segments1.RemoveAt(i)
+		      i = 0 
+		    else
+		      i = i + 1
+		    end if
+		  loop until segments1.count = 1 or i = segments1.count
+		  
+		  
+		  Fus = new StandardPolygon(Objects, 14, pts.count, pts(0))
+		  Fus.npts = 1
+		  
+		  for i = 1 to pts.LastIndex 
+		    Fus.AddPoint pts(i)
+		  next
+		  
+		  Fus.coord = new nBPoint(Fus)
 		  specs = fus.createspecs
 		  
 		  redim Fus.Angles(Fus.npts-2)
 		  redim Fus.Distances(Fus.npts-2)
-		  for i=0 to Fus.npts-2
+		  for i = 0 to Fus.npts-2
 		    Fus.Angles(i) = specs.Angles(i)
 		    Fus.Distances(i) = specs.Distances(i)
 		  next
@@ -252,16 +297,14 @@ Inherits Polygon
 
 	#tag Method, Flags = &h0
 		Function PossibleFusionWith(S as Lacet, byref i0 as integer, byref j0 as integer, byref dir as integer) As boolean
-		  dim i, j as integer
+		  dim i, j, k as integer
 		  dim delta as double
 		  dim dr1, dr2 as BiBPoint
 		  
 		  'Rappel: les polygones standard sont toujours orientés positivement (InverserOri est appliqué en cas de retournement)
 		  'Néanmoins les deux cas dir = 1 et dir = -1 peuvent se présenter
 		  
-		  delta = can.MagneticDist
-		  
-		  for i = 0  to npts-1
+		  for i = 0 to npts-1
 		    dr1 = getBiBside(i)
 		    for j = 0 to S.npts-1
 		      dr2 = s.getBiBside(j)
@@ -270,14 +313,15 @@ Inherits Polygon
 		        j0 = j
 		        dir = 1
 		        return true
-		      elseif  dr1.sufficientlynear(dr2.returned) then
+		      elseif dr1.sufficientlynear(dr2.returned) then
 		        i0 = i
 		        j0 = j
 		        dir = -1
-		        return true                     
+		        return true               
 		      end if
 		    next
 		  next
+		  
 		  return false
 		  
 		End Function
@@ -351,6 +395,14 @@ Inherits Polygon
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="paraperp"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ArcAngle"
 			Visible=false

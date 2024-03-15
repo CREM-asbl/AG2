@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Fusion
 Inherits MultipleSelectOperation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  super.constructor
@@ -12,7 +13,6 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  dim i as integer
 		  dim Tr as BasicPoint
 		  
 		  
@@ -44,9 +44,9 @@ Inherits MultipleSelectOperation
 		  Fus.Move(M1)
 		  
 		  Fus.EndConstruction
-		  if not fus.std then
-		    SetConstructionInfo(dir)
-		  end if
+		  'if not fus.std then
+		  'SetConstructionInfo(dir)
+		  'end if
 		  
 		  
 		  
@@ -60,6 +60,69 @@ Inherits MultipleSelectOperation
 		  Fus1 = Nil
 		  Fus2 = Nil
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function getFusionPts() As BasicPoint()
+		  dim i, j as integer
+		  dim dr1, dr2 as BiBPoint
+		  dim segments1(), segments2() As BiBPoint
+		  dim pts() As BasicPoint
+		  
+		  for i = 0 to Fus1.npts-1
+		    segments1.Add(Fus1.getBiBside(i))
+		  next
+		  
+		  for i = 0 to Fus2.npts-1
+		    segments2.Add(Fus2.getBiBside(i))
+		  next
+		  
+		  
+		  for i = segments1.LastIndex downto 0
+		    dr1 = segments1(i)
+		    for j = segments2.LastIndex downto 0
+		      dr2 = segments2(j)
+		      if dr1.sufficientlynear(dr2) then
+		        segments1.RemoveAt(i)
+		        segments2.RemoveAt(j)
+		      elseif dr1.sufficientlynear(dr2.returned) then
+		        segments1.RemoveAt(i)
+		        segments2.RemoveAt(j)                    
+		      end if
+		    next
+		  next
+		  
+		  for i = 0 to segments2.LastIndex
+		    segments1.Add segments2(i)
+		  next 
+		  
+		  MessageBox str(segments1.count)
+		  
+		  pts.add(segments1(0).First)
+		  pts.add(segments1(0).Second)
+		  segments1.RemoveAt(0)
+		  i = 0 
+		  
+		  do
+		    dim pt as BasicPoint
+		    pt = pts(pts.LastIndex)
+		    if Segments1(i).First.isSameAs(pt) then
+		      pts.add(segments1(i).second)
+		      segments1.RemoveAt(i)
+		      i = 0
+		    elseif Segments1(i).Second.isSameAs(pt) then
+		      pts.add(segments1(i).First)
+		      segments1.RemoveAt(i)
+		      i = 0 
+		    else
+		      i = i + 1
+		    end if
+		  loop until segments1.count = 1 or i = segments1.count
+		  
+		  MessageBox str(pts.count)
+		  return pts
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -81,7 +144,7 @@ Inherits MultipleSelectOperation
 		  case 1
 		    return s
 		  case 2
-		    if  S<>Fus1 and Lacet(Fus1).PossibleFusionWith(Lacet(s), start1, start2, dir) then
+		    if  S <> Fus1 and Lacet(Fus1).PossibleFusionWith(Lacet(s), start1, start2, dir) then
 		      return s
 		    end if
 		  end select
@@ -227,7 +290,7 @@ Inherits MultipleSelectOperation
 		    elseif s.std then
 		      Fus2 = StandardPolygon(s)
 		    else
-		      Fus2 =Polygon(s)
+		      Fus2 = Polygon(s)
 		    end if
 		    if Fus2.std and not Fus1.std then
 		      P = Fus1

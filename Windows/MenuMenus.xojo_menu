@@ -87,6 +87,9 @@ Begin Menu MenuMenus
          SpecialMenu = 0
          Index = -2147483648
          Text = "Coller"
+         ShortcutKey = "V"
+         Shortcut = "Cmd+V"
+         MenuModifier = True
          AutoEnabled = True
          AutoEnable = True
          Visible = True

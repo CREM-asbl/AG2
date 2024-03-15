@@ -1,6 +1,7 @@
 #tag Class
 Protected Class BiBPoint
 Inherits nBpoint
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function Anglepolaire() As double
 		  dim bp as Basicpoint
@@ -99,7 +100,7 @@ Inherits nBpoint
 	#tag Method, Flags = &h0
 		Function BiBInterBiB(B2 as BiBPoint) As BasicPoint
 		  dim B1 as BiBPoint
-		  dim p , q, r as BasicPoint
+		  dim p, q, r as BasicPoint
 		  dim t, det as double
 		  
 		  B1 = self

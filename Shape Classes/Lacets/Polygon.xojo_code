@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Polygon
 Inherits Lacet
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function airealge() As double
 		  
@@ -283,29 +284,87 @@ Inherits Lacet
 	#tag Method, Flags = &h0
 		Function Fusionner(Fus2 as Lacet, start1 as integer, start2 as integer, dir as integer) As Polygon
 		  dim Fus as Polyqcq
-		  dim i as integer
+		  dim i, j as integer
+		  dim dr1, dr2 as BiBPoint
+		  dim segments1(), segments2() As BiBPoint
+		  dim pts() As BasicPoint
 		  
-		  if  dir = -1  then
-		    Fus = new Polyqcq(Objects,Points((start1+1)mod npts).bpt)
-		    for i = 2 to npts-1
-		      Fus.AddPoint Points((start1+i) mod npts).bpt
+		  for i = 0 to npts-1
+		    segments1.Add(getBiBside(i))
+		  next
+		  
+		  for i = 0 to Fus2.npts-1
+		    segments2.Add(Fus2.getBiBside(i))
+		  next
+		  
+		  
+		  for i = segments1.LastIndex downto 0
+		    dr1 = segments1(i)
+		    for j = segments2.LastIndex downto 0
+		      dr2 = segments2(j)
+		      if dr1.sufficientlynear(dr2) then
+		        segments1.RemoveAt(i)
+		        segments2.RemoveAt(j)
+		      elseif dr1.sufficientlynear(dr2.returned) then
+		        segments1.RemoveAt(i)
+		        segments2.RemoveAt(j)                    
+		      end if
 		    next
-		    for  i = 1 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
-		    next
-		  elseif dir = 1 then
-		    Fus = new Polyqcq(Objects, Points(start1).bpt)
-		    for i = 1 to npts-1
-		      Fus.AddPoint Points((start1+i) mod npts).bpt
-		    next
-		    for i = 0 to Fus2.npts-1
-		      Fus.AddPoint Fus2.Points((start2+ i) mod Fus2.npts).bpt
-		    next
-		    
-		    Fus.Points(0).Identify1(Fus.Points(npts))
-		    Fus.Points(1).Identify1(Fus.Points(npts+1))
-		  end if
-		  Fus.coord= new nBPoint(Fus)
+		  next
+		  
+		  for i = 0 to segments2.LastIndex
+		    segments1.Add segments2(i)
+		  next 
+		  
+		  pts.add(segments1(0).First)
+		  pts.add(segments1(0).Second)
+		  segments1.RemoveAt(0)
+		  i = 0 
+		  
+		  do
+		    dim pt as BasicPoint
+		    pt = pts(pts.LastIndex)
+		    if Segments1(i).First.isSameAs(pt) then
+		      pts.add(segments1(i).second)
+		      segments1.RemoveAt(i)
+		      i = 0
+		    elseif Segments1(i).Second.isSameAs(pt) then
+		      pts.add(segments1(i).First)
+		      segments1.RemoveAt(i)
+		      i = 0 
+		    else
+		      i = i + 1
+		    end if
+		  loop until segments1.count = 1 or i = segments1.count
+		  
+		  Fus = new Polyqcq(Objects, pts(0))
+		  Fus.npts = 1
+		  
+		  for i = 1 to pts.LastIndex 
+		    Fus.AddPoint pts(i)
+		  next
+		  
+		  
+		  'if dir = -1  then
+		  'Fus = new Polyqcq(Objects,Points((start1+1)mod npts).bpt)
+		  'for i = 2 to npts-1
+		  'Fus.AddPoint Points((start1+i) mod npts).bpt
+		  'next
+		  'for  i = 1 to Fus2.npts-1
+		  'Fus.AddPoint Fus2.Points((start2+i) mod fus2.npts).bpt
+		  'next
+		  'elseif dir = 1 then
+		  'Fus = new Polyqcq(Objects, Points(start1).bpt)
+		  'for i = 1 to npts-1
+		  'Fus.AddPoint Points((start1+i) mod npts).bpt
+		  'next
+		  'for i = 0 to Fus2.npts-1
+		  'Fus.AddPoint Fus2.Points((start2+ i) mod Fus2.npts).bpt
+		  'next
+		  'Fus.Points(0).Identify1(Fus.Points(npts))
+		  'Fus.Points(1).Identify1(Fus.Points(npts+1))
+		  'end if
+		  Fus.coord = new nBPoint(Fus)
 		  return Fus
 		End Function
 	#tag EndMethod
