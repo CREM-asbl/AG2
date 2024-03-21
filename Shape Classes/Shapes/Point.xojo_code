@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Point
 Inherits Shape
-	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  dim List0, list1 as figslist
@@ -2731,7 +2731,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub Transform(M as Matrix)
-		  if (not modified)  or (pointsur.count =1 and  allparentsqcq)  then
+		  if (not modified) or (pointsur.count = 1 and  allparentsqcq) then
 		    Move (M)
 		  end if
 		  

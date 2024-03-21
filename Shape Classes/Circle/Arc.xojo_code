@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Arc
 Inherits Circle
-	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function aire() As double
 		  return arcangle*Pow(getradius,2)/2

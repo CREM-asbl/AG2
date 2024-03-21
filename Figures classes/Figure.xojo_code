@@ -853,11 +853,14 @@ Protected Class Figure
 		  dim ep, np as BasicPoint
 		  
 		  n = ListPtsModifs(0)
-		  s = shapes.item(0)
 		  p = Point(somm.item(n)) 
+		  s = p.parents(0)
 		  
-		  if s isa arc or s isa DSect  then
-		    return s.Modifier1(n)
+		  if s isa arc or s isa DSect then
+		    if (n > 1) then
+		      lockBoucleArcs
+		    end if 
+		    return s.Modifier1(s.GetIndexPoint(p))
 		  end if
 		  
 		  if s isa TriangRect then
@@ -869,7 +872,7 @@ Protected Class Figure
 		  
 		  choixpointsfixes
 		  
-		  if  NbUnModif > 2 then
+		  if NbUnModif > 2 then
 		    return new Matrix(1)
 		  end if
 		  
@@ -899,17 +902,7 @@ Protected Class Figure
 		    n1 = s.Points.indexof(p1)
 		    n2 = s.Points.indexof(p2)
 		    if n <> -1 and NbUnModif = 0 then
-		      'if s isa quadri then                             '  Modifications introduites le 19 mai 2014 puis supprimées le 8 juillet 2014  Surveiller!!
-		      'if abs(n1-n2) = 2 then
 		      return new similaritymatrix(p1, p2, ep, np)
-		      'elseif n1= (n+2) mod 4 then
-		      'return s.Modifier1fixe(p1,p)
-		      'else
-		      'return  s.Modifier1fixe(p2,p)
-		      'else
-		      'return s.Modifier1fixe(p1,p)
-		      'end if
-		      
 		    else
 		      return nil
 		    end if
@@ -1058,7 +1051,7 @@ Protected Class Figure
 		Function autospeupdate4() As Matrix
 		  dim p As point
 		  
-		  dim i0, i, k, n as integer
+		  dim i, k, n as integer
 		  dim t as boolean
 		  dim s as shape
 		  
@@ -1350,10 +1343,6 @@ Protected Class Figure
 		  // 2) placer ceux qui sont des points sur directement après les non modifiables dans la liste des candidats points fixes.
 		  // Mais on exclut tous les points déjà modifiés de la liste des candidats points fixes
 		  
-		  'if fx1 <> - 1 Then
-		  'return
-		  'end if
-		  
 		  redim pointsfixes(-1)
 		  redim ptfx0(-1)
 		  
@@ -1380,9 +1369,7 @@ Protected Class Figure
 		  Dim h, i, n, m, m0, i0 As Integer
 		  dim sf as figure
 		  
-		  
-		  
-		  n = subs.count -1
+		  n = subs.count-1
 		  
 		  //1ere étape: Insérer toutes les sous-figures contenant le point mobile plus celles qui les précèdent
 		  m0 = -2
@@ -1408,6 +1395,7 @@ Protected Class Figure
 		        end if
 		      end if
 		    next
+		    
 		    if i0 <> -1 then
 		      if h0 <> 0  then
 		        InsertPreceding(i0)
@@ -1418,13 +1406,12 @@ Protected Class Figure
 		  Loop
 		  
 		  
-		  
 		  if m = n then
 		    return
 		  end if
 		  
 		  
-		  //2eme etape: insérer  les sous-figures ne contenant pas le point mobile et précédées par au moins une autre sous-figure
+		  //2eme etape: insérer les sous-figures ne contenant pas le point mobile et précédées par au moins une autre sous-figure
 		  m0 = -2
 		  
 		  Do Until  m = m0 or m = n
@@ -1813,11 +1800,11 @@ Protected Class Figure
 		  
 		  Mat = new MatrixnD(n)
 		  
-		  for i = 0 to n -2
-		    f1=Figure(subs.item(i))
+		  for i = 0 to n-2
+		    f1 = Figure(subs.item(i))
 		    for j = i+1 to n-1
 		      f2 = Figure(subs.item(j))
-		      if  f1.precede(f2) then
+		      if f1.precede(f2) then
 		        mat.col(i,j) = 1
 		      end if
 		      if f2.precede(f1) then
@@ -1825,7 +1812,6 @@ Protected Class Figure
 		      end if
 		    next
 		  next
-		  
 		  
 		  
 		End Sub
@@ -2018,8 +2004,6 @@ Protected Class Figure
 		  dim f1, sf as figure
 		  dim i as integer
 		  
-		  
-		  
 		  f1 = subs.item(pos(0))
 		  
 		  for i = 1 to ubound(pos)
@@ -2031,7 +2015,7 @@ Protected Class Figure
 		  next
 		  
 		  pos.remove 0
-		  for i =  subs.count-1 downto 0
+		  for i = subs.count-1 downto 0
 		    if pos.indexof(i) <> -1 then
 		      subs.removefigure subs.item(i)
 		    end if
@@ -2297,7 +2281,7 @@ Protected Class Figure
 		    f2 = subs.item(h)
 		    
 		    if rang.indexof(h)=-1 and Mat.Col(h,i) = 1 then
-		      if not( (f1.auto=2 ) and (f2.auto=1) and f1.NbTrueSommCommuns(f2) >=2) then
+		      if not( (f1.auto=2 ) and (f2.auto=1) and f1.NbTrueSommCommuns(f2) >= 2) then
 		        s = 0
 		        for j = 1 to n
 		          s = s + MP(j).Col(h,i)
@@ -2473,6 +2457,28 @@ Protected Class Figure
 		  
 		  choixsubfig(p, h0)    //on choisit une sous fig de départ Toutes les sous-fig qui la précèdent doivent ...
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub lockBoucleArcs()
+		  dim i,n As integer
+		  
+		  n = shapes.count
+		  if shapes.count = 1 then
+		    return
+		  end if
+		  i = 0
+		  Do 
+		    if not Shapes.item(i) isa Arc then
+		      return
+		    end if
+		    i = i + 1
+		  Loop until i < Shapes.count
+		  
+		  for i = 0 to Somm.count-1
+		    somm.item(i).modified = true
+		  next 
 		End Sub
 	#tag EndMethod
 
@@ -2859,8 +2865,6 @@ Protected Class Figure
 		  dim i,  k, n as integer
 		  dim p as point
 		  
-		  
-		  
 		  // On dresse la liste des sommets de liberte nulle qui ne sont ni construits  par cette sous-figure ni modifiés
 		  // Ces points ne pourront être modifiés, on devra les prendre comme points fixes des matrices à calculer
 		  //Points de liberte nulle (routine "mobility") :
@@ -2881,11 +2885,11 @@ Protected Class Figure
 		    if ubound(p.parents) >=1 then
 		      n = 0
 		      for k = 0 to ubound(p.parents)
-		        if (p.parents(k) isa triangrect and p.parents(k).getindexpoint(p) = 1) or  (p.parents(k) isa triangiso and p.parents(k).getindexpoint(p) = 2) then
+		        if (p.parents(k) isa triangrect and p.parents(k).getindexpoint(p) = 1) or (p.parents(k) isa triangiso and p.parents(k).getindexpoint(p) = 2) or p.parents(k) isa Arc then
 		          n = n+1
 		        end if
 		      next
-		      if n >=2 then
+		      if n >= 2 then
 		        p.unmodifiable = true
 		      end if
 		    end if
@@ -2894,12 +2898,10 @@ Protected Class Figure
 		  NbUnModif = 0
 		  
 		  for i = 0 to somm.count-1
-		    p =somm.item(i)
+		    p = somm.item(i)
 		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pmobi ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
-		      'if p.pointsur.count <> 2 then
 		      NbUnModif = NbUnModif+1
-		      'end if
 		    end if
 		  next
 		  
@@ -2925,7 +2927,7 @@ Protected Class Figure
 		  
 		  
 		  
-		  // on recense les points  non modifiés et modifiables  absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
+		  // on recense les points  non modifiés et modifiables absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
 		  pmob = supfig.pmobi
 		  
 		  for i = 0 to somm.count-1
@@ -3734,7 +3736,6 @@ Protected Class Figure
 		Function subfigupdate() As Boolean
 		  Dim M As Matrix
 		  
-		  
 		  NbUnModif = 0
 		  select case auto
 		  case -1
@@ -3825,7 +3826,6 @@ Protected Class Figure
 		    end if
 		  next
 		  
-		  
 		  pos2.append pos(0)
 		  
 		  for i = 1 to n0-1
@@ -3839,10 +3839,10 @@ Protected Class Figure
 		  if n0 = 2 then
 		    f1 = subs.item(pos(0))
 		    f2 = subs.item(pos(1))
-		    if f1.shapes.count = 1 and f2.shapes.count =1 then
+		    if f1.shapes.count = 1 and f2.shapes.count = 1 then
 		      s1 = f1.shapes.item(0)
 		      s2 = f2.shapes.item(0)
-		      t = (s1.constructedby <> nil and s1.constructedby.oper = 3 and s1.constructedby.shape = s2 ) or (s2.constructedby <> nil and s2.constructedby.oper = 3 and s2.constructedby.shape = s1 )
+		      t = (s1.constructedby <> nil and s1.constructedby.oper = 3 and s1.constructedby.shape = s2 ) or (s2.constructedby <> nil and s2.constructedby.oper = 3 and s2.constructedby.shape = s1)
 		    else
 		      t = false
 		    end if

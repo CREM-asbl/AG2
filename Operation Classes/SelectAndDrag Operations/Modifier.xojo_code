@@ -213,7 +213,7 @@ Inherits SelectAndDragOperation
 		    return nil
 		  end if
 		  
-		   s = point(visible.item(0))
+		  s = point(visible.item(0))
 		  
 		  if s <> nil then
 		    for i = 0 to s.parents.count-1

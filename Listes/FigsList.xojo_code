@@ -1,6 +1,7 @@
 #tag Class
 Protected Class FigsList
 Inherits Liste
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub AddObject(Obj as Figure)
 		  Dim i As Integer
@@ -221,7 +222,7 @@ Inherits Liste
 		  next
 		  
 		  for i = 0 to count-1
-		    if item(i).isapoint = nil then                                    'Probleme: pourquoi avoir un jour supprimé ce test?  (révision 75) Prévu pour le cas ou des sommets de formes sont
+		    if item(i).isapoint = nil then       'Probleme: pourquoi avoir un jour supprimé ce test?  (révision 75) Prévu pour le cas ou des sommets de formes sont
 		      for j = 0 to item(i).subs.count-1                          'construits avant les formes.
 		        ff.subs.addobject item(i).subs.item(j)
 		      next
