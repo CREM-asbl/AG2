@@ -152,7 +152,7 @@ Inherits SelectOperation
 		  dim n as integer
 		  n = q.id
 		  
-		  if (not q.hidden or (ubound(q.parents) > -1 ) )  and not q.invalid and not q.deleted then
+		  if (not q.hidden or (q.parents.count > 0)) and not q.invalid and not q.deleted then
 		    if n > Ubound(Obeps) then
 		      redim Obeps(n)
 		    end if
@@ -255,7 +255,7 @@ Inherits SelectOperation
 		  for i = 0 to tempshape.count-1
 		    s = tempshape.item(i)
 		    n = s.id
-		    if  s isa point then
+		    if s isa point then
 		      adjoindrepoint(tos,Point(s))
 		    else
 		      for j = 0 to Ubound(s.childs)
@@ -573,8 +573,6 @@ Inherits SelectOperation
 		    if ti then
 		      CreateTip(tos)
 		    end if
-		    'tos.writeline(".endtransparencygroup")
-		    'tos.writeline(".poppdf14devicefilter")
 		    tos.writeline("fin")
 		    tos.close
 		    can.MouseCursor= System.Cursors.StandardPointer

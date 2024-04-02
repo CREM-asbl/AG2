@@ -2193,7 +2193,6 @@ Protected Class Shape
 		    p.valider
 		    return  AffiOrSimili
 		  else
-		    p.invalider
 		    return new Matrix(1)
 		  end if
 		  

@@ -1050,19 +1050,20 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function autospeupdate4() As Matrix
 		  dim p As point
-		  
 		  dim i, k, n as integer
 		  dim t as boolean
 		  dim s as shape
-		  
+		  dim M as Matrix
 		  
 		  choixpointsfixes
 		  s = shapes.item(0)
 		  n = NbSommSur
 		  
+		  if(s.Points.count < 4) then 
+		    return new Matrix(1)
+		  end if 
 		  select case n
 		  case 0, 1
-		    dim M as Matrix
 		    M = s.modifier4
 		    if M <> nil then
 		      return s.modifier4 
@@ -1070,7 +1071,7 @@ Protected Class Figure
 		      return autospeupdate3
 		    end if
 		  case 2
-		    t =replacerpoint (point(somm.item(Listsommsur(0))))
+		    t = replacerpoint (point(somm.item(Listsommsur(0))))
 		    t = replacerpoint (point(somm.item(Listsommsur(1))))
 		    if shapes.item(0)  isa rect and abs(listsommsur(0)-listsommsur(1)) = 2  then
 		      return autoaffupdate
@@ -1081,7 +1082,7 @@ Protected Class Figure
 		    if Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 2
 		        if i <> k then
-		          t =replacerpoint (point(somm.item(Listsommsur(i))))
+		          t = replacerpoint (point(somm.item(Listsommsur(i))))
 		        end if
 		      next
 		    else
@@ -1203,7 +1204,6 @@ Protected Class Figure
 		  dim u as BasicPoint
 		  
 		  s = trap(shapes.item(0))
-		  
 		  
 		  if NbSommSur > 0  and not s isa trapiso and not s isa traprect then
 		    i = ListSommSur(0)
@@ -3789,7 +3789,7 @@ Protected Class Figure
 		    updatePtsSur(M)
 		    updatePtsConsted(M)
 		    updateshapes(M)
-		    if  tobereconstructed then
+		    if tobereconstructed then
 		      tobereconstructed = false
 		      return true
 		    end if

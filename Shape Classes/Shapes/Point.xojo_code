@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Point
 Inherits Shape
-	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  dim List0, list1 as figslist
