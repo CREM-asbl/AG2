@@ -430,7 +430,7 @@ Protected Class BasicPoint
 		  dim q as basicpoint
 		  
 		  if distance(p) > Epsilon then
-		    q = p + (self -p)*(r/distance(p))
+		    q = p + (self-p)*(r/distance(p))
 		    return q
 		  else
 		    return self

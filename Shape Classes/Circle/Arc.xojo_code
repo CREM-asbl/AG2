@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Arc
 Inherits Circle
-	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Function aire() As double
 		  return arcangle*Pow(getradius,2)/2
@@ -130,7 +130,6 @@ Inherits Circle
 
 	#tag Method, Flags = &h0
 		Function computeangle(q as Basicpoint) As double
-		  
 		  return coord.computeangle(q,ori)
 		End Function
 	#tag EndMethod
@@ -148,7 +147,6 @@ Inherits Circle
 		    drapori = true  //on ne peut plus changer l'orientation
 		  end if
 		  arcangle = computeangle(points(2).bpt)
-		  
 		  'arcangle a toujours meme signe que l'orientation
 		End Sub
 	#tag EndMethod

@@ -829,8 +829,6 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Function autospeupdate() As Matrix
 		  select case NbPtsModif
-		  case 0
-		    return new Matrix(1)
 		  case 1
 		    return  autospeupdate1
 		  case 2
@@ -840,6 +838,8 @@ Protected Class Figure
 		  case 4
 		    return autospeupdate4
 		  end select
+		  
+		  return new Matrix(1)
 		  
 		  
 		End Function
@@ -3133,7 +3133,6 @@ Protected Class Figure
 		        Select Case  p.pointsur.count
 		        case  1
 		          p.puton p.pointsur.item(0)
-		          'p.unmodifiable = true
 		        end select
 		      end if
 		      if p.isonasupphom(s) = 2 then

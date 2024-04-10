@@ -1927,7 +1927,7 @@ Protected Class Shape
 		Function Modifier10(n as integer) As Matrix
 		  'Le point n° n est le seul point modifié. Il y a 0 points "sur"
 		  dim  r as double
-		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  dim ep0,ep1,ep2,np0,np1,np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  select case n
@@ -1981,7 +1981,7 @@ Protected Class Shape
 		  dim r as double
 		  dim M as Matrix
 		  
-		  dim ep0, ep1, ep2, np0,np1,np2 as BasicPoint
+		  dim ep0,ep1,ep2,np0,np1,np2 as BasicPoint
 		  epnp(ep0,ep1,ep2,np0,np1,np2)
 		  
 		  n0 = TroisiemeIndex(n1,n2)  'Le point n° n0 n'a pas été modifié.
@@ -1992,22 +1992,14 @@ Protected Class Shape
 		      return new SimilarityMatrix(ep1,ep2,np1,np2)
 		    end if
 		  case 1 'On modifie l'amplitude de l'arc
-		    if points(1).forme <> 1 then
-		      r = getradius
-		      points(2).moveto np2.projection(np0,r)
-		      return new AffinityMatrix(ep0,ep1,ep2,np0,np1,points(2).bpt)
-		    end if
+		    M = new RotationMatrix(Points(0).bpt, -self.arcangle)
+		    points(1).moveto M*Points(2).bpt
+		    return AffiOrSimili
 		  case 2  'On rétablit la figure en déplaçant l'extrémité  de l'arc points(2)
-		    self.computearcangle
 		    M = new RotationMatrix(Points(0).bpt, self.arcangle)
-		    if points(2).forme <> 1 then
-		      points(2).moveto points(2).bpt.projection(Points(1).bpt, M*Points(1).bpt)
-		      return AffiOrSimili
-		    else
-		      points(2).moveto M*Points(1).bpt
-		      points(2).modified = true
-		      return AffiOrSimili
-		    end if
+		    points(2).moveto M*Points(1).bpt
+		    points(2).modified = true
+		    return AffiOrSimili
 		  end select
 		  
 		  return new Matrix(1)
