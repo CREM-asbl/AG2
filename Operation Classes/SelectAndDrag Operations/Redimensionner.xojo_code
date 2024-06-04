@@ -104,7 +104,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub DoOper(p as BasicPoint)
-		  
 		  if currentshape isa repere then
 		    k0 = 1
 		    newrep(c,M1.rapport)

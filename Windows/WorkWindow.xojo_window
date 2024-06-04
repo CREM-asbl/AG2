@@ -3240,7 +3240,7 @@ End
 #tag Events MouvBut
 	#tag Event
 		Sub Pressed(index as Integer)
-		  If CurrentContent.TheObjects.count = 1 Then
+		  If CurrentContent.TheObjects.count = 1 and CurrentContent.thegrid = nil Then
 		    return
 		  end if
 		  
