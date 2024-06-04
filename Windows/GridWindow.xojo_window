@@ -21,7 +21,7 @@ Begin DesktopWindow GridWindow
    MinimumWidth    =   64
    Resizeable      =   False
    Title           =   ""
-   Type            =   11
+   Type            =   ""
    Visible         =   True
    Width           =   394
    Begin Label StaticText1
@@ -297,26 +297,24 @@ End
 		Sub Opening()
 		  StaticText1.Text = Dico.Value("ToolsGrid")
 		  StaticText2.Text = Dico.Value("PtSize")
-		  PopupMenu1.AddRow Dico.Value("Blank")
-		  PopupMenu1.AddRow Dico.Value("Squares")
-		  PopupMenu1.AddRow Dico.Value("Triangles")
 		  StaticText3.Text = Dico.Value("Step")
-		  Popupmenu3.addrow "1"
-		  PopupMenu3.AddRow "1/2"
-		  PopupMenu3.AddRow "1/3"
-		  PopupMenu3.AddRow "2"
-		  PopupMenu3.AddRow "3"
 		  
-		  if CurrentContent.thegrid = nil then
-		    popupmenu1.listindex = 0
-		  elseif CurrentContent.thegrid isa squaregrid then
-		    popupmenu1.listindex = 1
-		  elseif CurrentContent.thegrid isa hexgrid then
-		    popupmenu1.listindex = 2
-		  end if
+		  Dim popupMenu1Values() As String = Array("Blank", "Squares", "Triangles")
+		  For Each value As String In popupMenu1Values
+		    PopupMenu1.AddRow Dico.Value(value)
+		  Next
 		  
-		  popupmenu2.listindex = 0
-		  popupmenu3.listindex = 0
+		  Dim popupMenu3Values() As String = Array("1", "1/2", "1/3", "2", "3")
+		  For Each value As String In popupMenu3Values
+		    PopupMenu3.AddRow value
+		  Next
+		  
+		  PopupMenu1.ListIndex = If(CurrentContent.thegrid = Nil, 0, If(CurrentContent.thegrid IsA squaregrid, 1, 2))
+		  
+		  PopupMenu2.ListIndex = If(CurrentContent.TheGrid = Nil, 0, CurrentContent.thegrid.gs - 2) 
+		  
+		  Dim rapportValues() As Double = Array(1, 1/2, 1/3, 2, 3)
+		  PopupMenu3.ListIndex = If(CurrentContent.TheGrid = Nil, 0, rapportValues.IndexOf(CurrentContent.thegrid.rapport))
 		End Sub
 	#tag EndEvent
 
@@ -360,7 +358,7 @@ End
 #tag Events OkButton
 	#tag Event
 		Sub Action()
-		  Result=1
+		  Result = 1
 		  Hide
 		End Sub
 	#tag EndEvent
@@ -435,8 +433,7 @@ End
 			"6 - Rounded Window"
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
-			"9 - Metal Window"
-			"11 - Modeless Dialog"
+			"9 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
