@@ -1,6 +1,7 @@
 #tag Class
 Protected Class SquareGrid
 Inherits Grid
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(taille as integer)
 		  super.constructor(taille)
@@ -20,9 +21,9 @@ Inherits Grid
 		  dim d as double
 		  dim q as BasicPoint
 		  
-		  q = new Basicpoint(round(p.x), round(p.y))
+		  q = new Basicpoint(round(p.x/rapport)*rapport, round(p.y/rapport)*rapport)
 		  p = q-p
-		  d =  PointPriority-(p*p)*(can.scaling*can.scaling)
+		  d = PointPriority-(p*p)*(can.scaling*can.scaling)
 		  p = q
 		  return d
 		  
@@ -31,22 +32,22 @@ Inherits Grid
 
 	#tag Method, Flags = &h0
 		Sub Print(g as graphics, sc as double)
-		  dim i, j as integer
-		  dim u, v as double
+		  dim i, j, u, v as double
 		  dim p as BasicPoint
 		  
 		  computelimits
 		  
-		  for i = ceil(x0) to floor(x1)
-		    for j = ceil(y0) to floor(y1)
+		  for i = ceil(x0/sc)*sc to floor(x1/sc)*sc step sc
+		    for j = ceil(y0/sc)*sc to floor(y1/sc)*sc step sc
 		      p = can.transform(new Basicpoint(i,j))
-		      u = floor((p.x-Gs/2)*sc)
-		      v = ceil((p.y-Gs/2))*sc
-		      if  u > 0 and u < can.width*sc and v > 0 and v < can.height*sc then
-		        g.Fillrect(u, v,Gs,Gs)
+		      u = floor(p.x-Gs/2)
+		      v = ceil(p.y-Gs/2)
+		      if  u > 0 and u < can.width and v > 0 and v < can.height then
+		        g.Fillrect(u, v, Gs, Gs)
 		      end if
 		    next
 		  next
+		  
 		End Sub
 	#tag EndMethod
 

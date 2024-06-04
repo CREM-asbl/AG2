@@ -1,7 +1,7 @@
 #tag Class
 Protected Class ObjectsList
 Inherits Liste
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
 		  
@@ -826,7 +826,7 @@ Inherits Liste
 		  dim i  as Integer
 		  dim s as shape
 		  
-		  for i=1 to Ubound(Objects)
+		  for i = 1 to Ubound(Objects)
 		    s = shape(objects(i))
 		    s.UpdateUserCoord(M)
 		  next

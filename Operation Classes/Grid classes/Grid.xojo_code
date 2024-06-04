@@ -11,7 +11,6 @@ Protected Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Constructor(taillepoints as integer)
-		  
 		  gs = taillepoints
 		End Sub
 	#tag EndMethod
@@ -24,11 +23,10 @@ Protected Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
-		  
-		  g.PenHeight=1
-		  g.PenWidth=1
-		  g.foreColor=mag
-		  print(g,1)
+		  g.PenHeight = 1
+		  g.PenWidth = 1
+		  g.foreColor = mag
+		  print(g, rapport)
 		  g.forecolor = noir
 		End Sub
 	#tag EndMethod

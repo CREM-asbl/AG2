@@ -17,7 +17,7 @@ Inherits Operation
 		  end if
 		  GridWindow.ShowModal
 		  
-		  if GridWindow.result=1 then
+		  if GridWindow.result = 1 then
 		    type = GridWindow.PopupMenu1.listindex
 		    taillepoints = GridWindow.Popupmenu2.listindex + 2
 		    k = GridWindow.Popupmenu3.listindex
@@ -34,7 +34,6 @@ Inherits Operation
 		    case 4
 		      rapport = 3
 		    end select
-		    
 		    DoOperation
 		  end if
 		End Sub
@@ -51,15 +50,6 @@ Inherits Operation
 		Sub DoOper(t as integer, taille as integer, r as double)
 		  dim c as Basicpoint
 		  dim Mat as Matrix
-		  
-		  if r <> 1 then
-		    c = new BasicPoint(0,0)
-		    can.rep.idx = can.rep.idx*r
-		    can.rep.idy = can.rep.idy*r
-		    can.setrepere(can.rep)
-		    Mat = new HomothetyMatrix(c, 1/r)
-		    Objects.UpdateUserCoord(Mat)
-		  end if
 		  
 		  select case t
 		  case 0
@@ -83,7 +73,7 @@ Inherits Operation
 		    if type <> 0 then
 		      config.MvBt(0) = true
 		    else
-		      config.MvBt(0)=false
+		      config.MvBt(0) = false
 		    end if
 		  end if
 		  endoperation

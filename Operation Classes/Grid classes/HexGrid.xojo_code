@@ -1,6 +1,7 @@
 #tag Class
 Protected Class HexGrid
 Inherits Grid
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(taille as integer)
 		  super.constructor(taille)
@@ -21,28 +22,28 @@ Inherits Grid
 		  dim r , d as double
 		  dim u, v, q as BasicPoint
 		  
-		  r = sqrt(3)
-		  u = new BasicPoint(1,0)
-		  v = new BasicPoint(0.5,r/2)
+		  r = sqrt(3)*rapport
+		  u = new BasicPoint(1*rapport,0)
+		  v = new BasicPoint(0.5*rapport, r/2)
 		  
+		  a = Round(2*p.y/r)
 		  
-		  a = p.x-p.y/r
-		  b = 2*p.y/r
-		  a0 = a - floor(a)
-		  b0 = b-floor(b)
-		  
-		  if 2*a0+b0 < 1 and 2*b0+a0 < 1 then
-		    q = u * floor(a) + v * floor(b)
-		  elseif 2*a0+b0 > 2 and 2*b0+a0 > 2 then
-		    q = u*(floor(a)+1) + v*(floor(b)+1)
-		  elseif a0> b0 then
-		    q = u*(floor(a)+1) + v*floor(b)
+		  if a Mod 2 = 0 then
+		    q = new BasicPoint(Round(p.x/rapport)*rapport, a*r/2)
 		  else
-		    q = u* floor(a) + v*(floor(b)+1)
+		    b = Round(2*p.x/rapport)
+		    if b Mod 2 = 0 then 
+		      if (p.x >= b*rapport/2) then
+		        b = b + 1
+		      else 
+		        b = b - 1
+		      end if
+		    end if
+		    q = new BasicPoint(b*rapport/2, a*r/2)
 		  end if
 		  
 		  p = q-p
-		  d =  PointPriority  - (p*p)*(can.scaling*can.scaling)
+		  d = PointPriority - (p*p)*(can.scaling*can.scaling)
 		  p = q
 		  return d
 		  
@@ -52,8 +53,7 @@ Inherits Grid
 
 	#tag Method, Flags = &h0
 		Sub Print(g as graphics, sc as double)
-		  dim r1 as double
-		  dim i,j as integer
+		  dim i, j, r1 as double
 		  dim p as BasicPoint
 		  dim u,v as double
 		  
@@ -61,19 +61,19 @@ Inherits Grid
 		  
 		  computelimits
 		  
-		  for i = ceil(x0) to floor(x1)
-		    for j = ceil(y0) to floor(y1/r1-0.5)
+		  for i = ceil(x0/sc)*sc to floor(x1/sc)*sc step sc
+		    for j = ceil(y0/sc)*sc to floor(y1/sc)*sc step sc
 		      p = can.transform(new Basicpoint(i,j*r1))
-		      u = (p.x-Gs)*sc
-		      v = (p.y-Gs)*sc
-		      if  u > 0 and u < can.width*sc and v > 0 and v < can.height*sc then
-		        g.Fillrect(u, v,Gs,Gs)
+		      u = (p.x-Gs)
+		      v = (p.y-Gs)
+		      if  u > 0 and u < can.width and v > 0 and v < can.height then
+		        g.Fillrect(u, v, Gs, Gs)
 		      end if
-		      p = can.transform(new BasicPoint(i+0.5,(j+0.5)*r1))
-		      u = (p.x-Gs)*sc
-		      v = (p.y-Gs)*sc
-		      if  u > 0 and u < can.width*sc and v > 0 and v < can.height*sc then
-		        g.Fillrect(u, v,Gs,Gs)
+		      p = can.transform(new BasicPoint(i + 0.5*sc,(j + 0.5*sc)*r1))
+		      u = (p.x-Gs)
+		      v = (p.y-Gs)
+		      if  u > 0 and u < can.width and v > 0 and v < can.height then
+		        g.Fillrect(u, v, Gs, Gs)
 		      end if
 		    next
 		  next
