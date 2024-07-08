@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Point
 Inherits Shape
-	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  dim List0, list1 as figslist
@@ -24,9 +24,11 @@ Inherits Shape
 		    ff = List0.concat
 		    if pointsur.count > 0 then
 		      ff.ptssur.addshape self
-		      for i=0 to pointsur.count-1
+		      for i = 0 to pointsur.count-1
 		        ff1 = pointsur.item(i).getsousfigure(ff)
-		        ff1.ptssur.addshape self
+		        if ff1 <> nil then
+		          ff1.ptssur.addshape self
+		        end if
 		      next
 		    elseif centerordivpoint then  // les centerordivpoint ne sont pas repris dans fig.shapes mais uniquement dans fig.ptsconsted
 		      ff.ptsconsted.addshape self
