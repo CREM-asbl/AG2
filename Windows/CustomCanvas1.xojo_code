@@ -809,8 +809,20 @@ Inherits Canvas
 		  
 		  calculcoins
 		  
-		  
-		  
+		  Exception err
+		    dim d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("width", width)
+		    d.setVariable("height", height)
+		    d.setVariable("config", config)
+		    
+		    err.message = err.message+d.getString
+		    
+		    Raise err
+		    
+		    
+		    
 		End Sub
 	#tag EndMethod
 

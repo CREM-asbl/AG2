@@ -40,7 +40,10 @@ Inherits Operation
 		  
 		  version = FAG.GetAttribute("Version") 
 		  
+		  'on ne devrait pas changer la langue mais obligé de changer 
+		  'sinon le fichier ne se charge pas car dico dans sauvegarde 
 		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
+		  
 		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
 		  Config.setMenu(Cfg)
 		  app.themacros.XMLLoadMacros(FAG)
