@@ -194,9 +194,11 @@ Inherits SelectAndDragOperation
 		  
 		  if currentshape = nil then
 		    can.mousecursor = System.Cursors.StandardPointer
-		    oldvisible.tspfalse
+		    if Oldvisible <> nil then
+		      oldvisible.tspfalse
+		    end if
 		  elseif c <> nil then
-		    ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
+		    ratio = EndPoint.Distance(c)/StartPoint.Distance(c)
 		    if abs(ratio) > epsilon then
 		      M = new HomothetyMatrix(c,ratio)
 		      currentcontent.thefigs.enablemodifyall
