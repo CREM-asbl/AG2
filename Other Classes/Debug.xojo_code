@@ -8,6 +8,42 @@ Protected Class Debug
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ObjectToJSON(obj as Object) As String
+		  Dim props() As Introspection.PropertyInfo = Introspection.GetType(obj).GetProperties
+		  Dim jsonDict As New Dictionary
+		  
+		  For Each prop As Introspection.PropertyInfo In props
+		    Dim propName As String = prop.Name
+		    Dim propValue As Variant = prop.Value(obj)
+		    dim Svaleur as String 
+		    
+		    If propValue Is Nil Then
+		      jsonDict.Value(propName) = "nil"
+		    else
+		      try
+		        Svaleur = str(propValue)
+		      catch TypeMismatchException
+		        svaleur = "type " + str(propValue.Type)
+		        var methods() as Introspection.MethodInfo
+		        methods = Introspection.GetType(propValue).getMethods
+		        for Each method as Introspection.MethodInfo in methods
+		          if method.Name = "getString" then
+		            sValeur = method.Invoke(propValue)
+		            exit
+		          end if
+		        next
+		      end 
+		      jsonDict.Value(propName) = svaleur
+		    End If
+		  Next
+		  
+		  
+		  Dim json As String = GenerateJSON(jsonDict)
+		  return json
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub reset()
 		  s=""
 		End Sub
@@ -35,7 +71,7 @@ Protected Class Debug
 		    try
 		      Svaleur = str(valeur)
 		    catch TypeMismatchException
-		      svaleur = "toString pas encore implémenté"
+		      svaleur = "type " + str(valeur.Type)
 		      var methods() as Introspection.MethodInfo
 		      methods = Introspection.GetType(valeur).getMethods
 		      for Each method as Introspection.MethodInfo in methods
@@ -44,7 +80,6 @@ Protected Class Debug
 		          exit
 		        end if
 		      next
-		      svaleur = "type " + str(valeur.Type)
 		    end 
 		  else
 		    Svaleur = "nil"

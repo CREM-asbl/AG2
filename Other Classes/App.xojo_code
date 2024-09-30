@@ -69,13 +69,13 @@ Inherits DesktopApplication
 		    if Config<>nil then
 		      log = log + "**** Configuration ****" + EndOfLine + EndOfLine
 		      log = log + "Formes standards : "+Config.stdfile + EndOfLine +EndOfLine
-		      log = log + "**** Operation ****" + EndOfLine + EndOfLine
-		      
 		    end if
 		    
-		    if curoper <>nil then
+		    log = log + "**** Operation ****" + EndOfLine + EndOfLine
+		    
+		    if curoper <> nil then
 		      CurrentContent.InsertInHisto(curoper)
-		      log = log+ "Opération active : "+curoper.GetName + EndOfLine
+		      log = log+ "Opération active : "+ curoper.GetName + EndOfLine
 		      if not curoper isa ReadHisto then
 		        if curoper.CurrentShape <> nil then
 		          log = log + "appliquée à  " + Curoper.CurrentShape.GetType +" n° " +str(curoper.CurrentShape.id) + EndOfLine
@@ -83,6 +83,8 @@ Inherits DesktopApplication
 		          log = log + "Curoper.CurrentShape = nil"+ EndOfLine
 		        end if
 		      end if
+		      log = log + EndOfLine + "***Current operation state***" + EndOfLine
+		      log = log + ObjectToJSON(curoper) + EndOfLine + EndOfLine
 		    else
 		      log = log + "Ouverture de Fichier ou Operation Nil" + EndOfLine
 		    end if
@@ -90,25 +92,10 @@ Inherits DesktopApplication
 		    log = log + EndOfLine
 		    
 		    log = log + "**** Debug message ****" + EndOfLine + EndOfLine
-		    if error isa OutOfMemoryException then
-		      log = log + "OutOfMemoryException" + EndOfLine
-		    elseif error isa FunctionNotFoundException then
-		      log = log + "FunctionNotFoundException" + EndOfLine
-		    elseif error isa IllegalCastException then
-		      log = log + "IllegalCastException" + EndOfLine
-		    elseif error isa NilObjectException then
-		      log = log + "NilObjectException" + EndOfLine
-		    elseif error isa OutOfBoundsException then
-		      log = log + "OutOfBoundsException" + EndOfLine
-		    elseif error isa StackOverflowException then
-		      log = log + "StackOverflowException" + EndOfLine
-		    elseif error isa XmlException then
-		      log = log + "XmlException "+XmlException(error).Line+" - "+XmlException(error).Node + EndOfLine
-		    else
-		      log = log + "Autre erreur" + EndOfLine
-		    end if
-		    log = log+ error.message + EndOfLine
-		    log = log + "" + EndOfLine
+		    var typeError As String = Introspection.GetType(error).FullName
+		    log = log + typeError + EndOfLine
+		    log = log+ error.message + EndOfLine + EndOfLine
+		    
 		    log = log + "**** fin Debug message ****" + EndOfLine + EndOfLine
 		    
 		    log = log + "**** Error Stack ****" + EndOfLine + EndOfLine
@@ -253,6 +240,42 @@ Inherits DesktopApplication
 		  next
 		  
 		  return menus
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ObjectToJSON(obj as Object) As String
+		  Dim props() As Introspection.PropertyInfo = Introspection.GetType(obj).GetProperties
+		  Dim jsonDict As New Dictionary
+		  
+		  For Each prop As Introspection.PropertyInfo In props
+		    Dim propName As String = prop.Name
+		    Dim propValue As Variant = prop.Value(obj)
+		    dim Svaleur as String 
+		    
+		    If propValue Is Nil Then
+		      jsonDict.Value(propName) = "nil"
+		    else
+		      try
+		        Svaleur = str(propValue)
+		      catch TypeMismatchException
+		        svaleur = "type " + str(propValue.Type)
+		        var methods() as Introspection.MethodInfo
+		        methods = Introspection.GetType(propValue).getMethods
+		        for Each method as Introspection.MethodInfo in methods
+		          if method.Name = "getString" then
+		            sValeur = method.Invoke(propValue)
+		            exit
+		          end if
+		        next
+		      end 
+		      jsonDict.Value(propName) = svaleur
+		    End If
+		  Next
+		  
+		  
+		  Dim json As String = GenerateJSON(jsonDict)
+		  return json
 		End Function
 	#tag EndMethod
 

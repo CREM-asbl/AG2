@@ -2835,7 +2835,7 @@ Protected Class Shape
 		  Dim tsf As transformation
 		  
 		  'Un paraperp ne peut pas être modifié avant  son générateur
-		  If auto=7 And s2=constructedby.shape Then
+		  If auto = 7 And constructedby <> nil and s2 = constructedby.shape Then
 		    Return false
 		  End If
 		  

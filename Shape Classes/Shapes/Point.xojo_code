@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Point
 Inherits Shape
-	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
+	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  dim List0, list1 as figslist
@@ -364,7 +364,7 @@ Inherits Shape
 		  
 		  
 		  if tsfi.count > 0 then
-		    for i =tsfi.count-1 downto 0
+		    for i = tsfi.count-1 downto 0
 		      CurrentContent.Thetransfos.RemoveObject  tsfi.item(i)
 		    next
 		  end if
@@ -403,8 +403,11 @@ Inherits Shape
 		    d.setVariable("constructedby", constructedby)
 		    d.setVariable("code", code)
 		    d.setVariable("tsf", tsf)
+		    d.setVariable("tsfiCount", tsfi.count)
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
 		    d.setVariable("macconstructedby", macconstructedby)
-		    d.setVariable("conditioned", conditioned)
+		    d.setVariable("conditionedCount", conditioned.count)
 		    d.setVariable("conditionedby", conditionedby)
 		    d.setVariable("forme", forme)
 		    d.setVariable("isolated", isolated)

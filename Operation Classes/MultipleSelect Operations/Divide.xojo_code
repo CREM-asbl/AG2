@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Divide
 Inherits MultipleSelectOperation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub AddOperationToMac(OpList as XMLDocument, EL1 as XMLElement)
 		  dim EL as XMLElement
@@ -119,12 +120,25 @@ Inherits MultipleSelectOperation
 		    Q.mobility
 		  next
 		  
+		  Exception err
+		    var d As Debug
+		    d = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("s", s)
+		    d.setVariable("i", i)
+		    d.setVariable("p", p)
+		    d.setVariable("Q", Q)
+		    d.setVariable("Bib", Bib)
+		    d.setVariable("Trib", Trib)
+		    err.message = d.getString + EndOfLine + app.ObjectToJSON(self)
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
-		  
 		  CurrentContent.TheFigs.Removefigure currentshape.fig
 		  createshapes
 		  createdshapes.endconstruction
@@ -257,8 +271,12 @@ Inherits MultipleSelectOperation
 		  ReDeleteDeletedFigures(Temp)
 		  ReCreateCreatedFigures(Temp)
 		  
-		  
-		  
+		  Exception err
+		    err.Message = CurrentMethodName + EndOfLine + app.ObjectToJSON(self)
+		    Raise err
+		    
+		    
+		    
 		End Sub
 	#tag EndMethod
 
