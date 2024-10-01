@@ -117,7 +117,7 @@ Protected Class Transformation
 		  
 		  select case type
 		  case 1
-		    v = supp.points((index+1)mod supp.npts).bpt- supp.points(index) .bpt
+		    v = supp.points((index + 1)mod supp.npts).bpt - supp.points(index).bpt
 		    M = new translationmatrix (v*ori)
 		  case 2
 		    if supp isa arc then
@@ -178,15 +178,16 @@ Protected Class Transformation
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
-		    d.setMethod("Transformation","computematrix")
+		    d.setMessage(CurrentMethodName)
 		    d.setVariable("k",k)
 		    d.setVariable("u",u)
 		    d.setVariable("v",v)
 		    d.setVariable("w",w)
 		    d.setVariable("type",Type )
+		    d.setVariable("index", index)
 		    d.setVariable("M",M)
 		    d.setVariable("supp", supp)
-		    err.message = err.message+d.getString
+		    err.message = err.message+d.getString+EndOfLine+app.ObjectToJSON(self)
 		    
 		    Raise err
 		    

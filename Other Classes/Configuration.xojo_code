@@ -258,11 +258,11 @@ Protected Class Configuration
 		  
 		  select case std
 		  case "Jeu_de_base.std"
-		    Doc=new XMLDocument(jeu_de_base)
+		    Doc = new XMLDocument(jeu_de_base)
 		  case "Jeu_reduit.std"
 		    Doc = new XMLDocument(jeu_reduit)
 		  case "Polyminos.std"
-		    Doc=new XMLDocument(polyminos)
+		    Doc = new XMLDocument(polyminos)
 		  case "Reglettes.std", "Rods.std"
 		    Doc = new XMLDocument(reglettes)
 		  case "Tangram.std"
@@ -277,7 +277,7 @@ Protected Class Configuration
 		      MsgBox Dico.Value("FileMenu") + " " + std + Dico.Value("Introuvable")
 		      return
 		    end if
-		    Doc=new XMLDocument(fi)
+		    Doc = new XMLDocument(fi)
 		  end select
 		  
 		  stdfile = std
@@ -286,13 +286,13 @@ Protected Class Configuration
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
 		  if nstdfam > 4 then
-		    MsgBox  TooManyFiles(stdfile) + EndOfLine + only4
+		    MsgBox TooManyFiles(stdfile) + EndOfLine + only4
 		    nstdfam = 4
 		  end if
 		  
 		  for i = 0 to nstdfam-1
 		    EL1 = XMLElement(Famlist.Item(i))
-		    NamesStdFamilies(i)=EL1.GetAttribute("Nom")
+		    NamesStdFamilies(i) = EL1.GetAttribute("Nom")
 		    List = EL1.XQL("Couleur")
 		    if List.length > 0 then
 		      EL2 = XMLElement(List.Item(0))
@@ -300,36 +300,39 @@ Protected Class Configuration
 		    end if
 		    FormList = EL1.XQL("Forme")
 		    Nstdf(i) = FormList.length
-		    for j=0 to nstdf(i)-1
+		    for j = 0 to nstdf(i)-1
 		      Curfig = XMLElement(FormList.Item(j))
 		      CurSpecs=new StdPolygonSpecifications
 		      Curspecs.NonPointed = val(Curfig.GetAttribute("NonPointed"))  // 0 ou 1
 		      Curspecs.family = NamesStdFamilies(i)
-		      CurSpecs.name=CurFig.GetAttribute("Nom")
+		      CurSpecs.name = CurFig.GetAttribute("Nom")
 		      List = Curfig.XQL("Couleur")
-		      if List.length >0 then
-		        EL3 =  XMLElement(List.Item(0))
+		      if List.length > 0 then
+		        EL3 = XMLElement(List.Item(0))
 		        Curspecs.coul = new Couleur(EL3)
 		      else
 		        curspecs.coul = stdcolor(i)
 		      end if
 		      List = Curfig.XQL("Arete")
-		      for k=0 to List.Length-1
+		      for k = 0 to List.Length-1
 		        EL3 = XMLElement(List.Item(k))
-		        nrep = Val(EL3.GetAttribute("Repete"))
-		        if nrep = 0 then
-		          nrep = 1
-		        end if
-		        for h = 0 to nrep-1
-		          Curspecs.Distances.append Val(EL3.GetAttribute("Longueur"))
-		          Curspecs.Angles.append Val(EL3.GetAttribute("Angle"))*PI/180
-		        next
+		        Curspecs.Distances.append Val(EL3.GetAttribute("Longueur"))
+		        Curspecs.Angles.append Val(EL3.GetAttribute("Angle"))*PI/180
 		      next
 		      StdFamilies(i,j) = Curspecs
 		    next
 		  next
 		  
-		  
+		  Exception err
+		    var d as Debug = new Debug
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
+		    d.setVariable("k", k)
+		    
+		    err.message = CurrentMethodName + EndOfLine + d.getString + app.ObjectToJSON(self)
+		    
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
