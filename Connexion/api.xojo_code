@@ -19,6 +19,11 @@ Protected Module api
 		  Var d As DateTime = DateTime.Now(New TimeZone("Europe/Brussels"))
 		  var date as String
 		  
+		  #if DebugBuild
+		    messagebox app.log
+		    return
+		  #EndIf
+		  
 		  date = d.ToString().ReplaceAll(":", ".")
 		  
 		  directory="bugs/"+app.FullVersion+"/"+App.ErrorType+"/"+App.Sys+"/"+date+"/"
@@ -39,9 +44,6 @@ Protected Module api
 		  http.Send("POST",url+"/bug.php")
 		  
 		  Exception err
-		    #if DebugBuild
-		      msgbox err.message
-		    #EndIf
 		  Catch
 		    
 		End Sub

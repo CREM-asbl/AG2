@@ -4281,29 +4281,29 @@ Protected Class Shape
 		    oper = Val(Tmp.GetAttribute("Oper"))
 		    if s <> nil then
 		      setconstructedby s, oper
+		      select case oper //lecture des infos supplémentaires (data)
+		      case 1,2
+		        XMLReadConstructionInfoParaperp(Tmp)
+		      case 3
+		        XMLReadConstructionInfoDuplicate(Tmp)
+		      case 4
+		        XMLReadConstructionInfoDivPoint(Tmp, s)
+		      case 5
+		        XMLReadConstructionInfoCutPoints(Tmp)
+		      case 6
+		        XMLReadConstructionInfoImgPt(Tmp)
+		      case 7
+		        XMLReadConstructionInfoPtFix(Tmp)
+		      case 8
+		        XMLReadConstructionInfoProl(Tmp)
+		      case 9
+		        XMLReadConstructionInfoMerge(Tmp)
+		      case 10
+		        XMLReadConstructionInfoDuplPoint(Tmp)
+		      Case 45
+		        XMLReadConstructionInfoAutoInter(Tmp)
+		      end select
 		    end if
-		    select case oper //lecture des infos supplémentaires (data)
-		    case 1,2
-		      XMLReadConstructionInfoParaperp(Tmp)
-		    case 3
-		      XMLReadConstructionInfoDuplicate(Tmp)
-		    case 4
-		      XMLReadConstructionInfoDivPoint(Tmp, s)
-		    case 5
-		      XMLReadConstructionInfoCutPoints(Tmp)
-		    case 6
-		      XMLReadConstructionInfoImgPt(Tmp)
-		    case 7
-		      XMLReadConstructionInfoPtFix(Tmp)
-		    case 8
-		      XMLReadConstructionInfoProl(Tmp)
-		    case 9
-		      XMLReadConstructionInfoMerge(Tmp)
-		    case 10
-		      XMLReadConstructionInfoDuplPoint(Tmp)
-		    Case 45
-		      XMLReadConstructionInfoAutoInter(Tmp)
-		    end select
 		    if self isa point then
 		      point(self).mobility
 		      point(self).updateguides

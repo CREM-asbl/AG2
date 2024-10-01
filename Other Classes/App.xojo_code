@@ -131,7 +131,7 @@ Inherits DesktopApplication
 		    
 		    Workwindow.deleteContent
 		    
-		    if UBound (Workwindow.wcontent) = -1 then
+		    if UBound(Workwindow.wcontent) = -1 then
 		      Workwindow.NewContent(false)
 		    end if
 		    
