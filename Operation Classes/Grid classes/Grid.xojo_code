@@ -3,15 +3,16 @@ Protected Class Grid
 	#tag Method, Flags = &h0
 		Sub computelimits()
 		  x0 = min(min(can.cig.x,can.cid.x),min(can.csg.x,can.csd.x))
-		  x1 =max(max(can.cig.x,can.cid.x),max(can.csg.x,can.csd.x))
+		  x1 = max(max(can.cig.x,can.cid.x),max(can.csg.x,can.csd.x))
 		  y0 = min(min(can.cig.y,can.cid.y),min(can.csg.y,can.csd.y))
-		  y1 =max(max(can.cig.y,can.cid.y),max(can.csg.y,can.csd.y))
+		  y1 = max(max(can.cig.y,can.cid.y),max(can.csg.y,can.csd.y))
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(taillepoints as integer)
 		  gs = taillepoints
+		  rapport = 1
 		End Sub
 	#tag EndMethod
 
@@ -47,9 +48,10 @@ Protected Class Grid
 		Function XMLPutInContainer(Doc as XMLDocument) As XMLElement
 		  Dim Gr as XMLElement
 		  
-		  Gr =  Doc.CreateElement(Dico.Value("ToolsGrid"))
+		  Gr =  Doc.CreateElement("Grid")
 		  Gr.SetAttribute("Type", str(type))
 		  Gr.SetAttribute("PointSize", str(gs))
+		  Gr.SetAttribute("Gap", str(rapport))
 		  return Gr
 		  
 		  

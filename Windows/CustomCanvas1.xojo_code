@@ -1,7 +1,7 @@
 #tag Class
 Protected Class CustomCanvas1
 Inherits Canvas
-	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
 		  Dim p As BasicPoint
@@ -745,7 +745,7 @@ Inherits Canvas
 		    IdContent = CurrentContent.id
 		  End If
 		  
-		  if CurrentContent.TheGrid<>nil then
+		  if CurrentContent.TheGrid <> nil then
 		    CurrentContent.TheGrid.Paint(BackgroundPicture.Graphics)
 		  End If
 		  

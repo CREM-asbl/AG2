@@ -1,7 +1,7 @@
 #tag Class
 Protected Class ObjectsList
 Inherits Liste
-	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
 		  
@@ -1006,16 +1006,20 @@ Inherits Liste
 		  dim Obj as XMLElement
 		  dim gs as integer
 		  
-		  
 		  Obj= XMLElement(List.Item(0))
 		  gs = val(Obj.GetAttribute("PointSize"))
+		  var gap as Double = val(Obj.GetAttribute("Gap"))
+		  if gap = 0 then
+		    gap = 1
+		  end if
+		  
 		  select case val(Obj.Getattribute("Type"))
 		  case 0
 		    CurrentContent.TheGrid= nil
 		  case 1
-		    CurrentContent.TheGrid = new SquareGrid(gs)
+		    CurrentContent.TheGrid = new SquareGrid(gs, gap)
 		  case 2
-		    CurrentContent.TheGrid = new HexGrid(gs)
+		    CurrentContent.TheGrid = new HexGrid(gs, gap)
 		  end select
 		  
 		End Sub
@@ -1188,7 +1192,13 @@ Inherits Liste
 		      end if
 		    next
 		  next
+		  //Todo supprimer code ancienne version
+		  //Indiquer à l'utilisateur et sauvegarder au nouveau format ?
 		  List = Shapes.XQL(Dico.Value("ToolsGrid"))
+		  if List.length > 0 then
+		    XMLLoadGrille(List)
+		  end if
+		  List = Shapes.XQL("Grid")
 		  if List.length > 0 then
 		    XMLLoadGrille(List)
 		  end if

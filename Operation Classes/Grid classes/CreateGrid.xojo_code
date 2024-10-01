@@ -1,6 +1,7 @@
 #tag Class
 Protected Class CreateGrid
 Inherits Operation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  dim k as integer
@@ -132,7 +133,6 @@ Inherits Operation
 		  Temp.SetAttribute("PointSize", str(oldtaillepoints))
 		  Temp.SetAttribute("Ratio", str(oldrapport))
 		  EL.AppendChild(Temp)
-		  
 		  
 		  return EL
 		End Function
