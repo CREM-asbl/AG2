@@ -45,7 +45,7 @@ Inherits DesktopApplication
 
 	#tag Event
 		Function UnhandledException(error As RuntimeException) As Boolean
-		  dim st(-1), cre, Op,log as String
+		  dim st(-1), log as String
 		  dim i as integer
 		  dim curoper as Operation
 		  dim NWI As  NetworkInterface
@@ -108,9 +108,8 @@ Inherits DesktopApplication
 		    
 		    f = SpecialFolder.Documents.Parent
 		    if f <> nil then
-		      cre = f.Name
+		      log = log + "Createur : " + f.Name + EndOfLine
 		    end if
-		    log = log + "Createur : " + cre + EndOfLine
 		    NWI = System.GetNetworkInterface(0)
 		    log = log + NWI.IPAddress + " " +  "Mac: "+ NWI.MACAddress + EndOfLine
 		    

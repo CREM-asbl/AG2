@@ -447,9 +447,7 @@ Inherits MultipleSelectOperation
 		  dim i,j,n, num as integer
 		  dim s as shape
 		  dim EL, EL1, EL2 as XMLElement
-		  
 		  dim tsf as Transformation
-		  
 		  
 		  EL = XMLElement(Temp.child(0))
 		  
@@ -479,7 +477,8 @@ Inherits MultipleSelectOperation
 		    d.setVariable("EL1", EL1)
 		    d.setVariable("i", i)
 		    d.setVariable("tsf", tsf)
-		    err.message = err.message+d.getString
+		    d.setVariable("s", s)
+		    err.message = err.message+d.getString+EndOfLine+app.ObjectToJSON(self)
 		    
 		    Raise err
 		End Sub

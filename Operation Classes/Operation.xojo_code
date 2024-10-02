@@ -156,10 +156,21 @@ Protected Class Operation
 	#tag Method, Flags = &h0
 		Sub Help(g as graphics, s1 as string)
 		  'todo : à placer dans canvas ?
+		  #if DebugBuild then
+		    if CurrentHighlightedShape <> nil then
+		      info = info + " ("+str(CurrentHighlightedShape.id)+")"
+		    end if
+		    if CurrentAttractingShape <> nil then
+		      info = info + " ("+str(CurrentAttractingShape.id)+")"
+		    end if
+		  #endif
+		  
 		  if Config.ShowHelp and not canceling then
 		    g.forecolor = Config.bordercolor.col
 		    g.DrawString  lowercase(s1+info) ,Mcanx+8,Mcany+3
 		  end if
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -344,7 +355,6 @@ Protected Class Operation
 		Sub Paint(g as graphics)
 		  If CurrentHighlightedShape= Nil Then
 		    info = ""
-		    return
 		  end if
 		  
 		  if nobj > 1 then
@@ -353,15 +363,7 @@ Protected Class Operation
 		    info = ""
 		  end if
 		  
-		  #if DebugBuild then
-		    if CurrentHighlightedShape <> nil then
-		      info = info + " ("+str(CurrentHighlightedShape.id)+")"
-		    end if
-		  #endif
 		  
-		  'if WorkWindow.drappt then
-		  'info = info + " (" + left(str(can.Mouseuser.x),5)+", "+ left(str(can.Mouseuser.y),5) +")"
-		  'end if
 		End Sub
 	#tag EndMethod
 
@@ -601,6 +603,16 @@ Protected Class Operation
 		  if NextCurrentAttractingShape <> nil then
 		    NextCurrentAttractingShape.HighLight
 		  end if
+		  
+		  Exception err
+		    
+		    dim d As Debug = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("icot", icot)
+		    d.setVariable("Ope",ope)
+		    err.message = err.message+d.getString+EndOfLine+app.ObjectToJSON(self)
+		    
+		    Raise err
 		End Sub
 	#tag EndMethod
 

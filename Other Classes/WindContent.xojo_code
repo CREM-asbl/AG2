@@ -332,7 +332,8 @@ Protected Class WindContent
 		    'Case 31 //annuler
 		    'case 32 //refaire
 		    'Pour mémoire
-		    
+		  case 34 //Supprimer
+		    curoper = new Delete
 		  case 33 //Nommer
 		    curoper = New AddLabel
 		  case 35  //Identifier

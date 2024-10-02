@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Point
 Inherits Shape
-	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
+	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddToFigure()
 		  dim List0, list1 as figslist
@@ -52,6 +52,19 @@ Inherits Shape
 		  fig.idfig = -1
 		  CurrentContent.TheFigs.addobject fig
 		  
+		  Exception err
+		    var d as Debug = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i",i)
+		    d.setVariable("List0", List0)
+		    d.setVariable("List1", List1)
+		    d.setVariable("figu", figu)
+		    d.setVariable("ff", ff)
+		    d.setVariable("ff1", ff1)
+		    d.setVariable("tsf", tsf)
+		    err.message = d.getString + EndOfLine + App.ObjectToJSON(self)
+		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
@@ -496,13 +509,12 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function etiquet() As string
 		  dim et as string
-		  dim n as integer
 		  
 		  
 		  if labs.count = 1  and labs.item(0).text <> "" then
 		    if labs.item(0).text = "0" then
 		      et = "n0"
-		    elseif Integer.Parse(labs.item(0).text.ToText) <> 0 then
+		    elseif Integer.Parse(str(labs.item(0).text)) <> 0 then
 		      et = "n"+labs.item(0).text
 		    else
 		      et = labs.item(0).text
@@ -512,13 +524,6 @@ Inherits Shape
 		  end if
 		  return et
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub fixcouleurtrait(c as couleur, b as integer)
-		  bordercolor = c
-		  border = 100
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1132,7 +1137,6 @@ Inherits Shape
 		  dim StrongestMagnetism as Integer
 		  dim  td,q as BasicPoint
 		  dim cx,cy, delta as double
-		  dim p3 as Basicpoint
 		  dim BiB as BiBPoint
 		  
 		  if not PossibleAttractionWith(s)  then
@@ -1415,8 +1419,7 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Function OnSameShape(Q as Point, Byref s as shape) As boolean
-		  dim i,j,n as integer
-		  'dim num1,num2 as double
+		  dim i,j as integer
 		  dim sh(-1) as shape
 		  dim t as Boolean  'Utilisé uniquement par divide
 		  
@@ -1813,8 +1816,8 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Function PossibleAttractionWith(other as Shape) As Boolean
 		  
-		  dim gc1,gc2,bp as basicpoint
-		  dim dist,b1,b2 as double
+		  dim gc2,bp as basicpoint
+		  dim dist,b2 as double
 		  dim magdist as double
 		  magdist = can.MagneticDist
 		  
@@ -2747,7 +2750,7 @@ Inherits Shape
 		Sub updateconstructedpoints()
 		  Dim s As Point
 		  dim M1 as Matrix
-		  dim i,j, side as integer
+		  dim i,j as integer
 		  dim tsf as Transformation
 		  dim sh as Point
 		  
@@ -3028,8 +3031,6 @@ Inherits Shape
 		Sub UpdateShape()
 		  Dim sh  As shape
 		  dim i as integer
-		  dim ff as figure
-		  dim t as Boolean
 		  
 		  if bpt = nil then
 		    return

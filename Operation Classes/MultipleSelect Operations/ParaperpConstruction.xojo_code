@@ -284,6 +284,11 @@ Inherits ShapeConstruction
 		  
 		  Help g, display
 		  
+		  Exception err
+		    err.message = CurrentMethodName+EndOfLine+app.ObjectToJSON(self)
+		    raise err
+		    
+		    
 		End Sub
 	#tag EndMethod
 

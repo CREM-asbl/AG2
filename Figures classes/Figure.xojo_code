@@ -3607,7 +3607,7 @@ Protected Class Figure
 		    d.setVariable("i",i)
 		    d.setVariable("t", t)
 		    d.setVariable("tsf", tsf)
-		    err.message = err.message+d.getString
+		    err.message = err.message+d.getString+EndOfLine+app.ObjectToJSON(self)
 		    
 		    Raise err
 		End Sub

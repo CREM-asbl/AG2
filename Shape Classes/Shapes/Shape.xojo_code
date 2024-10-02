@@ -2972,6 +2972,16 @@ Protected Class Shape
 		    next
 		  end if
 		  
+		  Exception err
+		    var d as Debug = new Debug
+		    d.setMessage(CurrentMethodName)
+		    d.setVariable("i", i)
+		    d.setVariable("j", j)
+		    d.setVariable("k", k)
+		    d.setVariable("h", h)
+		    err.message = app.ObjectToJSON(self)
+		    raise err
+		    
 		End Function
 	#tag EndMethod
 
