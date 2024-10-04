@@ -6,9 +6,14 @@ Protected Module api
 		    return
 		  #endif
 		  
+		  #if TargetLinux then
+		    return
+		  #endif
+		  
 		  sendStat
 		  dim update as CheckUpdate = new CheckUpdate
 		  dim notification as Notification = new Notification
+		  
 		End Sub
 	#tag EndMethod
 
@@ -18,6 +23,10 @@ Protected Module api
 		  dim http as URLConnection
 		  Var d As DateTime = DateTime.Now(New TimeZone("Europe/Brussels"))
 		  var date as String
+		  
+		  #if TargetLinux then
+		    return
+		  #EndIf
 		  
 		  #if DebugBuild
 		    messagebox app.log

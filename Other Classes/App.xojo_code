@@ -37,9 +37,6 @@ Inherits DesktopApplication
 		  Config.ChargerConfig
 		  Tampon = new ObjectsList
 		  WorkWindow.Show
-		  
-		  
-		  
 		End Sub
 	#tag EndEvent
 
