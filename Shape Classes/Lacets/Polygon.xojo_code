@@ -4,7 +4,6 @@ Inherits Lacet
 	#tag CompatibilityFlags = ( TargetDesktop and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function airealge() As double
-		  
 		  return coord.airealgepolygon
 		  
 		End Function
@@ -12,7 +11,6 @@ Inherits Lacet
 
 	#tag Method, Flags = &h0
 		Function airearith() As double
-		  
 		  return coord.airearithpolygon
 		  
 		End Function

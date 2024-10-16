@@ -60,7 +60,7 @@ Protected Class nBpoint
 		  dim A as double
 		  
 		  for i = 0 to taille-1
-		    A = A +tab(i).Vect(tab((i+1) mod taille))
+		    A = A + tab(i).Vect(tab((i+1) mod taille))
 		  next
 		  A = A/2
 		  return A
@@ -90,14 +90,6 @@ Protected Class nBpoint
 		  arpobp()=completesides(arpolig(), arpocol())
 		  compos() = ComponentsCreation(arpobp(),arpolig(),arpocol())
 		  aire = compomesurer(compos)
-		  'If WorkWindow.drapg And Not decomp Then
-		  'for i = 0 to ubound(compos)
-		  'comp = compos(i)
-		  'poly = new polygon(currentcontent.theobjects, comp)
-		  'poly.endconstruction
-		  'next
-		  'decomp = true
-		  'end if
 		  return aire
 		End Function
 	#tag EndMethod
@@ -707,7 +699,7 @@ Protected Class nBpoint
 		  for i = 0 to n-1
 		    p = p + tab(i+1).distance(Tab(i))
 		  next
-		  p = p+ Tab(n).distance(Tab(0))
+		  p = p + Tab(n).distance(Tab(0))
 		  return p
 		End Function
 	#tag EndMethod

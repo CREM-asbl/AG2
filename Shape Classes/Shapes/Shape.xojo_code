@@ -3667,10 +3667,10 @@ Protected Class Shape
 		      end if
 		    next
 		  end if
-		  if not (currentcontent.currentoperation isa modifier) or  modifier(currentcontent.currentoperation).testfinished then
+		  if not (currentcontent.currentoperation isa modifier) or modifier(currentcontent.currentoperation).testfinished then
 		    if self = currentcontent.SHUL and modified then
 		      currentcontent.UL = currentcontent.SHUL.longueur(currentcontent.IcotUL)
-		    elseif self = currentcontent.SHUA and modified  then
+		    elseif self = currentcontent.SHUA and modified then
 		      currentcontent.UA = currentcontent.SHUA.aire
 		    end if
 		  end if

@@ -207,17 +207,8 @@ Inherits Liste
 		  
 		  for i = 0 to count-1
 		    ff.shapes.concat item(i).shapes
-		  next
-		  
-		  for i = 0 to count-1
 		    ff.somm.concat item(i).somm
-		  next
-		  
-		  for i = 0 to count-1
 		    ff.PtsSur.concat item(i).PtsSur
-		  next
-		  
-		  for i = 0 to count-1
 		    ff.PtsConsted.concat item(i).PtsConsted
 		  next
 		  
@@ -279,13 +270,6 @@ Inherits Liste
 		  CurrentContent.TheFigs.optimize(ff)
 		  
 		  return ff
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 

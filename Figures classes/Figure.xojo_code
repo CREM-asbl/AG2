@@ -1989,6 +1989,7 @@ Protected Class Figure
 		        subs.removefigure f2
 		      elseif fusionsubfigs(f2,f1) then
 		        subs.removefigure f1
+		        Exit
 		      end if
 		    next
 		  next
@@ -2038,8 +2039,6 @@ Protected Class Figure
 		  Dim p As point
 		  
 		  
-		  
-		  
 		  if f1.auto = 1 and f2.auto = 3  then
 		    concat1(f1,f2,3)
 		    return false 'false parce qu'on a déjà fait un remove de f2
@@ -2054,7 +2053,7 @@ Protected Class Figure
 		  End If
 		  
 		  
-		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto=3) or (f2.auto=3)) and not (f1.auto = 1 ) then
+		  if ((f1.supfig <> f2.supfig) or (f1.auto <> f2.auto)  or (f1.auto = 3) or (f2.auto = 3)) and not (f1.auto = 1 ) then
 		    return false
 		  end if
 		  
@@ -2069,7 +2068,7 @@ Protected Class Figure
 		  
 		  'On fusionne f1 et f2 si tous les sommets de f1 sont soit des sommets de f2 soit des points d'inter de  deux formes de f2
 		  if f1.NbSommCommuns(f2) = f1.Somm.count or f2.NbSommCommuns(f1) = f2.Somm.count then
-		    t=true
+		    t = true
 		  end if
 		  
 		  If t Then
