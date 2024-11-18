@@ -80,8 +80,6 @@ Inherits DesktopApplication
 		          log = log + "Curoper.CurrentShape = nil"+ EndOfLine
 		        end if
 		      end if
-		      log = log + EndOfLine + "***Current operation state***" + EndOfLine
-		      log = log + ObjectToJSON(curoper) + EndOfLine + EndOfLine
 		    else
 		      log = log + "Ouverture de Fichier ou Operation Nil" + EndOfLine
 		    end if

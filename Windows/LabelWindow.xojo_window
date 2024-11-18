@@ -569,8 +569,7 @@ Begin DesktopWindow LabelWindow
       Visible         =   True
       Width           =   50
    End
-   Begin ComboBox Polices
-      AutoComplete    =   False
+   Begin PopupMenu Polices
       AutoDeactivate  =   True
       Bold            =   False
       DataField       =   ""
@@ -578,7 +577,6 @@ Begin DesktopWindow LabelWindow
       Enabled         =   True
       Height          =   25
       HelpTag         =   ""
-      Hint            =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
@@ -600,7 +598,6 @@ Begin DesktopWindow LabelWindow
       Top             =   49
       Transparent     =   False
       Underline       =   False
-      UseFocusRing    =   True
       Visible         =   True
       Width           =   172
    End
@@ -744,8 +741,11 @@ End
 		  
 		  Delete.visible = not addlab.drapnew
 		  
-		  
-		  
+		  Exception err
+		    err.message = CurrentMethodName + EndOfLine + app.ObjectToJSON(self)
+		    Raise err
+		    
+		    
 		End Sub
 	#tag EndMethod
 
@@ -944,7 +944,7 @@ End
 		    Lab.fixe = OldLab.fixe
 		    Lab.Correction = OldLab.Correction
 		  else
-		    Lab.Text =""
+		    Lab.Text = ""
 		  end if
 		  
 		  self.close()
@@ -961,8 +961,6 @@ End
 	#tag Event
 		Sub Open()
 		  dim i as integer
-		  
-		  me.Text = Dico.value("Font")+ " : "
 		  
 		  For i=0 to FontCount-1
 		    if Font(i)="System" or Font(i)="Arial" or Font(i) = "Courier New" or Font(i) = "Times New Roman"  or Font(i) = "Symbol"  or Font(i) = "Sans"  or Font(i) = "Serif" or Font(i) = "Monospace" Then
@@ -1076,8 +1074,7 @@ End
 			"6 - Rounded Window"
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
-			"9 - Metal Window"
-			"11 - Modeless Dialog"
+			"9 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
