@@ -137,14 +137,6 @@ Inherits DesktopApplication
 
 
 	#tag Method, Flags = &h0
-		Sub abortread()
-		  MsgBox Dico.Value("MsgNovalidFile") + Dico.Value("Noread")
-		  CurrentContent.currentoperation = nil
-		  quit      'trouver un moyen de mettre un terme à la lecture sans sortir du programme en rétablissant la situation telle qu'avant le début de la lecture"
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub CheckSystem()
 		  #if TargetWindows then
 		    sys = "Windows"

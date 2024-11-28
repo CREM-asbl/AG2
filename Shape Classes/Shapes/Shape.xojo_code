@@ -4461,8 +4461,6 @@ Protected Class Shape
 		    if s1.constructedby <> nil and s1.constructedby.oper = 6 then
 		      tsf = Transformation(s1.constructedby.data(0))
 		    end if
-		  else
-		    app.abortread
 		  end if
 		  
 		  if tsf <> nil then
