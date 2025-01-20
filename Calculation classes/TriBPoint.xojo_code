@@ -1,6 +1,7 @@
 #tag Class
 Protected Class TriBPoint
 Inherits nBpoint
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function Angle() As double
 		  
@@ -66,6 +67,17 @@ Inherits nBpoint
 		  dim alpha as double
 		  dim M as RotationMatrix
 		  dim i as integer
+		  
+		  // Vérifier si les points sont confondus avec le centre
+		  if tab(1).distance(tab(0)) < epsilon then
+		    // Cas où les points sont confondus - définir des positions par défaut
+		    extre(0) = tab(0)
+		    extre(1) = tab(0)
+		    for i = 0 to 5
+		      ctrl(i) = Tab(0)
+		    next
+		    return
+		  end if
 		  
 		  alpha = Normalize(endangle-startangle, orien)/3
 		  M = new RotationMatrix(tab(0),alpha)

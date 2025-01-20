@@ -314,7 +314,7 @@ Inherits nBpoint
 		  alpha = A.alpha
 		  if abs(alpha) < epsilon then
 		    for i = 0 to 1
-		      ctrl(i) =first
+		      ctrl(i) = first
 		    next
 		  else
 		    alpha = alpha/2

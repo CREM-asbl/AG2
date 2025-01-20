@@ -97,7 +97,7 @@ Inherits NSkull
 		  if s isa arc then
 		    q = can.dtransform(s.coord.tab(2)-p)
 		  else
-		    q =can.dtransform(s.coord.tab(1)-p)
+		    q = can.dtransform(s.coord.tab(1)-p)
 		  end if
 		  item(2).x2 = q.x
 		  item(2).y2 = q.y
@@ -105,6 +105,10 @@ Inherits NSkull
 		  for i = 0 to 5
 		    updatectrl(i, can.dtransform(s.coord.ctrl(i)-p))
 		  next
+		  
+		  Exception err
+		    err.message = err.message + CurrentMethodName + EndOfLine + app.ObjectToJSON(self)
+		    Raise err
 		End Sub
 	#tag EndMethod
 

@@ -998,7 +998,7 @@ Protected Module Globals
 	#tag Constant, Name = cyan, Type = Color, Dynamic = False, Default = \"&c00FFFF", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = Epsilon, Type = Double, Dynamic = False, Default = \"1e-2", Scope = Public
+	#tag Constant, Name = Epsilon, Type = Double, Dynamic = False, Default = \"1e-12", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = ERROR, Type = Double, Dynamic = False, Default = \"1e+308", Scope = Public
