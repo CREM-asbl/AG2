@@ -537,8 +537,9 @@ Protected Class Configuration
 		    tos.close
 		  end if
 		  
-		  
-		  
+		  Exception err
+		    err.message = err.message+CurrentMethodName+EndOfLine+app.ObjectToJSON(self)
+		    Raise err
 		End Sub
 	#tag EndMethod
 
