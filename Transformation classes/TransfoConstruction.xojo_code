@@ -1,6 +1,7 @@
 #tag Class
 Protected Class TransfoConstruction
 Inherits MultipleSelectOperation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function choix1(p as basicPoint) As shape
 		  dim s as shape
@@ -121,13 +122,6 @@ Inherits MultipleSelectOperation
 		  
 		  
 		  visible = Objects.FindPoint(p)
-		  'for i = visible.count-1 downto 0
-		  's = visible.item(i)
-		  'if type = 1 and  not choixvalide(point(s)) then
-		  'visible.removeobject(s)
-		  'end if
-		  'next
-		  
 		  s = visible.item(iobj)
 		  
 		  if s = nil or s = fp then
@@ -263,7 +257,6 @@ Inherits MultipleSelectOperation
 		  dim nbp as nbpoint
 		  dim u, v as basicpoint
 		  
-		  
 		  currentshape = super.getshape(p)  //on liste les objets visibles et on ramène le premier
 		  if currentshape = nil then
 		    return nil
@@ -352,6 +345,7 @@ Inherits MultipleSelectOperation
 		  'super .paint(g)
 		  dim n as integer
 		  
+		  info = ""
 		  if currenthighlightedshape = nil then
 		    select  case currentitemtoset
 		    case 1
