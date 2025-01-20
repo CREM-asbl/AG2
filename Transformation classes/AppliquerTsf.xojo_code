@@ -268,6 +268,7 @@ Inherits MultipleSelectOperation
 		Sub Paint(g as graphics)
 		  dim str as string
 		  
+		  info = ""
 		  if ListTsf = nil then
 		    return
 		  end if
