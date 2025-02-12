@@ -61,39 +61,45 @@ Inherits nBpoint
 
 	#tag Method, Flags = &h0
 		Function BibDroiteInterCercle(D as BiBPoint, Byref p() as BasicPoint, byref q as Basicpoint, byref v as basicpoint) As integer
-		  dim ray, dist, cot as Double
-		  dim ori As Integer
+		  // A: Point sur la droite
+		  dim A as BasicPoint = First
 		  
+		  // u: Vecteur directeur normalisé de la droite
+		  dim u as BasicPoint = (Second - First)
+		  u = u.Normer
 		  
-		  q = D.second - D.First                      // D est le cercle
-		  ray = q.norme
-		  if (q.x < 0) then 
-		    ori = -1
-		  end if
-		  dist = D.first.Distance(First,Second) //distance du centre du cercle à la droite 
-		  q = D.First.Projection(First,Second)  // q est le milieu de la corde
+		  // C: Centre du cercle
+		  dim C as BasicPoint = D.First
+		  
+		  // r: Rayon du cercle
+		  dim Rayon as BasicPoint = D.Second - D.First
+		  dim r as Double = Rayon.Norme
+		  
+		  dim dist As BasicPoint = A - C
+		  // Calcul des coefficients de l'équation quadratique
+		  dim b as Double = 2 * u.ProduitScalaire(dist)
+		  dim cTerm as Double = dist.Norme * dist.Norme - r * r
+		  
+		  // Calcul du discriminant
+		  dim delta as Double = b * b - 4 * cTerm
+		  
 		  redim p(-1)
 		  
-		  cot = sqrt(abs(ray*ray-dist*dist))
-		  v = Second-first
-		  v = v.normer
-		  v = v*cot                                            // L'orientation de v est celle de self (de first vers second)
-		  if cot < epsilon then 'abs(ray-dist) < epsilon then
-		    p.append q
-		    p.append q
-		    return 1
-		  elseif ray > dist  then
-		    p.append q-v                             //p(0) est avant p(1) sur la droite (orientée)
-		    p.append q+v
-		    return 2
-		  elseif ray < dist  then
-		    p.append nil
-		    p.append nil
+		  if delta < -epsilon then // Gérer les erreurs d'arrondi
+		    // Aucune intersection
 		    return 0
+		  elseif delta <= epsilon then // Une seule intersection (ou très proches)
+		    dim t as Double = -b / 2
+		    p.Append A + u * t
+		    return 1
+		  else
+		    // Deux intersections
+		    dim t1 as Double = (-b - sqrt(delta)) / 2
+		    dim t2 as Double = (-b + sqrt(delta)) / 2
+		    p.Append A + u * t1
+		    p.Append A + u * t2
+		    return 2
 		  end if
-		  
-		  //Il faudrait unifier Bibdroiteintercercle, Bibdemidroiteintercercle et Bibsegmentintercerle
-		  
 		End Function
 	#tag EndMethod
 

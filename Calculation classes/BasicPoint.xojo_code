@@ -409,6 +409,14 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ProduitScalaire(other as BasicPoint) As Double
+		  
+		  return self.x * other.x + self.y * other.y
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Projection(a as basicpoint, b as basicpoint) As basicpoint
 		  // projection sur un segment
 		  

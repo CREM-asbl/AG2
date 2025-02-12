@@ -79,7 +79,7 @@ Inherits SelectOperation
 		    end if
 		  elseif sh1 isa circle then '( sh1 est un cercle, sh2 aussi))
 		    k = computeintercercles
-		    if k = 3 then
+		    if k = 3 then 'cercles confondus
 		      somevalidpoint = false
 		    end if
 		  end if
@@ -169,17 +169,14 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub computeinterlines_circle()
 		  dim i, j,k as integer
-		  dim   b, w, p() as basicpoint
+		  dim b, w, p(1) as basicpoint
 		  dim d1 as droite
 		  dim g2 as circle
 		  
-		  
+		  g2 = circle(sh2)
 		  
 		  for i = 0 to nlig
 		    d1 = sh1.getside(i)
-		    g2 = circle(sh2)
-		    redim p(-1)
-		    redim p(1)
 		    b = new BasicPoint(0,0)
 		    w = new BasicPoint(0,0)
 		    k = d1.inter(g2,p(),b,w)
@@ -191,15 +188,8 @@ Inherits SelectOperation
 		      val(i,0) = false
 		      val(i,1) = false
 		    case 1
-		      if w.norme > epsilon then
-		        bptinters(i,0) = b-w
-		        bptinters(i,1) = b+w
-		        val(i,0) = false
-		        val(i,1) = false
-		      else
-		        bptinters(i,0) = b
-		        bptinters(i,1) = b
-		      end if
+		      bptinters(i,0) = b
+		      bptinters(i,1) = b
 		    case 2
 		      bptinters(i,0) = p(0)
 		      bptinters(i,1) = p(1)
@@ -449,7 +439,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h1
 		Protected Sub positionfalseinterpoints()
-		  //Les faux points d'intersection sont les  sommets communs aux deux formes sh1 ou sh2
+		  //Les faux points d'intersection sont les sommets communs aux deux formes sh1 ou sh2
 		  // ou les sommets de l'un qui sont pointsur sur l'autre. (Exemple: point de tangence d'un cercle inscrit à un polygone.) Ces points n'ont pas le statut de pointinter mais occupent la place
 		  //d'un point inter. Celle-ci doit être mentionnée comme occupée. On les calcule en premier lieu.
 		  //Idem pour les points de subdivision
@@ -501,7 +491,7 @@ Inherits SelectOperation
 		      h = sh2.pointonside(p.bpt)
 		      if h <> -1 then
 		        for k = 0 to nlig
-		          if bptinters(k,h) <> nil and bezet(k,h) =false and  ( p.bpt.distance (bptinters(k,h)) < epsilon) then 
+		          if bptinters(k,h) <> nil and bezet(k,h) = false and  ( p.bpt.distance (bptinters(k,h)) < epsilon) then 
 		            bezet(k,h) = true
 		            ids(k,h) = p.id 
 		          end if
