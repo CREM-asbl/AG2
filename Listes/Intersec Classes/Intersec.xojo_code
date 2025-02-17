@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Intersec
 Inherits SelectOperation
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
 		  dim i1, j1 as integer  //Utilisé dans Point.adjustinter et shape.valider
@@ -191,6 +192,11 @@ Inherits SelectOperation
 		      bptinters(i,0) = b
 		      bptinters(i,1) = b
 		    case 2
+		      if p(0).distanceSquaredTo(d1.firstp) > p(1).distanceSquaredTo(d1.firstp) then
+		        dim temp as basicpoint = p(0)
+		        p(0) = p(1)
+		        p(1) = temp
+		      end if
 		      bptinters(i,0) = p(0)
 		      bptinters(i,1) = p(1)
 		      select case d1.nextre

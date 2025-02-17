@@ -129,6 +129,14 @@ Protected Class BasicPoint
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function DistanceSquaredTo(other As BasicPoint) As Double
+		  Dim dx As Double = self.x - other.x
+		  Dim dy As Double = self.y - other.y
+		  Return dx * dx + dy * dy
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Duplicata() As BasicPoint
 		  dim x,y as double
 		  
