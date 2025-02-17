@@ -249,45 +249,45 @@ Inherits ShapeConstruction
 		  
 		  select case currentitemtoset
 		  case 1
-		    
-		    if CurrentAttractingShape = nil then
-		      display = choose + asegmentoraline
-		    else
-		      currentattractingshape.paint(g)
+		    if CurrentAttractingShape <> nil then // Check for nil before accessing properties
+		      currentattractingshape.paint(g) // Safe to call paint now
 		      If CurrentAttractingShape IsA Lacet Then
 		        display = sur + thissegment +"?"
 		      else
 		        display = sur + this (currentattractingshape.gettype) +"?"
 		      end if
+		    else
+		      display = choose + asegmentoraline // Default display if CurrentAttractingShape is nil
 		    end if
 		    
 		  case 2, 3
-		    if CurrentAttractingShape = nil then
-		      display = fix + apoint
-		    else
+		    if CurrentAttractingShape <> nil then // Check for nil
 		      currentattractingshape.paint(g)
 		      if currentattractingshape isa point or currentattractingshape isa repere then
 		        display  = thispoint + "?"
-		      elseif nextcurrentattractingshape <> nil then
+		      elseif nextcurrentattractingshape <> nil then // Also check nextcurrentattractingshape
 		        display = attheinter + "?"
 		      else
 		        display = sur + this (currentattractingshape.gettype) +"?"
 		      end if
+		    else
+		      display = fix + apoint  // Default if CurrentAttractingShape is nil
 		    end if
 		  end select
 		  
-		  
 		  showattraction
-		  if currentshape <> nil and constructed then
+		  
+		  if currentshape <> nil and constructed then // Check currentshape as well
 		    currentshape.paintall(g)
 		  end if
 		  
 		  Help g, display
 		  
+		  
+		  // Exception handling – keep it but consider more specific error handling or logging
 		  Exception err
-		    err.message = CurrentMethodName+EndOfLine+app.ObjectToJSON(self)
+		    err.Message = CurrentMethodName + EndOfLine + "Error: " + err.Message + EndOfLine + app.ObjectToJSON(self)
 		    raise err
-		    
 		    
 		End Sub
 	#tag EndMethod
