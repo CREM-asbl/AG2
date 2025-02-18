@@ -103,7 +103,7 @@ Inherits Label
 		        dat = str(pt.indice(polygon(sh)))    // Indice de "Cauchy"
 		      end if
 		    case 1
-		      if pt.location >= 1 then
+		      if pt.location.count >= 1 then
 		        dat = arrondi2(pt.location(0))
 		      end if
 		    end select
