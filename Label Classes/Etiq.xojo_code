@@ -103,7 +103,9 @@ Inherits Label
 		        dat = str(pt.indice(polygon(sh)))    // Indice de "Cauchy"
 		      end if
 		    case 1
-		      dat = arrondi2(pt.location(0))
+		      if pt.location >= 1 then
+		        dat = arrondi2(pt.location(0))
+		      end if
 		    end select
 		  end if
 		  
@@ -142,8 +144,10 @@ Inherits Label
 		  
 		  return dat
 		  
-		  
-		  
+		  Exception err
+		    err.message = CurrentMethodName + EndOfLine + app.ObjectToJSON(self) 
+		    raise err
+		    
 		End Function
 	#tag EndMethod
 
