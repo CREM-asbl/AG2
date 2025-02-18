@@ -741,92 +741,40 @@ Protected Class Shape
 		Sub delete()
 		  dim i, j, n as integer
 		  dim s as shape
-		  dim tsf as transformation
-		  dim p as point
 		  dim inter as intersec
 		  dim pol as polygon
-		  dim MacInfo as MacConstructionInfo
 		  
 		  if constructedby <> nil then
-		    select case  constructedby.oper
-		    case 1, 2
-		      constructedby.shape.removeconstructedshape self
-		      if ubound(constructedby.data) > 0 and constructedby.data(1) <> nil then
-		        tsf = transformation (constructedby.data(1))
-		        tsf.constructedshapes.removeobject self                        'en cas d'avortement tsf n'est pas encore définie
-		        tsf.supp.tsfi.removeObject tsf
-		        currentcontent.TheTransfos.removeObject  tsf
-		      end if
-		    case 3, 8
-		      constructedby.shape.removeconstructedshape self
-		    case 5
-		      constructedby.shape.removeconstructedshape self
-		      for i =  Ubound(points) to 0
-		        s = points(i).constructedby.shape
-		        s.removeconstructedshape points(i)
-		      next
-		    case  6
-		      tsf = transformation (constructedby.data(0))
-		      if tsf <> nil then
-		        tsf.removeconstructioninfos(self)    'idem
-		      end if
-		    case 9
-		      shape(constructedby.data(0)).removeconstructedshape self
-		      shape(constructedby.data(2)).removeconstructedshape self
-		    end  select
-		    constructedby = nil
+		    RemoveConstructionLinks
 		  end if
 		  
 		  if macconstructedby <> nil then
-		    macinfo = macConstructedby
-		    for i = 0 to ubound(macinfo.realinit)
-		      s = currentcontent.theobjects.getshape(macinfo.realinit(i))
-		      s.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
-		    next
+		    RemoveMacroConstructionLinks
 		  end if
 		  
 		  
-		  if tsfi.count > 0 then
-		    for i =tsfi.count-1 downto 0
-		      CurrentContent.Thetransfos.RemoveObject tsfi.item(i)
-		    next
-		    tsfi.removeall
-		  end if
-		  
-		  for i = 0 to ubound(childs)
-		    if childs(i).tsfi.count >0 then
-		      for j = 0 to childs(i).tsfi.count -1
-		        CurrentContent.Thetransfos.RemoveObject childs(i).tsfi.item(j)
-		      next
-		      childs(i).tsfi.removeall
-		    end if
+		  // Supprimer les transformations associées
+		  RemoveTransformations(self) // Fonction factorisée
+		  for each child as shape in childs // Boucle For Each plus sûre
+		    RemoveTransformations(child)
 		  next
-		  
-		  
 		  
 		  if conditionedby <> nil then
 		    conditionedby.conditioned.removeobject self
 		  end if
 		  
+		  // Supprimer les liens des points sur la forme
 		  for i = ubound(childs) downto npts
-		    p = childs(i)
-		    p.removepointsur(self)
+		    childs(i).removepointsur(self)
 		  next
 		  
+		  // Supprimer les points de la forme
 		  for i = Ubound(points) downto 0
-		    p = points(i)
-		    if p.forme = 2 and p.id > id then
-		      inter = p.GetInter
-		      if inter <> nil then
-		        inter.removepoint p
-		      end if
-		    end if
-		    for j =  p.pointsur.count-1 downto 0
-		      if p.id > id then ' p.pointsur.item(j).id then
-		        p.removepointsur(p.pointsur.item(j))
-		      end if
-		    next
+		    dim p as point = points(i)
+		    RemovePointLinks(p) // Fonction factorisée pour la gestion des points
+		    
 		    removepoint p
+		    
 		    if p.id < id and p.isolated and p.pointsur.count = 0  then
 		      currentcontent.addshape(p)
 		      p.addtofigure
@@ -850,15 +798,10 @@ Protected Class Shape
 		  currentcontent.removeobject self
 		  
 		  Exception err
-		    dim d As Debug
-		    d = new Debug
-		    d.setMethod("Shape","delete")
-		    d.setVariable("constructedby",constructedby)
-		    d.setVariable("macconstructedby",macconstructedby)
-		    d.setVariable("points",UBound(points))
-		    err.message = err.message+d.getString
+		    err.Message = CurrentMethodName + EndOfLine + "Error: " + err.Message + EndOfLine + app.ObjectToJSON(self)
+		    raise err
 		    
-		    Raise err
+		    
 		End Sub
 	#tag EndMethod
 
@@ -3078,6 +3021,43 @@ Protected Class Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub RemoveConstructionLinks()
+		  dim i as Integer
+		  dim tsf as transformation 
+		  
+		  select case constructedby.oper
+		  case 1, 2
+		    constructedby.shape.removeconstructedshape self
+		    if ubound(constructedby.data) > 0 and constructedby.data(1) <> nil then
+		      tsf = transformation (constructedby.data(1))
+		      tsf.constructedshapes.removeobject self                        'en cas d'avortement tsf n'est pas encore définie
+		      tsf.supp.tsfi.removeObject tsf
+		      currentcontent.TheTransfos.removeObject  tsf
+		    end if
+		  case 3, 8
+		    constructedby.shape.removeconstructedshape self
+		  case 5
+		    constructedby.shape.removeconstructedshape self
+		    for i =  Ubound(points) to 0
+		      dim s as Shape = points(i).constructedby.shape
+		      s.removeconstructedshape points(i)
+		    next
+		  case  6
+		    tsf = transformation (constructedby.data(0))
+		    if tsf <> nil then
+		      tsf.removeconstructioninfos(self)    'idem
+		    end if
+		  case 9
+		    if constructedby.data.Ubound >= 0 and constructedby.data.Ubound >= 2 then // Check bounds before accessing
+		      if shape(constructedby.data(0)) <> nil then shape(constructedby.data(0)).removeconstructedshape self
+		      if shape(constructedby.data(2)) <> nil then shape(constructedby.data(2)).removeconstructedshape self
+		    end if
+		  end select
+		  constructedby = nil
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub RemoveFromFigure()
 		  dim ff as figure
@@ -3110,6 +3090,19 @@ Protected Class Shape
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub RemoveMacroConstructionLinks()
+		  dim i as Integer
+		  dim s As Shape
+		  
+		  dim MacInfo as MacConstructionInfo = macConstructedby
+		  for i = 0 to ubound(macinfo.realinit)
+		    s = currentcontent.theobjects.getshape(macinfo.realinit(i))
+		    s.macconstructedshapes.remove s.macconstructedshapes.IndexOf(self)
+		  next
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub RemovePoint(index as integer)
 		  RemovePoint(Points(index))
@@ -3127,6 +3120,40 @@ Protected Class Shape
 		  Q.removeParent self
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RemovePointLinks(p as point)
+		  dim i as Integer
+		  
+		  if p.forme = 2 and p.id > id then
+		    dim inter as intersec = p.GetInter
+		    if inter <> nil then
+		      inter.removepoint p
+		    end if
+		  end if
+		  
+		  for i = p.pointsur.count - 1 downto 0 // Itération à l'envers
+		    if p.id > id then
+		      p.removepointsur(p.pointsur.item(i))
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RemoveTransformations(s As Shape)
+		  dim i as Integer
+		  
+		  if s.tsfi.count > 0 then
+		    for i = s.tsfi.count - 1 downto 0 // Itération à l'envers plus sûre
+		      if i < CurrentContent.Thetransfos.count then 
+		        CurrentContent.Thetransfos.RemoveObject s.tsfi.item(i)
+		      end if
+		    next
+		    s.tsfi.removeall
+		  end if
 		End Sub
 	#tag EndMethod
 
