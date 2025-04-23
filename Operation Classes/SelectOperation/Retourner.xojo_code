@@ -93,9 +93,8 @@ Inherits SelectOperation
 		    end if
 		  next
 
-		  if s = currentcontent.SHUA then
-		    currentcontent.UA = - currentcontent.UA
-		  end if
+  // Ne pas modifier directement l'UA lorsque la forme de référence est retournée
+  // L'UA sera calculée correctement au moment de son utilisation pour l'affichage
 
 		  tempshape.inverserordre
 		  currentcontent.thefigs.enablemodifyall

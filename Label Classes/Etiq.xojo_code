@@ -8,19 +8,19 @@ Inherits Label
 		  dim m as integer
 		  dim b as boolean
 		  dim p as integer
-		  
+
 		  p = currentcontent.ndec
-		  
+
 		  b = (d < 0)
-		  
+
 		  if b then
 		    d = abs(d)
 		  end if
-		  
+
 		  r = pow(10,p)
 		  k = round(d*r)
 		  k = k/r
-		  
+
 		  s1 = str(k)
 		  m = instr(s1,".")
 		  select case m
@@ -48,7 +48,7 @@ Inherits Label
 		Sub Augmentefont()
 		  dim n as single
 		  n = TextSize
-		  
+
 		  SetSize(n+2)
 		End Sub
 	#tag EndMethod
@@ -62,13 +62,13 @@ Inherits Label
 		  dim bp as basicpoint
 		  dim vis as objectslist
 		  dim a,  i as integer
-		  
+
 		  dat ="-10000"
-		  ///////////// Abscisses 
+		  ///////////// Abscisses
 		  if chape isa point then
 		    pt = point(chape)
 		    bp = pt.bpt
-		    
+
 		    ///////// Si le point est localisé sur une forme sans être nécessairement un point sur ////////////
 		    vis = currentcontent.theobjects.findbipoint(bp)
 		    if vis.count > 0  then
@@ -85,7 +85,7 @@ Inherits Label
 		        dat = arrondi2(bp.location(circle(sh)))
 		      end if
 		    end if
-		    
+
 		    /////////////////// Si pt est un point sur ou un point "dans"///////////////////////////
 		    select case pt.forme
 		    case 0
@@ -108,10 +108,10 @@ Inherits Label
 		      end if
 		    end select
 		  end if
-		  
-		  ////////////////////// Longueurs 
-		  
-		  
+
+		  ////////////////////// Longueurs
+
+
 		  if chape isa droite then
 		    if chape =currentcontent.SHUL then
 		      dat= str(1)
@@ -121,7 +121,7 @@ Inherits Label
 		      dat =  "¥"/////Infini
 		      setfont("Symbol")
 		    end if
-		  end if 
+		  end if
 		  if chape isa polygon and chape = currentcontent.SHUL and loc = currentcontent.IcotUL  then
 		    dat = str(1)
 		  elseif chape isa Lacet and Loc <> -1 then
@@ -131,23 +131,29 @@ Inherits Label
 		  elseif chape isa Freecircle and loc <> -1 and currentcontent.UL <> 0 then
 		    dat = arrondi2(2*PI*Freecircle(chape).getradius/currentcontent.UL)
 		  end if
-		  
-		  ////// Aires 
-		  
+
+		  ////// Aires
+
 		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
 		    if chape = currentcontent.SHUA then
 		      dat = str(1)
-		    elseif currentcontent.UA <> 0 then
+		    elseif currentcontent.SHUA <> nil then
+		      // Calcul de l'UA juste avant son utilisation pour garantir la cohérence des calculs
+		      currentcontent.UA = currentcontent.SHUA.aire
 		      dat = arrondi2(chape.aire/currentcontent.UA)
+		    else
+		      // Unité d'aire par défaut
+		      currentcontent.UA = 1
+		      dat = arrondi2(chape.aire)
 		    end if
 		  end if
-		  
+
 		  return dat
-		  
+
 		  Exception err
-		    err.message = CurrentMethodName + EndOfLine + app.ObjectToJSON(self) 
+		    err.message = CurrentMethodName + EndOfLine + app.ObjectToJSON(self)
 		    raise err
-		    
+
 		End Function
 	#tag EndMethod
 
@@ -164,13 +170,13 @@ Inherits Label
 		  psw = lab.psw
 		  setsize(lab.Textsize)
 		  text = lab.text
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(n As integer)
-		  
+
 		  super.constructor
 		  if chr(Etiquette) <> "*" and chr(Etiquette) <> "%"  then
 		    Etiquette = Etiquette+1
@@ -184,17 +190,17 @@ Inherits Label
 		  Italic = LabelDefault.italic
 		  fixe = LabelDefault.fixe
 		  Selectable = true
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(side as integer, EL as XMLElement)
 		  dim coul as couleur
-		  
+
 		  super.constructor
-		  
-		  
+
+
 		  Text = El.GetAttribute("Text")
 		  if Text = "*" then
 		    WorkWindow.drapdim = true
@@ -216,18 +222,18 @@ Inherits Label
 		  else
 		    SetFixe(false)
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Copy() As Etiq
 		  Dim L as Etiq
-		  
+
 		  L = new Etiq(loc)
-		  
+
 		  L.Text = Text
 		  L.Position = Position
 		  L.Textsize = Textsize
@@ -246,7 +252,7 @@ Inherits Label
 		Sub DiminueFont()
 		  dim n as single
 		  n = TextSize
-		  
+
 		  if n > 10 then
 		    SetSize(n-2)
 		  end if
@@ -256,7 +262,7 @@ Inherits Label
 	#tag Method, Flags = &h0
 		Function Etiquet() As String
 		  dim et as string
-		  
+
 		  if  text = " " or text = "*"  then
 		    et = ""
 		  elseif text <> "0" and val(text) = 0 then
@@ -264,7 +270,7 @@ Inherits Label
 		  elseif  (text = "0" or val(text )<> 0) then
 		    et = "n"+text
 		  end if
-		  
+
 		  if text = "*" then
 		    WorkWindow.drapdim = true
 		  end if
@@ -275,8 +281,8 @@ Inherits Label
 	#tag Method, Flags = &h0
 		Sub MouseCorrection(P as BasicPoint)
 		  Correction = P-Position
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -284,41 +290,41 @@ Inherits Label
 		Sub Paint(g as graphics)
 		  dim  q as BasicPoint
 		  dim  dat as string
-		  
+
 		  If (dret <> Nil And dret  IsA rettimer And Text =  "*")   Then
 		    return
 		  end if
-		  
+
 		  if correction = nil then
 		    correction = new BasicPoint(0,0)
 		  end if
-		  
+
 		  q = position + correction
 		  q = can.transform(q)
 		  me.left = q.x
 		  SetParam(g)
-		  
+
 		  if chape.highlighted then
 		    g.forecolor =config.highlightcolor.col
 		  end if
-		  
+
 		  select case text
-		  case "%"  
+		  case "%"
 		    dat = str(chape.id)
 		  case "*"
 		    dat = calculmesure
 		  else
 		    dat = Text
 		  end select
-		  
+
 		  g.DrawString(dat,q.x,q.y)
 		  ResetParam(g)
 		  return
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -330,14 +336,14 @@ Inherits Label
 		  dim sh as shape
 		  dim type,a as integer  // 0 longueur  //1 aire // 2 abscisse
 		  dim dr as Droite
-		  
+
 		  if correction = nil then
 		    correction = new BasicPoint(0,0)
 		  end if
-		  
+
 		  SetParam(g)
 		  g.TextSize=Textsize * sc
-		  
+
 		  q = position + correction
 		  q = can.transform(q)
 		  q = q * sc
@@ -349,13 +355,13 @@ Inherits Label
 		    g.DrawString(Text,q.x, q.y)
 		    return
 		  end if
-		  
+
 		  if not WorkWindow.drapdim then
 		    return
 		  end if
-		  
-		  
-		  
+
+
+
 		  dat ="-10000"
 		  ///////////// Abscisses
 		  if chape isa point then
@@ -412,18 +418,24 @@ Inherits Label
 		      dat = arrondi2(2*PI*Freecircle(chape).getradius/currentcontent.UL)
 		    end if
 		  end if
-		  
+
 		  ////////////  Aires
-		  
+
 		  if ( (chape isa Lacet)  or (chape isa circle and not chape isa arc) ) and (loc = -1) then
 		    if chape = currentcontent.SHUA then
 		      dat = arrondi2(chape.Aire)
-		    elseif currentcontent.UA <> 0 then
+		    elseif currentcontent.SHUA <> nil then
+		      // Calcul de l'UA juste avant son utilisation pour garantir la cohérence des calculs
+		      currentcontent.UA = currentcontent.SHUA.aire
 		      dat = arrondi2(chape.aire/currentcontent.UA)
+		    else
+		      // Unité d'aire par défaut
+		      currentcontent.UA = 1
+		      dat = arrondi2(chape.aire)
 		    end if
 		    type = 1
 		  end if
-		  
+
 		  if dat <>"-10000" then
 		    select case type
 		    case 0
@@ -444,11 +456,11 @@ Inherits Label
 		Sub pssize()
 		  dim i, n as integer
 		  dim w, h, p as double
-		  
+
 		  psw = 0
 		  psh = 0
 		  psp = 0
-		  
+
 		  for i = 1 to Text.len
 		    p = 0
 		    h = 0
@@ -465,8 +477,8 @@ Inherits Label
 		    psh = max(psh, h)
 		    psp = max(psp ,p)
 		  next
-		  
-		  
+
+
 		  psw = psw*Textsize
 		  psp = psp*Textsize
 		  psh = psh*Textsize
@@ -517,7 +529,7 @@ Inherits Label
 
 	#tag Method, Flags = &h0
 		Sub SetParam(g as graphics)
-		  
+
 		  OldCol = g.ForeColor
 		  OldSize = g.TextSize
 		  g.TextFont = TextFont
@@ -525,17 +537,17 @@ Inherits Label
 		  g.TextSize=Textsize
 		  g.bold = Bold
 		  g.Italic = Italic
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetPosition()
 		  dim fp, sp as BasicPoint
-		  
-		  
-		  
+
+
+
 		  if chape isa cube then
 		    if loc >6 then
 		      return
@@ -563,7 +575,7 @@ Inherits Label
 		    fp = chape.points(loc).bpt
 		    sp = chape.points((loc+1) mod chape.npts).bpt
 		  end if
-		  
+
 		  if chape isa repere or (LockRight and LockBottom) then
 		    Position = new BasicPoint(0,0)
 		  elseif (chape isa Lacet ) and loc <> -1 then
@@ -575,7 +587,7 @@ Inherits Label
 		  elseif loc = -1 then
 		    Position = chape.GetGravitycenter
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -593,17 +605,25 @@ Inherits Label
 		  dim TE as TextEncoding
 		  dim eti as string
 		  dim a As  double
-		  
+
 		  q =  position + correction
-		  
-		  
+
+
 		  if  text = "*" then
 		    if chape isa point and point(chape).pointsur.count = 1  then
 		      eti = arrondi2(point(chape).location(0))
-		    elseif chape isa droite   then
+		    elseif chape isa droite then
 		      eti=arrondi2(droite(chape).firstp.distance(droite(chape).secondp))
 		    elseif chape isa polygon and loc = -1 then
-		      eti = arrondi2(polygon(chape).aire/currentcontent.UA)
+		      if currentcontent.SHUA <> nil then
+		        // Calcul de l'UA juste avant son utilisation
+		        currentcontent.UA = currentcontent.SHUA.aire
+		        eti = arrondi2(polygon(chape).aire/currentcontent.UA)
+		      else
+		        // Unité d'aire par défaut
+		        currentcontent.UA = 1
+		        eti = arrondi2(polygon(chape).aire)
+		      end if
 		    elseif chape isa polygon and loc <> -1 then
 		      eti =arrondi2(chape.points(loc).bpt.distance(chape.points((loc+1) mod chape.npts).bpt)/currentcontent.UL)
 		    elseif chape isa arc then
@@ -614,25 +634,25 @@ Inherits Label
 		    eti = text
 		  end if
 		  TE = Encodings.WindowsANSI
-		  
+
 		  conv = ConvertEncoding (eti, TE)
 		  tos.write("(")
 		  tos.write(conv)
-		  
+
 		  if chape isa arc then
 		    tos.writeline (")  ["+ str(q.x) +"  "+ str(q.y) + "] etiqhord  alphsymb (\260) show")
 		  else
 		    tos.writeline(")  ["+ str(q.x) +"  "+ str(q.y) + "] etiqhord")
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
 		  dim El as XMLElement
-		  
+
 		  El = Doc.CreateElement("Label")
 		  El.SetAttribute ("Text",Text)
 		  El.SetAttribute ("Font",TextFont)
@@ -655,22 +675,22 @@ Inherits Label
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

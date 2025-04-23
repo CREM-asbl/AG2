@@ -8,11 +8,11 @@ Inherits SelectAndDragOperation
 		  dim i as integer
 		  dim M as Matrix
 		  dim s As Shape
-		  
+
 		  if (tempshape.count = 0) or (NewPoint = EndPoint) then
 		    return
 		  end if
-		  
+
 		  if CurrentShape isa repere then
 		    C= new BasicPoint(can.width/2,can.height/2)
 		    newpoint = can.mousecan
@@ -26,9 +26,9 @@ Inherits SelectAndDragOperation
 		    super.completeoperation(NewPoint)
 		    return
 		  end if
-		  
+
 		  C = CurrentShape.getgravitycenter
-		  
+
 		  if  (c<>NewPoint) and (c <> endpoint)  and (c <> nil) then
 		    k= NewPoint.Distance(c)/EndPoint.Distance(c)
 		    M = new HomothetyMatrix(c,k)
@@ -37,22 +37,21 @@ Inherits SelectAndDragOperation
 		    if drapUL then
 		      currentcontent.UL = currentcontent.SHUL.longueur(currentcontent.IcotUL)
 		    end if
-		    if drapUA then
-		      currentcontent.UA = currentcontent.SHUA.aire
-		    end if
+		    // Ne pas calculer directement l'UA lors du redimensionnement
+		    // L'UA sera calculée juste avant son utilisation pour l'affichage
 		  end if
 		  CurrentContent.TheObjects.EnableModifyAll
-		  
+
 		  super.completeoperation(NewPoint)
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(currentMethodName)
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString
-		    
-		    
+
+
 		End Sub
 	#tag EndMethod
 
@@ -60,15 +59,15 @@ Inherits SelectAndDragOperation
 		Sub Constructor()
 		  super.constructor
 		  OpId = 22
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMethod(getString,getString)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
+
 		End Sub
 	#tag EndMethod
 
@@ -76,7 +75,7 @@ Inherits SelectAndDragOperation
 		Sub Constructor(EL as XMLElement)
 		  dim EL1 as XMLElement
 		  dim List as XmlNodeList
-		  
+
 		  super.constructor
 		  SelectIdForms(EL)
 		  ratio = Val(EL.GetAttribute("Ratio"))
@@ -88,16 +87,16 @@ Inherits SelectAndDragOperation
 		    c = new BasicPoint(0,0)
 		  end if
 		  Config.Trace=true
-		  
-		  
-		  
+
+
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMethod(GetName,"Redimensionner(EL as XMLElement)")
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Sub
 	#tag EndMethod
@@ -116,12 +115,12 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  
+
 		  super.endoperation
 		  c = nil
 		  M1 = nil
-		  
-		  
+
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -129,8 +128,8 @@ Inherits SelectAndDragOperation
 		    d.setVariable("CurrentShape",CurrentShape)
 		    d.setVariable("C",C)
 		    err.message = err.message+d.getString
-		    
-		    
+
+
 		End Sub
 	#tag EndMethod
 
@@ -144,9 +143,9 @@ Inherits SelectAndDragOperation
 		Function GetShape(p as BasicPoint) As shape
 		  dim s as shape
 		  dim i, j as integer
-		  
+
 		  s = super.getshape(p)
-		  
+
 		  if visible.count > 0  then
 		    nobj = visible.count
 		    for i =  nobj-1 downto 0
@@ -165,13 +164,13 @@ Inherits SelectAndDragOperation
 		      nobj = visible.count
 		    next
 		  end if
-		  
+
 		  if Visible.count > 0  then
 		    return visible.item(0)
 		  else
 		    return nil
 		  end if
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -182,16 +181,16 @@ Inherits SelectAndDragOperation
 		    d.setVariable("j",j)
 		    d.setVariable("s",s)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MouseUp(p as BasicPoint)
 		  dim M as Matrix
-		  
+
 		  if currentshape = nil then
 		    can.mousecursor = System.Cursors.StandardPointer
 		    if Oldvisible <> nil then
@@ -206,7 +205,7 @@ Inherits SelectAndDragOperation
 		    end if
 		    super.mouseup(p)
 		  end if
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -217,9 +216,9 @@ Inherits SelectAndDragOperation
 		    d.setVariable( "c", c)
 		    d.setVariable( "currentcontent", currentcontent)
 		    d.setVariable( "figs", figs)
-		    
+
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Sub
 	#tag EndMethod
@@ -231,21 +230,21 @@ Inherits SelectAndDragOperation
 		  repere(CurrentShape).Idy = repere(CurrentShape).Idy * k
 		  can.setrepere(repere(CurrentShape))
 		  CurrentContent.theobjects.updatelabels(k)
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  super.paint(g)
-		  
+
 		  if CurrentHighlightedShape=nil then
 		    Help g,  choose + aform
 		  else
 		    Help g, drag + pour+ letzoom
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -256,11 +255,11 @@ Inherits SelectAndDragOperation
 		  dim EL as XMLElement
 		  dim i, niter as integer
 		  dim NewPoint as BasicPoint
-		  
+
 		  niter = 60
-		  
+
 		  EL = XMLElement(Temp.child(0))
-		  if EL = nil then 
+		  if EL = nil then
 		    return
 		  end if
 		  SelectIdForms(EL)
@@ -269,10 +268,10 @@ Inherits SelectAndDragOperation
 		  c = new basicpoint(val(EL.GetAttribute("CX")), val(EL.GetAttribute("CY")))
 		  startpoint = new Basicpoint(val(EL.GetAttribute("startx")),val(EL.GetAttribute("starty")))
 		  endpoint = new Basicpoint(val(EL.GetAttribute("endx")),val(EL.GetAttribute("endy")))
-		  
+
 		  r = ratio^(1/niter)
 		  M1 = new HomothetyMatrix(c,r)
-		  
+
 		  if  currentshape isa repere then
 		    if Config.Trace then
 		      dret  = new ModifTimer(self)
@@ -296,8 +295,8 @@ Inherits SelectAndDragOperation
 		    c = nil
 		  end if
 		  objects.enablemodifyall
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -305,11 +304,11 @@ Inherits SelectAndDragOperation
 		Function ToXML(Doc as XMLDocument) As XMLElement
 		  Dim Myself as XMLElement
 		  dim Temp as XMLElement
-		  
+
 		  if c <> nil then
 		    ratio=EndPoint.Distance(c)/StartPoint.Distance(c)
 		    Myself= Doc.CreateElement(GetName)
-		    
+
 		    Myself.AppendChild Tempshape.XMLPutIdInContainer(Doc)
 		    Myself.SetAttribute("Ratio",str(ratio))
 		    Myself.setattribute("CX", str(c.x))
@@ -328,20 +327,20 @@ Inherits SelectAndDragOperation
 		  dim  M as Matrix
 		  dim r as Double
 		  dim EL as XMLElement
-		  
+
 		  EL = XMLElement(Temp.child(0))
-		  
-		  if EL = nil then 
-		    return 
+
+		  if EL = nil then
+		    return
 		  end if
-		  
+
 		  SelectIdForms(EL)
-		  
+
 		  r = val(EL.GetAttribute(Dico.value("Ratio")))
 		  r = 1/r
 		  currentshape = tempshape.item(0)
-		  
-		  
+
+
 		  if currentshape isa repere then
 		    M = new HomothetyMatrix(new BasicPoint(0,0),r)
 		    currentshape.Transform(M)
@@ -354,22 +353,22 @@ Inherits SelectAndDragOperation
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
