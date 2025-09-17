@@ -4710,7 +4710,10 @@ Protected Class Shape
 		  List = Temp.XQL("Childs")
 		  if List.Length  > 0 then
 		    EL = XMLElement(List.Item(0))
-		    for i = npts to EL.Childcount-1
+		    // Important: lire les caractéristiques PointSur pour TOUS les enfants,
+		    // y compris les sommets (indices 0..npts-1). Sinon, un sommet qui est
+		    // aussi un "point sur" perd sa contrainte après rechargement.
+		    for i = 0 to EL.Childcount-1
 		      EL1 =  XMLElement(EL.Child(i))
 		      pt = XMLReadPoint(EL1)  //pt est un point
 		      if pt.pointsur.count = 0 then //si on n'a pas encore lu  les caractéristiques de ce pointsur, on les lit; NE PAS REMPLACER par pt.forme
