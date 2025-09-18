@@ -96,22 +96,22 @@ Inherits SelectAndDragOperation
 		  // Démarre une modification animée à partir d'un point sélectionné
 		  dim s as shape
 		  dim dep as BasicPoint
-		  
+
 		  // Initialisation commune
 		  Self.StartModificationFromPoint(p, true)
-		  
+
 		  // Calcul d'un déplacement de base pour l'animation
 		  s = p.pointsur.item(0)
 		  dep = ComputeAnimationDeltaForShape(s)
-		  
+
 		  dep = dep/60
-		  
+
 		  if s isa droite and dep.norme < epsilon then
 		    return
 		  else
 		    dret = new AnimTimer(self)
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -120,26 +120,26 @@ Inherits SelectAndDragOperation
 		  Dim i, j, n0, n1 As Integer
 		  Dim sh As shape
 		  Dim p As point
-		  
+
 		  if s = nil or s.fig = nil  then
 		    return false
 		  end if
-		  
+
 		  p = point(s)
 		  p.mobility
-		  
+
 		  if p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
 		    return false
 		  end if
-		  
+
 		  if p.forme = 1 and p.constructedby <> nil and p.constructedby.oper = 10 and point(p.constructedby.shape).isextremityofaparaperpseg then
 		    return false
 		  end if
-		  
+
 		  if p.forme = 1 and p.isextremityofaparaperpseg then
 		    return false
 		  end if
-		  
+
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
 		    if (sh isa arc) then
@@ -153,12 +153,12 @@ Inherits SelectAndDragOperation
 		      end if
 		    next
 		  next
-		  
+
 		  return true
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -173,42 +173,42 @@ Inherits SelectAndDragOperation
 		  // Applique le déplacement calculé
 		  UpdateFigs(pc)
 		  can.refreshBackGround
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  dim i as integer
-		  
+
 		  super.constructor
 		  OpId = 21
 		  CurrentContent.TheObjects.UnselectAll
-		  
+
 		  for i = 0 to CurrentContent.TheFigs.count-1
 		    CurrentContent.thefigs.item(i).assocfigs = nil
 		  next
-		  
+
 		  drapchoix = true
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function decal(p as point, bp as Basicpoint) As basicpoint
 		  dim M as Matrix
-		  
-		  
+
+
 		  if p.guide <> nil and p.guide <> p then
 		    M = p.GetComposedMatrix(p.guide)
 		    M = M.inv
@@ -216,20 +216,20 @@ Inherits SelectAndDragOperation
 		  Else
 		    return bp
 		  end if
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
 		  Dim i, Magnetism As Integer
-		  
-		  
+
+
 		  if pointmobile = nil then
 		    return
 		  end if
-		  
-		  
+
+
 		  MagneticD = new BasicPoint(0,0)
 		  Magnetism= testmagnetisme(magneticD)
 		  if magnetism > 0 then
@@ -238,7 +238,7 @@ Inherits SelectAndDragOperation
 		      updatefigs(magneticd)
 		    End If
 		  end if
-		  
+
 		  pointmobile.drapmagn = false
 		  pointmobile.unhighlight
 		  figs.createstate("FinalState",pointmobile)
@@ -251,7 +251,7 @@ Inherits SelectAndDragOperation
 		  pointmobile = nil
 		  endpoint = Nil
 		  workwindow.setFocus
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -267,35 +267,35 @@ Inherits SelectAndDragOperation
 		  dim S As point
 		  dim tableau() as integer
 		  redim tableau(-1)
-		  
+
 		  iobj = 0
 		  drapchoix = false
 		  visible = objects.findpoint(p)
 		  nobj = visible.count
-		  
-		  
+
+
 		  if nobj = 0 then
 		    drapchoix = true
 		    return nil
 		  end if
-		  
+
 		  for i = visible.count-1 downto 0
 		    s = Point(Visible.item(i))
 		    if not choixvalid(s) then
 		      visible.removeobject(s)
 		    end if
 		  next
-		  
+
 		  nobj = visible.count
-		  
+
 		  if nobj = 0 then
 		    // Aucun objet visible valide après filtrage
 		    drapchoix = false
 		    return nil
 		  end if
-		  
+
 		  s = point(visible.item(0))
-		  
+
 		  if s <> nil then
 		    for i = 0 to s.parents.count-1
 		      if not s.parents(i).pointe then
@@ -316,10 +316,10 @@ Inherits SelectAndDragOperation
 		      return s
 		    end if
 		  end if
-		  
+
 		  return nil
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -327,24 +327,24 @@ Inherits SelectAndDragOperation
 		Sub InitFigs()
 		  Dim i As Integer
 		  dim figu as figure
-		  
+
 		  cancel = false
 		  figs.removeall  'figs est une propriété de SelectOperation
-		  
+
 		  figu = pointmobile.fig
 		  figu.listerassociatedfigures
 		  figs.addobject figu
 		  for i = 0 to figu.AssocFigs.count-1
 		    figs.addobject figu.assocfigs.item(i)
 		  next
-		  
+
 		  if figs.ordonner then
 		    figs.cancelfixedpoints
 		  else
 		    cancel = true
 		  end if
 		  figs.enablemodifyall
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -354,15 +354,15 @@ Inherits SelectAndDragOperation
 		  dim s as point
 		  dim a as arc
 		  dim M as Matrix
-		  
+
 		  CurrentContent.TheObjects.tracept = false
 		  can.ClearOffscreen
 		  super.MouseDown(p)
-		  
+
 		  if currentshape = nil or not testfinished  then
 		    return
 		  end if
-		  
+
 		  // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
 		  // La deuxième est introduite dans Figure.update1
 		  currenthighlightedshape = point(currentshape)
@@ -370,7 +370,7 @@ Inherits SelectAndDragOperation
 		  StartModificationFromPoint(point(currentshape), false)
 		  s = pointmobile
 		  EnsureArcMovableIfNeeded(s)
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -378,9 +378,9 @@ Inherits SelectAndDragOperation
 		Sub MouseDrag(bp as BasicPoint)
 		  dim mag as integer
 		  dim magneticd as basicpoint
-		  
-		  
-		  
+
+
+
 		  if cancel then
 		    return
 		  else
@@ -390,8 +390,8 @@ Inherits SelectAndDragOperation
 		    CompleteOperation(bp)
 		    mag= testmagnetisme(magneticd)
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -410,13 +410,13 @@ Inherits SelectAndDragOperation
 		Sub MouseWheel()
 		  dim i as integer
 		  dim p as point
-		  
+
 		  if visible = nil then
 		    return
 		  end if
-		  
+
 		  nobj = visible.count
-		  
+
 		  if nobj > 1 then
 		    iobj = (iobj+1) mod nobj
 		    if CurrentHighlightedShape<>nil then
@@ -426,10 +426,10 @@ Inherits SelectAndDragOperation
 		        p.parents(i).unhighlight
 		      next
 		    end if
-		    
+
 		    CurrentHighlightedShape = visible.item(iobj)
 		    CurrentHighlightedShape.HighLight
-		    
+
 		    if currenthighlightedshape isa point then
 		      p = point(CurrentHighlightedShape)
 		      if p.pointsur.count = 0 then
@@ -438,18 +438,18 @@ Inherits SelectAndDragOperation
 		        next
 		      end if
 		    end if
-		    
+
 		    can.refreshbackground
-		    
+
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
-		  
+
 		  super.Paint(g)
-		  
+
 		  if drapchoix = true  then
 		    if currenthighlightedshape = nil   then
 		      display = choose + apoint
@@ -466,7 +466,7 @@ Inherits SelectAndDragOperation
 		    pointmobile.paint(g)
 		  end if
 		  Help g, display
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -482,18 +482,18 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  
+
 		  dim EL, EL1  as XMLElement
 		  dim D, dep as BasicPoint
-		  
-		  
+
+
 		  EL = XMLElement(Temp.child(0))
 		  EL1 = XMLElement(EL.child(0))
-		  
+
 		  if val(EL.GetAttribute("Animation")) = 1 then
 		    animation = true
 		  end if
-		  
+
 		  pointmobile = point(objects.getshape(val(EL1.GetAttribute("Id"))))
 		  currentshape = pointmobile
 		  'if not animation then
@@ -502,12 +502,12 @@ Inherits SelectAndDragOperation
 		  Initfigs
 		  StartPoint = new BasicPoint(val(EL1.GetAttribute("SX")), val(EL1.GetAttribute("SY")))
 		  EndPoint = new BasicPoint(val(EL1.GetAttribute("EX")), val(EL1.GetAttribute("EY")))
-		  
-		  
+
+
 		  figs.enablemodifyall
 		  dep =  EndPoint-StartPoint
 		  dep = dep/60
-		  
+
 		  if Config.Trace and dep.norme > epsilon  then
 		    self.temp = temp
 		    dret = new ModifTimer(self)
@@ -518,9 +518,9 @@ Inherits SelectAndDragOperation
 		    ReDeleteDeletedFigures(Temp)
 		    RecreateCreatedFigures(Temp)
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -544,12 +544,12 @@ Inherits SelectAndDragOperation
 		  Dim t As Boolean
 		  dim s as point
 		  dim q1 as BasicPoint
-		  
+
 		  testfinished = false
 		  can.Mousecursor = system.cursors.wait
-		  
+
 		  startpoint = p.bpt
-		  pointmobile = p 
+		  pointmobile = p
 		  currentshape = p
 		  InitFigs
 		  if cancel then
@@ -568,12 +568,12 @@ Inherits SelectAndDragOperation
 		    currentshape = nil
 		    return t
 		  end if
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -581,9 +581,9 @@ Inherits SelectAndDragOperation
 		Function testfinal(p as basicpoint) As Boolean
 		  dim t as boolean
 		  dim s as point
-		  
+
 		  figs.enablemodifyall
-		  
+
 		  s = ptguide(pointmobile)
 		  figs.save
 		  t =  figs.update(s, decal(pointmobile, p))
@@ -591,34 +591,34 @@ Inherits SelectAndDragOperation
 		  figs.canceloldbpts
 		  figs.EnableModifyall
 		  return t
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function testmagnetisme(byref magneticD as basicPoint) As integer
 		  dim Magnetism As Integer
-		  
+
 		  Magnetism= Magnetisme(pointmobile,MagneticD)
-		  
+
 		  if cancelattraction(pointmobile)    then
 		    magnetism = 0
 		  else
 		    currentattractedshape = pointmobile
 		  end if
 		  return magnetism
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
 		  Dim Myself, EL As XMLElement
-		  
-		  
-		  
-		  
+
+
+
+
 		  Myself= Doc.CreateElement(GetName)
 		  EL = pointmobile.XMLPutINContainer(Doc)
 		  EL.SetAttribute("SX", str(StartPoint.x))
@@ -634,9 +634,9 @@ Inherits SelectAndDragOperation
 		    EL.SetAttribute("Rempl", "Ini")
 		    Myself.appendchild EL
 		  end if
-		  
+
 		  return Myself
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -646,25 +646,25 @@ Inherits SelectAndDragOperation
 		  dim List as XmlNodeList
 		  dim sid, i as integer
 		  dim ff as figure
-		  
+
 		  EL = XMLElement(Temp.child(0))
 		  EL1 = XMLElement(EL.child(0))
-		  
+
 		  if val(EL.GetAttribute("Animation")) = 1 then
 		    animation = true
 		  end if
 		  pointmobile = point(objects.getshape(val(EL1.GetAttribute("Id"))))
 		  pointmobile.drapmagn = true
-		  
+
 		  RedeleteCreatedFigures(temp)
 		  RecreateDeletedFigures(temp)
-		  
+
 		  List = Temp.XQL("ModifiedFigures")
 		  If List.length >0 Then
 		    MF = XMLElement(List.Item(0))
 		    MFInit = XMLElement(MF.Child(0))
 		  end if
-		  
+
 		  List = MFInit.XQL("Figure")
 		  if List.length > 0 then
 		    for i = 0 to List.length-1
@@ -682,14 +682,14 @@ Inherits SelectAndDragOperation
 		    next
 		  end if
 		  CurrentContent.optimize
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -697,43 +697,43 @@ Inherits SelectAndDragOperation
 		Sub UpdateFigs(np as BAsicPoint)
 		  dim s as point
 		  dim bp as basicpoint
-		  
+
 		  if pointmobile = nil then
 		    return
 		  end if
-		  
+
 		  s = ptguide(pointmobile)
 		  bp = decal(pointmobile, np)
-		  
+
 		  figs.save
 		  if not figs.update(s, bp)  then
 		    figs.restore
 		  end if
 		  figs.canceloldbpts
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
