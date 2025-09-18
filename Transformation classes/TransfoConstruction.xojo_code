@@ -7,13 +7,13 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim i , j , n as integer
 		  dim t as Boolean
-		  
+
 		  s = super.getshape(p)  //on liste les objets visibles et on ramène le premier
 		  if s = nil then
 		    return nil
 		  end if
 		  s.UnHighLight
-		  
+
 		  for i =  visible.count-1 downto 0
 		    s = visible.item(i)
 		    s.side = -1
@@ -22,10 +22,10 @@ Inherits MultipleSelectOperation
 		    case  1 // translation
 		      if s isa droite and droite(s).nextre = 2  then
 		        s.side = 0
-		      elseif  S isa Lacet and (not s isa bande) and (not s isa secteur) then 
+		      elseif  S isa Lacet and (not s isa bande) and (not s isa secteur) then
 		        n = s.pointonside(p)
 		        if n>-1 and s.coord.curved(n) = 0 then
-		          s.side = n 
+		          s.side = n
 		        else
 		          visremove(s)
 		        end if
@@ -34,7 +34,7 @@ Inherits MultipleSelectOperation
 		      else
 		        Visremove(s)
 		      end if
-		      
+
 		    case 2          // rotations
 		      if s isa arc then
 		        s.side = 0
@@ -46,7 +46,7 @@ Inherits MultipleSelectOperation
 		          visremove(s)                         // index ne contient que des -1 Dans ce cas, index = -1 signifie que le support est une forme complète
 		        end if
 		      else
-		        visremove(s) 
+		        visremove(s)
 		      end if
 		    case 3 to 5                                               // demi-tour et quarts de tour
 		      if not s isa point then
@@ -64,19 +64,19 @@ Inherits MultipleSelectOperation
 		          t = (s.tsfi.item(j).type = 6) and  (s.tsfi.item(j).index = n)
 		        next
 		        if n > -1 and (not t) and s.coord.curved(n) = 0 then
-		          s.side = n // 
+		          s.side = n //
 		        else
 		          visremove(s)
-		        end if 
+		        end if
 		      elseif s isa droite  then                                       // cas des "droites"
-		        s.side = 0                      
+		        s.side = 0
 		      else
 		        Visremove(s)
 		      end if
-		      
-		      
+
+
 		    case 7 // Homothétie
-		      
+
 		      if not s isa point and (( s.npts <> 4) or (not s isa Trap))  then
 		        Visremove(s)                             // on élimine ceux qui ne conviennent pas
 		      else
@@ -102,7 +102,7 @@ Inherits MultipleSelectOperation
 		      end if
 		    end select
 		  next
-		  
+
 		  nobj = visible.count
 		  if nobj > 0 then
 		    return Visible.item(iobj)
@@ -117,17 +117,18 @@ Inherits MultipleSelectOperation
 		  // Au cours du deuxième choix, on choisit toujours un point
 		  // on ne passe dans cette méthode que si p = 1,  7, 8 ou 9 et on a choisi un point au premier tour
 		  // on doit choisir un deuxième point
-		  
+
 		  dim s as shape
-		  
-		  
+
+
 		  visible = Objects.FindPoint(p)
+		  OperationHelpers.FilterVisiblePoints(visible)
 		  s = visible.item(iobj)
-		  
+
 		  if s = nil or s = fp then
 		    return nil
 		  end if
-		  
+
 		  select case type
 		  case 1
 		    index.append 0
@@ -135,10 +136,10 @@ Inherits MultipleSelectOperation
 		  case 7 to 11
 		    return s
 		  end select
-		  
-		  
+
+
 		  return nil
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -165,9 +166,9 @@ Inherits MultipleSelectOperation
 		  case 7,8,9,10,11
 		    NumberOfItemsToSelect=4
 		  end select
-		  
+
 		  ori = 1 //par défaut
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -176,7 +177,7 @@ Inherits MultipleSelectOperation
 		  dim EL1 as XMLElement
 		  dim num as integer
 		  colsep = true
-		  
+
 		  Constructor(val(EL.GetAttribute("TsfType")))
 		  ori = val(EL.GetAttribute("Ori"))
 		  index.append val(EL.GetAttribute("Index"))
@@ -197,21 +198,21 @@ Inherits MultipleSelectOperation
 		  if currentshape isa point then
 		    currentshape.borderwidth = 2.5
 		  end if
-		  
+
 		  // ori est destiné aux translations
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
 		  super.endoperation
-		  
+
 		  if type = 71 or type = 72 then
 		    type = 7
 		  end if
-		  
+
 		  if type = 81 or type = 82 then
 		    type = 8
 		  end if
@@ -219,17 +220,17 @@ Inherits MultipleSelectOperation
 		  sp = nil
 		  tp = nil
 		  qp = nil
-		  
+
 		  ori = 1
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ExclureDoublons(s as shape, p as Basicpoint)
 		  dim j as integer
-		  
+
 		  if  s.tsfi.count > 0 then
 		    for j = 0 to s.tsfi.count-1
 		      if s.tsfi.item(j).type = type and s.tsfi.item(j).index = s.pointonside(p)  then
@@ -237,17 +238,17 @@ Inherits MultipleSelectOperation
 		      end if
 		    next
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetName() As string
-		  
+
 		  return Dico.Value("DefinirTransformation")
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -256,22 +257,24 @@ Inherits MultipleSelectOperation
 		  dim q as point
 		  dim nbp as nbpoint
 		  dim u, v as basicpoint
-		  
+
 		  currentshape = super.getshape(p)  //on liste les objets visibles et on ramène le premier
 		  if currentshape = nil then
 		    return nil
 		  end if
-		  
+
 		  select case CurrentItemToSet
 		  case 1
 		    return choix1(p)
 		  case 2
 		    return choix2(p)
 		  case 3            // pour les homothéties, similitudes, étirements, isométries, cisaillements
-		    visible= Objects.findPoint(p)
+			visible= Objects.findPoint(p)
+			OperationHelpers.FilterVisiblePoints(visible)
 		    return point(visible.item(iobj))
 		  case 4
-		    visible = Objects.findpoint(p)
+			visible = Objects.findpoint(p)
+			OperationHelpers.FilterVisiblePoints(visible)
 		    q = point( visible.item(iobj))
 		    if q = nil then
 		      return nil
@@ -305,9 +308,9 @@ Inherits MultipleSelectOperation
 		      end if
 		    end if
 		  end select
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -335,8 +338,8 @@ Inherits MultipleSelectOperation
 		  case 10
 		    return Dico.value("Deplacement")
 		  end select
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -344,7 +347,7 @@ Inherits MultipleSelectOperation
 		Sub Paint(g as graphics)
 		  'super .paint(g)
 		  dim n as integer
-		  
+
 		  info = ""
 		  if currenthighlightedshape = nil then
 		    select  case currentitemtoset
@@ -397,7 +400,7 @@ Inherits MultipleSelectOperation
 		    end select
 		  end if
 		  Help g, display
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -406,7 +409,7 @@ Inherits MultipleSelectOperation
 		  dim supp as shape
 		  dim EL, EL1 as XMLElement
 		  dim n as integer
-		  
+
 		  EL = XMLElement(Temp.firstchild)
 		  n = val(EL.Getattribute("NewSupp"))
 		  if n = 0 then
@@ -418,7 +421,7 @@ Inherits MultipleSelectOperation
 		    ReCreateCreatedFigures(Temp)
 		  end if
 		  tsf = new Transformation(supp,EL)
-		  
+
 		  if supp = nil then
 		    return
 		  end if
@@ -426,9 +429,9 @@ Inherits MultipleSelectOperation
 		  if supp isa point then
 		    supp.borderwidth = 2.5
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -464,12 +467,12 @@ Inherits MultipleSelectOperation
 		Function setitem(s as shape) As Boolean
 		  dim bp1, bp2 as BasicPoint
 		  dim qp2 as point
-		  
-		  
+
+
 		  if s = nil then
 		    return false
 		  end if
-		  
+
 		  s.unhighlight
 		  select case currentitemtoset
 		  case 1
@@ -497,7 +500,7 @@ Inherits MultipleSelectOperation
 		        qp.moveto qp.bpt.projection(fp.bpt, sp.bpt)
 		        currentshape = new Supphom(objects, fp,  sp, qp)
 		        type = 71
-		        index.append  0 
+		        index.append  0
 		      else
 		        currentshape = new Polyqcq(objects, fp,sp, qp, tp)
 		        type = 72
@@ -531,7 +534,7 @@ Inherits MultipleSelectOperation
 		    return true
 		  end select
 		  return false
-		  
+
 		  // Types: 1 Translation 2 Rotation 3 Demi-tour,4 Quart G, 5 Quart D, 6 Symétrie 7 Homothétie 8 Similitude 9 Etirement 10 Déplacement 11 Cisaillement 12 Affinité générique
 		End Function
 	#tag EndMethod
@@ -566,15 +569,15 @@ Inherits MultipleSelectOperation
 		  end if
 		  EL.SetAttribute("TsfNum",str(tsf.GetNum))
 		  return EL
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim Temp  as XMLElement
-		  
-		  
+
+
 		  Temp=Doc.CreateElement("Transformation")
 		  if qp <> nil then
 		    Temp.SetAttribute("NewSupp", str(1))
@@ -586,9 +589,9 @@ Inherits MultipleSelectOperation
 		    Temp.setattribute("Index", str(tsf.supp.side))
 		  end if
 		  Temp.SetAttribute("NumTSF",str(tsf.GetNum))
-		  
+
 		  return Temp
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -597,7 +600,7 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim t as boolean
 		  s = nil
-		  
+
 		  for i = 0 to ubound(fp.parents)
 		    if fp.parents(i) isa trap then
 		      s = fp.parents(i)
@@ -607,9 +610,9 @@ Inherits MultipleSelectOperation
 		      end if
 		    end if
 		  next
-		  
+
 		  return false
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -618,7 +621,7 @@ Inherits MultipleSelectOperation
 		  dim supp as shape
 		  dim EL as XMLElement
 		  dim num as integer
-		  
+
 		  EL = XMLElement(Temp.firstchild)
 		  supp = SelectForm(EL)
 		  num = val(EL.Getattribute("NumTSF"))
@@ -640,9 +643,9 @@ Inherits MultipleSelectOperation
 
 
 	#tag Note, Name = Codes
-		
+
 		Codes des transfos:
-		
+
 		1: Translation
 		2: Rotation
 		3: Demi-tour
@@ -654,30 +657,30 @@ Inherits MultipleSelectOperation
 		9: Etirement
 		10: Déplacement
 		11: Cisaillement
-		
+
 		Si le code est >= 7, il est possible que le support soit un quadrilatère
 		Si le code est 1 ou 6, le support peut être un polygone, il doit alors être accompagné d'un numéro de côté (propriété index de la tsf)
-		
+
 		Le code 0 est utilisé pour les pseudo-transformations associées aux paraperp
 	#tag EndNote
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

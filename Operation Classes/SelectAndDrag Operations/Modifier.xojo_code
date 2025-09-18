@@ -2,15 +2,15 @@
 Protected Class Modifier
 Inherits SelectAndDragOperation
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
 		#tag Method, Flags = &h0
 		Sub Animer(p as point)
 		  // Démarre une modification animée à partir d'un point sélectionné

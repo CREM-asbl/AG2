@@ -4,25 +4,25 @@ Protected Module OperationHelpers
 		Function IsPointValidForModification(p as point) As Boolean
 		  Dim i, j As Integer
 		  Dim sh As shape
-		  
+
 		  if p = nil or p.fig = nil then
 		    return false
 		  end if
-		  
+
 		  p.mobility
-		  
+
 		  if p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
 		    return false
 		  end if
-		  
+
 		  if p.forme = 1 and p.constructedby <> nil and p.constructedby.oper = 10 and point(p.constructedby.shape).isextremityofaparaperpseg then
 		    return false
 		  end if
-		  
+
 		  if p.forme = 1 and p.isextremityofaparaperpseg then
 		    return false
 		  end if
-		  
+
 		  for i = 0 to ubound(p.parents)
 		    sh = p.parents(i)
 		    if (sh isa arc) then
@@ -36,7 +36,7 @@ Protected Module OperationHelpers
 		      end if
 		    next
 		  next
-		  
+
 		  return true
 		End Function
 	#tag EndMethod

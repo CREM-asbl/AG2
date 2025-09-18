@@ -8,9 +8,9 @@ Inherits MultipleSelectOperation
 		  dim p as point
 		  dim ff as figure
 		  dim List1 as figslist
-		  
+
 		  ff = currentshape.fig
-		  
+
 		  for i = 0 to ncutpt-1
 		    p = cutpts(i)
 		    if ff.somm.getposition(p) = -1 and ff.ptssur.getposition(p) = -1 and ff.ptsconsted.getposition(p) = -1 then
@@ -39,21 +39,21 @@ Inherits MultipleSelectOperation
 		    precIndex = currentShape.GetIndexPoint(CutPts(ncutpt-1))
 		    currentSide = currentshape.PointOnSide(Pt.bpt)
 		    currentindex = CurrentShape.GetIndexPoint(Pt)
-		    
-		    if currentShape isa Circle then 
+
+		    if currentShape isa Circle then
 		      sameSegment = false
 		    elseif CurrentIndex <> -1 and precIndex <> -1 then
 		      sameSegment = abs(precIndex-currentIndex) = 1 or abs(precIndex-currentIndex) = currentShape.npts-1
 		    elseif  currentIndex <> -1 then
-		      sameSegment = (currentIndex = precSide) or (precSide = (currentShape.npts - 1 + currentIndex) mod CurrentShape.npts)  
+		      sameSegment = (currentIndex = precSide) or (precSide = (currentShape.npts - 1 + currentIndex) mod CurrentShape.npts)
 		    elseif precIndex <> -1 then
-		      sameSegment = (currentSide = precIndex) or (currentSide = (currentShape.npts - 1 + precIndex) mod CurrentShape.npts)  
+		      sameSegment = (currentSide = precIndex) or (currentSide = (currentShape.npts - 1 + precIndex) mod CurrentShape.npts)
 		    else
 		      sameSegment = (currentSide = precSide)
 		    end if
 		    return (currentside <> -1 or pt.bpt = CurrentShape.GetGC.bpt) and Pt <> CutPts(ncutpt-1) and Pt <> CutPts(0) and not sameSegment
 		  end select
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -62,24 +62,24 @@ Inherits MultipleSelectOperation
 		  super.constructor
 		  OpId = 25
 		  WorkWindow.PointerPolyg
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i as integer
-		  
+
 		  currentshape.movetoback
-		  
+
 		  for i = 0 to 1
-		    Cut(i) = GetCutShape(i)      
+		    Cut(i) = GetCutShape(i)
 		  next
-		  
+
 		  addtofigurecutinfos
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -90,7 +90,7 @@ Inherits MultipleSelectOperation
 		  Cut(0) = nil
 		  Cut(1) = nil
 		  ncutpt = 0
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -107,7 +107,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function GetCutShape(n as integer) As Shape
 		  //Méthode qui construit les deux pièces de la découpe. On y passe d'abord avec n = 0 puis n =1
-		  
+
 		  dim s as Shape
 		  dim i, k as integer
 		  dim M as Translationmatrix
@@ -116,7 +116,7 @@ Inherits MultipleSelectOperation
 		  dim bp, Tr as basicPoint
 		  dim centres() as BasicPoint
 		  dim curved() as integer
-		  
+
 		  if (currentshape isa Circle)  or (currentshape.hybrid) then
 		    s = new Lacet(Objects)   //initialisation de la pièce
 		  elseif currentshape isa standardpolygon then
@@ -124,11 +124,11 @@ Inherits MultipleSelectOperation
 		  else
 		    s = new Polyqcq(Objects)
 		  end if
-		  
+
 		  if not s.std then
 		    s.SetConstructedBy currentshape,5
 		  end if
-		  
+
 		  if n = 0 then
 		    For i = 0 To ncutpt-1                              //On ajoute les points de découpe. addpoint se trouve dans polygon ou Lacet
 		      s.addpoint(CutPts(i).bpt)                 // ncpts augmente chaque fois de 1, npts aussi. Donc ncpts = ncutpt
@@ -138,15 +138,15 @@ Inherits MultipleSelectOperation
 		      s.addpoint(CutPts(i).bpt)
 		    next
 		  end if
-		  
+
 		  redim centres(-1)
 		  redim curved(-1)
-		  
+
 		  for i = 0 to s.npts-2
 		    centres.append nil
 		    curved.append 0
 		  next
-		  
+
 		  if n = 0 then                           //pt1 et pt2 sont les deux points de découpe situés sur le bord de currentshape
 		    pt1= cutpts(ncutpt-1)      //partir de cutpts(ncutpt-1), revenir à cutpts(0)  entretemps on va adjoindre les sommets de s rencontrés
 		    pt2 = cutpts(0)
@@ -154,7 +154,7 @@ Inherits MultipleSelectOperation
 		    pt1= cutpts(0)                  //partir de cutpts(0), revenir à cutpts(ncutpt-1) idem
 		    pt2 = cutpts(ncutpt-1)
 		  end if
-		  
+
 		  while Pt1<> Pt2                                     //pt1 parcourt les sommets intermédiaires pt2 est le point final
 		    if pt2 = currentshape.NextBorderPoint(pt1, pt2) then
 		      if currentshape isa polygon then
@@ -184,12 +184,12 @@ Inherits MultipleSelectOperation
 		      curved.append currentshape.coord.curved(k)
 		    end if
 		  wend
-		  
+
 		  s.narcs = 0
 		  for i = 0 to ubound(curved)
 		    s.narcs = s.narcs + curved(i)
 		  next
-		  
+
 		  s.autos
 		  Tr = CutPts(ncutpt-1).bpt-CutPts(0).bpt
 		  Tr = Tr.VecNorPerp
@@ -236,8 +236,8 @@ Inherits MultipleSelectOperation
 		  dim i,n as integer
 		  dim Pt, P1 as Point
 		  dim ff as figure
-		  
-		  
+
+
 		  if CurrentItemToSet = 1 then
 		    S = Operation.GetShape(p)
 		    if ( not (S isa Polygon or s isa circle)  or (s isa cube) or (s isa arc)  or s.isaellipse or S isa Bande ) then
@@ -249,13 +249,13 @@ Inherits MultipleSelectOperation
 		    if visible.count > 0 then
 		      for i = visible.count-1 downto 0
 		        pt = point(visible.item(i))
-		        if not choixvalide(pt) then
-		          visible.objects.remove i
-		        end if
+						if not choixvalide(pt) then
+							visible.objects.remove i
+						end if
 		      next
 		    end if
 		    if visible.count > 0 then
-		      nobj = visible.count
+			nobj = visible.count
 		      return visible.item(iobj)
 		    else
 		      return nil
@@ -271,9 +271,9 @@ Inherits MultipleSelectOperation
 		  dim a,b as BasicPoint
 		  dim i as integer
 		  dim oldCol as Color
-		  
+
 		  g.Bold=True
-		  
+
 		  select case CurrentItemToSet
 		  case 1
 		    Help g, choose + aform + tocut
@@ -288,7 +288,7 @@ Inherits MultipleSelectOperation
 		      g.DrawLine(a.x,a.y,b.x,b.y)
 		    next
 		    g.ForeColor = oldCol
-		    
+
 		    if CurrentHighlightedShape=nil then
 		      Help g, choose + anothercutpoint
 		    elseif currenthighlightedshape isa point then
@@ -299,8 +299,8 @@ Inherits MultipleSelectOperation
 		      g.ForeColor = oldCol
 		    end if
 		  end select
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -308,7 +308,7 @@ Inherits MultipleSelectOperation
 		Sub recopiercouleurs(s as shape)
 		  dim p1, p2, q1, q2 as point
 		  dim  i, cote as integer
-		  
+
 		  if not s.std then
 		    for i= 0 to s.npts-1
 		      if currentshape isa circle then
@@ -327,8 +327,8 @@ Inherits MultipleSelectOperation
 		      end if
 		    next
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -342,7 +342,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Sub SetConstructionInfo(s as shape, n as integer, M as Matrix)
 		  dim i as integer
-		  
+
 		  s.SetConstructedBy currentshape,5
 		  s.ConstructedBy.Data.Append M
 		  if n = 0 then
@@ -367,11 +367,11 @@ Inherits MultipleSelectOperation
 		  dim i as integer        'On fait la liste des points de découpe
 		  dim Pt, P1 as Point
 		  dim ff as figure
-		  
+
 		  If s = nil then
 		    return false
 		  end if
-		  
+
 		  select case CurrentItemToSet
 		  case 1
 		    currentshape = S
@@ -402,7 +402,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument) As XMLElement
 		  dim EL1 as XMLElement
-		  
+
 		  EL1 =  Doc.CreateElement(Dico.Value("Forms"))
 		  EL1.SetAttribute("NCutPoints", str(ncutpt))
 		  EL1.AppendChild Cut(0).XMLPutIdInContainer(Doc)
@@ -415,7 +415,7 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function ToXML(Doc as XMLDocument) As XMLElement
 		  dim EL0, EL1 as XMLElement
-		  
+
 		  EL0 = Doc.CreateElement(Dico.value("OperaCut"))
 		  EL0.appendchild currentshape.XMLPutIdInContainer(Doc)
 		  EL1 =  Doc.CreateElement(Dico.Value("Forms"))
@@ -424,17 +424,17 @@ Inherits MultipleSelectOperation
 		  EL1.AppendChild Cut(1).XMLPutInContainer(Doc)
 		  EL0.appendchild EL1
 		  return EL0
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
 		  dim EL, EL1 as XMLElement
-		  
+
 		  EL = XMLElement(Temp.child(0))
 		  EL1 = XMLElement(EL.Child(1))
-		  
+
 		  Cut(0) = Objects.Getshape(val(XMLElement(EL1.child(0)).GetAttribute("Id")))
 		  Cut(1) = Objects.Getshape(val(XMLElement(EL1.child(1)).GetAttribute("Id")))
 		  Cut(0).delete
@@ -457,22 +457,22 @@ Inherits MultipleSelectOperation
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
