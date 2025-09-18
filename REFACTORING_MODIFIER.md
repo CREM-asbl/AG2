@@ -172,4 +172,5 @@ Le code est maintenant plus lisible, plus sûr et plus facile à étendre.
   - `SelectAndDrag Operations/Glisser.GetShape`
   - `SelectAndDrag Operations/Tourner.GetShape`
   - `SelectAndDrag Operations/Redimensionner.GetShape`
+  - `SelectOperation/Retourner.GetShape`
 - Les filtres métier spécifiques propres à chaque opération sont conservés après l’appel générique.

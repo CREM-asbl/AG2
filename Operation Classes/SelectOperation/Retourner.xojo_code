@@ -155,14 +155,16 @@ Inherits SelectOperation
 		  s = super.getshape(p)
 
 		  if visible.count > 0 then
-		    for i = 0 to visible.count-1
+		    // Filtre générique via Choixvalide
+		    OperationHelpers.FilterVisibleByChoixValide(visible, Self)
+		    // Règles spécifiques de Retourner
+		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
-		      if (s isa cube) or (s isa point and point(s).pointoncube) or (s isa point and (UBound(point(s).parents) = -1 or point(s).parents(0).MacConstructedBy <> nil)) or not choixvalide(s) then
+		      if (s isa cube) or (s isa point and point(s).pointoncube) or (s isa point and (UBound(point(s).parents) = -1 or point(s).parents(0).MacConstructedBy <> nil)) then
 		        Visible.removeobject(s)
-		        nobj = visible.count
-		        i = i-1
 		      end if
 		    next
+		    nobj = visible.count
 		  end if
 
 		  if Visible.count > 0  then
