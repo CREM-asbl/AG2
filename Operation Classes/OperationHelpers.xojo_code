@@ -41,6 +41,21 @@ Protected Module OperationHelpers
 		End Function
 	#tag EndMethod
 	#tag Method, Flags = &h0
+		Sub FilterVisibleByChoixValide(ByRef visible as ObjectsList, op as SelectOperation)
+		  dim i as integer
+		  dim s as shape
+		  if visible = nil or op = nil then
+		    return
+		  end if
+		  for i = visible.count-1 downto 0
+		    s = visible.item(i)
+		    if not op.Choixvalide(s) then
+		      visible.removeobject(s)
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+	#tag Method, Flags = &h0
 		Function ComputeAnimationDeltaForShape(s as shape) As BasicPoint
 		  dim dep as BasicPoint
 		  if s = nil then

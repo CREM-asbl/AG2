@@ -164,3 +164,12 @@ Cette refactorisation améliore significativement la maintenabilité de la class
 - Préparant l'évolution vers des patterns plus avancés
 
 Le code est maintenant plus lisible, plus sûr et plus facile à étendre.
+
+## Deltas de réutilisation (sept. 2025)
+
+- Nouveau helper: `OperationHelpers.FilterVisibleByChoixValide(visible, op as SelectOperation)` pour centraliser l'usage de `SelectOperation.Choixvalide`.
+- Intégré dans:
+  - `SelectAndDrag Operations/Glisser.GetShape`
+  - `SelectAndDrag Operations/Tourner.GetShape`
+  - `SelectAndDrag Operations/Redimensionner.GetShape`
+- Les filtres métier spécifiques propres à chaque opération sont conservés après l’appel générique.

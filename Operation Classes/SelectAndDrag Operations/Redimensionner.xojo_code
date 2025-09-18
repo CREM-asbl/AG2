@@ -147,22 +147,26 @@ Inherits SelectAndDragOperation
 		  s = super.getshape(p)
 
 		  if visible.count > 0  then
-		    nobj = visible.count
-		    for i =  nobj-1 downto 0
+		    // Filtre générique via Choixvalide
+		    OperationHelpers.FilterVisibleByChoixValide(visible, Self)
+		    // Exclusions spécifiques: macro en création, formes std dans la figure, points
+		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
 		      if currentcontent.macrocreation then
 		        visible.removeobject(s)
+		        continue
 		      end if
 		      for j = 0 to s.fig.shapes.count-1
 		        if s.fig.shapes.item(j).std then
 		          visible.removeobject(s)
+		          exit for
 		        end if
 		      next
-		      if s isa point or not choixvalide(s)  then
+		      if s isa point then
 		        Visible.removeobject(s)
 		      end if
-		      nobj = visible.count
 		    next
+		    nobj = visible.count
 		  end if
 
 		  if Visible.count > 0  then
