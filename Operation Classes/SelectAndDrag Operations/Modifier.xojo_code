@@ -3,34 +3,114 @@ Protected Class Modifier
 Inherits SelectAndDragOperation
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
-		Sub Animer(p as point)
-		  dim s as shape
+		Function ComputeAnimationDeltaForShape(s as shape) As BasicPoint
+		  // Calcule un delta de base pour l'animation en fonction du type de shape
 		  dim dep as BasicPoint
-		  
-		  
-		  pointmobile = p
-		  currentshape = pointmobile
-		  s = p.pointsur.item(0)
-		  Initfigs
-		  figs.createstate("InitState",pointmobile)
-		  
-		  figs.enablemodifyall
-		  animation = true
-		  
+		  if s = nil then
+		    return new BasicPoint(0,0)
+		  end if
 		  if s isa droite and droite(s).nextre = 0 then
 		    dep = droite(s).extre2 - droite(s).extre1
 		  else
-		    dep = s.points(1).bpt-s.points(0).bpt
+		    // Hypothèse: au moins 2 points disponibles
+		    if ubound(s.points) >= 1 then
+		      dep = s.points(1).bpt - s.points(0).bpt
+		    else
+		      dep = new BasicPoint(1,0)
+		    end if
 		  end if
+		  return dep
+		End Function
+    	#tag EndMethod
+
+    	#tag Method, Flags = &h0
+		Sub EnsureArcMovableIfNeeded(s as point)
+		  // Débloque un arc trop petit pour permettre un mouvement initial minimal
+		  dim i as integer
+		  dim a as arc
+		  dim M as Matrix
+		  if s = nil then
+		    return
+		  end if
+		  for i = 0 to ubound(s.parents)
+		    if s.parents(i) isa arc then
+		      a = arc(s.parents(i))
+		      if a.getindex(s) = 2 and a.arcangle < PI/180 and s.modified = false then
+		        M = new rotationmatrix(a.coord.tab(0), PI/90)
+		        s.moveto M*s.bpt
+		      end if
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub FilterVisiblePoints(ByRef visible as ObjectsList)
+		  // Supprime de 'visible' les points non valides selon la règle choixvalid
+		  dim i as integer
+		  dim s as point
+		  if visible = nil then
+		    return
+		  end if
+		  for i = visible.count-1 downto 0
+		    s = Point(Visible.item(i))
+		    if not choixvalid(s) then
+		      visible.removeobject(s)
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PrepareParentPointers(s as point, ByRef tableau() as integer)
+		  // Marque les parents pour éviter les doublons pendant le test
+		  dim i as integer
+		  if s = nil then
+		    return
+		  end if
+		  for i = 0 to s.parents.count-1
+		    if not s.parents(i).pointe then
+		      tableau.append i
+		      s.parents(i).pointe = true
+		    end if
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ResetParentPointers(s as point, ByRef tableau() as integer)
+		  // Réinitialise les flags pointe sur les parents marqués
+		  dim i as integer
+		  if s = nil then
+		    return
+		  end if
+		  for i = 0 to s.parents.count-1
+		    if tableau.indexof(i) <> -1 then
+		      s.parents(i).pointe = false
+		    end if
+		  next
+		End Sub
+    	#tag EndMethod
+		#tag Method, Flags = &h0
+		Sub Animer(p as point)
+		  // Démarre une modification animée à partir d'un point sélectionné
+		  dim s as shape
+		  dim dep as BasicPoint
+		  
+		  // Initialisation commune
+		  Self.StartModificationFromPoint(p, true)
+		  
+		  // Calcul d'un déplacement de base pour l'animation
+		  s = p.pointsur.item(0)
+		  dep = ComputeAnimationDeltaForShape(s)
 		  
 		  dep = dep/60
 		  
-		  if  s isa droite and dep.norme < epsilon  then
+		  if s isa droite and dep.norme < epsilon then
 		    return
 		  else
 		    dret = new AnimTimer(self)
 		  end if
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -90,6 +170,7 @@ Inherits SelectAndDragOperation
 		  pointmobile.highlight
 		  Endpoint = pc
 		  figs.enablemodifyall
+		  // Applique le déplacement calculé
 		  UpdateFigs(pc)
 		  can.refreshBackGround
 		  
@@ -208,7 +289,7 @@ Inherits SelectAndDragOperation
 		  nobj = visible.count
 		  
 		  if nobj = 0 then
-		    s.highlight
+		    // Aucun objet visible valide après filtrage
 		    drapchoix = false
 		    return nil
 		  end if
@@ -283,28 +364,18 @@ Inherits SelectAndDragOperation
 		  end if
 		  
 		  // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
-		  //La deuxième est introduite dans Figure.update1
+		  // La deuxième est introduite dans Figure.update1
 		  currenthighlightedshape = point(currentshape)
-		  pointmobile = point(currentshape)
-		  InitFigs
-		  figs.createstate("InitState",pointmobile)
+		  // Initialisation commune (sans animation)
+		  StartModificationFromPoint(point(currentshape), false)
 		  s = pointmobile
-		  for i = 0 to ubound(s.parents)
-		    if s.parents(i) isa arc  then
-		      a = arc(s.parents(i))
-		      if a.getindex(s) = 2 and a.arcangle < PI/180 and s.modified = false then
-		        M = new rotationmatrix(a.coord.tab(0),PI/90)
-		        s.moveto M*s.bpt
-		      end if
-		    end if
-		  next
-		  
+		  EnsureArcMovableIfNeeded(s)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub MouseDrag(pc as BasicPoint)
+		Sub MouseDrag(bp as BasicPoint)
 		  dim mag as integer
 		  dim magneticd as basicpoint
 		  
@@ -316,7 +387,7 @@ Inherits SelectAndDragOperation
 		    if visi <> nil then
 		      visi.tspfalse
 		    end if
-		    CompleteOperation(pc)
+		    CompleteOperation(bp)
 		    mag= testmagnetisme(magneticd)
 		  end if
 		  
@@ -392,7 +463,6 @@ Inherits SelectAndDragOperation
 		    pointmobile = nil
 		  end if
 		  if pointmobile <> nil then
-		    display = ""
 		    pointmobile.paint(g)
 		  end if
 		  Help g, display
@@ -451,6 +521,21 @@ Inherits SelectAndDragOperation
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub StartModificationFromPoint(s as point, withAnimation as boolean)
+		  // Initialise l'état interne pour une modification (animée ou non)
+		  if s = Nil then
+		    return
+		  end if
+		  pointmobile = s
+		  currentshape = pointmobile
+		  Initfigs
+		  figs.createstate("InitState", pointmobile)
+		  figs.enablemodifyall
+		  animation = withAnimation
 		End Sub
 	#tag EndMethod
 
