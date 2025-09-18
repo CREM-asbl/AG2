@@ -531,7 +531,7 @@ Inherits SelectAndDragOperation
 		  // Applique le magnétisme et met à jour les figures si nécessaire
 		  dim MagneticD as BasicPoint
 		  dim Magnetism as Integer
-		  
+
 		  MagneticD = new BasicPoint(0,0)
 		  Magnetism = testmagnetisme(magneticD)
 		  if magnetism > 0 then
@@ -558,11 +558,11 @@ Inherits SelectAndDragOperation
 		  // Pattern save/restore/update centralisé pour éviter la duplication
 		  dim bp as BasicPoint
 		  dim success as Boolean
-		  
+
 		  if s = nil then
 		    return false
 		  end if
-		  
+
 		  bp = decal(s, target)
 		  figs.save
 		  success = figs.update(s, bp)
@@ -571,7 +571,7 @@ Inherits SelectAndDragOperation
 		  end if
 		  figs.canceloldbpts
 		  figs.enablemodifyall
-		  
+
 		  return success
 		End Function
 	#tag EndMethod
@@ -618,11 +618,11 @@ Inherits SelectAndDragOperation
 		Function testfinal(p as basicpoint) As Boolean
 		  // Test si une mise à jour des figures est possible à la position donnée
 		  dim s as point
-		  
+
 		  figs.enablemodifyall
 		  s = ptguide(pointmobile)
 		  return TryUpdateFigs(s, p)
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -729,15 +729,15 @@ Inherits SelectAndDragOperation
 		  // Met à jour les figures vers une nouvelle position
 		  dim s as point
 		  dim success as Boolean
-		  
+
 		  if pointmobile = nil then
 		    return
 		  end if
-		  
+
 		  s = ptguide(pointmobile)
 		  success = TryUpdateFigs(s, np)
 		  // Note: success peut être utilisé pour debug/logging si nécessaire
-		  
+
 		End Sub
 	#tag EndMethod
 

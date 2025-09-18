@@ -55,7 +55,7 @@ La méthode de modification des formes était devenue trop complexe et difficile
 - Plus lisible et maintenable
 
 #### `MouseDrag`
-- Utilise `CheckMagnetismDuringDrag()` 
+- Utilise `CheckMagnetismDuringDrag()`
 - Supprime les variables intermédiaires inutiles
 
 #### `testfinal` et `UpdateFigs`
@@ -151,7 +151,7 @@ End Class
 ### Déploiement progressif
 1. ✅ Refactor interne (cette étape)
 2. 🔄 Extraction SelectionPolicy (optionnel)
-3. 🔄 Service MagnetismService (optionnel) 
+3. 🔄 Service MagnetismService (optionnel)
 4. 🔄 Command pattern (refactor majeur)
 
 ## Conclusion
