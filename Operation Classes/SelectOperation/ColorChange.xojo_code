@@ -35,8 +35,8 @@ Inherits SelectOperation
 		      currentshape.tsp = False
 		    End If
 		  End If
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -59,67 +59,78 @@ Inherits SelectOperation
 		Function GetShape(p as Basicpoint) As shape
 		  dim s as shape
 		  dim i as integer
-		  
-		  
+
+
 		  s = super.getshape(p)
-		  
+
 		  if visible.count = 0 then
 		    return nil
 		  end if
-		  
+
 		  if bord then
+		    // Mode bord: déterminer le côté pointé pour les lacets, sinon -1 pour les points
 		    for i = 0 to visible.count-1
 		      s = Visible.item(i)
-		      if s isa Lacet  then
-		        s.side  = s.pointonside(p)
+		      if s isa Lacet then
+		        s.side = s.pointonside(p)
 		        side = s.side
 		      elseif s isa point then
 		        s.side = -1
 		      end if
 		    next
-		    
+		    nobj = visible.count
+		    if visible.count > 0 then
+		      return visible.item(iobj)
+		    else
+		      return nil
+		    end if
 		  else
+		    // Mode remplissage: exclure les arcs
 		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
 		      if s isa arc then
 		        visible.removeobject s
 		      end if
 		    next
+		    nobj = visible.count
+		    if visible.count > 0 then
+		      return visible.item(iobj)
+		    else
+		      return nil
+		    end if
 		  end if
-		  
-		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as Basicpoint)
-		  
+
 		  if currenthighlightedshape = nil then
 		    Objects.unselectall
 		    return
 		  end if
-		  
+
 		  if CurrentHighlightedshape <> nil and currenthighlightedshape.selected = false then
 		    Objects.Unselectall
 		    Objects.selectobject(CurrentHighLightedshape)
 		  end if
-		  
+
 		  DoOperation
-		  
+
 		  endoperation
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g As Graphics)
 		  Super.paint(g)
-		  
+
 		  If CurrentContent.currentoperation = Self Then
 		    display = choose + "d'abord la nouvelle couleur"
 		  End If
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -129,25 +140,25 @@ Inherits SelectOperation
 		  Dim bd As String
 		  Dim EL, EL1 As XMLElement
 		  Dim oldcolor As couleur
-		  
-		  
+
+
 		  EL = XMLElement(Temp.Child(0))
 		  bd =  EL.GetAttribute("Bord")
-		  
+
 		  If bd = "true" Then
 		    Bord = True
 		  Else
 		    Bord = False
 		  End If
-		  
+
 		  side = Val(EL.GetAttribute("side"))
 		  SelectIdForms(EL)  'une seule forme à sélectionner
 		  s = tempshape.item(0)
-		  
-		  if(s = nil) then 
-		    return 
+
+		  if(s = nil) then
+		    return
 		  end if
-		  
+
 		  EL1 = XMLElement(EL.child(1))    'lecture de newcolor
 		  newcolor = New Couleur(EL1)
 		  If side <> -1 Then
@@ -161,13 +172,13 @@ Inherits SelectOperation
 		    End If
 		  End If
 		  can.refreshBackGround
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -176,7 +187,7 @@ Inherits SelectOperation
 		  Dim i, j, n, nmax As Integer
 		  Dim s As shape
 		  Dim sn As Integer
-		  
+
 		  s = tempshape.item(0)
 		  If s IsA BiPoint Or s IsA circle or s isA Point Then
 		    sn = 0
@@ -196,8 +207,8 @@ Inherits SelectOperation
 		    Redim oldcolors(0)
 		    OldColors (0) = s.GetFillColor
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -205,7 +216,7 @@ Inherits SelectOperation
 		Function ToMac(Doc as XMLDocument) As XMLElement
 		  Dim Myself  as XMLElement
 		  dim i as integer
-		  
+
 		  Myself= Doc.CreateElement(Dico.value("Forms"))
 		  for i = 0 to tempshape.count-1
 		    Myself.appendchild tempshape.item(i).XMLPutIdInContainer(Doc)
@@ -218,7 +229,7 @@ Inherits SelectOperation
 		  Myself.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
 		  Myself.setattribute("Icot", str(side))
 		  return Myself
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -227,16 +238,16 @@ Inherits SelectOperation
 		  Dim Temp, EL, EL1 As XMLElement
 		  dim i,j,n as integer
 		  Dim s As shape
-		  
+
 		  'Comme on travaille uniquement dans le cadre du menu contextuel, il n'y a qu'au plus un élément dans tempshape
-		  
+
 		  If tempshape.count = 0 Then
 		    return nil
 		  end if
-		  
+
 		  s = tempshape.item(0)
 		  Temp = Doc.CreateElement(GetName)
-		  
+
 		  if Bord then
 		    Temp.SetAttribute("Bord", "true")
 		    Temp.setattribute("side", Str(s.side))
@@ -245,14 +256,14 @@ Inherits SelectOperation
 		    Temp.setattribute("side", Str(-1))
 		    Temp.SetAttribute("OldFill", Str(s.Fill))
 		  end if
-		  
+
 		  If Not Bord Then
 		    Temp.SetAttribute("Newfill",Str(newfill))
 		  End If
-		  
+
 		  Temp.appendchild tempshape.XMLPutIdInContainer(Doc)
 		  Temp.appendchild NewColor.XMLPutInContainer(Doc, "NewColor")
-		  
+
 		  If s.side = -1  Then
 		    Temp.AppendChild Oldcolors(0).XMLPutInContainer(Doc, "OldColor")
 		  Else
@@ -268,38 +279,38 @@ Inherits SelectOperation
 		    End If
 		    Temp.appendchild EL
 		  End If
-		  
+
 		  Return Temp
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UndoOperation(Temp as XMLElement)
-		  
+
 		  Dim s As shape
 		  dim bd as string
 		  Dim EL, EL1 As XMLElement
 		  dim oldcolor as couleur
-		  
+
 		  EL = XMLElement(Temp.Child(0))
 		  bd =  EL.GetAttribute("Bord")
-		  
+
 		  if bd = "true" then
 		    Bord = True
 		  else
 		    Bord = false
 		  end if
-		  
+
 		  side = Val(EL.GetAttribute("side"))
 		  SelectIdForms(EL)  'une seule forme à sélectionner
 		  s = tempshape.item(0)
-		  
+
 		  EL1 = XMLElement(EL.child(2))    'lecture de oldcolor
 		  oldcolor = New Couleur(EL1)
 		  If  side <> -1 Then
@@ -313,7 +324,7 @@ Inherits SelectOperation
 		    End If
 		  End If
 		  can.refreshBackGround
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -324,29 +335,29 @@ Inherits SelectOperation
 		    d.setVariable("EL1",EL1)
 		    err.message = err.message+d.getString
 		    Raise err
-		    
-		    
+
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

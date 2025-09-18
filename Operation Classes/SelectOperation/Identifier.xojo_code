@@ -5,8 +5,8 @@ Inherits SelectOperation
 		Sub Constructor()
 		  super.Constructor
 		  OpId = 35
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -14,8 +14,8 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i, j as integer
 		  dim s, s1 as shape
-		  
-		  
+
+
 		  if nobj = 2  then
 		    if remplacement.Labs.count = 1 then
 		      labremplacement = remplacement.labs.item(0).Text
@@ -44,10 +44,10 @@ Inherits SelectOperation
 		    remplacement.updateguides
 		    remplacement.forme = 1
 		  end if
-		  
+
 		  remplacement.mobility
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -57,7 +57,7 @@ Inherits SelectOperation
 		  remplace = nil
 		  Remplacement = nil
 		  support = nil
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -73,22 +73,23 @@ Inherits SelectOperation
 		  dim i, mag as integer
 		  dim t, t1 as boolean
 		  dim MagneticD as BasicPoint
-		  
+
 		  remplace = nil
 		  remplacement = nil
 		  support = nil
 		  t = false
-		  
+
 		  s = super.getshape(p)
-		  
-		  for i =  visible.count-1 downto 0
+
+		  // Filtrer les éléments visibles: ne garder que les points libres (sans parent std) et non construits par oper=9
+		  for i = visible.count-1 downto 0
 		    s = Visible.item(i)
-		    if  not (s isa point)  or (point(s).hasstdparent) or (s.constructedby <> nil and s.constructedby.oper = 9)  then
-		      Visible.removeobject(s)
-		      nobj = visible.count
+		    if not (s isa point) or point(s).hasstdparent or (s.constructedby <> nil and s.constructedby.oper = 9) then
+		      Visible.removeobject s
 		    end if
 		  next
-		  
+		  nobj = visible.count
+
 		  if nobj = 2 and point(visible.item(0)).bpt.distance(point(visible.item(1)).bpt) < epsilon  then
 		    t = positionner(point(visible.item(0)), point(visible.item(1)))
 		  elseif nobj = 1 then
@@ -102,13 +103,13 @@ Inherits SelectOperation
 		      end if
 		    end if
 		  end if
-		  
+
 		  if remplacement <> nil then
 		    t1 = (remplacement.pointsur.count = 0)
 		    if remplacement.guide <> nil then
 		      t1 = t1 and (remplacement.guide.pointsur.count = 0)
 		    end if
-		    
+
 		    if not ( (nobj = 2 and t)  or (nobj = 1 and support <> nil and t1) ) then
 		      remplacement = nil
 		    end if
@@ -119,29 +120,29 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
-		  
-		  
+
+
 		  if remplacement = nil or ((support = nil) and (remplace = nil))  then
 		    return
 		  end if
-		  
+
 		  Objects.Unselectall
 		  Objects.selectobject(CurrentHighLightedshape)
 		  Finished = false
 		  can.Mousecursor = System.Cursors.Wait
 		  WorkWindow.refreshtitle
-		  
+
 		  CurrentContent.Thefigs.removefigure remplacement.fig
 		  if remplace <> nil then
 		    CurrentContent.TheFigs.RemoveFigure remplace.fig
 		  else
 		    CurrentContent.TheFigs.RemoveFigure support.fig
 		  end if
-		  
+
 		  DoOperation
 		  endoperation
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -161,7 +162,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Function positionner(p as point, q as point) As Boolean
 		  dim p1, q1 as point
-		  
+
 		  if p.pointsur.count > 0 or p.constructedby <> nil  or p.hasduplicate then
 		    if q.pointsur.count > 0 or q.constructedby <> nil or q.hasduplicate then
 		      return false
@@ -175,7 +176,7 @@ Inherits SelectOperation
 		    remplace = q
 		    return true
 		  end if
-		  
+
 		  //remplacement est toujours un point libre (ni sur ni construit) et sans dupliqués
 		  //on pourra lui réaffecter les propriétés de remplacé
 		End Function
@@ -188,7 +189,7 @@ Inherits SelectOperation
 		  dim p as point
 		  dim i, n, h as integer
 		  dim s as shape
-		  
+
 		  EL = XMLElement(Temp.child(0))
 		  EL1 = XMLElement(EL.child(0))
 		  remplacement = point(objects.Getshape(val(EL1.Getattribute("Id"))))
@@ -236,7 +237,7 @@ Inherits SelectOperation
 		  ''
 		  ''Myself.appendchild EL
 		  'return EL
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -244,8 +245,8 @@ Inherits SelectOperation
 		Function ToXML(Doc as XMLDocument) As XMLElement
 		  Dim Myself, EL, EL1 as XMLElement
 		  dim i as integer
-		  
-		  
+
+
 		  Myself= Doc.CreateElement(GetName)
 		  Myself.appendchild Remplacement.XMLPutInContainer(Doc)
 		  if remplace <> nil then
@@ -272,7 +273,7 @@ Inherits SelectOperation
 		    Myself.appendchild EL
 		  end if
 		  return Myself
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -282,7 +283,7 @@ Inherits SelectOperation
 		  dim List as XMLNodeList
 		  dim i, j, n, h as integer
 		  dim s as shape
-		  
+
 		  EL = XMLElement(Temp.child(0))
 		  EL1 = XMLElement(EL.child(0))
 		  Remplacement  = point(objects.Getshape(val(EL1.Getattribute("Id"))))
@@ -291,7 +292,7 @@ Inherits SelectOperation
 		  else
 		    redim remplacement.labs.objects(-1)
 		  end if
-		  
+
 		  EL2 = XMLElement(EL.child(1))
 		  If EL2.GetAttribute("Ident") = "Point" then
 		    Remplace = point(objects.XMLLoadObject(EL2))
@@ -322,8 +323,8 @@ Inherits SelectOperation
 		      remplace.constructedby = remplacement.constructedby
 		      remplacement.constructedby = nil
 		    end if
-		    
-		    
+
+
 		    if remplacement.pointsur.count >0 then
 		      for i = remplacement.pointsur.count-1 downto 0
 		        s = remplacement.pointsur.item(i)
@@ -339,30 +340,30 @@ Inherits SelectOperation
 		  end if
 		  ReDeleteCreatedFigures(Temp)
 		  ReCreateDeletedFigures(Temp)
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

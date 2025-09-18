@@ -6,8 +6,8 @@ Inherits SelectOperation
 		  super.constructor
 		  OpId = 7
 		  WorkWindow.refreshtitle
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -15,34 +15,34 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  dim i as integer
 		  dim ids(-1) as integer
-		  
-		  
+
+
 		  if ubound(todelete) = -1 then
 		    return
 		  end if
-		  
+
 		  currenthighlightedshape = nil
 		  for i = 0 to ubound(todelete)
 		    ids.append todelete(i).id
 		  next
-		  
+
 		  ids.sortwith todelete
-		  
+
 		  figs = new figslist
 		  for i = 0 to ubound(todelete)
 		    objects.selectobject todelete(i)
 		    figs.addobject todelete(i).fig
 		  next
 		  CurrentContent.Thefigs.Removefigures figs
-		  
+
 		  for i = ubound(todelete) downto 0
 		    todelete(i).delete
 		  next
-		  
+
 		  if CurrentContent.ForHisto and figs.count > 0 then
 		    figs.restructurer
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -64,28 +64,29 @@ Inherits SelectOperation
 		Function GetShape(P as BasicPoint) As shape
 		  dim s as shape
 		  dim i, j as integer
-		  
+
 		  s = super.getshape(p)
-		  
+
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
 		      s = Visible.item(i)
-		      if s isa point  and not point(s).isolated   then
+		      // Ne proposer que les points isolés; les autres formes restent candidates
+		      if s isa point and not point(s).isolated then
 		        visible.removeobject s
-		        nobj = visible.count
 		      end if
 		    next
+		    nobj = visible.count
 		  end if
-		  
+
 		  if Visible.count > 0  then
 		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -95,11 +96,11 @@ Inherits SelectOperation
 		  dim p as point
 		  dim sh as shape
 		  dim t as boolean
-		  
+
 		  if s.highlighted then
 		    return
 		  end if
-		  
+
 		  if s isa point then
 		    p = point(s)
 		    for i = 0 to ubound(p.parents)
@@ -109,24 +110,24 @@ Inherits SelectOperation
 		      end if
 		    next
 		  end if
-		  
+
 		  for i = Ubound(s.ConstructedShapes) downto 0
 		    highlight(s.ConstructedShapes(i))
 		  next
-		  
+
 		  for i = Ubound(s.MacConstructedShapes) downto 0
 		    highlight(s.MacConstructedShapes(i))
 		  next
-		  
+
 		  for i = 0 to s.tsfi.count-1
 		    for j = 0 to s.tsfi.item(i).constructedshapes.count -1
 		      highlight(s.tsfi.item(i).constructedshapes.item(j))
 		    next
 		  next
-		  
+
 		  todelete.append s
 		  s.highlight
-		  
+
 		  if not (s isa point) then
 		    for i = 0 to ubound(s.childs)
 		      if s.childs(i).id > s.id then
@@ -141,24 +142,24 @@ Inherits SelectOperation
 		      end if
 		    next
 		  end if
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
-		  
+
 		  Finished = false
 		  can.Mousecursor = System.Cursors.Wait
 		  DoOperation
 		  endoperation
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -167,7 +168,7 @@ Inherits SelectOperation
 		  redim todelete(-1)
 		  dim s as shape
 		  dim dr as droite
-		  
+
 		  objects.unhighlightall
 		  can.refreshbackground
 		  s = Getshape(p)
@@ -176,7 +177,7 @@ Inherits SelectOperation
 		    'currenthighlightedshape = s
 		  end if
 		  'can.refreshbackground
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -184,18 +185,18 @@ Inherits SelectOperation
 		Sub MouseWheel()
 		  dim i as integer
 		  dim pt as point
-		  
+
 		  redim todelete(-1)
 		  objects.unhighlightall
 		  currenthighlightedshape = nil
 		  if visible = nil or visible.count = 0 then
 		    return
 		  end if
-		  
+
 		  nobj = visible.count
 		  iobj = (iobj+1) mod nobj
-		  
-		  
+
+
 		  CurrentHighlightedShape = visible.item(iobj)
 		  Highlight(CurrentHighlightedShape)
 		  if currenthighlightedshape isa point then
@@ -204,20 +205,20 @@ Inherits SelectOperation
 		      highlight(pt.parents(i))
 		    next
 		  end if
-		  
+
 		  can.refreshbackground
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  dim i as integer
-		  
+
 		  display = ""
 		  super.paint(g)
-		  
-		  
+
+
 		  if CurrentHighlightedShape <> nil  then
 		    display = this(currenthighlightedshape.gettype) + " ?"
 		  elseif objects.count > 1 then
@@ -227,7 +228,7 @@ Inherits SelectOperation
 		  for i = 0 to ubound(todelete)
 		    todelete(i).paint(g)
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -235,15 +236,15 @@ Inherits SelectOperation
 		Sub RedoOperation(Temp as XMLElement)
 		  Dim i As Integer
 		  Dim EL As XMLElement
-		  
-		  
+
+
 		  SelectIdForms(Temp)
-		  
+
 		  for i =  tempshape.count -1 downto 0
 		    tempshape.item(i).delete
 		  next
 		  objects.unselectall
-		  
+
 		  ReDeleteDeletedFigures(Temp)
 		  ReCreateCreatedFigures(Temp)
 		  can.RefreshBackground
@@ -261,29 +262,29 @@ Inherits SelectOperation
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
 		  can.RefreshBackground
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

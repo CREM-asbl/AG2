@@ -3,13 +3,13 @@ Protected Class Conditionner
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor(sh as shape)
-		  
+
 		  super.constructor
 		  OpId = 40
-		  
+
 		  sctxt = sh
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -29,7 +29,7 @@ Inherits SelectOperation
 		    sctxt.conditionedby = point(CurrentHighlightedShape)
 		    endoperation
 		  end if
-		  
+
 		  currentcontent.currentoperation = nil
 		  WorkWindow.refreshtitle
 		End Sub
@@ -45,19 +45,20 @@ Inherits SelectOperation
 		Function GetShape(p as basicPoint) As shape
 		  dim s as shape
 		  dim i as integer
-		  
-		  
+
+
 		  s = super.getshape(p)
-		  
-		  for i = visible.count downto 0
-		    if (not visible.item(i) isa point) or point(visible.item(i)).pointsur.count <> 2 then
-		      visible.removeobject visible.item(i)
+
+		  // Ne garder que les points avec exactement deux "pointsur" (points d'intersection)
+		  for i = visible.count-1 downto 0
+		    s = visible.item(i)
+		    if not (s isa point) or point(s).pointsur.count <> 2 then
+		      visible.removeobject s
 		    end if
 		  next
-		  
+
 		  nobj = visible.count
-		  
-		  if visible.count > 0 then
+		  if nobj > 0 then
 		    return visible.item(iobj)
 		  else
 		    return nil
@@ -78,13 +79,13 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  super.paint(g)
-		  
+
 		  if currenthighlightedshape <> nil and currenthighlightedshape isa point and (point(currenthighlightedshape).pointsur.count = 2) then
 		    display = thispoint + " ?"
 		  else
 		    display = choose + apoint + inter
 		  end if
-		  
+
 		  Help g, display
 		End Sub
 	#tag EndMethod
@@ -95,7 +96,7 @@ Inherits SelectOperation
 		  dim List as XMLNodeList
 		  dim condby as point
 		  dim n as integer
-		  
+
 		  Temp = XMLElement(Temp.Child(0))
 		  List = Temp.XQL(Dico.value("Form"))
 		  if list.length > 0 then
@@ -114,20 +115,20 @@ Inherits SelectOperation
 		      End If
 		    end if
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToXML(Doc As XMLDocument) As XMLElement
 		  Dim Temp As  XMLElement
-		  
+
 		  Temp = Doc.CreateElement(GetName)
 		  Temp.appendchild sctxt.XMLPutIdInContainer(Doc)
 		  'On n'utilise pas Temp.appendchild tempshape.XMLPutIdInContainer(Doc) car sctxt a été highlighted mais non sélectionné
 		  'En conséquence, dans le fichier XML il n'y a pas de niveau "Forms", on passe directement à "Form" et il n'y en a qu'une. Pas de sélection multiple dans le cas du menu contextuel!
-		  
+
 		  if oldcondby <> nil then
 		    Temp.SetAttribute("Condi",str(0))
 		  else
@@ -139,7 +140,7 @@ Inherits SelectOperation
 		    Temp.SetAttribute("Point",str(oldcondby.id))
 		  end if
 		  return Temp
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -149,7 +150,7 @@ Inherits SelectOperation
 		  dim List as XMLNodeList
 		  dim condby as point
 		  dim n as integer
-		  
+
 		  Temp = XMLElement(Temp.Child(0))
 		  List = Temp.XQL(Dico.value("Form"))
 		  if list.length > 0 then
@@ -166,8 +167,8 @@ Inherits SelectOperation
 		      condby.conditioned.addshape sctxt
 		    end if
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 

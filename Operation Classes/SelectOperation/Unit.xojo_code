@@ -117,23 +117,29 @@ Inherits SelectOperation
 
 		  select case Type
 		  case 0
-		    for i = 0 to visible.count-1
+		    // Conserver droites de type segment (nextre=2) et côtés de lacets sous le pointeur
+		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
-		      if not ( s isa droite and droite(s).nextre = 2) and not (s isa Lacet and Lacet(s).pointonside(p) <> -1) then
+		      if not ((s isa droite and droite(s).nextre = 2) or (s isa Lacet and Lacet(s).pointonside(p) <> -1)) then
 		        visible.removeobject s
 		      end if
 		    next
 
 		  case 1
-
-		    for i = 0 to visible.count-1
+		    // Conserver formes de surface valide (aire non nulle): lacets et cercles
+		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
-		      if not (( s isa Lacet or s isa Stdcircle or s isa freecircle)  and abs(s.aire) > epsilon)  then
+		      if not ((s isa Lacet or s isa Stdcircle or s isa freecircle) and abs(s.aire) > epsilon) then
 		        visible.removeobject s
 		      end if
 		    next
 		  end select
-		  return visible.item(iobj)
+		  nobj = visible.count
+		  if nobj > 0 then
+		    return visible.item(iobj)
+		  else
+		    return nil
+		  end if
 
 
 		End Function
