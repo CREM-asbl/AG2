@@ -5,7 +5,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub abort()
 		  dim i as integer
-		  
+
 		  for i =  tempshape.count-1 downto 0
 		    CurrentContent.thefigs.RemoveFigure copies.item(i).fig
 		    copies.item(i).delete
@@ -21,7 +21,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub CompleteOperation(NewPoint as BasicPoint)
 		  dim Magnetism As  Integer
-		  
+
 		  if copyptsur then
 		    cop.moveto newpoint
 		    if  dret = nil then
@@ -31,10 +31,10 @@ Inherits SelectAndDragOperation
 		  elseif Newpoint <> EndPoint and tempshape.count > 0 then
 		    Glissement(NewPoint)
 		  end if
-		  
+
 		  super.completeoperation(NewPoint)
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -43,8 +43,8 @@ Inherits SelectAndDragOperation
 		  super.constructor
 		  copies = new objectslist
 		  OpId = 19
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -53,21 +53,21 @@ Inherits SelectAndDragOperation
 		  dim n, rid as integer
 		  dim pt, q as point
 		  dim sh as shape
-		  
+
 		  super.constructor
 		  n = val(XMLElement(EL1).GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
 		  pt = point(objects.GetShape(rid))
-		  
+
 		  n = val(XMLElement(EL0).GetAttribute("Forme0"))
 		  rid = MExe.GetRealId(n)
 		  sh = objects.GetShape(rid)
-		  
+
 		  q = new point(objects, new basicpoint(0,0))
-		  
+
 		  pt.putduplicateon (sh, q)
 		  currentshape = q
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -75,7 +75,7 @@ Inherits SelectAndDragOperation
 		Sub EndOper1(M as Matrix)
 		  dim  M1 as Matrix
 		  dim i as integer
-		  
+
 		  if Config.Ajust then
 		    if CurrentContent.ForHisto  then
 		      M1 = Ajustement
@@ -92,7 +92,7 @@ Inherits SelectAndDragOperation
 		      setconstructioninfo(i, M)
 		    end if
 		  next
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -105,7 +105,7 @@ Inherits SelectAndDragOperation
 		    d.setVariable("angle",angle)
 		    d.setVariable("RotationPoint.bpt",RotationPoint.bpt)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Sub
 	#tag EndMethod
@@ -113,8 +113,8 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub EndOper2()
 		  dim M as Matrix
-		  
-		  
+
+
 		  if not copyptsur then
 		    copies = tempshape
 		    tempshape = oldtempshape
@@ -129,7 +129,7 @@ Inherits SelectAndDragOperation
 		  dim pt, q, s1 as point
 		  dim M as Matrix
 		  dim sh as shape
-		  
+
 		  if copyptsur then
 		    if (startpoint.distance(endpoint) < Epsilon)  or (currentattractingshape = nil) then
 		      abort
@@ -138,14 +138,14 @@ Inherits SelectAndDragOperation
 		    pt = point(tempshape.item(0))
 		    q = point(copies.item(0))
 		    sh = pt.pointsur.item(0)
-		    
+
 		    if pt.constructedby <> nil and pt.constructedby.oper = 10 then
 		      s1 = point(pt.constructedby.shape)
 		      if s1.pointsur.item(0) = pt.pointsur.item(0)  and s1.numside(0) = pt.numside(0) then
 		        abort
 		      end if
 		    end if
-		    
+
 		    if sh.sametype(CurrentAttractingShape) or q.surseg or (sh isa circle and currentattractingshape isa droite and droite(currentattractingshape).nextre = 2) then
 		      CurrentContent.Thefigs.RemoveFigure Currentattractingshape.fig
 		      pt.putduplicateon(Currentattractingshape, q)
@@ -159,11 +159,11 @@ Inherits SelectAndDragOperation
 		    EndOper1(M)
 		  end if
 		  LierGroupes
-		  
+
 		  super.Endoperation
 		  copies.removeall
 		  copyptsur = false
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -172,7 +172,7 @@ Inherits SelectAndDragOperation
 		    d.setVariable("pt",pt)
 		    d.setVariable("q",q)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Sub
 	#tag EndMethod
@@ -189,9 +189,9 @@ Inherits SelectAndDragOperation
 		  dim s1 as point
 		  dim i as integer
 		  dim keepers as ObjectsList
-		  
+
 		  s = super.getshape(p)
-		  
+
 		  if visible.count > 0 then
 		    // Conserver temporairement les points 'point sur' pour ne pas les perdre si Choixvalide les exclut
 		    keepers = new ObjectsList
@@ -231,7 +231,7 @@ Inherits SelectAndDragOperation
 		    next
 		    nobj = visible.count
 		  end if
-		  
+
 		  if Visible.count > 0  then
 		    return visible.item(iobj)
 		  else
@@ -243,31 +243,31 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Sub MouseDown(p As BasicPoint)
 		  dim i as integer
-		  
+
 		  if currenthighlightedshape = nil then
 		    Objects.unselectall
 		    return
 		  end if
-		  
+
 		  for i = tempshape.count-1 downto 0
 		    if tempshape.item(i).constructedby <> nil and tempshape.item(i).constructedby.oper = 6 then
 		      tempshape.item(i).dounselect
 		      tempshape.removeobject tempshape.item(i)
 		    end if
 		  next
-		  
+
 		  figs.removeall
 		  StartPoint = p
 		  EndPoint = p
-		  
+
 		  selection
 		  currentshape = currenthighlightedshape
-		  
+
 		  objects.tspfalse
 		  finished = false
 		  WorkWindow.refreshtitle
 		  nobj = 1
-		  
+
 		  if CurrentShape.Idgroupe <> -1 then
 		    currentshape.SelectGroup
 		  end if                                            // Ici, on sélectionne uniquement les objets liés au currentshape
@@ -275,19 +275,19 @@ Inherits SelectAndDragOperation
 		    CopyPtsur = true
 		  end if
 		  SetCopies(p)
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MouseUp(p as BasicPoint)
-		  
+
 		  dim M as Matrix
-		  
+
 		  if tempshape.count = 0 then
 		    return
 		  end if
@@ -307,21 +307,21 @@ Inherits SelectAndDragOperation
 		  elseif copyptsur then
 		    abort
 		  end if
-		  
+
 		  super.mouseup(p)
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
-		  
-		  
+
+
 		  super.Paint(g)
-		  
+
 		  if copyptsur  then
 		    cop.paint(g)
 		  end if
@@ -330,12 +330,12 @@ Inherits SelectAndDragOperation
 		  else
 		    display =  click + thendrag
 		  end if
-		  
+
 		  Help g, display
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -345,25 +345,25 @@ Inherits SelectAndDragOperation
 		  dim EL, EL1, EL2, EL3 as XMLElement
 		  dim M as Matrix
 		  dim dep as BasicPoint
-		  
-		  
-		  
+
+
+
 		  TMP = Temp
-		  
+
 		  EL = XMLElement(Temp.child(0))
 		  SelectIdForms(EL)
-		  
+
 		  if EL.childcount = 3 then
 		    EL2 = XMLElement(EL.child(2))
 		    angle = val(EL.Getattribute("angle"))
 		    EL2 = XMLElement(EL.child(0))
 		    fid = val(EL.GetAttribute("Id"))
 		  end if
-		  
+
 		  RedeleteDeletedFigures(Temp)
-		  
+
 		  EL1 = XMLElement(EL.Child(1))
-		  
+
 		  if tempshape.item(0) isa point and EL1.Name = Dico.value("Form") then
 		    RecreateCreatedFigures(Temp)
 		    if Config.Trace  then
@@ -408,9 +408,9 @@ Inherits SelectAndDragOperation
 		    end if
 		  end if
 		  WorkWindow.refresh
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -419,9 +419,9 @@ Inherits SelectAndDragOperation
 		  dim s as shape
 		  dim p, q as point
 		  dim n, op, j as integer
-		  
+
 		  //sh est la nouvelle copie, (duplicata de s)
-		  
+
 		  s = tempshape.item(i)
 		  if s.centerordivpoint then                            //les dupliqués des points de subdivision ou des centres sont considérés comme des points de subdiv
 		    q = point(sh)                                             //ou des centres pourautant que la forme mère des originaux soit également dupliquée
@@ -444,8 +444,8 @@ Inherits SelectAndDragOperation
 		      end if
 		    end if
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -454,10 +454,10 @@ Inherits SelectAndDragOperation
 		  dim j, n, k as integer
 		  dim s, s1, q  As  shape
 		  dim M1 as Matrix
-		  
+
 		  s = tempshape.item(i)
 		  q =copies.item(i)
-		  
+
 		  if q.centerordivpoint then
 		    return
 		  end if
@@ -466,7 +466,7 @@ Inherits SelectAndDragOperation
 		    s = s1
 		    M1 = Matrix(s1.constructedby.data(0)) * M1
 		  wend
-		  
+
 		  M1 = M1.inv
 		  M1 = M*M1
 		  q.SetConstructedBy s,3
@@ -491,7 +491,7 @@ Inherits SelectAndDragOperation
 		    point(q).updateguides
 		    point(q).mobility
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -501,11 +501,11 @@ Inherits SelectAndDragOperation
 		  dim s1,s2 as Shape
 		  dim ffigs as Figslist
 		  Dim ff As figure
-		  
+
 		  Vect = p
-		  
+
 		  p = New BasicPoint(0,0)
-		  
+
 		  if copyPtSur then
 		    s1 = tempshape.item(0)
 		    cop = new point(objects, point(s1).bpt)
@@ -518,7 +518,7 @@ Inherits SelectAndDragOperation
 		      if s1 isa point then
 		        s2 = s1.paste(objects,point(s1).bpt)
 		      Else
-		        If s1.std Then  
+		        If s1.std Then
 		          s2 = s1.paste(objects,Vect)
 		        Else
 		          s2 = s1.paste(objects,p)
@@ -533,7 +533,7 @@ Inherits SelectAndDragOperation
 		        highlight s2
 		      end if
 		    next
-		    
+
 		    for i = 0 to tempshape.count-2         //Si deux formes sources sont dans la même figure, les images doivent aussi être dans la même figure
 		      for j = i+1 to tempshape.count-1
 		        if (tempshape.item(i).fig = tempshape.item(j).fig) and (copies.item(i).fig <> copies.item(j).fig)  then
@@ -547,7 +547,7 @@ Inherits SelectAndDragOperation
 		        end if
 		      next
 		    next                                                  //Il faudra faire attention aux points construits dans setconstructioninfo
-		    
+
 		    for i = 0 to tempshape.count-1
 		      figs.addobject copies.item(i).fig
 		    next
@@ -558,7 +558,7 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
-		  
+
 		  if copyptsur then
 		    Temp = cop.XMLPutIdINContainer(Doc)
 		    Temp.setAttribute("Forme0", str(cop.pointsur.item(0).id))
@@ -572,8 +572,8 @@ Inherits SelectAndDragOperation
 	#tag Method, Flags = &h0
 		Function ToXml(Doc as XMLDocument) As XMLElement
 		  dim Myself, Temp as XMLElement
-		  
-		  
+
+
 		  Myself= Doc.CreateElement(GetName)
 		  Myself.SetAttribute("DX", str(EndPoint.x-StartPoint.x))
 		  Myself.SetAttribute("DY", str(EndPoint.y-StartPoint.y))
@@ -583,7 +583,7 @@ Inherits SelectAndDragOperation
 		  else
 		    Myself.appendchild copies.XMLPutInContainer(Doc)
 		  end if
-		  
+
 		  if rotationpoint <> nil then
 		    Temp=XMLElement(Doc.CreateElement("Rotation"))
 		    Temp.appendchild RotationPoint.XMLPutIdInContainer(Doc)
@@ -591,20 +591,20 @@ Inherits SelectAndDragOperation
 		    Myself.appendchild(Temp)
 		  end if
 		  return Myself
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -613,13 +613,13 @@ Inherits SelectAndDragOperation
 		  dim i,j,n as integer
 		  dim s1, s2 as Shape
 		  dim EL, EL1, EL2 as XMLElement
-		  
+
 		  EL = XMLElement(Temp.child(0))
 		  SelectIdForms(EL)
-		  
-		  
+
+
 		  EL1 = XMLElement(EL.Child(1))
-		  
+
 		  if tempshape.item(0) isa point and EL1.Name = Dico.value("Form") then
 		    CopyPtSur = true
 		    n = val(EL1.GetAttribute("Id"))
@@ -631,7 +631,7 @@ Inherits SelectAndDragOperation
 		      copies.addshape Objects.Getshape(n)
 		    next
 		  end if
-		  
+
 		  for i =  tempshape.count-1 downto 0
 		    s2 = copies.item(i)
 		    if s2.constructedby <> nil then
@@ -644,10 +644,10 @@ Inherits SelectAndDragOperation
 		    end if
 		    currentcontent.removeobject s2
 		  next
-		  
+
 		  ReDeleteCreatedFigures(Temp)
 		  RecreateDeletedFigures(Temp)
-		  
+
 		  objects.unselectall
 		  WorkWindow.refresh
 		End Sub
@@ -655,22 +655,22 @@ Inherits SelectAndDragOperation
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

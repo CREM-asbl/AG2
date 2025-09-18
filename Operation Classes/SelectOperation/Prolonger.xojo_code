@@ -149,21 +149,33 @@ Inherits SelectOperation
 		  
 		  for i = visible.count-1 downto 0
 		    s = Visible.item(i)
+		    // Exclure bandes et secteurs
 		    if s isa Bande or s isa Secteur then
 		      visible.removeobject(s)
-		    elseif not s.ValidSegment(p,ibip) or (s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(ibip) ) then  //le côté a déjà été prolongé
-		      visible.removeobject(s)
+		      continue
 		    end if
-		    if s isa Bande then
+		    // Prolongation déjà effectuée pour ce côté (formes lacets)
+		    if s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(ibip) then
 		      visible.removeobject(s)
-		    elseif s isa Lacet then
+		      continue
+		    end if
+		    // Segment valide au point p (peut fixer ibip)
+		    if not s.ValidSegment(p, ibip) then
+		      visible.removeobject(s)
+		      continue
+		    end if
+		    // Exclure arcs: côté courbe au point (pour les lacets non-cubes)
+		    if s isa Lacet then
 		      n = s.pointonside(p)
 		      if n <> -1 and not s isa cube and s.coord.curved(n) = 1 then
 		        visible.removeobject(s)
+		        continue
 		      end if
 		    end if
+		    // Exclure droites déjà complètes
 		    if s isa droite and droite(s).nextre = 0 then
-		      visible.removeobject s
+		      visible.removeobject(s)
+		      continue
 		    end if
 		  next
 		  
