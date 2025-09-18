@@ -5,23 +5,40 @@ Inherits SelectOperation
 		Sub Constructor()
 		  super.Constructor
 		  OpId = 38
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
 		  dim i as integer
-		  
+
+		  // UX: éviter un crash si aucune forme n'est survolée
+		  if currenthighlightedshape = nil then
+		    return
+		  end if
+
 		  if currenthighlightedshape.pointe = false then
 		    currenthighlightedshape.pointer
 		  else
-		    currenthighlightedshape.depointer 
+		    currenthighlightedshape.depointer
 		    if currenthighlightedshape isa arc then
 		      currenthighlightedshape.points(0).pointe = true
 		    end if
 		  end if
-		  
+
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Paint(g as graphics)
+		  // Aide contextuelle
+		  SelectOperation.Paint(g)
+		  if CurrentHighlightedShape = nil then
+		    Help g, choose + aform
+		  else
+		    Help g, click
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -34,7 +51,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
 		  UndoOperation(Temp)
-		  
+
 		End Sub
 	#tag EndMethod
 

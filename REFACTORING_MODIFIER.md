@@ -189,3 +189,38 @@ Changements de style appliqués sans modification du comportement:
 - Retours cohérents: `visible.item(iobj)` si `nobj > 0`, sinon `nil`.
 
 Ces ajustements fiabilisent la sélection et évitent des index hors limites tout en préservant les règles métier propres à chaque opération.
+
+#### Lot additionnel (sept. 2025)
+
+- Harmonisation du même pattern dans:
+  - `SelectOperation/Lier`
+  - `SelectOperation/GCConstruction`
+  - `SelectOperation/Decomposer`
+
+Même recette appliquée:
+- Boucles descendantes lors des suppressions sur `visible`.
+- `nobj = visible.count` après filtrage, jamais dans la boucle.
+- Retour `visible.item(iobj)` si `nobj > 0`, sinon `nil`.
+
+#### Rigidifier / Delier (sept. 2025)
+
+- `SelectOperation/Rigidifier`: possède un `GetShape` minimal sans liste `visible` (filtrage direct avec `fam > 9`). Aucun changement appliqué pour ne pas altérer le flux single-candidate.
+- `SelectOperation/Delier`: ne définit pas de `GetShape` (sélection via `MouseDown` + groupes). Rien à harmoniser côté sélection.
+
+#### ChangePosition (sept. 2025)
+
+- `SelectOperation/ChangePosition`: ne définit pas de `GetShape` et agit sur la sélection existante (`tempshape`). Aucun filtrage local à harmoniser.
+
+#### Pointer / Tracer (sept. 2025)
+
+- `SelectOperation/Pointer` et `SelectOperation/Tracer` ne définissent pas de `GetShape`; ils opèrent via `currenthighlightedshape` et la sélection courante. Aucun besoin d’harmonisation du filtrage.
+
+Note: aucune variante distincte d'« Épaisseur avancée » n’a été trouvée. Le fichier `SelectOperation/Epaisseur` ne définit pas de `GetShape`.
+
+#### SaveStd / SaveEPS (sept. 2025)
+
+- `SelectOperation/SaveStd` et `SelectOperation/SaveEPS` ne définissent pas de `GetShape` et s’appuient entièrement sur `tempshape` (la sélection active) pour exporter. Aucune harmonisation de filtrage requise.
+
+#### Hide / Imprimer / Copier / Coller (sept. 2025)
+
+- `SelectOperation/Hide`, `SelectOperation/Imprimer`, `SelectOperation/Copier` et `SelectOperation/Coller` ne définissent pas de `GetShape` spécifique et reposent sur la sélection courante (`tempshape`) et/ou `currenthighlightedshape`. Pas d’harmonisation à appliquer côté filtrage.

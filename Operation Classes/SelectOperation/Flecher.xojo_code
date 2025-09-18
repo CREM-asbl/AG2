@@ -5,16 +5,33 @@ Inherits SelectOperation
 		Sub Constructor()
 		  super.constructor
 		  OpId = 39
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
+		  // UX: éviter un crash si aucune forme n'est survolée
+		  if currenthighlightedshape = nil then
+		    return
+		  end if
+
 		  if  currenthighlightedshape.Ti = nil then
 		    currenthighlightedshape.Ti = new Tip
 		  else
 		    currenthighlightedshape.Ti = nil
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Paint(g as graphics)
+		  // Aide contextuelle simple et cohérente
+		  SelectOperation.Paint(g)
+		  if CurrentHighlightedShape = nil then
+		    Help g, choose + aform
+		  else
+		    Help g, click
 		  end if
 		End Sub
 	#tag EndMethod
@@ -28,7 +45,7 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
 		  UndoOperation(Temp)
-		  
+
 		End Sub
 	#tag EndMethod
 
