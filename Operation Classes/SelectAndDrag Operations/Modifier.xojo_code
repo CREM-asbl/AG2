@@ -222,22 +222,14 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
-		  Dim i, Magnetism As Integer
-
+		  Dim i As Integer
 
 		  if pointmobile = nil then
 		    return
 		  end if
 
-
-		  MagneticD = new BasicPoint(0,0)
-		  Magnetism= testmagnetisme(magneticD)
-		  if magnetism > 0 then
-		    pointmobile.drapmagn  = testfinal (magneticd)
-		    if pointmobile.drapmagn   then
-		      updatefigs(magneticd)
-		    End If
-		  end if
+		  // Applique le magnétisme si nécessaire
+		  ApplyMagnetismIfNeeded()
 
 		  pointmobile.drapmagn = false
 		  pointmobile.unhighlight
@@ -376,11 +368,6 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDrag(bp as BasicPoint)
-		  dim mag as integer
-		  dim magneticd as basicpoint
-
-
-
 		  if cancel then
 		    return
 		  else
@@ -388,9 +375,9 @@ Inherits SelectAndDragOperation
 		      visi.tspfalse
 		    end if
 		    CompleteOperation(bp)
-		    mag= testmagnetisme(magneticd)
+		    // Test du magnétisme pendant le drag
+		    CheckMagnetismDuringDrag()
 		  end if
-
 
 		End Sub
 	#tag EndMethod
@@ -540,6 +527,56 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ApplyMagnetismIfNeeded()
+		  // Applique le magnétisme et met à jour les figures si nécessaire
+		  dim MagneticD as BasicPoint
+		  dim Magnetism as Integer
+		  
+		  MagneticD = new BasicPoint(0,0)
+		  Magnetism = testmagnetisme(magneticD)
+		  if magnetism > 0 then
+		    pointmobile.drapmagn = testfinal(magneticd)
+		    if pointmobile.drapmagn then
+		      updatefigs(magneticd)
+		    end if
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub CheckMagnetismDuringDrag()
+		  // Vérifie le magnétisme pendant le drag sans appliquer
+		  dim magneticd as basicpoint
+		  dim mag as integer
+		  mag = testmagnetisme(magneticd)
+		  // Le résultat peut être utilisé pour l'affichage visuel
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TryUpdateFigs(s as point, target as BasicPoint) As Boolean
+		  // Pattern save/restore/update centralisé pour éviter la duplication
+		  dim bp as BasicPoint
+		  dim success as Boolean
+		  
+		  if s = nil then
+		    return false
+		  end if
+		  
+		  bp = decal(s, target)
+		  figs.save
+		  success = figs.update(s, bp)
+		  if not success then
+		    figs.restore
+		  end if
+		  figs.canceloldbpts
+		  figs.enablemodifyall
+		  
+		  return success
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function test(p as Point) As Boolean
 		  Dim t As Boolean
 		  dim s as point
@@ -579,19 +616,13 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function testfinal(p as basicpoint) As Boolean
-		  dim t as boolean
+		  // Test si une mise à jour des figures est possible à la position donnée
 		  dim s as point
-
+		  
 		  figs.enablemodifyall
-
 		  s = ptguide(pointmobile)
-		  figs.save
-		  t =  figs.update(s, decal(pointmobile, p))
-		  figs.restore
-		  figs.canceloldbpts
-		  figs.EnableModifyall
-		  return t
-
+		  return TryUpdateFigs(s, p)
+		  
 		End Function
 	#tag EndMethod
 
@@ -694,25 +725,19 @@ Inherits SelectAndDragOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateFigs(np as BAsicPoint)
+		Sub UpdateFigs(np as BasicPoint)
+		  // Met à jour les figures vers une nouvelle position
 		  dim s as point
-		  dim bp as basicpoint
-
+		  dim success as Boolean
+		  
 		  if pointmobile = nil then
 		    return
 		  end if
-
+		  
 		  s = ptguide(pointmobile)
-		  bp = decal(pointmobile, np)
-
-		  figs.save
-		  if not figs.update(s, bp)  then
-		    figs.restore
-		  end if
-		  figs.canceloldbpts
-
-
-
+		  success = TryUpdateFigs(s, np)
+		  // Note: success peut être utilisé pour debug/logging si nécessaire
+		  
 		End Sub
 	#tag EndMethod
 
