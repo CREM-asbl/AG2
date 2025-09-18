@@ -175,3 +175,17 @@ Le code est maintenant plus lisible, plus sûr et plus facile à étendre.
   - `SelectOperation/Retourner.GetShape`
   - `SelectAndDrag Operations/Duplicate.GetShape` (avec réinjection des points « point sur » si exclus par le filtre générique)
 - Les filtres métier spécifiques propres à chaque opération sont conservés après l’appel générique.
+
+### Harmonisation complémentaire (sept. 2025)
+
+- Harmonisation de `GetShape` pour:
+  - `SelectOperation/Identifier`
+  - `SelectOperation/Unit`
+  - `SelectOperation/Conditionner`
+
+Changements de style appliqués sans modification du comportement:
+- Boucles de filtrage converties en itérations « count-1 downto 0 » lors de suppressions dans `visible`.
+- Mise à jour de `nobj = visible.count` déplacée hors des boucles.
+- Retours cohérents: `visible.item(iobj)` si `nobj > 0`, sinon `nil`.
+
+Ces ajustements fiabilisent la sélection et évitent des index hors limites tout en préservant les règles métier propres à chaque opération.

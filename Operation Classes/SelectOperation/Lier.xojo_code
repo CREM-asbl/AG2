@@ -7,7 +7,7 @@ Inherits SelectOperation
 		  s.IDGroupe = N
 		  Objects.Groupes(N).addShape s
 		  listids.append s.id
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -18,15 +18,15 @@ Inherits SelectOperation
 		  prem = true
 		  prembis = True
 		  WorkWindow.refreshtitle
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(El as XMLElement)
 		  Dim List As XmlNodeList
-		  
+
 		  Constructor()
 		  List = EL.XQL(Dico.value("Group"))
 		  if List.length > 0 then
@@ -42,7 +42,7 @@ Inherits SelectOperation
 		Sub DoOperation()
 		  Dim i, selectedGroupId, n1, n2 As Integer
 		  dim s as point
-		  
+
 		  for i = tempshape.count -1 downto 0
 		    if tempshape.item(i).constructedby <> nil and  tempshape.item(i).constructedby.oper = 6 then
 		      objects.unselectobject tempshape.item(i)
@@ -55,11 +55,11 @@ Inherits SelectOperation
 		      objects.unselectobject s
 		    end if
 		  next
-		  
+
 		  if tempshape.count = 0 then
 		    return
 		  end if
-		  
+
 		  for i = tempshape.count-1 downto 0
 		    selectedGroupId = tempshape.item(i).IDGroupe
 		    if prem then
@@ -82,24 +82,24 @@ Inherits SelectOperation
 		    end if
 		  next
 		  EndOperation
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub EndOperation()
 		  Dim i, n As Integer
-		  
+
 		  if ubound(listids) > -1 then
 		    super.endoperation
 		    redim listids(-1)
 		  end if
 		  objects.unselectall
-		  
+
 		  can.Mousecursor =System.Cursors.StandardPointer
-		  
+
 		  n = objects.item(1).idgroupe
-		  
+
 		  if objects.count > 2 then
 		    for i = 2 to objects.count-1
 		      if objects.item(i).IDGroupe <> n then
@@ -107,12 +107,12 @@ Inherits SelectOperation
 		      end if
 		    next
 		  end if
-		  
+
 		  CurrentContent.currentoperation = nil
 		  objects.unselectall
 		  objects.unhighlightall
 		  can.refreshbackground
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -120,7 +120,7 @@ Inherits SelectOperation
 		Sub fusionner(k as integer, n as integer)
 		  dim j as integer
 		  dim s as shape
-		  
+
 		  for j = 0 to Objects.Groupes(N).count-1
 		    s = objects.Groupes(N).item(j)
 		    s.OldIdGroupes.append s.IDGroupe
@@ -144,17 +144,21 @@ Inherits SelectOperation
 		Function GetShape(p as Basicpoint) As shape
 		  dim s, s1 as shape
 		  dim i as integer
-		  
+
 		  s = super.getshape(p)
-		  
+
 		  for i = visible.count-1 downto 0
 		    s1 = visible.item(i)
 		    if ( s1.constructedby <> nil and s1.constructedby.oper = 6)  then
 		      visible.removeobject s1
 		    end  if
 		  next
-		  nobj = visible.count-1
-		  return visible.item(iobj)
+		  nobj = visible.count
+		  if nobj > 0 then
+		    return visible.item(iobj)
+		  else
+		    return nil
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -163,11 +167,11 @@ Inherits SelectOperation
 		  dim i,g1,g2,cg as integer
 		  dim s as Shape
 		  dim ok as Boolean
-		  
+
 		  g1=-1
 		  g2=-1
 		  ok = true
-		  
+
 		  // On vérifie que les formes sélectionnées n'appartiennent pas à plus de deux groupes
 		  if tempshape.count >0 then
 		    i = 0
@@ -198,32 +202,32 @@ Inherits SelectOperation
 		    EndOperation
 		    Return
 		  End If
-		  
+
 		  selection
 		  Finished = False
 		  DoOperation
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Paint(g as graphics)
 		  Dim i As Integer
-		  
-		  
+
+
 		  if CurrentContent.currentoperation = self then
-		    display = choose + aform + alier + EndOfLine _ 
+		    display = choose + aform + alier + EndOfLine _
 		    +"Après avoir choisi la dernière forme à lier, cliquez du bouton droit " + EndOfLine _
 		    + "en dehors de toute forme"
 		  end if
-		  
+
 		  for i = 0 to ubound(objects.groupes)
 		    objects.affichergroupe(i, bleu,g)
 		  next
-		  
+
 		  g.ForeColor = Config.bordercolor.col
-		  
+
 		  Help g, display
 		End Sub
 	#tag EndMethod
@@ -234,7 +238,7 @@ Inherits SelectOperation
 		  dim EL as XMLElement
 		  dim n, i as integer
 		  dim pr as integer
-		  
+
 		  List = Temp.XQL(Dico.value("Group"))
 		  if List.length > 0 then
 		    EL = XMLElement(List.Item(0))
@@ -255,8 +259,8 @@ Inherits SelectOperation
 		    finished = true
 		    objects.unselectall
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -265,7 +269,7 @@ Inherits SelectOperation
 		  dim temp, EL as XMLElement
 		  dim i as integer
 		  dim s as shape
-		  
+
 		  temp =  Doc.CreateElement(Dico.Value("Group"))
 		  temp.setattribute("IdGroupe", str(numlist))
 		  temp.setattribute("Fusion", str(Fusion))
@@ -280,9 +284,9 @@ Inherits SelectOperation
 		      EL.appendchild s.XMLPutIdinContainer(Doc)
 		    end if
 		  next
-		  
+
 		  temp.AppendChild EL
-		  
+
 		  return temp
 		End Function
 	#tag EndMethod
@@ -294,21 +298,21 @@ Inherits SelectOperation
 		  dim EL as XMLElement
 		  dim List as XmlNodeList
 		  dim g as graphics
-		  
+
 		  List = Temp.XQL(Dico.value("Group"))
 		  if List.length = 0 then
 		    return
 		  end if
-		  
+
 		  EL = XMLElement(List.Item(0))
 		  NumList = val(EL.GetAttribute("IdGroupe"))
 		  Fusion = val(EL.GetAttribute("Fusion"))
 		  SelectIdForms(EL)
-		  
+
 		  if fusion <> -1 then
 		    objects.groupes.Insert(fusion,new ObjectsList)
 		  end if
-		  
+
 		  for i = 0 to tempshape.count-1
 		    s = tempshape.item(i)
 		    objects.groupes(numlist).removeobject s
@@ -319,28 +323,28 @@ Inherits SelectOperation
 		  next
 		  Objects.OptimizeGroups
 		  objects.unselectall
-		  
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

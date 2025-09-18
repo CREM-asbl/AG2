@@ -3,11 +3,11 @@ Protected Class GCConstruction
 Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  
+
 		  super.Constructor
 		  OpId = 14
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -15,7 +15,7 @@ Inherits SelectOperation
 		Sub Constructor(MExe as MacroExe, EL1 as XMLElement)
 		  dim sh as shape
 		  dim n, rid, side as integer
-		  
+
 		  super.Constructor
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
@@ -30,12 +30,12 @@ Inherits SelectOperation
 		  dim i,j, n as integer
 		  'dim GC as Point
 		  dim t as boolean
-		  
+
 		  n = tempshape.count-1
 		  if n = -1 then
 		    return
 		  end if
-		  
+
 		  for i = 0 to n
 		    s = tempshape.item(i)
 		    if not (s isa Point) then
@@ -57,9 +57,9 @@ Inherits SelectOperation
 		      end if
 		    end if
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -73,25 +73,24 @@ Inherits SelectOperation
 		Function GetShape(p as basicPoint) As shape
 		  dim s as shape
 		  dim i, j as integer
-		  
+
 		  s = super.getshape(p)
-		  
+
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
 		      s = Visible.item(i)
 		      if s isa point or  s isa bande or s isa secteur  or (s isa droite and droite(s).nextre < 2)  or s isa arc  then
 		        visible.removeobject s
-		        nobj = visible.count
 		      end if
 		    next
 		  end if
-		  
-		  if Visible.count > 0  then
+		  nobj = visible.count
+		  if nobj > 0  then
 		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -108,16 +107,16 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub RedoOperation(Temp as XMLElement)
-		  
+
 		  ReDeleteDeletedFigures (Temp)
 		  ReCreateCreatedFigures(Temp)
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToMac(Doc as XMLDocument, EL as XMLElement) As XMLElement
-		  
+
 		  EL.AppendChild currentshape.XMLPutIdINContainer(Doc)
 		  EL.appendchild  currentshape.XMLPutConstructionInfoInContainer(Doc)
 		  return EL
@@ -128,7 +127,7 @@ Inherits SelectOperation
 		Function ToXML(Doc As XMLDocument) As XMLElement
 		  dim EL, Temp as XMLElement
 		  dim i as integer
-		  
+
 		  Temp = Doc.CreateElement(GetName)
 		  Temp.appendchild Tempshape.XMLPutIdInContainer(Doc)
 		  EL = Doc.CreateElement(Dico.Value("Centres"))
@@ -146,10 +145,10 @@ Inherits SelectOperation
 		  dim i, j, n as integer
 		  dim EL as XMLElement
 		  dim p as point
-		  
+
 		  EL = XMLElement(Temp.Child(0))
 		  SelectIdForms(EL)
-		  
+
 		  n = tempshape.count-1
 		  for i = 0 to n
 		    s = tempshape.item(i)
@@ -161,7 +160,7 @@ Inherits SelectOperation
 		    end if
 		  next
 		  objects.unselectall
-		  
+
 		  ReDeleteCreatedFigures (Temp)
 		  ReCreateDeletedFigures(Temp)
 		End Sub
@@ -169,22 +168,22 @@ Inherits SelectOperation
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote

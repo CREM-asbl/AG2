@@ -8,7 +8,7 @@ Inherits SelectOperation
 		  objects.unhighlightall
 		  wnd.refreshtitle
 		  DoOperation (s)
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -16,7 +16,7 @@ Inherits SelectOperation
 		Sub DoOperation(s as polygon)
 		  dim dec as autointersec
 		  dim arpo() As point
-		  
+
 		  dec = s.autointer
 		  if dec = nil then
 		    dec = new AutoIntersec(polygon(s))
@@ -25,12 +25,12 @@ Inherits SelectOperation
 		    dec= nil
 		    return
 		  end if
-		  
+
 		  s.autointer.createpoints
 		  arpo()=s.completesides
 		  s.createcomponents(arpo())
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -46,13 +46,13 @@ Inherits SelectOperation
 		  dim i, j as integer
 		  s = super.getshape(p)
 		  dim dec as autointersec
-		  
+
 		  if visible.count > 0 then
 		    for i =  visible.count-1 downto 0
 		      s = Visible.item(i)
 		      if not s isa polygon then
 		        visible.removeobject(s)
-		      else 
+		      else
 		        dec = polygon(s).autointer
 		        if dec = nil then
 		          dec = new AutoIntersec(polygon(s))
@@ -64,13 +64,13 @@ Inherits SelectOperation
 		      end if
 		    next
 		  end if
-		  
-		  if Visible.count > 0  then
+		  nobj = visible.count
+		  if nobj > 0  then
 		    return visible.item(iobj)
 		  else
 		    return nil
 		  end if
-		  
+
 		End Function
 	#tag EndMethod
 
