@@ -2,95 +2,15 @@
 Protected Class Modifier
 Inherits SelectAndDragOperation
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
-	#tag Method, Flags = &h0
-		Function ComputeAnimationDeltaForShape(s as shape) As BasicPoint
-		  // Calcule un delta de base pour l'animation en fonction du type de shape
-		  dim dep as BasicPoint
-		  if s = nil then
-		    return new BasicPoint(0,0)
-		  end if
-		  if s isa droite and droite(s).nextre = 0 then
-		    dep = droite(s).extre2 - droite(s).extre1
-		  else
-		    // Hypothèse: au moins 2 points disponibles
-		    if ubound(s.points) >= 1 then
-		      dep = s.points(1).bpt - s.points(0).bpt
-		    else
-		      dep = new BasicPoint(1,0)
-		    end if
-		  end if
-		  return dep
-		End Function
-    	#tag EndMethod
+    
 
-    	#tag Method, Flags = &h0
-		Sub EnsureArcMovableIfNeeded(s as point)
-		  // Débloque un arc trop petit pour permettre un mouvement initial minimal
-		  dim i as integer
-		  dim a as arc
-		  dim M as Matrix
-		  if s = nil then
-		    return
-		  end if
-		  for i = 0 to ubound(s.parents)
-		    if s.parents(i) isa arc then
-		      a = arc(s.parents(i))
-		      if a.getindex(s) = 2 and a.arcangle < PI/180 and s.modified = false then
-		        M = new rotationmatrix(a.coord.tab(0), PI/90)
-		        s.moveto M*s.bpt
-		      end if
-		    end if
-		  next
-		End Sub
-	#tag EndMethod
+    
 
-	#tag Method, Flags = &h0
-		Sub FilterVisiblePoints(ByRef visible as ObjectsList)
-		  // Supprime de 'visible' les points non valides selon la règle choixvalid
-		  dim i as integer
-		  dim s as point
-		  if visible = nil then
-		    return
-		  end if
-		  for i = visible.count-1 downto 0
-		    s = Point(Visible.item(i))
-		    if not choixvalid(s) then
-		      visible.removeobject(s)
-		    end if
-		  next
-		End Sub
-	#tag EndMethod
+    
 
-	#tag Method, Flags = &h0
-		Sub PrepareParentPointers(s as point, ByRef tableau() as integer)
-		  // Marque les parents pour éviter les doublons pendant le test
-		  dim i as integer
-		  if s = nil then
-		    return
-		  end if
-		  for i = 0 to s.parents.count-1
-		    if not s.parents(i).pointe then
-		      tableau.append i
-		      s.parents(i).pointe = true
-		    end if
-		  next
-		End Sub
-	#tag EndMethod
+    
 
-	#tag Method, Flags = &h0
-		Sub ResetParentPointers(s as point, ByRef tableau() as integer)
-		  // Réinitialise les flags pointe sur les parents marqués
-		  dim i as integer
-		  if s = nil then
-		    return
-		  end if
-		  for i = 0 to s.parents.count-1
-		    if tableau.indexof(i) <> -1 then
-		      s.parents(i).pointe = false
-		    end if
-		  next
-		End Sub
-    	#tag EndMethod
+    
 		#tag Method, Flags = &h0
 		Sub Animer(p as point)
 		  // Démarre une modification animée à partir d'un point sélectionné
@@ -102,7 +22,7 @@ Inherits SelectAndDragOperation
 
 		  // Calcul d'un déplacement de base pour l'animation
 		  s = p.pointsur.item(0)
-		  dep = ComputeAnimationDeltaForShape(s)
+		  dep = OperationHelpers.ComputeAnimationDeltaForShape(s)
 
 		  dep = dep/60
 
@@ -271,12 +191,7 @@ Inherits SelectAndDragOperation
 		    return nil
 		  end if
 
-		  for i = visible.count-1 downto 0
-		    s = Point(Visible.item(i))
-		    if not choixvalid(s) then
-		      visible.removeobject(s)
-		    end if
-		  next
+				OperationHelpers.FilterVisiblePoints(visible)
 
 		  nobj = visible.count
 
@@ -288,21 +203,12 @@ Inherits SelectAndDragOperation
 
 		  s = point(visible.item(0))
 
-		  if s <> nil then
-		    for i = 0 to s.parents.count-1
-		      if not s.parents(i).pointe then
-		        tableau.append i
-		        s.parents(i).pointe = true
-		      end if
-		    next
+				if s <> nil then
+					OperationHelpers.PrepareParentPointers(s, tableau)
 		    currenthighlightedshape = s
 		    s.highlight
 		    drapchoix = test(s)
-		    for i = 0 to s.parents.count-1
-		      if tableau.indexof(i) <> -1 then
-		        s.parents(i).pointe = false
-		      end if
-		    next
+					OperationHelpers.ResetParentPointers(s, tableau)
 		    if drapchoix then
 		      currentshape = s
 		      return s
@@ -361,7 +267,7 @@ Inherits SelectAndDragOperation
 		  // Initialisation commune (sans animation)
 		  StartModificationFromPoint(point(currentshape), false)
 		  s = pointmobile
-		  EnsureArcMovableIfNeeded(s)
+		  OperationHelpers.EnsureArcMovableIfNeeded(s)
 
 		End Sub
 	#tag EndMethod

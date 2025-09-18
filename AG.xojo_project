@@ -50,6 +50,7 @@ Folder=Shape Classes;Shape Classes;&hFFFFFFFFBA3BB98D;&h0000000000000000;false
 Folder=Shapes;Shape Classes/Shapes;&h0000000062FCBFFF;&hFFFFFFFFBA3BB98D;false
 Module=Globals;Resources/Globals.xojo_code;&h000000000518A7FF;&hFFFFFFFFBA3BB9E1;false
 Module=Dictionnaires;Resources/Dictionnaires.xojo_code;&h000000000345D7FF;&hFFFFFFFFBA3BB9E1;false
+Module=OperationHelpers;Operation Classes/OperationHelpers.xojo_code;&hFFFFFFFFBEE34C00;&hFFFFFFFFBA483D7A;false
 Class=Point;Shape Classes/Shapes/Point.xojo_code;&h0000000078B037FF;&h0000000062FCBFFF;false
 Folder=Circle;Shape Classes/Circle;&h000000006CE7FFFF;&hFFFFFFFFBA3BB98D;false
 Class=Ouvrir;Operation Classes/Ouvrir.xojo_code;&h000000003C6BFFFF;&hFFFFFFFFBA483D7A;false
