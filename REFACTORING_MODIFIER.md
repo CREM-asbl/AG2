@@ -173,4 +173,5 @@ Le code est maintenant plus lisible, plus sûr et plus facile à étendre.
   - `SelectAndDrag Operations/Tourner.GetShape`
   - `SelectAndDrag Operations/Redimensionner.GetShape`
   - `SelectOperation/Retourner.GetShape`
+  - `SelectAndDrag Operations/Duplicate.GetShape` (avec réinjection des points « point sur » si exclus par le filtre générique)
 - Les filtres métier spécifiques propres à chaque opération sont conservés après l’appel générique.

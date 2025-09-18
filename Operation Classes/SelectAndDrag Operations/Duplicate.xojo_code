@@ -188,26 +188,48 @@ Inherits SelectAndDragOperation
 		  Dim s As shape
 		  dim s1 as point
 		  dim i as integer
+		  dim keepers as ObjectsList
 		  
 		  s = super.getshape(p)
 		  
 		  if visible.count > 0 then
+		    // Conserver temporairement les points 'point sur' pour ne pas les perdre si Choixvalide les exclut
+		    keepers = new ObjectsList
+		    for i = 0 to visible.count-1
+		      s = visible.item(i)
+		      if s isa point and point(s).isptsur then
+		        keepers.addshape s
+		      end if
+		    next
+		    // Filtre générique via Choixvalide (peut exclure des cas non valides pour les mouvements)
+		    OperationHelpers.FilterVisibleByChoixValide(visible, Self)
+		    // Réinjecter les points 'point sur' capturés si nécessaire
+		    for i = 0 to keepers.count-1
+		      s = keepers.item(i)
+		      if visible.getposition(s) = -1 then
+		        visible.addshape s
+		      end if
+		    next
+		    // Filtres métier spécifiques à Duplicate
 		    for i = visible.count-1 downto 0
 		      s = Visible.item(i)
 		      if s.constructedby <> nil and s.constructedby.oper = 6 then
 		        visible.removeobject s
+		        continue
 		      end if
-		      If s IsA point And point(s).forme=1 And s.constructedby <> Nil And s.constructedby.oper = 10 Then
-		        s1 =point(s.constructedby.shape)
-		        if s1.pointsur.item(0) = point(s).pointsur.item(0)  and s1.numside(0) = point(s).numside(0) then
+		      if s isa point and point(s).forme = 1 and s.constructedby <> nil and s.constructedby.oper = 10 then
+		        s1 = point(s.constructedby.shape)
+		        if s1.pointsur.item(0) = point(s).pointsur.item(0) and s1.numside(0) = point(s).numside(0) then
 		          visible.removeobject s
+		          continue
 		        end if
 		      end if
 		      if currentcontent.macrocreation and not s.isptsur then
 		        visible.removeobject s
+		        continue
 		      end if
-		      nobj = visible.count
 		    next
+		    nobj = visible.count
 		  end if
 		  
 		  if Visible.count > 0  then
