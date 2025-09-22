@@ -7,66 +7,87 @@ Inherits Operation
 		  super.constructor
 		  OpId = -1
 		  currentcontent.currentoperation = self
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(f as folderitem)
-		  Dim Doc As XmlDocument
-		  Dim Cfg As String
-		  dim version as string
-		  
-		  
-		  
-		  constructor()
-		  
-		  Try
-		    Doc=New XMLDocument(f)
-		  Catch err As XmlException
-		    MsgBox Dico.Value("MsgNovalidFile")
-		    Return
-		  end try
-		  
-		  
-		  FagTitle = f.name
-		  FAG = Doc.DocumentElement
-		  if Doc.FirstChild.name <> "AG" then
-		    MsgBox Dico.Value("Nofagfile")
-		    return
-		  end if
-		  
-		  
-		  version = FAG.GetAttribute("Version") 
-		  
-		  'on ne devrait pas changer la langue mais obligé de changer 
-		  'sinon le fichier ne se charge pas car dico dans sauvegarde 
-		  Config.setLangue (FAG.GetAttribute(Dico.Value("Langage")))
-		  
-		  Cfg = FAG.GetAttribute(Dico.Value("Config"))
-		  Config.setMenu(Cfg)
-		  app.themacros.XMLLoadMacros(FAG)
-		  currentcontent.ChargerPrefs(FAG, f)
-		  currentcontent.ChargerObjets(FAG)
-		  currentcontent.CurrentFile = f
-		  currentcontent.CurrentFileUpToDate=true
-		  
-		  CurrentContent.AddOperation(self)
-		  currentcontent.CurrentOperation = nil
-		  can.mousecursor = System.Cursors.StandardPointer
-		  Workwindow.refreshtitle
-		  can.refreshbackground
-		  finished = true
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		End Sub
+			Sub Constructor(f as folderitem)
+				' Refactoring : gestion centralisée des erreurs, extraction de méthodes, vérification attributs, renommage
+				Dim Doc As XmlDocument
+				Dim Cfg As String
+
+				constructor()
+
+				Try
+					Doc = New XMLDocument(f)
+				Catch err As XmlException
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End Try
+
+				FagTitle = f.name
+				RootElement = Doc.DocumentElement
+				' Vérification du type de fichier AG
+				If Doc.FirstChild.name <> "AG" Then
+					AfficherErreurEtReset(Dico.Value("Nofagfile"))
+					Return
+				End If
+
+				' Vérification de la présence de l'attribut Version (non utilisé ici)
+				' Dim version As String = ""
+				' If RootElement.HasAttribute("Version") Then
+				'   version = RootElement.GetAttribute("Version")
+				' End If
+
+					' Gestion de la langue
+					Dim langAttr As String = RootElement.GetAttribute(Dico.Value("Langage"))
+					If langAttr <> "" Then
+						Config.setLangue(langAttr)
+					End If
+
+					' Gestion du menu
+					Dim cfgAttr As String = RootElement.GetAttribute(Dico.Value("Config"))
+					If cfgAttr <> "" Then
+						Config.setMenu(cfgAttr)
+					End If
+
+				' Chargement des macros, préférences et objets
+				ChargerMacros(RootElement)
+				ChargerPreferencesEtObjets(RootElement, f)
+
+				currentcontent.CurrentFile = f
+				currentcontent.CurrentFileUpToDate = true
+
+				CurrentContent.AddOperation(self)
+				currentcontent.CurrentOperation = nil
+				can.mousecursor = System.Cursors.StandardPointer
+				Workwindow.refreshtitle
+				can.refreshbackground
+				finished = true
+			End Sub
+	' Méthode privée : gestion centralisée des erreurs et reset d'état
+	Private Sub AfficherErreurEtReset(msg As String)
+		MsgBox msg
+		currentcontent.currentoperation = nil
+	End Sub
+
+	' Méthode privée : chargement des macros
+	Private Sub ChargerMacros(RootElement As XMLElement)
+		If app.themacros <> Nil Then
+			app.themacros.XMLLoadMacros(RootElement)
+		End If
+	End Sub
+
+	' Méthode privée : chargement des préférences et objets
+	Private Sub ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem)
+		If currentcontent <> Nil Then
+			currentcontent.ChargerPrefs(RootElement, f)
+			currentcontent.ChargerObjets(RootElement)
+		End If
+	End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -79,12 +100,12 @@ Inherits Operation
 		Sub RedoOperation(EL as XMLElement)
 		  dim Temp, Obj as XMLElement
 		  dim List as XmlNodeList
-		  
-		  
+
+
 		  Temp = XMLElement(EL.Child(0))
 		  Objects.XMLLoadObjects(Temp)
 		  Objects.updateids
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -94,63 +115,64 @@ Inherits Operation
 		  dim EN as XMLNode
 		  dim i, j as integer
 		  dim List as XMLNodeList
-		  
+
 		  CurrentContent.CreateFigs
-		  
+
 		  for i = 0 to CurrentContent.TheFigs.count-1
 		    CurrentContent.TheFigs.item(i).XMLPutIncontainer(1,CurrentContent.OpList)
 		  next
-		  
+
 		  EL = Doc.CreateElement(Dico.value("ObjectsLus"))
 		  EL.SetAttribute("Fichier", FagTitle)
 		  Temp = Doc.CreateElement(Dico.value("Forms"))
-		  
-		  List = FAG.XQL(Dico.Value("Forms"))
-		  If List.length = 0 Then
-		    List = FAG.XQL(Dico.Value("Objects"))
-		  end if
-		  If list.Length > 0 then
-		    Obj= XMLElement(List.Item(0))
-		    for i = 0 to Obj.ChildCount-1
-		      EN = Doc.ImportNode(Obj.Child(i), true)
-		      Temp.Appendchild EN
-		    next
-		  end if
+
+				List = RootElement.XQL(Dico.Value("Forms"))
+				If List.length = 0 Then
+					List = RootElement.XQL(Dico.Value("Objects"))
+				End If
+				If List.Length > 0 Then
+					Obj = XMLElement(List.Item(0))
+					For i = 0 To Obj.ChildCount - 1
+						EN = Doc.ImportNode(Obj.Child(i), True)
+						Temp.AppendChild EN
+					Next
+				End If
 		  EL.AppendChild Temp
 		  return EL
-		  
+
 		End Function
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
 
 
 	#tag Property, Flags = &h0
-		FAG As XMLElement
+			' Renommage pour plus de clarté
+			RootElement As XMLElement
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		FagTitle As string
+			FagTitle As String
 	#tag EndProperty
 
 
