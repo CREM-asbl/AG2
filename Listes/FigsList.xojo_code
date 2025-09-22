@@ -3,24 +3,24 @@ Protected Class FigsList
 Inherits Liste
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
-		Sub AddObject(Obj as Figure)
-		  Dim i As Integer
-		  
-		  
-		  if Obj = nil then
-		    return
-		  end if
-		  
-		  if GetPosition(Obj) <> -1 then
-		    return
-		  Else
-		    Objects.append Obj
-		  end if
-		  
-		  
+	Sub AddObject(Obj as Figure)
+	  Dim i As Integer
+
+	  // Validation robuste des paramètres d'entrée
+	  if Obj = nil then
+	    // Log ou lever une exception selon les besoins
+	    return
+	  end if
+
+	  // Vérification de duplication
+	  if GetPosition(Obj) <> -1 then
+	    return  // Déjà présent, éviter les doublons
+	  Else
+	    Objects.append Obj
+	  end if
 		  super.AddObject(obj)
-		  
-		  
+
+
 		  if (self = CurrentContent.TheFigs) and Obj.idfig = -1 then
 		    Obj.idfig = newIdFig
 		    for i = 0 to Obj.subs.count-1
@@ -38,7 +38,7 @@ Inherits Liste
 		  dim i, j, k as integer
 		  dim tsf as transformation
 		  dim f as figure
-		  
+
 		  for k = 0 to count-1
 		    for i =  item(k).Constructedfigs.count-1 downto 0
 		      f =  item(k).Constructedfigs.item(i)
@@ -69,7 +69,7 @@ Inherits Liste
 		  dim f, sf as figure
 		  dim i, j as integer
 		  dim tsf as Transformation
-		  
+
 		  for j =  count-1 downto 0
 		    sf = item(j)
 		    for i =  ubound(sf.constructioninfos) downto 0
@@ -86,15 +86,15 @@ Inherits Liste
 		      sf.constructioninfos.remove i
 		    next
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub appendlist(liste as figslist)
 		  dim i as integer
-		  
+
 		  for i = 0 to liste.count-1
 		    addobject liste.item(i)
 		  next
@@ -104,20 +104,20 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Function bouclesasupprimer(ByRef n0 as integer) As Boolean
 		  dim n as integer
-		  
-		  
+
+
 		  n = Mat.nc
 		  n0 = 1
 		  M1 = Mat
-		  
+
 		  while  M1.Trace = 0 and not M1.Null and n0 < n
 		    M1 = Mat*M1
 		    n0 = n0+1
 		  wend
-		  
+
 		  return M1.Trace >0
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -127,13 +127,13 @@ Inherits Liste
 		  dim A,  M0, M1, M2, MId  as Matrix
 		  dim but, source as figure
 		  dim dr as shape
-		  
-		  
+
+
 		  MId = new Matrix(1)
-		  
-		  
+
+
 		  move(M)
-		  
+
 		  for i = 0 to UBound(listetsf)
 		    but = listebuts(i)
 		    if but.isafigprp(dr) and listetsf(i).M.Equal(MId)  then
@@ -149,16 +149,16 @@ Inherits Liste
 		    end if
 		    but.move(M2)
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub cancelfixedpoints()
 		  dim i as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).cancelfixedpoints
 		  next
@@ -168,7 +168,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub canceloldbpts()
 		  dim j as integer
-		  
+
 		  for j = 0 to count-1
 		    item(j).canceloldbpts
 		  next
@@ -178,7 +178,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub Canceltrace()
 		  dim i As integer
-		  
+
 		  for i = 0 to count -1
 		    item(i).canceltrace
 		  next
@@ -187,63 +187,157 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function Concat() As Figure
-		  Dim ff, sf As figure
+		  Dim ff As figure
 		  dim temp as figslist
-		  dim i, j as integer
-		  dim pt as point
-		  
+
+		  // Validation d'entrée
+		  if count = 0 then
+		    return nil
+		  end if
+
 		  if count = 1 then
 		    return item(0)
 		  end if
-		  
-		  //conserver toutes les figures jusqu'à la fin pour mettre à jour les infos de construction
+
+		  // Conserver toutes les figures jusqu'à la fin pour mettre à jour les infos de construction
+		  temp = PrepareTempFigsList()
+
+		  // Créer la nouvelle figure fusionnée
+		  ff = new Figure
+
+		  // Étapes de fusion
+		  ConcatenateFigureData(ff)
+		  ConcatenateSubFigures(ff)
+		  UpdateFigureReferences(ff)
+		  ProcessSpecialPoints(ff)
+
+		  // Finalisation
+		  ff.fusionnerinclusions
+		  temp.adjustconstructioninfos(ff)
+		  temp.adjustconstructedinfos(ff)
+		  CurrentContent.TheFigs.optimize(ff)
+
+		  return ff
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PrepareTempFigsList() As FigsList
+		  // Prépare la liste temporaire des figures
+		  dim temp as figslist
+		  dim i as integer
+
 		  temp = new figslist
-		  
 		  for i = count-1 downto 0
 		    temp.addobject item(i)
 		  next
-		  
-		  ff = new Figure
-		  
+
+		  return temp
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConcatenateFigureData(ff as Figure)
+		  // Concatène les données de base des figures
+		  dim i as integer
+
+		  if ff = nil then
+		    return
+		  end if
+
 		  for i = 0 to count-1
-		    ff.shapes.concat item(i).shapes
-		    ff.somm.concat item(i).somm
-		    ff.PtsSur.concat item(i).PtsSur
-		    ff.PtsConsted.concat item(i).PtsConsted
+		    if item(i) <> nil then
+		      ff.shapes.concat item(i).shapes
+		      ff.somm.concat item(i).somm
+		      ff.PtsSur.concat item(i).PtsSur
+		      ff.PtsConsted.concat item(i).PtsConsted
+		    end if
 		  next
-		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConcatenateSubFigures(ff as Figure)
+		  // Concatène les sous-figures
+		  dim i, j as integer
+
+		  if ff = nil then
+		    return
+		  end if
+
 		  for i = 0 to count-1
-		    if item(i).isapoint = nil then       'Probleme: pourquoi avoir un jour supprimé ce test?  (révision 75) Prévu pour le cas ou des sommets de formes sont
-		      for j = 0 to item(i).subs.count-1                          'construits avant les formes.
+		    if item(i) <> nil and item(i).isapoint = nil then
+		      for j = 0 to item(i).subs.count-1
 		        ff.subs.addobject item(i).subs.item(j)
 		      next
 		    end if
 		  next
-		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateFigureReferences(ff as Figure)
+		  // Met à jour les références dans la figure fusionnée
+		  dim i as integer
+
+		  if ff = nil then
+		    return
+		  end if
+
+		  // Mise à jour des références des sous-figures
 		  for i = 0 to ff.subs.count-1
-		    ff.subs.item(i).supfig = ff
+		    if ff.subs.item(i) <> nil then
+		      ff.subs.item(i).supfig = ff
+		    end if
 		  next
-		  
+
+		  // Mise à jour des références des formes
 		  for i = 0 to ff.shapes.count-1
-		    ff.shapes.item(i).fig = ff
+		    if ff.shapes.item(i) <> nil then
+		      ff.shapes.item(i).fig = ff
+		    end if
 		  next
-		  
+
+		  // Mise à jour des références des sommets
 		  for i = 0 to ff.somm.count-1
-		    ff.somm.item(i).fig = ff
+		    if ff.somm.item(i) <> nil then
+		      ff.somm.item(i).fig = ff
+		    end if
 		  next
-		  
+
+		  // Mise à jour des références des points sur
 		  for i = 0 to ff.PtsSur.count-1
-		    ff.PtsSur.item(i).fig = ff
+		    if ff.PtsSur.item(i) <> nil then
+		      ff.PtsSur.item(i).fig = ff
+		    end if
 		  next
-		  
+
+		  // Mise à jour des références des points construits
 		  for i = 0 to ff.PtsConsted.count-1
-		    ff.PtsConsted.item(i).fig = ff
+		    if ff.PtsConsted.item(i) <> nil then
+		      ff.PtsConsted.item(i).fig = ff
+		    end if
 		  next
-		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ProcessSpecialPoints(ff as Figure)
+		  // Traite les points spéciaux lors de la fusion
+		  dim i, j as integer
+		  dim pt as point
+		  dim sf as figure
+
+		  if ff = nil then
+		    return
+		  end if
+
 		  for i = 0 to ff.somm.count-1
 		    pt = point(ff.somm.item(i))
 		    if pt <> nil and pt.macconstructedby = nil then
-		      ff.shapes.removeobject pt   // indispensable pour éviter certains bugs -- (cas où le point n'était pas construit)
+		      ff.shapes.removeobject pt
+
+		      // Traitement des points sur
 		      if pt.pointsur.count > 0 then
 		        ff.ptssur.addshape pt
 		        for j = 0 to pt.pointsur.count-1
@@ -253,6 +347,8 @@ Inherits Liste
 		          end if
 		        next
 		      end if
+
+		      // Traitement des points centre ou division
 		      if pt.centerordivpoint then
 		        ff.ptsconsted.addshape pt
 		        sf = pt.constructedby.shape.getsousfigure(ff)
@@ -262,15 +358,7 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  
-		  ff.fusionnerinclusions
-		  
-		  temp.adjustconstructioninfos(ff)
-		  temp.adjustconstructedinfos(ff)
-		  CurrentContent.TheFigs.optimize(ff)
-		  
-		  return ff
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -289,27 +377,38 @@ Inherits Liste
 		Sub CreateState(st as string, p as point)
 		  dim j as integer
 		  dim EL as XMLElement
-		  
+
+		  // Validation des paramètres d'entrée
+		  if st = "" then
+		    return  // État vide non autorisé
+		  end if
+
 		  EL = CurrentContent.Oplist.CreateElement(st)
-		  
-		  if p <> nil and p.pointsur.count > 0 and p.multassomm < 2 then 
-		    EL.appendchild InsertPointSurInState(p, CurrentContent.OpList)
+
+		  // Optimisation: traitement conditionnel avec validation
+		  if p <> nil then
+		    if p.pointsur.count > 0 and p.multassomm < 2 then
+		      EL.appendchild InsertPointSurInState(p, CurrentContent.OpList)
+		    end if
+
+		    if p.multassomm > 0 then
+		      EL.appendchild InsertTrueParents(p, CurrentContent.OpList)
+		    end if
+
+		    if p.centerordivpoint then
+		      EL.appendchild InsertConstedPoints(p, CurrentContent.OpList)
+		    end if
 		  end if
-		  
-		  if p <> nil and  p.multassomm > 0 then
-		    EL.appendchild InsertTrueParents(p, CurrentContent.OpList)
-		  end if
-		  
-		  if p <> nil and  p.centerordivpoint  then
-		    EL.appendchild InsertConstedPoints(p, CurrentContent.OpList)
-		  end if
-		  
-		  if st <> "FinalState" then
+
+		  // Traitement efficace des éléments
+		  if st <> "FinalState" and count > 0 then
 		    for j = 0 to count-1
-		      item(j).createstate(EL)
+		      if item(j) <> nil then
+		        item(j).createstate(EL)
+		      end if
 		    next
 		  end if
-		  
+
 		  if st = "FigsMoved" then
 		    CurrentContent.FigsMoved.appendchild EL
 		  else
@@ -323,13 +422,13 @@ Inherits Liste
 		  dim i, j as integer
 		  dim p, q as point
 		  redim index(-1)
-		  
-		  
+
+
 		  if count = 1  then
 		    index.append 0
 		    return
 		  end if
-		  
+
 		  if currentcontent.forhisto then
 		    q = modifier(currentcontent.currentoperation).pointmobile
 		  elseif currentcontent.currentoperation isa readHisto then
@@ -343,7 +442,7 @@ Inherits Liste
 		    p = q.guide
 		  end if
 		  index.append Objects.indexof(p.fig)
-		  
+
 		  for i = 0 to count-1
 		    if index.indexof(i) = -1 then
 		      j = 0
@@ -366,12 +465,12 @@ Inherits Liste
 		  MatId = new Matrix(1)
 		  dim curoper as Operation
 		  curoper = CurrentContent.CurrentOperation
-		  
+
 		  redim listebuts(-1)
 		  redim listesources(-1)
 		  redim listetsf(-1)
 		  figs0 = new figslist
-		  
+
 		  tsflist = CurrentContent.TheTransfos
 		  CurrentContent.TheFigs.enablechooseall
 		  for i = 0 to tsflist.count-1
@@ -380,19 +479,19 @@ Inherits Liste
 		      tsf.constructedfigs.item(j).chosen = false
 		    next
 		  next
-		  
+
 		  for i = 0 to count-1
 		    figs0.addobject item(i)
 		    figs0.item(i).chosen = true
 		  next
-		  
+
 		  if tsflist.count = 0 then
 		    return
 		  end if
-		  
+
 		  n0 = -1
 		  n2 = ubound(listetsf)
-		  
+
 		  while n2 < ubound(listetsf)+1
 		    n1 = figs0.count-1
 		    n2 = ubound(listetsf)+1
@@ -415,21 +514,28 @@ Inherits Liste
 		    next
 		    n0 = n1
 		  wend
-		  
+
 		  for i = 0 to ubound(listesources)
 		    listesources(i).Mmove = new Matrix(1)
 		    listetsf(i).oldM = listetsf(i).M
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CreerMatricePrecedences(n as integer)
 		  dim i , j  , k as integer
-		  
+
+		  // Validation des paramètres d'entrée
+		  if n <= 0 then
+		    Mat = new MatrixnD(1)
+		    return
+		  end if
+
 		  Mat = new MatrixnD(n)
-		  
+
+		  // Phase 1: Construction de la matrice de précédence directe
 		  for i = 0 to n -2
 		    for j = i+1 to n-1
 		      if item(i).precede(item(j)) then
@@ -440,21 +546,21 @@ Inherits Liste
 		      end if
 		    next
 		  next
-		  
-		  for i = 0 to n-1
-		    for j = 0 to n-1
-		      if i <> j then
-		        for k = 0 to n-1
-		          if k <> i and k <> j then
-		            if mat.col(i,j) = 1 and mat.col(j,k) = 1  then
-		              mat.col(i,k) = 1
-		            end if
+
+		  // Phase 2: Calcul optimisé de la fermeture transitive (Floyd-Warshall)
+		  // Complexité réduite avec arrêt précoce
+		  for k = 0 to n-1
+		    for i = 0 to n-1
+		      if mat.col(i,k) = 1 then  // Optimisation: skip si pas de relation via k
+		        for j = 0 to n-1
+		          if i <> j and mat.col(k,j) = 1 then
+		            mat.col(i,j) = 1
 		          end if
 		        next
 		      end if
 		    next
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -464,14 +570,14 @@ Inherits Liste
 		  for i = 0 to count-1
 		    item(i).chosen = false
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub enablemodifyall()
 		  dim i as integer
-		  
+
 		  for i = 0 to count -1
 		    item(i).enablemodifyall
 		  next
@@ -484,38 +590,38 @@ Inherits Liste
 		  dim ff as new figslist
 		  dim f as figure
 		  dim index() as integer
-		  
+
 		  nc = M1.nc
-		  
+
 		  for i = 0 to nc-1
 		    if M1.col (i,i) > 0 then
 		      ff.addobject item(i)
 		      index.append i
 		    end if
 		  next
-		  
-		  
+
+
 		  if ff.count > 0 then
 		    f = ff.concat
 		    f.ListerPrecedences
-		    
+
 		    for j = ubound(index) downto 0
 		      CurrentContent.TheFigs.removefigure item(index(j))
 		      removefigure item(index(j))
 		    next
-		    
+
 		    addobject f
 		    CurrentContent.TheFigs.addobject f
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub fx1cancel()
 		  dim i as integer
-		  
+
 		  for i=0 to count-1
 		    item(i).fx1cancel
 		  next
@@ -525,20 +631,30 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Function GetFigure(n as integer) As figure
 		  dim i as integer
-		  
+
+		  // Validation des paramètres d'entrée
+		  if n < 0 then
+		    return nil
+		  end if
+
+		  // Optimisation: recherche avec arrêt précoce
 		  for i = 0 to count-1
-		    if item(i).idfig = n then
+		    if item(i) <> nil and item(i).idfig = n then
 		      return item(i)
 		    end if
 		  next
-		  
+
 		  return nil
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetPosition(f as Figure) As Integer
-		  
+		  // Validation des paramètres d'entrée
+		  if f = nil then
+		    return -1
+		  end if
+
 		  return Objects.indexof(f)
 		End Function
 	#tag EndMethod
@@ -547,13 +663,13 @@ Inherits Liste
 		Function getString() As String
 		  dim s as String
 		  dim i as integer
-		  
+
 		  s = "FigsList{"
 		  for i=0 to UBound(Objects)
 		    s = s+Figure(Objects(i)).getString+","
 		  next
 		  s = s+"}"
-		  
+
 		  return s
 		End Function
 	#tag EndMethod
@@ -561,7 +677,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub InsererIndex(i as integer)
 		  'dim j as integer
-		  
+
 		  'If ubound(index) = -1 then
 		  'index.append i
 		  'else
@@ -572,20 +688,20 @@ Inherits Liste
 		  'index.insert  j, i
 		  '
 		  'end if
-		  
+
 		  dim  j as integer
-		  
+
 		  if i = -1 or index.indexof(i) <> -1 then
 		    return
 		  end if
-		  
+
 		  j = 0
 		  while j <=  UBound(index) and Mat.col(i,index(j)) = 0
 		    j = j+1
 		  wend
-		  
+
 		  index.insert j,i
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -594,10 +710,10 @@ Inherits Liste
 		  dim i as integer
 		  dim  Form, EL as XMLElement
 		  dim tsf as Transformation
-		  
+
 		  Form = Doc.CreateElement("PtsConsted")
-		  
-		  
+
+
 		  EL = Doc.CreateElement("Forme")
 		  EL.SetAttribute("Id",str(p.constructedby.shape.id))
 		  El.SetAttribute("Oper", str(p.constructedby.oper))
@@ -612,7 +728,7 @@ Inherits Liste
 		    EL.SetAttribute("Nr", str(i))
 		  end if
 		  Form.appendchild EL
-		  
+
 		  return Form
 		End Function
 	#tag EndMethod
@@ -621,9 +737,9 @@ Inherits Liste
 		Function InsertPointSurInState(p as point, Doc as XMLDocument) As XMLElement
 		  dim i as integer
 		  dim  Form, EL as XMLElement
-		  
+
 		  Form = Doc.CreateElement("PtSur")
-		  
+
 		  for i = 0 to p.pointsur.count - 1
 		    EL = Doc.CreateElement("Forme")
 		    EL.SetAttribute("Id",str(p.pointsur.item(i).id))
@@ -631,7 +747,7 @@ Inherits Liste
 		    EL.SetAttribute("Numside", str(p.numside(i)))
 		    Form.appendchild EL
 		  next
-		  
+
 		  return Form
 		End Function
 	#tag EndMethod
@@ -640,9 +756,9 @@ Inherits Liste
 		Function InsertTrueParents(p as point, Doc as XMLDocument) As XMLElement
 		  dim i as integer
 		  dim  Form, EL as XMLElement
-		  
+
 		  Form = Doc.CreateElement("Parents")
-		  
+
 		  for i = 0 to ubound(p.parents)
 		    if p.parents(i).getindexpoint(p) <> -1 then
 		      EL = Doc.CreateElement("Forme")
@@ -650,7 +766,7 @@ Inherits Liste
 		      Form.appendchild EL
 		    end if
 		  next
-		  
+
 		  return Form
 		End Function
 	#tag EndMethod
@@ -664,22 +780,22 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub Move(M as matrix)
 		  dim i as integer
-		  
-		  
+
+
 		  for i = 0 to count-1
 		    item(i).Move(M)
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub movepoints(M as matrix)
 		  dim i as integer
-		  
-		  
+
+
 		  for i = 0 to count-1
 		    item(i).MovePoints(M)
 		  next
@@ -690,7 +806,7 @@ Inherits Liste
 		Function NewIdFig() As Integer
 		  prevIdfig = prevIdfig + 1
 		  return previdfig
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -699,9 +815,9 @@ Inherits Liste
 		  dim i as integer
 		  dim pt as point
 		  dim temp as figslist
-		  
+
 		  temp = new figslist
-		  
+
 		  for i = 0 to count-1
 		    pt = item(i).Isapoint
 		    if pt <> nil then
@@ -710,12 +826,12 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  
+
 		  if temp.count > 0 then
 		    temp.adjustconstructioninfos(ff)
 		    temp.adjustconstructedinfos(ff)
 		  end if
-		  
+
 		  removefigures temp
 		End Sub
 	#tag EndMethod
@@ -723,18 +839,18 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Function Ordonner() As Boolean
 		  dim  n0 as integer
-		  
+
 		  redim index(-1)
-		  
+
 		  if count <= 1 then
 		    index.append 0
 		    return true
 		  end if
-		  
+
 		  CreerMatricePrecedences(count)
-		  
+
 		  if not Mat.Null and  Bouclesasupprimer (n0) then
-		    fusionner 
+		    fusionner
 		    return ordonner
 		  else
 		    CreerIndex
@@ -747,11 +863,11 @@ Inherits Liste
 		Sub RemoveFigure(f as Figure)
 		  Dim  EL1, EL2 As XMLElement
 		  dim i As Integer
-		  
+
 		  If f = Nil Or getposition(f) = -1 Then
 		    return
 		  end if
-		  
+
 		  If (Self = CurrentContent.TheFigs) And (Currentcontent.FigsCreated.Childcount > 0)   Then
 		    EL1 = XMLElement(CurrentContent.FigsCreated.firstchild)
 		    For i = EL1.childcount-1 DownTo 0
@@ -766,18 +882,18 @@ Inherits Liste
 		      f.XMLPutInContainer(0,CurrentContent.Oplist)
 		    End If
 		  End If
-		  
+
 		  RemoveObject f
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub RemoveFigures(figs as figslist)
 		  dim i as integer
-		  
+
 		  for i =  Figs.count-1 downto 0
 		    RemoveFigure figs.item(i)
 		  next
@@ -787,7 +903,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub restore()
 		  dim j as integer
-		  
+
 		  for j = 0 to count-1
 		    item(j).restore
 		  next
@@ -797,7 +913,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub restructurer()
 		  dim i as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).restructurer
 		  next
@@ -807,7 +923,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub save()
 		  dim j as integer
-		  
+
 		  for j = 0 to count-1
 		    item(j).save
 		  next
@@ -816,7 +932,13 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub SetIdFig(n as integer)
-		  previdfig = n
+		  // Validation de l'ID figure
+		  if n < 0 then
+		    // ID négatif non autorisé, utiliser 0 par défaut
+		    previdfig = 0
+		  else
+		    previdfig = n
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -824,25 +946,36 @@ Inherits Liste
 		Function Update(p as point, np as BasicPoint) As Boolean
 		  dim t as Boolean
 		  dim i as integer
-		  
-		  if p = nil then
+
+		  // Validation robuste des paramètres
+		  if p = nil or np = nil then
 		    return false
 		  end if
+
+		  // Vérification de la validité de l'index
+		  if count = 0 or ubound(index) = -1 then
+		    return false
+		  end if
+
 		  p.updatefirstpoint(np)
 		  t = true
+
 		  for i = 0 to count-1
-		    t = item(index(i)).update1(p) and t
+		    // Vérification des limites d'index
+		    if index(i) >= 0 and index(i) < count then
+		      t = item(index(i)).update1(p) and t
+		    end if
 		  next
-		  
+
 		  return t
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub updatematrixduplicatedshapes(M as matrix)
 		  dim i as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).updatematrixduplicatedshapes(M)
 		  next
@@ -860,22 +993,22 @@ Inherits Liste
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
