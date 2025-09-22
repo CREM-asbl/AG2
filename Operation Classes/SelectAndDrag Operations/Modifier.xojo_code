@@ -17,6 +17,11 @@ Inherits SelectAndDragOperation
 		  dim s as shape
 		  dim dep as BasicPoint
 
+		  // Vérification sécurité avant accès
+		  if p = nil or p.pointsur.count = 0 then
+		    return
+		  end if
+
 		  // Initialisation commune
 		  Self.StartModificationFromPoint(p, true)
 
@@ -37,48 +42,22 @@ Inherits SelectAndDragOperation
 
 	#tag Method, Flags = &h0
 		Function choixvalid(s as shape) As Boolean
-		  Dim i, j, n0, n1 As Integer
-		  Dim sh As shape
-		  Dim p As point
+		  // Utilise la validation centralisée d'OperationHelpers pour éviter la duplication
+		  // Cette méthode vérifie si une forme peut être modifiée selon les critères géométriques :
+		  // - Liberté de mouvement du point (liberte > 0)
+		  // - Pas de fusion sans constructeur
+		  // - Exclusion des extrémités de segments para-perpendiculaires
+		  // - Validation des dépendances d'arcs et constructions spéciales
 
-		  if s = nil or s.fig = nil  then
+		  if s = nil then
 		    return false
 		  end if
 
-		  p = point(s)
-		  p.mobility
-
-		  if p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
+		  if not (s isa point) then
 		    return false
 		  end if
 
-		  if p.forme = 1 and p.constructedby <> nil and p.constructedby.oper = 10 and point(p.constructedby.shape).isextremityofaparaperpseg then
-		    return false
-		  end if
-
-		  if p.forme = 1 and p.isextremityofaparaperpseg then
-		    return false
-		  end if
-
-		  for i = 0 to ubound(p.parents)
-		    sh = p.parents(i)
-		    if (sh isa arc) then
-		      if (sh.getindexpoint(p) = 2) and (p.pointsur.count =1) and  not (p.pointsur.item(0) isa circle and (p.pointsur.item(0).getindex(sh.points(0)) = 0) )  then
-		        return false
-		      end if
-		    end if
-		    for j = 0 to ubound(p.parents)
-		      if i<> j and  (sh.constructedby <> nil and (sh.constructedby.oper = 3 or sh.constructedby.oper = 5) and sh.constructedby.shape = p.parents(j)) then
-		        return false
-		      end if
-		    next
-		  next
-
-		  return true
-
-
-
-
+		  return OperationHelpers.IsPointValidForModification(point(s))
 		End Function
 	#tag EndMethod
 
@@ -379,38 +358,48 @@ Inherits SelectAndDragOperation
 		  dim EL, EL1  as XMLElement
 		  dim D, dep as BasicPoint
 
+		  // Protection contre XML malformé tout en conservant la fonctionnalité
+		  try
+		    EL = XMLElement(Temp.child(0))
+		    EL1 = XMLElement(EL.child(0))
 
-		  EL = XMLElement(Temp.child(0))
-		  EL1 = XMLElement(EL.child(0))
+		    if val(EL.GetAttribute("Animation")) = 1 then
+		      animation = true
+		    end if
 
-		  if val(EL.GetAttribute("Animation")) = 1 then
-		    animation = true
-		  end if
+		    pointmobile = point(objects.getshape(val(EL1.GetAttribute("Id"))))
+		    currentshape = pointmobile
+		    'if not animation then
+		    'DecrocherInitial(pointmobile, Temp)
+		    'end if
+		    Initfigs
+		    StartPoint = new BasicPoint(val(EL1.GetAttribute("SX")), val(EL1.GetAttribute("SY")))
+		    EndPoint = new BasicPoint(val(EL1.GetAttribute("EX")), val(EL1.GetAttribute("EY")))
 
-		  pointmobile = point(objects.getshape(val(EL1.GetAttribute("Id"))))
-		  currentshape = pointmobile
-		  'if not animation then
-		  'DecrocherInitial(pointmobile, Temp)
-		  'end if
-		  Initfigs
-		  StartPoint = new BasicPoint(val(EL1.GetAttribute("SX")), val(EL1.GetAttribute("SY")))
-		  EndPoint = new BasicPoint(val(EL1.GetAttribute("EX")), val(EL1.GetAttribute("EY")))
+		    figs.enablemodifyall
+		    dep = EndPoint-StartPoint
+		    dep = dep/60
 
+		    if Config.Trace and dep.norme > epsilon then
+		      self.temp = temp
+		      dret = new ModifTimer(self)
+		    else
+		      D = EndPoint
+		      EndPoint = StartPoint
+		      CompleteOperation(D)
+		      ReDeleteDeletedFigures(Temp)
+		      RecreateCreatedFigures(Temp)
+		    end if
 
-		  figs.enablemodifyall
-		  dep =  EndPoint-StartPoint
-		  dep = dep/60
-
-		  if Config.Trace and dep.norme > epsilon  then
-		    self.temp = temp
-		    dret = new ModifTimer(self)
-		  else
-		    D = EndPoint
-		    EndPoint = StartPoint
-		    CompleteOperation(D)
-		    ReDeleteDeletedFigures(Temp)
-		    RecreateCreatedFigures(Temp)
-		  end if
+		  catch err as RuntimeException
+		    #if DebugBuild then
+		      System.DebugLog "Modifier.RedoOperation: Erreur lors de la répétition - " + err.Message
+		    #endif
+		    // En cas d'erreur, on essaie de continuer avec les valeurs par défaut
+		    if pointmobile = nil then
+		      return
+		    end if
+		  end try
 
 
 
@@ -474,6 +463,10 @@ Inherits SelectAndDragOperation
 		  success = figs.update(s, bp)
 		  if not success then
 		    figs.restore
+		    #if DebugBuild then
+		      // Log échec pour débogage
+		      System.DebugLog "Modifier.TryUpdateFigs: Échec mise à jour figures pour point " + str(s.id)
+		    #endif
 		  end if
 		  figs.canceloldbpts
 		  figs.enablemodifyall
@@ -584,43 +577,61 @@ Inherits SelectAndDragOperation
 		  dim sid, i as integer
 		  dim ff as figure
 
-		  EL = XMLElement(Temp.child(0))
-		  EL1 = XMLElement(EL.child(0))
+		  // Protection contre XML malformé avec gestion gracieuse
+		  try
+		    EL = XMLElement(Temp.child(0))
+		    EL1 = XMLElement(EL.child(0))
 
-		  if val(EL.GetAttribute("Animation")) = 1 then
-		    animation = true
-		  end if
-		  pointmobile = point(objects.getshape(val(EL1.GetAttribute("Id"))))
-		  pointmobile.drapmagn = true
+		    if val(EL.GetAttribute("Animation")) = 1 then
+		      animation = true
+		    end if
+		    pointmobile = point(objects.getshape(val(EL1.GetAttribute("Id"))))
+		    if pointmobile <> nil then
+		      pointmobile.drapmagn = true
+		    end if
 
-		  RedeleteCreatedFigures(temp)
-		  RecreateDeletedFigures(temp)
+		    RedeleteCreatedFigures(temp)
+		    RecreateDeletedFigures(temp)
 
-		  List = Temp.XQL("ModifiedFigures")
-		  If List.length >0 Then
-		    MF = XMLElement(List.Item(0))
-		    MFInit = XMLElement(MF.Child(0))
-		  end if
-
-		  List = MFInit.XQL("Figure")
-		  if List.length > 0 then
-		    for i = 0 to List.length-1
-		      EL3 = XMLElement(List.Item(i))
-		      sid = val(EL3.GetAttribute("FigId"))
-		      ff = CurrentContent.Thefigs.getfigure(sid)
-		      if ff <> nil then
-		        ff.RestoreInit(EL3)
-		        ff.RestoreMmove
-		        IF (FF.shapes.getposition(currentcontent.SHUL) <>-1) or (ff.shapes.getposition(currentcontent.shUA) <> -1) then
-		          currentcontent.theobjects.updatelabels(1)
-		        end if
-		        ff.updatemacconstructedshapes
+		    List = Temp.XQL("ModifiedFigures")
+		    If List.length >0 Then
+		      MF = XMLElement(List.Item(0))
+		      if MF <> nil then
+		        MFInit = XMLElement(MF.Child(0))
 		      end if
-		    next
-		  end if
-		  CurrentContent.optimize
+		    end if
 
+		    if MFInit <> nil then
+		      List = MFInit.XQL("Figure")
+		      if List.length > 0 then
+		        for i = 0 to List.length-1
+		          EL3 = XMLElement(List.Item(i))
+		          if EL3 <> nil then
+		            sid = val(EL3.GetAttribute("FigId"))
+		            ff = CurrentContent.Thefigs.getfigure(sid)
+		            if ff <> nil then
+		              ff.RestoreInit(EL3)
+		              ff.RestoreMmove
+		              IF (FF.shapes.getposition(currentcontent.SHUL) <>-1) or (ff.shapes.getposition(currentcontent.shUA) <> -1) then
+		                currentcontent.theobjects.updatelabels(1)
+		              end if
+		              ff.updatemacconstructedshapes
+		            end if
+		          end if
+		        next
+		      end if
+		    end if
+		    CurrentContent.optimize
 
+		  catch err as RuntimeException
+		    #if DebugBuild then
+		      System.DebugLog "Modifier.UndoOperation: Erreur lors de l'annulation - " + err.Message
+		    #endif
+		    // Tentative de nettoyage minimal en cas d'erreur
+		    if pointmobile <> nil then
+		      pointmobile.drapmagn = false
+		    end if
+		  end try
 
 
 
