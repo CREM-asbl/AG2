@@ -1,14 +1,7 @@
 #tag Class
-Protected Class ObjectsList
+Class ObjectsList
 Inherits Liste
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
-
-	#tag Interface, Flags = &h2
-		Private Interface IShapeFilter
-			Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
-		End Interface
-	#tag EndInterface
-
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
 
@@ -370,9 +363,7 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  return nil
-
-
+		  return Visible
 		End Function
 	#tag EndMethod
 
@@ -400,21 +391,28 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function GetShape(id as integer) As shape
-		  dim i As Integer
-		  dim s, temp as Shape
+		  // *** Optimisation avec cache ***
+		  // 1. Tenter de récupérer la forme depuis le cache pour une performance maximale.
+		  if mShapeCache <> nil and mShapeCache.HasKey(id) then
+		    dim sFromCache as Shape = mShapeCache.Value(id)
+		    // Vérifier que la forme n'a pas été supprimée entre-temps
+		    if sFromCache <> nil and not sFromCache.deleted then
+		      return sFromCache
+		    end if
+		  end if
 
-
+		  // 2. Si non trouvée dans le cache (cas de secours), parcourir la liste d'objets.
+		  dim i as integer
+		  dim s as Shape
+		  dim temp as Shape
 		  for i=0 to Ubound(objects)
 		    s = Shape(Objects(i))
-		    if  not s.deleted then   'not objects(i).invalid and
-		      temp=GetShapeIn(s,id)
-		      if temp<>nil then
-		        return temp
-		      end if
+		    if not s.deleted then
+		      temp = GetShapeIn(s, id)
+		      if temp <> nil then return temp
 		    end if
 		  next
-		  return Visible
-
+		  return nil
 
 		End Function
 	#tag EndMethod
@@ -579,6 +577,9 @@ Inherits Liste
 		  'i = i-1
 		  'wend
 		  if self = Currentcontent.TheObjects then
+		    // Retire la forme et ses dépendances du cache.
+		    UncacheShapeAndChildren(Shape(s))
+
 
 		    i = shape(s).idgroupe
 		    if i>-1 then
@@ -651,20 +652,20 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub selectfigure(figu as figure)
 		  dim i as integer
-
-		  for i = 0 to figu.shapes.count-1
-		    selectobject(figu.shapes.item(i))
-		  next
-
-		  Exception err
-		    dim d As Debug
-		    d = new Debug
+		  Try
+		    for i = 0 to figu.shapes.count-1
+		      selectobject(figu.shapes.item(i))
+		    next
+		  Catch err as RuntimeException
+		    dim d as new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("i", i)
 		    d.setVariable("figu.shapes", figu.shapes)
-		    err.message = err.message+d.getString
-
+		    // Ajouter les informations de débogage au message de l'exception existante
+		    // et la relancer pour ne pas interrompre la chaîne d'erreurs.
+		    err.Message = err.Message + EndOfLine + d.getString
 		    Raise err
+		  End Try
 		End Sub
 	#tag EndMethod
 
@@ -1271,7 +1272,8 @@ Inherits Liste
 		    return new Cube(self, temp)
 		  end select
 
-
+		  // Si aucun type connu n'est trouvé, retourner nil pour éviter une erreur.
+		  return nil
 		End Function
 	#tag EndMethod
 
@@ -1322,70 +1324,7 @@ Inherits Liste
 		End Function
 	#tag EndMethod
 
-	#tag Class, Flags = &h2
-		Private Class BipointFilter
-		Implements IShapeFilter
-			#tag Method, Flags = &h0
-				Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
-				  dim found as boolean = false
-				  if candidate isa droite and candidate.PinShape(searchPoint) then
-				    found = true
-				  elseif candidate isa polygon and polygon(candidate).pointonside(searchPoint) > -1 then
-				    found = true
-				  end if
-
-				  if found then
-				    results.addshape(candidate)
-				  end if
-				End Sub
-			#tag EndMethod
-		End Class
-	#tag EndClass
-
-	#tag Class, Flags = &h2
-		Private Class PointFilter
-		Implements IShapeFilter
-			#tag Method, Flags = &h0
-				Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
-				  // Cherche le point lui-même s'il est un point
-				  if candidate isa point and (not candidate.Hidden or WorkWindow.DrapShowALL) and point(candidate).pinshape(searchPoint) then
-				    results.addshape(candidate)
-				  else
-				    // Cherche dans les enfants de la forme
-				    dim j as integer
-				    dim pt as point
-				    if candidate.childs <> nil then
-				      for j = 0 to ubound(candidate.childs)
-				        pt = candidate.childs(j)
-				        // Les enfants ne sont pas vérifiés par la boucle principale de findWithFilter,
-				        // ils nécessitent donc leurs propres vérifications de validité.
-				        if (not pt.invalid) and not (pt.deleted) and (not pt.Hidden or WorkWindow.DrapShowALL) and pt.pinshape(searchPoint) then
-				          results.addshape(pt)
-				        end if
-				      next
-				    end if
-				  end if
-				End Sub
-			#tag EndMethod
-		End Class
-	#tag EndClass
-
-	#tag Class, Flags = &h2
-		Private Class SegmentFilter
-		Implements IShapeFilter
-			#tag Method, Flags = &h0
-				Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
-				  if candidate isa droite and droite(candidate).nextre = 2 and droite(candidate).pInShape(searchPoint) then
-				    results.addshape(candidate)
-				  elseif candidate isa polygon and polygon(candidate).pointonside(searchPoint) > -1 then
-				    results.addshape(candidate)
-				  end if
-				End Sub
-			#tag EndMethod
-		End Class
-	#tag EndClass
-
-	#tag Method, Flags = &h0
+		#tag Method, Flags = &h0
 		Sub XMLReadTsf(Obj as XMLElement)
 		  dim i as integer
 		  dim s as shape
@@ -1396,6 +1335,18 @@ Inherits Liste
 		    s = GetShape(val(Temp.GetAttribute("Id")))
 		    s.XMLReadTsf(Temp)
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RemoveAll()
+		  // Vider le cache des formes pour éviter les conflits lors du chargement d'un nouveau fichier.
+		  if mShapeCache <> nil then
+		    mShapeCache.Clear
+		  end if
+		
+		  // Appeler la méthode de la classe parente pour vider la liste d'objets.
+		  super.RemoveAll
 		End Sub
 	#tag EndMethod
 
@@ -1489,14 +1440,6 @@ Inherits Liste
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="mShapeCache"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Dictionary"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
@@ -1508,7 +1451,7 @@ Inherits Liste
 			Name="PrevId"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="-1"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

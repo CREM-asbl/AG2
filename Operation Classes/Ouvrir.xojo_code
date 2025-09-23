@@ -6,7 +6,6 @@ Inherits Operation
 		Sub Constructor()
 		  super.constructor
 		  OpId = -1
-		  currentcontent.currentoperation = self
 
 
 
@@ -19,7 +18,8 @@ Inherits Operation
 				Dim Doc As XmlDocument
 				Dim Cfg As String
 
-				constructor()
+				super.constructor
+				OpId = -1
 
 				Try
 					Doc = New XMLDocument(f)

@@ -1,6 +1,8 @@
 #tag Class
 Protected Class PointsList
 Inherits Liste
+Implements IShapeFilter
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Concat(ol as pointslist)
 		  dim i as integer
@@ -8,6 +10,14 @@ Inherits Liste
 		  for i = 0 to ol.count-1
 		    concat ol.element(i)
 		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as Liste)
+		  // Part of the IShapeFilter interface.
+		  
 		  
 		End Sub
 	#tag EndMethod
