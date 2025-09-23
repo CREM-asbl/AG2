@@ -6,20 +6,32 @@ Protected Module OperationHelpers
 		  Dim sh As shape
 
 		  if p = nil or p.fig = nil then
+		    if p <> nil and p.id = 17 then
+		      System.DebugLog "Point M (Id=17) invalid: p.fig = nil"
+		    end if
 		    return false
 		  end if
 
 		  p.mobility
 
 		  if p.liberte = 0 or (p.fused and p.constructedby.shape = nil) then
+		    if p.id = 17 then
+		      System.DebugLog "Point M (Id=17) invalid: liberte=" + str(p.liberte) + ", fused=" + str(p.fused)
+		    end if
 		    return false
 		  end if
 
 		  if p.forme = 1 and p.constructedby <> nil and p.constructedby.oper = 10 and point(p.constructedby.shape).isextremityofaparaperpseg then
+		    if p.id = 17 then
+		      System.DebugLog "Point M (Id=17) invalid: extremity of paraperpseg"
+		    end if
 		    return false
 		  end if
 
 		  if p.forme = 1 and p.isextremityofaparaperpseg then
+		    if p.id = 17 then
+		      System.DebugLog "Point M (Id=17) invalid: is extremity of paraperpseg"
+		    end if
 		    return false
 		  end if
 
@@ -37,6 +49,9 @@ Protected Module OperationHelpers
 		    next
 		  next
 
+		  if p.id = 17 then
+		    System.DebugLog "Point M (Id=17) is VALID for modification"
+		  end if
 		  return true
 		End Function
 	#tag EndMethod

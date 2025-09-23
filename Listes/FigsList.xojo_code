@@ -963,7 +963,12 @@ Inherits Liste
 		  for i = 0 to count-1
 		    // Vérification des limites d'index
 		    if index(i) >= 0 and index(i) < count then
-		      t = item(index(i)).update1(p) and t
+		      dim figureResult as Boolean
+		      figureResult = item(index(i)).update1(p)
+		      t = figureResult and t
+		      if p <> nil and p.id = 17 and not figureResult then
+		        System.DebugLog "Point M (Id=17) - Figure " + str(i) + " (idfig=" + str(item(index(i)).idfig) + ") failed update1"
+		      end if
 		    end if
 		  next
 

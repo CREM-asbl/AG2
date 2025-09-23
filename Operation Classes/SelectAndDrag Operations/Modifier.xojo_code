@@ -219,6 +219,9 @@ Inherits SelectAndDragOperation
 		    figs.cancelfixedpoints
 		  else
 		    cancel = true
+		    if pointmobile <> nil and pointmobile.id = 17 then
+		      System.DebugLog "Point M (Id=17) InitFigs failed: figs.ordonner returned false"
+		    end if
 		  end if
 		  figs.enablemodifyall
 
@@ -481,6 +484,10 @@ Inherits SelectAndDragOperation
 		  dim s as point
 		  dim q1 as BasicPoint
 
+		  if p.id = 17 then
+		    System.DebugLog "Point M (Id=17) entering test() method"
+		  end if
+
 		  testfinished = false
 		  can.Mousecursor = system.cursors.wait
 
@@ -489,12 +496,18 @@ Inherits SelectAndDragOperation
 		  currentshape = p
 		  InitFigs
 		  if cancel then
+		    if p.id = 17 then
+		      System.DebugLog "Point M (Id=17) test() failed: cancel = true after InitFigs"
+		    end if
 		    return false
 		  else
 		    s = ptguide(pointmobile)
 		    figs.save
 		    q1 = new basicpoint(2*rnd()-1,2*rnd()-1) *(2*can.magneticdist)
 		    t = figs.update(s, s.bpt+q1)
+		    if p.id = 17 and not t then
+		      System.DebugLog "Point M (Id=17) figs.update failed"
+		    end if
 		    figs.restore
 		    figs.canceloldbpts
 		    figs.EnableModifyall
@@ -502,6 +515,9 @@ Inherits SelectAndDragOperation
 		    testfinished = true
 		    pointmobile = nil
 		    currentshape = nil
+		    if p.id = 17 then
+		      System.DebugLog "Point M (Id=17) test() result: " + str(t)
+		    end if
 		    return t
 		  end if
 

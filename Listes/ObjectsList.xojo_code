@@ -4,10 +4,10 @@ Inherits Liste
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
-		  
+
 		  s.endconstruction             // on met en particulier s dans une figure (ff reste nil)
 		  s.setfigconstructioninfos
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -19,7 +19,7 @@ Inherits Liste
 		  if s = nil   then
 		    return
 		  end if
-		  
+
 		  if s isa point then
 		    pt = point(s)
 		    for i = 0 to ubound(pt.parents)
@@ -36,17 +36,17 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub addtofigure()
 		  //Cette méthode ne sert que lors de la création de points de subdivision
-		  
+
 		  dim i as integer
 		  dim  ff, ff1 as figure
 		  dim s as shape
-		  
+
 		  s = item(0).constructedby.shape
 		  ff = s.fig
 		  ff1 = s.getsousfigure(ff)
-		  
+
 		  CurrentContent.TheFigs.RemoveFigure s.fig
-		  
+
 		  for i =  0 to count-1
 		    ff.ptsconsted.addshape item(i)
 		    ff1.ptsconsted.addshape item(i)
@@ -55,7 +55,7 @@ Inherits Liste
 		  ff.ListerPrecedences
 		  ff.idfig = -1
 		  CurrentContent.TheFigs.addobject ff
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -64,9 +64,9 @@ Inherits Liste
 		  dim s as shape
 		  dim i  as integer
 		  dim p as BasicPoint
-		  
+
 		  g.forecolor = c
-		  
+
 		  if groupes(n) <> nil then
 		    for i=0 to Groupes(n).count-1
 		      s = Groupes(n).item(i)
@@ -80,7 +80,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub AugmenteFont()
 		  dim i as integer
-		  
+
 		  for i = 0 to count -1
 		    item(i).augmentefont
 		  next
@@ -91,7 +91,7 @@ Inherits Liste
 		Sub canceldejaexporte()
 		  dim i, j as integer
 		  dim s as shape
-		  
+
 		  for i = 0 to count-1
 		    s = item(i)
 		    for j = 0 to ubound(s.childs)
@@ -112,7 +112,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub Concat(ol as objectslist)
 		  dim i as integer
-		  
+
 		  for i = 0 to ol.count-1
 		    concat ol.item(i)
 		  next
@@ -124,7 +124,7 @@ Inherits Liste
 		  if GetPosition(s)  = -1  then
 		    objects.append s
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -132,8 +132,8 @@ Inherits Liste
 		Sub Constructor()
 		  selection = new ObjectsList(false)
 		  prevId = -1
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -142,15 +142,15 @@ Inherits Liste
 		  if initSelection then
 		    selection = new ObjectsList(false)
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function CreateShape(fa as integer, fo as integer) As Shape
-		  
+
 		  dim currentshape as shape
-		  
+
 		  if Fa <10 then
 		    select case Fa
 		      'case -1
@@ -225,10 +225,10 @@ Inherits Liste
 		    'currentshape = new StdCircle(self,fa, fo, bp(0))
 		    'end if
 		  end if
-		  
+
 		  currentshape.fam = fa
 		  currentshape.forme = fo
-		  
+
 		  return currentshape
 		End Function
 	#tag EndMethod
@@ -236,7 +236,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub EnableModifyAll()
 		  dim i,j as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).enablemodify
 		    for j = 0 to ubound(item(i).constructedshapes)
@@ -244,14 +244,14 @@ Inherits Liste
 		    next
 		    item(i).Modified = false
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub enabletoupdatelabels()
 		  dim i as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).enabletoupdatelabel
 		  next
@@ -261,12 +261,12 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub EndConstruction()
 		  dim i as integer //utilisé uniquement par divide
-		  
+
 		  for i = 0 to count-1
 		    point(item(i)).mobility
 		    CurrentContent.addShape item(i)
 		  next
-		  
+
 		  if  CurrentContent.ForHisto then
 		    addtofigure
 		  end if
@@ -276,13 +276,13 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function findbipoint(p as BasicPoint) As ObjectsList
-		  
+
 		  dim n, i As Integer
 		  dim Visible as ObjectsList
 		  dim ob as shape
-		  
+
 		  Visible = new objectslist
-		  
+
 		  for i=Ubound(currentcontent.Plans) downto 0
 		    ob = GetShape(currentcontent.Plans(i))
 		    n = -1
@@ -295,23 +295,23 @@ Inherits Liste
 		      Visible.addshape ob
 		    end if
 		  next
-		  
+
 		  return Visible
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function findObject(p as BasicPoint) As ObjectsList
-		  
+
 		  dim i As Integer
 		  dim S1 as Shape
 		  dim Visible as ObjectsList
-		  
+
 		  Visible = new objectslist
-		  
+
 		  for i=Ubound(currentcontent.Plans) downto 1
 		    S1=GetShape(currentcontent.Plans(i))
 		    if not s1.deleted  then
@@ -325,9 +325,9 @@ Inherits Liste
 		    end if
 		  next
 		  return Visible
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -337,9 +337,9 @@ Inherits Liste
 		  dim S as Shape
 		  dim pt as point
 		  dim Visible as ObjectsList
-		  
+
 		  Visible = new objectslist
-		  
+
 		  for i=Ubound(currentcontent.plans) downto 0
 		    S=GetShape(currentcontent.plans(i))
 		    if s <> nil   then
@@ -354,11 +354,11 @@ Inherits Liste
 		        next
 		      end if
 		    end if
-		    
+
 		  next
-		  
+
 		  return Visible
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -367,9 +367,9 @@ Inherits Liste
 		  dim i As Integer
 		  dim S as Shape
 		  dim Visible as ObjectsList
-		  
+
 		  Visible = new objectslist
-		  
+
 		  for i=Ubound(currentcontent.plans) downto 0
 		    S=GetShape(currentcontent.plans(i))
 		    if s <> nil  and not s.invalid and not s.deleted then
@@ -380,9 +380,9 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  
+
 		  return Visible
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -400,8 +400,8 @@ Inherits Liste
 		Function GetShape(id as integer) As shape
 		  dim i as Integer
 		  dim s, temp as Shape
-		  
-		  
+
+
 		  for i=0 to Ubound(objects)
 		    s = Shape(Objects(i))
 		    if  not s.deleted then   'not objects(i).invalid and
@@ -412,19 +412,19 @@ Inherits Liste
 		    end if
 		  next
 		  return nil
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetShapeIn(s as Shape, id as Integer) As shape
-		  
+
 		  dim i as Integer
-		  
+
 		  if s=nil then
 		    return nil
 		  end if
-		  
+
 		  if s.id=id then
 		    return s
 		  else
@@ -440,13 +440,13 @@ Inherits Liste
 		    next
 		    return nil
 		  end if
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub InsertShape(S As Shape, n as integer)
-		  
+
 		  if GetPosition(s)  = -1 then
 		    objects.insert (n,S)
 		  end if
@@ -457,7 +457,7 @@ Inherits Liste
 		Sub inverserordre()
 		  dim s1, s2 as shape
 		  dim i as integer
-		  
+
 		  if count > 1 then
 		    for i = 0 to count\2 -1
 		      s1 = item(i)
@@ -471,13 +471,13 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Function IsSame(obl as ObjectsList) As Boolean
 		  dim i as integer
-		  
+
 		  For i = 0 to count-1
 		    if item(i) <> obl.item(i) then
 		      return false
 		    end if
 		  next
-		  
+
 		  return true
 		End Function
 	#tag EndMethod
@@ -490,20 +490,20 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function NewId() As Integer
-		  
+
 		  prevId = prevId + 1
 		  return prevId
-		  
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Optimize()
-		  
+
 		  //Retire de la liste les points qui ont des parents
 		  dim pt as point
 		  dim i as Integer
-		  
+
 		  for i = UBound(Objects) downto 0
 		    if objects(i) isa point then
 		      pt = point(objects(i))
@@ -512,26 +512,26 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub OptimizeGroups()
 		  dim i, j as integer
-		  
+
 		  for i = ubound(groupes) downto 0
 		    if groupes(i) = nil or groupes(i).count = 0 then
 		      groupes.remove i
 		    end if
 		  next
-		  
+
 		  for i = 0 to ubound(groupes)
 		    for j = 0 to Groupes(i).count-1
 		      Groupes(i).item(j).IdGroupe = i
 		    next
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -539,7 +539,7 @@ Inherits Liste
 		Sub Paint(g as graphics)
 		  Dim i As Integer
 		  dim o as shape
-		  
+
 		  tracept = false
 		  For i=0 To count-1
 		    o = GetPlan(i)
@@ -547,14 +547,14 @@ Inherits Liste
 		      o.PaintAll(g)
 		    end if
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ReAttractingAll()
 		  dim i,j as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).Attracting = True
 		    for j = 0 to ubound (item(i).Childs)
@@ -567,15 +567,15 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub RemoveObject(s as Variant)
 		  dim i as integer
-		  
+
 		  super.removeobject s
-		  
+
 		  'i = ubound(groupes)
 		  'while i > -1 and groupes(i).getposition(s) = -1
 		  'i = i-1
 		  'wend
 		  if self = Currentcontent.TheObjects then
-		    
+
 		    i = shape(s).idgroupe
 		    if i>-1 then
 		      groupes(i).removeobject s
@@ -583,7 +583,7 @@ Inherits Liste
 		        optimizegroups
 		      end if
 		    end if
-		    
+
 		  end if
 		End Sub
 	#tag EndMethod
@@ -592,9 +592,9 @@ Inherits Liste
 		Sub Reselect()
 		  dim i as integer
 		  dim ob as shape
-		  
+
 		  Unselectall
-		  
+
 		  for i=0 to Oldselection.count -1
 		    ob =Oldselection.item(i)
 		    if not ob.Hidden and not ob.invalid and not ob.deleted then
@@ -609,7 +609,7 @@ Inherits Liste
 		Function ReverseFindObject(p as BasicPoint) As shape
 		  dim i As Integer
 		  dim S, sh as Shape
-		  
+
 		  for i=0 to Ubound(Objects)
 		    sh = shape(objects(i))
 		    if (not sh.Hidden or WorkWindow.DrapShowALL)  and not sh.invalid and (not sh.deleted) then
@@ -627,8 +627,8 @@ Inherits Liste
 		Sub selectall()
 		  dim i , j as integer
 		  dim ob as shape
-		  
-		  
+
+
 		  for i=1 to Ubound(objects)
 		    ob =objects(i)
 		    if not ob.invalid  and not ob.deleted then
@@ -640,18 +640,18 @@ Inherits Liste
 		      end if
 		    next
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub selectfigure(figu as figure)
 		  dim i as integer
-		  
+
 		  for i = 0 to figu.shapes.count-1
 		    selectobject(figu.shapes.item(i))
 		  next
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
@@ -659,7 +659,7 @@ Inherits Liste
 		    d.setVariable("i", i)
 		    d.setVariable("figu.shapes", figu.shapes)
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
 		End Sub
 	#tag EndMethod
@@ -678,7 +678,7 @@ Inherits Liste
 		  dim i, fam as integer
 		  dim Temp as XMLElement
 		  dim s as shape
-		  
+
 		  for i=1 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = Val(Temp.GetAttribute(Dico.value("NrFam")))
@@ -698,36 +698,36 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub ShowAll()
-		  
+
 		  dim i as Integer
-		  
+
 		  for i=0 to Ubound(Objects)
 		    Shape(Objects(i)).Show
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SwapObjects(S1 as Shape, S2 as Shape)
 		  dim pos1, pos2 as integer
-		  
+
 		  pos1 = GetPosition(S1)
 		  pos2 = GetPosition(S2)
-		  
+
 		  if pos1 <> -1 and pos2 <>-1 then
 		    objects(pos1) = S2
 		    objects(pos2) = S1
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub tspfalse()
 		  dim i as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).tsp = false
 		  next
@@ -737,7 +737,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub unhighlightall()
 		  dim i as integer
-		  
+
 		  for i =  ubound(objects) downto 0
 		    shape(objects(i)).unhighlight
 		  next
@@ -756,10 +756,10 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Sub unSelectObject(s As Shape)
-		  
+
 		  selection.removeobject s
 		  s.doUnSelect
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -767,7 +767,7 @@ Inherits Liste
 		Sub updateangles(a as double)
 		  dim i as integer
 		  dim s as shape
-		  
+
 		  for i = 0 to count-1
 		    s = item(i)
 		    if s isa StandardPolygon  then
@@ -788,9 +788,9 @@ Inherits Liste
 		    s= item(i)
 		    if s isa cube then
 		      cube(s).csk.update(n, k)
-		    end if 
+		    end if
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -798,7 +798,7 @@ Inherits Liste
 		Sub updateids()
 		  dim i,j,n as integer
 		  dim s as shape
-		  
+
 		  n = 0
 		  for i = 0 to Ubound(objects)
 		    s = shape(objects(i))
@@ -814,7 +814,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub updatelabels(k as double)
 		  dim i as integer
-		  
+
 		  for i = 0 to count-1
 		    item(i).updatelabel(k)
 		  next
@@ -825,7 +825,7 @@ Inherits Liste
 		Sub UpdateUserCoord(M as Matrix)
 		  dim i  as Integer
 		  dim s as shape
-		  
+
 		  for i = 1 to Ubound(Objects)
 		    s = shape(objects(i))
 		    s.UpdateUserCoord(M)
@@ -854,7 +854,7 @@ Inherits Liste
 		  dim Pt as XMLNode
 		  dim Temp as XMLElement
 		  dim fam as integer
-		  
+
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
@@ -871,9 +871,9 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -885,7 +885,7 @@ Inherits Liste
 		  dim Pt as XMLNode
 		  dim Temp as XMLElement
 		  dim fam as integer
-		  
+
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
@@ -912,7 +912,7 @@ Inherits Liste
 		  dim s as shape
 		  dim Temp as XMLElement
 		  dim ff as figure
-		  
+
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
@@ -928,14 +928,14 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  
+
 		  n = 0
 		  for i = 0 to CurrentContent.TheFigs.Count-1
 		    CurrentContent.TheFigs.item(i).ListerPrecedences
 		    idf = CurrentContent.Thefigs.item(i).idfig
 		    n = max(n, idf)
 		  next
-		  
+
 		  CurrentContent.TheFigs.setidfig (n)
 		End Sub
 	#tag EndMethod
@@ -948,7 +948,7 @@ Inherits Liste
 		  dim Pt as XMLNode
 		  dim Temp as XMLElement
 		  dim fam as integer
-		  
+
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.value("NrFam")))
@@ -974,7 +974,7 @@ Inherits Liste
 		  dim i as integer
 		  dim s as shape
 		  dim Temp as XMLElement
-		  
+
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    s = XMLLoadObject(Temp)
@@ -989,7 +989,7 @@ Inherits Liste
 		  dim i, fam  as integer
 		  dim s as shape
 		  dim Temp as XMLElement
-		  
+
 		  for i=0 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    fam = val(Temp.GetAttribute(Dico.Value("NrFam")))
@@ -1005,14 +1005,14 @@ Inherits Liste
 		Sub XMLLoadGrille(List as XMLNodeList)
 		  dim Obj as XMLElement
 		  dim gs as integer
-		  
+
 		  Obj= XMLElement(List.Item(0))
 		  gs = val(Obj.GetAttribute("PointSize"))
 		  var gap as Double = val(Obj.GetAttribute("Gap"))
 		  if gap = 0 then
 		    gap = 1
 		  end if
-		  
+
 		  select case val(Obj.Getattribute("Type"))
 		  case 0
 		    CurrentContent.TheGrid= nil
@@ -1021,7 +1021,7 @@ Inherits Liste
 		  case 2
 		    CurrentContent.TheGrid = new HexGrid(gs, gap)
 		  end select
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -1031,15 +1031,15 @@ Inherits Liste
 		  dim a as integer
 		  dim fstd as String
 		  dim s as shape
-		  
-		  
+
+
 		  id = Val(Temp.GetAttribute("Id"))
 		  s = getshape(id)
-		  
+
 		  if s <> nil then
 		    return s
 		  end if
-		  
+
 		  fam = Val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  forme = Val(Temp.GetAttribute(Dico.Value("NrForm")))
 		  a = Val(Temp.GetAttribute(Dico.Value("Auto")))             // pour d'anciens fichiers de sauvegarde (jusqu'à la version 2.3.8) qui étaient incorrects
@@ -1122,7 +1122,7 @@ Inherits Liste
 		  End Select
 		  s.id = id
 		  addshape(s)
-		  
+
 		  if  Val(Temp.GetAttribute("Standard"))= 1 then
 		    s.std = true
 		  else
@@ -1140,13 +1140,13 @@ Inherits Liste
 		  else
 		    s.IdGroupe = -1
 		  End If
-		  
+
 		  If s IsA Lacet And Val(Temp.GetAttribute("AutoInter")) = 1 Then
 		    Lacet(s).autointer = New AutoIntersec(Temp)
 		  end if
-		  
+
 		  return s
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -1156,9 +1156,9 @@ Inherits Liste
 		  dim List as XMLNodeList
 		  dim nobj, i, j as integer
 		  Dim s As shape
-		  
+
 		  'Voir note à propos de "Forms" et "Objects"  dans Figure.XMLPutInContainer(Doc)
-		  
+
 		  List = Shapes.XQL(Dico.Value("Forms"))
 		  If List.length = 0 Then
 		    List = shapes.XQL(Dico.Value("Objects"))
@@ -1167,13 +1167,13 @@ Inherits Liste
 		    Obj= XMLElement(List.Item(0))
 		    nobj = obj.childcount
 		    if nobj >0 then
-		      XMLLireobjets(Obj)                        
+		      XMLLireobjets(Obj)
 		      XMLLirePointsSur(Obj)
-		      XMLReadTsf(Obj)                                   
+		      XMLReadTsf(Obj)
 		      XMLLireCondi(Obj)
-		      XMLLireConstructionInfos(Obj)           
+		      XMLLireConstructionInfos(Obj)
 		      XMLLireMacConstructionInfos(Obj)
-		      XMLLireIdFigs(Obj)                                
+		      XMLLireIdFigs(Obj)
 		      CurrentContent.TheTransfos.CleanConstructedFigs
 		      SetFigConstructionInfos(Obj)
 		      CurrentContent.optimize
@@ -1181,12 +1181,50 @@ Inherits Liste
 		    end if
 		    updateids
 		  end if
+
+		  // Recalculer la mobilité de tous les points après chargement complet
+		  // et remettre correctement l'état modifiable pour s'assurer que les points
+		  // sur segments sont correctement modifiables
+		  CurrentContent.TheFigs.enablemodifyall
+		  CurrentContent.optimize  // Force une optimisation comme après une opération
+
+		  // Force une reconstruction complète des dépendances entre figures
+		  for i = 0 to CurrentContent.TheFigs.count-1
+		    dim fig as Figure
+		    fig = CurrentContent.TheFigs.item(i)
+		    fig.ListerPrecedences
+
+		    // Force l'assignation d'IDs valides pour toutes les sous-figures
+		    for j = 0 to fig.subs.count-1
+		      if fig.subs.item(j).idfig = -1 then
+		        fig.subs.item(j).idfig = CurrentContent.TheFigs.newIdFig
+		      end if
+		      // Force la reconstruction des sous-figures après chargement pour réinitialiser leur état
+		      fig.subs.item(j).tobereconstructed = true
+		    next
+		  next
+
 		  for i = 0 to CurrentContent.TheObjects.count-1
 		    s = CurrentContent.TheObjects.item(i)
+		    if s isa point then
+		      point(s).mobility
+		      // Debug spécifique pour le point M (Id=17)
+		      if s.id = 17 then
+		        if point(s).fig <> nil then
+		        else
+		        end if
+		        if point(s).constructedby <> nil then
+		        else
+		        end if
+		      end if
+		    end if
 		    if s.id = 0 and not s isa repere then
 		      s.id = newid
 		    end if
 		    for j = 0 to ubound(s.childs)
+		      if s.childs(j) isa point then
+		        point(s.childs(j)).mobility
+		      end if
 		      if s.childs(j).id = 0 then
 		        s.childs(j).id = newid
 		      end if
@@ -1208,9 +1246,9 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Function XMLLoadStdForm(Temp as XMLElement) As Shape
 		  dim nom as string
-		  
+
 		  nom = Temp.GetAttribute("Type")
-		  
+
 		  select case nom
 		  case Dico.Value("PolygStd")
 		    return new StandardPolygon(self, temp)
@@ -1219,8 +1257,8 @@ Inherits Liste
 		  case Dico.Value("Cube")
 		    return new Cube(self, temp)
 		  end select
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -1229,8 +1267,8 @@ Inherits Liste
 		  Dim Temp as XMLElement
 		  dim i as integer
 		  dim s as shape
-		  
-		  
+
+
 		  if count > 0 then
 		    Temp = Doc.CreateElement(Dico.Value("Forms"))
 		    for i  = 0 to Ubound(objects)
@@ -1241,8 +1279,8 @@ Inherits Liste
 		  else
 		    return nil
 		  end if
-		  
-		  
+
+
 		End Function
 	#tag EndMethod
 
@@ -1251,22 +1289,22 @@ Inherits Liste
 		  Dim i  As  Integer
 		  dim EL as XMLElement
 		  dim s as shape
-		  
+
 		  optimize
-		  
+
 		  EL =  Doc.CreateElement(Dico.Value("Forms"))
-		  
+
 		  for i=0 to UBound(Objects)
 		    s = shape(objects(i))
 		    EL.AppendChild(s.XMLPutInContainer(Doc))
 		  next
-		  
+
 		  Return EL
-		  
+
 		  'Note: XMLPutIncontainer et XMLPutIdInContainer utilisent le premier Doc.CreateElement(Dico.Value("Objects")), le second Doc.CreateElement(Dico.Value("Forms"))
 		  'J'unifie en remplaçant Objects par Forms dans les deux cas
 		  'Mais pour que les anciens fichiers restent lisibles, j'ajoute une ligne dans ObjectsList.XMLLoadObjects qui renvoie à une recherche de "Objects" si "Forms" ne donne rien.
-		  
+
 		  '2 juillet 2019
 		End Function
 	#tag EndMethod
@@ -1276,7 +1314,7 @@ Inherits Liste
 		  dim i as integer
 		  dim s as shape
 		  dim Temp as XMLElement
-		  
+
 		  for i=1 to Obj.ChildCount-1
 		    Temp = XMLElement(Obj.Child(i))
 		    s = GetShape(val(Temp.GetAttribute("Id")))
@@ -1287,22 +1325,22 @@ Inherits Liste
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
