@@ -2,6 +2,13 @@
 Protected Class ObjectsList
 Inherits Liste
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+
+	#tag Interface, Flags = &h2
+		Private Interface IShapeFilter
+			Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
+		End Interface
+	#tag EndInterface
+
 	#tag Method, Flags = &h0
 		Sub addconstruction(s As Shape)
 
@@ -150,7 +157,7 @@ Inherits Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub concat(s As Shape)
+		Sub Concat(s As Shape)
 		  if GetPosition(s)  = -1  then
 		    objects.append s
 		  end if
@@ -308,58 +315,62 @@ Inherits Liste
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function findbipoint(p as BasicPoint) As ObjectsList
+	#tag Method, Flags = &h2
+		Private Function findWithFilter(p as BasicPoint, filter as IShapeFilter, iStart as integer = -1, iEnd as integer = -1) As ObjectsList
+		  dim i as Integer
+		  dim candidate as Shape
+		  dim visible as new ObjectsList
 
-		  dim n, i As Integer
-		  dim Visible as ObjectsList
-		  dim ob as shape
+		  dim startIdx, endIdx as integer
+		  startIdx = if(iStart = -1, Ubound(currentcontent.Plans), iStart)
+		  endIdx = if(iEnd = -1, 0, iEnd)
 
-		  Visible = new objectslist
-
-		  for i=Ubound(currentcontent.Plans) downto 0
-		    ob = GetShape(currentcontent.Plans(i))
-		    n = -1
-		    if ob isa droite and ob.PinShape(p) then
-		      n = 0
-		    elseif ob isa polygon then
-		      n=Ob.pointonside(p)
-		    end if
-		    if n <> -1 and not ob.invalid and not ob.deleted  then
-		      Visible.addshape ob
+		  for i = startIdx downto endIdx
+		    candidate = GetShape(currentcontent.Plans(i))
+		    // Le filtre est appelé uniquement pour les formes valides, ce qui simplifie sa logique.
+		    if candidate <> nil and not candidate.invalid and not candidate.deleted then
+		      filter.Filter(candidate, p, visible)
 		    end if
 		  next
+		  return visible
+		End Function
+	#tag EndMethod
 
-		  return Visible
-
-
-
+	#tag Method, Flags = &h0
+		Function FindBipoint(p as BasicPoint) As ObjectsList
+		  return findWithFilter(p, new BipointFilter)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function findObject(p as BasicPoint) As ObjectsList
-
 		  dim i As Integer
 		  dim S1 as Shape
 		  dim Visible as ObjectsList
 
 		  Visible = new objectslist
 
+		  // NOTE: Cette méthode n'est pas refactorisée avec `findWithFilter` en raison de sa logique très spécifique :
+		  // 1. Itération de Ubound(plans) jusqu'à 1 (et non 0).
+		  // 2. Appel à `s1.SelectShape(p)` qui peut retourner une forme différente.
+		  // 3. Appel à `findpoint(p)` dans certains cas.
 		  for i=Ubound(currentcontent.Plans) downto 1
 		    S1=GetShape(currentcontent.Plans(i))
-		    if not s1.deleted  then
+		    if s1 <> nil and not s1.deleted  then
 		      s1=s1.SelectShape(p)
 		      if s1 <> nil and not s1.invalid and not s1.deleted then
 		        if s1 isa bipoint and not (s1 isa droite or s1 isa supphom)  then
-		          s1 = findpoint(p).item(0)
-		        End If
+		          // Remplacer un bipoint par un point réel s'il en existe un à cet endroit.
+		          dim pts as ObjectsList = findpoint(p)
+		          if pts.count > 0 then
+		            s1 = pts.item(0)
+		          end if
+		        end if
 		        Visible.addshape S1
 		      end if
 		    end if
 		  next
-		  return Visible
-
+		  return nil
 
 
 		End Function
@@ -367,56 +378,13 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function FindPoint(p as BasicPoint) As ObjectsList
-		  dim i, j As Integer
-		  dim S as Shape
-		  dim pt as point
-		  dim Visible as ObjectsList
-
-		  Visible = new objectslist
-
-		  for i=Ubound(currentcontent.plans) downto 0
-		    S=GetShape(currentcontent.plans(i))
-		    if s <> nil   then
-		      if s isa point and (not s.invalid) and (not s.deleted) and (not s.Hidden or WorkWindow.DrapShowALL)   and point(s).pinshape(p)  then
-		        visible.addshape  point(s)
-		      else
-		        for j = 0 to ubound(s.childs)
-		          pt = s.childs(j)
-		          if (not pt.invalid) and not (pt.deleted) and  (not pt.Hidden or WorkWindow.DrapShowALL)   and pt.pinshape(p)  then
-		            visible.addshape pt
-		          end if
-		        next
-		      end if
-		    end if
-
-		  next
-
-		  return Visible
-
+		  return findWithFilter(p, new PointFilter)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function FindSegment(p as BasicPoint) As objectslist
-		  dim i As Integer
-		  dim S as Shape
-		  dim Visible as ObjectsList
-
-		  Visible = new objectslist
-
-		  for i=Ubound(currentcontent.plans) downto 0
-		    S=GetShape(currentcontent.plans(i))
-		    if s <> nil  and not s.invalid and not s.deleted then
-		      if s isa droite and droite(s).nextre = 2 and droite(s).pInShape(p) then
-		        visible.addshape s
-		      elseif s isa polygon and polygon(s).pointonside(p) > -1 then
-		        visible.addshape s
-		      end if
-		    end if
-		  next
-
-		  return Visible
-
+		  return findWithFilter(p, new SegmentFilter)
 		End Function
 	#tag EndMethod
 
@@ -432,7 +400,7 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function GetShape(id as integer) As shape
-		  dim i as Integer
+		  dim i As Integer
 		  dim s, temp as Shape
 
 
@@ -445,7 +413,8 @@ Inherits Liste
 		      end if
 		    end if
 		  next
-		  return nil
+		  return Visible
+
 
 		End Function
 	#tag EndMethod
@@ -887,19 +856,6 @@ Inherits Liste
 		    s = shape(objects(i))
 		    s.UpdateUserCoord(M)
 		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub validatefrom()
-		  'dim i as integer
-		  '
-		  '
-		  'for i = 0 to count-1
-		  'if not item(i).deleted and item(i).invalid and item(i).id > s.id and item(i).hascommonpointwith(s) then
-		  'item(i).valider
-		  'end if
-		  'next
 		End Sub
 	#tag EndMethod
 
@@ -1366,6 +1322,69 @@ Inherits Liste
 		End Function
 	#tag EndMethod
 
+	#tag Class, Flags = &h2
+		Private Class BipointFilter
+		Implements IShapeFilter
+			#tag Method, Flags = &h0
+				Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
+				  dim found as boolean = false
+				  if candidate isa droite and candidate.PinShape(searchPoint) then
+				    found = true
+				  elseif candidate isa polygon and polygon(candidate).pointonside(searchPoint) > -1 then
+				    found = true
+				  end if
+
+				  if found then
+				    results.addshape(candidate)
+				  end if
+				End Sub
+			#tag EndMethod
+		End Class
+	#tag EndClass
+
+	#tag Class, Flags = &h2
+		Private Class PointFilter
+		Implements IShapeFilter
+			#tag Method, Flags = &h0
+				Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
+				  // Cherche le point lui-même s'il est un point
+				  if candidate isa point and (not candidate.Hidden or WorkWindow.DrapShowALL) and point(candidate).pinshape(searchPoint) then
+				    results.addshape(candidate)
+				  else
+				    // Cherche dans les enfants de la forme
+				    dim j as integer
+				    dim pt as point
+				    if candidate.childs <> nil then
+				      for j = 0 to ubound(candidate.childs)
+				        pt = candidate.childs(j)
+				        // Les enfants ne sont pas vérifiés par la boucle principale de findWithFilter,
+				        // ils nécessitent donc leurs propres vérifications de validité.
+				        if (not pt.invalid) and not (pt.deleted) and (not pt.Hidden or WorkWindow.DrapShowALL) and pt.pinshape(searchPoint) then
+				          results.addshape(pt)
+				        end if
+				      next
+				    end if
+				  end if
+				End Sub
+			#tag EndMethod
+		End Class
+	#tag EndClass
+
+	#tag Class, Flags = &h2
+		Private Class SegmentFilter
+		Implements IShapeFilter
+			#tag Method, Flags = &h0
+				Sub Filter(candidate as Shape, searchPoint as BasicPoint, results as ObjectsList)
+				  if candidate isa droite and droite(candidate).nextre = 2 and droite(candidate).pInShape(searchPoint) then
+				    results.addshape(candidate)
+				  elseif candidate isa polygon and polygon(candidate).pointonside(searchPoint) > -1 then
+				    results.addshape(candidate)
+				  end if
+				End Sub
+			#tag EndMethod
+		End Class
+	#tag EndClass
+
 	#tag Method, Flags = &h0
 		Sub XMLReadTsf(Obj as XMLElement)
 		  dim i as integer
@@ -1490,7 +1509,7 @@ Inherits Liste
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="integer"
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
