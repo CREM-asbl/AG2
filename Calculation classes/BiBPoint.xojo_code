@@ -258,7 +258,6 @@ Inherits nBpoint
 		  dim Bib As  BiBPoint
 		  dim i,n, k as integer
 		  dim bq, v as BasicPoint
-		  redim q(-1)
 		  redim q(1)
 		  
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
@@ -285,7 +284,7 @@ Inherits nBpoint
 		    end if
 		  end if
 		  
-		  for i = 1 downto 0
+		  for i = ubound(q) downto 0
 		    if q(i) = nil then
 		      q.remove i
 		    end if
