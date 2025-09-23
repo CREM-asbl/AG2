@@ -17,6 +17,7 @@ Inherits Liste
 		  dim t as shape
 		  dim pt as point
 		  if s = nil   then
+		    // Ne rien faire si la forme est nulle.
 		    return
 		  end if
 
@@ -30,6 +31,7 @@ Inherits Liste
 		    next
 		  end if
 		  super.addobject(s)
+		  CacheShapeAndChildren(s) // Met en cache la forme et ses dépendances.
 		End Sub
 	#tag EndMethod
 
@@ -87,6 +89,34 @@ Inherits Liste
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h2
+		Private Sub CacheShapeAndChildren(s as Shape)
+		  // Met en cache de manière récursive une forme et toutes ses formes dépendantes (enfants, formes construites).
+		  if s = nil then return
+
+		  // Si la forme est déjà en cache, on arrête pour éviter les traitements redondants et les boucles infinies.
+		  if mShapeCache.HasKey(s.id) then return
+
+		  // Ajoute la forme actuelle au cache.
+		  mShapeCache.Value(s.id) = s
+
+		  // Itère sur les enfants (généralement des Points).
+		  dim i as integer
+		  if s.Childs <> nil then
+		    for i = 0 to ubound(s.Childs)
+		      CacheShapeAndChildren(s.Childs(i))
+		    next
+		  end if
+
+		  // Itère sur les formes construites à partir de celle-ci.
+		  if s.constructedshapes <> nil then
+		    for i = 0 to ubound(s.constructedshapes)
+		      CacheShapeAndChildren(s.constructedshapes(i))
+		    next
+		  end if
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub canceldejaexporte()
 		  dim i, j as integer
@@ -131,6 +161,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  selection = new ObjectsList(false)
+		  mShapeCache = new Dictionary
 		  prevId = -1
 
 
@@ -142,6 +173,9 @@ Inherits Liste
 		  if initSelection then
 		    selection = new ObjectsList(false)
 		  end if
+		  // Le cache doit toujours être initialisé pour éviter une NilObjectException,
+		  // y compris pour les listes internes comme 'selection'.
+		  mShapeCache = new Dictionary
 
 		End Sub
 	#tag EndMethod
@@ -448,6 +482,7 @@ Inherits Liste
 		Sub InsertShape(S As Shape, n as integer)
 
 		  if GetPosition(s)  = -1 then
+		    CacheShapeAndChildren(s) // Met en cache la forme et ses dépendances.
 		    objects.insert (n,S)
 		  end if
 		End Sub
@@ -731,6 +766,28 @@ Inherits Liste
 		  for i = 0 to count-1
 		    item(i).tsp = false
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h2
+		Private Sub UncacheShapeAndChildren(s as Shape)
+		  // Retire de manière récursive une forme et ses enfants directs du cache.
+		  if s = nil then return
+
+		  // Si la forme n'est pas/plus dans le cache, on arrête.
+		  if not mShapeCache.HasKey(s.id) then return
+
+		  // Retire la forme actuelle.
+		  mShapeCache.Remove(s.id)
+
+		  // Itère sur les enfants (qui sont détruits avec leur parent).
+		  dim i as integer
+		  for i = 0 to ubound(s.Childs)
+		    UncacheShapeAndChildren(s.Childs(i))
+		  next
+
+		  // Note: Les 'constructedshapes' ne sont pas retirées récursivement car elles peuvent avoir une existence indépendante
+		  // et ne sont pas nécessairement supprimées avec cette forme.
 		End Sub
 	#tag EndMethod
 
@@ -1359,6 +1416,10 @@ Inherits Liste
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		mShapeCache As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		OldSelection As ObjectsList
 	#tag EndProperty
 
@@ -1406,6 +1467,14 @@ Inherits Liste
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="mShapeCache"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Dictionary"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
