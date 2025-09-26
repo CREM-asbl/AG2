@@ -1221,6 +1221,7 @@ Inherits Liste
 		  for i = 0 to CurrentContent.TheObjects.count-1
 		    s = CurrentContent.TheObjects.item(i)
 		    if s isa point then
+		      point(s).UpdatePointSurPosition
 		      point(s).mobility
 		      // Debug spécifique pour le point M (Id=17)
 		      if s.id = 17 then
@@ -1237,6 +1238,7 @@ Inherits Liste
 		    end if
 		    for j = 0 to ubound(s.childs)
 		      if s.childs(j) isa point then
+		        point(s.childs(j)).UpdatePointSurPosition
 		        point(s.childs(j)).mobility
 		      end if
 		      if s.childs(j).id = 0 then

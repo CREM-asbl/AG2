@@ -3028,6 +3028,19 @@ Inherits Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub UpdatePointSurPosition()
+		  dim i as integer
+		  if forme = 1 then
+		    for i = 0 to pointsur.count - 1
+		      puton(pointsur.item(i), location(i))
+		    next
+		  elseif forme = 2 then
+		    adjustinter(pointsur.item(0), pointsur.item(1))
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateShape()
 		  Dim sh  As shape
 		  dim i as integer
@@ -3369,6 +3382,7 @@ Inherits Shape
 		        numside.append r
 		      end if
 		      sh.setpoint(self)
+                      puton(sh, loc)
 		    next
 		    mobility
 		  end if

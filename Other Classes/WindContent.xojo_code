@@ -103,6 +103,9 @@ Protected Class WindContent
 		  r = can.rep
 		  TheObjects.updatelabels(r.echelle)
 		  
+		  For i As Integer = 0 To TheFigs.count - 1
+		    TheFigs.item(i).updateshapes
+		  Next
 		  
 		End Sub
 	#tag EndMethod
