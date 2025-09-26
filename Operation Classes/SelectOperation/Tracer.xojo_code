@@ -17,8 +17,12 @@ Inherits SelectOperation
 		  end if
 
 		  currenthighlightedshape.tracept = not currenthighlightedshape.tracept
+          System.DebugLog "Tracer.DoOperation: currenthighlightedshape.tracept = " + str(currenthighlightedshape.tracept)
 		  if currenthighlightedshape.tracept then
 		    currentcontent.theobjects.tracept = true
+            System.DebugLog "Tracer.DoOperation: currentcontent.theobjects.tracept = " + str(currentcontent.theobjects.tracept)
+            currentcontent.theobjects.createTrace = true
+            System.DebugLog "Tracer.DoOperation: currentcontent.theobjects.createTrace = " + str(currentcontent.theobjects.createTrace)
 		  end if
 
 		  Exception err

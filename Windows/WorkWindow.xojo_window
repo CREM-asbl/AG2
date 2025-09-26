@@ -777,7 +777,7 @@ End
 		      refreshtitle
 		    end if
 		  case 116 't Creer Objets Tracés
-		    CurrentContent.TheObjects.CreerTrace = not  CurrentContent.TheObjects.creertrace
+		    CurrentContent.TheObjects.CreateTrace = not  CurrentContent.TheObjects.createTrace
 		  case 181 'µ
 		    stdflag = not stdflag
 		  end select
@@ -2065,7 +2065,6 @@ End
 		    Formswindow.close
 		    MyCanvas1.ClearOffscreen
 		    CurrentContent.CurrentOperation = new Tracer()
-		    Tracer(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
 		  end if
 		  return true

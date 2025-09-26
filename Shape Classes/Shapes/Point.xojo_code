@@ -1555,13 +1555,14 @@ Inherits Shape
 		    rsk.paint(g)
 		  end if
 		  
-		  if tracept and currentcontent.theobjects.creertrace then
+		  if tracept and currentcontent.theobjects.createTrace then
 		    pt=new point(currentcontent.theobjects,bpt)
 		    pt.EndConstruction
 		  end if
 		  
 		  pic = can.OffScreenPicture
 		  if tracept  and (modified or currentcontent.currentoperation isa appliquertsf)  then
+            System.DebugLog "Point.Paint: Drawing trace for Point ID " + str(self.id) + ", tracept = " + str(self.tracept) + ", modified = " + str(self.modified) + ", OffscreenPicture is nil: " + str(can.OffscreenPicture = nil)
 		    rsk.paint(can.OffscreenPicture.Graphics)
 		    currentcontent.theobjects.tracept = true
 		  end if

@@ -669,7 +669,7 @@ Inherits Canvas
 		  'Background.graphics.TextSize = Config.TextSize
 		  'Background.graphics.Bold = true
 		  
-		  if currentcontent <> nil and not currentcontent.theobjects.tracept then
+		  if currentcontent <> nil and currentcontent.theobjects.tracept then
 		    OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
 		    OffscreenPicture.Transparent = 1
 		  end if

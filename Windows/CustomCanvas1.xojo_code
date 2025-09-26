@@ -755,6 +755,10 @@ Inherits Canvas
 		  End If
 		  
 		  CurrentContent.TheObjects.paint(BackgroundPicture.Graphics)
+
+  if OffscreenPicture <> nil then
+    BackgroundPicture.graphics.DrawPicture OffscreenPicture, 0, 0
+  end if
 		  
 		  if op <> nil  then
 		    op.Paint(BackgroundPicture.Graphics)

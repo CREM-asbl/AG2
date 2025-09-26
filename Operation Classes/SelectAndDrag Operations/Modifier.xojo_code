@@ -142,6 +142,7 @@ Inherits SelectAndDragOperation
 		  pointmobile = nil
 		  endpoint = Nil
 		  workwindow.setFocus
+		  figs.enablemodifyall
 
 		End Sub
 	#tag EndMethod
@@ -235,7 +236,7 @@ Inherits SelectAndDragOperation
 		  dim a as arc
 		  dim M as Matrix
 
-		  CurrentContent.TheObjects.tracept = false
+		  // CurrentContent.TheObjects.tracept = false
 		  can.ClearOffscreen
 		  super.MouseDown(p)
 

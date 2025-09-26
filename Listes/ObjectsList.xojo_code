@@ -159,24 +159,15 @@ Inherits Liste
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  selection = new ObjectsList(false)
-		  mShapeCache = new Dictionary
-		  prevId = -1
-
-
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(initSelection As Boolean)
+		Sub Constructor(Optional initSelection As Boolean = True)
 		  if initSelection then
-		    selection = new ObjectsList(false)
+		    selection = new ObjectsList(False)
 		  end if
 		  // Le cache doit toujours être initialisé pour éviter une NilObjectException,
 		  // y compris pour les listes internes comme 'selection'.
 		  mShapeCache = new Dictionary
-
+		  // prevId est initialisé par défaut à -1 dans la définition de la propriété.
+		  // Pas besoin de le réinitialiser ici.
 		End Sub
 	#tag EndMethod
 
@@ -542,7 +533,6 @@ Inherits Liste
 		  Dim i As Integer
 		  dim o as shape
 
-		  tracept = false
 		  For i=0 To count-1
 		    o = GetPlan(i)
 		    if o <> nil   then
@@ -1343,9 +1333,7 @@ Inherits Liste
 	#tag Method, Flags = &h0
 		Sub RemoveAll()
 		  // Vider le cache des formes pour éviter les conflits lors du chargement d'un nouveau fichier.
-		  if mShapeCache <> nil then
-		    mShapeCache.Clear
-		  end if
+		  mShapeCache.Clear
 		
 		  // Appeler la méthode de la classe parente pour vider la liste d'objets.
 		  super.RemoveAll
@@ -1376,7 +1364,7 @@ Inherits Liste
 
 
 	#tag Property, Flags = &h0
-		CreerTrace As Boolean
+		createTrace As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1410,7 +1398,7 @@ Inherits Liste
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="CreerTrace"
+			Name="createTrace"
 			Visible=false
 			Group="Behavior"
 			InitialValue="0"
