@@ -103,27 +103,38 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Function computeintercercles() As integer
-		  dim k as integer
-		  dim bq() as basicpoint
-		  dim g1, g2 as circle
-		  
-		  g1 = circle(sh1)
-		  g2 = circle(sh2)
-		  k = g1.inter(g2,bq())
-		  
-		  if k = 3 or k = 0 then   'introduit pour sangaku02
-		    val(0,0) = false
-		    val(0,1) = false
-		    return k
-		  end if
-		  
+		dim k as integer
+		dim bq() as basicpoint
+		dim g1, g2 as circle
+		
+		g1 = circle(sh1)
+		g2 = circle(sh2)
+		k = g1.inter(g2,bq())
+		
+		if k = 3 or k = 0 then   'introduit pour sangaku02
+		val(0,0) = false
+		val(0,1) = false
+		return k
+		end if
+		
+		if ubound(bq) >= 0 then
 		  bptinters(0,0) = bq(0)
-		  bptinters(0,1) = bq(1)
-		  
-		  return 2
-		  
-		  
-		  
+		else
+		  bptinters(0,0) = nil
+		  val(0,0) = false
+		end if
+		
+		  if ubound(bq) >= 1 then
+		    bptinters(0,1) = bq(1)
+		  else
+		    bptinters(0,1) = nil
+		    val(0,1) = false
+		  end if
+		
+		  return k
+		
+		
+		
 		End Function
 	#tag EndMethod
 
