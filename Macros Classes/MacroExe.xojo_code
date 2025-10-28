@@ -293,8 +293,8 @@ Inherits MultipleSelectOperation
 		      curop = new divide(self, EL1)
 		      createdshape = divide(curop).createdshapes.item(0)
 		    case 28 //Prolonger
-		      curop = new Prolonger(self,EL1)
-		      createdshape = Prolonger(curop).Dr
+		    curop = new Prolonger(self,EL1)
+		    createdshape = Prolonger(curop).NewLine
 		      'case 35 //Identifier Pour mémoire
 		    case 37 //FixPConstruction
 		      curop = new FixPConstruction(self, EL1)

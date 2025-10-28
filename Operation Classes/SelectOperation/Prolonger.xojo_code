@@ -14,19 +14,23 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub Constructor(MExe as MacroExe, EL1 as XMLElement)
-		  dim n, rid as integer
-		  
-		  Constructor()
-		  n = val(EL1.GetAttribute("Id"))
-		  rid = MExe.GetRealId(n)
-		  Bip = objects.GetShape(rid)
-		  cot = MExe.GetRealSide(n)
+		dim n, rid as integer
+		
+		super.Constructor
+		colsep = true
+		OpId = 28
+		WorkWindow.PointerPolyg
+		n = val(EL1.GetAttribute("Id"))
+		rid = MExe.GetRealId(n)
+		  BaseShape = objects.GetShape(rid)
+		  SelectedSide = MExe.GetRealSide(n)
 		  DoOperation
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub deplacerptssur()
+	Sub deplacerptssur()
+		  // Moves points from the base shape to the new line and handles perpendicular adjustments
 		  Dim s As shape
 		  dim i,j, op as integer
 		  dim Bib1, Bib2 as BiBPoint
@@ -36,42 +40,42 @@ Inherits SelectOperation
 		  
 		  objects.unselectall
 		  
-		  for i =  ubound(Bip.childs) downto Bip.npts
-		    p = Bip.Childs(i)
-		    j = p.PointSur.GetPosition(Bip)
-		    if p.numside(j) = ibip then
+		  for i =  ubound(BaseShape.childs) downto BaseShape.npts
+		  p = BaseShape.Childs(i)
+		  j = p.PointSur.GetPosition(BaseShape)
+		  if p.numside(j) = StartIndex then
 		      select case p.forme
-		      case 1
-		        p.removepointsur Bip
-		        p.puton Dr
-		      case 2 
+		      case 1  // Simple point: just move to new line
+		        p.removepointsur BaseShape
+		        p.puton NewLine
+		      case 2  // Intersection point: adjust parameters and intersection
 		        s = p.PointSur.item(1-j)
-		        p.removepointsur Bip
-		        p.puton Dr
+		        p.removepointsur BaseShape
+		        p.puton NewLine
 		        p.permuterparam
-		        p.adjustinter(Dr,s)
+		        p.adjustinter(NewLine,s)
 		      end select
-		    End If
-		    p.fig = Dr.fig
+		      End If
+		      p.fig = NewLine.fig
 		  next
 		  
 		  
-		  for i = 2 to ubound(Dr.childs)
-		    p = Dr.childs(i)
-		    for j = 0 to ubound(p.parents)
-		      s = p.parents(j)
-		      if s <> Dr and s.isaparaperp then
-		        w = droite(s).constructbasis
-		        bib1 = new Bibpoint(droite(s).firstp, droite(s).firstp+w)
-		        bib2 = new Bibpoint(Dr.firstp, Dr.secondp)
-		        w = Bib1.BiBInterdroites(Bib2,droite(s).nextre, Dr.nextre,r1, r2)
-		        if w <> nil then
-		          p.valider
-		          point(p).moveto w
-		          p.puton Dr
-		        end if
-		      end if
-		    next
+		  for i = 2 to ubound(NewLine.childs)
+		  p = NewLine.childs(i)
+		  for j = 0 to ubound(p.parents)
+		  s = p.parents(j)
+		  if s <> NewLine and s.isaparaperp then
+		  w = droite(s).constructbasis
+		  bib1 = new Bibpoint(droite(s).firstp, droite(s).firstp+w)
+		  bib2 = new Bibpoint(NewLine.firstp, NewLine.secondp)
+		  w = Bib1.BiBInterdroites(Bib2,droite(s).nextre, NewLine.nextre,r1, r2)
+		  if w <> nil then
+		  p.valider
+		  point(p).moveto w
+		  p.puton NewLine
+		  end if
+		  end if
+		  next
 		  next
 		  
 		  
@@ -80,42 +84,51 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DoOperation()
+	Sub DoOperation()
+		  // Performs the prolongation operation: creates a new line extending the selected side
 		  Dim i, j As Integer
 		  
-		  Bip = currenthighlightedshape
+		  BaseShape = currenthighlightedshape
 		  if not currentcontent.macrocreation then
-		    CurrentContent.TheFigs.Removefigure Bip.fig
+		  CurrentContent.TheFigs.Removefigure BaseShape.fig
 		  end if
 		  GetSide
-		  
-		  Dr = New Droite(objects, Bip.points(ibip), Bip.points(jbip), 0)
+
+		  NewLine = New Droite(objects, BaseShape.points(StartIndex), BaseShape.points(EndIndex), 0)
 		  deplacerptssur
-		  if Bip isa Lacet then
-		    if Lacet(Bip).prol.count = 0 then
-		      redim Lacet(Bip).prol(Bip.npts-1)
-		    end if 
-		    Lacet(Bip).prol(ibip) = true
+		  if BaseShape isa Lacet then
+		  if Lacet(BaseShape).prol.count = 0 then
+		  redim Lacet(BaseShape).prol(BaseShape.npts-1)
 		  end if
+		  Lacet(BaseShape).prol(StartIndex) = true
+		  end if
+
+		  NewLine.endconstruction
+		  NewLine.setconstructedby BaseShape, 8
+		  NewLine.Constructedby.data.append StartIndex
+
+		  UpdateChildFigures(NewLine)
 		  
-		  Dr.endconstruction
-		  Dr.setconstructedby Bip, 8
-		  Dr.Constructedby.data.append ibip
 		  
-		  for i = 2 to ubound(Dr.childs)
-		    Dr.childs(i).fig = Dr.fig
-		    Dr.fig.PtsSur.addshape Dr.childs(i)
-		    for j = 0 to Dr.fig.subs.count - 1
-		      if Dr.fig.subs.item(j).shapes.getposition(Dr) <> -1 then
-		        Dr.fig.subs.item(j).PtsSur.addshape Dr.childs(i)
+		  
+		  
+		  
+		End Sub
+		#tag EndMethod
+
+		#tag Method, Flags = &h21
+		Private Sub UpdateChildFigures(line As Droite)
+		  // Updates figure references for all child points of the new line
+		  Dim i, j As Integer
+		  for i = 2 to ubound(line.childs)
+		    line.childs(i).fig = line.fig
+		    line.fig.PtsSur.addshape line.childs(i)
+		    for j = 0 to line.fig.subs.count - 1
+		      if line.fig.subs.item(j).shapes.getposition(line) <> -1 then
+		        line.fig.subs.item(j).PtsSur.addshape line.childs(i)
 		      End If
 		    next
 		  next
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -123,9 +136,9 @@ Inherits SelectOperation
 		Sub EndOperation()
 		  
 		  super.endoperation
-		  
-		  Bip = nil
-		  Dr = nil
+
+		  BaseShape = nil
+		  NewLine = nil
 		End Sub
 	#tag EndMethod
 
@@ -136,16 +149,18 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetShape(p as BasicPoint) As shape
+	Function GetShape(p as BasicPoint) As shape
+		  // Determines if a shape at point p can be prolonged, filtering out invalid shapes
 		  Dim s As shape
 		  dim i as integer
 		  
 		  s = operation.GetShape(p)
 		  
 		  if s = nil then
-		    return nil
+		  return nil
 		  end if
 		  dim n as integer
+  dim sideIndex as integer
 		  
 		  for i = visible.count-1 downto 0
 		    s = Visible.item(i)
@@ -155,8 +170,8 @@ Inherits SelectOperation
 		      continue
 		    end if
 		    
-		    // Segment valide au point p (peut fixer ibip)
-		    if not s.ValidSegment(p, ibip) then
+		    // Segment valide au point p (peut fixer sideIndex)
+		    if not s.ValidSegment(p, sideIndex) then
 		      visible.removeobject(s)
 		      continue
 		    end if
@@ -196,14 +211,14 @@ Inherits SelectOperation
 		  
 		  s = visible.item(iobj)
 		  if s = nil then
+		    return nil
+		  end if
+		  SelectedSide = index(iobj)
+		  // Prolongation déjà effectuée pour ce côté (formes lacets)
+		  if s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(SelectedSide) then
 		  return nil
 		  end if
-		  cot = index(iobj)
-		  // Prolongation déjà effectuée pour ce côté (formes lacets)
-  if s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(cot) then
-    return nil
-  end if
-  return s
+		  return s
 		  
 		  
 		  
@@ -214,14 +229,14 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub GetSide()
 		  
-		  if Bip isa cube then
-		    cube(Bip).GetIbipJbip(cot,ibip,jbip)
-		  elseif Bip isa Lacet then
-		    ibip = cot
-		    jbip = (cot+1) mod Bip.npts
-		  elseif Bip isa droite then
-		    ibip = 0
-		    jbip = 1
+		  if BaseShape isa cube then
+		  cube(BaseShape).GetIbipJbip(SelectedSide,StartIndex,EndIndex)
+		  elseif BaseShape isa Lacet then
+		  StartIndex = SelectedSide
+		  EndIndex = (SelectedSide+1) mod BaseShape.npts
+		  elseif BaseShape isa droite then
+		  StartIndex = 0
+		  EndIndex = 1
 		  end if
 		  
 		End Sub
@@ -238,16 +253,14 @@ Inherits SelectOperation
 		  else
 		    super.paint(g)
 		    if sh isa Lacet then
-		      Lacet(sh).PaintSide(g,cot,2,config.HighlightColor)
-		      'end if
-		      'if currentcontent.macrocreation then
-		      if not sh isa cube and sh.coord.curved(cot)=1 then
-		        display = thisarc + "?"
-		      else
-		        display = thissideofpoly + "?"
-		      end if
+		    Lacet(sh).PaintSide(g,SelectedSide,2,config.HighlightColor)
+		    if not sh isa cube and sh.coord.curved(SelectedSide)=1 then
+		      display = thisarc + "?"
 		    else
-		      display = thissegment + "?"
+		    display = thissideofpoly + "?"
+		    end if
+		    else
+		    display = thissegment + "?"
 		    end if
 		  end if
 		  Help g, display
@@ -263,21 +276,21 @@ Inherits SelectOperation
 		  
 		  EL1 = XMLElement(Temp.child(0))
 		  EL2 = XMLElement(EL1.child(0))
-		  Bip = objects.getshape(val(EL2.GetAttribute("Id")))
+		  BaseShape = objects.getshape(val(EL2.GetAttribute("Id")))
 		  EL2 = XMLElement(EL1.child(1))
-		  Dr = Droite(Objects.XMLLoadObject(EL2))
-		  ibip = val(EL2.GetAttribute("Ibip"))
-		  jbip = (ibip+1) mod Bip.npts
-		  if Bip isa Polygon then
-		    Polygon(Bip).prol(ibip) = true
+		  NewLine = Droite(Objects.XMLLoadObject(EL2))
+		  StartIndex = val(EL2.GetAttribute("Ibip"))
+		  EndIndex = (StartIndex+1) mod BaseShape.npts
+		  if BaseShape isa Lacet then
+		  Lacet(BaseShape).prol(StartIndex) = true
 		  end if
-		  
-		  for i =  ubound(Bip.childs) downto Bip.npts
-		    p = Bip.Childs(i)
-		    if p.numside(0) = ibip then
-		      p.removepointsur Bip
-		      p.puton Dr
-		    end if
+
+		  for i =  ubound(BaseShape.childs) downto BaseShape.npts
+		  p = BaseShape.Childs(i)
+		  if p.numside(0) = StartIndex then
+		  p.removepointsur BaseShape
+		  p.puton NewLine
+		  end if
 		  next
 		  
 		  
@@ -297,21 +310,22 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub replacerperp()
+	Sub replacerperp()
+		  // Moves points back from the new line to the base shape during undo
 		  dim j as integer
 		  dim p as point
 		  
 		  
 		  
 		  
-		  for j = ubound(Dr.childs) downto  Dr.npts
-		    p = Dr.Childs(j)
-		    p.removepointsur Dr
-		    p.puton bip
-		    p.numside(0) = ibip
-		    if Bip.pointonside(p.bpt) = -1 then
-		      p.invalider
-		    end if
+		  for j = ubound(NewLine.childs) downto  NewLine.npts
+		  p = NewLine.Childs(j)
+		  p.removepointsur NewLine
+		  p.puton BaseShape
+		  p.numside(0) = StartIndex
+		  if BaseShape.pointonside(p.bpt) = -1 then
+		  p.invalider
+		  end if
 		    if p.location(0) < 0 or p.location(0)> 1 then
 		      p.invalider
 		    end if
@@ -328,10 +342,10 @@ Inherits SelectOperation
 		Function ToMac(Doc as XmlDocument, EL as XMLElement) As XMLElement
 		  dim Temp as XMLElement
 		  
-		  Temp =  Dr.XMLPutIdInContainer(Doc)
-		  Temp.AppendChild DR.XMLPutChildsInContainer(Doc)
+		  Temp =  NewLine.XMLPutIdInContainer(Doc)
+		  Temp.AppendChild NewLine.XMLPutChildsInContainer(Doc)
 		  EL.appendchild Temp
-		  EL.AppendChild Dr.XMLPutConstructionInfoInContainer(Doc)
+		  EL.AppendChild NewLine.XMLPutConstructionInfoInContainer(Doc)
 		  
 		  return EL
 		End Function
@@ -342,12 +356,10 @@ Inherits SelectOperation
 		  dim Temp, EL as XMLElement
 		  
 		  Temp=Doc.CreateElement(GetName)
-		  Temp.appendChild Bip.XMLPutInContainer(Doc)
-		  'if Bip isa Polygon then
-		  EL = Dr.XMLPutIncontainer(Doc)
-		  EL.SetAttribute("Ibip", str(ibip))
+		  Temp.appendChild BaseShape.XMLPutInContainer(Doc)
+		  EL = NewLine.XMLPutIncontainer(Doc)
+		  EL.SetAttribute("Ibip", str(StartIndex))
 		  Temp.Appendchild EL
-		  'end if
 		  return Temp
 		  
 		  
@@ -361,17 +373,17 @@ Inherits SelectOperation
 		  
 		  EL1 = XMLElement(Temp.child(0))
 		  EL2 = XMLElement(EL1.child(0))
-		  Bip = objects.getshape(val(EL2.GetAttribute("Id")))
-		  
+		  BaseShape = objects.getshape(val(EL2.GetAttribute("Id")))
+
 		  EL2 = XMLElement(EL1.child(1))
-		  Dr = droite(objects.getshape(val(EL2.GetAttribute("Id"))))
-		  if Bip isa Polygon then
-		    ibip = val(EL2.GetAttribute("Ibip"))
-		    polygon(Bip).prol(ibip) = false
+		  NewLine = droite(objects.getshape(val(EL2.GetAttribute("Id"))))
+		  if BaseShape isa Lacet then
+		  StartIndex = val(EL2.GetAttribute("Ibip"))
+		  Lacet(BaseShape).prol(StartIndex) = false
 		  end if
 		  replacerperp
-		  
-		  dr.delete
+
+		  NewLine.delete
 		  RedeleteCreatedFigures(temp)
 		  RecreateDeletedFigures(temp)
 		  
@@ -411,23 +423,23 @@ Inherits SelectOperation
 
 
 	#tag Property, Flags = &h0
-		BiP As shape
+		BaseShape As shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		cot As Integer
+		SelectedSide As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Dr As Droite
+		NewLine As Droite
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ibip As Integer
+		StartIndex As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		jbip As Integer
+		EndIndex As Integer
 	#tag EndProperty
 
 
@@ -449,12 +461,12 @@ Inherits SelectOperation
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="cot"
-			Visible=false
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
+		Name="SelectedSide"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="display"
@@ -481,12 +493,12 @@ Inherits SelectOperation
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="ibip"
-			Visible=false
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
+		Name="StartIndex"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -521,12 +533,12 @@ Inherits SelectOperation
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="jbip"
-			Visible=false
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
+		Name="EndIndex"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
