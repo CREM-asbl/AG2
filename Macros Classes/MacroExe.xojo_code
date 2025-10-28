@@ -176,10 +176,9 @@ Inherits MultipleSelectOperation
 		      end if
 		      newshape.points(i).ifmac = ifm
 		      if ifm.fo = 1 and (Mac.ObInterm.indexof(ifm.forme0) =-1) then
-		        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
-		        newshape.points(i).numside.append  ifm.numside0
-		        'newshape.points(i).puton s, ifmac.childs(i).location
-		        newshape.points(i).placerptsursurfigure
+		      s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
+		      newshape.points(i).numside.append  ifm.numside0
+		      newshape.points(i).placerptsursurfigure
 		      end if
 		      newshape.points(i).forme = ifm.fo
 		    next
@@ -295,7 +294,6 @@ Inherits MultipleSelectOperation
 		    case 28 //Prolonger
 		    curop = new Prolonger(self,EL1)
 		    createdshape = Prolonger(curop).NewLine
-		      'case 35 //Identifier Pour mémoire
 		    case 37 //FixPConstruction
 		      curop = new FixPConstruction(self, EL1)
 		      createdshape = FixPConstruction(curop).tsf.FixPt
@@ -466,9 +464,17 @@ Inherits MultipleSelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetRealId(n as integer) As integer
-		  return Real(MacId.indexof(n))
-		  
+	Function GetRealId(n as integer) As integer
+	dim idx as integer = MacId.indexof(n)
+	if idx = -1 then
+	  dim d as Debug
+	d = new Debug
+	d.setMessage(CurrentMethodName + ": ID not found")
+	d.setVariable("n", n)
+	raise new RuntimeException(d.getString)
+	end if
+	return Real(idx)
+	  
 		  Exception err
 		    var d as Debug
 		    d = new Debug
@@ -721,7 +727,7 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim s as shape
 		  
-		  EL0 = Doc.CreateElement(Dico.value("Forms"))
+		  EL0 = Doc.CreateElement(Dico.Value("Forms"))
 		  
 		  for i = 0 to ubound(MacInfo.RealFinal)
 		    s = Objects.Getshape(MacInfo.RealFinal(i))
@@ -741,14 +747,14 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim s as shape
 		  
-		  EL0 = Doc.CreateElement(Dico.value("Macro"))
+		  EL0 = Doc.CreateElement(Dico.Value("Macro"))
 		  EL0.setAttribute("Name", Mac.Caption)
 		  EL1 =  Doc.CreateElement("Initial_Forms")
 		  for i = 0 to ubound(MacInfo.RealInit)
 		    s = Objects.Getshape(MacInfo.RealInit(i))
 		    EL1.appendchild s.XMLPutIdInContainer(Doc)
 		  next
-		  EL0. appendchild EL1
+		  EL0.appendchild EL1
 		  EL1 =  Doc.CreateElement("Final_Forms")
 		  for i = 0 to ubound(MacInfo.RealFinal)
 		    s = Objects.Getshape(MacInfo.RealFinal(i))
