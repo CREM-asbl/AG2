@@ -154,11 +154,7 @@ Inherits SelectOperation
 		      visible.removeobject(s)
 		      continue
 		    end if
-		    // Prolongation déjà effectuée pour ce côté (formes lacets)
-		    if s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(ibip) then
-		      visible.removeobject(s)
-		      continue
-		    end if
+		    
 		    // Segment valide au point p (peut fixer ibip)
 		    if not s.ValidSegment(p, ibip) then
 		      visible.removeobject(s)
@@ -178,10 +174,14 @@ Inherits SelectOperation
 		      continue
 		    end if
 		  next
-		  
-		  nobj = visible.count
-		  redim index(-1)
-		  redim index(nobj)
+
+		  if visible.count = 0 then
+		    return nil
+		  end if
+
+  nobj = visible.count
+  redim index(-1)
+  redim index(nobj)
 		  
 		  iobj = 0
 		  
@@ -196,10 +196,14 @@ Inherits SelectOperation
 		  
 		  s = visible.item(iobj)
 		  if s = nil then
-		    return nil
+		  return nil
 		  end if
 		  cot = index(iobj)
-		  return s
+		  // Prolongation déjà effectuée pour ce côté (formes lacets)
+  if s isa Lacet and Lacet(s).prol.count > 0 and Lacet(s).prol(cot) then
+    return nil
+  end if
+  return s
 		  
 		  
 		  
