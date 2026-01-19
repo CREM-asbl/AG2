@@ -565,13 +565,13 @@ Protected Class Configuration
 		  EL1 = temp.appendChild(Doc.CreateElement("Language"))
 		  EL1.AppendChild(Doc.CreateTextNode(Langue))
 
-		  EL2 = temp.appendchild(Doc.CreateElement("Configuration"))
-		  EL2.AppendChild(Doc.CreateTextNode(Menu))
+EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
+	  EL2.AppendChild(Doc.CreateTextNode(Menu))
 
-		  EL3 = temp.appendchild(Doc.CreateElement("StdSize"))
-		  EL3.AppendChild(Doc.CreateTextNode(str(StdSize)))
+	  EL3 = temp.AppendChild(Doc.CreateElement("StdSize"))
+	  EL3.AppendChild(Doc.CreateTextNode(str(StdSize)))
 
-		  EL4 = temp.appendchild(Doc.CreateElement("LastInfo"))
+	  EL4 = temp.AppendChild(Doc.CreateElement("LastInfo"))
 		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))
 
 
@@ -702,9 +702,8 @@ Protected Class Configuration
 		  EL = ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorStdFam","ColStdFam")
 		  if EL <> nil then temp.AppendChild EL
 
-		  if  MenuMenus.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark  then
-		    temp.appendchild CFG.CreateElement("Thickness")
-		  end if
+		  EL = ConfigElem3("ToolsMenu","ToolsThickness","ToolsThick1","Thickness")
+		  if EL <> nil then temp.AppendChild EL
 		  EL = ConfigElem("ToolsMenu","ToolsRigid","Rigid")
 		  if EL <> nil then temp.AppendChild EL
 		  EL = ConfigElem("ToolsMenu","ToolsHide","Hide")
@@ -719,7 +718,7 @@ Protected Class Configuration
 		  if EL <> nil then temp.AppendChild EL
 
 		  EL = ConfigElem("MacrosMenu", "MacrosLoad", "Macros")
-		  if EL <> nil then temp.appendchild EL
+		  if EL <> nil then temp.AppendChild EL
 
 		  EL = ConfigElem("OperaMenu","OperaDivide","Divide")
 		  if EL <> nil then temp.AppendChild EL
@@ -801,12 +800,12 @@ Protected Class Configuration
 		    EL = CFG.CreateElement("StdFile")
 		    if EL <> nil then
 		      EL.SetAttribute("Name", stdfile)
-		      Temp.appendchild EL
+		      Temp.AppendChild EL
 		    end if
 		    EL = CFG.CreateElement("TailleFormesStandard")
 		    if EL <> nil then
 		      EL.SetAttribute("Value", str(stdsize))
-		      Temp.appendchild EL
+		      Temp.AppendChild EL
 		    end if
 		  end if
 
@@ -818,26 +817,26 @@ Protected Class Configuration
 		          EL = CFG.CreateElement("Fam"+str(i))
 		          if EL <> nil then
 		            EL.SetAttribute("Vis", str(j))
-		            temp.appendchild EL
+		            temp.AppendChild EL
 		          end if
 		        end if
 		      next
 		    next
 		  end if
 		  if MvBt(0) then
-		    temp.appendchild CFG.CreateElement("Modify")
+		    temp.AppendChild CFG.CreateElement("Modify")
 		  end if
 		  if MvBt(1) then
-		    temp.appendchild CFG.CreateElement("Slide")
+		    temp.AppendChild CFG.CreateElement("Slide")
 		  end if
 		  if MvBt(2) then
-		    temp.appendchild CFG.CreateElement("Turn")
+		    temp.AppendChild CFG.CreateElement("Turn")
 		  end if
 		  if MvBt(3) then
-		    temp.appendchild CFG.CreateElement("Return")
+		    temp.AppendChild CFG.CreateElement("Return")
 		  end if
 		  if MvBt(4) then
-		    temp.appendchild CFG.CreateElement("Zoom")
+		    temp.AppendChild CFG.CreateElement("Zoom")
 		  end if
 
 		  CFG.PreserveWhitespace = true
