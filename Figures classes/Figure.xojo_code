@@ -3516,7 +3516,7 @@ Protected Class Figure
 
 		  for i =  subs.count-1 downto 0
 		    f = Figure(subs.item(i))
-		    if f.isempty then
+		    if f <> nil and f.isempty then
 		      subs.removeobject subs.item(i)
 		    end if
 		  next

@@ -39,9 +39,19 @@ Inherits Liste
 		  dim tsf as transformation
 		  dim f as figure
 
+		  if ff = nil then
+		    return
+		  end if
+
 		  for k = 0 to count-1
+		    if item(k) = nil then
+		      continue
+		    end if
 		    for i =  item(k).Constructedfigs.count-1 downto 0
 		      f =  item(k).Constructedfigs.item(i)
+		      if f = nil then
+		        continue
+		      end if
 		      if getposition(f) = -1 then
 		        for j = 0 to ubound(f.constructioninfos)
 		          if f.constructioninfos(j).sourcefig = item(k) then
@@ -53,8 +63,10 @@ Inherits Liste
 		          if f.constructioninfos(j).sourcefig = item(k) then
 		            ff.setconstructedby ff, f.constructioninfos(j).tsf
 		            tsf = f.Constructioninfos(j).tsf
-		            tsf.constructedfigs.removefigure f
-		            tsf.constructedfigs.addobject ff
+		            if tsf <> nil then
+		              tsf.constructedfigs.removefigure f
+		              tsf.constructedfigs.addobject ff
+		            end if
 		            f.constructioninfos.remove j
 		          end if
 		        next
@@ -70,19 +82,28 @@ Inherits Liste
 		  dim i, j as integer
 		  dim tsf as Transformation
 
+		  if ff = nil then
+		    return
+		  end if
+
 		  for j =  count-1 downto 0
 		    sf = item(j)
+		    if sf = nil then
+		      continue
+		    end if
 		    for i =  ubound(sf.constructioninfos) downto 0
 		      f = sf.constructioninfos(i).sourcefig
 		      tsf = sf.constructioninfos(i).tsf
-		      f.constructedfigs.removefigure sf
-		      if getposition(f) = -1 Then
-		        ff.setconstructedby f, tsf
-		      else
-		        ff.setconstructedby ff, tsf
+		      if f <> nil and tsf <> nil then
+		        f.constructedfigs.removefigure sf
+		        if getposition(f) = -1 Then
+		          ff.setconstructedby f, tsf
+		        else
+		          ff.setconstructedby ff, tsf
+		        end if
+		        tsf.constructedfigs.removefigure sf
+		        tsf.constructedfigs.addobject ff
 		      end if
-		      tsf.constructedfigs.removefigure sf
-		      tsf.constructedfigs.addobject ff
 		      sf.constructioninfos.remove i
 		    next
 		  next
@@ -915,7 +936,9 @@ Inherits Liste
 		  dim i as integer
 
 		  for i = 0 to count-1
-		    item(i).restructurer
+		    if item(i) <> nil then
+		      item(i).restructurer
+		    end if
 		  next
 		End Sub
 	#tag EndMethod
