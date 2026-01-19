@@ -3,22 +3,22 @@ Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub centre(ifmac as infomac, byref nbp As nBPoint)
 
-		  dim ifm1 as infomac
+		  dim infoMac as infomac
 		  dim num as integer
 
-		  ifm1= MacInf.GetInfoMac(ifmac.forme0, num)
-		  nbp.append ifm1.coord.centre
+		  infoMac= MacInf.GetInfoMac(ifmac.forme0, num)
+		  nbp.append infoMac.coord.centre
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ComputeFix(ifmac as infomac, nbp as nbpoint)
+		Sub ComputeFix(ifmac as infomac, nbp as nBPoint)
 		  dim M as Matrix
-		  dim ifm as InfoMac
+		  dim infoMac as InfoMac
 		  dim num as integer
 
-		  ifm = MacInf.GetInfoMac(ifmac.forme0,num)
-		  M = ifm.M
+		  infoMac = MacInf.GetInfoMac(ifmac.forme0,num)
+		  M = infoMac.M
 		  if M <> nil and M.v1 <> nil then
 		    nbp.append M.fixpt
 		  end if
@@ -30,39 +30,39 @@ Protected Class Macro
 		  dim  m as integer
 		  dim nbp as nBpoint
 		  dim s as shape
-		  dim ifm as infomac
+		  dim infoMac as infomac
 
-		  ifm = MacInf.GetInfoMac(ifmac.forme0,m)
-		  if ifm.MacId <> ifmac.forme0 then
-		    ifm = ifm.childs(m)
+		  infoMac = MacInf.GetInfoMac(ifmac.forme0,m)
+		  if infoMac.MacId <> ifmac.forme0 then
+		    infoMac = infoMac.childs(m)
 		  end if
-		  nbp = ifm.coord
+		  nbp = infoMac.coord
 		  select case ifmac.type
 		  case 1
-		    ifm.M = nbp.TranslationMatrix
+		    infoMac.M = nbp.TranslationMatrix
 		  case 2
-		    ifm.M = nbp.RotationMatrix
+		    infoMac.M = nbp.RotationMatrix
 		  case 3
-		    ifm.M = new rotationmatrix(nbp.tab(0), PI)
+		    infoMac.M = new rotationmatrix(nbp.tab(0), PI)
 		  case 4
-		    ifm.M = new rotationmatrix(nbp.tab(0),PIDEMI)
+		    infoMac.M = new rotationmatrix(nbp.tab(0),PIDEMI)
 		  case 5
-		    ifm.M = new rotationmatrix(nbp.tab(0), -PIDEMI)
+		    infoMac.M = new rotationmatrix(nbp.tab(0), -PIDEMI)
 		  case 6
-		    ifm.M = new SymmetryMatrix(nbp.tab(0),nbp.tab(1))
+		    infoMac.M = new SymmetryMatrix(nbp.tab(0),nbp.tab(1))
 		  case 7,8
-		    ifm.M = nbp.SimilarityMatrix
+		    infoMac.M = nbp.SimilarityMatrix
 		  case 9,11
-		    ifm.M = nbp.EtirCisailMatrix
+		    infoMac.M = nbp.EtirCisailMatrix
 		  case 10
-		    ifm.M = nbp.IsometryMatrix
+		    infoMac.M = nbp.IsometryMatrix
 		  end select
 
 		  'k = ObFinal.indexof(MacId)
-		  if  ifm.final then      //Si le support est une forme finale ou initiale
+		  if  infoMac.final then      //Si le support est une forme finale ou initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.tsfi.item(ifmac.num).setfpsp(s)
-		    s.tsfi.item(ifmac.num).M =  ifm.M
+		    s.tsfi.item(ifmac.num).M =  infoMac.M
 		  end if
 
 		  Exception err
@@ -72,8 +72,8 @@ Protected Class Macro
 		    d.setVariable("m", m)
 		    d.setVariable("s", s)
 		    d.setVariable("nbp", nbp)
-		    d.setVariable("ifm", ifm)
-		    err.Message = err.message + d.getString
+		    d.setVariable("infoMac", infoMac)
+		    err.Message = "Erreur dans " + CurrentMethodName + ": " + err.message + d.getString
 		    Raise err
 		End Sub
 	#tag EndMethod
