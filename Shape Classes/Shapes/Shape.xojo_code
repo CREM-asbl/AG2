@@ -4636,10 +4636,12 @@ Protected Class Shape
 		    Tmp = XMLElement(List.Item(0))
 		    cap = TMP.GetAttribute("Macro")
 		    Mac =app.TheMacros.GetMacro(cap)
-		    Tmp = XMLElement(Tmp.Child(0))
-		    MacInfo = new MacConstructionInfo(Mac,Tmp)
-		    SetMacConstructedBy MacInfo
-		    auto = 0
+		    if Mac <> nil then
+		      Tmp = XMLElement(Tmp.Child(0))
+		      MacInfo = new MacConstructionInfo(Mac,Tmp)
+		      SetMacConstructedBy MacInfo
+		      auto = 0
+		    end if
 		  end if
 		End Sub
 	#tag EndMethod
