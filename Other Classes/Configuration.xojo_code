@@ -17,12 +17,12 @@ Protected Class Configuration
 		  dim C as XMLDocument
 		  dim El,temp as  XMLElement
 		  dim fi as FolderItem
-		  
-		  
+
+
 		  if oldMenu = Menu then
 		    return
 		  end if
-		  
+
 		  select case Menu
 		  case "Menu_A"
 		    C=new XMLDocument(Menu_A)
@@ -44,13 +44,13 @@ Protected Class Configuration
 		    end if
 		  end select
 		  El = C.DocumentElement
-		  
+
 		  ChargerMenu(El)
 		  ChargerBoutons(El)
-		  
+
 		  ShowTools = EL.XQL("FreeForms").length > 0
 		  ShowStdTools = EL.XQL("StdForms").length > 0
-		  
+
 		  GridPointsSize = 1
 		  List = EL.XQL("DistanceMagnetisme")
 		  if List.length > 0 then
@@ -59,7 +59,7 @@ Protected Class Configuration
 		  else
 		    MagneticDist = 8
 		  end if
-		  
+
 		  if ShowStdTools then
 		    List = EL.XQL("StdFile")
 		    if List.Length > 0 then
@@ -69,9 +69,9 @@ Protected Class Configuration
 		      ShowStdTools = false
 		    end if
 		  end if
-		  
+
 		  ChargerLibForms(El)
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -82,56 +82,56 @@ Protected Class Configuration
 		  dim List as XMLNodeList
 		  dim Temp as XMLElement
 		  dim Names(-1) as string
-		  
-		  
+
+
 		  Libfamilies(0,0) = "Point"
 		  nlibf(0)=0
-		  
+
 		  Names = Array("Segment", "SegParall", "SegPerp", "Droite", "DroiteParall", "DroitePerp", "DemiDroite", "Bande", "Secteur")
 		  nlibf(1)=8
 		  for j = 0 to nlibf(1)
 		    Libfamilies(1,j)=Names(j)
 		  next
-		  
+
 		  Names = Array("Triang", "TriangIso", "TriangEqui", "TriangRect", "TriangRectIso")
 		  nlibf(2)=4
 		  for j = 0 to nlibf(2)
 		    Libfamilies(2,j)=Names(j)
 		  next
-		  
+
 		  Names = Array("Quadri","Trap","TrapRect","TrapIso","Parallelogram","Rect","Losange","Carre")
 		  nlibf(3)=7
 		  for j = 0 to nlibf(3)
 		    Libfamilies(3,j)=Names(j)
 		  next
-		  
+
 		  Names = Array("TriangEqui","Carre","PentaReg","HexaReg","HeptaReg","OctoReg","EnneaReg","DecaReg","UndecaReg","DodecaReg")
 		  nlibf(4)=9
 		  for j = 0 to nlibf(4)
 		    Libfamilies(4,j)=Names(j)
 		  next
-		  
+
 		  Names = Array("FreeCircle", "Arc","DSect", "HalfDsk")
 		  nlibf(5)=3
 		  for j = 0 to nlibf(5)
 		    Libfamilies(5,j)=Names(j)
 		  next
-		  
+
 		  Names = Array("Triang","Quadri","Penta","Hexa","Hepta","Octo","Ennea","Deca","Undeca","Dodeca")
 		  nlibf(6)=9
 		  for j = 0 to nlibf(6)
 		    Libfamilies(6,j)=Names(j)
 		  next
-		  
-		  
-		  
+
+
+
 		  for i = 0 to 6
 		    for j = 0 to nlibf(i)
 		      Libvisible(i,j) = false
 		    next
 		    nlibvis(i) = false
 		  next
-		  
+
 		  if ShowTools then
 		    LibVisible(0,0) = true
 		    nlibvis(0) = true
@@ -148,18 +148,18 @@ Protected Class Configuration
 		      UpdateNlibVis(i)
 		    next
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ChargerMenu(El As XMLElement)
 		  Dim mmenubar As DesktopMenuItem
-		  
+
 		  'un moyen plus propre ?
 		  mmenubar = MenuMenus
-		  
+
 		  mmenubar.Child("EditMenu").Child("EditUndo").HasCheckMark = El.XQL("Undo").length > 0
 		  mmenubar.Child("EditMenu").Child("EditRedo").HasCheckMark = El.XQL("Redo").length > 0
 		  mmenubar.Child("EditMenu").Child("EditCopy").HasCheckMark = El.XQL("Copy").length > 0
@@ -170,7 +170,7 @@ Protected Class Configuration
 		  mmenubar.Child("EditMenu").Child("EditDelete").HasCheckMark = El.XQL("Delete").length > 0
 		  mmenubar.Child("EditMenu").Child("EditLink").HasCheckMark = El.XQL("Link").length > 0
 		  mmenubar.Child("EditMenu").Child("EditUnlink").HasCheckMark = El.XQL("Link").length > 0
-		  
+
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").HasCheckMark = El.XQL("ColTsp").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").HasCheckMark = El.XQL("ColTsp").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").HasCheckMark = El.XQL("ColTsp").length > 0
@@ -184,10 +184,10 @@ Protected Class Configuration
 		  mmenubar.Child("ToolsMenu").Child("ToolsARPlan").HasCheckMark = El.XQL("AVPlan").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsAVPlan").HasCheckMark = El.XQL("AVPlan").length > 0
 		  mmenubar.Child("ToolsMenu").Child("ToolsLabel").HasCheckMark = El.XQL("Label").length > 0
-		  
+
 		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").HasCheckMark = El.XQL("Macros").length > 0
 		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").HasCheckMark = El.XQL("Macros").length > 0
-		  
+
 		  mmenubar.Child("OperaMenu").Child("OperaDivide").HasCheckMark = El.XQL("Divide").length > 0
 		  mmenubar.Child("OperaMenu").Child("OperaCut").HasCheckMark = El.XQL("Cut").length > 0
 		  mmenubar.Child("OperaMenu").Child("OperaMerge").HasCheckMark = El.XQL("Merge").length > 0
@@ -195,7 +195,7 @@ Protected Class Configuration
 		  mmenubar.Child("OperaMenu").Child("OperaIdentify").HasCheckMark = El.XQL("Identify").length > 0
 		  mmenubar.Child("OperaMenu").Child("OperaProl").HasCheckMark = El.XQL("Prolonger").length > 0
 		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").HasCheckMark = El.XQL("CreateCenter").length > 0
-		  
+
 		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").HasCheckMark = El.XQL("Transformations").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").child("DefinirTranslation").HasCheckMark = El.XQL("Translation").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").HasCheckMark = El.XQL("Rotation").length > 0
@@ -211,7 +211,7 @@ Protected Class Configuration
 		  mmenubar.Child("TransfosMenu").Child("TransfosHide").HasCheckMark = El.XQL("HideTsf").length > 0
 		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").HasCheckMark = El.XQL("PtsFix").length > 0
 		  mmenubar.Child("TransfosMenu").Child("InvCurve").HasCheckMark = El.XQL("InvCurve").length > 0
-		  
+
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").HasCheckMark =true
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("FondEcranConfigurer").HasCheckMark =true
 		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").HasCheckMark =true
@@ -233,12 +233,12 @@ Protected Class Configuration
 		  mmenubar.Child("PrefsMenu").Child("PrefsArea").HasCheckMark = El.XQL("Area").length >0
 		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").HasCheckMark= El.XQL("Area").length >0
 		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").HasCheckMark = El.XQL("Area").length >0
-		  
+
 		  mmenubar.Child("HelpMenu").Child("HelpView").HasCheckMark = true
 		  mmenubar.Child("HelpMenu").Child("HelpVisit").HasCheckMark = true
 		  mmenubar.Child("HelpMenu").Child("HelpAbout").HasCheckMark = true
 		  mmenubar.Child("HelpMenu").Child("HelpUG").HasCheckMark = true
-		  
+
 		  mmenubar.Child("NotesMenu").Child("NotesOpen").HasCheckMark = El.XQL("Notes").length > 0
 		End Sub
 	#tag EndMethod
@@ -251,11 +251,11 @@ Protected Class Configuration
 		  dim EL, CurFig, EL1, EL2,EL3 as XMLElement
 		  dim h,i,j,k,nrep as Integer
 		  dim CurSpecs as StdPolygonSpecifications
-		  
+
 		  if not ShowStdTools then
 		    return
 		  end if
-		  
+
 		  select case std
 		  case "Jeu_de_base.std"
 		    Doc = new XMLDocument(jeu_de_base)
@@ -279,9 +279,9 @@ Protected Class Configuration
 		    end if
 		    Doc = new XMLDocument(fi)
 		  end select
-		  
+
 		  stdfile = std
-		  
+
 		  EL = Doc.DocumentElement
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
@@ -289,7 +289,7 @@ Protected Class Configuration
 		    MsgBox TooManyFiles(stdfile) + EndOfLine + only4
 		    nstdfam = 4
 		  end if
-		  
+
 		  for i = 0 to nstdfam-1
 		    EL1 = XMLElement(Famlist.Item(i))
 		    NamesStdFamilies(i) = EL1.GetAttribute("Nom")
@@ -322,23 +322,32 @@ Protected Class Configuration
 		      StdFamilies(i,j) = Curspecs
 		    next
 		  next
-		  
+
 		  Exception err
 		    var d as Debug = new Debug
 		    d.setVariable("i", i)
 		    d.setVariable("j", j)
 		    d.setVariable("k", k)
-		    
+
 		    err.message = CurrentMethodName + EndOfLine + d.getString + app.ObjectToJSON(self)
-		    
+
 		    Raise err
-		    
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ConfigElem(m as string, sm as string, tag as string) As XMLNode
-		  if MenuMenus.Child(m).Child(sm).HasCheckMark then
+		  dim menu as DesktopMenuItem
+		  dim submenu as DesktopMenuItem
+
+		  menu = MenuMenus.Child(m)
+		  if menu = nil then return nil
+
+		  submenu = menu.Child(sm)
+		  if submenu = nil then return nil
+
+		  if submenu.HasCheckMark then
 		    return CFG.CreateElement(tag)
 		  else
 		    return nil
@@ -348,7 +357,20 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Function ConfigElem3(m as string, sm as string, ssm as string, tag as string) As XMLNode
-		  if MenuMenus.Child(m).Child(sm).Child(ssm).HasCheckMark then
+		  dim menu as DesktopMenuItem
+		  dim submenu as DesktopMenuItem
+		  dim subsubmenu as DesktopMenuItem
+
+		  menu = MenuMenus.Child(m)
+		  if menu = nil then return nil
+
+		  submenu = menu.Child(sm)
+		  if submenu = nil then return nil
+
+		  subsubmenu = submenu.Child(ssm)
+		  if subsubmenu = nil then return nil
+
+		  if subsubmenu.HasCheckMark then
 		    return CFG.CreateElement(tag)
 		  else
 		    return nil
@@ -364,12 +386,12 @@ Protected Class Configuration
 		  dim El2 as XMLTextNode
 		  dim List as XMLNodeList
 		  dim lastmaj,f() as String
-		  
+
 		  initParams
 		  fi=app.DocFolder.Child("AG_Init.xml")
-		  
+
 		  password = hash("")
-		  
+
 		  if fi.exists then
 		    try
 		      C=new XMLDocument(fi)
@@ -391,7 +413,7 @@ Protected Class Configuration
 		        end if
 		      end if
 		    end if
-		    
+
 		    List = EL.XQL("Language")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -404,7 +426,7 @@ Protected Class Configuration
 		        end if
 		      end if
 		    end if
-		    
+
 		    List = EL.XQL("Configuration")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -417,7 +439,7 @@ Protected Class Configuration
 		        end if
 		      end if
 		    end if
-		    
+
 		    List = EL.XQL("StdSize")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -430,7 +452,7 @@ Protected Class Configuration
 		        end if
 		      end if
 		    end if
-		    
+
 		    List = EL.XQL("LastInfo")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -448,23 +470,23 @@ Protected Class Configuration
 		    StdSize = 1
 		    Save
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CreateNewMenu(Menu as String)
 		  dim fi as FolderItem
-		  
+
 		  if Menu <> "" then
 		    fi=app.MenusFolder.Child(Menu+".men")
 		    ToXML.SaveXML fi
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -502,31 +524,31 @@ Protected Class Configuration
 		  dim tos as TextOutputStream
 		  dim Doc as XMLDocument
 		  dim temp,EL, EL1, EL2,EL3, EL4 as XMLNode
-		  
+
 		  'save pourAG_init
-		  
+
 		  //création du document XML
-		  
+
 		  Doc=new XMLDocument
 		  temp = Doc.appendChild(Doc.CreateElement("AG_Init"))
-		  
+
 		  EL = temp.appendChild(Doc.CreateElement("Password"))
 		  EL.AppendChild(Doc.CreateTextNode(Password))
-		  
-		  
+
+
 		  EL1 = temp.appendChild(Doc.CreateElement("Language"))
 		  EL1.AppendChild(Doc.CreateTextNode(Langue))
-		  
+
 		  EL2 = temp.appendchild(Doc.CreateElement("Configuration"))
 		  EL2.AppendChild(Doc.CreateTextNode(Menu))
-		  
+
 		  EL3 = temp.appendchild(Doc.CreateElement("StdSize"))
 		  EL3.AppendChild(Doc.CreateTextNode(str(StdSize)))
-		  
+
 		  EL4 = temp.appendchild(Doc.CreateElement("LastInfo"))
 		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))
-		  
-		  
+
+
 		  //enregistrement du document XML
 		  fi=app.DocFolder.Child("AG_Init.xml")
 		  tos=TextOutputStream.Create(fi)
@@ -536,7 +558,7 @@ Protected Class Configuration
 		    tos.write(Doc.ToString)
 		    tos.close
 		  end if
-		  
+
 		  Exception err
 		    err.message = err.message+CurrentMethodName+EndOfLine+app.ObjectToJSON(self)
 		    Raise err
@@ -552,8 +574,8 @@ Protected Class Configuration
 		      Langue = OldLangue
 		    end if
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -562,7 +584,7 @@ Protected Class Configuration
 		  if Menu = m then
 		    return
 		  end if
-		  
+
 		  oldMenu = Menu
 		  if m = "" then
 		    m  = "Menu_AC"
@@ -570,14 +592,14 @@ Protected Class Configuration
 		  Menu = m
 		  ChargerConfig
 		  save
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub setPassword(pass as string)
 		  Password = pass
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -593,9 +615,9 @@ Protected Class Configuration
 	#tag Method, Flags = &h0
 		Sub ToggleFLib(fam as integer)
 		  dim i as integer
-		  
+
 		  nlibvis(fam) = not nlibvis(fam)
-		  
+
 		  for i=0 to nlibf(fam)
 		    Libvisible(fam,i) = nlibvis(fam)
 		  next
@@ -606,7 +628,7 @@ Protected Class Configuration
 		Sub ToggleLibVisible(fam as integer, shape as integer)
 		  Libvisible(fam,shape) = not Libvisible(fam,shape)
 		  UpdateNLibVis(fam)
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -620,83 +642,134 @@ Protected Class Configuration
 		Function ToXml() As XMLDocument
 		  dim temp, EL as XMLNode
 		  dim i, j as integer
-		  
+
 		  CFG = New XmlDocument
-		  
-		  
+
+
 		  temp = CFG.AppendChild(CFG.CreateElement("Configuration"))
-		  
-		  temp.AppendChild ConfigElem("EditMenu","EditUndo","Undo")
-		  temp.AppendChild ConfigElem("EditMenu","EditRedo","Redo")
-		  temp.AppendChild ConfigElem("EditMenu","EditCopy","Copy")
-		  temp.AppendChild ConfigElem("EditMenu","EditPaste","Paste")
-		  temp.AppendChild ConfigElem("EditMenu","EditSelection","Selection")
-		  temp.AppendChild ConfigElem("EditMenu","EditReselect","Reselect")
-		  temp.AppendChild ConfigElem("EditMenu","EditSelectall","Selectall")
-		  temp.AppendChild ConfigElem("EditMenu","EditDelete","Delete")
-		  temp.AppendChild ConfigElem("EditMenu","EditLink","Link")
-		  
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsColorTransparent","ColTsp")
-		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorBorder","ColBorder")
-		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorFill","ColFill")
-		  temp.AppendChild ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorStdFam","ColStdFam")
-		  
+
+		  EL = ConfigElem("EditMenu","EditUndo","Undo")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditRedo","Redo")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditCopy","Copy")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditPaste","Paste")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditSelection","Selection")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditReselect","Reselect")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditSelectall","Selectall")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditDelete","Delete")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("EditMenu","EditLink","Link")
+		  if EL <> nil then temp.AppendChild EL
+
+		  EL = ConfigElem("ToolsMenu","ToolsColorTransparent","ColTsp")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorBorder","ColBorder")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorFill","ColFill")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("ToolsMenu","ToolsColor", "ToolsColorStdFam","ColStdFam")
+		  if EL <> nil then temp.AppendChild EL
+
 		  if  MenuMenus.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark  then
 		    temp.appendchild CFG.CreateElement("Thickness")
 		  end if
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsRigid","Rigid")
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsHide","Hide")
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsGrid","Grid")
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsHisto","Histo")
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsAVPlan","AVPlan")
-		  temp.AppendChild ConfigElem("ToolsMenu","ToolsLabel","Label")
-		  
-		  temp.appendchild ConfigElem("MacrosMenu", "MacrosLoad", "Macros")
-		  
-		  temp.AppendChild ConfigElem("OperaMenu","OperaDivide","Divide")
-		  temp.AppendChild ConfigElem("OperaMenu","OperaCut","Cut")
-		  temp.AppendChild ConfigElem("OperaMenu","OperaMerge","Merge")
-		  temp.AppendChild ConfigElem("OperaMenu","OperaClone","Cloner")
-		  temp.AppendChild ConfigElem("OperaMenu","OperaProl","Prolonger")
-		  temp.AppendChild ConfigElem("OperaMenu","OperaCreateCenter","CreateCenter")
-		  temp.AppendChild ConfigElem("OperaMenu","OperaIdentify","Identify")
-		  
-		  temp.AppendChild ConfigElem("TransfosMenu","TransfosAppliquer","Transformations")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine","DefinirTranslation","Translation")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirRotation","Rotation")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartD","Rot90D")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartG","Rot90G")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine",  "DefinirDemitour","SymCentrale")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine",  "Definirsymetrieaxiale","SymOrtho")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine",  "DefinirHomothetie","Homothetie")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirSimilitude","Similitude")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDeplacement","Deplacement")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirEtirement","Etirement")
-		  temp.AppendChild ConfigElem3("TransfosMenu","TransfosDefine", "DefinirCisaillement","Cisaillement")
-		  
-		  temp.AppendChild ConfigElem("TransfosMenu","TransfosFixedPoints","PtsFix")
-		  temp.AppendChild ConfigElem("TransfosMenu","TransfosHide","HideTsf")
-		  
-		  
-		  temp.AppendChild ConfigElem("PrefsMenu","PrefsStdForms", "StdForms")
-		  temp.AppendChild ConfigElem("PrefsMenu","PrefsFleches", "Flecher")
-		  temp.AppendChild ConfigElem("PrefsMenu","PrefsTrace", "Traj")
-		  temp.AppendChild ConfigElem("PrefsMenu","PrefsPolyg", "Pointer")
-		  temp.AppendChild ConfigElem("PrefsMenu","PrefsBiface", "Biface")
-		  temp.AppendChild ConfigElem("PrefsMenu","PrefsAjust", "Ajuster")
-		  
+		  EL = ConfigElem("ToolsMenu","ToolsRigid","Rigid")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("ToolsMenu","ToolsHide","Hide")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("ToolsMenu","ToolsGrid","Grid")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("ToolsMenu","ToolsHisto","Histo")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("ToolsMenu","ToolsAVPlan","AVPlan")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("ToolsMenu","ToolsLabel","Label")
+		  if EL <> nil then temp.AppendChild EL
+
+		  EL = ConfigElem("MacrosMenu", "MacrosLoad", "Macros")
+		  if EL <> nil then temp.appendchild EL
+
+		  EL = ConfigElem("OperaMenu","OperaDivide","Divide")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("OperaMenu","OperaCut","Cut")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("OperaMenu","OperaMerge","Merge")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("OperaMenu","OperaClone","Cloner")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("OperaMenu","OperaProl","Prolonger")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("OperaMenu","OperaCreateCenter","CreateCenter")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("OperaMenu","OperaIdentify","Identify")
+		  if EL <> nil then temp.AppendChild EL
+
+		  EL = ConfigElem("TransfosMenu","TransfosAppliquer","Transformations")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine","DefinirTranslation","Translation")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirRotation","Rotation")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartD","Rot90D")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirQuartG","Rot90G")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine",  "DefinirDemitour","SymCentrale")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine",  "Definirsymetrieaxiale","SymOrtho")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine",  "DefinirHomothetie","Homothetie")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirSimilitude","Similitude")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirDeplacement","Deplacement")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirEtirement","Etirement")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem3("TransfosMenu","TransfosDefine", "DefinirCisaillement","Cisaillement")
+		  if EL <> nil then temp.AppendChild EL
+
+		  EL = ConfigElem("TransfosMenu","TransfosFixedPoints","PtsFix")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("TransfosMenu","TransfosHide","HideTsf")
+		  if EL <> nil then temp.AppendChild EL
+
+
+		  EL = ConfigElem("PrefsMenu","PrefsStdForms", "StdForms")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("PrefsMenu","PrefsFleches", "Flecher")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("PrefsMenu","PrefsTrace", "Traj")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("PrefsMenu","PrefsPolyg", "Pointer")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("PrefsMenu","PrefsBiface", "Biface")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("PrefsMenu","PrefsAjust", "Ajuster")
+		  if EL <> nil then temp.AppendChild EL
+
 		  EL = ConfigElem("PrefsMenu","PrefsMagDist", "DistanceMagnetisme")
 		  if EL <> nil then
 		    EL.setattribute("Value", str(MagneticDist))
 		    temp.appendchild EL
 		  end if
-		  
-		  temp.AppendChild ConfigElem("HelpMenu","HelpView", "View")
-		  temp.AppendChild ConfigElem("HelpMenu","HelpVisit", "Visit")
-		  temp.AppendChild ConfigElem("HelpMenu","HelpAbout", "About")
-		  temp.AppendChild ConfigElem("NotesMenu","NotesOpen", "Notes")
-		  
-		  
+
+		  EL = ConfigElem("HelpMenu","HelpView", "View")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("HelpMenu","HelpVisit", "Visit")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("HelpMenu","HelpAbout", "About")
+		  if EL <> nil then temp.AppendChild EL
+		  EL = ConfigElem("NotesMenu","NotesOpen", "Notes")
+		  if EL <> nil then temp.AppendChild EL
+
+
 		  if ShowStdTools then
 		    temp.AppendChild CFG.CreateElement("StdForms")
 		    EL = CFG.CreateElement("StdFile")
@@ -710,7 +783,7 @@ Protected Class Configuration
 		      Temp.appendchild EL
 		    end if
 		  end if
-		  
+
 		  if ShowTools then
 		    temp.AppendChild CFG.CreateElement("FreeForms")
 		    for i = 1 to 7
@@ -740,7 +813,7 @@ Protected Class Configuration
 		  if MvBt(4) then
 		    temp.appendchild CFG.CreateElement("Zoom")
 		  end if
-		  
+
 		  CFG.PreserveWhitespace = true
 		  return CFG
 		End Function
@@ -750,36 +823,36 @@ Protected Class Configuration
 		Sub UpdateNLibVis(fam as integer)
 		  dim i as integer
 		  dim visible as Boolean
-		  
+
 		  visible = false
-		  
+
 		  for i=0 to nlibf(fam)
 		    visible = visible or Libvisible(fam,i)
 		  next
-		  
+
 		  nlibvis(fam) = visible
-		  
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
