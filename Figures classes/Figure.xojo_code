@@ -1424,7 +1424,8 @@ Protected Class Figure
 		  end if
 
 		  t = true
-		  for i = 0 to somm.count-1
+		  dim nPoints as integer = somm.count  ' Optimisation: Pré-cacher pour éviter appels répétés
+		  for i = 0 to nPoints-1
 		    p = Point(somm.item(i))
 		    tt = true
 		    tt = tt and (not p.invalid) and (p.pointsur.count < 2)
@@ -3061,21 +3062,26 @@ Protected Class Figure
 		  // On choisit les points appartenant au plus grand nombre de sous-figures en les classant par valeur de distance décroissante
 		  //du premier point modifié
 
-
 		  dim i as integer
 		  dim p, pmob as point
+		  dim isModified() as Boolean  ' Optimisation: lookup O(1) au lieu de O(n) pour IndexOf
 
 		  redim formsPerPoint(-1)
 		  redim formsPerPoint(somm.count-1)
+		  redim isModified(somm.count-1)
 
+		  ' Pré-remplir le booléen pour marquer points modifiés
+		  for i = 0 to somm.count-1
+		    isModified(i) = (ListPtsModifs.indexof(i) <> -1)
+		  next
 
-
-		  // on recense les points  non modifiés et modifiables absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
+		  // on recense les points non modifiés et modifiables absents de la liste précédente et les points modifiés qui ne sont pas des pointssur
 		  pmob = supfig.pmobi
 
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
-		    if (p.id <> pmob.id) and (PointsFixes.IndexOf(i) = -1) and  (PtsConsted.GetPosition(p) = -1) and (ListPtsModifs.indexof(i)=-1) then
+		    ' Optimisation: Utiliser array booléen (O(1)) au lieu de IndexOf (O(n))
+		    if (p.id <> pmob.id) and (PointsFixes.IndexOf(i) = -1) and  (PtsConsted.GetPosition(p) = -1) and (not isModified(i)) then
 		      formsPerPoint(i)=1
 		    end if
 		  next
@@ -3083,10 +3089,6 @@ Protected Class Figure
 		  redim ptfx0(-1)
 
 		  classementptsfix(1)
-
-
-
-
 
 
 		End Sub
@@ -4247,11 +4249,11 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub updatesomm(M as Matrix)
-		  dim i as integer
+		  dim i, nPoints as integer
 		  dim p as Point
 
-
-		  for i = 0 to somm.count-1
+		  nPoints = somm.count  ' Optimisation: Pré-cacher la taille pour éviter appels répétés
+		  for i = 0 to nPoints-1
 		    p = Point(somm.item(i))
 		    p.Transform(M)
 		    p.updateshape
@@ -4259,13 +4261,6 @@ Protected Class Figure
 		      p.modified = true    //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		    end if
 		  next
-
-
-
-
-
-
-
 		End Sub
 	#tag EndMethod
 
