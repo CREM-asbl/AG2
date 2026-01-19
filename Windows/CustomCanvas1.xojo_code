@@ -8,20 +8,20 @@ Inherits Canvas
 		  dim s as shape
 		  Dim m As MenuItem
 		  Dim curop As operation
-		  
+
 		  p = MouseUser
 		  currenthighlightedshape = GetShape(p)
-		  
-		  if(currenthighlightedshape = nil) then 
+
+		  if(currenthighlightedshape = nil) then
 		    return false
 		  end if
 		  sctxt = currenthighlightedshape
-		  
+
 		  info = ""
 		  CurrentContent.TheTransfos.DrapShowAll = false //On cache les tsf hidden2
 		  CurrentContent.TheTransfos.ShowAll                     //On montre les autres
 		  currentcontent.thetransfos.unhighlightall
-		  
+
 		  curop =  currentcontent.currentoperation
 		  If dret <> Nil Then
 		    dret.enabled = false
@@ -34,12 +34,12 @@ Inherits Canvas
 		      curop.endoperation
 		    end if
 		  End If
-		  
+
 		  if curop isa readhisto or currentcontent.macrocreation   then
 		    Return False
 		  End If
-		  
-		  
+
+
 		  If sctxt IsA Lacet  Then
 		    side = sctxt.side
 		  Elseif sctxt IsA circle And (Not sctxt IsA arc) And circle(sctxt).inside(p) Then
@@ -49,22 +49,22 @@ Inherits Canvas
 		  Elseif sctxt IsA point Then
 		    side=-1
 		  End If
-		  
+
 		  workwindow.refreshtitle
 		  Refreshbackground
-		  
+
 		  base.Name= sctxt.GetType
 		  If side <> -1 Then
 		    tit = "Côté n°"+Str(sctxt.side) + " du " + sctxt.identifiant
 		  Else
 		    tit = sctxt.identifiant
 		  End If
-		  
+
 		  base.append (New MenuItem(tit))
 		  base.append( New MenuItem(MenuItem.TextSeparator))
 		  base.append(New MenuItem(Dico.Value("ToolsLabel")))
 		  base.append( New MenuItem(Dico.Value("ToolsColorBorder")))
-		  
+
 		  If side = -1 And (Not sctxt IsA point) And (Not sctxt IsA droite) And (Not sctxt IsA arc) Then
 		    m = new MenuItem(Dico.value("ToolsColorTransparent"))
 		    base.append m
@@ -73,30 +73,30 @@ Inherits Canvas
 		    m.append(New MenuItem(Dico.value("ToolsTsp")))
 		    base.append( New MenuItem(Dico.value("ToolsColorFill")))
 		  end if
-		  
+
 		  if (not sctxt isa point) or (ubound(point(sctxt).parents) = -1) then
 		    base.append(New MenuItem(Dico.Value("ToolsAVPlan")))
 		    base.append(New MenuItem(Dico.Value("ToolsARPlan")))
 		  end if
-		  
+
 		  If sctxt IsA polygon Then
 		    base.append(New MenuItem(Dico.Value("AutoIntersec")))
 		  End If
-		  
+
 		  if sctxt.borderwidth = config.thickness then
 		    base.append( New MenuItem(Dico.Value("Epais")))
 		  else
 		    base.append(New MenuItem(Dico.Value("Mince")))
 		  end if
-		  
-		  
+
+
 		  if not sctxt.std and sctxt.fam < 10  then
 		    base.append(New MenuItem(Dico.Value("Rigidifier")))
 		  else
 		    base.append(New MenuItem(Dico.Value("Derigidifier")))
 		  end if
-		  
-		  
+
+
 		  if not sctxt isa point then
 		    if not sctxt.pointe then
 		      base.append(New MenuItem(Dico.Value("Pointer")))
@@ -109,19 +109,19 @@ Inherits Canvas
 		      base.append(New MenuItem(Dico.Value("DeFlecher")))
 		    end if
 		  end if
-		  
+
 		  if sctxt.tracept then
 		    base.append(New MenuItem(Dico.Value("DeTracer")))
 		  else
 		    base.append(New MenuItem(Dico.Value("Tracer")))
 		  end if
-		  
+
 		  if sctxt.conditionedby = nil then
 		    base.append( New MenuItem(Dico.Value("Condition")))
 		  else
 		    base.append(New MenuItem(Dico.Value("Decondition")))
 		  end if
-		  
+
 		  if sctxt isa point and point(sctxt).pointsur.count = 1 then
 		    s = point(sctxt).pointsur.item(0)
 		    if s isa polygon  and not point(sctxt).surseg  then
@@ -131,13 +131,13 @@ Inherits Canvas
 		      base.append (New MenuItem(Dico.Value("Animer")))
 		    end if
 		  end if
-		  
+
 		  if sctxt isa droite and  sctxt.fig.shapes.count = 1 and sctxt.constructedby = nil and ubound(sctxt.constructedshapes) = -1 then
 		    base.append (New MenuItem("Rectifier l'horizontale"))
 		  end if
-		  
-		  Return true 
-		  
+
+		  Return true
+
 		  Exception err
 		    var d as Debug
 		    d = new Debug
@@ -149,7 +149,7 @@ Inherits Canvas
 		    d.setVariable("sctxt", sctxt)
 		    err.message = err.message + d.getString
 		    Raise err
-		    
+
 		End Function
 	#tag EndEvent
 
@@ -159,8 +159,8 @@ Inherits Canvas
 		  dim coul as couleur
 		  Dim dr As droite
 		  Dim oldside As Integer
-		  
-		  
+
+
 		  Select Case hitItem.Text
 		  case tit
 		    TextWindow.show
@@ -189,7 +189,7 @@ Inherits Canvas
 		      currentoper.currentshape = sctxt
 		      EndOperMenuContext
 		    End If
-		    
+
 		  Case Dico.Value("ToolsColorFill")
 		    colo = sctxt.FillColor.col
 		    side =-1
@@ -202,7 +202,7 @@ Inherits Canvas
 		      currentoper.currentshape = sctxt
 		      EndOperMenuContext
 		    End If
-		    
+
 		  case Dico.Value("ToolsOpq")
 		    currentcontent.currentoperation = new TransparencyChange(100)
 		    currentoper = Transparencychange(currentcontent.currentoperation)
@@ -268,7 +268,7 @@ Inherits Canvas
 		    currentcontent.currentoperation = nil
 		  End If
 		  workwindow.refreshtitle
-		  
+
 		  return true
 		End Function
 	#tag EndEvent
@@ -276,7 +276,7 @@ Inherits Canvas
 	#tag Event
 		Sub DoubleClick(X As Integer, Y As Integer)
 		  dim s as shape
-		  
+
 		  if  CurrentContent.currentoperation isa shapeconstruction then
 		    s =  CurrentContent.CurrentOperation.currentshape
 		    if (s.fam > 10 and s.IndexConstructedPoint = 0)  then
@@ -285,7 +285,7 @@ Inherits Canvas
 		      CurrentContent.abortconstruction
 		    end if
 		  end if
-		  
+
 		End Sub
 	#tag EndEvent
 
@@ -301,11 +301,11 @@ Inherits Canvas
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
 		  Dim p, pp As BasicPoint
 		  Dim curop As operation
-		  
+
 		  p = New BasicPoint(x,y)
 		  pp = itransform(p)
 		  curop = currentcontent.currentoperation
-		  
+
 		  Formswindow.close
 		  If Not IsContextualClick Then
 		    If dret = Nil And Curop <> Nil Then
@@ -315,11 +315,11 @@ Inherits Canvas
 		    Return True
 		  End If
 		  CurrentContent.AbortConstruction
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Function
 	#tag EndEvent
 
@@ -337,15 +337,15 @@ Inherits Canvas
 		Sub MouseMove(X As Integer, Y As Integer)
 		  'On passe d'abord dans le mousemove du canvas, puis dans celui de la fenêtre (qui n'existe plus)
 		  dim p as BasicPoint
-		  
+
 		  'Note: CurrentOper n'est <>  nil que dans les méthodes ReadHisto.NextOper, RedHisto.PrecOper, Windcontent.RedoLastOperation et
 		  'Windcontent.UndoLastOperation. Donc la plupart du temps, on passe dans les lignes 12 à 30
-		  
-		  
+
+
 		  If  CurrentContent.curoper <> Nil  Then
 		    Return
 		  End If
-		  
+
 		  p = mouseuser
 		  Mousecursor = System.Cursors.StandardPointer
 		  If dret = Nil And CurrentContent.CurrentOperation <> Nil and not currentContent.CurrentOperation isa Ouvrir Then
@@ -353,52 +353,52 @@ Inherits Canvas
 		    refreshbackground
 		    Return
 		  End If
-		  
+
 		  //Ce qui suit se déroule à condition qu'aucune opération ne soit définie
-		  
+
 		  oldp = p
 		  If currenthighlightedshape <> Nil Then
 		    currenthighlightedshape.unhighlight
 		  End If
-		  
+
 		  currenthighlightedshape = GetShape(p)
-		  
+
 		  If currenthighlightedshape <> Nil  Then
 		    sctxt = currenthighlightedshape
 		    sctxt.highlight
 		  End If
-		  
-		  
+
+
 		  if currenthighlightedshape <> nil and not currentcontent.macrocreation then
 		    ctxt = True    'Branche le "MouseWheel
 		  Else
 		    info = Dico.value("click")+Dico.value("onabuttonoramenu")+EndOfLine+Dico.value("chgTextSize")
 		    ctxt = False
 		  End If
-		  
+
 		  refreshbackground
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
 		  // Le mouseup attend que les opérations lancées par le mousedown soient terminées avant de s'exécuter
-		  
+
 		  if CurrentContent.currentoperation<> nil and  (CurrentContent.currentoperation isa selectanddragoperation  or CurrentContent.currentoperation isa savebitmap) then
 		    CurrentContent.CurrentOperation.MouseUp(itransform(new BasicPoint(x,y)))
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Function MouseWheel(X As Integer, Y As Integer, deltaX as Integer, deltaY as Integer) As Boolean
-		  
+
 		  if CurrentContent.CurrentOperation <> nil then
 		    CurrentContent.CurrentOperation.MouseWheel
 		  elseif ctxt then
@@ -418,23 +418,23 @@ Inherits Canvas
 		    zone.fill = 0
 		    zone.border = 100
 		  end if
-		  
+
 		  OffscreenPicture=New Picture(width,height,Screen(0).Depth)
 		  OffscreenPicture.Transparent = 1
 		  HelpMess = True
 		  OKMess = True
-		  
+
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
-		  
+
 		  if OffscreenPicture <> nil and BackgroundPicture <> nil  then
 		    BackgroundPicture.graphics.DrawPicture OffscreenPicture , 0, 0
 		    g.drawPicture(BackgroundPicture, 0, 0)
 		  end if
-		  
+
 		End Sub
 	#tag EndEvent
 
@@ -508,24 +508,24 @@ Inherits Canvas
 		  if FondsEcran = nil then
 		    return
 		  end if
-		  
+
 		  dim image As Picture
 		  dim fondLeft, fondTop, fondWidth, fondHeight as Double
-		  
+
 		  image= FondsEcran.image
-		  if image = nil then 
+		  if image = nil then
 		    dim msg As new MessageDialog
 		    msg.IconType = MessageDialog.IconTypes.Caution
 		    msg.Message = "L'image de fond d'écran " + FondsEcran.name + " n'est plus disponible"
 		    call msg.ShowModal
 		    FondsEcran = nil
 		    return
-		  end if 
+		  end if
 		  fondLeft = 0
 		  fondTop = 0
 		  fondWidth = image.width
 		  fondHeight = image.height
-		  
+
 		  Select Case FondsEcran.align
 		  Case "stretched"
 		    fondWidth = width
@@ -535,14 +535,14 @@ Inherits Canvas
 		  Case "topRight", "centerRight", "bottomRight"
 		    fondLeft = Width - image.width
 		  end Select
-		  
+
 		  Select Case FondsEcran.align
 		  Case "centerLeft", "centerCenter", "centerRight"
 		    fondTop = (Height - image.Height)/2
 		  Case "bottomLeft", "bottomCenter", "bottomRight"
 		    fondTop = Height - image.Height
 		  end Select
-		  
+
 		  BackgroundPicture.graphics.drawpicture image,fondLeft,fondTop,fondWidth,fondHeight,0,0,image.width,image.height
 		End Sub
 	#tag EndMethod
@@ -566,7 +566,7 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub EndOperMenuContext()
-		  
+
 		  currentoper.currenthighlightedshape = sctxt
 		  currentoper.selection
 		  currentoper.immediatedooperation
@@ -598,9 +598,9 @@ Inherits Canvas
 	#tag Method, Flags = &h0
 		Function GetShape(p as BasicPoint) As shape
 		  Dim s As shape
-		  
+
 		  iobj = 0
-		  
+
 		  vis = CurrentContent.TheObjects.findobject(p)
 		  if vis <> nil and vis.count <> 0 then
 		    nobj = vis.count
@@ -622,9 +622,9 @@ Inherits Canvas
 		  else
 		    s = nil
 		  end if
-		  
+
 		  Return s
-		  
+
 		  Exception err
 		    dim dbg As Debug
 		    dbg = new Debug
@@ -633,11 +633,11 @@ Inherits Canvas
 		    dbg.setVariable("vis", vis)
 		    dbg.setVariable("s", s)
 		    err.message = err.message+dbg.getString
-		    
+
 		    Raise err
-		    
-		    
-		    
+
+
+
 		End Function
 	#tag EndMethod
 
@@ -650,7 +650,7 @@ Inherits Canvas
 		  SuppMess.AlternateActionButton.Visible = True
 		  SuppMess.AlternateActionButton.Caption = "Ne plus afficher cette aide"
 		  SuppMess.Message = mess
-		  
+
 		  b = SuppMess.ShowModal
 		  Select Case b
 		  Case SuppMess.ActionButton
@@ -661,17 +661,17 @@ Inherits Canvas
 		    HelpMess = False
 		    Return True
 		  End Select
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function idtransform(bp as basicpoint) As basicpoint
 		  dim u1,u2 as basicpoint
-		  
+
 		  if invctm <> nil then
 		    u1 = INVCTM.v1*bp.x
 		    u2 = INVCTM.v2*bp.y
@@ -706,9 +706,9 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub oldsaveAsPict()
-		  
+
 		  dim fi as folderItem
-		  
+
 		  #if targetMacOS
 		    fi=GetSaveFolderItem("application/pict","Sauvegarde.pict")
 		  #endif
@@ -718,48 +718,48 @@ Inherits Canvas
 		  If fi<>Nil then
 		    fi.saveAsPicture BackgroundPicture
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub RefreshBackground()
-		  
+
 		  dim op As operation
-		  
-		  
+
+
 		  if BackgroundPicture = nil or CurrentContent = nil or CurrentContent.GetRepere = nil then
 		    return
 		  end if
-		  
+
 		  EraseBackground
-		  
+
 		  if drapzone then
 		    drawzone(MouseCan)
 		  end if
-		  
+
 		  if IdContent <> CurrentContent.id then
 		    Setrepere(CurrentContent.GetRepere)
 		    ClearOffscreen
 		    IdContent = CurrentContent.id
 		  End If
-		  
+
 		  if CurrentContent.TheGrid <> nil then
 		    CurrentContent.TheGrid.Paint(BackgroundPicture.Graphics)
 		  End If
-		  
+
 		  op = CurrentContent.currentoperation
 		  If op = Nil Then
 		    workwindow.drapshowall = False
 		  End If
-		  
+
 		  CurrentContent.TheObjects.paint(BackgroundPicture.Graphics)
 
   if OffscreenPicture <> nil then
     BackgroundPicture.graphics.DrawPicture OffscreenPicture, 0, 0
   end if
-		  
+
 		  if op <> nil  then
 		    op.Paint(BackgroundPicture.Graphics)
 		  elseif CurrentContent.curoper <> nil and (CurrentContent.curoper isa lier or CurrentContent.curoper isa delier)  then
@@ -774,19 +774,19 @@ Inherits Canvas
 		  elseif config.ShowHelp and info <> "" then
 		    BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		  end if
-		  
+
 		  if TextWindow.Visible then
 		    TextWindow.Afficher
 		  end if
-		  
+
 		  refresh
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -794,39 +794,47 @@ Inherits Canvas
 		Sub Resize()
 		  me.left = 122
 		  me.top = 0
-		  me.width = WorkWindow.width - me.left
-		  me.height = WorkWindow.height
-		  
-		  BackgroundPicture = New Picture(width,height,screen(0).depth)
+
+		  var targetWidth As Integer = WorkWindow.width - me.left
+		  var targetHeight As Integer = WorkWindow.height
+
+		  // Clamp to valid Picture bounds to avoid errors during fast resize/minimize.
+		  targetWidth = Max(1, Min(32767, targetWidth))
+		  targetHeight = Max(1, Min(32767, targetHeight))
+
+		  me.width = targetWidth
+		  me.height = targetHeight
+
+		  BackgroundPicture = New Picture(targetWidth,targetHeight,screen(0).depth)
 		  BackgroundPicture.graphics.ForeColor= &cFFFFFF
-		  BackgroundPicture.graphics.FillRect(0,0,width,height)
+		  BackgroundPicture.graphics.FillRect(0,0,targetWidth,targetHeight)
 		  if config <> nil then
 		    BackgroundPicture.graphics.forecolor = Config.bordercolor.col
 		    BackgroundPicture.graphics.TextSize = Config.TextSize
 		    bkcol = Config.Fillcolor.col
 		  end if
 		  BackgroundPicture.graphics.Bold = true
-		  
-		  OffscreenPicture = New Picture(width,height,screen(0).depth)
+
+		  OffscreenPicture = New Picture(targetWidth,targetHeight,screen(0).depth)
 		  OffscreenPicture.Transparent = 1
-		  
-		  
+
+
 		  calculcoins
-		  
+
 		  Exception err
 		    dim d As Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
-		    d.setVariable("width", width)
-		    d.setVariable("height", height)
+		    d.setVariable("width", targetWidth)
+		    d.setVariable("height", targetHeight)
 		    d.setVariable("config", config)
-		    
+
 		    err.message = err.message+d.getString
-		    
+
 		    Raise err
-		    
-		    
-		    
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -835,7 +843,7 @@ Inherits Canvas
 		  if FondsEcran = nil then
 		    FondsEcran = new FondEcran
 		  end if
-		  
+
 		  FondsEcran.image = image
 		  FondsEcran.Name = Name
 		End Sub
@@ -855,16 +863,16 @@ Inherits Canvas
 		  computescaling
 		  setmagneticdist
 		  calculcoins
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function transform(bp as basicPoint) As basicpoint
-		  
+
 		  return CTM*bp
 		End Function
 	#tag EndMethod
@@ -874,32 +882,32 @@ Inherits Canvas
 		CTM est la matrice de transformation des coordonnées utilisateurs en coordonnées canvas (pixels)
 		INVCTM est la matrice inverse
 		CTM est calculée à partir du repère
-		
+
 		transform convertit un point-utilisateur en un point canvas en mutlipliant par CTM
 		itransform opère la conversion inverse
 		dtransform convertit un vecteur-utilisateur en un point canvas en mutlipliant par CTM0: matrice CTM dont la dernière colonne est remplacée par (0 0)
 		idtransform opère la conversion inverse
-		
+
 		Ces conventions sont les m^emes qu'en postscript.
 	#tag EndNote
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
