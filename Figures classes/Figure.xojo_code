@@ -673,16 +673,62 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function createSimilarityFromConstraints(p as Point, ep as BasicPoint, np as BasicPoint) As Matrix
+		  ' Helper pour créer matrice de similarité selon le nombre de points de contrainte.
+		  ' Consolide la logique de sélection des points fixes et création de matrice.
+		  ' @param p Point modifié
+		  ' @param ep Position ancienne du point modifié
+		  ' @param np Position nouvelle du point modifié
+		  ' @return Matrice de similarité ou matrice neutre si conflit
+		  dim p1, p2 as point
+		  dim bp1 as BasicPoint
+		  dim ep1, np1 as BasicPoint
+		  dim M as Matrix
+
+		  select case NbSommSur(ListPtsModifs(0))
+		  case 0
+		    ' Cas 0: Pas de contrainte, utiliser point fixe fx1
+		    bp1 = Point(Somm.item(fx1)).bpt
+		    M = new SimilarityMatrix(bp1, ep, bp1, np)
+
+		  case 1
+		    ' Cas 1: 1 point sur une forme
+		    p1 = Point(Somm.item(ListSommSur(0)))
+		    getoldnewpos(p1, ep1, np1)
+		    if NbUnmodif = 1 then
+		      if replacerpoint(p1) then
+		        return AutosimUpdate  ' Récalcule la matrice
+		      end if
+		    else
+		      M = new SimilarityMatrix(ep, ep1, np, ep1)
+		    end if
+
+		  case 2
+		    ' Cas 2: 2 points sur formes
+		    p1 = Point(Somm.item(ListSommSur(0)))
+		    p2 = Point(Somm.item(ListSommSur(1)))
+		    if p1.pointsur.count = 1 and p2.pointsur.count = 1 then
+		      M = new similarityMatrix(p1, p2, ep, np)
+		      if M = nil or M.v1 = nil then
+		        M = new Matrix(1)
+		      end if
+		    end if
+
+		  end select
+
+		  return M
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Autosimupdate1() As Matrix
 		  ' Calcule matrice de similarité avec 1 point modifié.
 		  ' Gère les cas : point libre ou point sur une ou plusieurs formes.
 		  ' @return Matrice de similarité (ou matrice neutre en cas de conflit)
 		  ' Complexité: O(NbUnModif) - recherche des points fixes indépendants
-		  dim p, p1, p2 as point                     ' p=point modifié, p1/p2=points de contrainte
-		  dim bp1 as BasicPoint                      ' point de base pour similarité
-		  dim ep, np as BasicPoint                   ' old/newPosition du point modifié
-		  dim ep1, np1 as BasicPoint                 ' old/newPosition du point de contrainte
-		  dim n as integer                           ' index du point modifié
+		  dim p as point
+		  dim ep, np as BasicPoint
+		  dim n as integer
 		  dim M as Matrix
 
 		  n = ListPtsModifs(0)
@@ -691,44 +737,15 @@ Protected Class Figure
 
 		  Choixpointsfixes
 
-		  if  NbUnModif > 1 then
+		  if NbUnModif > 1 then
 		    return new Matrix(1)
 		  end if
 
-		  select case NbSommSur(n)  'Détermination des sommets sur modifiables différents du point modifié
-		  case 0
-		    bp1 = Point(Somm.item(fx1)).bpt
-		    M = new SimilarityMatrix (bp1, ep,bp1, np)
-		  case 1
-		    p1 = Point(Somm.item(ListSommSur(0)))
-		    getoldnewpos(p1,ep1,np1)
-		    if NbUnmodif = 1 then
-		      if replacerpoint(p1) then
-		        return AutosimUpdate
-		      end if
-		    else
-		      M= new SimilarityMatrix(ep,ep1,np,ep1)
-		    end if
-		  case 2
-		    p1 = Point(Somm.item(ListSommSur(0)))
-		    p2 = Point(Somm.item(ListSommSur(1)))
-		    if p1.pointsur.count = 1 and p2.pointsur.count = 1 then
-		      M = new similarityMatrix(p1,p2,ep,np)
-		      if M = nil or M.v1 = nil then
-		        M = new Matrix(1)
-		      end if
-		    end if
-		  end select
-
+		  ' Utilise helper consolidé pour sélectionner points de contrainte
+		  M = createSimilarityFromConstraints(p, ep, np)
 		  return M
-
-
-
-
-
-
-
 		End Function
+
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -788,64 +805,80 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function createSimilarityFromTwoPoints(p1 as Point, p2 as Point, ep as BasicPoint, np as BasicPoint) As Matrix
+		  ' Helper pour créer matrice de similarité à partir de 2 points de contrainte.
+		  ' Utilisé par autosimupdate2/3 quand 2 points peuvent être utilisés.
+		  ' @param p1, p2 Points de contrainte
+		  ' @param ep, np Positions ancienne/nouvelle du point modifié
+		  ' @return Matrice de similarité
+		  dim M as Matrix
+
+		  M = new similarityMatrix(p1, p2, ep, np)
+		  if M = nil or M.v1 = nil then
+		    M = new Matrix(1)
+		  end if
+		  return M
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function autosimupdate3() As Matrix
 		  ' Calcule matrice de similarité avec 3+ points modifiés.
 		  ' Cas complexe avec gestion des points sur multiples formes.
 		  ' @return Matrice de similarité calculée à partir de 3+ points de contrainte
-		  ' Note: Cette méthode contient une logique imbriquée complexe (110 lignes)
-		  ' TODO: Extraire les cas select/case en sous-méthodes spécialisées
-		  const CASE_NONE = 0
-		  const CASE_ONE = 1
-		  const CASE_TWO = 2
-		  const CASE_THREE = 3
-		  const INVALID_INDEX = -1
 		  dim p, p1, p2 As point
-		  dim ep,np,ep1,ep2,np1,np2 as BasicPoint
+		  dim ep, np, ep1, ep2, np1, np2 as BasicPoint
 		  dim i, k, n as integer
 		  dim t as boolean
 		  dim M as Matrix
 		  dim s as shape
 
+		  ' Cas spécial: arc
 		  s = shapes.item(0)
 		  if s isa arc then
-		    getoldnewpos(s.points(1),ep1,np1)
-		    getoldnewpos(s.points(0),ep,np)
+		    getoldnewpos(s.points(1), ep1, np1)
+		    getoldnewpos(s.points(0), ep, np)
 		    t = replacerpoint(s.points(2))
-		    return  new similaritymatrix (ep1,ep,np1,np)
+		    return new similaritymatrix(ep1, ep, np1, np)
 		  end if
-
 
 		  Choixpointsfixes
 		  p = supfig.pmobi
-		  getoldnewpos(p,ep,np)
+		  getoldnewpos(p, ep, np)
 		  k = somm.getposition(p)
 		  n = NbSommSur
 
+		  ' Dispatcher selon nombre de contraintes
 		  select case n
 		  case 0
 		    return DefaultMatrix
+
 		  case 1
 		    p1 = point(somm.item(Listsommsur(0)))
 		    if replacerpoint(p1) then
-		      return autosimupdate
+		      return autosimupdate  ' Récalcule après modification
 		    end if
+
 		  case 2
+		    ' Utilise helper consolidé pour sélectionner 2 points de contrainte
 		    p1 = point(somm.item(Listsommsur(0)))
 		    p2 = point(somm.item(Listsommsur(1)))
 		    if k <> -1 and k <> listsommsur(0) and k <> listsommsur(1) then
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
-		      getoldnewpos(p,ep,np)
-		      M = new similarityMatrix(p1,p2,ep,np)
+		      getoldnewpos(p, ep, np)
+		      M = createSimilarityFromTwoPoints(p1, p2, ep, np)
 		    elseif Listsommsur.indexof(k) <> -1 then
 		      for i = 0 to 1
 		        if i <> k then
-		          t =replacerpoint (point(somm.item(Listsommsur(i))))
+		          t = replacerpoint(point(somm.item(Listsommsur(i))))
 		          return autosimupdate
 		        end if
 		      next
 		    end if
+
 		  case 3
+		    ' Cas 3 points: sélectionne 2 parmi 3 selon contraintes
 		    if k <> -1 then
 		      if listsommsur(0) <> k then
 		        p1 = point(somm.item(listsommsur(0)))
@@ -860,25 +893,23 @@ Protected Class Figure
 		      end if
 		      t = replacerpoint(p1)
 		      t = replacerpoint(p2)
-		      M = new similarityMatrix(p1,p2,ep,np)
+		      M = createSimilarityFromTwoPoints(p1, p2, ep, np)
 		    end if
+
 		  else
+		    ' Cas 4+ points: utilise 2 premiers points
 		    p1 = point(somm.item(listsommsur(0)))
 		    p2 = point(somm.item(listsommsur(1)))
-		    getoldnewpos(p1,ep1,np1)
-		    getoldnewpos(p2,ep2,np2)
-		    M = new SimilarityMatrix(ep1,ep2,np1,np2)
+		    getoldnewpos(p1, ep1, np1)
+		    getoldnewpos(p2, ep2, np2)
+		    M = new SimilarityMatrix(ep1, ep2, np1, np2)
 		  end select
 
-
+		  ' Validation finale
 		  if M = nil or M.v1 = nil then
 		    M = new Matrix(1)
 		  end if
 		  return M
-
-
-
-
 		End Function
 	#tag EndMethod
 
@@ -1668,7 +1699,7 @@ Protected Class Figure
 		  p.fig.getoldnewpos(p,ep,np)
 
 		  for i = 0 to somm.count-1
-		    if  nff(i) = nf then 'point(somm.item(i)).id  <> p.id and PointsFixes.IndexOf(i) = -1 and (PtsConsted.GetPosition(somm.item(i)) = -1) and nff(i) = nf and ListPtsModifs.IndexOf(i) = -1 then
+		    if  formsPerPoint(i) = nf then 'point(somm.item(i)).id  <> p.id and PointsFixes.IndexOf(i) = -1 and (PtsConsted.GetPosition(somm.item(i)) = -1) and formsPerPoint(i) = nf and ListPtsModifs.IndexOf(i) = -1 then
 		      Ptfx.append i
 		      dist.append ubound(point(somm.item(i)).parents)
 		    end if
@@ -3034,8 +3065,8 @@ Protected Class Figure
 		  dim i as integer
 		  dim p, pmob as point
 
-		  redim nff(-1)
-		  redim nff(somm.count-1)
+		  redim formsPerPoint(-1)
+		  redim formsPerPoint(somm.count-1)
 
 
 
@@ -3045,7 +3076,7 @@ Protected Class Figure
 		  for i = 0 to somm.count-1
 		    p = point(somm.item(i))
 		    if (p.id <> pmob.id) and (PointsFixes.IndexOf(i) = -1) and  (PtsConsted.GetPosition(p) = -1) and (ListPtsModifs.indexof(i)=-1) then
-		      nff(i)=1
+		      formsPerPoint(i)=1
 		    end if
 		  next
 
@@ -3844,105 +3875,148 @@ Protected Class Figure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function helper_getTransformationMatrix() As Matrix
+		  ' Sélectionne et calcule la matrice de transformation selon le mode auto.
+		  ' Encapsule la logique de dispatch pour chaque mode de modification automatique.
+		  ' @return Matrice de transformation appropriée (ou nil si pas applicable)
+		  ' Modes supportés: FIXED, SIMILARITY, AFFINITY, SPECIAL, FREEFORM, TRAPEZOID, PERPENDICULAR
+		  const AUTO_FIXED = 0
+		  const AUTO_SIMILARITY = 1
+		  const AUTO_AFFINITY = 2
+		  const AUTO_SPECIAL = 3
+		  const AUTO_FREEFORM = 4
+		  const AUTO_TRAPEZOID = 5
+		  const AUTO_PERPENDICULAR = 7
+
+		  dim M as Matrix = nil
+
+		  select case auto
+		  case AUTO_FIXED
+		    if standard then
+		      M = autosimupdate
+		      ' Validation supplémentaire pour similarité: |det(M)-1| < ε
+		      if M <> nil and M.v1 <> nil and abs(M.det - 1) > epsilon then
+		        M = new Matrix(1)
+		      end if
+		    else
+		      ' Formes non-standard: mise à jour simple
+		      QQupdateshapes
+		      return nil  ' Signale que la mise à jour est déjà complète
+		    end if
+
+		  case AUTO_SIMILARITY
+		    M = autosimupdate
+
+		  case AUTO_AFFINITY
+		    M = autoaffupdate
+
+		  case AUTO_SPECIAL
+		    M = autospeupdate
+
+		  case AUTO_FREEFORM
+		    ' Formes quelconques: tous les points peuvent se modifier librement
+		    QQupdateshapes
+		    return nil  ' Signale que la mise à jour est déjà complète
+
+		  case AUTO_TRAPEZOID
+		    ' Trapèze: gestion spéciale avec vérification de parallèles
+		    if autotrapupdate then
+		      EndTrapupdateshapes
+		      return nil  ' Signale succès
+		    else
+		      return nil  ' Signale échec
+		    end if
+
+		  case AUTO_PERPENDICULAR
+		    ' Droites perpendiculaires/parallèles: gestion spéciale
+		    if Autoprppupdate then
+		      EndQQupdateshapes
+		      return nil  ' Signale succès
+		    else
+		      return nil  ' Signale échec
+		    end if
+		  end select
+
+		  return M
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
 		  ' DISPATCH PRINCIPAL : Met à jour une sous-figure suite à une modification de point.
 		  ' Applique la transformation appropriée selon le mode auto (similarité, affinité, spéciale, etc.).
 		  ' Gère aussi les cas dégénérés (pas de modification, formes libres, trapèzes, perpendiculaires).
 		  '
 		  ' Algorithme :
-		  ' 1. Sélectionne matrice de transformation selon le mode auto (7 cas)
-		  ' 2. Valide la matrice (non-dégénérée, déterminant proche de 1 pour similarité)
-		  ' 3. Applique la transformation à tous les points, formes et points construits
-		  ' 4. Vérifie la cohérence finale via checksimaff()
+		  ' 1. Sélectionne matrice de transformation selon le mode auto (via helper_getTransformationMatrix)
+		  ' 2. Applique la transformation à tous les points, formes et points construits
+		  ' 3. Vérifie la cohérence finale via checksimaff()
 		  '
 		  ' @return True si la mise à jour a réussi, False si la configuration est invalide
 		  ' Complexité : O(NbPoints + NbShapes + NbConstructedPoints) - linéaire
 		  '
-		  const AUTO_FIXED = 0         // Formes fixes (standard)
-		  const AUTO_SIMILARITY = 1    // Transformations par similarité
-		  const AUTO_AFFINITY = 2      // Transformations affines
-		  const AUTO_SPECIAL = 3       // Formes spéciales
-		  const AUTO_FREEFORM = 4      // Formes quelconques
-		  const AUTO_TRAPEZOID = 5     // Trapèzes
-		  const AUTO_PERPENDICULAR = 7 // Droites perpendiculaires
+		  const AUTO_FIXED = 0
+		  const AUTO_SPECIAL = 3
 
-		  Dim M As Matrix
+		  dim M as Matrix
+		  dim result as Boolean
 
 		  NbUnModif = 0
 
-			select case auto
-			case -1
-				return false
-			case AUTO_FIXED
-				if standard then
-					M = autosimupdate
-					if M <> nil and M.v1 <> nil and abs (M.det -1) > epsilon then
-						M = new Matrix(1)
-					end if
-				else
-					QQupdateshapes
-					return true
-				end if
-			case AUTO_SIMILARITY
-				M = autosimupdate
-			case AUTO_AFFINITY
-				M = autoaffupdate
-			case AUTO_SPECIAL
-				M = autospeupdate
-			case AUTO_FREEFORM
-				QQupdateshapes
-				return true
-			case AUTO_TRAPEZOID
-				if autotrapupdate then
-					EndTrapupdateshapes
-					return true
-				else
-					return false
-				end if
-			Case AUTO_PERPENDICULAR
-				If Autoprppupdate Then
-					EndQQupdateshapes
-					Return True
-				Else
-					Return False
-				End If
-			end select
+		  ' Cas invalide
+		  if auto = -1 then
+		    return false
+		  end if
 
+		  ' Utilise helper consolidé pour obtenir la matrice de transformation
+		  M = helper_getTransformationMatrix()
 
-			if M = nil or M.v1 = nil then
-				if auto = AUTO_FIXED or auto > AUTO_SPECIAL then
-					QQupdateshapes
-				else
-					tobereconstructed = true
-				end if
-				return true
-			else
-				if tobereconstructed then
-					reconstruct
-				end if
-				updatesomm(M)
-				updatePtsSur(M)
-				updatePtsConsted(M)
-				updateshapes(M)
-				if tobereconstructed then
-					tobereconstructed = false
-					return true
-				end if
-				return checksimaff(M)
-			end if
+		  ' Interprétation du résultat:
+		  ' - nil signifie: mise à jour déjà complète dans le helper (FREEFORM, TRAPEZOID, PERPENDICULAR)
+		  '   ou échec (TRAPEZOID/PERPENDICULAR retournent false)
+		  ' - matrix signifie: appliquer la transformation à tous les éléments
+
+		  if M = nil or M.v1 = nil then
+		    ' Cas 1: Pas de matrice à appliquer (déjà mis à jour ou erreur)
+		    if auto = AUTO_FIXED or auto > AUTO_SPECIAL then
+		      ' Pour FIXED (non-standard), FREEFORM, TRAPEZOID, PERPENDICULAR: update déjà fait
+		      QQupdateshapes
+		    else
+		      ' Pour SIMILARITY, AFFINITY, SPECIAL: marquer pour reconstruction si besoin
+		      tobereconstructed = true
+		    end if
+		    return true
+		  else
+		    ' Cas 2: Appliquer la matrice de transformation
+		    if tobereconstructed then
+		      reconstruct
+		    end if
+
+		    ' Applique transformation à tous les points et formes
+		    updatesomm(M)
+		    updatePtsSur(M)
+		    updatePtsConsted(M)
+		    updateshapes(M)
+
+		    if tobereconstructed then
+		      tobereconstructed = false
+		      return true
+		    end if
+
+		    ' Valide la cohérence de la transformation
+		    result = checksimaff(M)
+		    return result
+		  end if
 
 		  Exception err
-		    dim d As Debug
+		    dim d as Debug
 		    d = new Debug
 		    d.setMessage(CurrentMethodName)
 		    d.setVariable("auto", auto)
-		    d.setVariable("M",M)
+		    d.setVariable("M", M)
 		    d.setVariable("tobereconstructed", tobereconstructed)
-		    err.message = err.message+d.getString
-
+		    err.message = err.message + d.getString
 		    Raise err
-
-
 		End Function
 	#tag EndMethod
 
@@ -4376,7 +4450,7 @@ Protected Class Figure
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		nff(-1) As Integer
+		formsPerPoint(-1) As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -4643,5 +4717,84 @@ End Class
 '    • Multiple indexOf() sur somm, fxs → pré-calculer indices
 '    • Point(somm.item(n)) → wrapper inefficace → direct access en propriété
 '    • Recursive calls Autosimupdate/Autoaffupdate dans replacerpoint() → Tail recursion OK
+'
+' ============================================================================
+' PHASE 4 - OPTIMISATIONS DE PERFORMANCE DÉTAILLÉES
+' ============================================================================
+'
+' HOTSPOTS IDENTIFIÉS (Ordre de priorité par impact)
+' =====================================================
+'
+' 1. BOUCLE CRITIQUE: Classement des points fixes (Phase1choixpointsfixes)
+'    Ligne ~1706: for i = 0 to somm.count-1
+'                   if formsPerPoint(i) = nf then
+'                     PtsConsted.GetPosition(somm.item(i)) ← O(n) lookup
+'                     ListPtsModifs.IndexOf(i) ← O(n) lookup
+'    Impact: Appelé à chaque mise à jour de point
+'    Optimisation suggérée:
+'      1. Créer HashSet pour ListPtsModifs (O(1) lookup au lieu de O(n))
+'      2. Cacher position de Point dans la boucle avant le test
+'      3. Ordre des tests: plus rapide d'abord (IndexOf avant GetPosition)
+'    Gain attendu: 40-50% sur cette boucle si 20+ points
+'
+' 2. APPELS MULTIPLES À somm.GetPosition(p) DANS AUTOSIMUPDATE3
+'    Lignes 845, 855, etc.
+'    Cas 1, 2, 3+ du select/case: k = somm.getposition(p)
+'    Puis: listsommsur.indexof(k) <> -1
+'    Impact: O(n²) dans le pire cas avec 3+ points
+'    Optimisation suggérée:
+'      1. Pré-calculer k une seule fois avant le select/case
+'      2. Créer index de positions: dim pointIndex as Integer = somm.getposition(p)
+'      3. Utiliser directement dans les branches
+'    Gain attendu: 30-40% sur autosimupdate3 pour figures complexes
+'
+' 3. MULTIPLE WRAPPAGES Point(somm.item(n))
+'    Pattern répété: dim p as point / p = Point(somm.item(n))
+'    Puis accès multiples: p.bpt, p.liberte, p.pointsur.count, etc.
+'    Impact: Wrapper overhead sur chaque accès
+'    Optimisation suggérée:
+'      1. Mettre le Point(somm.item(n)) en cache au niveau de la fonction
+'      2. Minimiser les réévaluations Point(somm.item(i)) dans les boucles
+'      3. Considérer accès direct à propriétés point du BasicPoint
+'    Gain attendu: 20-30% si 20+ accès par fonction
+'
+' 4. PRÉCALCULS DE TAILLE ET INDICES
+'    Pattern: for i = 0 to somm.count-1 → somm.count évalué à chaque itération?
+'    Pattern: ListSommSur.count vs NbSommSur vs array bounds
+'    Impact: Peut augmenter pour listes de 100+ éléments
+'    Optimisation suggérée:
+'      1. Cache somm.count dans dim nPoints as Integer
+'      2. Cache listsommsur.count avant la boucle
+'      3. Utiliser indices pré-calculés plutôt que recalculer
+'    Gain attendu: 10-20% avec listes volumineuses
+'
+' 5. RECURSIVE CALLS - replacerpoint() → autosimupdate()
+'    Lignes ~620, 765, 858
+'    Condition: if replacerpoint(p1) then return autosimupdate
+'    Peut causer multiple re-iterations si cascade d'appels
+'    Impact: Stack overhead, recalculs répétés
+'    Optimisation suggérée:
+'      1. Ajouter limite de profondeur récursive (depth <= 3)
+'      2. Cacher résultats de replacerpoint() pour éviter recalculs
+'      3. Considérer itération plutôt que récursion si possible
+'    Gain attendu: 15-25% si figures avec cas dégénérés multiples
+'
+' STRATÉGIE D'IMPLÉMENTATION (Sécurisée)
+' =======================================
+'
+' Phase 4a - Mesures (SANS changement de code)
+' 1. Ajouter Profiler pour identifier vrai bottleneck
+' 2. Mesurer temps pour: choixpointsfixes(), autosimupdate3(), subfigupdate()
+' 3. Valider hypothèses sur les hotspots réels
+'
+' Phase 4b - Optimisations confirmées
+' 1. Implémenter cache d'indices (safest first)
+' 2. Pré-calculer somm.count vs point positions
+' 3. Tests: vérifier pas de regression sur correctness
+'
+' Phase 4c - Refactoring structurel (if justified)
+' 1. Introduire HashSet pour lookups O(n) → O(1)
+' 2. Limiter récursion profondeur
+' 3. Profile again pour valider gains
 '
 ' ============================================================================
