@@ -2,10 +2,10 @@
 Protected Class Macro
 	#tag Method, Flags = &h0
 		Sub centre(ifmac as infomac, byref nbp As nBPoint)
-		  
+
 		  dim ifm1 as infomac
 		  dim num as integer
-		  
+
 		  ifm1= MacInf.GetInfoMac(ifmac.forme0, num)
 		  nbp.append ifm1.coord.centre
 		End Sub
@@ -16,7 +16,7 @@ Protected Class Macro
 		  dim M as Matrix
 		  dim ifm as InfoMac
 		  dim num as integer
-		  
+
 		  ifm = MacInf.GetInfoMac(ifmac.forme0,num)
 		  M = ifm.M
 		  if M <> nil and M.v1 <> nil then
@@ -31,7 +31,7 @@ Protected Class Macro
 		  dim nbp as nBpoint
 		  dim s as shape
 		  dim ifm as infomac
-		  
+
 		  ifm = MacInf.GetInfoMac(ifmac.forme0,m)
 		  if ifm.MacId <> ifmac.forme0 then
 		    ifm = ifm.childs(m)
@@ -57,14 +57,14 @@ Protected Class Macro
 		  case 10
 		    ifm.M = nbp.IsometryMatrix
 		  end select
-		  
+
 		  'k = ObFinal.indexof(MacId)
 		  if  ifm.final then      //Si le support est une forme finale ou initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    s.tsfi.item(ifmac.num).setfpsp(s)
 		    s.tsfi.item(ifmac.num).M =  ifm.M
 		  end if
-		  
+
 		  Exception err
 		    var d As Debug
 		    d = new Debug
@@ -84,9 +84,10 @@ Protected Class Macro
 		  dim s as shape
 		  dim nbp as new nBPoint
 		  dim i as integer
-		  
+		  dim maxIndex as integer
+
 		  MacId = ifmac.MacId //numéro pour la macro de la forme construite
-		  
+
 		  //Si la forme considérée est initiale, il suffit de récolter les informations dans la liste des objets précédemment créés.
 		  if Obinit.indexof(MacId) <> -1 then
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
@@ -100,19 +101,28 @@ Protected Class Macro
 		    end if
 		    if ifmac.childs.Count > 0 then
 		      for i = 0 to ifmac.childs.Count-1
-		        ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
+		        if i < ifmac.coord.taille then
+		          ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
+		        end if
 		      next
 		    end if
 		  end if
-		  
+
 		  if ObInterm.indexof(MacId) <> -1 then  //Si c'est une forme intermédiaire
 		    ExeOper(ifmac, nbp)                                     //on recalcule ou récupère les coordonnées
 		    ifmac.coord = nbp
-		    for i =0 to ifmac.npts-1
-		      ifmac.childs(i).coord = new nBPoint(nbp.tab(i))
-		    next
+		    if nbp <> nil and nbp.taille > 0 then
+		      if ifmac.npts-1 < nbp.taille-1 then
+		        maxIndex = ifmac.npts-1
+		      else
+		        maxIndex = nbp.taille-1
+		      end if
+		      for i = 0 to maxIndex
+		        ifmac.childs(i).coord = new nBPoint(nbp.tab(i))
+		      next
+		    end if
 		  end if
-		  
+
 		  if (ObFinal.indexof(MacId) <> -1)  then      //Si c'est une forme finale
 		    ExeOper(ifmac, nbp)
 		    if nbp = nil or nbp.taille = 0 then
@@ -120,11 +130,11 @@ Protected Class Macro
 		    end if
 		    ifmac.coord = nbp
 		    for i = 0 to ifmac.npts-1
-		      if nbp.tab(i) = nil then
+		      if i >= nbp.taille or nbp.tab(i) = nil then
 		        return
 		      end if
 		    next
-		    
+
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
 		    if s isa point then
@@ -141,20 +151,22 @@ Protected Class Macro
 		      end if
 		    end if
 		    for i = 0 to s.npts-1
-		      s.coord.tab(i) = ifmac.coord.tab(i)
-		      if s.points(i).forme=1 then
-		        redim s.points(i).location(-1)
-		        redim s.points(i).numside(-1)
-		        redim s.points(i).location(0)
-		        redim s.points(i).numside(0)
-		        s.points(i).location(0) = ifmac.childs(i).location
-		        s.points(i).numside(0) = ifmac.childs(i).numside0
-		        ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
+		      if i < ifmac.coord.taille then
+		        s.coord.tab(i) = ifmac.coord.tab(i)
+		        if i < ifmac.childs.count and s.points(i).forme=1 then
+		          redim s.points(i).location(-1)
+		          redim s.points(i).numside(-1)
+		          redim s.points(i).location(0)
+		          redim s.points(i).numside(0)
+		          s.points(i).location(0) = ifmac.childs(i).location
+		          s.points(i).numside(0) = ifmac.childs(i).numside0
+		          ifmac.childs(i).RealSide =  ifmac.childs(i).numside0
+		        end if
 		      end if
 		    next
 		    s.repositionnerpoints
 		  end if
-		  
+
 		  Exception err
 		    var d As Debug
 		    d = new Debug
@@ -165,7 +177,7 @@ Protected Class Macro
 		    d.setVariable("i", i)
 		    err.Message = err.message + d.getString
 		    Raise err
-		    
+
 		End Sub
 	#tag EndMethod
 
@@ -174,7 +186,7 @@ Protected Class Macro
 		  dim i,  num as integer
 		  dim ifm1, ifm2 as infomac
 		  dim p as point
-		  
+
 		  if ifmac.fa = 0 then
 		    redim nbp.tab(-1)
 		    redim nbp.tab(0)
@@ -225,8 +237,8 @@ Protected Class Macro
 		  Dim List As XMLNodeList
 		  dim Temp, EL1 As  XMLElement
 		  dim i as integer
-		  
-		  
+
+
 		  Constructor()
 		  Histo =  XMLElement(Doc.FirstChild)
 		  Caption =  Histo.GetAttribute("Name")
@@ -235,7 +247,7 @@ Protected Class Macro
 		    Description = XMLElement(List.Item(0))
 		    Expli = Description.child(0).value
 		  end if
-		  
+
 		  List = Histo.XQL("Initial")
 		  if List.length > 0 then
 		    Temp = XMLElement(List.Item(0))
@@ -247,7 +259,7 @@ Protected Class Macro
 		    next
 		  end if
 		  'Histo.RemoveChild Temp
-		  
+
 		  List = Histo.XQL("Final")
 		  if List.length > 0 then
 		    Temp = XMLElement(List.Item(0))
@@ -259,7 +271,7 @@ Protected Class Macro
 		    next
 		  end if
 		  'Histo.RemoveChild Temp
-		  
+
 		  List = Histo.XQL("Interm")
 		  if List.length > 0 then
 		    Temp = XMLElement(List.Item(0))
@@ -271,8 +283,8 @@ Protected Class Macro
 		    next
 		  end if
 		  'Histo.RemoveChild Temp
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -282,14 +294,14 @@ Protected Class Macro
 		  Dim tos as TextOutputStream
 		  dim place as integer
 		  Dim dlg as New SaveAsDialog
-		  
-		  
-		  
+
+
+
 		  dlg.InitialDirectory=app.MacFolder
 		  dlg.promptText=""
 		  dlg.Title= Dico.Value("SaveMacro")
 		  dlg.filter=FileAGTypes.MACR
-		  
+
 		  file=dlg.ShowModal()
 		  If file <> Nil then
 		    place = Instr(file.name,".xmag")
@@ -305,14 +317,14 @@ Protected Class Macro
 		      tos.close
 		    end if
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function DescriptionToMac(Doc as XMLDocument) As XMLElement
 		  dim Descri as XMLElement
-		  
+
 		  Descri = Doc.CreateElement("Description")
 		  Descri.AppendChild Doc.CreateTextNode(expli)
 		  return Descri
@@ -326,10 +338,10 @@ Protected Class Macro
 		  dim Bib as BiBPoint
 		  dim bp1, bp2 as BasicPoint
 		  dim ifm, ifm1, ifm2 as infomac
-		  
+
 		  ifm = MacInf.GetInfoMac(ifmac.Forme0, num)  //ifmac correspondant à l'objet constructeur
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme1,num1)
-		  
+
 		  if ifm1 <> nil then
 		    if ifm1.macid = ifmac.forme1 then
 		      bp1 = ifm1.coord.tab(0)
@@ -337,7 +349,7 @@ Protected Class Macro
 		      bp1=ifm1.childs(num1).coord.tab(0)
 		    end if
 		  end if
-		  
+
 		  ifm2 = MacInf.GetInfoMac(ifmac.forme2,num2)
 		  if ifm2 <> nil then
 		    if ifm2.macid = ifmac.forme2 then
@@ -346,7 +358,7 @@ Protected Class Macro
 		      bp2=ifm2.childs(num2).coord.tab(0)
 		    end if
 		  end if
-		  
+
 		  if ifm.fa <> 5 and ifm.fa <> 7 then
 		    Bib = new BiBPoint(bp1,bp2)
 		    nbp.append BiB.subdiv(ifmac.ndiv,ifmac.idiv)
@@ -359,8 +371,8 @@ Protected Class Macro
 		    nbp.append TriB.subdiv(ifm.ori,ifmac.ndiv, ifmac.idiv)
 		  elseif ifm1.fa = 7 then                                     'cas des lacets
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -370,16 +382,16 @@ Protected Class Macro
 		  dim nb as nBPoint
 		  dim ifm0, ifm1 as infomac
 		  dim Bib as BiBPoint
-		  
+
 		  if ifmac.ptsur <> 1 then
 		    return
 		  end if
-		  
+
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme2,m)
 		  if ifm1.macId <> ifmac.forme2 then
 		    ifm1 = ifm1.childs(m)       //infomac du dupliqué
 		  end if
-		  
+
 		  // Si le dupliqué est
 		  ifmac.location = ifm1.location
 		  side = ifmac.numside1                           //numero de coté du dupliqué
@@ -389,9 +401,9 @@ Protected Class Macro
 		  nb = ifm0.coord
 		  BiB = new BiBPoint (nb.tab(side), nb.tab((side+1) mod nb.taille))
 		  nbp.append BiB.BptOnBiBpt(ifmac.location)
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -399,7 +411,7 @@ Protected Class Macro
 		Sub Elaguer()
 		  dim i, ObId as integer
 		  dim EL, EL1 as XMLElement
-		  
+
 		  for i = Histo.childcount -1 downto 0
 		    EL = XMLElement(Histo.Child(i))
 		    EL1 = XMLElement(EL.firstChild)
@@ -410,7 +422,7 @@ Protected Class Macro
 		      end if
 		    end if
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -444,8 +456,8 @@ Protected Class Macro
 		  case 46 //PointSur
 		    PointSur (ifmac, nbp)
 		  end select
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -453,7 +465,7 @@ Protected Class Macro
 		Sub extend(ifmac as InfoMac, byref nbp as nBPoint)
 		  dim index, num as integer
 		  dim ifm1 as infomac
-		  
+
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
 		  index = ifmac.numside0
 		  nbp.append ifm1.coord.tab(index)
@@ -477,7 +489,7 @@ Protected Class Macro
 		  dim bp as BasicPoint
 		  dim  ifm0, ifm1 as infomac
 		  dim bb(), q, v as BasicPoint
-		  
+
 		  Mid = ifmac.MacId
 		  mid0 = ifmac.forme0
 		  ifm0 = MacInf.GetInfoMac(mid0, num)
@@ -485,30 +497,30 @@ Protected Class Macro
 		  fo0 = ifm0.fo
 		  nb0 = ifm0.coord
 		  nextre0 = NextreDroite(fa0,fo0)
-		  
+
 		  mid1 = ifmac.forme1
 		  ifm1 = MacInf.GetInfoMac(mid1, num)
 		  fa1 = ifm1.fa
 		  fo1 = ifm1.fo
 		  nb1 = ifm1.coord
 		  nextre1 = NextreDroite(fa1,fo1)
-		  
+
 		  if fa0 <> 5  then
 		    ncot0 = ifmac.NumSide0
 		  else
 		    ncot0 = 0
 		  end if
 		  Bib0 = new BiBPoint(nb0.tab(ncot0), nb0.tab((ncot0+1) mod nb0.taille))
-		  
-		  
+
+
 		  if fa1 <> 5 then
 		    ncot1 = ifmac.Numside1
 		  else
 		    ncot1 = 0
 		  end if
 		  Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
-		  
-		  
+
+
 		  if fa0 <> 5 and fa1 <> 5 then
 		    bp =  bib0.BiBInterDroites(Bib1,nextre0,nextre1,r1,r2)
 		    nbp.append bp
@@ -534,10 +546,10 @@ Protected Class Macro
 		      nbp.append bb(n)
 		    end select
 		  end if
-		  
+
 		  //A revoir pour le cas des arcs (et cercles) et  pour les points d'inter qui sont des objets finaux
 		  // Encore considérer les intersections droite-cercle et cercle-cercle
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -546,11 +558,11 @@ Protected Class Macro
 		  dim i, j as integer
 		  dim ifmac As InfoMac
 		  dim s as shape
-		  
+
 		  //Dans cette phase, on calcule les objets et on met les valeurs numériques dans l'objet IfMac associé
-		  
+
 		  MacInf = MacInfo
-		  
+
 		  for i = 0 to ubound(MacInf.ifmacs)    'Histo.Childcount-1  // i: numéro de l'opération
 		    ifmac = MacInfo.ifmacs(i)
 		    if codesoper.indexof(ifmac.oper) <> -1 then //est-ce une opération de construction d'un objet?
@@ -558,7 +570,7 @@ Protected Class Macro
 		    elseif ifmac.oper =17 then                          'On doit calculer la matrice de la transfo et la stocker dans l'infomac du support
 		      ComputeMatrix(ifmac)
 		    end if
-		    
+
 		    if not (currentcontent.currentoperation isa macroexe) and not (ifmac.oper = 17) then
 		      if Validation(ifmac) then
 		        for j = 0 to ubound(ObFinal)
@@ -578,9 +590,9 @@ Protected Class Macro
 
 	#tag Method, Flags = &h0
 		Function NextreDroite(fa as integer, fo as integer) As integer
-		  
+
 		  dim nextre as integer
-		  
+
 		  select case fa
 		  case  1
 		    if (fo = 3 or fo = 4 or fo = 5) then
@@ -594,7 +606,7 @@ Protected Class Macro
 		    nextre = 2
 		  end select
 		  return nextre
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -604,7 +616,7 @@ Protected Class Macro
 		  mw.Title = GetName + " : " + Dico.Value("MacroDescription") +" " + caption
 		  mw.EF.Text = expli
 		  WorkWindow.setfocus
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -616,8 +628,8 @@ Protected Class Macro
 		  dim  num, macid as integer
 		  dim BiB1, BiB2 as BiBPoint
 		  dim r1, r2 as double
-		  
-		  
+
+
 		  MacId = ifmac.MacId
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
 		  side = Ifmac.Numside0
@@ -664,9 +676,9 @@ Protected Class Macro
 		        end if
 		      end if
 		    end if
-		    
+
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -676,13 +688,13 @@ Protected Class Macro
 		  dim ifm1 as infomac
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
-		  
+
 		  redim nbp.tab(-1)
 		  redim nbp.tab(0)
-		  
-		  
+
+
 		  ifm1 = MacInf.GetInfoMac(ifmac.MacId,num)
-		  
+
 		  if ifm1.fa <> 5 then 'cas des segments, droites, côtés de polygones,...
 		    side = Ifmac.Numside0
 		    if ifm1.fa = 1 and ifm1.fo = 8 then
@@ -707,7 +719,7 @@ Protected Class Macro
 		      nbp.tab(0) = TriB.PositionOnCircle(ifmac.location, ifm1.ori)
 		    end select
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -720,24 +732,24 @@ Protected Class Macro
 		  dim Histo as XMLElement
 		  Dim dlg as New SaveAsDialog
 		  dim d as new Date
-		  
+
 		  if ubound(ObFinal) = -1 then
 		    return
 		  end if
-		  
+
 		  CurrentContent.CurrentOperation = nil
 		  WorkWindow.refreshtitle
-		  
+
 		  Doc = CurrentContent.OpList
 		  Histo = XMLElement(Doc.FirstChild)
 		  Histo.SetAttribute("Creation_Date",d.ShortDate)
 		  ToXML(Doc, Histo)
-		  
+
 		  dlg.InitialDirectory=app.MacFolder
 		  dlg.promptText=""
 		  dlg.Title= Dico.Value("SaveMacro")
 		  dlg.filter=FileAGTypes.MACR
-		  
+
 		  file=dlg.ShowModal()
 		  If file <> Nil then
 		    place = Instr(file.name,".xmag")
@@ -760,11 +772,11 @@ Protected Class Macro
 		      WorkWindow.updatesousmenusmacros
 		    end if
 		  end if
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -774,8 +786,8 @@ Protected Class Macro
 		  dim i as integer
 		  dim categorie as string
 		  dim ObCategorie(), FaCategorie(), FoCategorie() as integer
-		  
-		  
+
+
 		  select case n
 		  case 0
 		    Categorie = "Initial"
@@ -793,7 +805,7 @@ Protected Class Macro
 		    FaCategorie = FaInterm
 		    FoCategorie = FoInterm
 		  end select
-		  
+
 		  Temp=Doc.CreateElement(Categorie)
 		  for i = 0 to ubound(ObCategorie)
 		    EL = Doc.CreateElement("Obj"+Categorie)
@@ -802,7 +814,7 @@ Protected Class Macro
 		    EL.SetAttribute("Fo",str(FoCategorie(i)))
 		    Temp.AppendChild EL
 		  next
-		  
+
 		  return Temp
 		End Function
 	#tag EndMethod
@@ -818,7 +830,7 @@ Protected Class Macro
 		  EL.AppendChild ToMac(Docu,0)
 		  EL.AppendChild ToMac(Docu,1)
 		  EL.AppendChild ToMac(Docu,2)
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -828,8 +840,8 @@ Protected Class Macro
 		  dim nbp1 as nBPoint
 		  dim M as Matrix
 		  dim ifm1, ifm2 as infomac
-		  
-		  
+
+
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0, num)  //lecture support
 		  if ifm1.MacId <> ifmac.forme0 and num <> -1 then
 		    ifm1=ifm1.childs(num)
@@ -852,10 +864,10 @@ Protected Class Macro
 		      end if
 		    next
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -871,7 +883,7 @@ Protected Class Macro
 		Function Validation(ifmac As infomac) As Boolean
 		  dim i as integer
 		  dim t as Boolean
-		  
+
 		  if ifmac.fa = 0 then
 		    return ifmac.coord.tab(0) <> nil
 		  else
@@ -886,22 +898,22 @@ Protected Class Macro
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
