@@ -153,93 +153,110 @@ Protected Class Configuration
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub SafeSetCheckMark(menu as string, submenu as string, subsubmenu as string, hasTag as boolean)
+		  dim m as DesktopMenuItem
+		  dim sm as DesktopMenuItem
+		  dim ssm as DesktopMenuItem
+
+		  m = MenuMenus.Child(menu)
+		  if m = nil then return
+
+		  sm = m.Child(submenu)
+		  if sm = nil then return
+
+		  if subsubmenu <> "" then
+		    ssm = sm.Child(subsubmenu)
+		    if ssm = nil then return
+		    ssm.HasCheckMark = hasTag
+		  else
+		    sm.HasCheckMark = hasTag
+		  end if
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub ChargerMenu(El As XMLElement)
-		  Dim mmenubar As DesktopMenuItem
+		  SafeSetCheckMark("EditMenu", "EditUndo", "", El.XQL("Undo").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditRedo", "", El.XQL("Redo").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditCopy", "", El.XQL("Copy").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditPaste", "", El.XQL("Paste").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditSelection", "", El.XQL("Selection").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditReSelect", "", El.XQL("Reselect").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditSelectall", "", El.XQL("Selectall").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditDelete", "", El.XQL("Delete").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditLink", "", El.XQL("Link").length > 0)
+		  SafeSetCheckMark("EditMenu", "EditUnlink", "", El.XQL("Link").length > 0)
 
-		  'un moyen plus propre ?
-		  mmenubar = MenuMenus
+		  SafeSetCheckMark("ToolsMenu", "ToolsColorTransparent", "", El.XQL("ColTsp").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsColorTransparent", "ToolsOpq", El.XQL("ColTsp").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsColorTransparent", "ToolsSTsp", El.XQL("ColTsp").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsColorTransparent", "ToolsTsp", El.XQL("ColTsp").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsThickness", "ToolsThick1", El.XQL("Thickness").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsThickness", "ToolsThick2", El.XQL("Thickness").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsHide", "", El.XQL("Hide").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsRigid", "", El.XQL("Rigid").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsGrid", "", El.XQL("Grid").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsHisto", "", El.XQL("Histo").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsARPlan", "", El.XQL("AVPlan").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsAVPlan", "", El.XQL("AVPlan").length > 0)
+		  SafeSetCheckMark("ToolsMenu", "ToolsLabel", "", El.XQL("Label").length > 0)
 
-		  mmenubar.Child("EditMenu").Child("EditUndo").HasCheckMark = El.XQL("Undo").length > 0
-		  mmenubar.Child("EditMenu").Child("EditRedo").HasCheckMark = El.XQL("Redo").length > 0
-		  mmenubar.Child("EditMenu").Child("EditCopy").HasCheckMark = El.XQL("Copy").length > 0
-		  mmenubar.Child("EditMenu").Child("EditPaste").HasCheckMark = El.XQL("Paste").length > 0
-		  mmenubar.Child("EditMenu").Child("EditSelection").HasCheckMark = El.XQL("Selection").length > 0
-		  mmenubar.Child("EditMenu").Child("EditReSelect").HasCheckMark = El.XQL("Reselect").length > 0
-		  mmenubar.Child("EditMenu").Child("EditSelectall").HasCheckMark = El.XQL("Selectall").length > 0
-		  mmenubar.Child("EditMenu").Child("EditDelete").HasCheckMark = El.XQL("Delete").length > 0
-		  mmenubar.Child("EditMenu").Child("EditLink").HasCheckMark = El.XQL("Link").length > 0
-		  mmenubar.Child("EditMenu").Child("EditUnlink").HasCheckMark = El.XQL("Link").length > 0
+		  SafeSetCheckMark("MacrosMenu", "MacrosLoad", "", El.XQL("Macros").length > 0)
+		  SafeSetCheckMark("MacrosMenu", "MacrosCreate", "", El.XQL("Macros").length > 0)
 
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").HasCheckMark = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsOpq").HasCheckMark = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsSTsp").HasCheckMark = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsColorTransparent").Child("ToolsTsp").HasCheckMark = El.XQL("ColTsp").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark = El.XQL("Thickness").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick2").HasCheckMark = El.XQL("Thickness").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsHide").HasCheckMark = El.XQL("Hide").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsRigid").HasCheckMark = El.XQL("Rigid").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsGrid").HasCheckMark = El.XQL("Grid").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsHisto").HasCheckMark = El.XQL("Histo").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsARPlan").HasCheckMark = El.XQL("AVPlan").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsAVPlan").HasCheckMark = El.XQL("AVPlan").length > 0
-		  mmenubar.Child("ToolsMenu").Child("ToolsLabel").HasCheckMark = El.XQL("Label").length > 0
+		  SafeSetCheckMark("OperaMenu", "OperaDivide", "", El.XQL("Divide").length > 0)
+		  SafeSetCheckMark("OperaMenu", "OperaCut", "", El.XQL("Cut").length > 0)
+		  SafeSetCheckMark("OperaMenu", "OperaMerge", "", El.XQL("Merge").length > 0)
+		  SafeSetCheckMark("OperaMenu", "OperaClone", "", El.XQL("Cloner").length > 0)
+		  SafeSetCheckMark("OperaMenu", "OperaIdentify", "", El.XQL("Identify").length > 0)
+		  SafeSetCheckMark("OperaMenu", "OperaProl", "", El.XQL("Prolonger").length > 0)
+		  SafeSetCheckMark("OperaMenu", "OperaCreateCenter", "", El.XQL("CreateCenter").length > 0)
 
-		  mmenubar.Child("MacrosMenu").Child("MacrosLoad").HasCheckMark = El.XQL("Macros").length > 0
-		  mmenubar.Child("MacrosMenu").Child("MacrosCreate").HasCheckMark = El.XQL("Macros").length > 0
+		  SafeSetCheckMark("TransfosMenu", "TransfosAppliquer", "", El.XQL("Transformations").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirTranslation", El.XQL("Translation").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirRotation", El.XQL("Rotation").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirQuartD", El.XQL("Rot90D").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirQuartG", El.XQL("Rot90G").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirDemitour", El.XQL("SymCentrale").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "Definirsymetrieaxiale", El.XQL("SymOrtho").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirSimilitude", El.XQL("Similitude").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirHomothetie", El.XQL("Homothetie").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirEtirement", El.XQL("Etirement").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirDeplacement", El.XQL("Deplacement").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosDefine", "DefinirCisaillement", El.XQL("Cisaillement").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosHide", "", El.XQL("HideTsf").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "TransfosFixedPoints", "", El.XQL("PtsFix").length > 0)
+		  SafeSetCheckMark("TransfosMenu", "InvCurve", "", El.XQL("InvCurve").length > 0)
 
-		  mmenubar.Child("OperaMenu").Child("OperaDivide").HasCheckMark = El.XQL("Divide").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaCut").HasCheckMark = El.XQL("Cut").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaMerge").HasCheckMark = El.XQL("Merge").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaClone").HasCheckMark = El.XQL("Cloner").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaIdentify").HasCheckMark = El.XQL("Identify").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaProl").HasCheckMark = El.XQL("Prolonger").length > 0
-		  mmenubar.Child("OperaMenu").Child("OperaCreateCenter").HasCheckMark = El.XQL("CreateCenter").length > 0
+		  SafeSetCheckMark("PrefsMenu", "Fonds", "Install", true)
+		  SafeSetCheckMark("PrefsMenu", "Fonds", "FondEcranConfigurer", true)
+		  SafeSetCheckMark("PrefsMenu", "Fonds", "UnInstall", true)
+		  SafeSetCheckMark("PrefsMenu", "PrefsStdForms", "", El.XQL("StdForms").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsTrace", "", El.XQL("Traj").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsMagDist", "", El.XQL("DistanceMagnetisme").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsColor", "PrefsColorBorder", El.XQL("ColBorder").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsColor", "PrefsColorFill", El.XQL("ColFill").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsColor", "PrefsColorStdFam", El.XQL("ColStdFam").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsThickness", "", El.XQL("Thickness").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsPolyg", "", El.XQL("Pointer").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsBiface", "", El.XQL("Biface").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsAjust", "", El.XQL("Ajuster").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsFleches", "", El.XQL("Flecher").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsUL", "PrefsULDef", true)
+		  SafeSetCheckMark("PrefsMenu", "PrefsUL", "PrefsULChoix", true)
+		  SafeSetCheckMark("PrefsMenu", "PrefsUA", "PrefsUADef", true)
+		  SafeSetCheckMark("PrefsMenu", "PrefsUA", "PrefsUAChoix", true)
+		  SafeSetCheckMark("PrefsMenu", "PrefsArea", "", El.XQL("Area").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsArea", "PrefsAreaArith", El.XQL("Area").length > 0)
+		  SafeSetCheckMark("PrefsMenu", "PrefsArea", "PrefsAreaAlg", El.XQL("Area").length > 0)
 
-		  mmenubar.Child("TransfosMenu").Child("TransfosAppliquer").HasCheckMark = El.XQL("Transformations").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").child("DefinirTranslation").HasCheckMark = El.XQL("Translation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirRotation").HasCheckMark = El.XQL("Rotation").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartD").HasCheckMark = El.XQL("Rot90D").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirQuartG").HasCheckMark = El.XQL("Rot90G").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDemitour").HasCheckMark = El.XQL("SymCentrale").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("Definirsymetrieaxiale").HasCheckMark = El.XQL("SymOrtho").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirSimilitude").HasCheckMark = El.XQL("Similitude").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirHomothetie").HasCheckMark = El.XQL("Homothetie").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirEtirement").HasCheckMark = El.XQL("Etirement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirDeplacement").HasCheckMark = El.XQL("Deplacement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosDefine").Child("DefinirCisaillement").HasCheckMark = El.XQL("Cisaillement").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosHide").HasCheckMark = El.XQL("HideTsf").length > 0
-		  mmenubar.Child("TransfosMenu").Child("TransfosFixedPoints").HasCheckMark = El.XQL("PtsFix").length > 0
-		  mmenubar.Child("TransfosMenu").Child("InvCurve").HasCheckMark = El.XQL("InvCurve").length > 0
+		  SafeSetCheckMark("HelpMenu", "HelpView", "", true)
+		  SafeSetCheckMark("HelpMenu", "HelpVisit", "", true)
+		  SafeSetCheckMark("HelpMenu", "HelpAbout", "", true)
+		  SafeSetCheckMark("HelpMenu", "HelpUG", "", true)
 
-		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("Install").HasCheckMark =true
-		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("FondEcranConfigurer").HasCheckMark =true
-		  mmenubar.Child("PrefsMenu").Child("Fonds").Child("UnInstall").HasCheckMark =true
-		  mmenubar.Child("PrefsMenu").Child("PrefsStdForms").HasCheckMark = El.XQL("StdForms").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark = El.XQL("Traj").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsMagDist").HasCheckMark = El.XQL("DistanceMagnetisme").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorBorder").HasCheckMark = El.XQL("ColBorder").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorFill").HasCheckMark = El.XQL("ColFill").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsColor").Child("PrefsColorStdFam").HasCheckMark = El.XQL("ColStdFam").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsThickness").HasCheckMark = El.XQL("Thickness").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsPolyg").HasCheckMark  = El.XQL("Pointer").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark =  El.XQL("Biface").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark =  El.XQL("Ajuster").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark = El.XQL("Flecher").length > 0
-		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULDef").HasCheckMark = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsUL").child("PrefsULChoix").HasCheckMark = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUADef").HasCheckMark = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsUA").child("PrefsUAChoix").HasCheckMark = true
-		  mmenubar.Child("PrefsMenu").Child("PrefsArea").HasCheckMark = El.XQL("Area").length >0
-		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaArith").HasCheckMark= El.XQL("Area").length >0
-		  mmenubar.Child("PrefsMenu").Child("PrefsArea").child("PrefsAreaAlg").HasCheckMark = El.XQL("Area").length >0
-
-		  mmenubar.Child("HelpMenu").Child("HelpView").HasCheckMark = true
-		  mmenubar.Child("HelpMenu").Child("HelpVisit").HasCheckMark = true
-		  mmenubar.Child("HelpMenu").Child("HelpAbout").HasCheckMark = true
-		  mmenubar.Child("HelpMenu").Child("HelpUG").HasCheckMark = true
-
-		  mmenubar.Child("NotesMenu").Child("NotesOpen").HasCheckMark = El.XQL("Notes").length > 0
+		  SafeSetCheckMark("NotesMenu", "NotesOpen", "", El.XQL("Notes").length > 0)
 		End Sub
 	#tag EndMethod
 
@@ -249,7 +266,7 @@ Protected Class Configuration
 		  dim Doc As XMLDocument
 		  dim List, Famlist, FormList as XMLNodeList
 		  dim EL, CurFig, EL1, EL2,EL3 as XMLElement
-		  dim h,i,j,k,nrep as Integer
+		  dim h,i,j,k as Integer
 		  dim CurSpecs as StdPolygonSpecifications
 
 		  if not ShowStdTools then
@@ -492,7 +509,16 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h1
 		Protected Function GetMenuItem(menu as string, sousmenu as string) As boolean
-		  return MenuMenus.Child(menu).Child(sousmenu).HasCheckMark
+		  dim m as DesktopMenuItem
+		  dim sm as DesktopMenuItem
+
+		  m = MenuMenus.Child(menu)
+		  if m = nil then return false
+
+		  sm = m.Child(sousmenu)
+		  if sm = nil then return false
+
+		  return sm.HasCheckMark
 		End Function
 	#tag EndMethod
 
