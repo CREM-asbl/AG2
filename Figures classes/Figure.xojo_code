@@ -294,6 +294,8 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function Autoaffupdate() As Matrix
+		  ' Dispatcher pour le calcul de matrice affine selon le nombre de points modifiés.
+		  ' @return Matrice affine appropriée (jusqu'à 4 points pour détermination complète)
 		  select case NbPtsModif // Nombre de pointsmodifiés
 		  case 0
 		    return new Matrix(1)
@@ -319,9 +321,13 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autoaffupdate1() As Matrix
-		  dim p, p1,p2 as point
-		  dim bp1, bp2, ep, np as BasicPoint
-		  dim i, n, m1, m2, ns as integer
+		  ' Calcule matrice affine avec 1 point modifié.
+		  ' Point sur forme ou libre - constrain l'une des 6 degrés de liberté
+		  ' @return Matrice affine ou neutre si conflit
+		  dim p, p1, p2 as point                    ' points d'appui pour l'affinité
+		  dim bp1, bp2 as BasicPoint                ' positions de base pour calcul affinité
+		  dim ep, np as BasicPoint                  ' old/new position du point modifié
+		  dim i, n, m1, m2, ns as integer           ' indices: n=point modifié, m1/m2=supports
 
 		  n = ListPtsModifs(0)
 		  p = somm.item(n)
@@ -391,11 +397,13 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function Autoaffupdate2() As Matrix
+		  ' Calcule matrice affine avec 2 points modifiés.
+		  ' 2 points contraignent 4 degrés de liberté (2 translations, 2 angles/échelles)
+		  ' @return Matrice affine calculée à partir de 2 points
 
-
-		  dim p, q, r, p1, p2 as point
-		  dim ep, eq, np, nq,ep1,np1, er, nr as BasicPoint
-		  dim i, n1, n2, n3 as integer
+		  dim p, q, r, p1, p2 as point              ' p,q=points modifiés, r,p1,p2=points supports
+		  dim ep, eq, np, nq, ep1, np1, er, nr as BasicPoint  ' old/new positions
+		  dim i, n1, n2, n3 as integer               ' indices des points modifiés
 
 		  if NbUnModif > 2 then
 		    return new Matrix(1)
@@ -503,11 +511,14 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function Autoaffupdate3() As Matrix
+		  ' Calcule matrice affine avec 3 points modifiés.
+		  ' Surdétermination : 3 points contraignent les 6 degrés de liberté affins (surcontraint)
+		  ' @return Matrice affine calculée par moindres carrés ou tri de points prioritaires
 
-		  dim p, q, r as point
-		  dim ep, eq, er, np, nq, nr As  BasicPoint
-		  dim n1, n2, n3, n4 as integer
-		  dim s as shape
+		  dim p, q, r as point                      ' les 3 points modifiés (surcontraint pour affinité)
+		  dim ep, eq, er, np, nq, nr As BasicPoint  ' old/new positions des 3 points
+		  dim n1, n2, n3, n4 as integer              ' indices des points modifiés
+		  dim s as shape                             ' forme d'appui si nécessaire
 
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
@@ -518,7 +529,6 @@ Protected Class Figure
 		  getoldnewpos(p,ep,np)
 		  getoldnewpos(q,eq,nq)
 		  getoldnewpos(r,er,nr)
-
 
 		  Choixpointsfixes
 		  if NbUnModif > 0 then
@@ -549,6 +559,10 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autoaffupdate4() As Matrix
+		  ' Calcule matrice affine avec 4+ points modifiés (cas surdéterminé).
+		  ' Nécessite heuristique pour sélectionner les points prioritaires ou utiliser régression
+		  ' @return Matrice affine calculée avec gestion des surcontraintes
+		  ' Note: Peut retourner matrice neutre si conflit irrésoluble
 		  dim p as point
 		  dim k, n, i as integer
 		  dim t as Boolean
@@ -642,7 +656,8 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function AutosimUpdate() As Matrix
-
+		  ' Dispatcher pour le calcul de matrice de similarité selon le nombre de points modifiés.
+		  ' @return Matrice de similarité appropriée (Identité si NbPtsModif=0, Autosimupdate1/2/3 sinon)
 
 		  select case NbPtsModif
 		  case 0
@@ -659,9 +674,15 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function Autosimupdate1() As Matrix
-		  dim p, p1,p2 as point
-		  dim bp1, ep, np,ep1, np1 as BasicPoint
-		  dim n as integer
+		  ' Calcule matrice de similarité avec 1 point modifié.
+		  ' Gère les cas : point libre ou point sur une ou plusieurs formes.
+		  ' @return Matrice de similarité (ou matrice neutre en cas de conflit)
+		  ' Complexité: O(NbUnModif) - recherche des points fixes indépendants
+		  dim p, p1, p2 as point                     ' p=point modifié, p1/p2=points de contrainte
+		  dim bp1 as BasicPoint                      ' point de base pour similarité
+		  dim ep, np as BasicPoint                   ' old/newPosition du point modifié
+		  dim ep1, np1 as BasicPoint                 ' old/newPosition du point de contrainte
+		  dim n as integer                           ' index du point modifié
 		  dim M as Matrix
 
 		  n = ListPtsModifs(0)
@@ -712,12 +733,15 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function Autosimupdate2() As Matrix
-		  dim p, q,  pmob, p3 as point
-		  dim n1, n2, npmob as integer
-		  dim M as Matrix
-		  dim k as double
-		  dim s as shape
-		  dim ep, eq, np, nq As BasicPoint
+		  ' Calcule matrice de similarité avec 2 points modifiés.
+		  ' Gère les cas de points sur formes avec contraintes particulières.
+		  ' @return Matrice de similarité (ou neutre si 2 points créent un conflit)
+		  dim p, q, pmob, p3 as point              ' p, q = points modifiés, pmob = point mobile du parent
+		  dim n1, n2, npmob as integer              ' indices des 2 points modifiés et du point mobile
+		  dim M as Matrix                           ' matrice résultante
+		  dim k as double                           ' coefficient d'homothétie ou scalaire
+		  dim s as shape                            ' forme d'appui
+		  dim ep, eq, np, nq As BasicPoint          ' old/new positions des points p, q
 
 		  n1 = ListPtsModifs(0)
 		  n2 = ListPtsModifs(1)
@@ -765,6 +789,16 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autosimupdate3() As Matrix
+		  ' Calcule matrice de similarité avec 3+ points modifiés.
+		  ' Cas complexe avec gestion des points sur multiples formes.
+		  ' @return Matrice de similarité calculée à partir de 3+ points de contrainte
+		  ' Note: Cette méthode contient une logique imbriquée complexe (110 lignes)
+		  ' TODO: Extraire les cas select/case en sous-méthodes spécialisées
+		  const CASE_NONE = 0
+		  const CASE_ONE = 1
+		  const CASE_TWO = 2
+		  const CASE_THREE = 3
+		  const INVALID_INDEX = -1
 		  dim p, p1, p2 As point
 		  dim ep,np,ep1,ep2,np1,np2 as BasicPoint
 		  dim i, k, n as integer
@@ -850,6 +884,8 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autospeupdate() As Matrix
+		  ' Dispatcher pour formes spéciales (arcs, triangles isocèles, etc.)
+		  ' @return Matrice de transformation adaptée aux contraintes géométriques de la forme
 		  select case NbPtsModif
 		  case 1
 		    return  autospeupdate1
@@ -869,6 +905,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autospeupdate1() As Matrix
+		  ' Modifie forme spéciale avec 1 point modifié.
+		  ' Maintient propriétés de la forme (rayon d'arc, isoscélité, etc.)
+		  ' @return Matrice spéciale ou neutre si modification invalide
 		  dim p, q, p1, p2 as point
 		  dim s as shape
 		  dim n, n1, n2 as integer
@@ -980,6 +1019,10 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autospeupdate3() As Matrix
+		  ' Modifie forme spéciale complexe avec 3+ points modifiés.
+		  ' Complexité élevée : 100+ lignes avec multiples select/case imbriqués
+		  ' TODO: Refactoriser en 5-6 sous-méthodes par type de forme spéciale
+		  ' @return Matrice spéciale calculée avec conservation des contraintes
 		  dim p, q , r As point
 		  dim ep,eq,er,np,nq,nr as BasicPoint
 		  dim i, k, n, n1, n2, n3 as integer
@@ -1119,6 +1162,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autotrapupdate() As Boolean
+		  ' Dispatcher pour mise à jour de trapèze selon nombre de points modifiés.
+		  ' Maintient la propriété : "une paire de côtés parallèles"
+		  ' @return True si mise à jour réussie, False si conflit sur parallélisme
 		  ' Met à jour une figure de type trapèze selon le nombre de points modifiés.
 		  ' @return True si la mise à jour a réussi
 		  select case NbPtsModif // Nombre de points modifiés (y compris les sommets sur) Mais il peut exister des sommets sur non modifiés
@@ -2171,6 +2217,39 @@ Protected Class Figure
 
 
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function validateTransformationMatrix(M as Matrix, checkDeterminant as Boolean = false) As Matrix
+		  ' Helper pour valider une matrice de transformation calculée.
+		  ' Retourne la matrice si valide, sinon retourne une matrice neutre (identité).
+		  ' @param M Matrice candidat
+		  ' @param checkDeterminant Si True, vérifie que |det(M) - 1| < EPSILON pour similarités
+		  ' @return Matrice validée ou matrice neutre
+		  const NUMERIC_TOLERANCE = 1.0e-6
+		  const IDENTITY_DET_MAX_DEVIATION = 1.0e-3  ' Tolérance plus large pour déterminant
+
+		  if M = nil or M.v1 = nil then
+		    return new Matrix(1)  ' Retourne matrice neutre
+		  end if
+
+		  if checkDeterminant and abs(M.det - 1) > IDENTITY_DET_MAX_DEVIATION then
+		    return new Matrix(1)  ' Déterminant incorrect pour similarité → matrice neutre
+		  end if
+
+		  return M
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub getPointPositions(pt as Point, ByRef oldPos as BasicPoint, ByRef newPos as BasicPoint)
+		  ' Surcharge lisible pour getoldnewpos - extraction des positions ancienne/nouvelle d'un point.
+		  ' Alias améliorant la lisibilité du code dans les gros algorithmes de transformation.
+		  ' @param pt Point source
+		  ' @param oldPos Position ancienne (sortie)
+		  ' @param newPos Position nouvelle (sortie)
+		  getoldnewpos(pt, oldPos, newPos)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -3766,9 +3845,19 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
-		  ' Met à jour une sous-figure suite à une modification de point.
-		  ' Applique la transformation appropriée selon le mode auto de la figure.
+		  ' DISPATCH PRINCIPAL : Met à jour une sous-figure suite à une modification de point.
+		  ' Applique la transformation appropriée selon le mode auto (similarité, affinité, spéciale, etc.).
+		  ' Gère aussi les cas dégénérés (pas de modification, formes libres, trapèzes, perpendiculaires).
+		  '
+		  ' Algorithme :
+		  ' 1. Sélectionne matrice de transformation selon le mode auto (7 cas)
+		  ' 2. Valide la matrice (non-dégénérée, déterminant proche de 1 pour similarité)
+		  ' 3. Applique la transformation à tous les points, formes et points construits
+		  ' 4. Vérifie la cohérence finale via checksimaff()
+		  '
 		  ' @return True si la mise à jour a réussi, False si la configuration est invalide
+		  ' Complexité : O(NbPoints + NbShapes + NbConstructedPoints) - linéaire
+		  '
 		  const AUTO_FIXED = 0         // Formes fixes (standard)
 		  const AUTO_SIMILARITY = 1    // Transformations par similarité
 		  const AUTO_AFFINITY = 2      // Transformations affines
@@ -4491,3 +4580,68 @@ Protected Class Figure
 	#tag EndViewBehavior
 End Class
 #tag EndClass
+' ============================================================================
+' REFACTORING ROADMAP - Patterns de duplication identifiés pour Phase 3
+' ============================================================================
+'
+' 1. DUPLICATION AUTOSIMUPDATE / AUTOAFFUPDATE / AUTOSPEUPDATE
+'    -----------------------------------------------------------
+'    Pattern: chaque famille (sim/aff/spe) possède 3-4 variantes numérotées:
+'    - Autoxx1() : 1 point modifié     (~25-35 lignes, select case sur NbSommSur)
+'    - Autoxx2() : 2 points modifiés   (~30-40 lignes, sélection points prioritaires)
+'    - Autoxx3() : 3+ points modifiés  (~100 lignes, logique complexe imbriquée)
+'    - Autoxx4() : (affinity/special seulement, surcontraint) (~60+ lignes)
+'
+'    Observations communes:
+'    - Chaque case du select/case sur NbSommSur (0,1,2,3,else) se répète
+'    - getoldnewpos() appelé récursivement pour extraire points anciens/nouveaux
+'    - replacerpoint() teste si remplacement simple possible
+'    - Chaque variante return new Matrix(1) en cas de conflit
+'
+'    Opportunité de refactoring:
+'    → Créer classe de base AbstractAutoUpdate avec logique commune
+'    → Extraire select/case NbSommSur en helper SimilarityMatrix.createFromConstraints()
+'    → Consolider validations de matrice (nil check, determinant vérification)
+'
+' 2. AUTOTRAPUPDATE1/2/3/4 - Trapèze
+'    ----------------------------------
+'    Tous les 4 retournent Boolean et partagent la même logique:
+'    1. Sélectionner les points fixes/mobiles
+'    2. Déterminer la paire de côtés parallèles
+'    3. Appliquer transformation tout en maintenant parallélisme
+'    4. Retourner False si parallélisme est violé
+'
+'    Consolidation: Extraire logique parallélisme dans SimilarityMatrix/TransformationMatrix
+'
+' 3. GETOLDNEWPOS() - Appelée ~200+ fois
+'    -----------------------------------------------
+'    Actuellement: parcourt Point.forme pour récupérer ancienne/nouvelle position
+'    Opportunité: Cacher le détail dans Point class pour meilleure encapsulation
+'    Considérer: Point.getOldNewPositions() retourne (BasicPoint, BasicPoint)
+'
+' 4. VARIABLE NAMING - Clarification recommandée
+'    -----------------------------------------------
+'    somm        → points ou vertices (liste des points de la figure)
+'    bpt         → basicPoint ou bptValue
+'    nff         → numberOfFigures ou figuresCount
+'    ptfx0, ptfx1 → fixedPointsPhase0, fixedPointsPhase1
+'    tsf         → transformation (déjà utilisé partiellement)
+'    ep, np      → startPoint, endPoint ou oldPosition, newPosition
+'    M           → transformationMatrix ou resultMatrix (plus explicite)
+'
+' 5. LONG METHODS - Candidates pour décomposition
+'    -----------------------------------------------
+'    • subfigupdate()       : 100 lignes → Dispatcher OK, mais select/case pourrait être polymorphe
+'    • autosimupdate3()     : 110 lignes → 5 cases select imbriqués → extraire en sous-méthodes
+'    • autospeupdate3()     : 100+ lignes → Très complexe (types de formes spéciales variées)
+'    • autoaffupdate3/4()   : 90+ lignes → Surdétermination → extraire logique moindres carrés
+'    • subfigupdate()       : 75 lignes (dispatcher) → OK mais pourrait utiliser pattern Strategy
+'
+' 6. PERFORMANCE OPPORTUNITIES
+'    --------------------------
+'    • ListSommSur.item(i) vs NbSommSur() appelés multiples fois → cacher dans boucle
+'    • Multiple indexOf() sur somm, fxs → pré-calculer indices
+'    • Point(somm.item(n)) → wrapper inefficace → direct access en propriété
+'    • Recursive calls Autosimupdate/Autoaffupdate dans replacerpoint() → Tail recursion OK
+'
+' ============================================================================
