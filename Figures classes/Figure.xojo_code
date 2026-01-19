@@ -2,8 +2,18 @@
 Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub AdapterAutos(f1 as figure)
-		  // Une figure a été construite par fusion de plusieurs autres. Les formes sont de types différents.
-		  //Il faut trouver une valeur de auto qui ne crée pas de déformations et provoque le moins de blocages possibles.
+		  ' Adapte le mode de modification automatique d'une figure fusionnée.
+		  ' Détermine le mode le plus approprié pour éviter déformations et blocages.
+		  ' @param f1 La figure dont on doit adapter le mode auto
+		  const AUTO_FIXED = 0         // Formes fixes (standard)
+		  const AUTO_SIMILARITY = 1    // Transformations par similarité
+		  const AUTO_AFFINITY = 2      // Transformations affines
+		  const AUTO_SPECIAL = 3       // Formes spéciales (arcs, triangles particuliers)
+		  const AUTO_FREEFORM = 4      // Formes quelconques (tous points libres)
+		  const AUTO_TRAPEZOID = 5     // Trapèzes
+		  const AUTO_ISOMETRY = 6      // Isométries
+		  const AUTO_PERPENDICULAR = 7 // Droites perpendiculaires/parallèles
+
 		  dim t, tt as boolean
 		  dim k, h, j, n, amin as integer
 		  dim aut(-1) as integer
@@ -12,7 +22,7 @@ Protected Class Figure
 		  For n = 0 To f1.shapes.count-1
 		    s = f1.shapes.item(n)
 		    If s.constructedby <> Nil And s.isaparaperp Then
-		      f1.Auto = 7
+		      f1.Auto = AUTO_PERPENDICULAR
 		      Return
 		    End If
 		  Next
@@ -38,7 +48,7 @@ Protected Class Figure
 		    next
 		    if t then
 		      select case n
-		      Case 0, 1, 2, 4, 6, 7
+		      Case AUTO_FIXED, AUTO_SIMILARITY, AUTO_AFFINITY, AUTO_FREEFORM, AUTO_ISOMETRY, AUTO_PERPENDICULAR
 		        f1.auto = n
 		      end select
 		      return
@@ -48,12 +58,12 @@ Protected Class Figure
 		  ''Deuxième cas: toutes les formes sont autosim ou autoaff
 		  t = true
 		  for j = 0 to ubound(aut)
-		    t  = t and ((aut(j) =1 ) or (aut(j) = 2))
+		    t  = t and ((aut(j) = AUTO_SIMILARITY) or (aut(j) = AUTO_AFFINITY))
 		  next
 		  if t then
 		    tt = true
 		    for j = 0 to f1.shapes.count -1
-		      if aut(j) = 1 then
+		      if aut(j) = AUTO_SIMILARITY then
 		        tt = tt and ( (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
 		      else
 		        tt = false
@@ -61,18 +71,18 @@ Protected Class Figure
 		    next
 
 		    if tt then 'tout point peut être modifié indépendamment des autres
-		      f1.Auto = 4
+		      f1.Auto = AUTO_FREEFORM
 		      return
 		    end if
 
 		    tt = true
 		    for j = 0 to f1.shapes.count -1
-		      tt = tt and (aut(j) = 2 or  (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
+		      tt = tt and (aut(j) = AUTO_AFFINITY or  (F1.shapes.item(j) isa BiPoint) or (F1.shapes.item(j) isa FreeCircle) or (F1.shapes.item(j) isa polyqcq and f1.shapes.item(j).npts = 3) )
 		    next
 		    if tt then
-		      f1.auto = 2
+		      f1.auto = AUTO_AFFINITY
 		    else 'Sinon, on choisit autosim (les autoaff ne seront pas déformées)
-		      f1.auto = 1
+		      f1.auto = AUTO_SIMILARITY
 		    end if
 		    return
 
@@ -81,10 +91,10 @@ Protected Class Figure
 		  'Troisième cas: toutes les formes sont autosim ou paraperp
 		  t = true
 		  for j = 0 to ubound(aut)
-		    t  = t And ((aut(j) =1 ) Or (aut(j) = 7))
+		    t  = t And ((aut(j) = AUTO_SIMILARITY) Or (aut(j) = AUTO_PERPENDICULAR))
 		  next
 		  if t then
-		    f1.Auto = 7
+		    f1.Auto = AUTO_PERPENDICULAR
 		    return
 		  end if
 
@@ -92,12 +102,12 @@ Protected Class Figure
 
 		  t = true
 		  for j = 0 to ubound(aut)
-		    t  = t and ((aut(j) =1 ) or (aut(j) = 4))
+		    t  = t and ((aut(j) = AUTO_SIMILARITY) or (aut(j) = AUTO_FREEFORM))
 		  next
 		  if t then
 		    'tt = true
 		    for j = 0 to ubound(aut)
-		      if aut(j) = 4 then
+		      if aut(j) = AUTO_FREEFORM then
 		        s = f1.shapes.element(j)
 		        k = -1
 		        for h = 0 to s.npts-1
@@ -106,7 +116,7 @@ Protected Class Figure
 		      end if
 		      'if tt then
 		      If k <> -1 Then
-		        f1.auto = 1
+		        f1.auto = AUTO_SIMILARITY
 		      end if
 		    next
 		    Return
@@ -152,16 +162,25 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Sub addconstructedfigs(figs as figslist, s as shape)
+		  ' Ajoute récursivement les figures qui ont servi à construire une forme.
+		  ' @param figs Liste des figures à compléter
+		  ' @param s La forme dont on cherche les figures de construction
+		  const OPER_DERIVE = 3        // Opération de dérivation
+		  const OPER_INTERSECT = 5     // Opération d'intersection
+		  const OPER_TRANSFORM = 6     // Opération de transformation
+		  const OPER_COPY = 9          // Opération de copie
+		  const OPER_PROJECT = 10      // Opération de projection
+
 		  Dim ci As constructioninfo
 		  dim k as integer
 		  Dim sh As shape
 
 
 		  ci = s.constructedby
-		  if (ci <> nil) and (ci.shape <> nil) and (ci.oper = 3 or ci.oper = 5  or (ci.oper = 9 and  s isa point) )  then
+		  if (ci <> nil) and (ci.shape <> nil) and (ci.oper = OPER_DERIVE or ci.oper = OPER_INTERSECT or (ci.oper = OPER_COPY and s isa point) )  then
 		    Figs.addobject ci.shape.fig
 		  end if
-		  if ci <> nil and ci.oper = 9 and not s isa point  then
+		  if ci <> nil and ci.oper = OPER_COPY and not s isa point  then
 		    sh = shape(ci.data(0))
 		    Figs.addobject sh.fig
 		    sh = shape(ci.data(2))
@@ -186,8 +205,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function alignement() As boolean
-		  // Vérification qu'aucun point modifié n'est  aligné avec deux points fixes ou deux points sur
-
+		  ' Vérifie qu'aucun point modifié n'est aligné avec deux points fixes
+		  ' ou deux points contraints sur une forme.
+		  ' @return True si un alignement problématique est détecté
 		  dim i, j, k as integer
 		  dim bq1,bq2, ep, np as basicpoint
 		  dim p as point
@@ -244,9 +264,11 @@ Protected Class Figure
 		    addconstructedfigs(figs, somm.item(i))
 		  next
 
+		  const OPER_PROJECT = 10  // Opération de projection
+
 		  for h = 0 to PtsSur.count-1
 		    addconstructedfigs(figs, PtsSur.item(h) )
-		    if PtsSur.item(h).constructedby <> nil and Ptssur.item(h).constructedby.oper = 10 then
+		    if PtsSur.item(h).constructedby <> nil and Ptssur.item(h).constructedby.oper = OPER_PROJECT then
 		      figs.addobject Ptssur.item(h).constructedby.shape.fig
 		    end if
 		    for k = 0 to  ubound(Ptssur.item(h).constructedshapes)
@@ -1097,7 +1119,9 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function autotrapupdate() As Boolean
-		  select case NbPtsModif // Nombre de pointsmodifiés (y compris les sommetssur) Mais il peut exister des sommetssur non modifiés
+		  ' Met à jour une figure de type trapèze selon le nombre de points modifiés.
+		  ' @return True si la mise à jour a réussi
+		  select case NbPtsModif // Nombre de points modifiés (y compris les sommets sur) Mais il peut exister des sommets sur non modifiés
 		  case 0
 		    return true
 		  case 1
@@ -1305,6 +1329,13 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function checksimaff(M as Matrix) As Boolean
+		  ' Vérifie si la matrice M transforme correctement les points de la figure
+		  ' selon les contraintes de similarité/affinité.
+		  ' @param M La matrice de transformation à valider
+		  ' @return True si tous les points valides sont correctement transformés
+		  const NUMERIC_TOLERANCE = 1.0e-6  // Tolérance pour comparaisons numériques
+		  const OPER_PROJECT = 10           // Opération de projection
+
 		  dim i as integer
 		  dim ep, np as basicpoint
 		  dim p as point
@@ -1320,28 +1351,24 @@ Protected Class Figure
 		    p = Point(somm.item(i))
 		    tt = true
 		    tt = tt and (not p.invalid) and (p.pointsur.count < 2)
-		    tt = tt and (p.constructedby = nil or (p.pointsur.count=1 and (p.duplicateorcut or p.constructedby.oper = 10)))
+		    tt = tt and (p.constructedby = nil or (p.pointsur.count=1 and (p.duplicateorcut or p.constructedby.oper = OPER_PROJECT)))
 		    tt = tt and not ((p.parents(0).isaparaperp) and (p.forme = 0))
 		    if tt then
 		      ep = oldbpts(i)
 		      np = p.bpt
 		      d = np.distance(M*ep)
-		      t = (d < 1e-6) and t  // Relaxed epsilon for numerical stability
-		      if self.idfig = 12 then  // Debug for subfigure 1
-		      end if
-		    else
-		      if self.idfig = 12 then
-		      end if
+		      t = (d < NUMERIC_TOLERANCE) and t
 		    end if
 		  next
-		  if self.idfig = 12 then
-		  end if
+
 		  return t
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Choixpointsfixes()
+		  ' Sélectionne les points fixes à utiliser pour calculer les matrices de transformation.
+		  ' Algorithme en 3 phases : non-modifiables, points sur formes, autres points.
 		  // Modif d'une sous-figure
 
 		  // 0) Par priorité, on choisit comme candidats points fixes les points non modifiables.
@@ -3739,15 +3766,25 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
+		  ' Met à jour une sous-figure suite à une modification de point.
+		  ' Applique la transformation appropriée selon le mode auto de la figure.
+		  ' @return True si la mise à jour a réussi, False si la configuration est invalide
+		  const AUTO_FIXED = 0         // Formes fixes (standard)
+		  const AUTO_SIMILARITY = 1    // Transformations par similarité
+		  const AUTO_AFFINITY = 2      // Transformations affines
+		  const AUTO_SPECIAL = 3       // Formes spéciales
+		  const AUTO_FREEFORM = 4      // Formes quelconques
+		  const AUTO_TRAPEZOID = 5     // Trapèzes
+		  const AUTO_PERPENDICULAR = 7 // Droites perpendiculaires
+
 		  Dim M As Matrix
 
 		  NbUnModif = 0
-		  if self.idfig = 12 then
-		  end if
+
 			select case auto
 			case -1
 				return false
-			case 0
+			case AUTO_FIXED
 				if standard then
 					M = autosimupdate
 					if M <> nil and M.v1 <> nil and abs (M.det -1) > epsilon then
@@ -3757,23 +3794,23 @@ Protected Class Figure
 					QQupdateshapes
 					return true
 				end if
-			case 1
+			case AUTO_SIMILARITY
 				M = autosimupdate
-			case 2
+			case AUTO_AFFINITY
 				M = autoaffupdate
-			case 3
+			case AUTO_SPECIAL
 				M = autospeupdate
-			case 4
+			case AUTO_FREEFORM
 				QQupdateshapes
 				return true
-			case 5
+			case AUTO_TRAPEZOID
 				if autotrapupdate then
 					EndTrapupdateshapes
 					return true
 				else
 					return false
 				end if
-			Case 7
+			Case AUTO_PERPENDICULAR
 				If Autoprppupdate Then
 					EndQQupdateshapes
 					Return True
@@ -3784,12 +3821,12 @@ Protected Class Figure
 
 
 			if M = nil or M.v1 = nil then
-				if auto = 0 or auto > 3 then
+				if auto = AUTO_FIXED or auto > AUTO_SPECIAL then
 					QQupdateshapes
 				else
 					tobereconstructed = true
 				end if
-				return true               ////faut-il bloquer plus ?  (arc d'angle 0) OUI (voir SimilarityMatrix(p1,p2,ep, np))
+				return true
 			else
 				if tobereconstructed then
 					reconstruct
@@ -3802,9 +3839,7 @@ Protected Class Figure
 					tobereconstructed = false
 					return true
 				end if
-				Dim checkResult As Boolean
-				checkResult = checksimaff(M)
-				return checkResult
+				return checksimaff(M)
 			end if
 
 		  Exception err
