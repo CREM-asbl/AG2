@@ -110,7 +110,8 @@ Inherits DesktopApplication
 		    
 		    CurrentContent.bugfound = true
 		    
-		    app.ErrorType = NthField(st(1),"%",1)
+		    app.ErrorType = NthField(st(0),"%",1)
+		    log = log + "ErrorType : " + app.ErrorType + EndOfLine
 		    app.log = log
 		    api.SendBug
 		    
