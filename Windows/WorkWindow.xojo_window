@@ -707,7 +707,7 @@ End
 		  dim sh as shape
 
 		  setfocus
-		  if CurrentContent.bugfound then
+		  if CurrentContent <> nil and CurrentContent.bugfound then
 		    return false
 		  end if
 		  s = asc(key)
@@ -3392,9 +3392,13 @@ End
 		Sub MouseEnter()
 		  dim EL, EL1, EL2, EL3 as XMLElement
 		  dim Name, Type as string
-		  dim op, op1 as integer
-		  dim n1, n2, n3 as integer
+		  dim op as integer
+		  dim n1 as integer
 		  dim s as shape
+
+		  if currentcontent = nil then
+		    return
+		  end if
 
 		  if currentcontent.currentoperation <> nil then
 		    me.Tooltip = Dico.Value("Cancel") + " " + currentcontent.currentoperation.GetName
@@ -3452,7 +3456,7 @@ End
 		    selshape.unhighlight
 		    'can.refreshbackground
 		  end if
-		  if currentcontent.currentoperation <> nil then
+		  if currentcontent <> nil and currentcontent.currentoperation <> nil then
 		    currentcontent.currentoperation.canceling = false
 		  end if
 		End Sub
