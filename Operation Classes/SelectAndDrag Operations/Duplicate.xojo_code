@@ -293,6 +293,7 @@ Inherits SelectAndDragOperation
 		  end if
 		  if endpoint.distance(startpoint) < epsilon then
 		    abort
+		    return // nothing to duplicate when the drag is null; skip EndOperation to avoid nil copies
 		  end if
 		  if currentattractingshape <> nil and MagneticD <> nil then
 		    if copyptsur then
@@ -306,6 +307,7 @@ Inherits SelectAndDragOperation
 		    EndPoint = Endpoint + magneticD
 		  elseif copyptsur then
 		    abort
+		    return // aborted because no valid attraction target; avoid continuing
 		  end if
 
 		  super.mouseup(p)
