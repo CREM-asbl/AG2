@@ -131,12 +131,22 @@ Inherits SelectAndDragOperation
 		  dim sh as shape
 
 		  if copyptsur then
+		    // Abort if no movement or no valid target
 		    if (startpoint.distance(endpoint) < Epsilon)  or (currentattractingshape = nil) then
 		      abort
 		      return
 		    End If
+		    // Defensive guards to avoid NilObjectException
+		    if tempshape = nil or tempshape.count = 0 or copies = nil or copies.count = 0 then
+		      abort
+		      return
+		    end if
 		    pt = point(tempshape.item(0))
 		    q = point(copies.item(0))
+		    if pt = nil or q = nil or pt.pointsur = nil or pt.pointsur.count = 0 then
+		      abort
+		      return
+		    end if
 		    sh = pt.pointsur.item(0)
 
 		    if pt.constructedby <> nil and pt.constructedby.oper = 10 then
