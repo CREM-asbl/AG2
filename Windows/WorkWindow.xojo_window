@@ -666,7 +666,7 @@ End
 	#tag Event
 		Function CancelClosing(appQuitting As Boolean) As Boolean
 		  dim i as integer
-		  
+
 		  'if appQuitting then
 		  for i = ubound(wcontent) downto 0
 		    deletecontent
@@ -676,10 +676,10 @@ End
 		  next
 		  'end if
 		  appquitting = true
-		  
+
 		  return false
-		  
-		  
+
+
 		End Function
 	#tag EndEvent
 
@@ -696,7 +696,7 @@ End
 		  else
 		    MsgBox Dico.Value("MsgUnfoundable")+ ou + Dico.Value("MsgNovalidFile")
 		  end if
-		  
+
 		End Sub
 	#tag EndEvent
 
@@ -705,14 +705,14 @@ End
 		  Dim u(-1), s As Integer
 		  dim disp, nom as string
 		  dim sh as shape
-		  
+
 		  setfocus
 		  if CurrentContent.bugfound then
 		    return false
 		  end if
 		  s = asc(key)
-		  
-		  
+
+
 		  select case asc(Key)
 		  case 1 'ctrl-shft a  Modifications affines
 		    currentcontent.drapaff = not currentcontent.drapaff
@@ -751,7 +751,7 @@ End
 		  case 48, 224 'touche 0 réinitialise taille textes
 		    ResetFont
 		    refresh
-		  case 59    ' ; Afficher fenetre de configuration 
+		  case 59    ' ; Afficher fenetre de configuration
 		    config
 		  case 99  'c Inverser couleurs
 		    switchcolors
@@ -764,7 +764,7 @@ End
 		  case 112 'p' afficher numéros des points
 		    drappt = not drappt
 		  case 113 'q ?
-		    app.quiet = not app.quiet 
+		    app.quiet = not app.quiet
 		  case 115 's  Exportation postscript
 		    if CurrentContent.currentoperation <> nil then
 		      disp = CurrentContent.currentoperation.display + CurrentContent.currentoperation.info
@@ -781,10 +781,10 @@ End
 		  case 181 'µ
 		    stdflag = not stdflag
 		  end select
-		  
+
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndEvent
 
@@ -801,27 +801,27 @@ End
 		  else
 		    setcross
 		  end if
-		  
+
 		  dim B, B1, B2 as boolean
 		  dim item as MenuItem
 		  dim i, c, n as integer
-		  
+
 		  c = MenuBar.Child("Fenetres").Count
 		  n = GetNumWindow
 		  if GetNumWindow > -1 and MenuBar.Child("Fenetres").Count > GetNumWindow then
 		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
 		  end if
-		  
+
 		  if (MenuBar = HistMenu) then
 		    return
 		  end if
-		  
+
 		  if currentcontent <> nil then
 		    MenuBar.Child("FileMenu").Child("FileNew").enabled = not currentcontent.macrocreation
 		    MenuBar.Child("FileMenu").Child("FileOpen").enabled =  not currentcontent.macrocreation
-		    
+
 		    PushButton1.enabled = currentcontent.currentop > 0
-		    
+
 		    if can.rep <> nil then
 		      B =  CurrentContent.TheObjects.count > 1
 		      B1 = CurrentContent.TheGrid <> nil
@@ -830,8 +830,8 @@ End
 		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= B  and not CurrentContent.CurrentFileUptoDate
 		      MenuBar.Child("FileMenu").Child("FileClose").enabled =   not currentcontent.macrocreation
 		      if MenuMenus.Child("EditMenu").Child("EditUndo").HasCheckMark then
-		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = B 
-		        pushbutton1.enabled = B 
+		        MenuBar.Child("EditMenu").Child("EditUndo").Enabled = B
+		        pushbutton1.enabled = B
 		      end if
 		      if MenuMenus.Child("EditMenu").Child("EditRedo").HasCheckMark then
 		        MenuBar.Child("EditMenu").Child("EditRedo").Enabled = (CurrentContent.currentop < CurrentContent.totaloperation -1)
@@ -847,19 +847,19 @@ End
 		      MenuBar.Child("FileMenu").Child("FileSave").Enabled= false
 		      MenuBar.Child("FileMenu").Child("FileClose").enabled = false
 		    end if
-		    
+
 		    MenuBar.Child("FileMenu").Child("FilePrint").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveAs").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveStd").Enabled = B
 		    MenuBar.Child("FileMenu").Child("FileSaveEps").Enabled= B and (Config.username = Dico.Value("Enseignant"))
 		    MenuBar.Child("FileMenu").Child("FileSaveBitmap").Enabled = B
-		    
+
 		    if MenuBar.Child("PrefsMenu") <> nil then
-		      
+
 		      if MenuBar.Child("PrefsMenu").child("Fonds") <> nil then
 		        MenuBar.Child("PrefsMenu").child("Fonds").child("FondEcranConfigurer").enabled = MyCanvas1.FondsEcran <> nil
 		      end if
-		      
+
 		      if MenuBar.Child("PrefsMenu").child("PrefsFleches") <> nil then
 		        MenuBar.Child("PrefsMenu").Child("PrefsFleches").HasCheckMark  = Config.PolFleches
 		      end if
@@ -872,12 +872,12 @@ End
 		        MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = (config.area = 1)
 		      end if
 		    end if
-		    
+
 		    if MenuBar.child("HelpMenu") <> nil and MenuBar.Child("HelpMenu").Child("HelpView") <> nil then
 		      MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
 		    end if
 		  end if
-		  
+
 		End Sub
 	#tag EndEvent
 
@@ -893,7 +893,7 @@ End
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
-		  
+
 		  if MenuMenus.Child("EditMenu").Child("EditCopy").HasCheckMark  then
 		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark
 		  end if
@@ -912,8 +912,8 @@ End
 		Sub Resizing()
 		  can.resize
 		  can.RefreshBackground
-		  
-		  
+
+
 		End Sub
 	#tag EndEvent
 
@@ -939,8 +939,8 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -963,8 +963,8 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -976,7 +976,7 @@ End
 		    refreshtitle
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1146,7 +1146,7 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1176,39 +1176,39 @@ End
 		  dim f, f1 as folderitem
 		  dim s, S1 as string
 		  dim dlg as new OpenDialog
-		  
-		  
+
+
 		  dlg.ActionButtonCaption = "Convertir"
 		  dlg.Title = "Choisis un fichier .eps"
 		  dlg.Filter = FileAGTypes.EPS
-		  
+
 		  f = dlg.ShowModal
-		  if f = nil then 
+		  if f = nil then
 		    return true
 		  end if
 		  s=  f.shellpath
 		  if dlg.Result <> nil then
-		    #if targetWindows then 
+		    #if targetWindows then
 		      sh.Execute(f.shellpath)
 		      s1 = s.replace(f.name,"")
 		      sh.execute("cd "+ s1)
 		      sh.execute("epstopdf --nosafer "+s)
 		    #elseif targetMacOS then
-		      s1 = s.replace("eps","pdf") 
+		      s1 = s.replace("eps","pdf")
 		      sh.execute ("pstopdf "+ s +" -o "+s1, f.shellpath)
 		    #elseif targetlinux then
 		    #Endif
-		    s1 = s.replace("eps","pdf") 
+		    s1 = s.replace("eps","pdf")
 		    sh.execute(s1)
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function FileClose() As Boolean Handles FileClose.Action
-		  
+
 		  deletecontent
 		  if UBound (wcontent) = -1 then
 		    NewContent(false)
@@ -1230,7 +1230,7 @@ End
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
 		  Dim f As FolderItem
-		  
+
 		  if mousedispo then
 		    Formswindow.close
 		    f=GetOpenFolderItem(FileAGTypes.All)
@@ -1242,10 +1242,10 @@ End
 		  end if
 		  setfocus
 		  return true
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1322,8 +1322,8 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1331,7 +1331,7 @@ End
 		Function FondEcranConfigurer() As Boolean Handles FondEcranConfigurer.Action
 		  PrefFondEcran.ShowModal
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1341,8 +1341,8 @@ End
 		    dim md as MessageDialog
 		    Dim b as MessageDialogButton
 		    Dim mois() as string
-		    dim mess as string 
-		    
+		    dim mess as string
+
 		    mois.Append ("Janvier")
 		    mois.Append ("Février")
 		    mois.Append ("Mars")
@@ -1355,8 +1355,8 @@ End
 		    mois.Append ("Octobre")
 		    mois.Append ("Novembre")
 		    mois.Append ("Décembre")
-		    
-		    
+
+
 		    Formswindow.close
 		    md = New MessageDialog
 		    md.Title = Dico.value("HelpAbout")
@@ -1366,27 +1366,27 @@ End
 		    b = md.ShowModal
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function HelpUG() As Boolean Handles HelpUG.Action
 		  dim fi as Folderitem
-		  
+
 		  'fi = getfolderitem(Dico.Value("UserGuide")) pas utile pour l'instant car un seul guide et en plus pose problème
-		  
+
 		  fi = getfolderitem("Guide Utilisateur AG2.pdf")
-		  
+
 		  if fi.exists then
 		    fi.launch
 		  else
 		    MsgBox Dico.Value("MsgUnfoundable")
 		  end if
 		  Return True
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1418,14 +1418,14 @@ End
 		    close
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function Install() As Boolean Handles Install.Action
 		  Dim f As FolderItem
-		  
+
 		  if mousedispo then
 		    Formswindow.close
 		    f=GetOpenFolderItem(FileAGTypes.Image)
@@ -1436,9 +1436,9 @@ End
 		      PrefFondEcran.ShowModal
 		    end if
 		  end if
-		  
+
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1455,10 +1455,10 @@ End
 
 	#tag MenuHandler
 		Function MacrosClose2(index as Integer) As Boolean Handles MacrosClose2.Action
-		  
+
 		  app.themacros.RemoveMac app.themacros.item(index)
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1466,7 +1466,7 @@ End
 		Function MacrosCopy2(index as Integer) As Boolean Handles MacrosCopy2.Action
 		  app.themacros.item(index).CopyMacroToFile
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1481,19 +1481,19 @@ End
 		  can.refreshbackground
 		  currentcontent.mac = nil
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosDescri2(index as Integer) As Boolean Handles MacrosDescri2.Action
 		  dim Mac as Macro
-		  
+
 		  Mac = app.themacros.item(index)
 		  Mac.OpenDescripWindow
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1502,28 +1502,28 @@ End
 		  Dim f As FolderItem
 		  dim mac as macro
 		  dim cf as Confirmation
-		  
+
 		  Formswindow.close
 		  currentcontent.currentoperation = nil
 		  refreshtitle
-		  
+
 		  mac= app.themacros.item(index)
 		  f = app.MacFolder.Child(mac.caption+".xmag")
-		  
+
 		  if f <> nil then
 		    cf = new Confirmation("Voulez-vous vraiment supprimer cette macro du disque dur?")
 		    cf.showmodal
-		    
+
 		    if cf.result = 1 then
 		      app.themacros.RemoveMac app.themacros.item(index)
 		      f.delete
 		    end if
 		    cf.close
 		  end if
-		  
+
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1536,7 +1536,7 @@ End
 		    refreshtitle
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1546,7 +1546,7 @@ End
 		  dim Doc as XmlDocument
 		  dim mac as macro
 		  dim dlg as OpenDialog
-		  
+
 		  Formswindow.close
 		  currentcontent.currentoperation = nil
 		  refreshtitle
@@ -1554,7 +1554,7 @@ End
 		  dlg.InitialDirectory = App.MacFolder
 		  dlg.Filter = FileAGTypes.MACR
 		  f = dlg.ShowModal
-		  
+
 		  if f <> nil then
 		    Doc = new XmlDocument(f)
 		    mac = new Macro(Doc)
@@ -1562,13 +1562,13 @@ End
 		    WorkWindow.updatesousmenusmacros
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function MacrosQuit() As Boolean Handles MacrosQuit.Action
-		  
+
 		  CloseMacro
 		  return true
 		End Function
@@ -1577,7 +1577,7 @@ End
 	#tag MenuHandler
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
 		  dim op as operation
-		  
+
 		  Formswindow.close
 		  op = currentcontent.currentoperation
 		  if op isa choosefinal then
@@ -1636,7 +1636,7 @@ End
 	#tag MenuHandler
 		Function OperaDivide() As Boolean Handles OperaDivide.Action
 		  dim diw as DivideWindow
-		  
+
 		  if mousedispo then
 		    Formswindow.close
 		    diw = new DivideWindow
@@ -1656,14 +1656,14 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function OperaMerge() As Boolean Handles OperaMerge.Action
-		  
+
 		  if mousedispo then
 		    Formswindow.close
 		    CurrentContent.CurrentOperation=new Fusion()
@@ -1689,7 +1689,7 @@ End
 		  MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark
 		  Config.Ajust = MenuBar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1704,14 +1704,14 @@ End
 		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = true
 		  end if
 		  Return True
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
 	#tag MenuHandler
 		Function PrefsAreaArith() As Boolean Handles PrefsAreaArith.Action
-		  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark 
+		  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark
 		  if  MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark then
 		    config.area = 0
 		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = false
@@ -1720,7 +1720,7 @@ End
 		    MenuBar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = true
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1729,7 +1729,7 @@ End
 		  MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark = not MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark
 		  Config.Biface = MenuBar.Child("PrefsMenu").Child("PrefsBiface").HasCheckMark
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1747,10 +1747,10 @@ End
 		  Formswindow.close
 		  refreshtitle
 		  configcolorChange(False)
-		  
+
 		  Return True
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1761,9 +1761,9 @@ End
 		  refreshtitle
 		  drapstdcolor = true
 		  return true
-		  
-		  
-		  
+
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1779,7 +1779,7 @@ End
 		Function PrefsMagDist() As Boolean Handles PrefsMagDist.Action
 		  dim mw as MagDistWindow
 		  dim d as double
-		  
+
 		  mw = new MagDistWindow
 		  mw.ShowModal
 		  if mw.result=1 then
@@ -1791,8 +1791,8 @@ End
 		    mw.close
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1815,7 +1815,7 @@ End
 		    Refresh
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1823,7 +1823,7 @@ End
 		Function PrefsThickness() As Boolean Handles PrefsThickness.Action
 		  dim mw as ThickWindow
 		  dim d as double
-		  
+
 		  mw = new ThickWindow
 		  mw.ShowModal
 		  if mw.result=1 then
@@ -1832,7 +1832,7 @@ End
 		    mw.close
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1864,10 +1864,10 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1890,10 +1890,10 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
-		  
-		  
+
+
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1947,7 +1947,7 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -1955,7 +1955,7 @@ End
 		Function ToolsHisto() As Boolean Handles ToolsHisto.Action
 		  Dim f As FolderItem
 		  Dim dlg as OpenDialog
-		  
+
 		  if mousedispo then
 		    Formswindow.close
 		    MyCanvas1.Mousecursor = system.cursors.wait
@@ -1969,15 +1969,15 @@ End
 		      dlg.Filter = FileAGTypes.HIST
 		      f = dlg.ShowModal
 		    end if
-		    
+
 		    if f<>nil  then
 		      OpenFile(f)
 		    end if
-		    
+
 		    MyCanvas1.Mousecursor = System.Cursors.StandardPointer
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2001,8 +2001,8 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2027,7 +2027,7 @@ End
 		    refreshtitle
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2068,8 +2068,8 @@ End
 		    refreshtitle
 		  end if
 		  return true
-		  
-		  
+
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2082,7 +2082,7 @@ End
 		    refreshtitle
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2105,7 +2105,7 @@ End
 		    refreshtitle
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2117,7 +2117,7 @@ End
 		    refreshtitle
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2125,7 +2125,7 @@ End
 		Function UnInstall() As Boolean Handles UnInstall.Action
 		  mycanvas1.FondsEcran = nil
 		  Return False
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2135,7 +2135,7 @@ End
 		  sh.ExecuteMode = Shell.ExecuteModes.Asynchronous
 		  dim f as folderitem
 		  dim s, S1 as string
-		  
+
 		  f = GetOpenFolderItem(FileAGTypes.eps)
 		  if f <> nil then
 		    #if targetWindows then
@@ -2146,7 +2146,7 @@ End
 		    #Endif
 		  end if
 		  Return True
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2154,7 +2154,7 @@ End
 		Function winitem(index as Integer) As Boolean Handles winitem.Action
 		  dim i as integer
 		  dim oldOp as Operation
-		  
+
 		  if mousedispo then
 		    Formswindow.close
 		    if index <> GetNumWindow then
@@ -2182,7 +2182,7 @@ End
 		    end if
 		  end if
 		  return true
-		  
+
 		End Function
 	#tag EndMenuHandler
 
@@ -2206,14 +2206,14 @@ End
 		Sub AugmenteFont()
 		  dim obj as ObjectsList
 		  dim i as integer
-		  
+
 		  Config.TextSize = Config.TextSize +1
 		  updateTextSize
 		  obj = currentcontent.Theobjects
 		  for i = 0 to obj.count -1
 		    obj.item(i).augmentefont
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2231,7 +2231,7 @@ End
 		  Formswindow.close
 		  deletecontent
 		  MenuMacros(false)
-		  
+
 		  MenuBar.Child("MacrosMenu").Child("MacrosCreate").visible = true
 		  MenuBar.Child("MacrosMenu").Child("MacrosLoad").visible = true
 		  Config.Trace =MenuBar.Child("PrefsMenu").Child("PrefsTrace").HasCheckMark
@@ -2241,7 +2241,7 @@ End
 	#tag Method, Flags = &h0
 		Sub CloseSousMenu(mitem as DesktopMenuItem)
 		  dim i as integer
-		  
+
 		  for i =  mitem.count-1 downto 0
 		    mitem.RemoveMenuAt i
 		  next
@@ -2251,7 +2251,7 @@ End
 	#tag Method, Flags = &h0
 		Sub CloseSousMenusMacros()
 		  dim mitem as Desktopmenuitem
-		  
+
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosExecute")
 		  CloseSousMenu(mitem)
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosClose")
@@ -2262,14 +2262,14 @@ End
 		  CloseSousMenu(mitem)
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosCopy")
 		  CloseSousMenu(mitem)
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub config()
 		  ConfigWindow.showmodal
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2279,9 +2279,9 @@ End
 		  CurrentContent.CurrentOperation = Nil
 		  refreshtitle
 		  Var col As Color
-		  
-		  
-		  
+
+
+
 		  If Color.SelectedFromDialog(col,"Choisir une couleur") Then
 		    If t  Then
 		      config.bordercolor = New couleur(col)
@@ -2290,14 +2290,14 @@ End
 		      config.fill = 100
 		    End If
 		  End If
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CopyCFGMenu()
 		  dim mitem,sm as DesktopMenuItem
-		  
+
 		  if Config.pwok then
 		    mitem = new MenuItem
 		    mitem.Name = "Cfg"
@@ -2308,8 +2308,8 @@ End
 		    mitem.AddMenu sm
 		    MenuBar.AddMenu mitem
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2317,7 +2317,7 @@ End
 		Sub CopyMenuBar()
 		  dim i, nmen as integer
 		  dim mitem as DesktopMenuItem
-		  
+
 		  nmen = MenuMenus.count
 		  for i = 0 to nmen-1
 		    mitem = CopyMenuItem(MenuMenus.MenuAt(i))
@@ -2326,11 +2326,11 @@ End
 		    end if
 		  next
 		  CopyCFGMenu
-		  
+
 		  if config.ajust then
 		    menubar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = true
 		  end if
-		  
+
 		  if config.menu = "Menu_C" or config.menu = "Menu_AC" then
 		    if config.area = 0  then
 		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = true
@@ -2345,25 +2345,25 @@ End
 		Function CopyMenuItem(mitem as DesktopMenuItem) As DesktopMenuItem
 		  dim item, jtem as DesktopMenuitem
 		  dim i, nitem as integer
-		  
-		  
+
+
 		  item = new MenuItem
 		  item.Name = mitem.Name
 		  item.ShortCut = mitem.ShortCut
 		  item.index = mitem.index
-		  
+
 		  item.Text = Dico.Value(item.Name)
-		  
+
 		  if item.Text = item.name then
 		    item.Text = mitem.Text
 		  end if
-		  
+
 		  if item.name = "PrefsFreeForms" then
 		    return nil
 		  end if
-		  
+
 		  nitem = mitem.count
-		  
+
 		  if nitem = 0 then
 		    if mitem.HasCheckMark then
 		      return item
@@ -2383,7 +2383,7 @@ End
 		      return nil
 		    end if
 		  end if
-		  
+
 		End Function
 	#tag EndMethod
 
@@ -2397,7 +2397,7 @@ End
 		Sub CreateSousMenu(muitem as DesktopMenuItem, nom as string)
 		  dim i as integer
 		  dim mitem as DesktopMenuItem
-		  
+
 		  for i = 0 to app.themacros.count-1
 		    mitem = new desktopMenuItem
 		    mitem.Name = nom
@@ -2406,15 +2406,15 @@ End
 		    muitem.AddMenu mitem
 		    mitem.Text = app.TheMacros.item(i).caption
 		  next
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub CreateSousMenusMacros()
 		  dim mitem as DesktopMenuItem
-		  
+
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosExecute")
 		  CreateSousMenu(mitem, "MacrosChoose")
 		  mitem = MenuMenus.Child("MacrosMenu").Child("MacrosClose")
@@ -2432,9 +2432,9 @@ End
 		Sub deleteContent()
 		  dim conf as Confirmation
 		  dim i,n,val As integer
-		  
+
 		  val = 0
-		  
+
 		  if not currentcontent.macrocreation then
 		    if CurrentContent.TheObjects.count > 1 and not CurrentContent.CurrentFileUptoDate then
 		      conf = new Confirmation(CurrentContent.id)
@@ -2442,27 +2442,27 @@ End
 		      val = Conf.result      ''Yes
 		      conf.close
 		    end if
-		    
+
 		    if val = 1 then
 		      CurrentContent.Save
 		      if CurrentContent.Currentfile = nil then
-		        val = -1 
+		        val = -1
 		      end if
 		    end if
-		    
+
 		    if val = -1 then
 		      return
 		    end if
 		  end if
-		  
+
 		  n = GetNumWindow
-		  
+
 		  wcontent.Remove(n)
-		  
+
 		  if n < MenuBar.Child("Fenetres").Count then
 		    MenuBar.Child("Fenetres").RemoveMenuAt(n)
 		  end if
-		  
+
 		  if ubound(wcontent) >= n then
 		    for i=n to UBound (wcontent)
 		      MenuBar.Child("Fenetres").MenuAt(i).index = i
@@ -2477,11 +2477,11 @@ End
 		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
 		    refresh
 		  end if
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2489,14 +2489,14 @@ End
 		Sub DiminueFont()
 		  dim obj as ObjectsList
 		  dim i as integer
-		  
+
 		  Config.TextSize = Config.TextSize -1
 		  updateTextSize
 		  obj = currentcontent.Theobjects
 		  for i = 0 to obj.count -1
 		    obj.item(i).diminuefont
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2516,7 +2516,7 @@ End
 		Sub EraseMenuBar()
 		  dim i, n as integer
 		  n = menubar.count
-		  
+
 		  for i = n-1 downto 2
 		    menubar.RemoveMenuAt i
 		  next
@@ -2532,7 +2532,7 @@ End
 	#tag Method, Flags = &h0
 		Function GetNumWindow() As integer
 		  dim i as integer
-		  
+
 		  for i=0 to UBound(wcontent)
 		    if (wcontent(i)=currentContent) then
 		      return i
@@ -2545,16 +2545,16 @@ End
 	#tag Method, Flags = &h0
 		Sub InitParams()
 		  can = mycanvas1
-		  
+
 		  width = screen(0).width -120
 		  height = screen(0).height
-		  
+
 		  title = Config.username
 		  AcceptFileDrop(FileAGTypes.SAVE)
 		  AcceptFileDrop(FileAGTypes.HIST)
-		  
+
 		  'Les couleurs sont au départ dans Config
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2588,15 +2588,15 @@ End
 		  if menumenus.Child("HelpMenu").Child("HelpView").HasCheckMark  then
 		    MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MenuMacros(t as Boolean)
 		  dim i as integer
-		  
+
 		  MenuMenus.Child("MacrosMenu").Child("MacrosQuit").HasCheckMark = t
 		  MenuMenus.Child("MacrosMenu").Child("MacrosFinaux").HasCheckMark = t
 		  MenuMenus.Child("MacrosMenu").Child("MacrosSave").HasCheckMark = t
@@ -2634,13 +2634,13 @@ End
 		  'MenuBar.Child("EditMenu").Item(i).visible = not t
 		  'next
 		  'MenuBar.Child("EditMenu").visible = not t
-		  
+
 		  for i = 1 to 3
 		    MouvBut(i).visible = not t
 		  next
 		  PushButton1.visible = not t
 		  stdbox.visible = not t
-		  
+
 		  Exception err
 		    var d as Debug
 		    d = new Debug
@@ -2661,24 +2661,24 @@ End
 		Sub MoveBoxRefresh()
 		  dim i as integer
 		  MoveBox.Visible = false
-		  
+
 		  for i=0 to 4
 		    MouvBut(i).visible = Config.MvBt(i) and not draphisto
 		    MoveBox.Visible = MoveBox.Visible or MouvBut(i) .visible
 		  next
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub NewContent(t as Boolean)
 		  dim mitem as MenuItem
-		  
+
 		  if (GetNumWindow<>-1) then
 		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = false
 		  end if
-		  
-		  
+
+
 		  numfig=numfig+1
 		  currentContent = new WindContent(numfig)
 		  wcontent.Append(currentContent)
@@ -2690,20 +2690,20 @@ End
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
 		  MenuBar.Child("Fenetres").AddMenu mitem
 		  MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
-		  
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub OpenFile(f as Folderitem)
 		  dim nc as boolean
-		  
+
 		  if  CurrentContent.TheObjects.count > 1 then
 		    Formswindow.close
 		    NewContent(false)
 		    nc = true
 		  end if
-		  
+
 		  if f.Type = "HIST" then
 		    CurrentContent.currentoperation = new ReadHisto(f)
 		  elseif f.Type = "SAVE" then
@@ -2714,10 +2714,10 @@ End
 		      deleteContent
 		    end if
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2731,22 +2731,22 @@ End
 	#tag Method, Flags = &h0
 		Sub ReadNomsMouvBut()
 		  dim i as integer
-		  
+
 		  PushButton1.Caption = Dico.Value("Cancel")
 		  MouvBut(0).Caption = Dico.Value("Modify")
 		  MouvBut(1).Caption = Dico.Value("Slide")
 		  MouvBut(2).Caption = Dico.Value("Turn")
 		  MouvBut(3).Caption = Dico.Value("Flip")
 		  MouvBut(4).Caption = Dico.Value("Zoom")
-		  
+
 		  for i=0 to 4
 		    MouvBut(i).Tooltip = MouvBut(i).Caption
 		  next
 		  PushButton1.Tooltip = PushButton1.caption
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2773,7 +2773,7 @@ End
 		    StdBoxRefresh
 		    LibBoxRefresh
 		  end if
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2786,9 +2786,9 @@ End
 		  else
 		    Title=CurrentContent.GetWindTitle
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2802,7 +2802,7 @@ End
 	#tag Method, Flags = &h0
 		Sub ScreenAdjust()
 		  MyCanvas1.Resize
-		  
+
 		End Sub
 	#tag EndMethod
 
@@ -2821,16 +2821,16 @@ End
 		  dim i,  h, taille, haut, larg as double
 		  dim dlx, dly, urx, ury as double
 		  dim specs as StdPolygonSpecifications
-		  
+
 		  StdOutil(fam).Visible = fam < Config.nstdfam
-		  
+
 		  if not StdOutil(fam).Visible then
 		    return
 		  end if
-		  
+
 		  h = stdoutil(fam).height
 		  specs = config.stdfamilies(fam,form)
-		  
+
 		  if specs.family = "Cubes"   then
 		    ico(fam) = new Cubeskull(new BasicPoint(3, 0.5*h-6), form,1)
 		    taille = 0.5*h
@@ -2887,11 +2887,11 @@ End
 		    ico(fam).fillcolor = config.stdcolor(fam).col
 		  end if
 		  ico(fam).borderwidth= 1/h
-		  
-		  
-		  
-		  
-		  
+
+
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2902,15 +2902,15 @@ End
 		  else
 		    config.trace = false
 		  end if
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub StdBoxRefresh()
 		  dim i as integer
-		  
+
 		  if  Config.ShowStdTools and not draphisto then
 		    for i = 0 to 3
 		      if ( i < config.nstdfam ) then
@@ -2924,9 +2924,9 @@ End
 		  else
 		    StdBox.visible = false
 		  end if
-		  
-		  
-		  
+
+
+
 		End Sub
 	#tag EndMethod
 
@@ -2935,8 +2935,8 @@ End
 		  dim i , j, k As integer
 		  dim s as shape
 		  dim coul as couleur
-		  
-		  
+
+
 		  Config.Hidecolor = config.Hidecolor.comp
 		  config.Fillcolor = config.Fillcolor.comp
 		  can.Bkcol = config.fillcolor.col
@@ -2949,13 +2949,13 @@ End
 		  else
 		    BackgroundColor = blanc
 		  end if
-		  
+
 		  s = can.rep
 		  for j = 0 to s.labs.count-1
 		    coul = new couleur(s.labs.item(i).TextColor)
 		    s.labs.item(i).TextColor = coul.comp.col
 		  next
-		  
+
 		  for i = 1 to CurrentContent.TheObjects.count -1
 		    s = CurrentContent.TheObjects.item(i)
 		    s.colsw = false
@@ -2963,7 +2963,7 @@ End
 		      s.childs(j).colsw = false
 		    next
 		  next
-		  
+
 		  for i = 1 to CurrentContent.TheObjects.count -1
 		    s = CurrentContent.TheObjects.item(i)
 		    if not s.colsw then
@@ -3025,8 +3025,8 @@ End
 		  ReadStTexts
 		  TradMenu
 		  updateToolBar
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
@@ -3042,13 +3042,13 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub updateTextSize()
 		  dim i as integer
-		  
+
 		  PushButton1.FontSize = Config.TextSize
-		  
+
 		  for i = 0 to 4
 		    MouvBut(i).FontSize = config.TextSize
 		  next
-		  
+
 		  MyCanvas1.Refresh
 		End Sub
 	#tag EndMethod
@@ -3057,7 +3057,7 @@ End
 		Sub UpdateToolBar()
 		  dim espace as integer
 		  dim st as string
-		  
+
 		  espace = min((me.Height-me.MinimumHeight)/3,5)
 		  if(me.Height = me.MinimumHeight) then
 		    MoveBox.FontSize = 8
@@ -3084,31 +3084,31 @@ End
 		  elseif st = "Menu_AC" then
 		    Tools.FillColor = &cefefef
 		  end if
-		  
-		  
-		  
-		  
+
+
+
+
 		End Sub
 	#tag EndMethod
 
 
 	#tag Note, Name = Licence
-		
+
 		Copyright © 2010 CREM
 		Noël Guy - Pliez Geoffrey
-		
+
 		This file is part of Apprenti Géomètre 2.
-		
+
 		Apprenti Géomètre 2 is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
-		
+
 		Apprenti Géomètre 2 is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.
-		
+
 		You should have received a copy of the GNU General Public License
 		along with Apprenti Géomètre 2.  If not, see <http://www.gnu.org/licenses/>.
 	#tag EndNote
@@ -3242,7 +3242,7 @@ End
 		  If CurrentContent.TheObjects.count = 1 and CurrentContent.thegrid = nil Then
 		    return
 		  end if
-		  
+
 		  If mousedispo Then
 		    Formswindow.close
 		    select case index
@@ -3281,19 +3281,19 @@ End
 	#tag Event
 		Sub MouseUp(index as Integer, x As Integer, y As Integer)
 		  dim c as color
-		  
+
 		  if app.quitting then
 		    return
 		  end if
-		  
+
 		  if not Config.ShowStdTools then
 		    return
 		  end if
-		  
+
 		  Kit = "Standard"
-		  
+
 		  me.SetFocus
-		  
+
 		  if drapstdcolor then
 		    c = Config.stdcolor(index).col
 		    if selectcolor(c, "Choisis une  couleur") then
@@ -3307,7 +3307,7 @@ End
 		    drapico = true
 		    FormsWindow.setParams(0, SelectedTool, false)
 		  end if
-		  
+
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -3319,7 +3319,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As Rect)
-		  
+
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
@@ -3329,14 +3329,14 @@ End
 		      g.drawobject ico(index), ico(index).x, ico(index).y
 		    end if
 		  end if
-		  
+
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Opening(index as Integer)
 		  setIco(index,0)
-		  
-		  
+
+
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -3377,7 +3377,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As Rect)
-		  
+
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -3385,7 +3385,7 @@ End
 	#tag Event
 		Sub Pressed()
 		  Annuler
-		  
+
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -3395,7 +3395,7 @@ End
 		  dim op, op1 as integer
 		  dim n1, n2, n3 as integer
 		  dim s as shape
-		  
+
 		  if currentcontent.currentoperation <> nil then
 		    me.Tooltip = Dico.Value("Cancel") + " " + currentcontent.currentoperation.GetName
 		    if currentcontent.currentoperation.currentshape <> nil then
@@ -3403,13 +3403,13 @@ End
 		      selshape = currentcontent.currentoperation.currentshape
 		    end if
 		    currentcontent.currentoperation.canceling = true
-		    Return 
+		    Return
 		  end if
-		  
+
 		  if currentcontent.currentop = 0  then
 		    return
 		  end if
-		  
+
 		  EL = currentcontent.OpToCancel
 		  if  EL = nil then
 		    return
@@ -3418,27 +3418,31 @@ End
 		  if  EL1 = nil then
 		    return
 		  end if
-		  
+
 		  op = val(EL.GetAttribute("OpId"))
 		  Name = EL.GetAttribute(Dico.Value("Type")) + " "+ EL1.GetAttribute("Type")
 		  me.Tooltip = Dico.Value("Cancel") + " " + lowercase(Name)
 		  n1 =val(EL1.GetAttribute("Id"))
 		  s = currentcontent.TheObjects.GetShape(n1)
-		  s.side = -1
-		  selshape = s
-		  
+		  if s <> nil then
+		    s.side = -1
+		    selshape = s
+		  end if
+
 		  select case op
 		  case 19 //Dupliquer
 		    EL2 = XMLElement(EL1.firstchild)
 		    EL3 = XMLElement(EL2.firstchild)
 		    if EL3 <> nil then
-		      Type = EL3.GetAttribute("Type") '+ " n°" + 
+		      Type = EL3.GetAttribute("Type") '+ " n°" +
 		      n1 = val(EL2.GetAttribute("Id"))
 		      selshape = currentcontent.TheObjects.GetShape(n1)
 		    end if
 		  end select
-		  selshape.highlight
-		  me.Tooltip = me.Tooltip + " "+  lowercase(Dico.value(Type))
+		  if selshape <> nil then
+		    selshape.highlight
+		    me.Tooltip = me.Tooltip + " "+  lowercase(Dico.value(Type))
+		  end if
 		  can.refreshbackground
 		End Sub
 	#tag EndEvent
