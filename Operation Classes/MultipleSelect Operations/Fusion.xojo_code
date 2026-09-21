@@ -43,14 +43,12 @@ Inherits MultipleSelectOperation
 		  
 		  Fus.Move(M1)
 		  
-		  Fus.EndConstruction
-		  'if not fus.std then
-		  'SetConstructionInfo(dir)
-		  'end if
+		  		  Fus.EndConstruction
+		  		  if not Fus.std then
+		  		    SetConstructionInfo(dir)
+		  		  end if
 		  
-		  
-		  
-		End Sub
+		  		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
