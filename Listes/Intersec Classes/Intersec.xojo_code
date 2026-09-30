@@ -609,7 +609,16 @@ Inherits SelectOperation
 		      return
 		    else               'sinon on envisage de le changer de place
 		      if val(i1,j1) then
-		        validerpoint(pt,i1,j1)
+		        if ((sh2 isa circle) and not (sh1 isa circle) and (i1 <> h)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 <> k)) then
+		          'cercle vs polygone : migration implicite vers un autre côté interdite — on invalide plutôt que de changer de côté
+		          pt.invalider
+		          if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
+		            bezet(h,k) = false
+		            ids(h,k) = 0
+		          end if
+		        else
+		          validerpoint(pt,i1,j1)
+		        end if
 		      else
 		        pt.invalider
 		        bezet(h,k) = false
