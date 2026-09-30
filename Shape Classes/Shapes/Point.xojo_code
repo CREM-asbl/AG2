@@ -1563,6 +1563,7 @@ Inherits Shape
 		  end if
 
 		  if tracept and currentcontent.theobjects.createTrace then
+		    currentcontent.theobjects.createTrace = false
 		    pt=new point(currentcontent.theobjects,bpt)
 		    pt.EndConstruction
 		  end if

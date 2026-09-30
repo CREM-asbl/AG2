@@ -71,6 +71,9 @@ Inherits SelectAndDragOperation
 		  figs.enablemodifyall
 		  // Applique le déplacement calculé
 		  UpdateFigs(pc)
+		  if pointmobile.tracept then
+		    currentcontent.theobjects.createTrace = true
+		  end if
 		  can.refreshBackGround
 
 
