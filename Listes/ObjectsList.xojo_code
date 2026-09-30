@@ -539,7 +539,6 @@ Inherits Liste
 		      o.PaintAll(g)
 		    end if
 		  next
-		  tracept = false
 
 		End Sub
 	#tag EndMethod
