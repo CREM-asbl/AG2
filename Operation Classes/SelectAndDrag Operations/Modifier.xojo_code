@@ -71,6 +71,9 @@ Inherits SelectAndDragOperation
 		  figs.enablemodifyall
 		  // Applique le déplacement calculé
 		  UpdateFigs(pc)
+		  if pointmobile.tracept then
+		    currentcontent.theobjects.createTrace = true
+		  end if
 		  can.refreshBackGround
 
 
@@ -236,7 +239,7 @@ Inherits SelectAndDragOperation
 		  dim a as arc
 		  dim M as Matrix
 
-		  // CurrentContent.TheObjects.tracept = false
+		  CurrentContent.TheObjects.tracept = false
 		  can.ClearOffscreen
 		  super.MouseDown(p)
 

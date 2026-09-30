@@ -50,9 +50,7 @@ Protected Class Operation
 		  CurrentContent.curoper = nil
 		  CurrentContent.CreateFigs
 		  if not self isa SaveBitMap then
-		    if not config.trace then
-		      can.clearoffscreen
-		    end if
+		    can.clearoffscreen
 		  end if
 		  finished = true
 		  
