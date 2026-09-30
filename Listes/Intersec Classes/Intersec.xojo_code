@@ -576,15 +576,57 @@ Inherits SelectOperation
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Function adjacentside(h as integer, k as integer, i1 as integer, j1 as integer) As boolean
-		  'Deux slots cercle-vs-polygone sont adjacents si leurs points calculés coïncident (sommet commun du polygone)
-		  if h < 0 or h > nlig or k < 0 or k > ncol or i1 < 0 or i1 > nlig or j1 < 0 or j1 > ncol then
+		Protected Function slotsadjacents(h as integer, k as integer, i1 as integer, j1 as integer) As boolean
+		  'Vrai si les deux slots portent sur le même côté du polygone ou sur deux côtés contigus (cas cercle vs polygone).
+		  if h < 0 or k < 0 or i1 < 0 or j1 < 0 then
 		    return false
 		  end if
-		  if bptinters(h,k) = nil or bptinters(i1,j1) = nil then
-		    return false
+		  if sh1 isa circle and not (sh2 isa circle) then
+		    return sidegap(k, j1, sh2.npts)
+		  elseif sh2 isa circle and not (sh1 isa circle) then
+		    return sidegap(h, i1, sh1.npts)
 		  end if
-		  return bptinters(h,k).distance(bptinters(i1,j1)) < epsilon
+		  return false
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function sidegap(a as integer, b as integer, n as integer) As boolean
+		  'Deux index de côté d'un polygone à n côtés sont contigus s'ils diffèrent d'au plus 1 (cyclique).
+		  dim d as integer
+		  if n <= 1 then
+		    return a = b
+		  end if
+		  d = abs(a - b)
+		  if d > n - d then
+		    d = n - d
+		  end if
+		  return d <= 1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function homepoint(pt as point, h as integer, k as integer, byref i1 as integer, byref j1 as integer) As boolean
+		  'Cherche le slot valide libre le plus proche sur le côté d'origine ou un côté contigu (retour du point sans disparition).
+		  dim i, j as integer
+		  dim r, best as double
+		  dim found as boolean
+		  best = 1000000.0
+		  found = false
+		  for i = 0 to nlig
+		    for j = 0 to ncol
+		      if val(i,j) and not bezet(i,j) and bptinters(i,j) <> nil and slotsadjacents(h,k,i,j) then
+		        r = pt.bpt.distance(bptinters(i,j))
+		        if r < best then
+		          best = r
+		          i1 = i
+		          j1 = j
+		          found = true
+		        end if
+		      end if
+		    next
+		  next
+		  return found
 		End Function
 	#tag EndMethod
 
@@ -605,10 +647,13 @@ Inherits SelectOperation
 		      'cercle vs polygone : retour prioritaire au slot d'origine (même occupé par soi-même)
 		      if h >= 0 and h <= nlig and k >= 0 and k <= ncol and val(h,k) and (not bezet(h,k) or ids(h,k) = pt.id) and bptinters(h,k) <> nil then
 		        validerpoint(pt,h,k)
-		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and val(i1,j1) and not bezet(i1,j1) and adjacentside(h,k,i1,j1) then
-		        'transfert par le sommet commun : le point suit son intersection vers le côté adjacent, sans saut
+		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and val(i1,j1) and not bezet(i1,j1) and slotsadjacents(h,k,i1,j1) then
+		        'transfert par côté contigu : le point suit son intersection sans saut
 		        validerpoint(pt,i1,j1)
 		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and (((sh2 isa circle) and not (sh1 isa circle) and (i1 = h)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 = k))) and val(i1,j1) and not bezet(i1,j1) then
+		        validerpoint(pt,i1,j1)
+		      elseif homepoint(pt,h,k,i1,j1) then
+		        'repli : slot valide libre le plus proche sur le côté d'origine ou un côté contigu
 		        validerpoint(pt,i1,j1)
 		      end if
 		      'sinon on reste invalide : pas de migration vers un autre côté
@@ -634,8 +679,8 @@ Inherits SelectOperation
 		    else               'sinon on envisage de le changer de place
 		      if val(i1,j1) then
 		        if ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle)) then
-		          if ((sh2 isa circle) and not (sh1 isa circle) and (i1 <> h) and not adjacentside(h,k,i1,j1)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 <> k) and not adjacentside(h,k,i1,j1)) then
-		            'cercle vs polygone : migration vers un côté non adjacent interdite — on invalide plutôt que de sauter
+		          if not slotsadjacents(h,k,i1,j1) then
+		            'cercle vs polygone : migration vers un côté non contigu interdite — on invalide plutôt que de sauter
 		            pt.invalider
 		            if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
 		              bezet(h,k) = false
