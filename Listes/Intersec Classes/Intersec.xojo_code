@@ -630,6 +630,45 @@ Inherits SelectOperation
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function isCirclePolygonPair() As boolean
+		  return ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub updateConstrained(pt as point, h as integer, k as integer)
+		  'Sémantique point-contraint (cercle vs polygone) : le point suit sa contrainte
+		  '(côté d'origine), jamais le plus-proche global. Ni inversion, ni saut.
+		  dim i1, j1 as integer
+		  dim wasInvalid as boolean
+		  
+		  wasInvalid = pt.invalid
+		  
+		  '1. contrainte propre : slot d'origine valide et libre (ou à soi) → on suit
+		  if h >= 0 and h <= nlig and k >= 0 and k <= ncol and val(h,k) and bptinters(h,k) <> nil and (not bezet(h,k) or ids(h,k) = pt.id) then
+		    validerpoint(pt,h,k)
+		    return
+		  end if
+		  
+		  '2. passage par un sommet : côté d'origine ou contigu, continuité au plus proche
+		  if homepoint(pt,h,k,i1,j1) then
+		    validerpoint(pt,i1,j1)
+		    return
+		  end if
+		  
+		  '3. la contrainte a disparu : on invalide sans voler le slot d'un autre
+		  if not wasInvalid then
+		    pt.invalider
+		    if h >= 0 and h <= nlig and k >= 0 and k <= ncol and (not bezet(h,k) or ids(h,k) = pt.id) then
+		      bezet(h,k) = false
+		      ids(h,k) = 0
+		    end if
+		  end if
+		  'déjà invalide : on le reste, sans migration
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub replacerphase2(pt as point)
 		  dim   i1, j1, h, k as integer
@@ -640,24 +679,16 @@ Inherits SelectOperation
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
 		  
+		  if isCirclePolygonPair then
+		    'point-contraint : le point suit sa contrainte, jamais le plus-proche global
+		    updateConstrained(pt,h,k)
+		    return
+		  end if
+		  
 		  d = nearest(pt,i1,j1)
 		  
 		  if pt.invalid then          'cas des points invalides
-		    if ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle)) then
-		      'cercle vs polygone : retour prioritaire au slot d'origine (même occupé par soi-même)
-		      if h >= 0 and h <= nlig and k >= 0 and k <= ncol and val(h,k) and (not bezet(h,k) or ids(h,k) = pt.id) and bptinters(h,k) <> nil then
-		        validerpoint(pt,h,k)
-		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and val(i1,j1) and not bezet(i1,j1) and slotsadjacents(h,k,i1,j1) then
-		        'transfert par côté contigu : le point suit son intersection sans saut
-		        validerpoint(pt,i1,j1)
-		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and (((sh2 isa circle) and not (sh1 isa circle) and (i1 = h)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 = k))) and val(i1,j1) and not bezet(i1,j1) then
-		        validerpoint(pt,i1,j1)
-		      elseif homepoint(pt,h,k,i1,j1) then
-		        'repli : slot valide libre le plus proche sur le côté d'origine ou un côté contigu
-		        validerpoint(pt,i1,j1)
-		      end if
-		      'sinon on reste invalide : pas de migration vers un autre côté
-		    elseif val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
+		    if val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
 		      'Que se passe-t-il quand un point valide est assez proche d'une place vacante qui n'est pas la sienne (sinon il aurait été replacé à la phase 1)
 		      if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		        // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
@@ -678,20 +709,7 @@ Inherits SelectOperation
 		      return
 		    else               'sinon on envisage de le changer de place
 		      if val(i1,j1) then
-		        if ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle)) then
-		          if not slotsadjacents(h,k,i1,j1) then
-		            'cercle vs polygone : migration vers un côté non contigu interdite — on invalide plutôt que de sauter
-		            pt.invalider
-		            if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
-		              bezet(h,k) = false
-		              ids(h,k) = 0
-		            end if
-		          else
-		            validerpoint(pt,i1,j1)
-		          end if
-		        else
-		          validerpoint(pt,i1,j1)
-		        end if
+		        validerpoint(pt,i1,j1)
 		      else
 		        pt.invalider
 		        bezet(h,k) = false
