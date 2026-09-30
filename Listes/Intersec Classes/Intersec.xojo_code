@@ -575,6 +575,19 @@ Inherits SelectOperation
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function adjacentside(h as integer, k as integer, i1 as integer, j1 as integer) As boolean
+		  'Deux slots cercle-vs-polygone sont adjacents si leurs points calculés coïncident (sommet commun du polygone)
+		  if h < 0 or h > nlig or k < 0 or k > ncol or i1 < 0 or i1 > nlig or j1 < 0 or j1 > ncol then
+		    return false
+		  end if
+		  if bptinters(h,k) = nil or bptinters(i1,j1) = nil then
+		    return false
+		  end if
+		  return bptinters(h,k).distance(bptinters(i1,j1)) < epsilon
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub replacerphase2(pt as point)
 		  dim   i1, j1, h, k as integer
@@ -589,9 +602,12 @@ Inherits SelectOperation
 		  
 		  if pt.invalid then          'cas des points invalides
 		    if ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle)) then
-		      'cercle vs polygone : retour prioritaire au slot d'origine (même occupé par soi-même), jamais de migration vers un autre côté
+		      'cercle vs polygone : retour prioritaire au slot d'origine (même occupé par soi-même)
 		      if h >= 0 and h <= nlig and k >= 0 and k <= ncol and val(h,k) and (not bezet(h,k) or ids(h,k) = pt.id) and bptinters(h,k) <> nil then
 		        validerpoint(pt,h,k)
+		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and val(i1,j1) and not bezet(i1,j1) and adjacentside(h,k,i1,j1) then
+		        'transfert par le sommet commun : le point suit son intersection vers le côté adjacent, sans saut
+		        validerpoint(pt,i1,j1)
 		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and (((sh2 isa circle) and not (sh1 isa circle) and (i1 = h)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 = k))) and val(i1,j1) and not bezet(i1,j1) then
 		        validerpoint(pt,i1,j1)
 		      end if
@@ -617,12 +633,16 @@ Inherits SelectOperation
 		      return
 		    else               'sinon on envisage de le changer de place
 		      if val(i1,j1) then
-		        if ((sh2 isa circle) and not (sh1 isa circle) and (i1 <> h)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 <> k)) then
-		          'cercle vs polygone : migration implicite vers un autre côté interdite — on invalide plutôt que de changer de côté
-		          pt.invalider
-		          if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
-		            bezet(h,k) = false
-		            ids(h,k) = 0
+		        if ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle)) then
+		          if ((sh2 isa circle) and not (sh1 isa circle) and (i1 <> h) and not adjacentside(h,k,i1,j1)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 <> k) and not adjacentside(h,k,i1,j1)) then
+		            'cercle vs polygone : migration vers un côté non adjacent interdite — on invalide plutôt que de sauter
+		            pt.invalider
+		            if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
+		              bezet(h,k) = false
+		              ids(h,k) = 0
+		            end if
+		          else
+		            validerpoint(pt,i1,j1)
 		          end if
 		        else
 		          validerpoint(pt,i1,j1)
