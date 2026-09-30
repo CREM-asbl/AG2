@@ -1562,7 +1562,7 @@ Inherits Shape
 		    rsk.paint(g)
 		  end if
 
-		  if tracept and currentcontent.theobjects.createTrace and (modified or currentcontent.currentoperation isa appliquertsf) then
+		  if tracept and currentcontent.theobjects.createTrace then
 		    pt=new point(currentcontent.theobjects,bpt)
 		    pt.EndConstruction
 		  end if

@@ -533,6 +533,7 @@ Inherits Liste
 		  Dim i As Integer
 		  dim o as shape
 
+		  tracept = false
 		  For i=0 To count-1
 		    o = GetPlan(i)
 		    if o <> nil   then
