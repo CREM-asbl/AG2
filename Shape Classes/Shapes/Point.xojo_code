@@ -1569,7 +1569,7 @@ Inherits Shape
 		  end if
 
 		  pic = can.OffScreenPicture
-		  if tracept and (modified or currentcontent.currentoperation isa appliquertsf) and pic <> nil then
+		  if tracept and (modified or currentcontent.currentoperation isa modifier or currentcontent.currentoperation isa appliquertsf) and pic <> nil then
 		    rsk.paint(pic.Graphics)
 		    currentcontent.theobjects.tracept = true
 		  end if
