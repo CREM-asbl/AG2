@@ -588,7 +588,15 @@ Inherits SelectOperation
 		  d = nearest(pt,i1,j1)
 		  
 		  if pt.invalid then          'cas des points invalides
-		    if val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
+		    if ((sh2 isa circle) and not (sh1 isa circle)) or ((sh1 isa circle) and not (sh2 isa circle)) then
+		      'cercle vs polygone : retour prioritaire au slot d'origine (même occupé par soi-même), jamais de migration vers un autre côté
+		      if h >= 0 and h <= nlig and k >= 0 and k <= ncol and val(h,k) and (not bezet(h,k) or ids(h,k) = pt.id) and bptinters(h,k) <> nil then
+		        validerpoint(pt,h,k)
+		      elseif i1 >= 0 and i1 <= nlig and j1 >= 0 and j1 <= ncol and (((sh2 isa circle) and not (sh1 isa circle) and (i1 = h)) or ((sh1 isa circle) and not (sh2 isa circle) and (j1 = k))) and val(i1,j1) and not bezet(i1,j1) then
+		        validerpoint(pt,i1,j1)
+		      end if
+		      'sinon on reste invalide : pas de migration vers un autre côté
+		    elseif val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
 		      'Que se passe-t-il quand un point valide est assez proche d'une place vacante qui n'est pas la sienne (sinon il aurait été replacé à la phase 1)
 		      if  (not (sh1 isa circle) and not(sh2 isa circle)) or (sh1 isa circle and sh2 isa circle)  then
 		        // on ne risque de changer un pt d'inter de côté que s'il n'existe aucun autre pt d'inter dans son voisinage et que pas de probl de parallelisme --ou perp
