@@ -201,7 +201,8 @@ Inherits SelectOperation
 		      val(i,1) = false
 		    case 1
 		      bptinters(i,0) = b
-		      bptinters(i,1) = b
+		      bptinters(i,1) = nil
+		      val(i,1) = false
 		    case 2
 		      if p(0).distanceSquaredTo(d1.firstp) > p(1).distanceSquaredTo(d1.firstp) then
 		        dim temp as basicpoint = p(0)
@@ -428,10 +429,14 @@ Inherits SelectOperation
 		  if pt.forme = 2 then
 		    h = pt.numside(0)
 		    k = pt.numside(1)
-		    if  val(h,k) and (not bezet(h,k) ) and pt.bpt.distance(bptinters(h,k))  < epsilon then
-		      i1 = h
-		      j1 = k
-		      return 0
+		    if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
+		      if bptinters(h,k) <> nil and val(h,k) and (not bezet(h,k) or ids(h,k) = pt.id) then
+		        if pt.bpt.distance(bptinters(h,k)) < epsilon then
+		          i1 = h
+		          j1 = k
+		          return 0
+		        end if
+		      end if
 		    end if
 		  end if
 		  
@@ -439,7 +444,7 @@ Inherits SelectOperation
 		  j1 = k
 		  for i = 0 to nlig
 		    for j = 0 to ncol
-		      if val(i,j)  and (not bezet(i,j)) and bptinters(i,j) <> nil then
+		      if val(i,j)  and (not bezet(i,j) or ids(i,j) = pt.id) and bptinters(i,j) <> nil then
 		        s = pt.bpt.distance(bptinters(i,j))
 		        if abs(s) < r1 then
 		          r1 = s
