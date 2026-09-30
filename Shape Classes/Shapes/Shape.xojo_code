@@ -2546,7 +2546,7 @@ Protected Class Shape
 		    next
 		  end if
 
-		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf)  then
+		  if tracept and (modified or CurrentContent.currentoperation isa appliquertsf) and can.offscreenpicture <> nil then
 		    paint(can.offscreenpicture.graphics)
 		    currentcontent.theobjects.tracept = true
 		  end if
