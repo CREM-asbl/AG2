@@ -236,7 +236,7 @@ Inherits SelectAndDragOperation
 		  dim a as arc
 		  dim M as Matrix
 
-		  // CurrentContent.TheObjects.tracept = false
+		  CurrentContent.TheObjects.tracept = false
 		  can.ClearOffscreen
 		  super.MouseDown(p)
 

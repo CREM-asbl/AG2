@@ -1568,9 +1568,8 @@ Inherits Shape
 		  end if
 
 		  pic = can.OffScreenPicture
-		  if tracept  and (modified or currentcontent.currentoperation isa appliquertsf)  then
-            System.DebugLog "Point.Paint: Drawing trace for Point ID " + str(self.id) + ", tracept = " + str(self.tracept) + ", modified = " + str(self.modified) + ", OffscreenPicture is nil: " + str(can.OffscreenPicture = nil)
-		    rsk.paint(can.OffscreenPicture.Graphics)
+		  if tracept and (modified or currentcontent.currentoperation isa appliquertsf) and pic <> nil then
+		    rsk.paint(pic.Graphics)
 		    currentcontent.theobjects.tracept = true
 		  end if
 

@@ -2065,6 +2065,7 @@ End
 		    Formswindow.close
 		    MyCanvas1.ClearOffscreen
 		    CurrentContent.CurrentOperation = new Tracer()
+		    Tracer(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
 		  end if
 		  return true
