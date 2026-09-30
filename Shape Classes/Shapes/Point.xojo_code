@@ -1574,7 +1574,7 @@ Inherits Shape
 		  end if
 
 
-		  if  (not hidden) and  Labs.count = 1 and (not invalid) and (not deleted) and (g <> pic.graphics) then
+		  if (not hidden) and Labs.count = 1 and (not invalid) and (not deleted) and (pic = nil or g <> pic.graphics) then
 		    Labs.item(0).Paint(g)
 		  end if
 
