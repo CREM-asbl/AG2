@@ -355,13 +355,12 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub init()
-		  dim i, j as integer
-		  
-		  
+		  dim i, j, m, h, k as integer
 		  
 		  redim bptinters(nlig, ncol)
 		  redim val(nlig,ncol)
 		  redim bezet(nlig,ncol)
+		  redim ids(nlig,ncol)
 		  
 		  for i = 0 to nlig
 		    for j = 0 to ncol
@@ -370,6 +369,16 @@ Inherits SelectOperation
 		    next
 		  next
 		  
+		  for m = 0 to ubound(pts)
+		    if pts(m) <> nil and ubound(pts(m).numside) >= 1 then
+		      h = pts(m).numside(0)
+		      k = pts(m).numside(1)
+		      if h >= 0 and h <= nlig and k >= 0 and k <= ncol then
+		        ids(h,k) = pts(m).id
+		        bezet(h,k) = true
+		      end if
+		    end if
+		  next
 		  
 		End Sub
 	#tag EndMethod
