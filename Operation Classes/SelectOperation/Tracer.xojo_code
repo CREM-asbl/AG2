@@ -19,7 +19,6 @@ Inherits SelectOperation
 		  currenthighlightedshape.tracept = not currenthighlightedshape.tracept
 		  if currenthighlightedshape.tracept then
 		    currentcontent.theobjects.tracept = true
-		    currentcontent.theobjects.createTrace = true
 		  else
 		    currentcontent.theobjects.tracept = false
 		    currentcontent.theobjects.createTrace = false
