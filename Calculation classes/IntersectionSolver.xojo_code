@@ -49,6 +49,12 @@ Public Class IntersectionSolution
 		  return StableKey = other.StableKey
 		End Function
 	#tag EndMethod
+	
+		#tag Method, Flags = &h0
+			Function Equals(other as IntersectionSolver) As Boolean
+			  return false
+			End Function
+		#tag EndMethod
 
 End Class
 #tag EndClass
