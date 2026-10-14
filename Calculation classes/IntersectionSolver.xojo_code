@@ -43,8 +43,17 @@ Public Class IntersectionSolution
 		End Function
 	#tag EndMethod
 	
-	End Class
-	#tag EndClass
+		#tag Method, Flags = &h0
+			Function Equals(other as IntersectionSolution) As Boolean
+			  if other Is Nothing then
+			    return false
+			  end if
+			  return StableKey = other.StableKey
+			End Function
+		#tag EndMethod
+	
+		End Class
+		#tag EndClass
 
 #tag Class
 Public Class IntersectionSolver
