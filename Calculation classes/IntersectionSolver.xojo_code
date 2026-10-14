@@ -43,21 +43,8 @@ Public Class IntersectionSolution
 		End Function
 	#tag EndMethod
 	
-	#tag Method, Flags = &h0
-		Function Equals(other as IntersectionSolution) As Boolean
-		  if other = nil then return false
-		  return StableKey = other.StableKey
-		End Function
-	#tag EndMethod
-	
-		#tag Method, Flags = &h0
-			Function Equals(other as IntersectionSolver) As Boolean
-			  return false
-			End Function
-		#tag EndMethod
-
-End Class
-#tag EndClass
+	End Class
+	#tag EndClass
 
 #tag Class
 Public Class IntersectionSolver
@@ -354,6 +341,12 @@ Public Class IntersectionSolver
 		  return solutions
 		End Function
 	#tag EndMethod
+	
+		#tag Method, Flags = &h0
+			Function Equals(other as IntersectionSolver) As Boolean
+			  return false
+			End Function
+		#tag EndMethod
 
-End Class
-#tag EndClass
+	End Class
+	#tag EndClass
