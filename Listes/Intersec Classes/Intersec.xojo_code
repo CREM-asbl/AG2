@@ -80,6 +80,7 @@ Inherits SelectOperation
 		        for i = 0 to nlig
 		          for j = 0 to ncol
 		            val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
+		          next
 		        next
 		      end if
 		    end if
