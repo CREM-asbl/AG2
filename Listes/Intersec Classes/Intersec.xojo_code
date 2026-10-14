@@ -78,7 +78,8 @@ Inherits SelectOperation
 		      computeinterlines_circle
 		      if sh2 isa arc then
 		        for i = 0 to nlig
-		          val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
+		          for j = 0 to ncol
+		            val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
 		        next
 		      end if
 		    end if
@@ -222,8 +223,9 @@ Inherits SelectOperation
 		      val(i,0) = false
 		      val(i,1) = false
 		    case 1
+		      ' Tangence : un seul point d'intersection, pas deux identiques
 		      bptinters(i,0) = b
-		      bptinters(i,1) = b
+		      bptinters(i,1) = nil
 		    case 2
 		      //Ordre déterministe des branches: paramètre signé le long de la
 		      //droite support (firstp -> secondp). L'ancien tri non signé sur
