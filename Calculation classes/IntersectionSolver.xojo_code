@@ -54,7 +54,8 @@ Public Class IntersectionSolver
 	#tag Method, Flags = &h0
 		Function SolveCircleCircle(c1 as Circle, c2 as Circle, swapped as Boolean) As IntersectionSolution()
 		  dim solutions(-1) as IntersectionSolution
-		  dim bq() as BasicPoint
+		  dim p() as BasicPoint
+		  dim bq, v as BasicPoint
 		  dim bib1, bib2 as BiBPoint
 		  dim n as Integer
 
@@ -70,7 +71,7 @@ Public Class IntersectionSolver
 		    return solutions
 		  end if
 
-		  n = bib1.BibInterCercles(bib2, bq())
+		  n = bib1.BibInterCercles(bib2, p(), bq, v)
 
 		  if n = 0 then
 		    return solutions
@@ -78,7 +79,7 @@ Public Class IntersectionSolver
 
 		  for i as Integer = 0 to n - 1
 		    dim sol as new IntersectionSolution
-		    sol.Position = bq(i)
+		    sol.Position = p(i)
 		    sol.Shape1Side = 0
 		    sol.Shape2Side = 0
 		    sol.IsTangent = (n = 1)
@@ -106,7 +107,8 @@ Public Class IntersectionSolver
 
 		    dim inters() as BasicPoint
 		    dim bq, w as BasicPoint
-		    dim n as Integer = side.BiBDroiteInterCercle(new BiBPoint(c.GetGravityCenter, c.GetGravityCenter + new BasicPoint(0, c.GetRadius)), inters(), bq, w)
+		    dim bibCircle as BiBPoint = new BiBPoint(c.GetGravityCenter, c.GetGravityCenter + new BasicPoint(0, c.GetRadius))
+		    dim n as Integer = side.BibDroiteInterCercle(bibCircle, inters(), bq, w)
 
 		    if n = 0 then continue
 
@@ -158,7 +160,9 @@ Public Class IntersectionSolver
 		      if side2 = nil then continue
 
 		      dim r1, r2 as Double
-		      dim inter as BasicPoint = side1.BiBInterDroites(side2, 2, 2, r1, r2)
+		      dim bib1 as BiBPoint = new BiBPoint(side1.First, side1.Second)
+		      dim bib2 as BiBPoint = new BiBPoint(side2.First, side2.Second)
+		      dim inter as BasicPoint = bib1.BibInterdroites(bib2, 2, 2, r1, r2)
 
 		      if inter = nil then continue
 
@@ -202,7 +206,7 @@ Public Class IntersectionSolver
 		  dim bibLine as BiBPoint = new BiBPoint(line.FirstP, line.SecondP)
 		  dim bibCircle as BiBPoint = new BiBPoint(c.GetGravityCenter, c.GetGravityCenter + new BasicPoint(0, c.GetRadius))
 
-		  dim n as Integer = bibLine.BiBDroiteInterCercle(bibCircle, inters(), bq, w)
+		  dim n as Integer = bibLine.BibDroiteInterCercle(bibCircle, inters(), bq, w)
 
 		  if n = 0 then return solutions
 
@@ -228,7 +232,9 @@ Public Class IntersectionSolver
 		Function SolveLineLine(line1 as Droite, line2 as Droite, swapped as Boolean) As IntersectionSolution()
 		  dim solutions(-1) as IntersectionSolution
 		  dim r1, r2 as Double
-		  dim inter as BasicPoint = line1.BiBInterDroites(line2, 2, 2, r1, r2)
+		  dim bib1 as BiBPoint = new BiBPoint(line1.FirstP, line1.SecondP)
+		  dim bib2 as BiBPoint = new BiBPoint(line2.FirstP, line2.SecondP)
+		  dim inter as BasicPoint = bib1.BibInterdroites(bib2, 2, 2, r1, r2)
 
 		  if inter = nil then return solutions
 
@@ -259,7 +265,9 @@ Public Class IntersectionSolver
 		    if side = nil then continue
 
 		    dim r1, r2 as Double
-		    dim inter as BasicPoint = line.BiBInterDroites(side, 2, 2, r1, r2)
+		    dim bibLine2 as BiBPoint = new BiBPoint(line.FirstP, line.SecondP)
+		    dim bibSide2 as BiBPoint = new BiBPoint(side.First, side.Second)
+		    dim inter as BasicPoint = bibLine2.BibInterdroites(bibSide2, 2, 2, r1, r2)
 
 		    if inter = nil then continue
 

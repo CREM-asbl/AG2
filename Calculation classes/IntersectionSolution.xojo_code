@@ -45,7 +45,7 @@ Public Class IntersectionSolution
 
 	#tag Method, Flags = &h0
 		Function Equals(other as IntersectionSolution) As Boolean
-		  if other Is Nothing then
+		  if other = nil then
 		    return false
 		  end if
 		  return StableKey = other.StableKey
