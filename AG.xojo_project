@@ -203,6 +203,7 @@ Class=SquareGrid;Operation Classes/Grid classes/SquareGrid.xojo_code;&hFFFFFFFFB
 Class=TriDPoint;Calculation classes/TriDPoint.xojo_code;&h000000000E4F57FF;&hFFFFFFFFBD6B81F9;false
 Class=TriDshape;Calculation classes/TriDshape.xojo_code;&h0000000015FD8FFF;&hFFFFFFFFBD6B81F9;false
 Class=IntersectionSolver;Calculation classes/IntersectionSolver.xojo_code;&h0000000000000000;&hFFFFFFFFBD6B81F9;false
+Class=IntersectionSolution;Calculation classes/IntersectionSolver.xojo_code;&h0000000000000000;&hFFFFFFFFBD6B81F9;false
 Class=ModifTimer;Timers/ModifTimer.xojo_code;&h0000000031CB9FFF;&h000000002A6C8FFF;false
 Class=RetTimer;Timers/RetTimer.xojo_code;&hFFFFFFFFBC64D3DA;&h000000002A6C8FFF;false
 Class=TsfTimer;Timers/TsfTimer.xojo_code;&h0000000022A02FFF;&h000000002A6C8FFF;false
