@@ -1,6 +1,10 @@
 #tag Class
 Protected Class Intersec
 Inherits SelectOperation
+	//TODO long terme: remplacer computeinter* par IntersectionSolver.SolutionsFor
+	//pour paires supportees (cercle/cercle, segment/cercle, polygone).
+	//Conserver code existant pour demi-droites/arcs (semantique nextre
+	//absente du solver = droites infinies seulement). Voir issue #36.
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Addpoint(p as point)
@@ -74,7 +78,9 @@ Inherits SelectOperation
 		      computeinterlines_circle
 		      if sh2 isa arc then
 		        for i = 0 to nlig
-		          val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
+		          for j = 0 to ncol
+		            val(i,j) = val(i,j) and arc(sh2).inside(bptinters(i,j) )
+		          next
 		        next
 		      end if
 		    end if
@@ -115,6 +121,24 @@ Inherits SelectOperation
 		val(0,0) = false
 		val(0,1) = false
 		return k
+		end if
+		
+		//Ordre déterministe des branches: signe du produit vectoriel par
+		//rapport à l'axe des centres. Sous mouvement continu les deux
+		//intersections ne peuvent pas s'échanger (sauf tangence où elles
+		//se confondent) donc la colonne 0/1 reste stable
+		if ubound(bq) >= 1 then
+		  dim c1, c2 as basicpoint
+		  dim v0, v1 as double
+		  c1 = g1.GetGravityCenter
+		  c2 = g2.GetGravityCenter
+		  v0 = (c2.x-c1.x)*(bq(0).y-c1.y) - (c2.y-c1.y)*(bq(0).x-c1.x)
+		  v1 = (c2.x-c1.x)*(bq(1).y-c1.y) - (c2.y-c1.y)*(bq(1).x-c1.x)
+		  if v0 > v1 then
+		    dim temp as basicpoint = bq(0)
+		    bq(0) = bq(1)
+		    bq(1) = temp
+		  end if
 		end if
 		
 		if ubound(bq) >= 0 then
@@ -200,10 +224,20 @@ Inherits SelectOperation
 		      val(i,0) = false
 		      val(i,1) = false
 		    case 1
+		      ' Tangence : un seul point d'intersection, pas deux identiques
 		      bptinters(i,0) = b
-		      bptinters(i,1) = b
+		      bptinters(i,1) = nil
 		    case 2
-		      if p(0).distanceSquaredTo(d1.firstp) > p(1).distanceSquaredTo(d1.firstp) then
+		      //Ordre déterministe des branches: paramètre signé le long de la
+		      //droite support (firstp -> secondp). L'ancien tri non signé sur
+		      //distanceSquaredTo(firstp) pouvait permuter les deux branches
+		      //d'une frame à l'autre (inversion des points d'intersection)
+		      dim ux, uy, t0, t1 as double
+		      ux = d1.secondp.x - d1.firstp.x
+		      uy = d1.secondp.y - d1.firstp.y
+		      t0 = (p(0).x - d1.firstp.x)*ux + (p(0).y - d1.firstp.y)*uy
+		      t1 = (p(1).x - d1.firstp.x)*ux + (p(1).y - d1.firstp.y)*uy
+		      if t0 > t1 then
 		        dim temp as basicpoint = p(0)
 		        p(0) = p(1)
 		        p(1) = temp
@@ -428,10 +462,18 @@ Inherits SelectOperation
 		  if pt.forme = 2 then
 		    h = pt.numside(0)
 		    k = pt.numside(1)
-		    if  val(h,k) and (not bezet(h,k) ) and pt.bpt.distance(bptinters(h,k))  < epsilon then
+		    if  val(h,k) and (not bezet(h,k) ) and bptinters(h,k) <> nil then
+		      s = pt.bpt.distance(bptinters(h,k))
+		      if s < epsilon then
+		        i1 = h
+		        j1 = k
+		        return 0
+		      end if
+		      //Mémoire de branche (clé stable numside): le point garde sa
+		      //branche d'origine même si une autre place libre est plus proche
 		      i1 = h
 		      j1 = k
-		      return 0
+		      return s
 		    end if
 		  end if
 		  
@@ -588,7 +630,8 @@ Inherits SelectOperation
 		    end if
 		    return
 		  else                               'cas des points valides
-		    if d > epsilon  then  'un pt valide trop loin de toute place vacante est invalidé
+		    if d > epsilon and (i1 <> h or j1 <> k) then  'un pt valide trop loin de toute place vacante est invalidé
+		      'sauf s'il est ramené sur sa propre branche (mémoire de clé)
 		      pt.invalider
 		      bezet(h,k) = false
 		      ids(h,k) = 0
