@@ -352,10 +352,10 @@ Public Class IntersectionSolver
 	#tag EndMethod
 	
 		#tag Method, Flags = &h0
-			Function Equals(other as IntersectionSolver) As Boolean
-			  return false
-			End Function
-		#tag EndMethod
+					Function Equals(other as IntersectionSolver) As Boolean
+					  return false
+					End Function
+				#tag EndMethod
 
-	End Class
-	#tag EndClass
+			End Class
+			#tag EndClass
