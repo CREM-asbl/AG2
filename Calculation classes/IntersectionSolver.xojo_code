@@ -30,7 +30,7 @@ Public Class IntersectionSolver
 		    end if
 		  end if
 
-		  // Dispatch based on shape types
+		  // Dispatch based on shape types (Lacet covers Polygon subclass)
 		  if shapeA isa Circle and shapeB isa Circle then
 		    solutions = SolveCircleCircle(Circle(shapeA), Circle(shapeB), swapped)
 		  elseif shapeA isa Circle and shapeB isa Lacet then
@@ -98,8 +98,8 @@ Public Class IntersectionSolver
 	#tag Method, Flags = &h0
 		Function SolveCirclePolygon(c as Circle, poly as Lacet, swapped as Boolean) As IntersectionSolution()
 		  dim solutions(-1) as IntersectionSolution
-		  dim nSides as Integer = poly.npts - 1
-		  if poly isa Polygon then nSides = poly.npts
+		  dim nSides as Integer = poly.npts
+		  if not poly isa Polygon then nSides = poly.npts - 1
 
 		  for sideIdx as Integer = 0 to nSides - 1
 		    dim side as BiBPoint = poly.coord.GetBibSide(sideIdx)
@@ -117,11 +117,6 @@ Public Class IntersectionSolver
 
 		      // Check if point lies on the segment (not just the line)
 		      dim onSegment as Boolean = pt.Between(side.First, side.Second)
-
-		      // For arcs, also check angular bounds
-		      if poly isa Arc then
-		        onSegment = onSegment and Arc(poly).Inside(pt)
-		      end if
 
 		      if onSegment then
 		        dim sol as new IntersectionSolution
@@ -146,10 +141,10 @@ Public Class IntersectionSolver
 	#tag Method, Flags = &h0
 		Function SolvePolygonPolygon(p1 as Lacet, p2 as Lacet, swapped as Boolean) As IntersectionSolution()
 		  dim solutions(-1) as IntersectionSolution
-		  dim n1 as Integer = p1.npts - 1
-		  dim n2 as Integer = p2.npts - 1
-		  if p1 isa Polygon then n1 = p1.npts
-		  if p2 isa Polygon then n2 = p2.npts
+		  dim n1 as Integer = p1.npts
+		  dim n2 as Integer = p2.npts
+		  if not p1 isa Polygon then n1 = p1.npts - 1
+		  if not p2 isa Polygon then n2 = p2.npts - 1
 
 		  for i as Integer = 0 to n1 - 1
 		    dim side1 as BiBPoint = p1.coord.GetBibSide(i)
@@ -169,14 +164,6 @@ Public Class IntersectionSolver
 		      // Check if intersection lies on both segments
 		      dim onSeg1 as Boolean = inter.Between(side1.First, side1.Second)
 		      dim onSeg2 as Boolean = inter.Between(side2.First, side2.Second)
-
-		      // For arcs, check angular bounds
-		      if p1 isa Arc then
-		        onSeg1 = onSeg1 and Arc(p1).Inside(inter)
-		      end if
-		      if p2 isa Arc then
-		        onSeg2 = onSeg2 and Arc(p2).Inside(inter)
-		      end if
 
 		      if onSeg1 and onSeg2 then
 		        dim sol as new IntersectionSolution
@@ -257,8 +244,8 @@ Public Class IntersectionSolver
 	#tag Method, Flags = &h0
 		Function SolveLinePolygon(line as Droite, poly as Lacet, swapped as Boolean) As IntersectionSolution()
 		  dim solutions(-1) as IntersectionSolution
-		  dim nSides as Integer = poly.npts - 1
-		  if poly isa Polygon then nSides = poly.npts
+		  dim nSides as Integer = poly.npts
+		  if not poly isa Polygon then nSides = poly.npts - 1
 
 		  for sideIdx as Integer = 0 to nSides - 1
 		    dim side as BiBPoint = poly.coord.GetBibSide(sideIdx)
@@ -272,9 +259,6 @@ Public Class IntersectionSolver
 		    if inter = nil then continue
 
 		    dim onSegment as Boolean = inter.Between(side.First, side.Second)
-		    if poly isa Arc then
-		      onSegment = onSegment and Arc(poly).Inside(inter)
-		    end if
 
 		    if onSegment then
 		      dim sol as new IntersectionSolution
