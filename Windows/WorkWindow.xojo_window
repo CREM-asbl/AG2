@@ -3437,11 +3437,13 @@ End
 		  select case op
 		  case 19 //Dupliquer
 		    EL2 = XMLElement(EL1.firstchild)
-		    EL3 = XMLElement(EL2.firstchild)
-		    if EL3 <> nil then
-		      Type = EL3.GetAttribute("Type") '+ " n°" +
-		      n1 = val(EL2.GetAttribute("Id"))
-		      selshape = currentcontent.TheObjects.GetShape(n1)
+		    if EL2 <> nil then
+		      EL3 = XMLElement(EL2.firstchild)
+		      if EL3 <> nil then
+		        Type = EL3.GetAttribute("Type") '+ " n°" +
+		        n1 = val(EL2.GetAttribute("Id"))
+		        selshape = currentcontent.TheObjects.GetShape(n1)
+		      end if
 		    end if
 		  end select
 		  if selshape <> nil then
