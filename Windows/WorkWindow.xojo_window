@@ -2862,11 +2862,8 @@ End
 		    haut = ury-dly
 		    taille = 0.8*h/max(larg,haut)
 		    LSkull(ico(fam)).UpdateSize(taille)
-		    ico(fam).x =  (h-larg*taille)/4
-		    if dlx < 0 then
-		      ico(fam).x = ico(fam).x-dlx*taille/2
-		    end if
-		    ico(fam).y =  (h+haut*taille)/4
+		    ico(fam).x =  (h-larg*taille)/4-dlx*taille/2
+		    ico(fam).y =  (h-haut*taille)/4-dly*taille/2
 		    ico(fam).borderwidth = 0.02
 		  else                                                    'cas des cerclesstd
 		    taille = 0.4*h*specs.distances(0)
