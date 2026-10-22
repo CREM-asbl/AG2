@@ -18,6 +18,8 @@ Inherits SelectOperation
 		  // différent de la version du 19/08/12
 		  
 		  d = nearest(p,i1,j1)
+		  if i1 < 0 or j1 < 0 or i1 > nlig or j1 > ncol then p.invalider
+		  if i1 < 0 or j1 < 0 or i1 > nlig or j1 > ncol then return
 		  if bezet(i1,j1) or (d > can.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
 		    p.invalider
 		    return
@@ -426,6 +428,7 @@ Inherits SelectOperation
 		    next
 		  next
 		  
+		  if i1 < 0 or j1 < 0 or i1 > nlig or j1 > ncol then return nil
 		  if  bezet(i1,j1) or (r1 > can.magneticdist and currentcontent.currentoperation isa shapeconstruction)  then
 		    return nil
 		  else
@@ -462,6 +465,8 @@ Inherits SelectOperation
 		  if pt.forme = 2 then
 		    h = pt.numside(0)
 		    k = pt.numside(1)
+		    if h < 0 or k < 0 or h > nlig or k > ncol then h = 0
+		    if h < 0 or k < 0 or h > nlig or k > ncol then k = 0
 		    if  val(h,k) and (not bezet(h,k) ) and bptinters(h,k) <> nil then
 		      s = pt.bpt.distance(bptinters(h,k))
 		      if s < epsilon then
@@ -585,6 +590,8 @@ Inherits SelectOperation
 		  
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
+		  if h < 0 or k < 0 or h > nlig or k > ncol then h = 0
+		  if h < 0 or k < 0 or h > nlig or k > ncol then k = 0
 		  
 		  
 		  if val(h,k) and ids(h,k) = pt.id   then 'valide ou non, le point est replacé là où il était et revalidé
@@ -612,8 +619,12 @@ Inherits SelectOperation
 		  
 		  h = pt.numside(0)     'On mémorise l'ancienne position
 		  k = pt.numside(1)
+		  if h < 0 or k < 0 or h > nlig or k > ncol then h = 0
+		  if h < 0 or k < 0 or h > nlig or k > ncol then k = 0
 		  
 		  d = nearest(pt,i1,j1)
+		  if i1 < 0 or j1 < 0 or i1 > nlig or j1 > ncol then i1 = 0
+		  if i1 < 0 or j1 < 0 or i1 > nlig or j1 > ncol then j1 = 0
 		  
 		  if pt.invalid then          'cas des points invalides
 		    if val(i1,j1) and not bezet(i1,j1) then 'and d < can.magneticdist then 'un point invalide peut etretemps avoir été déplacé loin d'un emplacement valide
@@ -651,6 +662,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub setlocation(p as point, i as integer, j as integer)
+		  if i < 0 or j < 0 or i > nlig or j > ncol then return
 		  p.numside(0) = i
 		  p.numside(1) = j
 		  if  not sh1 isa circle then
@@ -704,6 +716,7 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub validerpoint(pt as point, i as integer, j As integer)
+		  if i < 0 or j < 0 or i > nlig or j > ncol then return
 		  if bptinters(i,j) = nil then
 		    return
 		  end if
