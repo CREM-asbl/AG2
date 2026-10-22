@@ -2775,20 +2775,27 @@ Inherits Shape
 		      select case s.constructedby.Oper
 		      Case 3, 5 'duplication d'un point non ptsur et découpage
 		        if (not currentcontent.currentoperation isa retourner) and (not currentcontent.currentoperation isa selectanddragoperation) or  (currentcontent.currentoperation isa modifier)  then
+		          if ubound(s.constructedby.data) >= 0 then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.Moveto M1*bpt
+		          end if
 		        end if
 		      case 6 'image par transfo
+		        if ubound(s.constructedby.data) >= 0 then
 		        tsf = Transformation(s.constructedby.data(0))
 		        M1 = tsf.M
 		        if M1 <> nil and M1.v1 <> nil then
 		          s.Moveto M1*bpt
 		        end if
+		        end if
 		      case 9 'fusion
 		        if s.constructedby.shape <> nil then
+		          if ubound(s.constructedby.data) >= 0 then
 		          M1 = Matrix(s.constructedby.data(0))
 		          s.MoveTo M1*bpt
+		          end if
 		        else
+		          if ubound(s.constructedby.data) >= 3 then
 		          for j = 0 to 2 step 2
 		            sh = Point(s.constructedby.data(j))
 		            if sh = self then
@@ -2796,14 +2803,17 @@ Inherits Shape
 		              s.MoveTo M1*bpt
 		            end if
 		          next
+		          end if
 		        end if
 		      Case 10 'duplication de pointsur
+		        if ubound(s.constructedby.data) >= 0 and s.pointsur.count > 0 and pointsur.count > 0 and ubound(location) >= 0 and ubound(numside) >= 0 and ubound(s.numside) >= 0 then
 		        s.numside(0) = (numside(0) + s.constructedBy.data(0)) mod s.pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
 		        End If
+		        end if
 		      end select
 		      s.modified = true
 		      s.updateshape
@@ -2816,15 +2826,19 @@ Inherits Shape
 		    if not s.modified then
 		      select case constructedby.Oper
 		      case 3, 5
+		        if ubound(constructedby.data) >= 0 then
 		        M1 = Matrix(constructedby.data(0))
 		        M1 = M1.inv
 		        s.Moveto M1*(self.bpt)
+		        end if
 		      Case 10
+		        if ubound(constructedby.data) >= 0 and pointsur.count > 0 and ubound(location) >= 0 and ubound(numside) >= 0 and ubound(s.numside) >= 0 then
 		        s.numside(0) = (numside(0) - constructedBy.data(0) + pointsur.item(0).npts) mod pointsur.item(0).npts
 		        if s.pointsur.item(0) = pointsur.item(0) and s.numside(0) = numside(0) then
 		          s.puton(s.pointsur.item(0),1-location(0))
 		        else
 		          s.puton(s.pointsur.item(0),location(0))
+		        end if
 		        end if
 		      end select
 		      s.modified = true
@@ -2833,12 +2847,15 @@ Inherits Shape
 		  elseif constructedby <> nil and constructedby.oper = 9 then
 		    if constructedby.shape <> nil then
 		      s = Point(ConstructedBy.Shape)
+		      if ubound(constructedby.data) >= 0 then
 		      M1 = Matrix(constructedby.data(0))
 		      M1 = M1.inv
 		      s.Moveto M1*bpt
+		      end if
 		      s.modified = true
 		      s.updateshape
 		    else
+		      if ubound(constructedby.data) >= 3 then
 		      for i = 0 to 2 step 2
 		        s = Point(Constructedby.data(i))
 		        if not s.modified then
@@ -2849,6 +2866,7 @@ Inherits Shape
 		          s.updateshape
 		        end if
 		      next
+		      end if
 		    end if
 		  end if
 		End Sub
@@ -3082,7 +3100,7 @@ Inherits Shape
 		  next
 
 		  if ifmac <> nil and forme = 1 then
-		    ifmac.location = location(0)
+		    if ubound(location) >= 0 then ifmac.location = location(0)
 		  end if
 
 		  modified = true   //ajouté le 24 février 2014 pour éviter des blocages de figure (macro PtFixHomo puis joindre le ptfix à un sommet du trap)
