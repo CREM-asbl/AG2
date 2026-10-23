@@ -459,9 +459,13 @@ Inherits nBpoint
 		      q.append nil
 		    else
 		      BiB = S.GetBibSide(i)
-		      q.append BiBInterdroites(Bib,0,0,r1,r2)
-		      if r1 = 1000 then
-		        if q.Ubound >= 0 then q(0)= P.bpt
+		      if BiB = nil then
+		        q.append nil
+		      else
+		        q.append BiBInterdroites(Bib,0,0,r1,r2)
+		        if r1 = 1000 then
+		          if q.Ubound >= 0 then q(0)= P.bpt
+		        end if
 		      end if
 		    end if
 		  end if
@@ -474,9 +478,13 @@ Inherits nBpoint
 		      q.append nil
 		    else
 		      Bib = s.GetBiBSide(i)
-		      q.append BiBInterdroites(Bib,0,1,r1,r2)
-		      if r = 1000 then
-		        if q.Ubound >= 0 then q(0) = P.bpt
+		      if Bib = nil then
+		        q.append nil
+		      else
+		        q.append BiBInterdroites(Bib,0,1,r1,r2)
+		        if r1 = 1000 then
+		          if q.Ubound >= 0 then q(0) = P.bpt
+		        end if
 		      end if
 		    end if
 		  end if

@@ -2245,6 +2245,9 @@ Inherits Shape
 		  dim r as double
 
 		  n = Pointsur.getposition(s)
+		  if n = -1 then
+		    return
+		  end if
 		  a =  s.firstp
 		  b =  s.secondp
 		  r = bpt.location(a,b)
@@ -2277,11 +2280,12 @@ Inherits Shape
 	#tag Method, Flags = &h0
 		Sub PutOnCircle(s as circle)
 
-
 		  dim  n as integer
 
-
 		  n = Pointsur.getposition(s)
+		  if n = -1 then
+		    return
+		  end if
 
 		  location(n) = bpt.location(s)
 		  numside(n) = 0
@@ -2299,6 +2303,9 @@ Inherits Shape
 		  dim CutPt as Boolean
 
 		  n = Pointsur.getposition(pol)
+		  if n = -1 then
+		    return
+		  end if
 		  i = 0
 		  while (i <= UBound(ConstructedShapes) and not Cutpt)   'si c'est un point de découpe, on le maintient sur le même côté
 		    if ConstructedShapes(i).ConstructedBy.Oper=5 or  point(constructedshapes(i)).surseg  or surseg then
