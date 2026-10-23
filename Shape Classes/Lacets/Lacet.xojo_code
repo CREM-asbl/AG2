@@ -272,10 +272,12 @@ Inherits Shape
 		Function GetSide(i as integer) As Droite
 		  'Ne pas confondre avec le "GetSide" de Lskull
 		  dim d as Droite
-		  
-		  if coord.curved(i) = 0 and i < npts then
-		    d = new Droite(Points(i),Points((i+1) mod npts))
-		    d.nextre = 2
+
+		  if i > -1 and i < npts then
+		    if coord.curved(i) = 0 then
+		      d = new Droite(Points(i),Points((i+1) mod npts))
+		      d.nextre = 2
+		    end if
 		  end if
 		  return d
 		  

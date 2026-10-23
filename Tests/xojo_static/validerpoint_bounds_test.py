@@ -45,7 +45,9 @@ def test_replacer_bounds_guards():
 def test_nearest_addpoint_locatepoint_guards():
     text = INTERSEC.read_text(encoding="utf-8")
     near = extract_method(text, "Function nearest(pt as point")
-    assert_guard_before(near, "h > nlig or k > ncol", "val(h,k)", "nearest")
+    assert "h > nlig" in near and "k > ncol" in near, "nearest: missing h/k upper guards"
+    assert_guard_before(near, "h > nlig", "val(h,k)", "nearest")
+    assert_guard_before(near, "k > ncol", "val(h,k)", "nearest")
     add = extract_method(text, "Sub Addpoint(p as point)")
     assert_guard_before(add, "i1 > nlig or j1 > ncol", "bezet(i1,j1)", "Addpoint")
     loc = extract_method(text, "Function locatepoint(p as BasicPoint)")

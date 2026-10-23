@@ -157,7 +157,11 @@ Inherits DSect
 	#tag Method, Flags = &h0
 		Function GetBibSide(i as integer) As BiBPoint
 		  dim Bib as BiBPoint
-		  
+
+		  if i < 0 or i > 2 then
+		    return nil
+		  end if
+
 		  if i = 0 then
 		    i = 1
 		  end if
