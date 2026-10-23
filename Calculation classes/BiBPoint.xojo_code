@@ -222,7 +222,13 @@ Inherits nBpoint
 		  dim dr as droite
 
 		  if S isa Droite or s isa polygon or s isa bande or s isa secteur then
+		    if k = -1 then
+		      return nil
+		    end if
 		    dr = s.getside(k)
+		    if dr = nil then
+		      return nil
+		    end if
 		    Bib = new BiBpoint(dr.firstp, dr.secondp)
 		    select case dr.nextre
 		    case 0
@@ -263,7 +269,13 @@ Inherits nBpoint
 		  if S isa Droite or S isa Polygon or S isa Bande or S isa Secteur  then
 
 		    k = S.pointonside(P.bpt)
+		    if k = -1 then
+		      return nil
+		    end if
 		    Bib =S.getBiBside(k)
+		    if Bib = nil then
+		      return nil
+		    end if
 
 		    select case Bib.nextre
 		    case 0
@@ -351,7 +363,13 @@ Inherits nBpoint
 		  dim dr as droite
 
 		  if not S isa circle then
+		    if k = -1 then
+		      return nil
+		    end if
 		    dr = s.getside(k)
+		    if dr = nil then
+		      return nil
+		    end if
 		    Bib = new BiBpoint(dr.firstp, dr.secondp)
 		    if Bib <> nil then
 		      bp = BiBInterdroites(Bib, 0, dr.nextre, r1, r2)
@@ -418,11 +436,18 @@ Inherits nBpoint
 
 		  if S isa Polygon then
 		    i = S.PointOnSide(P.bpt)
-		    BiB = S.GetBibSide(i)
-		    'Bib = new BiBPoint(S.Points(P.Numside(0)).bpt,S.Points((P.Numside(0)+1) mod S.npts).bpt)
-		    q.append BibInterdroites(Bib,0,2,r1,r2)
-		    if r1 = 1000 then
-		      if q.Ubound >= 0 then q(0) = P.bpt
+		    if i = -1 then
+		      q.append nil
+		    else
+		      BiB = S.GetBibSide(i)
+		      if BiB = nil then
+		        q.append nil
+		      else
+		        q.append BibInterdroites(Bib,0,2,r1,r2)
+		        if r1 = 1000 then
+		          if q.Ubound >= 0 then q(0) = P.bpt
+		        end if
+		      end if
 		    end if
 		  end if
 

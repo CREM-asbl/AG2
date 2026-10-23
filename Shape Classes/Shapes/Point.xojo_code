@@ -2063,7 +2063,13 @@ Inherits Shape
 		    if (sh.isaparaperp and n = 1 and s <> sh.constructedby.shape) or (( (sh isa triangiso) or (sh isa triangrect) or (sh isa rect) or (sh isa arc)) and (n = 2)) or    (sh isa trap and (not sh isa traprect) and (not sh isa trapiso)  and (n = 3)) then
 		      if not s isa circle then
 		        k = s.pointonside(bpt)
+		        if k = -1 then
+		          return
+		        end if
 		        dr = s.getside(k)
+		        if dr = nil then
+		          return
+		        end if
 		        Bib = new BibPoint(dr.firstp,dr.secondp)
 		        d = bpt.distance(bib)
 		      else
@@ -2211,11 +2217,20 @@ Inherits Shape
 		  dim BiB as BiBPoint
 
 		  n = Pointsur.getposition(s)
+		  if n = -1 then
+		    return
+		  end if
 
 		  if numside(n) = -1 then
 		    numside(n) = S.PointonSide(bpt)
 		  end if
+		  if numside(n) = -1 then
+		    return
+		  end if
 		  BiB = s.GetBibSide(numside(n))
+		  if BiB = nil then
+		    return
+		  end if
 		  location(n) = bpt.location(BiB)
 		  Moveto(bpt.projection(BiB))
 
@@ -2326,10 +2341,15 @@ Inherits Shape
 		  dim a,b as BasicPoint
 		  dim n as integer
 
-
 		  n = Pointsur.getposition(s)
+		  if n = -1 then
+		    return
+		  end if
 		  if Numside(n) = -1 then
 		    numside(n) = S.PointonSide(bpt)
+		  end if
+		  if numside(n) = -1 then
+		    return
 		  end if
 		  a = S.Points(0).bpt
 		  b = S.Points(numside(n)/2+1).bpt

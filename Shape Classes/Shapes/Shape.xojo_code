@@ -1018,6 +1018,10 @@ Protected Class Shape
 		Function GetBibSide(i as integer) As BiBPoint
 		  dim Bib as BiBPoint
 
+		  if i < 0 or i >= npts then
+		    return nil
+		  end if
+
 		  BiB = new BiBPoint(coord.tab(i), coord.tab((i+1) mod npts))
 
 		  if self isa circle then

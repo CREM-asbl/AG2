@@ -465,8 +465,8 @@ Inherits SelectOperation
 		  if pt.forme = 2 then
 		    h = pt.numside(0)
 		    k = pt.numside(1)
-		    if h < 0 or k < 0 or h > nlig or k > ncol then h = 0
-		    if h < 0 or k < 0 or h > nlig or k > ncol then k = 0
+		    if h < 0 or h > nlig then h = 0
+		    if k < 0 or k > ncol then k = 0
 		    if  val(h,k) and (not bezet(h,k) ) and bptinters(h,k) <> nil then
 		      s = pt.bpt.distance(bptinters(h,k))
 		      if s < epsilon then
