@@ -53,9 +53,6 @@ Inherits Shape
 		  end if
 		  can.setrepere(self)
 		  echelle =  k
-		  Hidden = true
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -149,7 +146,9 @@ Inherits Shape
 		  El1.SetAttribute("Y", Str(IdY.y))
 		  Form.appendchild EL1
 		  
-		  Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
+		  if Hidden then
+		    Form.AppendChild(Doc.CreateElement(Dico.Value("Hidden")))
+		  end if
 		  
 		  for i = 0 to labs.count-1
 		    form.appendchild labs.item(i).toXML(Doc)

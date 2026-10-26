@@ -3511,21 +3511,28 @@ Protected Class Shape
 		  Hidden = not Hidden
 
 		  for i = 0 to ubound(childs)
-		    t =true
+		    if childs(i) = nil then
+		      Continue For
+		    end if
+		    t = true
 
 		    for j = 0 to ubound(childs(i).parents)
 		      s = childs(i).parents(j)
-		      if s.getindexpoint(childs(i)) <> -1 then
-		        if not s.hidden or ubound(s.constructedshapes) <> -1 or ubound(s.macconstructedshapes) <> -1 then
-		          t = false
+		      if s <> nil then
+		        if s.getindexpoint(childs(i)) <> -1 then
+		          if not s.hidden or ubound(s.constructedshapes) <> -1 or ubound(s.macconstructedshapes) <> -1 then
+		            t = false
+		          end if
 		        end if
 		      end if
 		    next
 
-		    if  t then
+		    if t and childs(i).pointsur <> nil then
 		      for j = 0 to childs(i).pointsur.count-1
 		        s = childs(i).pointsur.item(j)
-		        t = t and s.hidden
+		        if s <> nil then
+		          t = t and s.hidden
+		        end if
 		      next
 		    end if
 
