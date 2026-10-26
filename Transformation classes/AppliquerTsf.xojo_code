@@ -456,15 +456,21 @@ Inherits MultipleSelectOperation
 		  
 		  EL1 = XMLElement(EL.Child(0))
 		  num = val(EL1.GetAttribute("NumTSF"))
-		  tsf = s.tsfi.item(num)
+		  if s <> nil and s.tsfi <> nil then
+		    tsf = s.tsfi.item(num)
+		  end if
 		  
 		  EL1 = XMLElement(EL.Child(2))
 		  for i = 0 to EL1.childcount-1
 		    EL2 = XMLElement(EL1.child(i))
 		    n =  val(EL2.GetAttribute("Id"))
 		    s = objects.getshape(n)
-		    tsf.removeconstructioninfos(s)
-		    CurrentContent.removeobject s
+		    if s <> nil then
+		      if tsf <> nil then
+		        tsf.removeconstructioninfos(s)
+		      end if
+		      CurrentContent.removeobject s
+		    end if
 		  next
 		  
 		  RedeleteCreatedFigures(Temp)
