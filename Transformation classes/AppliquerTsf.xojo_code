@@ -463,8 +463,12 @@ Inherits MultipleSelectOperation
 		    EL2 = XMLElement(EL1.child(i))
 		    n =  val(EL2.GetAttribute("Id"))
 		    s = objects.getshape(n)
-		    tsf.removeconstructioninfos(s)
-		    CurrentContent.removeobject s
+		    if s <> nil then
+		      if tsf <> nil then
+		        tsf.removeconstructioninfos(s)
+		      end if
+		      CurrentContent.removeobject s
+		    end if
 		  next
 		  
 		  RedeleteCreatedFigures(Temp)
