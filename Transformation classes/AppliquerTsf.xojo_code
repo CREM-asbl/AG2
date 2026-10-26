@@ -456,7 +456,9 @@ Inherits MultipleSelectOperation
 		  
 		  EL1 = XMLElement(EL.Child(0))
 		  num = val(EL1.GetAttribute("NumTSF"))
-		  tsf = s.tsfi.item(num)
+		  if s <> nil and s.tsfi <> nil then
+		    tsf = s.tsfi.item(num)
+		  end if
 		  
 		  EL1 = XMLElement(EL.Child(2))
 		  for i = 0 to EL1.childcount-1

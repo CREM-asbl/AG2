@@ -44,6 +44,14 @@ def test_undo_guards_nil_shape():
         "CurrentContent.removeobject s"
     ), "UndoOperation: shape guard must precede removeobject"
 
+def test_undo_guards_nil_selectform():
+    body = undo_body()
+    assert "s = SelectForm(EL)" in body
+    assert "if s <> nil and s.tsfi <> nil then" in body, "UndoOperation: missing SelectForm/tsfi nil guard"
+    assert body.index("if s <> nil and s.tsfi <> nil then") < body.index(
+        "tsf = s.tsfi.item(num)"
+    ), "UndoOperation: head guard must precede tsfi.item"
+
 
 if __name__ == "__main__":
     test_undo_guards_nil_tsf()
