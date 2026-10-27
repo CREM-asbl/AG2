@@ -25,16 +25,26 @@ def test_restructurer_nil_guards():
     body = extract_restructurer(text)
 
     assert "s2.constructedby.shape" in body, "crash site missing"
-    # s2 nil / constructedby nil must be skipped before dereference
-    assert "s2 = nil or s2.constructedby = nil" in body
-    # s1 (constructedby.shape) may itself be nil -> s1.fig would crash
-    assert "s1 = nil" in body
-    # figs involved may be nil (GetPosition is nil-safe, setconstructedby is not)
-    assert "s1.fig = nil or s2.fig = nil" in body
+    # Xojo `or`/`and` do not short-circuit: guards must be nested ifs,
+    # one condition per line, before any dereference.
+    assert "s2 = nil or" not in body, "s2 guard uses `or`: still derefs nil"
+    assert "s1 = nil or" not in body, "s1 guard uses `or`: still derefs nil"
+    for guard in (
+        "if s2 = nil then",
+        "if s2.constructedby = nil then",
+        "if s1 = nil then",
+        "if s1.fig = nil then",
+        "if s2.fig = nil then",
+    ):
+        assert guard in body, f"missing guard `{guard}`"
     # guards must precede the dereference
-    assert body.index("s2.constructedby = nil") < body.index(
+    assert body.index("if s2 = nil then") < body.index(
         "s1 = s2.constructedby.shape"
     )
+    assert body.index("if s2.constructedby = nil then") < body.index(
+        "s1 = s2.constructedby.shape"
+    )
+    assert body.index("if s1 = nil then") < body.index("s1.fig")
 
 
 if __name__ == "__main__":
