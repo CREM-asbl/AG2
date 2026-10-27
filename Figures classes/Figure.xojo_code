@@ -3729,7 +3729,22 @@ Protected Class Figure
 		    if t then
 		      for i = 0 to tsf.constructedshapes.count-1
 		        s2 = tsf.constructedshapes.item(i)
+		        if s2 = nil then
+		          continue
+		        end if
+		        if s2.constructedby = nil then
+		          continue
+		        end if
 		        s1 = s2.constructedby.shape
+		        if s1 = nil then
+		          continue
+		        end if
+		        if s1.fig = nil then
+		          continue
+		        end if
+		        if s2.fig = nil then
+		          continue
+		        end if
 		        if figs.getposition (s1.fig) <> -1 or figs.getposition(s2.fig) <> -1 then
 		          s2.fig.setconstructedby s1.fig, tsf
 		          tsf.constructedfigs.addobject s2.fig
