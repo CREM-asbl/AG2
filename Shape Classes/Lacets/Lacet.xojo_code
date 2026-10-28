@@ -96,6 +96,7 @@ Inherits Shape
 		  InitCurvesOrders
 		  M = new TranslationMatrix(q)
 		  Move(M)
+		  coord.MoveExtreCtrl(M)
 		  redim prol(s.npts-1)
 		  
 		  

@@ -79,6 +79,9 @@ Begin Menu MenuMenus
          SpecialMenu = 0
          Index = -2147483648
          Text = "Copier"
+         ShortcutKey = "C"
+         Shortcut = "Cmd+C"
+         MenuModifier = True
          AutoEnabled = True
          AutoEnable = True
          Visible = True

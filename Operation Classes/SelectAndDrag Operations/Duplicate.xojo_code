@@ -530,8 +530,10 @@ Inherits SelectAndDragOperation
 		      if s1 isa point then
 		        s2 = s1.paste(objects,point(s1).bpt)
 		      Else
-		        If s1.std Then
+		        If s1 isa StandardPolygon Then
 		          s2 = s1.paste(objects,Vect)
+		        ElseIf s1.std Then
+		          s2 = s1.paste(objects,Vect - s1.Points(0).bpt)
 		        Else
 		          s2 = s1.paste(objects,p)
 		        End If
