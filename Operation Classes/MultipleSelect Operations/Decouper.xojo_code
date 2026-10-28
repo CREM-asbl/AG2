@@ -125,6 +125,10 @@ Inherits MultipleSelectOperation
 		    s = new Polyqcq(Objects)
 		  end if
 
+		  if currentshape.std then
+		    s.std = true
+		  end if
+
 		  if not s.std then
 		    s.SetConstructedBy currentshape,5
 		  end if
@@ -207,11 +211,16 @@ Inherits MultipleSelectOperation
 		    s.coord.centres = centres
 		    s.coord.curved = curved
 		  end if
-		  if s.std then
+		  if s isa StandardPolygon and s.std then
 		    s.fam = 14
 		    standardpolygon(s).myspecs = polygon(s).createspecs
 		    standardpolygon(s).angles = standardpolygon(s).myspecs.angles
 		    standardpolygon(s).distances = standardpolygon(s).myspecs.angles
+		  end if
+		  if s.std then
+		    for i = 0 to s.npts-1
+		      s.points(i).Mobility
+		    next
 		  end if
 		  Lacet(s).prepareskull(s.points(0).bpt)
 		  if s.hybrid then

@@ -4,13 +4,17 @@ Inherits Circle
 	#tag CompatibilityFlags = (TargetDesktop and (Target32Bit or Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(ol as objectslist, p as basicpoint, s as stdcircle)
+		  dim M as Matrix
+		  
 		  Shape.Constructor(ol,s)
 		  
 		  radius = s.radius
 		  angles.append s.angles(0)
 		  file = s.file
 		  createskull
-		  
+		  M = new TranslationMatrix(p)
+		  Move(M)
+		  coord.MoveExtreCtrl(M)
 		  
 		End Sub
 	#tag EndMethod
@@ -115,12 +119,11 @@ Inherits Circle
 		Function Paste(Obl as ObjectsList, p as BasicPoint) As shape
 		  dim s as StdCircle
 		  
-		  s = new StdCircle(Obl,p+Points(0).bpt,self)
+		  s = new StdCircle(Obl,p,self)
 		  s.radius  = radius
-		  s.angles.append angles(0)
 		  s.hidden = false
 		  s.FixeCouleurFond(FillColor,100)
-		  s.Points(0).Hide
+		  s.ori = ori
 		  return s
 		End Function
 	#tag EndMethod
