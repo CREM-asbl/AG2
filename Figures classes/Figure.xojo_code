@@ -2172,7 +2172,17 @@ Protected Class Figure
 		  t = true
 		  for k = 0 to f1.somm.count-1
 		    p = f1.somm.item(k)
-		    t1 = (p.forme = 2) and (f2.shapes.getposition(p.pointsur.item(0)) <> -1) and (f2.shapes.getposition(p.pointsur.item(1))<> -1)
+		    if p = nil then
+		      t1 = false
+		    elseif p.forme = 2 and p.pointsur.count >= 2 then
+		      if f2.shapes.getposition(p.pointsur.item(0)) <> -1 and f2.shapes.getposition(p.pointsur.item(1)) <> -1 then
+		        t1 = true
+		      else
+		        t1 = false
+		      end if
+		    else
+		      t1 = false
+		    end if
 		    t = t and((f2.somm.getposition(p)<> -1) or t1)
 		  next
 
@@ -3020,8 +3030,13 @@ Protected Class Figure
 
 		  for i = 0 to somm.count-1
 		    p = somm.item(i)
-		    if p.forme = 2 and p.pointsur.item(0).modified and p.pointsur.item(1).modified then
-		      p.unmodifiable = true
+		    if p = nil then
+		      Continue For
+		    end if
+		    if p.forme = 2 and p.pointsur.count >= 2 then
+		      if p.pointsur.item(0).modified and p.pointsur.item(1).modified then
+		        p.unmodifiable = true
+		      end if
 		    end if
 		    if p.constructedby <> nil and p.constructedby.oper <> 10  then
 		      p.unmodifiable = true
@@ -3043,6 +3058,9 @@ Protected Class Figure
 
 		  for i = 0 to somm.count-1
 		    p = somm.item(i)
+		    if p = nil then
+		      Continue For
+		    end if
 		    if  (p.liberte = 0 or p.unmodifiable)  and (p <> supfig.pmobi ) and not p.modified and PtsConsted.getposition(p) = -1 and ListPtsModifs.indexof(i)=-1 then
 		      Pointsfixes.append i
 		      NbUnModif = NbUnModif+1
