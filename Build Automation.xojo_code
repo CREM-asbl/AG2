@@ -2,7 +2,7 @@
 			Begin BuildStepList Linux
 				Begin BuildProjectStep Build
 				End
-				Begin CopyFilesBuildStep PackageFiles2
+				Begin CopyFilesBuildStep PackageFiles
 					AppliesTo = 0
 					Architecture = 0
 					Target = 0
@@ -39,7 +39,7 @@
 			Begin BuildStepList Windows
 				Begin BuildProjectStep Build
 				End
-				Begin CopyFilesBuildStep PackageFiles1
+				Begin CopyFilesBuildStep PackageFiles
 					AppliesTo = 0
 					Architecture = 0
 					Target = 0
