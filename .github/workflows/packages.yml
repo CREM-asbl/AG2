@@ -1,0 +1,42 @@
+name: AG2 packages (self-hosted Xojo)
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+jobs:
+  build-windows:
+    runs-on: [self-hosted, windows, xojo]
+    steps:
+      - uses: actions/checkout@v4
+      # Build Xojo via IDE manuel (pas de CLI fiable en 2023r2).
+      # Pre-requis: dossiers Builds-AG pre-remplis par build IDE local.
+      - name: Package Inno Setup x64 + x86
+        run: |
+          .\Builds-AG\tools\package-windows.ps1 -Arch x64
+          .\Builds-AG\tools\package-windows.ps1 -Arch x86
+      - uses: actions/upload-artifact@v4
+        with: { name: windows, path: Builds-AG/dist/AG2-*-windows-*.exe* }
+  build-linux:
+    runs-on: [self-hosted, linux, xojo]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package tgz
+        run: ./Builds-AG/tools/package-linux.sh
+      - uses: actions/upload-artifact@v4
+        with: { name: linux, path: Builds-AG/dist/AG2-*-linux-*.tgz* }
+  build-macos:
+    runs-on: [self-hosted, macOS, xojo]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package DMG (sans compte Apple)
+        run: ./Builds-AG/tools/package-macos.sh
+      - uses: actions/upload-artifact@v4
+        with: { name: macos, path: Builds-AG/dist/AG2-*-macos-* }
+  release:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: dist, merge-multiple: true }
+      - uses: softprops/action-gh-release@v2
+        with: { files: dist/* }
