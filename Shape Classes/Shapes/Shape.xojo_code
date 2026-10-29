@@ -132,6 +132,9 @@ Protected Class Shape
 		    List0.addobject ff
 		    List0.addobject figu
 		    fig = List0.concat
+		    if fig = nil then
+		      fig = figu
+		    end if
 		    CurrentContent.TheFigs.Removefigure ff
 		  else
 		    fig = figu
