@@ -96,6 +96,7 @@ Inherits Shape
 		  InitCurvesOrders
 		  M = new TranslationMatrix(q)
 		  Move(M)
+		  coord.MoveExtreCtrl(M)
 		  redim prol(s.npts-1)
 		  
 		  
@@ -546,12 +547,12 @@ Inherits Shape
 		    if coord.curved(i) = 1 then
 		      BiB2 = new BiBPoint(coord.centres(i),Points(i).bpt)
 		      n = BiB1.BiBDemiDroiteInterCercle(BiB2, bp(), bq, v)
-		      for j = 1 downto 0
+		      for j = UBound(bp) downto 0
 		        if bp(j) = nil then
 		          bp.remove j
 		        end if
 		      next
-		      for j = n-1 downto 0
+		      for j = UBound(bp) downto 0
 		        if PointOnSide(bp(j)) = i then
 		          c = not c
 		        end if

@@ -1061,8 +1061,22 @@ End
 		Function EditCopy() As Boolean Handles EditCopy.Action
 		  if mousedispo then
 		    Formswindow.close
-		    CurrentContent.CurrentOperation = new Copier
-		    Copier(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    if CurrentContent.TheObjects.selection.count = 0 then
+		      dim vis as ObjectsList
+		      dim s as shape
+		      vis = CurrentContent.TheObjects.findobject(can.MouseUser)
+		      if vis <> nil and vis.count > 0 then
+		        s = vis.item(0)
+		        CurrentContent.TheObjects.unselectall
+		        CurrentContent.TheObjects.selectobject(s)
+		      end if
+		    end if
+		    if CurrentContent.TheObjects.selection.count = 0 then
+		      CurrentContent.CurrentOperation = nil
+		    else
+		      CurrentContent.CurrentOperation = new Copier
+		      Copier(CurrentContent.CurrentOperation).ImmediateDoOperation
+		    end if
 		    refreshtitle
 		  end if
 		  return true
@@ -1098,6 +1112,10 @@ End
 		  if mousedispo then
 		    Formswindow.close
 		    CurrentContent.CurrentOperation = new Coller
+		    if app.tampon.count > 0 then
+		      Coller(CurrentContent.CurrentOperation).MouseDown(can.MouseUser)
+		      CurrentContent.CurrentOperation = nil
+		    end if
 		    refreshtitle
 		  end if
 		  return true
