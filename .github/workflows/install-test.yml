@@ -1,0 +1,36 @@
+name: install-test (sans build Xojo)
+on:
+  workflow_dispatch:
+  push:
+    paths: ["Builds-AG/dist/**", "tools-packaging/**", ".github/workflows/install-test.yml"]
+jobs:
+  test-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verifier dist
+        run: ls -la "Builds-AG/dist/" || echo "dist absent (artefacts CI requis)"
+      - name: Extraire tgz Linux
+        run: |
+          TGZ=$(ls "Builds-AG/dist/"AG2-*-linux-*.tgz | sed -n 1p)
+          mkdir -p /tmp/ag2 && tar -xzf "$TGZ" -C /tmp/ag2
+      - name: ldd sans missing
+        run: |
+          BIN=$(find /tmp/ag2 -maxdepth 3 -name AG2 -type f -print -quit)
+          echo "BIN=$BIN"
+          MISS=$(ldd "$BIN" 2>&1 | grep -i "not found" || true)
+          echo "MISS=$MISS"
+          test -z "$MISS"
+      - name: Lancement --help
+        run: |
+          BIN=$(find /tmp/ag2 -maxdepth 3 -name AG2 -type f -print -quit)
+          "$BIN" --help
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extraire tgz macOS
+        run: |
+          TGZ=$(ls Builds-AG/dist/AG2-*-macos-*.tgz | sed -n 1p)
+          mkdir -p /tmp/ag2 && tar -xzf "$TGZ" -C /tmp/ag2
+          ls /tmp/ag2
