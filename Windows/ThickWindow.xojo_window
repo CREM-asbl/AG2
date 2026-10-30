@@ -211,6 +211,12 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Pressed()
+		  dim d as double
+		  d = val(TF.text)
+		  if d <= 0 then
+		    MsgBox Dico.Value("Invalid")
+		    return
+		  end if
 		  Result = 1
 		  Hide
 		End Sub

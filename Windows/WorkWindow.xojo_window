@@ -1846,7 +1846,10 @@ End
 		  mw.ShowModal
 		  if mw.result=1 then
 		    d = val(mw.TF.text)
-		    Config.Thickness = d
+		    if d > 0 then
+		      Config.Thickness = d
+		      Config.Save
+		    end if
 		    mw.close
 		  end if
 		  Return True
