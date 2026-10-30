@@ -470,6 +470,17 @@ Protected Class Configuration
 		      end if
 		    end if
 
+		    List = EL.XQL("Thickness")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        Thickness = Val(XMLElement(EL1).GetAttribute("Value"))
+		        if Thickness <= 0 then
+		          Thickness = 1.5
+		        end if
+		      end if
+		    end if
+
 		    List = EL.XQL("LastInfo")
 		    if List.Length>0 then
 		      EL1 = List.Item(0)
@@ -485,6 +496,7 @@ Protected Class Configuration
 		    setLangue("Francais")
 		    Menu = "Menu_AC"
 		    StdSize = 1
+		    Thickness = 1.5
 		    Save
 		  end if
 
@@ -574,6 +586,8 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 	  EL4 = temp.AppendChild(Doc.CreateElement("LastInfo"))
 		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))
 
+		  EL = temp.AppendChild(Doc.CreateElement("Thickness"))
+		  EL.SetAttribute("Value", str(Thickness))
 
 		  //enregistrement du document XML
 		  fi=app.DocFolder.Child("AG_Init.xml")
