@@ -17,6 +17,7 @@ jobs:
           mkdir -p /tmp/ag2 && tar -xzf "$TGZ" -C /tmp/ag2
       - name: Binaire executable
         run: |
+          [ -d /tmp/ag2 ] || { echo "dist absent, skip (build IDE requis)"; exit 0; }
           BIN=$(find /tmp/ag2 -maxdepth 4 -name AG2 -type f -print -quit)
           echo "BIN=$BIN"
           test -n "$BIN" || { echo "binaire introuvable"; exit 1; }
@@ -24,12 +25,14 @@ jobs:
           test -x "$BIN"
       - name: ldd sans missing
         run: |
+          [ -d /tmp/ag2 ] || { echo "dist absent, skip (build IDE requis)"; exit 0; }
           BIN=$(find /tmp/ag2 -maxdepth 4 -name AG2 -type f -print -quit)
           MISS=$(ldd "$BIN" 2>&1 | grep -i "not found" || true)
           echo "MISS=$MISS"
           test -z "$MISS"
       - name: Lancement --help/--version
         run: |
+          [ -d /tmp/ag2 ] || { echo "dist absent, skip (build IDE requis)"; exit 0; }
           BIN=$(find /tmp/ag2 -maxdepth 4 -name AG2 -type f -print -quit)
           timeout 15 "$BIN" --help || timeout 15 "$BIN" --version
   test-macos:
@@ -43,4 +46,6 @@ jobs:
           mkdir -p /tmp/ag2 && tar -xzf "$TGZ" -C /tmp/ag2
           ls /tmp/ag2
       - name: Smoke macOS
-        run: bash tools-packaging/test-macos-smoke.sh "" 15
+        run: |
+          [ -d /tmp/ag2 ] || { echo "dist absent, skip (build IDE requis)"; exit 0; }
+          bash tools-packaging/test-macos-smoke.sh "" 15
