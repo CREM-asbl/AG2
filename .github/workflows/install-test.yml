@@ -2,7 +2,7 @@ name: install-test (sans build Xojo)
 on:
   workflow_dispatch:
   push:
-    paths: ["Builds - AG/dist/**", "tools-packaging/**", ".github/workflows/install-test.yml"]
+    paths: ["tools-packaging/**", ".github/workflows/install-test.yml"]
 jobs:
   test-ubuntu:
     runs-on: ubuntu-latest
@@ -12,7 +12,8 @@ jobs:
         run: ls -la "Builds - AG/dist/" || echo "dist absent (artefacts CI requis)"
       - name: Extraire tgz Linux
         run: |
-          TGZ=$(ls "Builds - AG/dist/"AG2-*-linux-*.tgz | sed -n 1p)
+          TGZ=$(ls "Builds - AG/dist/"AG2-*-linux-*.tgz 2>/dev/null | sed -n 1p || true)
+          if [ -z "$TGZ" ]; then echo "dist absent, skip (build IDE requis)"; exit 0; fi
           mkdir -p /tmp/ag2 && tar -xzf "$TGZ" -C /tmp/ag2
       - name: Binaire executable
         run: |
@@ -37,7 +38,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Extraire tgz macOS
         run: |
-          TGZ=$(ls "Builds - AG/dist/"AG2-*-macos-*.tgz | sed -n 1p)
+          TGZ=$(ls "Builds - AG/dist/"AG2-*-macos-*.tgz 2>/dev/null | sed -n 1p || true)
+          if [ -z "$TGZ" ]; then echo "dist absent, skip (build IDE requis)"; exit 0; fi
           mkdir -p /tmp/ag2 && tar -xzf "$TGZ" -C /tmp/ag2
           ls /tmp/ag2
       - name: Smoke macOS

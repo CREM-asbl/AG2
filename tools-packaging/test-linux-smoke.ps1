@@ -8,7 +8,7 @@
 .PARAMETER Tgz Chemin tgz. Defaut : dernier AG2-*-linux-*.tgz de Builds - AG/dist.
 .PARAMETER TimeoutSec Timeout lancement binaire (defaut 15).
 .EXAMPLE .\tools-packaging\test-linux-smoke.ps1
-.EXAMPLE .\tools-packaging\test-linux-smoke.ps1 -Tgz dist/AG2-2.7.2-linux-x64.tgz -TimeoutSec 30
+.EXAMPLE .\tools-packaging\test-linux-smoke.ps1 -Tgz "C:\Builds\AG2\dist\AG2-2.7.2-linux-x64.tgz" -TimeoutSec 30
 #>
 [CmdletBinding()]
 param(

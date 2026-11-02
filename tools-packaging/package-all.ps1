@@ -39,7 +39,7 @@ if (Active "windows") {
 if (Active "linux") { Step "linux" { & (Join-Path $tp "package-linux.ps1") } }
 if (Active "macos") { Step "macos" { & (Join-Path $tp "package-macos.ps1") } }
 Step "manifest" { & (Join-Path $tp "make-manifest.ps1") }
-Step "tests" { & (Join-Path $tp "test-packages.ps1") -Only $Only -Skip $Skip }
+Step "tests" { & (Join-Path $tp "test-packages.ps1") -Only $Only -Skip $Skip; if ($LASTEXITCODE -ne 0) { throw "tests KO (exit $LASTEXITCODE)" } }
 if (Active "linux") {
   try { Step "smoke-linux" { & (Join-Path $tp "test-linux-smoke.ps1") } }
   catch { Write-Output "smoke-linux: SKIP ($($_.Exception.Message))" }
