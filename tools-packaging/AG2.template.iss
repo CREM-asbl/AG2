@@ -1,46 +1,103 @@
-; AG2 Inno Setup — genere par package-windows.ps1 (AppId fixe, lzma2/max, SignedUninstaller)
-#define MyAppVersion "{{VERSION}}"
-#define MyArch "{{ARCH}}"
-#define SrcDir "{{SRCDIR}}"
+; Template AG2 - Inno Setup 6 (aligne origine Builds - AG/tools)
+; Usage: ISCC.exe /DMyAppVersion=2.7.2 /DMyAppArch=x64 /DSrcDir="..." /DOutDir="..." /DLogoIco="..." AG2.template.iss
+#ifndef MyAppVersion
+  #define MyAppVersion "2.7.2"
+#endif
+#ifndef MyAppArch
+  #define MyAppArch "x64"
+#endif
+#ifndef SrcDir
+  #define SrcDir "."
+#endif
+#ifndef OutDir
+  #define OutDir "."
+#endif
+#ifndef LogoIco
+  #define LogoIco "crem.ico"
+#endif
+#ifndef AppBaseName
+  #if MyAppArch == "x86"
+    #define AppBaseName "AG2-" + MyAppVersion + "-windows-x86"
+  #else
+    #define AppBaseName "AG2-" + MyAppVersion + "-windows-x64"
+  #endif
+#endif
 
 [Setup]
-AppId={{APPID}}
 AppName=Apprenti Geometre 2
-AppVersion={#MyAppVersion}
-AppVerName=Apprenti Geometre 2 {#MyAppVersion} ({#MyArch})
-AppPublisher=CREM
-AppPublisherURL=https://www.crem.be
-DefaultDirName={autopf}\CREM\AG2
+AppVerName=Apprenti Geometre 2 {#MyAppVersion} ({#MyAppArch})
+AppPublisher=CREM asbl
+AppPublisherURL=https://www.crem.be/
+AppSupportURL=https://www.crem.be/
+AppUpdatesURL=https://www.crem.be/
+DefaultDirName={pf}\Apprenti Geometre 2
 DefaultGroupName=Apprenti Geometre 2
-OutputDir={{OUTDIR}}
-OutputBaseFilename=AG2-{#MyAppVersion}-windows-{#MyArch}
+OutputDir={#OutDir}
+OutputBaseFilename={#AppBaseName}
 Compression=lzma2/max
 SolidCompression=yes
 SignedUninstaller=no
-; Prod avec certificat: SignedUninstaller=yes + SignTool configure
+AppCopyright=CREM
+AppVersion={#MyAppVersion}
+LicenseFile={#SrcDir}\COPY.rtf
+SetupIconFile={#LogoIco}
+UninstallDisplayIcon={app}\AG2.exe
 ChangesAssociations=yes
-ArchitecturesAllowed={#MyArch}
-ArchitecturesInstallIn64BitMode={#MyArch}
 WizardStyle=modern
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 
-[Files]
-Source: "{#SrcDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-
-[Icons]
-Name: "{group}\Apprenti Geometre 2"; Filename: "{app}\AG2.exe"
-Name: "{autodesktop}\Apprenti Geometre 2"; Filename: "{app}\AG2.exe"; Tasks: desktopicon
+[Languages]
+Name: english; MessagesFile: compiler:Default.isl
+Name: french; MessagesFile: compiler:Languages\French.isl
+Name: dutch; MessagesFile: compiler:Languages\Dutch.isl
+Name: german; MessagesFile: compiler:Languages\German.isl
+Name: spanish; MessagesFile: compiler:Languages\Spanish.isl
+Name: italian; MessagesFile: compiler:Languages\Italian.isl
+Name: portuguese; MessagesFile: compiler:Languages\Portuguese.isl
 
 [Tasks]
-Name: desktopicon; Description: "Icone bureau"; GroupDescription: "Options:"
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+
+[Files]
+Source: {#SrcDir}\*; DestDir: {app}; Flags: recursesubdirs
+
+[Icons]
+Name: {group}\Apprenti Geometre 2; Filename: {app}\AG2.exe
+Name: {group}\{cm:UninstallProgram,Apprenti Geometre 2}; Filename: {uninstallexe}
+Name: {commondesktop}\Apprenti Geometre 2; Filename: {app}\AG2.exe; Tasks: desktopicon
+
+[Run]
+Filename: {app}\AG2.exe; Description: {cm:LaunchProgram,Apprenti Geometre 2}; Flags: nowait postinstall skipifsilent
 
 [Registry]
-Root: HKLM64; Subkey: "Software\Classes\.fag"; ValueType: string; ValueName: ""; ValueData: "AG2.Figure"; Flags: uninsdeletekey; Check: IsAdminInstallMode
-Root: HKCU; Subkey: "Software\Classes\.fag"; ValueType: string; ValueName: ""; ValueData: "AG2.Figure"; Flags: uninsdeletekey; Check: not IsAdminInstallMode
-Root: HKLM64; Subkey: "Software\Classes\.hag"; ValueType: string; ValueName: ""; ValueData: "AG2.Historique"; Flags: uninsdeletekey; Check: IsAdminInstallMode
-Root: HKCU; Subkey: "Software\Classes\.hag"; ValueType: string; ValueName: ""; ValueData: "AG2.Historique"; Flags: uninsdeletekey; Check: not IsAdminInstallMode
-Root: HKLM64; Subkey: "Software\Classes\AG2.Figure\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\AG2.exe"" ""%1"""; Check: IsAdminInstallMode
-Root: HKCU; Subkey: "Software\Classes\AG2.Figure\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\AG2.exe"" ""%1"""; Check: not IsAdminInstallMode
-Root: HKLM64; Subkey: "Software\Classes\AG2.Historique\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\AG2.exe"" ""%1"""; Check: IsAdminInstallMode
-Root: HKCU; Subkey: "Software\Classes\AG2.Historique\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\AG2.exe"" ""%1"""; Check: not IsAdminInstallMode
+Root: HKLM; Subkey: SOFTWARE\AG; ValueType: string; ValueName: path; ValueData: {uninstallexe}; Flags: createvalueifdoesntexist uninsdeletekey
+Root: HKCR; Subkey: AG.CREM; ValueType: string; ValueData: Apprenti geometre 2; Flags: createvalueifdoesntexist uninsdeletekey
+Root: HKCR; Subkey: AG.CREM\DefaultIcon; ValueType: string; ValueData: {app}\AG2.exe,0; Flags: createvalueifdoesntexist uninsdeletekey
+Root: HKCR; Subkey: AG.CREM\shell\open\command; ValueType: string; ValueData: """{app}\AG2.exe"" ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey
+Root: HKCR; Subkey: .fag; ValueType: string; ValueData: AG.CREM; Flags: createvalueifdoesntexist uninsdeletekey
+Root: HKCR; Subkey: .hag; ValueType: string; ValueData: AG.CREM; Flags: createvalueifdoesntexist uninsdeletekey
+
+[Code]
+const
+  OldVersionRegKey = 'Software\AG';
+var
+  HasOldVersion: Boolean;
+  Path: String;
+  ResultCode: Integer;
+function InitializeSetup(): Boolean;
+begin
+  HasOldVersion := RegKeyExists(HKLM, OldVersionRegKey);
+  if HasOldVersion then
+  begin
+    if RegQueryStringValue(HKEY_LOCAL_MACHINE, OldVersionRegKey, 'path', Path) = true then
+    begin
+      MsgBox('Desinstallation de la version precedente', mbInformation, MB_OK);
+      Exec(ExpandConstant(Path), '/SILENT', '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
+      Result := True;
+    end else begin
+      MsgBox('Impossible de desinstaller la version precedente', mbInformation, MB_OK);
+      Result := False;
+    end;
+  end else Result := True;
+end;

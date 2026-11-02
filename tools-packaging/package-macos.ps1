@@ -16,9 +16,11 @@ $src = Get-ChildItem -Path $builds -Directory | Where-Object { $_.Name -match "m
 if (-not $src) { throw "Dossier build macOS introuvable sous $builds" }
 $app = Get-ChildItem -Path $src.FullName -Filter "*.app" -Recurse -Directory | Select-Object -First 1
 if (-not $app) { throw "Bundle .app introuvable sous $($src.FullName)" }
+$macOSDir = Join-Path $app.FullName "Contents\MacOS"
+if (Test-Path $macOSDir -PathType Container) { Copy-Item (Join-Path $root "Changelog.md") (Join-Path $macOSDir "Changelog.md") -Force }
 $tgz = Join-Path $dist "AG2-$ver-macos-universal.tgz"
 if (Test-Path $tgz) { Remove-Item $tgz -Force }
-& tar -czf $tgz -C $src.FullName . 2>&1 | Select-Object -First 10
+& tar -czf $tgz -C $src.FullName AG2.app 2>&1 | Select-Object -First 10
 if (-not (Test-Path $tgz)) { throw "Echec creation $tgz" }
 $sec = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $mb = [math]::Round((Get-Item $tgz).Length / 1MB, 1)
