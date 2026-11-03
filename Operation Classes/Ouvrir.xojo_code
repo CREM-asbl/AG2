@@ -88,23 +88,30 @@ Inherits Operation
 				can.refreshbackground
 				finished = true
 			End Sub
-	' Méthode privée : gestion centralisée des erreurs et reset d'état
-	Private Sub AfficherErreurEtReset(msg As String)
+	#tag EndMethod
+
+	#tag Method, Flags = &h2
+		' Méthode privée : gestion centralisée des erreurs et reset d'état
+		Private Sub AfficherErreurEtReset(msg As String)
 		MsgBox msg
 		If currentcontent <> nil Then
 			currentcontent.currentoperation = nil
 		End If
-	End Sub
+		End Sub
+	#tag EndMethod
 
-	' Méthode privée : chargement des macros
-	Private Sub ChargerMacros(RootElement As XMLElement)
+	#tag Method, Flags = &h2
+		' Méthode privée : chargement des macros
+		Private Sub ChargerMacros(RootElement As XMLElement)
 		If app.themacros <> Nil Then
 			app.themacros.XMLLoadMacros(RootElement)
 		End If
-	End Sub
+		End Sub
+	#tag EndMethod
 
-	' Méthode privée : chargement des préférences et objets
-	Private Function ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem) As Boolean
+	#tag Method, Flags = &h2
+		' Méthode privée : chargement des préférences et objets
+		Private Function ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem) As Boolean
 		If RootElement = nil Then
 			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: RootElement nil, abandon")
 			Return False
@@ -116,7 +123,7 @@ Inherits Operation
 		If Not currentcontent.ChargerPrefs(RootElement, f) Then Return False
 		If Not currentcontent.ChargerObjets(RootElement) Then Return False
 		Return True
-	End Function
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
