@@ -16,13 +16,20 @@ Inherits Dictionary
 		  case "PortuguesBr"
 		    C = new XMLDocument(PortuguesBr)
 		  else
+		    If app.DctFolder = Nil Then
+		      Return Nil
+		    End If
 		    Name = langue+".dct"
 		    f = app.DctFolder.Child(Name)
-		    if f.exists then
-		      C=new XMLDocument(f)
+		    if f <> Nil then
+		      if f.exists then
+		        C=new XMLDocument(f)
+		      else
+		        MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
+		        return nil
+		      end if
 		    else
-		      MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
-		      return nil
+		      Return Nil
 		    end if
 		  end select
 		  

@@ -1,0 +1,98 @@
+"""Static startup-guard test for issue #71.
+
+Linux symptom: Xojo runtime quits silently (exit 0, 0.2s, no window,
+no CreateWindow) on minimal/headless systems. Startup chain
+App.Opening -> InitFolders -> new Configuration runs before any window:
+
+- InitFolders dereferences SpecialFolder.Documents without a nil guard.
+  On headless Linux (no xdg-user-dirs, no ~/Documents) Documents is nil,
+  so .Child raises NilObjectException. App.UnhandledException swallows it
+  (CurrentContent is nil at startup -> return true), app exits 0 silent.
+- Configuration.Constructor/Save dereference app.DocFolder without a nil
+  guard, same silent-quit path when InitFolders bailed out early.
+- Dictionnaire.getXML dereferences app.DctFolder without a nil guard.
+- No --help/--version short-circuit exists: CLI probes run the full GUI
+  path, so the smoke test sees exit 0 and wrongly reports PASS.
+- Smoke test only checks exit code, never output content, so a silent
+  quit is indistinguishable from a healthy --help.
+"""
+
+from pathlib import Path
+
+APP = Path("Other Classes/App.xojo_code")
+CONFIG = Path("Other Classes/Configuration.xojo_code")
+DICO = Path("Other Classes/Dictionnaire.xojo_code")
+SMOKE = Path("tools-packaging/test-linux-smoke.ps1")
+
+
+def extract_block(text: str, marker: str) -> str:
+    low = text.lower()
+    start = low.index(marker.lower())
+    for end_marker in ("#tag endevent", "#tag endmethod"):
+        end = low.find(end_marker.lower(), start)
+        if end != -1:
+            return text[start:end].lower()
+    raise AssertionError(f"no block end after {marker!r}")
+
+
+def opening_body() -> str:
+    return extract_block(APP.read_text(encoding="utf-8"), "Sub Opening()")
+
+
+def initfolders_body() -> str:
+    return extract_block(APP.read_text(encoding="utf-8"), "Sub InitFolders()")
+
+
+def test_opening_short_circuits_cli_before_gui():
+    body = opening_body()
+    assert "system.commandline" in body, \
+        "Opening: missing --help/--version short-circuit via System.CommandLine"
+    assert "initwindow.showmodal" in body
+    assert body.index("system.commandline") < body.index("initwindow.showmodal"), \
+        "Opening: CLI short-circuit must run before initWindow.ShowModal"
+
+
+def test_initfolders_guards_nil_documents():
+    body = initfolders_body()
+    assert "specialfolder.documents" in body
+    assert "if basedocs = nil then" in body or "if basedocs=nil then" in body, \
+        "InitFolders: missing nil guard with fallback when Documents is nil"
+    assert "specialfolder.applicationdata" in body, \
+        "InitFolders: missing ApplicationData fallback for headless Linux"
+
+
+def test_configuration_constructor_guards_nil_docfolder():
+    text = CONFIG.read_text(encoding="utf-8")
+    body = extract_block(text, "Sub Constructor()")
+    assert "app.docfolder = nil" in body, \
+        "Configuration.Constructor: missing nil DocFolder guard"
+
+
+def test_configuration_save_guards_nil_docfolder():
+    text = CONFIG.read_text(encoding="utf-8")
+    body = extract_block(text, "Sub Save()")
+    assert "app.docfolder = nil" in body, \
+        "Configuration.Save: missing nil DocFolder guard"
+
+
+def test_dictionnaire_getxml_guards_nil_dctfolder():
+    text = DICO.read_text(encoding="utf-8")
+    body = extract_block(text, "Function getXML(")
+    assert "app.dctfolder = nil" in body, \
+        "Dictionnaire.getXML: missing nil DctFolder guard"
+
+
+def test_smoke_rejects_silent_quit():
+    text = SMOKE.read_text(encoding="utf-8")
+    assert "SMOKE-KO-silent" in text, \
+        "smoke: must FAIL on empty --help output (silent quit), not just exit code"
+
+
+if __name__ == "__main__":
+    test_opening_short_circuits_cli_before_gui()
+    test_initfolders_guards_nil_documents()
+    test_configuration_constructor_guards_nil_docfolder()
+    test_configuration_save_guards_nil_docfolder()
+    test_dictionnaire_getxml_guards_nil_dctfolder()
+    test_smoke_rejects_silent_quit()
+    print("OK: all #71 Linux startup guards present")

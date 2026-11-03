@@ -48,6 +48,19 @@ Chaîne packaging locale (Xojo 2023r2 IDE manuel, PowerShell Windows).
 | `watch-builds.ps1` | Watcher auto → package-all -Only cible |
 | `update-version-xml.ps1` | Sync https://api.crem.be/AG/version.xml (DryRun défaut) |
 | `test-linux-smoke.ps1 [-Tgz] [-TimeoutSec]` | Smoke WSL2 (extract TEMP, ldd + --help, PASS/FAIL/SKIP) |
+
+## Linux headless (issue #71)
+
+Silent exit 0 before any window = startup quit before CreateWindow.
+Causes fixed/guarded: `SpecialFolder.Documents` nil (no xdg-user-dirs),
+`DocFolder` nil in `Configuration`/`Dictionnaire`, `--help` running full
+GUI path. `App.Opening` now short-circuits `--help`/`--version` before
+`initWindow.ShowModal`, `InitFolders` falls back to
+`ApplicationData` then app dir, and the smoke test fails on empty
+`--help` output (`SMOKE-KO-silent`) instead of PASS.
+
+Prereqs on minimal systems: install `xdg-user-dirs`, run
+`xdg-user-dirs-update`, launch under `DISPLAY`/Xvfb or WSLg.
 | `test-macos-smoke.sh [tgz] [timeout]` | Smoke macOS CI (otool, plutil, --help, PASS/FAIL/SKIP) |
 | `publish-release.ps1` | gh release (DryRun défaut) |
 

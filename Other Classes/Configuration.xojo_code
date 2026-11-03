@@ -405,6 +405,14 @@ Protected Class Configuration
 		  dim lastmaj,f() as String
 
 		  initParams
+		  If app.DocFolder = Nil Then
+		    System.DebugLog("AG2: DocFolder indisponible, configuration par defaut.")
+		    setLangue("Francais")
+		    Menu = "Menu_AC"
+		    StdSize = 1
+		    Thickness = 1.5
+		    Return
+		  End If
 		  fi=app.DocFolder.Child("AG_Init.xml")
 
 		  password = hash("")
@@ -590,6 +598,10 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 		  EL.SetAttribute("Value", str(Thickness))
 
 		  //enregistrement du document XML
+		  If app.DocFolder = Nil Then
+		    System.DebugLog("AG2: DocFolder indisponible, configuration non sauvegardee.")
+		    Return
+		  End If
 		  fi=app.DocFolder.Child("AG_Init.xml")
 		  tos=TextOutputStream.Create(fi)
 		  if tos =nil then

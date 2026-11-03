@@ -26,6 +26,12 @@ Inherits DesktopApplication
 
 	#tag Event
 		Sub Opening()
+		  Dim cliArgs As String = System.CommandLine
+		  If cliArgs.IndexOf("--help") >= 0 Or cliArgs.IndexOf("--version") >= 0 Then
+		    System.DebugLog("Apprenti Geometre 2 " + FullVersion + " - application graphique ; lancez sans argument sous DISPLAY/Xvfb.")
+		    Quit(0)
+		    Return
+		  End If
 		  CheckSystem
 		  InitFolders
 		  Dico = new Dictionnaire
@@ -50,6 +56,7 @@ Inherits DesktopApplication
 		  
 		  
 		  if CurrentContent = nil or CurrentContent.bugfound then
+		    System.DebugLog("AG2 fatal: " + error.Message)
 		    return true
 		  end if
 		  
@@ -181,11 +188,24 @@ Inherits DesktopApplication
 
 	#tag Method, Flags = &h0
 		Sub InitFolders()
+		  Dim baseDocs As FolderItem
 		  AppFolder=GetFolderItem("")
 		  #if DebugBuild then
 		    AppFolder = AppFolder.Parent
 		  #endif
-		  DocFolder = SpecialFolder.Documents.Child("Apprenti geometre")
+		  baseDocs = SpecialFolder.Documents
+		  If baseDocs = Nil Then
+		    baseDocs = SpecialFolder.ApplicationData
+		  End If
+		  If baseDocs = Nil Then
+		    baseDocs = AppFolder
+		  End If
+		  If baseDocs = Nil Then
+		    System.DebugLog("AG2 fatal: aucun dossier utilisateur accessible (Documents/ApplicationData).")
+		    Quit(1)
+		    Return
+		  End If
+		  DocFolder = baseDocs.Child("Apprenti geometre")
 		  if not DocFolder.Exists then
 		    DocFolder.CreateAsFolder
 		  end if

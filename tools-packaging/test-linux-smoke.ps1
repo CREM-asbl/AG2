@@ -72,6 +72,7 @@ $TO "$BIN" --help >/tmp/ag2smoke/help.log 2>&1; H=$?
 if [ $H -ne 0 ]; then $TO "$BIN" --version >/tmp/ag2smoke/help.log 2>&1; H=$?; fi
 echo "EXIT=$H"
 if [ $H -ne 0 ]; then echo "SMOKE-KO-launch"; exit 1; fi
+if [ ! -s /tmp/ag2smoke/help.log ]; then echo "SMOKE-KO-silent (exit 0 sans sortie: quit silencieux avant fenetre/CLI)"; exit 1; fi
 echo "SMOKE-OK"
 '@
 $bash = ($bash -replace "`r", "") -replace '\{0\}', $wslTgz -replace '\{1\}', $TimeoutSec
