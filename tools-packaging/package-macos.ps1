@@ -18,11 +18,11 @@ if (-not $src) { throw "Dossier build macOS introuvable sous $builds" }
 $stage = Join-Path $env:TEMP "ag2-macos-stage"
 Remove-Item -Recurse -Force $stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $stage | Out-Null
-$destApp = Join-Path $stage "AG2.app"
 
 $app = Get-ChildItem -Path $src.FullName -Filter "*.app" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($app) {
-  # Copier en preservant les liens symboliques via tar
+  $bundleName = $app.Name
+  $destApp = Join-Path $stage $bundleName
   New-Item -ItemType Directory -Force -Path $destApp | Out-Null
   & tar -cf - -C $app.FullName . | tar -xf - -C $destApp
   if ($LASTEXITCODE -ne 0) { throw "Echec copie bundle macOS" }
@@ -36,27 +36,17 @@ if ($app) {
   if ($LASTEXITCODE -ne 0) { throw "Echec extraction $($tar.FullName)" }
   $extractedApp = Get-ChildItem -Path $extractRoot -Filter "*.app" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 1
   if (-not $extractedApp) { throw "Bundle .app introuvable apres extraction" }
+  $bundleName = $extractedApp.Name
+  $destApp = Join-Path $stage $bundleName
   Move-Item -Path $extractedApp.FullName -Destination $destApp -Force
 }
 
-# Renommer l'executable et mettre a jour Info.plist si necessaire
 $macOSDir = Join-Path $destApp "Contents\MacOS"
-$plist = Join-Path $destApp "Contents\Info.plist"
-$oldExe = Get-ChildItem -Path $macOSDir -File | Where-Object { $_.Name -ne "Changelog.md" } | Select-Object -First 1
-if ($oldExe -and $oldExe.Name -ne "AG2") {
-  Rename-Item -Path $oldExe.FullName -NewName "AG2" -Force
-  if (Test-Path $plist) {
-    $raw = [IO.File]::ReadAllText($plist)
-    $raw = $raw -replace "<string>$([regex]::Escape($oldExe.Name))</string>", "<string>AG2</string>"
-    [IO.File]::WriteAllText($plist, $raw)
-  }
-}
-
 if (Test-Path $macOSDir -PathType Container) { Copy-Item (Join-Path $root "Changelog.md") (Join-Path $macOSDir "Changelog.md") -Force }
 
 $tgz = Join-Path $dist "AG2-$ver-macos-universal.tgz"
 if (Test-Path $tgz) { Remove-Item $tgz -Force }
-& tar -czf $tgz -C $stage AG2.app 2>&1 | Select-Object -First 10
+& tar -czf $tgz -C $stage $bundleName 2>&1 | Select-Object -First 10
 if (-not (Test-Path $tgz)) { throw "Echec creation $tgz" }
 $sec = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $mb = [math]::Round((Get-Item $tgz).Length / 1MB, 1)

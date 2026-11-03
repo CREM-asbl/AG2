@@ -1,6 +1,6 @@
 #Requires -Version 5.1
 <#
-.SYNOPSIS Package Linux: tgz depuis build IDE (racine AG2 propre, sans surcouche ./).
+.SYNOPSIS Package Linux: tgz depuis build IDE (racine nom d'origine, sans surcouche ./).
 #>
 [CmdletBinding()]
 param()
@@ -20,19 +20,15 @@ if (-not (Test-Path $appDir -PathType Container)) {
   if (-not $appDirObj) { throw "Dossier app introuvable sous $($src.FullName)" }
   $appDir = $appDirObj.FullName
 }
+$stageName = Split-Path $appDir -Leaf
 Copy-Item (Join-Path $root "Changelog.md") (Join-Path $appDir "Changelog.md") -Force
 $stage = Join-Path $env:TEMP "ag2-linux-stage"
 Remove-Item -Recurse -Force $stage -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force -Path (Join-Path $stage "AG2") | Out-Null
-Copy-Item (Join-Path $appDir "*") (Join-Path $stage "AG2") -Recurse -Force
-# Normaliser le nom de l'executable en AG2 pour la distribution
-$linuxExe = Get-ChildItem -Path (Join-Path $stage "AG2") -File | Where-Object { $_.Name -notmatch "\.(so|md|rtf|pdf|fag|std|png|jpg|ico)$" } | Select-Object -First 1
-if ($linuxExe -and $linuxExe.Name -ne "AG2") {
-  Rename-Item -Path $linuxExe.FullName -NewName "AG2" -Force
-}
+New-Item -ItemType Directory -Force -Path (Join-Path $stage $stageName) | Out-Null
+Copy-Item (Join-Path $appDir "*") (Join-Path $stage $stageName) -Recurse -Force
 $tgz = Join-Path $dist "AG2-$ver-linux-x64.tgz"
 if (Test-Path $tgz) { Remove-Item $tgz -Force }
-& tar -czf $tgz -C $stage AG2 2>&1 | Select-Object -First 10
+& tar -czf $tgz -C $stage $stageName 2>&1 | Select-Object -First 10
 if (-not (Test-Path $tgz)) { throw "Echec creation $tgz" }
 $sec = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $mb = [math]::Round((Get-Item $tgz).Length / 1MB, 1)
