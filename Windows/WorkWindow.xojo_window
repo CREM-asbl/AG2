@@ -2720,6 +2720,19 @@ End
 		Sub OpenFile(f as Folderitem)
 		  dim nc as boolean
 
+		  if f = nil then
+		    MsgBox Dico.Value("MsgNovalidFile")
+		    Return
+		  end if
+		  if CurrentContent = nil then
+		    MsgBox Dico.Value("MsgNovalidFile")
+		    Return
+		  end if
+		  if CurrentContent.TheObjects = nil then
+		    MsgBox Dico.Value("MsgNovalidFile")
+		    Return
+		  end if
+
 		  if  CurrentContent.TheObjects.count > 1 then
 		    Formswindow.close
 		    NewContent(false)
