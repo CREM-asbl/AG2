@@ -58,6 +58,7 @@ set -u
 rm -rf /tmp/ag2smoke; mkdir -p /tmp/ag2smoke
 tar -xzf '{0}' -C /tmp/ag2smoke
 BIN=$(find /tmp/ag2smoke -maxdepth 4 -name "Apprenti Geometre 2" -type f -print -quit)
+if [ -z "$BIN" ]; then BIN=$(find /tmp/ag2smoke -maxdepth 4 -name "AG2" -type f -print -quit); fi
 if [ -z "$BIN" ]; then BIN=$(find /tmp/ag2smoke -maxdepth 4 -type f -executable -print -quit); fi
 if [ -z "$BIN" ]; then echo "SMOKE-KO-no-binary"; exit 1; fi
 echo "BIN=$BIN"

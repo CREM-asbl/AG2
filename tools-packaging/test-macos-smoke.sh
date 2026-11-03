@@ -26,7 +26,8 @@ tar -xzf "$TGZ" -C /tmp/ag2smoke || fail "extraction tgz impossible"
 APP=$(find /tmp/ag2smoke -maxdepth 4 -name "*.app" -type d -print -quit)
 if [ -z "$APP" ]; then fail "bundle .app introuvable"; fi
 echo "APP=$APP"
-BIN="$APP/Contents/MacOS/Apprenti Geometre 2"\nif [ ! -f "$BIN" ]; then BIN="$APP/Contents/MacOS/AG2"; fi
+BIN="$APP/Contents/MacOS/Apprenti Geometre 2"
+if [ ! -f "$BIN" ]; then BIN="$APP/Contents/MacOS/AG2"; fi
 if [ ! -f "$BIN" ]; then
   BIN=$(find "$APP/Contents/MacOS" -maxdepth 1 -type f -print -quit)
 fi
