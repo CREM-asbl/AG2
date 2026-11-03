@@ -18,12 +18,18 @@ if (-not (Test-Path $src -PathType Container)) { throw "Dossier build Windows in
 $exe = Get-ChildItem -Path $src -Filter "AG2.exe" | Select-Object -First 1
 if (-not $exe) { throw "AG2.exe introuvable sous $src" }
 Copy-Item (Join-Path $root "Changelog.md") (Join-Path $src "Changelog.md") -Force
-$logo = Join-Path (Join-Path $builds $buildName) "LogoAG.ico"
-if (-not (Test-Path $logo)) { $logo = Join-Path $root "crem.ico" }
-if (-not (Test-Path $logo)) { throw "LogoIco introuvable (ni $buildName\LogoAG.ico ni crem.ico racine)" }
+$buildLogo = Join-Path (Join-Path $builds $buildName) "LogoAG.ico"
+$repoLogo = Join-Path $root "LogoAG.ico"
+$toolsLogo = Join-Path $PSScriptRoot "LogoAG.ico"
+if (Test-Path $buildLogo) { $logo = $buildLogo }
+elseif (Test-Path $repoLogo) { $logo = $repoLogo }
+elseif (Test-Path $toolsLogo) { $logo = $toolsLogo }
+else { $logo = Join-Path $root "crem.ico" }
+if (-not (Test-Path $logo)) { throw "LogoIco introuvable (ni $buildName\LogoAG.ico, ni LogoAG.ico racine/tools-packaging, ni crem.ico racine)" }
 $iss = Join-Path $PSScriptRoot "AG2.template.iss"
 $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 if (-not (Test-Path $iscc)) { throw "ISCC introuvable: $iscc" }
+Write-Output "ISCC LogoIco: $logo"
 & $iscc "/DMyAppVersion=$ver" "/DMyAppArch=$Arch" "/DSrcDir=$src" "/DOutDir=$dist" "/DLogoIco=$logo" $iss 2>&1 | Out-String | Write-Output
 if ($LASTEXITCODE -ne 0) { throw "ISCC echoue code $LASTEXITCODE" }
 $setup = Join-Path $dist "AG2-$ver-windows-$Arch.exe"

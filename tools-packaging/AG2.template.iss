@@ -13,7 +13,7 @@
   #define OutDir "."
 #endif
 #ifndef LogoIco
-  #define LogoIco "crem.ico"
+  #define LogoIco "LogoAG.ico"
 #endif
 #ifndef AppBaseName
   #if MyAppArch == "x86"
