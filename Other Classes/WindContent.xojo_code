@@ -79,7 +79,16 @@ Protected Class WindContent
 		  dim n as integer
 		  dim dr as droite
 		  dim r as Repere
-		  
+
+		  If FAG = nil Then
+		    System.DebugLog("WindContent.ChargerObjets: FAG nil, abandon")
+		    Return
+		  End If
+		  If TheObjects = nil Then
+		    System.DebugLog("WindContent.ChargerObjets: TheObjects nil, abandon")
+		    Return
+		  End If
+
 		  TheObjects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
 		  TheObjects.SetId(-1)
 		  TheObjects.XMLLoadObjects(FAG)
@@ -87,20 +96,36 @@ Protected Class WindContent
 		  n = val(FAG.GetAttribute("SHUA"))
 		  if n <> 0 then
 		    SHUA = TheObjects.Getshape(n)
-		    UA = SHUA.aire
+		    if SHUA <> nil then
+		      UA = SHUA.aire
+		    end if
 		  end if
 		  n = val(FAG.GetAttribute("SHUL"))
 		  if n <> 0 then
 		    SHUL = TheObjects.Getshape(n)
-		    if SHUL isa droite then
+		    if SHUL = nil then
+		      System.DebugLog("WindContent.ChargerObjets: SHUL id introuvable: " + str(n))
+		    elseif SHUL isa droite then
 		      UL = droite(SHUL).longueur
 		    elseif SHUL isa polygon then
 		      IcotUL = val(FAG.GetAttribute("IcotUL"))
 		      dr = Polygon(SHUL).Getside(IcotUL)
-		      UL = dr.longueur
+		      if dr <> nil then
+		        UL = dr.longueur
+		      else
+		        System.DebugLog("WindContent.ChargerObjets: Getside nil, IcotUL=" + str(IcotUL))
+		      end if
 		    end if
 		  end if
+		  if can = nil then
+		    System.DebugLog("WindContent.ChargerObjets: can nil, labels ignores")
+		    Return
+		  end if
 		  r = can.rep
+		  if r = nil then
+		    System.DebugLog("WindContent.ChargerObjets: repere nil, labels ignores")
+		    Return
+		  end if
 		  TheObjects.updatelabels(r.echelle)
 		  
 		  For i As Integer = 0 To TheFigs.count - 1
@@ -116,8 +141,16 @@ Protected Class WindContent
 		  dim Obj As XMLElement
 		  dim List as XMLNodeList
 		  dim s1, s2 As string
-		  
-		  
+
+		  If FAG = nil Then
+		    System.DebugLog("WindContent.ChargerPrefs: FAG nil, abandon")
+		    Return
+		  End If
+		  If f = nil Then
+		    System.DebugLog("WindContent.ChargerPrefs: FolderItem nil, abandon")
+		    Return
+		  End If
+
 		  removeall
 		  ndec = val(FAG.GetAttribute("NbrDec"))
 		  if ndec =0 then
@@ -137,13 +170,25 @@ Protected Class WindContent
 		  
 		  if List.length > 0 then
 		    Obj = XMLElement(List.item(0))
+		    if Obj = nil then
+		      System.DebugLog("WindContent.ChargerPrefs: FondEcran nil, ignore")
+		      Return
+		    end if
 		    s1 = Obj.GetAttribute("File")
 		    s2 = Obj.GetAttribute("Align")
 		    f = f.parent
+		    if f = nil then
+		      System.DebugLog("WindContent.ChargerPrefs: parent dossier nil, fond ignore")
+		      Return
+		    end if
 		    f = f.child(s1)
 		    if f=nil then
 		      return 
 		    else
+		      if can = nil then
+		        System.DebugLog("WindContent.ChargerPrefs: can nil, fond ignore")
+		        return
+		      end if
 		      can.setFondEcran(Picture.Open(f), f.Name)
 		      can.alignFondEcran(s2)
 		    end if

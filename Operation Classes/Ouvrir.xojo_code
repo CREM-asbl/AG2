@@ -21,6 +21,15 @@ Inherits Operation
 				super.constructor
 				OpId = -1
 
+				If f = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
+				If currentcontent = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
+
 				Try
 					Doc = New XMLDocument(f)
 				Catch err As XmlException
@@ -30,6 +39,10 @@ Inherits Operation
 
 				FagTitle = f.name
 				RootElement = Doc.DocumentElement
+				If RootElement = nil Or Doc.DocumentElement = nil Or Doc.FirstChild = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
 				' Vérification du type de fichier AG
 				If Doc.FirstChild.name <> "AG" Then
 					AfficherErreurEtReset(Dico.Value("Nofagfile"))
@@ -83,6 +96,10 @@ Inherits Operation
 
 	' Méthode privée : chargement des préférences et objets
 	Private Sub ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem)
+		If RootElement = nil Then
+			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: RootElement nil, abandon")
+			Return
+		End If
 		If currentcontent <> Nil Then
 			currentcontent.ChargerPrefs(RootElement, f)
 			currentcontent.ChargerObjets(RootElement)
