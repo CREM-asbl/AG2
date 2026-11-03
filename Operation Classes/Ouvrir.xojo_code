@@ -21,6 +21,15 @@ Inherits Operation
 				super.constructor
 				OpId = -1
 
+				If f = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
+				If currentcontent = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
+
 				Try
 					Doc = New XMLDocument(f)
 				Catch err As XmlException
@@ -30,8 +39,12 @@ Inherits Operation
 
 				FagTitle = f.name
 				RootElement = Doc.DocumentElement
+				If RootElement = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
 				' Vérification du type de fichier AG
-				If Doc.FirstChild.name <> "AG" Then
+				If RootElement.Name <> "AG" Then
 					AfficherErreurEtReset(Dico.Value("Nofagfile"))
 					Return
 				End If
@@ -56,7 +69,14 @@ Inherits Operation
 
 				' Chargement des macros, préférences et objets
 				ChargerMacros(RootElement)
-				ChargerPreferencesEtObjets(RootElement, f)
+				If Not ChargerPreferencesEtObjets(RootElement, f) Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
+				If can = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
 
 				currentcontent.CurrentFile = f
 				currentcontent.CurrentFileUpToDate = true
@@ -68,26 +88,42 @@ Inherits Operation
 				can.refreshbackground
 				finished = true
 			End Sub
-	' Méthode privée : gestion centralisée des erreurs et reset d'état
-	Private Sub AfficherErreurEtReset(msg As String)
-		MsgBox msg
-		currentcontent.currentoperation = nil
-	End Sub
+	#tag EndMethod
 
-	' Méthode privée : chargement des macros
-	Private Sub ChargerMacros(RootElement As XMLElement)
+	#tag Method, Flags = &h2
+		Private Sub AfficherErreurEtReset(msg As String)
+		' Méthode privée : gestion centralisée des erreurs et reset d'état
+		MsgBox msg
+		If currentcontent <> nil Then
+			currentcontent.currentoperation = nil
+		End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h2
+		Private Sub ChargerMacros(RootElement As XMLElement)
+		' Méthode privée : chargement des macros
 		If app.themacros <> Nil Then
 			app.themacros.XMLLoadMacros(RootElement)
 		End If
-	End Sub
+		End Sub
+	#tag EndMethod
 
-	' Méthode privée : chargement des préférences et objets
-	Private Sub ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem)
-		If currentcontent <> Nil Then
-			currentcontent.ChargerPrefs(RootElement, f)
-			currentcontent.ChargerObjets(RootElement)
+	#tag Method, Flags = &h2
+		Private Function ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem) As Boolean
+		' Méthode privée : chargement des préférences et objets
+		If RootElement = nil Then
+			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: RootElement nil, abandon")
+			Return False
 		End If
-	End Sub
+		If currentcontent = Nil Then
+			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: currentcontent nil, abandon")
+			Return False
+		End If
+		If Not currentcontent.ChargerPrefs(RootElement, f) Then Return False
+		If Not currentcontent.ChargerObjets(RootElement) Then Return False
+		Return True
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
