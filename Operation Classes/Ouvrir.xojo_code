@@ -91,8 +91,8 @@ Inherits Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h2
-		' Méthode privée : gestion centralisée des erreurs et reset d'état
 		Private Sub AfficherErreurEtReset(msg As String)
+		' Méthode privée : gestion centralisée des erreurs et reset d'état
 		MsgBox msg
 		If currentcontent <> nil Then
 			currentcontent.currentoperation = nil
@@ -101,8 +101,8 @@ Inherits Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h2
-		' Méthode privée : chargement des macros
 		Private Sub ChargerMacros(RootElement As XMLElement)
+		' Méthode privée : chargement des macros
 		If app.themacros <> Nil Then
 			app.themacros.XMLLoadMacros(RootElement)
 		End If
@@ -110,8 +110,8 @@ Inherits Operation
 	#tag EndMethod
 
 	#tag Method, Flags = &h2
-		' Méthode privée : chargement des préférences et objets
 		Private Function ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem) As Boolean
+		' Méthode privée : chargement des préférences et objets
 		If RootElement = nil Then
 			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: RootElement nil, abandon")
 			Return False
