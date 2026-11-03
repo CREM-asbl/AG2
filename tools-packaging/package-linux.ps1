@@ -15,12 +15,21 @@ New-Item -ItemType Directory -Path $dist -Force | Out-Null
 $src = Get-ChildItem -Path $builds -Directory | Where-Object { $_.Name -match "Linux" } | Select-Object -First 1
 if (-not $src) { throw "Dossier build Linux introuvable sous $builds" }
 $appDir = Join-Path $src.FullName "AG2"
-if (-not (Test-Path $appDir -PathType Container)) { throw "Dossier app AG2 introuvable sous $($src.FullName)" }
+if (-not (Test-Path $appDir -PathType Container)) {
+  $appDirObj = Get-ChildItem -Path $src.FullName -Directory | Select-Object -First 1
+  if (-not $appDirObj) { throw "Dossier app introuvable sous $($src.FullName)" }
+  $appDir = $appDirObj.FullName
+}
 Copy-Item (Join-Path $root "Changelog.md") (Join-Path $appDir "Changelog.md") -Force
 $stage = Join-Path $env:TEMP "ag2-linux-stage"
 Remove-Item -Recurse -Force $stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path (Join-Path $stage "AG2") | Out-Null
 Copy-Item (Join-Path $appDir "*") (Join-Path $stage "AG2") -Recurse -Force
+# Normaliser le nom de l'executable en AG2 pour la distribution
+$linuxExe = Get-ChildItem -Path (Join-Path $stage "AG2") -File | Where-Object { $_.Name -notmatch "\.(so|md|rtf|pdf|fag|std|png|jpg|ico)$" } | Select-Object -First 1
+if ($linuxExe -and $linuxExe.Name -ne "AG2") {
+  Rename-Item -Path $linuxExe.FullName -NewName "AG2" -Force
+}
 $tgz = Join-Path $dist "AG2-$ver-linux-x64.tgz"
 if (Test-Path $tgz) { Remove-Item $tgz -Force }
 & tar -czf $tgz -C $stage AG2 2>&1 | Select-Object -First 10
