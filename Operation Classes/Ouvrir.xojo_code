@@ -39,12 +39,12 @@ Inherits Operation
 
 				FagTitle = f.name
 				RootElement = Doc.DocumentElement
-				If RootElement = nil Or Doc.DocumentElement = nil Or Doc.FirstChild = nil Then
+				If RootElement = nil Then
 					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
 					Return
 				End If
 				' Vérification du type de fichier AG
-				If Doc.FirstChild.name <> "AG" Then
+				If RootElement.Name <> "AG" Then
 					AfficherErreurEtReset(Dico.Value("Nofagfile"))
 					Return
 				End If
@@ -69,7 +69,14 @@ Inherits Operation
 
 				' Chargement des macros, préférences et objets
 				ChargerMacros(RootElement)
-				ChargerPreferencesEtObjets(RootElement, f)
+				If Not ChargerPreferencesEtObjets(RootElement, f) Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
+				If can = nil Then
+					AfficherErreurEtReset(Dico.Value("MsgNovalidFile"))
+					Return
+				End If
 
 				currentcontent.CurrentFile = f
 				currentcontent.CurrentFileUpToDate = true
@@ -84,7 +91,9 @@ Inherits Operation
 	' Méthode privée : gestion centralisée des erreurs et reset d'état
 	Private Sub AfficherErreurEtReset(msg As String)
 		MsgBox msg
-		currentcontent.currentoperation = nil
+		If currentcontent <> nil Then
+			currentcontent.currentoperation = nil
+		End If
 	End Sub
 
 	' Méthode privée : chargement des macros
@@ -95,16 +104,19 @@ Inherits Operation
 	End Sub
 
 	' Méthode privée : chargement des préférences et objets
-	Private Sub ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem)
+	Private Function ChargerPreferencesEtObjets(RootElement As XMLElement, f As FolderItem) As Boolean
 		If RootElement = nil Then
 			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: RootElement nil, abandon")
-			Return
+			Return False
 		End If
-		If currentcontent <> Nil Then
-			currentcontent.ChargerPrefs(RootElement, f)
-			currentcontent.ChargerObjets(RootElement)
+		If currentcontent = Nil Then
+			System.DebugLog("Ouvrir.ChargerPreferencesEtObjets: currentcontent nil, abandon")
+			Return False
 		End If
-	End Sub
+		If Not currentcontent.ChargerPrefs(RootElement, f) Then Return False
+		If Not currentcontent.ChargerObjets(RootElement) Then Return False
+		Return True
+	End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
