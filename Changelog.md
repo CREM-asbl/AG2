@@ -1,12 +1,15 @@
-## Version 2.7.2 (2026-11-02)
+## Version 2.7.2 (2026-11-03)
 
+- fix(packaging): use Apprenti Geometre LogoAG.ico for Windows setup
+- Bump Xojo Release 2->3
+- fix(packaging): realigne linux/macos/windows sur origine + sync Changelog
 - docs: exemple chemin absolu avec espace Builds - AG
 - fix: install-test skip gracieux sur toutes les etapes sans dist
 - fix: install-test skip sans dist, gate LASTEXITCODE, exemple chemin absolu
 - Merge packaging workflow from geoffrey-pliez-linux-macos-smoke-tests (superset of packaging-in-ag2; 1a5 redundant)
 - fix: persist thickness preference in AG_Init.xml
 - fix: guard fusionsubfigs/Phase0/AddToFigure against OOB/nil (#61)
-- Ajout des fichiers supplémentaires pour le packaging multiplateforme
+- Ajout des fichiers suppl├®mentaires pour le packaging multiplateforme
 - Fix standard arc copy deformation (paste vs duplicate)
 - fix: bound pInShape bp loops by UBound to prevent OutOfBounds
 - Fix #39: nested nil guards in Figure.restructurer (Xojo or has no short-circuit)
@@ -27,11 +30,6 @@
 - chore(geometry): note TODO IntersectionSolver futur dans Intersec
 - fix(geometry): stabilise les branches d'intersection dans Intersec
 - test(geometry): oracle de memoire de branche stable (TDD)
-- refactor(geometry): supprime les controles Arc morts dans IntersectionSolver
-- fix(geometry): corrige appels API BiBPoint et syntaxe nil dans IntersectionSolver
-- refactor: split IntersectionSolution into its own file
-
-# AG2 - Changelog
 
 ## Version 2.7.1 (depuis v2.7.0)
 
