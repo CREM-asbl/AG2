@@ -2896,11 +2896,21 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setcross()
-		  if BackgroundColor = blanc then
-		    can.mousecursor = cross
-		  else
-		    can.mousecursor = whitecross
-		  end if
+		  If BackgroundColor = blanc Then
+		    If cross <> Nil Then
+		      can.mousecursor = cross
+		    Else
+		      can.mousecursor = System.Cursors.StandardPointer
+		      System.DebugLog("AG2: curseur cross nil, fallback StandardPointer.")
+		    End If
+		  Else
+		    If whitecross <> Nil Then
+		      can.mousecursor = whitecross
+		    Else
+		      can.mousecursor = System.Cursors.StandardPointer
+		      System.DebugLog("AG2: curseur whitecross nil, fallback StandardPointer.")
+		    End If
+		  End If
 		End Sub
 	#tag EndMethod
 
