@@ -66,9 +66,13 @@ Inherits DesktopApplication
 		    initWindow.ShowModal
 		    System.DebugLog("splash closed")
 		  End If
+		  System.DebugLog("avant ChargerConfig")
 		  Config.ChargerConfig
+		  System.DebugLog("apres ChargerConfig")
 		  Tampon = new ObjectsList
+		  System.DebugLog("apres ObjectsList")
 		  WorkWindow.Show
+		  System.DebugLog("WorkWindow visible")
 		End Sub
 	#tag EndEvent
 
@@ -82,7 +86,7 @@ Inherits DesktopApplication
 		  
 		  
 		  if CurrentContent = nil then
-		    System.DebugLog("AG2 fatal: " + error.Message)
+		    System.DebugLog("AG2 fatal: " + Introspection.GetType(error).FullName + " #" + Str(error.ErrorNumber) + " " + error.Message)
 		    return false
 		  end if
 		  if CurrentContent.bugfound then

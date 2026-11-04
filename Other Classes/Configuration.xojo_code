@@ -658,8 +658,12 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 		    m  = "Menu_AC"
 		  end if
 		  Menu = m
-		  ChargerConfig
-		  save
+		  Try
+		    ChargerConfig
+		    save
+		  Catch err As RuntimeException
+		    System.DebugLog("setMenu erreur: " + err.Message)
+		  End Try
 
 		End Sub
 	#tag EndMethod

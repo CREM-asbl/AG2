@@ -363,8 +363,20 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  Config.setMenu(PopupMenu1.Text)
-		  Config.save
+		  System.DebugLog("splash click avant setMenu")
+		  Try
+		    dim menuText as String = PopupMenu1.Text
+		    if menuText = "" then
+		      menuText = "Menu_AC"
+		    end if
+		    Config.setMenu(menuText)
+		    System.DebugLog("splash click apres setMenu")
+		    Config.save
+		    System.DebugLog("splash click apres save")
+		  Catch err As RuntimeException
+		    System.DebugLog("splash click erreur: " + err.Message)
+		  End Try
+		  System.DebugLog("splash click avant close")
 		  close
 		  
 		End Sub
