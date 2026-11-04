@@ -51,6 +51,16 @@ Inherits DesktopApplication
 		  If noSplash Then
 		    quiet = True
 		    System.DebugLog("splash skipped (--no-splash)")
+		    If Config.Menu = "" Then
+		      Config.Menu = "Menu_AC"
+		    End If
+		    If Config.username = "" Then
+		      Config.username = Dico.Value("Enseignant")
+		    End If
+		    If Config.user = "" Then
+		      Config.user = "pup"
+		    End If
+		    System.DebugLog("nosplash defaults user=" + Config.user)
 		  Else
 		    System.DebugLog("splash showing")
 		    initWindow.ShowModal

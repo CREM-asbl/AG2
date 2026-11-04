@@ -594,6 +594,11 @@ Inherits Canvas
 		    Dim gtkSettings as MemoryBlock
 		    
 		    gtkSettings = gtk_settings_get_default()
+		    If gtkSettings = nil Then
+		      System.DebugLog("AG2: gtk settings indisponibles, double-clic par defaut.")
+		      DoubleClickTime = 30
+		      Return
+		    End If
 		    
 		    g_object_get(gtkSettings,"gtk-double-click-time",doubleClickTime, 0)
 		    // DoubleClickTime now holds the number of milliseconds
@@ -662,7 +667,13 @@ Inherits Canvas
 
 	#tag Method, Flags = &h0
 		Sub Resize()
-		  Background=NewPicture(width,height,Screen(0).Depth)
+		  Dim depth As Integer = 32
+		  If ScreenCount > 0 Then
+		    depth = Screen(0).Depth
+		  Else
+		    System.DebugLog("AG2: aucun ecran detecte, profondeur par defaut.")
+		  End If
+		  Background=NewPicture(width,height,depth)
 		  'Background.graphics.ForeColor= Bkcol
 		  'Background.graphics.FillRect(0,0,width,height)
 		  'Background.graphics.forecolor = Config.bordercolor.col
@@ -670,7 +681,7 @@ Inherits Canvas
 		  'Background.graphics.Bold = true
 		  
 		  if currentcontent <> nil and not currentcontent.theobjects.tracept then
-		    OffscreenPicture=NewPicture(width,height,Screen(0).Depth)
+		    OffscreenPicture=NewPicture(width,height,depth)
 		    OffscreenPicture.Transparent = 1
 		  end if
 		  if config <> nil then

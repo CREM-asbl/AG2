@@ -894,9 +894,23 @@ End
 		  NewContent(false)
 		  DrapShowall = false
 
-		  if MenuMenus.Child("EditMenu").Child("EditCopy").HasCheckMark  then
-		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark
-		  end if
+		  Dim srcMenu As DesktopMenuItem = MenuMenus.Child("EditMenu")
+		  If srcMenu <> nil Then
+		    Dim srcItem As DesktopMenuItem = srcMenu.Child("EditCopy")
+		    If srcItem <> nil Then
+		      If srcItem.HasCheckMark Then
+		        Dim dstMenu As DesktopMenuItem = MenuBar.Child("EditMenu")
+		        If dstMenu <> nil Then
+		          Dim dstItem As DesktopMenuItem = dstMenu.Child("EditReselect")
+		          If dstItem <> nil Then
+		            DrapResel = dstItem.HasCheckMark
+		          Else
+		            System.DebugLog("AG2: menu EditReselect indisponible.")
+		          End If
+		        End If
+		      End If
+		    End If
+		  End If
 		  maximize
 		End Sub
 	#tag EndEvent
@@ -2349,15 +2363,30 @@ End
 		  next
 		  CopyCFGMenu
 
+		  Dim prefsMenu As DesktopMenuItem = menubar.Child("PrefsMenu")
+		  If prefsMenu = nil Then
+		    System.DebugLog("AG2: menu PrefsMenu indisponible.")
+		    Return
+		  End If
+
 		  if config.ajust then
-		    menubar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = true
+		    If prefsMenu.Child("PrefsAjust") <> nil Then
+		      prefsMenu.Child("PrefsAjust").HasCheckMark = true
+		    End If
 		  end if
 
 		  if config.menu = "Menu_C" or config.menu = "Menu_AC" then
-		    if config.area = 0  then
-		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = true
-		    else
-		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = true
+		    Dim prefsArea As DesktopMenuItem = prefsMenu.Child("PrefsArea")
+		    If prefsArea <> nil Then
+		      if config.area = 0  then
+		        If prefsArea.Child("PrefsAreaArith") <> nil Then
+		          prefsArea.Child("PrefsAreaArith").HasCheckMark = true
+		        End If
+		      else
+		        If prefsArea.Child("PrefsAreaAlg") <> nil Then
+		          prefsArea.Child("PrefsAreaAlg").HasCheckMark = true
+		        End If
+		      end if
 		    end if
 		  end if
 		End Sub
@@ -2547,7 +2576,17 @@ End
 
 	#tag Method, Flags = &h0
 		Function GetMenuItem(menu as string, sousmenu as string) As Boolean
-		  Return MenuMenus.Child(menu).Child(sousmenu).HasCheckMark
+		  Dim m As DesktopMenuItem = MenuMenus.Child(menu)
+		  If m = nil Then
+		    System.DebugLog("AG2: menu introuvable : " + menu)
+		    Return False
+		  End If
+		  Dim sm As DesktopMenuItem = m.Child(sousmenu)
+		  If sm = nil Then
+		    System.DebugLog("AG2: sous-menu introuvable : " + sousmenu)
+		    Return False
+		  End If
+		  Return sm.HasCheckMark
 		End Function
 	#tag EndMethod
 
@@ -2568,8 +2607,14 @@ End
 		Sub InitParams()
 		  can = mycanvas1
 
-		  width = screen(0).width -120
-		  height = screen(0).height
+		  If ScreenCount > 0 Then
+		    width = screen(0).width -120
+		    height = screen(0).height
+		  Else
+		    System.DebugLog("AG2: aucun ecran detecte, taille fenetre par defaut.")
+		    width = 800
+		    height = 600
+		  End If
 
 		  title = Config.username
 		  AcceptFileDrop(FileAGTypes.SAVE)
@@ -2697,7 +2742,10 @@ End
 		  dim mitem as MenuItem
 
 		  if (GetNumWindow<>-1) then
-		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = false
+		    Dim prevFen As DesktopMenuItem = MenuBar.Child("Fenetres")
+		    If prevFen <> nil Then
+		      prevFen.MenuAt(GetNumWindow).HasCheckMark = false
+		    End If
 		  end if
 
 
@@ -2710,8 +2758,13 @@ End
 		  mitem.Name = "winitem"
 		  mitem.index = GetNumWindow
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
-		  MenuBar.Child("Fenetres").AddMenu mitem
-		  MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
+		  Dim fenMenu As DesktopMenuItem = MenuBar.Child("Fenetres")
+		  If fenMenu = nil Then
+		    System.DebugLog("AG2: menu Fenetres indisponible, contenu sans onglet.")
+		  Else
+		    fenMenu.AddMenu mitem
+		    fenMenu.MenuAt(GetNumWindow).HasCheckMark = true
+		  End If
 
 		End Sub
 	#tag EndMethod
