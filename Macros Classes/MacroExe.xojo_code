@@ -122,8 +122,24 @@ Inherits MultipleSelectOperation
 		  dim ifmac, ifm As InfoMac
 		  dim s, newshape as shape
 		  
+		  if EL = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL")
+		    return
+		  end if
+		  if EL.ChildCount < 2 then
+		    System.DebugLog(CurrentMethodName + ": skip ChildCount<2")
+		    return
+		  end if
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
+		  if EL0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
+		    return
+		  end if
+		  if EL1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL1")
+		    return
+		  end if
 		  n = val(EL0.GetAttribute("Id"))
 		  
 		  if (Mac.ObInit.indexof(n) = -1) and  (Mac.ObInterm.indexof(n) = -1) and  (Mac.ObFinal.indexof(n) = -1) then
@@ -206,8 +222,16 @@ Inherits MultipleSelectOperation
 		  dim i, oper as integer
 		  dim EL as XMLElement
 		  
+		  if Temp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil Temp")
+		    return
+		  end if
 		  for i = 0 to Temp.Childcount-1  // i : numéro de l'opération
 		    EL = XMLElement(Temp.Child(i))
+		    if EL = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil EL i=" + Str(i))
+		      continue
+		    end if
 		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction (forme ou tsf) ? prévoir le cas contraire!
 		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
 		      oper = val(EL.GetAttribute("OpId"))
@@ -251,35 +275,55 @@ Inherits MultipleSelectOperation
 		  dim createdshape as shape
 		  
 		  if EL = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL")
+		    return
+		  end if
+		  if EL.ChildCount < 2 then
+		    System.DebugLog(CurrentMethodName + ": skip ChildCount<2")
 		    return
 		  end if
 		  EL0 = XMLElement(EL.Child(0))
 		  EL1 = XMLElement(EL.Child(1))
 		  if EL0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
 		    return
 		  end if
 		  if EL1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL1")
 		    return
 		  end if
 		  n = val(EL0.GetAttribute("Id"))
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    rid = GetRealId(n)
 		    if rid = -1 then
+		      System.DebugLog(CurrentMethodName + ": skip unknown MacId n=" + Str(n) + " rid=-1")
 		      return
 		    end if
 		    createdshape = objects.getshape(rid)
 		    if createdshape = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil shape n=" + Str(n) + " rid=" + Str(rid))
 		      return
 		    end if
 		    EL01 = XMLElement(EL0.Child(0))
-		    if EL01 <> nil then
-		      side = GetRealSide(n)
-		      if side = -1 then
-		        side = 0
-		      end if
-		      if createdshape.npts > 0 then
+		    if EL01 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil EL01 n=" + Str(n))
+		      return
+		    end if
+		    if EL01.ChildCount = 0 then
+		      System.DebugLog(CurrentMethodName + ": skip empty EL01 n=" + Str(n))
+		      return
+		    end if
+		    side = GetRealSide(n)
+		    if side = -1 then
+		      side = 0
+		    end if
+		    if createdshape.npts > 0 then
 		      for i = 0 to EL01.ChildCount-1
 		        EL02 = XMLElement(EL01.Child(i))
+		        if EL02 = nil then
+		          System.DebugLog(CurrentMethodName + ": skip nil EL02 i=" + Str(i) + " n=" + Str(n))
+		          continue
+		        end if
 		        MacId.append val(EL02.GetAttribute("Id"))
 		        Real.Append createdshape.points((i+side) mod createdshape.npts).id
 		        RealSide.append -1  ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
@@ -328,6 +372,7 @@ Inherits MultipleSelectOperation
 		    end select
 		    
 		    if createdshape = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil createdshape n=" + Str(n) + " oper=" + Str(oper))
 		      return
 		    end if
 		    if Mac.ObFinal.IndexOf(n) = -1 then
@@ -339,6 +384,13 @@ Inherits MultipleSelectOperation
 		    
 		    for i = 0 to EL0.ChildCount-1
 		      EL01 = XMLElement(EL0.Child(i))
+		      if EL01 = nil then
+		        System.DebugLog(CurrentMethodName + ": skip nil EL01 i=" + Str(i) + " n=" + Str(n))
+		        MacId.append -1
+		        Real.Append -1
+		        RealSide.append -1
+		        continue
+		      end if
 		      MacId.append val(EL01.GetAttribute("Id"))
 		      if i <= createdshape.npts - 1 then
 		        Real.Append createdshape.points(i).id
@@ -382,10 +434,12 @@ Inherits MultipleSelectOperation
 		  dim side as integer
 		  
 		  if EL = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL")
 		    return
 		  end if
 		  EL0 = XMLElement(EL.Child(0))
 		  if EL0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
 		    return
 		  end if
 		  
@@ -395,10 +449,12 @@ Inherits MultipleSelectOperation
 		  n = val(EL0.GetAttribute("Id"))
 		  rid = GetRealId(n)                                 //Le support doit avoir été créé antérieurement
 		  if rid = -1 then
+		    System.DebugLog(CurrentMethodName + ": skip unknown MacId n=" + Str(n) + " rid=-1")
 		    return
 		  end if
 		  supp = objects.getshape(rid)
 		  if supp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil support n=" + Str(n) + " rid=" + Str(rid))
 		    return
 		  end if
 		  type = val(EL.GetAttribute("TsfType"))
@@ -483,8 +539,16 @@ Inherits MultipleSelectOperation
 		  dim EL as XMLElement  'on exécute une sous-macro d'une macro
 		  dim i, oper as integer
 		  
+		  if Temp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil Temp")
+		    return
+		  end if
 		  for i = 0 to Temp.Childcount-1  // i : numéro de l'opération
 		    EL = XMLElement(Temp.Child(i))
+		    if EL = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil EL i=" + Str(i))
+		      continue
+		    end if
 		    if EL.Name = Dico.Value("Operation") then
 		      oper = val(EL.GetAttribute("OpId"))
 		      if codesoper.indexof(oper) <>  -1 then

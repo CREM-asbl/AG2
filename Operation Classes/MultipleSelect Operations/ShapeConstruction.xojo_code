@@ -151,8 +151,18 @@ Inherits MultipleSelectOperation
 		      currentshape = nil
 		      return
 		    end if
+		    dim ELChild as XMLElement
 		    for i = 0 to CurrentShape.ncpts-1
-		      n = val(XMLElement(EL.Child(i)).GetAttribute("Id"))
+		      if i >= EL.ChildCount then
+		        currentshape = nil
+		        return
+		      end if
+		      ELChild = XMLElement(EL.Child(i))
+		      if ELChild = nil then
+		        currentshape = nil
+		        return
+		      end if
+		      n = val(ELChild.GetAttribute("Id"))
 		      rid = MExe.GetRealId(n)
 		      if rid = -1 then
 		        currentshape = nil

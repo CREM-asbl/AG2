@@ -283,14 +283,16 @@ Inherits SelectOperation
 		  dim s1, s2 as shape
 		  dim p as point
 		  
-		  
-		  ob = currentcontent.theobjects
 		  if MExe = nil then
 		    return
 		  end if
 		  if EL1 = nil then
 		    return
 		  end if
+		  if currentcontent = nil then
+		    return
+		  end if
+		  ob = currentcontent.theobjects
 		  if ob = nil then
 		    return
 		  end if

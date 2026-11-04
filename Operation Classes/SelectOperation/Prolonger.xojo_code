@@ -36,6 +36,10 @@ Inherits SelectOperation
 		    return
 		  end if
 		  SelectedSide = MExe.GetRealSide(n)
+		  if SelectedSide = -1 then
+		    System.DebugLog(CurrentMethodName + ": skip unknown side n=" + Str(n))
+		    return
+		  end if
 		  DoOperation
 		End Sub
 	#tag EndMethod
