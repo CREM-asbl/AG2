@@ -35,6 +35,12 @@ Inherits DesktopApplication
 		      Return
 		    End If
 		  Next
+		  Dim noSplash As Boolean = False
+		  For Each arg As String In cliArgs
+		    If arg = "--no-splash" Then
+		      noSplash = True
+		    End If
+		  Next
 		  CheckSystem
 		  InitFolders
 		  Dico = new Dictionnaire
@@ -42,7 +48,14 @@ Inherits DesktopApplication
 		  api.init 
 		  LabelDefault = new LabelParams
 		  themacros = new macroslist
-		  initWindow.ShowModal
+		  If noSplash Then
+		    quiet = True
+		    System.DebugLog("splash skipped (--no-splash)")
+		  Else
+		    System.DebugLog("splash showing")
+		    initWindow.ShowModal
+		    System.DebugLog("splash closed")
+		  End If
 		  Config.ChargerConfig
 		  Tampon = new ObjectsList
 		  WorkWindow.Show

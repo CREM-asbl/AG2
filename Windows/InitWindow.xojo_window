@@ -301,7 +301,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  LabelVersion.setString( "Version "+App.FullVersion)
+		  LabelVersion.Text = "Version "+App.FullVersion
 		  LabelVersion.Bold = true
 		  LabelVersion.TextSize = 20
 		End Sub
