@@ -37,6 +37,20 @@ def test_setcross_guards_custom_cursors():
         "setcross: pas de fallback StandardPointer si curseur custom nil"
 
 
+def test_setcross_bypasses_custom_cursors_on_linux():
+    body = setcross_body()
+    low = body.lower()
+    assert "#if targetlinux" in low, \
+        "setcross: pas de bypass TargetLinux (nil check insuffisant: handle GDK nul sous Linux)"
+    linux_block = low.split("#if targetlinux", 1)[1].split("#endif", 1)[0]
+    assert "standardpointer" in linux_block, \
+        "setcross: bloc TargetLinux sans fallback StandardPointer"
+    assert "cross" not in linux_block.replace("standardpointer", "").replace(
+        "curseur", "").replace("custom", "") or \
+        "can.mousecursor = cross" not in linux_block, \
+        "setcross: bloc TargetLinux assigne encore curseur custom"
+
 if __name__ == "__main__":
     test_setcross_guards_custom_cursors()
+    test_setcross_bypasses_custom_cursors_on_linux()
     print("OK: setcross cursor guards")

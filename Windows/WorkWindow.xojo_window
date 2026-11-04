@@ -2896,6 +2896,11 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setcross()
+		  #If TargetLinux Then
+		    can.mousecursor = System.Cursors.StandardPointer
+		    System.DebugLog("AG2: setcross bypass custom cursors Linux (handle GDK).")
+		    Return
+		  #Endif
 		  If BackgroundColor = blanc Then
 		    If cross <> Nil Then
 		      can.mousecursor = cross
