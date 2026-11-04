@@ -230,7 +230,7 @@ Inherits MultipleSelectOperation
 		    EL = XMLElement(Temp.Child(i))
 		    if EL = nil then
 		      System.DebugLog(CurrentMethodName + ": skip nil EL i=" + Str(i))
-		      continue
+		      Continue For
 		    end if
 		    if EL.Name = Dico.Value("Operation") then  //est-ce une opération de construction (forme ou tsf) ? prévoir le cas contraire!
 		      //Pour les points d'intersection, ptsur = 0 (ils sont traités comme résultant d'une opération d'inter (code 45))
@@ -322,13 +322,12 @@ Inherits MultipleSelectOperation
 		        EL02 = XMLElement(EL01.Child(i))
 		        if EL02 = nil then
 		          System.DebugLog(CurrentMethodName + ": skip nil EL02 i=" + Str(i) + " n=" + Str(n))
-		          continue
+		          Continue For
 		        end if
 		        MacId.append val(EL02.GetAttribute("Id"))
 		        Real.Append createdshape.points((i+side) mod createdshape.npts).id
 		        RealSide.append -1  ' Les MacInfo.RealInit et MacInfo.RealInitSide correspondants devront être utilisés
 		      next                                                                   ' comme MacId  dans les instructions de la sous-macro faisant appel à l'objet initial
-		      end if
 		    end if
 		    'Chaque fois qu'on va construire un nouvel objet, on placera sa MacId  dans 'MacId'
 		  else                                                                     'son id dans Real et ' éventuellement le n° de côté dans RealSide. Ces données deviennent les MacId
@@ -389,7 +388,7 @@ Inherits MultipleSelectOperation
 		        MacId.append -1
 		        Real.Append -1
 		        RealSide.append -1
-		        continue
+		        Continue For
 		      end if
 		      MacId.append val(EL01.GetAttribute("Id"))
 		      if i <= createdshape.npts - 1 then
@@ -547,7 +546,7 @@ Inherits MultipleSelectOperation
 		    EL = XMLElement(Temp.Child(i))
 		    if EL = nil then
 		      System.DebugLog(CurrentMethodName + ": skip nil EL i=" + Str(i))
-		      continue
+		      Continue For
 		    end if
 		    if EL.Name = Dico.Value("Operation") then
 		      oper = val(EL.GetAttribute("OpId"))

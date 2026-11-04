@@ -246,18 +246,18 @@ Inherits SelectAndDragOperation
 		      s = Visible.item(i)
 		      if s.constructedby <> nil and s.constructedby.oper = 6 then
 		        visible.removeobject s
-		        continue
+		        Continue For
 		      end if
 		      if s isa point and point(s).forme = 1 and s.constructedby <> nil and s.constructedby.oper = 10 then
 		        s1 = point(s.constructedby.shape)
 		        if s1.pointsur.item(0) = point(s).pointsur.item(0) and s1.numside(0) = point(s).numside(0) then
 		          visible.removeobject s
-		          continue
+		          Continue For
 		        end if
 		      end if
 		      if currentcontent.macrocreation and not s.isptsur then
 		        visible.removeobject s
-		        continue
+		        Continue For
 		      end if
 		    next
 		    nobj = visible.count

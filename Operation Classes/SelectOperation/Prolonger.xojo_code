@@ -183,26 +183,26 @@ Inherits SelectOperation
 		    // Exclure bandes et secteurs
 		    if s isa Bande or s isa Secteur then
 		      visible.removeobject(s)
-		      continue
+		      Continue For
 		    end if
 		    
 		    // Segment valide au point p (peut fixer sideIndex)
 		    if not s.ValidSegment(p, sideIndex) then
 		      visible.removeobject(s)
-		      continue
+		      Continue For
 		    end if
 		    // Exclure arcs: côté courbe au point (pour les lacets non-cubes)
 		    if s isa Lacet then
 		      n = s.pointonside(p)
 		      if n <> -1 and not s isa cube and s.coord.curved(n) = 1 then
 		        visible.removeobject(s)
-		        continue
+		        Continue For
 		      end if
 		    end if
 		    // Exclure droites déjà complètes
 		    if s isa droite and droite(s).nextre = 0 then
 		      visible.removeobject(s)
-		      continue
+		      Continue For
 		    end if
 		  next
 
