@@ -30,7 +30,6 @@ Inherits DesktopApplication
 		  For Each arg As String In cliArgs
 		    If arg = "--help" Or arg = "--version" Then
 		      Dim cliMsg As String = "Apprenti Geometre 2 " + FullVersion + " - application graphique ; lancez sans argument sous DISPLAY/Xvfb."
-		      Print(cliMsg)
 		      System.DebugLog(cliMsg)
 		      Quit(0)
 		      Return

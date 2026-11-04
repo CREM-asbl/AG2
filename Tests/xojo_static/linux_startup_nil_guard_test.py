@@ -101,8 +101,8 @@ def test_opening_uses_exact_cli_token_and_stdout():
         "Opening: IndexOf substring match risks false positives (e.g. --helpful); use exact token"
     assert "split" in body, \
         "Opening: must split System.CommandLine into exact tokens"
-    assert "print(" in body or "stdout" in body, \
-        "Opening: --help/--version must write to stdout (Print/StdOut), not only System.DebugLog"
+    assert "system.debuglog" in body, \
+        "Opening: --help/--version must log via System.DebugLog (Desktop: no Print/StdOut; stderr captured by smoke)"
 
 def test_unhandled_exception_parent_nil_guard():
     body = unhandled_body()
