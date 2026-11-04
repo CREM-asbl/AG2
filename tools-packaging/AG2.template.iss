@@ -44,8 +44,7 @@ SetupIconFile={#LogoIco}
 UninstallDisplayIcon={app}\AG2.exe
 ChangesAssociations=yes
 WizardStyle=modern
-PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=dialog
+PrivilegesRequired=admin
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl

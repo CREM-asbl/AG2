@@ -75,11 +75,26 @@ Protected Class WindContent
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerObjets(FAG as XMLElement)
+		Function ChargerObjets(FAG as XMLElement) As Boolean
 		  dim n as integer
 		  dim dr as droite
 		  dim r as Repere
-		  
+
+		  If FAG = nil Then
+		    System.DebugLog("WindContent.ChargerObjets: FAG nil, abandon")
+		    Return False
+		  End If
+		  If TheObjects = nil Then
+		    System.DebugLog("WindContent.ChargerObjets: TheObjects nil, abandon")
+		    Return False
+		  End If
+
+		  UA = 1
+		  UL = 1
+		  IcotUL = -1
+		  SHUA = nil
+		  SHUL = nil
+
 		  TheObjects.drapplan = (val(FAG.GetAttribute("Plans")) = 1)
 		  TheObjects.SetId(-1)
 		  TheObjects.XMLLoadObjects(FAG)
@@ -87,37 +102,63 @@ Protected Class WindContent
 		  n = val(FAG.GetAttribute("SHUA"))
 		  if n <> 0 then
 		    SHUA = TheObjects.Getshape(n)
-		    UA = SHUA.aire
+		    if SHUA <> nil then
+		      UA = SHUA.aire
+		    end if
 		  end if
 		  n = val(FAG.GetAttribute("SHUL"))
 		  if n <> 0 then
 		    SHUL = TheObjects.Getshape(n)
-		    if SHUL isa droite then
+		    if SHUL = nil then
+		      System.DebugLog("WindContent.ChargerObjets: SHUL id introuvable: " + str(n))
+		    elseif SHUL isa droite then
 		      UL = droite(SHUL).longueur
 		    elseif SHUL isa polygon then
 		      IcotUL = val(FAG.GetAttribute("IcotUL"))
 		      dr = Polygon(SHUL).Getside(IcotUL)
-		      UL = dr.longueur
+		      if dr <> nil then
+		        UL = dr.longueur
+		      else
+		        System.DebugLog("WindContent.ChargerObjets: Getside nil, IcotUL=" + str(IcotUL))
+		      end if
 		    end if
 		  end if
+		  if can = nil then
+		    System.DebugLog("WindContent.ChargerObjets: can nil, labels ignores")
+		    Return False
+		  end if
 		  r = can.rep
+		  if r = nil then
+		    System.DebugLog("WindContent.ChargerObjets: repere nil, labels ignores")
+		    Return False
+		  end if
 		  TheObjects.updatelabels(r.echelle)
-		  
+	  
 		  For i As Integer = 0 To TheFigs.count - 1
 		    TheFigs.item(i).updateshapes
 		  Next
-		  
-		End Sub
+		  Return True
+	  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ChargerPrefs(FAG as XMLElement, f as folderitem)
+		Function ChargerPrefs(FAG as XMLElement, f as folderitem) As Boolean
 		  dim BkCol as string
 		  dim Obj As XMLElement
 		  dim List as XMLNodeList
 		  dim s1, s2 As string
-		  
-		  
+		  dim pic As Picture
+
+		  If FAG = nil Then
+		    System.DebugLog("WindContent.ChargerPrefs: FAG nil, abandon")
+		    Return False
+		  End If
+		  If f = nil Then
+		    System.DebugLog("WindContent.ChargerPrefs: FolderItem nil, abandon")
+		    Return False
+		  End If
+
 		  removeall
 		  ndec = val(FAG.GetAttribute("NbrDec"))
 		  if ndec =0 then
@@ -137,19 +178,41 @@ Protected Class WindContent
 		  
 		  if List.length > 0 then
 		    Obj = XMLElement(List.item(0))
+		    if Obj = nil then
+		      System.DebugLog("WindContent.ChargerPrefs: FondEcran nil, ignore")
+		      Return True
+		    end if
 		    s1 = Obj.GetAttribute("File")
 		    s2 = Obj.GetAttribute("Align")
+		    If s1 = "" Or s1.InStr("/") >= 0 Or s1.InStr("\") >= 0 Or s1 = "." Or s1 = ".." Then
+		      System.DebugLog("WindContent.ChargerPrefs: nom fond invalide, ignore")
+		      Return True
+		    End If
 		    f = f.parent
-		    f = f.child(s1)
-		    if f=nil then
-		      return 
-		    else
-		      can.setFondEcran(Picture.Open(f), f.Name)
-		      can.alignFondEcran(s2)
+		    if f = nil then
+		      System.DebugLog("WindContent.ChargerPrefs: parent dossier nil, fond ignore")
+		      Return True
 		    end if
+		    f = f.child(s1)
+		    if f = nil Or Not f.Exists then
+		      System.DebugLog("WindContent.ChargerPrefs: fichier fond introuvable, ignore")
+		      Return True
+		    end if
+		    if can = nil then
+		      System.DebugLog("WindContent.ChargerPrefs: can nil, fond ignore")
+		      Return True
+		    end if
+		    pic = Picture.Open(f)
+		    if pic = nil then
+		      System.DebugLog("WindContent.ChargerPrefs: image illisible, fond ignore")
+		      Return True
+		    end if
+		    can.setFondEcran(pic, f.Name)
+		    can.alignFondEcran(s2)
 		  end if
-		  
-		End Sub
+		  Return True
+	  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
