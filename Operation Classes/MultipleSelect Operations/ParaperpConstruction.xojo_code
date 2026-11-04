@@ -19,13 +19,30 @@ Inherits ShapeConstruction
 		  dim EL as XMLElement
 		  dim sh as shape
 		  
+		  if Mexe = nil then
+		    return
+		  end if
+		  if EL0 = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  constructor (fa,fo)
 		  Mid = val(EL1.GetAttribute("Id"))              //Ids de la droite/segment
 		  ori = val(EL1.GetAttribute("Ori"))
 		  rid = MExe.GetRealId(Mid)
+		  if rid = -1 then
+		    currentshape = nil
+		    return
+		  end if
 		  Refe= objects.GetShape(rid)
+		  if Refe = nil then
+		    currentshape = nil
+		    return
+		  end if
 		  currentshape.setconstructedby(Refe, val(EL1.GetAttribute("Oper")))
 		  side = val(EL1.GetAttribute("Index"))
 		  currentshape.constructedby.data.append side
@@ -34,9 +51,25 @@ Inherits ShapeConstruction
 		  
 		  'Positionnement aisé du premier point
 		  EL =XMLElement(EL0.Child(0))
+		  if EL = nil then
+		    currentshape = nil
+		    return
+		  end if
+		  if EL.Child(0) = nil then
+		    currentshape = nil
+		    return
+		  end if
 		  Mid = val(XMLElement(EL.Child(0)).GetAttribute("Id"))  //Ids du premier point
 		  rid = MExe.GetRealId(Mid)
+		  if rid = -1 then
+		    currentshape = nil
+		    return
+		  end if
 		  pt = point(objects.GetShape(rid))
+		  if pt = nil then
+		    currentshape = nil
+		    return
+		  end if
 		  currentshape.substitutepoint(pt,currentshape.points(0))
 		  
 		  'Deuxième point
@@ -48,9 +81,21 @@ Inherits ShapeConstruction
 		  ' si fo > 3 then  'pas de probleme rien à changer à ce qui précède : une droite n'a qu'un second point caché
 		  if fo <3 then
 		    EL = XMLElement(EL.Child(1))
+		    if EL = nil then
+		      currentshape = nil
+		      return
+		    end if
 		    Mid = val(EL.GetAttribute("Id"))   //Ids du deuxième point
 		    rid = MExe.GetRealId(Mid)
+		    if rid = -1 then
+		      currentshape = nil
+		      return
+		    end if
 		    pt = point(objects.GetShape(rid))
+		    if pt = nil then
+		      currentshape = nil
+		      return
+		    end if
 		    'b1) Si l'extrémité n'est pas un point sur, il s'agit soit d'un point initial, soit d'un point déjà défini, on le positionne conformément au contenu de la macro
 		    'voir remarque correspondante dans  macro.paraperp
 		    BiB1 =  BiBPoint(currentshape.coord)
@@ -60,11 +105,27 @@ Inherits ShapeConstruction
 		      'b2) si l'extrémité est un point sur, il faut repositionner l'extrémité
 		    else
 		      EL = XMLElement(EL.Child(0))
+		      if EL = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      pt.surseg = (val(EL.GetAttribute("Surseg")) = 1)
 		      EL = XMLElement(EL.Child(0))
+		      if EL = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      Mid = val(EL.GetAttribute("Id")) 'macId du support de pt
 		      rid = MExe.GetRealId(Mid)
+		      if rid = -1 then
+		        currentshape = nil
+		        return
+		      end if
 		      sh = objects.Getshape(rid)
+		      if sh = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      num = val(EL.GetAttribute("NrCote"))
 		      pt.moveto BiB1.ComputeDroiteFirstIntersect(sh,num,pt.bpt)
 		    end if

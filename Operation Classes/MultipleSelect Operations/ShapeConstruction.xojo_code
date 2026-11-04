@@ -100,6 +100,15 @@ Inherits MultipleSelectOperation
 		  dim sh as shape
 		  dim loc as double
 		  
+		  if Mexe = nil then
+		    return
+		  end if
+		  if EL0 = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  
@@ -110,9 +119,25 @@ Inherits MultipleSelectOperation
 		    if fo = 1 then
 		      pt = point(currentshape)
 		      EL = XMLElement(EL1.Child(0))
+		      if EL = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      n = val(EL.GetAttribute("Id"))
 		      rid = MExe.GetRealId(n)
+		      if rid = -1 then
+		        currentshape = nil
+		        return
+		      end if
 		      sh = objects.GetShape(rid)
+		      if sh = nil then
+		        currentshape = nil
+		        return
+		      end if
+		      if pt = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      sh.setpoint(pt)
 		      pt.pointsur.addshape sh
 		      pt.numside.append val(EL1.GetAttribute("NumSide0"))
@@ -122,10 +147,32 @@ Inherits MultipleSelectOperation
 		    end if
 		  else
 		    EL = XMLElement(EL0.Child(0))
+		    if EL = nil then
+		      currentshape = nil
+		      return
+		    end if
+		    dim ELChild as XMLElement
 		    for i = 0 to CurrentShape.ncpts-1
-		      n = val(XMLElement(EL.Child(i)).GetAttribute("Id"))
+		      if i >= EL.ChildCount then
+		        currentshape = nil
+		        return
+		      end if
+		      ELChild = XMLElement(EL.Child(i))
+		      if ELChild = nil then
+		        currentshape = nil
+		        return
+		      end if
+		      n = val(ELChild.GetAttribute("Id"))
 		      rid = MExe.GetRealId(n)
+		      if rid = -1 then
+		        currentshape = nil
+		        return
+		      end if
 		      pt = point(objects.GetShape(rid))
+		      if pt = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      currentshape.substitutepoint(pt,currentshape.points(i))
 		    next
 		    currentshape.constructshape

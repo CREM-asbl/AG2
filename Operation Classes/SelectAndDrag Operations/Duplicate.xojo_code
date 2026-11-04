@@ -54,14 +54,35 @@ Inherits SelectAndDragOperation
 		  dim pt, q as point
 		  dim sh as shape
 
+		  if MExe = nil then
+		    return
+		  end if
+		  if EL0 = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  super.constructor
 		  n = val(XMLElement(EL1).GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  pt = point(objects.GetShape(rid))
+		  if pt = nil then
+		    return
+		  end if
 
 		  n = val(XMLElement(EL0).GetAttribute("Forme0"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  sh = objects.GetShape(rid)
+		  if sh = nil then
+		    return
+		  end if
 
 		  q = new point(objects, new basicpoint(0,0))
 
@@ -225,18 +246,18 @@ Inherits SelectAndDragOperation
 		      s = Visible.item(i)
 		      if s.constructedby <> nil and s.constructedby.oper = 6 then
 		        visible.removeobject s
-		        continue
+		        Continue For
 		      end if
 		      if s isa point and point(s).forme = 1 and s.constructedby <> nil and s.constructedby.oper = 10 then
 		        s1 = point(s.constructedby.shape)
 		        if s1.pointsur.item(0) = point(s).pointsur.item(0) and s1.numside(0) = point(s).numside(0) then
 		          visible.removeobject s
-		          continue
+		          Continue For
 		        end if
 		      end if
 		      if currentcontent.macrocreation and not s.isptsur then
 		        visible.removeobject s
-		        continue
+		        Continue For
 		      end if
 		    next
 		    nobj = visible.count

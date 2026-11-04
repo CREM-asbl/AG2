@@ -49,23 +49,43 @@ Inherits MultipleSelectOperation
 		Sub Constructor(Mexe as MacroExe, EL1 as XMLElement)
 		  dim n, rid, side, divp, Id0, Id1 as integer
 		  
+		  if Mexe = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  Divide.constructor()
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = Mexe.GetRealId( n)
+		  if rid = -1 then
+		    return
+		  end if
 		  currentshape = objects.getshape(rid)
+		  if currentshape = nil then
+		    return
+		  end if
 		  numberofdivisions = val(EL1.GetAttribute("NDivP"))
 		  divp = val(EL1.GetAttribute("DivP"))
 		  Id0 = val(EL1.GetAttribute("Id0"))
 		  rid = MExe.GetRealId(Id0)
+		  if rid = -1 then
+		    return
+		  end if
 		  firstpoint = point(objects.getshape(rid))
+		  if firstpoint = nil then
+		    return
+		  end if
 		  Id1 = val(EL1.GetAttribute("Id1"))
 		  rid = MExe.GetRealId(Id1)
+		  if rid = -1 then
+		    return
+		  end if
 		  secondpoint = point(objects.getshape(rid))
+		  if secondpoint = nil then
+		    return
+		  end if
 		  DoOperation
-		  
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod

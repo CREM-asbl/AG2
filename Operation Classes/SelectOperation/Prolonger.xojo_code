@@ -16,14 +16,30 @@ Inherits SelectOperation
 		Sub Constructor(MExe as MacroExe, EL1 as XMLElement)
 		dim n, rid as integer
 		
+		if MExe = nil then
+		  return
+		end if
+		if EL1 = nil then
+		  return
+		end if
 		super.Constructor
 		colsep = true
 		OpId = 28
 		WorkWindow.PointerPolyg
 		n = val(EL1.GetAttribute("Id"))
 		rid = MExe.GetRealId(n)
+		if rid = -1 then
+		  return
+		end if
 		  BaseShape = objects.GetShape(rid)
+		  if BaseShape = nil then
+		    return
+		  end if
 		  SelectedSide = MExe.GetRealSide(n)
+		  if SelectedSide = -1 then
+		    System.DebugLog(CurrentMethodName + ": skip unknown side n=" + Str(n))
+		    return
+		  end if
 		  DoOperation
 		End Sub
 	#tag EndMethod
@@ -167,26 +183,26 @@ Inherits SelectOperation
 		    // Exclure bandes et secteurs
 		    if s isa Bande or s isa Secteur then
 		      visible.removeobject(s)
-		      continue
+		      Continue For
 		    end if
 		    
 		    // Segment valide au point p (peut fixer sideIndex)
 		    if not s.ValidSegment(p, sideIndex) then
 		      visible.removeobject(s)
-		      continue
+		      Continue For
 		    end if
 		    // Exclure arcs: côté courbe au point (pour les lacets non-cubes)
 		    if s isa Lacet then
 		      n = s.pointonside(p)
 		      if n <> -1 and not s isa cube and s.coord.curved(n) = 1 then
 		        visible.removeobject(s)
-		        continue
+		        Continue For
 		      end if
 		    end if
 		    // Exclure droites déjà complètes
 		    if s isa droite and droite(s).nextre = 0 then
 		      visible.removeobject(s)
-		      continue
+		      Continue For
 		    end if
 		  next
 
