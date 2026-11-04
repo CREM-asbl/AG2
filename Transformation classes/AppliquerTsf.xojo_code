@@ -21,21 +21,50 @@ Inherits MultipleSelectOperation
 		  dim tsf as transformation
 		  dim n, rid, num  as integer
 		  
-		  
+		  if Mexe = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  Constructor()
 		  
 		  n = val(EL1.GetAttribute("SuppTsf"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  supp = objects.Getshape(rid)
+		  if supp = nil then
+		    return
+		  end if
 		  num = val(EL1.GetAttribute("Nr"))
+		  if num < 0 then
+		    return
+		  end if
+		  if num > supp.tsfi.count - 1 then
+		    return
+		  end if
 		  tsf = supp.tsfi.item(num)
+		  if tsf = nil then
+		    return
+		  end if
 		  
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  s1 = objects.Getshape(rid)
+		  if s1 = nil then
+		    return
+		  end if
 		  objects.unselectall
 		  objects.selectobject(s1)
 		  CreerCopies
+		  if copies.count = 0 then
+		    return
+		  end if
 		  tsf.appliquer(s1,copies.item(0))
 		  tsf.setconstructioninfos1(s1,copies.item(0))
 		End Sub

@@ -15,17 +15,35 @@ Inherits SelectOperation
 		  dim n, rid, num as integer
 		  dim Supp as shape
 		  
+		  if MExe = nil then
+		    return
+		  end if
+		  if EL = nil then
+		    return
+		  end if
 		  Constructor()
 		  n = val(EL.GetAttribute("SuppTsf"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  supp = objects.GetShape(rid)
+		  if supp = nil then
+		    return
+		  end if
 		  num = val(EL.GetAttribute("Nr"))
+		  if num < 0 then
+		    return
+		  end if
+		  if num > supp.tsfi.count - 1 then
+		    return
+		  end if
 		  tsf = supp.tsfi.item(num)
+		  if tsf = nil then
+		    return
+		  end if
 		  tsf.computematrix
 		  DoOperation
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod

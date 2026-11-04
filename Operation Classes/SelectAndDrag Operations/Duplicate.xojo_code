@@ -54,14 +54,35 @@ Inherits SelectAndDragOperation
 		  dim pt, q as point
 		  dim sh as shape
 
+		  if MExe = nil then
+		    return
+		  end if
+		  if EL0 = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  super.constructor
 		  n = val(XMLElement(EL1).GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  pt = point(objects.GetShape(rid))
+		  if pt = nil then
+		    return
+		  end if
 
 		  n = val(XMLElement(EL0).GetAttribute("Forme0"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  sh = objects.GetShape(rid)
+		  if sh = nil then
+		    return
+		  end if
 
 		  q = new point(objects, new basicpoint(0,0))
 

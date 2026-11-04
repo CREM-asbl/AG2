@@ -285,14 +285,41 @@ Inherits SelectOperation
 		  
 		  
 		  ob = currentcontent.theobjects
+		  if MExe = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
+		  if ob = nil then
+		    return
+		  end if
 		  EL2 = XMLElement(EL1.FirstChild)
+		  if EL2 = nil then
+		    return
+		  end if
 		  n = CDBl(EL2.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  s1 = ob.Getshape(rid)
+		  if s1 = nil then
+		    return
+		  end if
 		  EL2 = XMLElement(EL1.Child(1))
+		  if EL2 = nil then
+		    return
+		  end if
 		  n = CDbl(EL2.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  s2 = ob.Getshape(rid)
+		  if s2 = nil then
+		    return
+		  end if
 		  
 		  constructor(s1,s2)
 		  computeinter

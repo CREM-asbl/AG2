@@ -16,10 +16,22 @@ Inherits SelectOperation
 		  dim sh as shape
 		  dim n, rid, side as integer
 
+		  if MExe = nil then
+		    return
+		  end if
+		  if EL1 = nil then
+		    return
+		  end if
 		  super.Constructor
 		  n = val(EL1.GetAttribute("Id"))
 		  rid = MExe.GetRealId(n)
+		  if rid = -1 then
+		    return
+		  end if
 		  sh = objects.getshape(rid)
+		  if sh = nil then
+		    return
+		  end if
 		  currentshape = sh.GetGC
 		End Sub
 	#tag EndMethod

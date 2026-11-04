@@ -16,13 +16,25 @@ Inherits SelectOperation
 		Sub Constructor(MExe as MacroExe, EL1 as XMLElement)
 		dim n, rid as integer
 		
+		if MExe = nil then
+		  return
+		end if
+		if EL1 = nil then
+		  return
+		end if
 		super.Constructor
 		colsep = true
 		OpId = 28
 		WorkWindow.PointerPolyg
 		n = val(EL1.GetAttribute("Id"))
 		rid = MExe.GetRealId(n)
+		if rid = -1 then
+		  return
+		end if
 		  BaseShape = objects.GetShape(rid)
+		  if BaseShape = nil then
+		    return
+		  end if
 		  SelectedSide = MExe.GetRealSide(n)
 		  DoOperation
 		End Sub
