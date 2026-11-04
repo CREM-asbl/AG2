@@ -27,7 +27,7 @@ Begin DesktopWindow TextWindow
    Begin DesktopTextArea EF
       AllowAutoDeactivate=   True
       AllowFocusRing  =   True
-      AllowSpellChecking=   True
+      AllowSpellChecking=   False
       AllowStyledText =   True
       AllowTabs       =   False
       BackgroundColor =   &cFFFFFF
@@ -87,6 +87,10 @@ End
 		  EF.height = height
 		  EF.ReadOnly = true
 		  EF.BackgroundColor=&cFFFFFF
+		  #If TargetLinux Then
+		    EF.AllowSpellChecking = False
+		    System.DebugLog("textwindow opening spellcheck off")
+		  #Endif
 		  
 		  Afficher
 		End Sub
@@ -109,6 +113,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Afficher()
+		  #If TargetLinux Then
+		    EF.AllowSpellChecking = False
+		  #Endif
 		  Dim  i, j As Integer
 		  dim f , ff as figure
 		  dim Doc as XMLDocument
