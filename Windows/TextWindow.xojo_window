@@ -89,6 +89,7 @@ End
 		  EF.BackgroundColor=&cFFFFFF
 		  #If TargetLinux Then
 		    EF.AllowSpellChecking = False
+		    EF.MouseCursor = System.Cursors.StandardPointer
 		    System.DebugLog("textwindow opening spellcheck off")
 		  #Endif
 		  
@@ -115,6 +116,7 @@ End
 		Sub Afficher()
 		  #If TargetLinux Then
 		    EF.AllowSpellChecking = False
+		    EF.MouseCursor = System.Cursors.StandardPointer
 		  #Endif
 		  Dim  i, j As Integer
 		  dim f , ff as figure

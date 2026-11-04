@@ -774,7 +774,11 @@ Protected Class WindContent
 		  SaveHisto
 		  CurrentFileUpToDate=false
 		  curoper = CreerOperation(EL)
-		  can.Mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.cursors.wait
+		  #Endif
 		  can.ClearOffscreen
 		  CurOper.RedoOperation(EL)
 		  
@@ -978,7 +982,11 @@ Protected Class WindContent
 		  SaveHisto
 		  curoper = CreerOperation(EL)
 		  CurrentFileUpToDate=false
-		  can.Mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.cursors.wait
+		  #Endif
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
 		  

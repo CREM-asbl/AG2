@@ -11,6 +11,7 @@ fallback System.Cursors.StandardPointer + DebugLog), comportement
 Windows/macOS inchange.
 """
 from pathlib import Path
+import pathlib
 
 WORK = Path("Windows/WorkWindow.xojo_window")
 
@@ -50,7 +51,32 @@ def test_setcross_bypasses_custom_cursors_on_linux():
         "can.mousecursor = cross" not in linux_block, \
         "setcross: bloc TargetLinux assigne encore curseur custom"
 
+
+TEXT = pathlib.Path("Windows/TextWindow.xojo_window")
+WIND = pathlib.Path("Other Classes/WindContent.xojo_code")
+
+def test_textwindow_forces_standard_pointer_on_linux():
+    text = TEXT.read_text(encoding="utf-8")
+    low = text.lower()
+    assert "ef.mousecursor" in low, "TextWindow: aucun EF.MouseCursor (I-beam GTK implicite)"
+    assert "#if targetlinux" in low, "TextWindow: pas de garde TargetLinux pour curseur EF"
+    idx = low.find("#if targetlinux")
+    block = low[idx:idx + 2000]
+    assert "ef.mousecursor" in block and "standardpointer" in block, "TextWindow: bloc TargetLinux sans EF fallback"
+
+def test_wait_cursors_guarded_on_linux():
+    for path in [WIND, WORK]:
+        text = pathlib.Path(path).read_text(encoding="utf-8")
+        low = text.lower()
+        if "cursors.wait" not in low:
+            continue
+        assert "#if targetlinux" in low, "Wait non garde TargetLinux"
+        assert "standardpointer" in low, "pas de fallback StandardPointer pour Wait Linux"
+
+
 if __name__ == "__main__":
     test_setcross_guards_custom_cursors()
     test_setcross_bypasses_custom_cursors_on_linux()
+    test_textwindow_forces_standard_pointer_on_linux()
+    test_wait_cursors_guarded_on_linux()
     print("OK: setcross cursor guards")

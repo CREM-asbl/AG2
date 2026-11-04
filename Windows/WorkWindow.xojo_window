@@ -1993,7 +1993,11 @@ End
 
 		  if mousedispo then
 		    Formswindow.close
-		    MyCanvas1.Mousecursor = system.cursors.wait
+		    #If TargetLinux Then
+		      MyCanvas1.Mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      MyCanvas1.Mousecursor = system.cursors.wait
+		    #Endif
 		    if not (Config.username = "Enseignant") then
 		      OpenHistWindow.ShowModal
 		      f = OpenHistWindow.file
