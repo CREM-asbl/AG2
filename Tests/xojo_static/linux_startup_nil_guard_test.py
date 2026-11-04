@@ -38,6 +38,12 @@ def extract_block(text: str, marker: str) -> str:
 def opening_body() -> str:
     return extract_block(APP.read_text(encoding="utf-8"), "Sub Opening()")
 
+def unhandled_body() -> str:
+    return extract_block(APP.read_text(encoding="utf-8"), "Function UnhandledException(")
+
+def method_body(path: Path, marker: str) -> str:
+    return extract_block(path.read_text(encoding="utf-8"), marker)
+
 
 def initfolders_body() -> str:
     return extract_block(APP.read_text(encoding="utf-8"), "Sub InitFolders()")
@@ -86,6 +92,59 @@ def test_smoke_rejects_silent_quit():
     text = SMOKE.read_text(encoding="utf-8")
     assert "SMOKE-KO-silent" in text, \
         "smoke: must FAIL on empty --help output (silent quit), not just exit code"
+    assert "help.log" in text.lower() or "stdout" in text.lower(), \
+        "smoke: must capture stdout/stderr content, not just exit code"
+
+def test_opening_uses_exact_cli_token_and_stdout():
+    body = opening_body()
+    assert 'indexof("--help")' not in body, \
+        "Opening: IndexOf substring match risks false positives (e.g. --helpful); use exact token"
+    assert "split" in body, \
+        "Opening: must split System.CommandLine into exact tokens"
+    assert "print(" in body or "stdout" in body, \
+        "Opening: --help/--version must write to stdout (Print/StdOut), not only System.DebugLog"
+
+def test_unhandled_exception_parent_nil_guard():
+    body = unhandled_body()
+    assert "specialfolder.documents" in body
+    assert ".parent" in body
+    assert "if f <> nil then" in body, \
+        "UnhandledException: must nil-guard Documents folder before .Parent/.Name"
+
+def test_unhandled_exception_not_silent_at_startup():
+    body = unhandled_body()
+    assert "currentcontent = nil" in body or "currentcontent=nil" in body
+    assert "return false" in body, \
+        "UnhandledException: startup error with CurrentContent nil must return false (non-zero exit), not swallow with return true"
+
+def test_initfolders_child_nil_guards():
+    body = extract_block(APP.read_text(encoding="utf-8"), "Sub InitFolders()")
+    assert "ensurefolder" in body or body.count("= nil") >= 3, \
+        "InitFolders: each Child() result must be nil-guarded (or via EnsureFolder helper)"
+
+def test_dictionnaire_no_msgbox_headless():
+    text = DICO.read_text(encoding="utf-8")
+    body = extract_block(text, "Function getXML(")
+    assert "msgbox" not in body, \
+        "Dictionnaire.getXML: MsgBox blocks headless; use System.DebugLog instead"
+
+def test_app_dicodispo_guards_nil():
+    body = method_body(APP, "Function DicoDispo(")
+    assert "dctfolder = nil" in body, \
+        "App.DicoDispo: missing nil DctFolder guard"
+
+def test_configuration_chargerconfig_guards_nil():
+    body = method_body(CONFIG, "Sub ChargerConfig()")
+    assert "menusfolder = nil" in body, \
+        "Configuration.ChargerConfig: missing nil MenusFolder guard"
+
+def test_configuration_save_guards_nil_first():
+    body = method_body(CONFIG, "Sub Save()")
+    assert "app.docfolder = nil" in body
+    guard_idx = body.find("app.docfolder = nil")
+    build_idx = body.find("new xmldocument")
+    assert guard_idx != -1 and (build_idx == -1 or guard_idx < build_idx), \
+        "Configuration.Save: nil DocFolder guard must run before building XML"
 
 
 if __name__ == "__main__":
@@ -95,4 +154,12 @@ if __name__ == "__main__":
     test_configuration_save_guards_nil_docfolder()
     test_dictionnaire_getxml_guards_nil_dctfolder()
     test_smoke_rejects_silent_quit()
+    test_opening_uses_exact_cli_token_and_stdout()
+    test_unhandled_exception_parent_nil_guard()
+    test_unhandled_exception_not_silent_at_startup()
+    test_initfolders_child_nil_guards()
+    test_dictionnaire_no_msgbox_headless()
+    test_app_dicodispo_guards_nil()
+    test_configuration_chargerconfig_guards_nil()
+    test_configuration_save_guards_nil_first()
     print("OK: all #71 Linux startup guards present")

@@ -25,10 +25,11 @@ Inherits Dictionary
 		      if f.exists then
 		        C=new XMLDocument(f)
 		      else
-		        MsgBox Dico.Value("FileMenu") + " " + Name + " " + Dico.Value("Introuvable")
+		        System.DebugLog("AG2: dictionnaire introuvable : " + Name)
 		        return nil
 		      end if
 		    else
+		      System.DebugLog("AG2: dictionnaire introuvable : " + Name)
 		      Return Nil
 		    end if
 		  end select

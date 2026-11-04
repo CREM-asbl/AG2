@@ -473,13 +473,21 @@ Protected Class WindContent
 		  
 		  childs = Split(directory,"/")
 		  fi=App.DocFolder
+		  If fi = Nil Then
+		    System.DebugLog("AG2: DocFolder indisponible, historique non accessible.")
+		    Return Nil
+		  End If
 		  
 		  for i=0 to UBound(childs)
 		    fi = fi.Child(childs(i))
+		    if fi = nil then
+		      System.DebugLog("AG2: dossier historique inaccessible.")
+		      return nil
+		    end if
 		    if not fi.Exists then
 		      fi.CreateAsFolder
 		      if not fi.Exists then
-		        MsgBox Dico.Value("ErrorOnSave")+ " " + Dico.Value("Nowritingpermission")
+		        System.DebugLog("AG2: permission d'ecriture refusee pour l'historique.")
 		        return nil
 		      end if
 		    end if
