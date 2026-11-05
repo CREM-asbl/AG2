@@ -63,6 +63,7 @@ def test_textwindow_forces_standard_pointer_on_linux():
     idx = low.find("#if targetlinux")
     block = low[idx:idx + 2000]
     assert "ef.mousecursor" in block and "standardpointer" in block, "TextWindow: bloc TargetLinux sans EF fallback"
+    assert "self.mousecursor" in block, "TextWindow Opening: Self.MouseCursor non force (realisation GTK curseur fenetre nil)"
 
 def test_wait_cursors_guarded_on_linux():
     for path in [WIND, WORK]:
