@@ -146,6 +146,11 @@ End
 		  tab = 0
 		  if sc <> nil then
 		    EF.text = messages(sc)
+		    #If TargetLinux Then
+		      EF.AllowSpellChecking = False
+		      EF.MouseCursor = System.Cursors.StandardPointer
+		      System.DebugLog("AG2: TextWindow.xojo_window:147 cursor=StandardPointer")
+		    #Endif
 		    return
 		  end if
 		  

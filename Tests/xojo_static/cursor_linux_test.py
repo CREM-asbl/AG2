@@ -128,3 +128,17 @@ def test_paint_does_not_refresh_textwindow_unconditionally():
     seg = low[max(0, idx-600):idx]
     assert "mtextrefresh" in seg or "besoin" in seg or "dirty" in seg or "refresh" in seg.split("if")[-1], \
         "CustomCanvas1.Paint: TextWindow.Afficher appele a chaque frame (re-realise curseur GTK nul au survol)"
+
+def test_afficher_early_return_reasserts_cursor_on_linux():
+    text = TEXT.read_text(encoding="utf-8")
+    low = text.lower()
+    start = low.index("sub afficher()")
+    body = low[start:low.index("end sub", start)]
+    assert "if sc <> nil" in body, "Afficher: garde early-return sc<>nil introuvable"
+    early = body.split("if sc <> nil", 1)[1].split("end if", 1)[0]
+    assert "ef.text" in early and "return" in early, \
+        "Afficher: early-return sc<>nil sans EF.Text (site inattendu)"
+    assert "#if targetlinux" in early and "standardpointer" in early, \
+        "Afficher: early-return sc<>nil assigne EF.Text sans re-force StandardPointer TargetLinux (GDK nul :147-149)"
+    assert "ef.mousecursor" in early, \
+        "Afficher: early-return sc<>nil sans EF.MouseCursor (I-beam realise au show/survol)"
