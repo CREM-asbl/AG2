@@ -92,9 +92,9 @@ End
 		    EF.AllowSpellChecking = False
 		    EF.MouseCursor = System.Cursors.StandardPointer
 		    System.DebugLog("textwindow opening spellcheck off")
+		  #Else
+		    Afficher
 		  #Endif
-		  
-		  Afficher
 		End Sub
 	#tag EndEvent
 
@@ -118,6 +118,10 @@ End
 		    Self.MouseCursor = System.Cursors.StandardPointer
 		    EF.MouseCursor = System.Cursors.StandardPointer
 		    System.DebugLog("textwindow activated cursor forced")
+		    If Not mAffiche Then
+		      mAffiche = True
+		      Afficher
+		    End If
 		  #Endif
 		End Sub
 	#tag EndEvent
@@ -542,12 +546,19 @@ End
 		tab As Integer
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private mAffiche As Boolean = False
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events EF
 	#tag Event
 		Sub TextChanged()
+		  #If TargetLinux Then
+		    If Not mAffiche Then Return
+		  #Endif
 		  self.Afficher
 		End Sub
 	#tag EndEvent

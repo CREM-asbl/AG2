@@ -84,6 +84,17 @@ def test_textwindow_reasserts_cursor_post_show():
     assert "self.mousecursor" in blk, "Activated: Self.MouseCursor non force"
     assert "ef.mousecursor" in blk, "Activated: EF.MouseCursor non reaffirme"
 
+def test_textwindow_defers_afficher_post_show_on_linux():
+    text = TEXT.read_text(encoding="utf-8")
+    low = text.lower()
+    assert "maffiche" in low, "TextWindow: pas de flag mAffiche (Afficher pre-show realise I-beam GDK nul)"
+    opening = low.split("sub opening()", 1)[1].split("end sub", 1)[0]
+    assert "afficher" not in opening.replace("#else", "").split("#if targetlinux")[0] or \
+        "#else" in opening, "TextWindow Opening: Afficher appele pre-show sans garde Linux"
+    activated = low.split("sub activated()", 1)[1].split("end sub", 1)[0]
+    assert "afficher" in activated and "maffiche" in activated, \
+        "TextWindow Activated: Afficher non differe post-show"
+
 
 if __name__ == "__main__":
     test_setcross_guards_custom_cursors()
