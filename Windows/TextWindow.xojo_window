@@ -111,6 +111,15 @@ End
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Activated()
+		  #If TargetLinux Then
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		    EF.MouseCursor = System.Cursors.StandardPointer
+		    System.DebugLog("textwindow activated cursor forced")
+		  #Endif
+		End Sub
+	#tag EndEvent
 
 	#tag Method, Flags = &h0
 		Sub Afficher()
