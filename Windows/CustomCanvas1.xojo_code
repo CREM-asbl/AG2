@@ -375,6 +375,9 @@ Inherits Canvas
 		    info = Dico.value("click")+Dico.value("onabuttonoramenu")+EndOfLine+Dico.value("chgTextSize")
 		    ctxt = False
 		  End If
+		  #If TargetLinux Then
+		    mTextRefresh = True
+		  #Endif
 
 		  refreshbackground
 
@@ -724,6 +727,12 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub DemanderTextRefresh()
+		  mTextRefresh = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RefreshBackground()
 
 		  dim op As operation
@@ -775,9 +784,17 @@ Inherits Canvas
 		    BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		  end if
 
-		  if TextWindow.Visible then
-		    TextWindow.Afficher
-		  end if
+		  #If TargetLinux Then
+		    If TextWindow.Visible And mTextRefresh Then
+		      mTextRefresh = False
+		      TextWindow.Afficher
+		      System.DebugLog("AG2: textwindow refresh on demand (hover GDK safe).")
+		    End If
+		  #Else
+		    if TextWindow.Visible then
+		      TextWindow.Afficher
+		    end if
+		  #Endif
 
 		  refresh
 
@@ -1011,6 +1028,10 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		OKMess As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mTextRefresh As Boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

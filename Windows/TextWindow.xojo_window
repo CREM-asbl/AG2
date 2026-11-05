@@ -128,10 +128,6 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Afficher()
-		  #If TargetLinux Then
-		    EF.AllowSpellChecking = False
-		    EF.MouseCursor = System.Cursors.StandardPointer
-		  #Endif
 		  Dim  i, j As Integer
 		  dim f , ff as figure
 		  dim Doc as XMLDocument
@@ -176,6 +172,11 @@ End
 		  for i = 0 to Macs.count-1
 		    EF.Text = EF.Text + Macs.item(i).caption +chr(10)
 		  next
+		  #If TargetLinux Then
+		    EF.AllowSpellChecking = False
+		    EF.MouseCursor = System.Cursors.StandardPointer
+		    System.DebugLog("AG2: textwindow afficher cursor reasserted.")
+		  #Endif
 		  
 		End Sub
 	#tag EndMethod

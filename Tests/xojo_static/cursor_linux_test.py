@@ -103,3 +103,28 @@ if __name__ == "__main__":
     test_wait_cursors_guarded_on_linux()
     test_textwindow_reasserts_cursor_post_show()
     print("OK: setcross cursor guards")
+
+CUST = pathlib.Path("Windows/CustomCanvas1.xojo_code")
+
+def test_afficher_reasserts_cursor_after_text_assign_on_linux():
+    text = TEXT.read_text(encoding="utf-8")
+    low = text.lower()
+    start = low.index("sub afficher()")
+    body = low[start:low.index("end sub", start)]
+    last_text = body.rfind("ef.text")
+    last_cursor = body.rfind("ef.mousecursor")
+    assert last_text != -1 and last_cursor != -1, "Afficher: EF.Text ou EF.MouseCursor introuvable"
+    assert last_cursor > last_text, \
+        "Afficher: EF.MouseCursor force AVANT dernier EF.Text (GTK re-realise I-beam nul au survol canvas)"
+    tail = body[last_text:]
+    assert "#if targetlinux" in tail and "standardpointer" in tail, \
+        "Afficher: pas de re-force StandardPointer TargetLinux apres assignations EF.Text"
+
+def test_paint_does_not_refresh_textwindow_unconditionally():
+    text = CUST.read_text(encoding="utf-8")
+    low = text.lower()
+    assert "textwindow.afficher" in low, "CustomCanvas1: appel TextWindow.Afficher introuvable"
+    idx = low.find("textwindow.afficher")
+    seg = low[max(0, idx-600):idx]
+    assert "mtextrefresh" in seg or "besoin" in seg or "dirty" in seg or "refresh" in seg.split("if")[-1], \
+        "CustomCanvas1.Paint: TextWindow.Afficher appele a chaque frame (re-realise curseur GTK nul au survol)"
