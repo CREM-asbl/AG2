@@ -177,6 +177,41 @@ def test_workwindow_opening_forces_standard_pointer_linux():
     assert "StandardPointer" in joined, \
         "WorkWindow.Opening: aucun curseur StandardPointer force sous Linux"
 
+def test_workwindow_opening_cursor_not_on_nil_can_linux():
+    """can is nil until InitParams(); forcing can.MouseCursor before is a crash.
+
+    Regression guard for issue #71: `can` (global CustomCanvas1) is nil at
+    startup and only assigned in InitParams() (`can = mycanvas1`).  The
+    Linux cursor-forcing block must therefore run AFTER InitParams(), or
+    guard `can` against nil, so `can.MouseCursor` is never dereferenced
+    on a nil reference.  DebugLog must come after the forced cursor.
+    """
+    text = WORK.read_text(encoding="utf-8")
+    in_opening = False
+    body = []
+    for line in text.splitlines():
+        if "Sub Opening()" in line:
+            in_opening = True
+            body = []
+            continue
+        if in_opening:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    low = "\n".join(body).lower()
+    can_idx = low.find("can.mousecursor")
+    assert can_idx != -1, "WorkWindow.Opening: aucun can.MouseCursor force sous Linux"
+    init_idx = low.find("initparams()")
+    has_nil_guard = any(g in low[:can_idx] for g in (
+        "if can <> nil", "if can<>nil", "if can <> nil then", "if can<>nil then",
+    ))
+    assert (init_idx != -1 and init_idx < can_idx) or has_nil_guard, (
+        "WorkWindow.Opening: can.MouseCursor est force avant InitParams() "
+        "et sans garde nil -> crash window.cpp:1092"
+    )
+    debug_idx = low.find("ag2: workwindow opening cursor forced")
+    assert debug_idx == -1 or debug_idx > can_idx, \
+        "WorkWindow.Opening: DebugLog doit venir apres le forçage du curseur"
 
 if __name__ == "__main__":
     test_no_custom_cursor_reference_in_code()
@@ -186,4 +221,5 @@ if __name__ == "__main__":
     test_no_textwindow_afficher_in_refreshbackground_linux()
     test_no_mtextrefresh_set_in_mousemove_linux()
     test_workwindow_opening_forces_standard_pointer_linux()
+    test_workwindow_opening_cursor_not_on_nil_can_linux()
     print("OK: custom cursors removed")
