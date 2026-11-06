@@ -251,6 +251,73 @@ def test_textwindow_activated_linux_forces_ef_mousecursor():
         "TextWindow.Activated: EF.MouseCursor non force apres realisation"
     )
 
+def test_workwindow_mouvbut_pressed_cursor_guarded_linux():
+    text = WORK.read_text(encoding="utf-8")
+    in_event = False
+    body = []
+    for line in text.splitlines():
+        if "Sub Pressed(index as Integer)" in line:
+            in_event = True
+            body = []
+            continue
+        if in_event:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    in_guard = False
+    depth = 0
+    offending = []
+    for line in body:
+        stripped = line.strip()
+        if stripped.startswith("#If Not TargetLinux"):
+            in_guard = True
+            depth = 1
+            continue
+        if in_guard:
+            if stripped.startswith("#If "):
+                depth += 1
+            if stripped in ("#Endif", "#EndIf", "#End If"):
+                depth -= 1
+                if depth == 0:
+                    in_guard = False
+                    continue
+            if stripped.startswith("#Else") and depth == 1:
+                in_guard = False
+                continue
+        if re.search(r"(?i)can\.mousecursor\s*=\s*System\.Cursors\.StandardPointer", stripped):
+            if not in_guard:
+                offending.append(stripped)
+    assert not offending, (
+        "WorkWindow.MouvBut.Pressed: can.MouseCursor non garde sous Linux:\n"
+        + "\n".join(offending)
+    )
+
+def test_textwindow_afficher_cursor_assignments_guarded_linux():
+    body = _extract_event_body("Windows/TextWindow.xojo_window", "Afficher")
+    linux = _extract_linux_block(body)
+    total = len(re.findall(r"(?i)EF\.MouseCursor\s*=", body))
+    guarded = len(re.findall(r"(?i)EF\.MouseCursor\s*=", linux))
+    assert total == guarded and total >= 2, (
+        f"TextWindow.Afficher: {total} assignations MouseCursor, "
+        f"{guarded} gardees sous Linux"
+    )
+
+def test_workwindow_opening_no_setfocus_linux():
+    body = _extract_event_body("Windows/WorkWindow.xojo_window", "Opening")
+    offending = [l for l in body.splitlines() if re.search(r"(?i)\bsetfocus\b", l)]
+    assert not offending, (
+        "WorkWindow.Opening: SetFocus au demarrage sous Linux:\n"
+        + "\n".join(offending)
+    )
+
+def test_textwindow_opening_no_setfocus_linux():
+    body = _extract_event_body("Windows/TextWindow.xojo_window", "Opening")
+    offending = [l for l in body.splitlines() if re.search(r"(?i)\bsetfocus\b", l)]
+    assert not offending, (
+        "TextWindow.Opening: SetFocus au demarrage sous Linux:\n"
+        + "\n".join(offending)
+    )
+
 if __name__ == "__main__":
     test_no_custom_cursor_reference_in_code()
     test_no_cursor_resource_in_project()

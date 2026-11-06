@@ -3344,7 +3344,9 @@ End
 		      CurrentContent.CurrentOperation = new redimensionner()
 		    end select
 		    refreshtitle
+		    #If Not TargetLinux Then
 		    can.mousecursor = System.Cursors.StandardPointer
+		    #Endif
 		    SetFocus
 		  end if
 		End Sub
