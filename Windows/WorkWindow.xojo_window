@@ -799,7 +799,7 @@ End
 		  If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
 		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
 		  else
-		    setcross
+		    can.mousecursor = System.Cursors.StandardPointer
 		  end if
 
 		  dim B, B1, B2 as boolean
@@ -2899,31 +2899,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub setcross()
-		  #If TargetLinux Then
-		    can.mousecursor = System.Cursors.StandardPointer
-		    System.DebugLog("AG2: setcross bypass custom cursors Linux (handle GDK).")
-		    Return
-		  #Endif
-		  If BackgroundColor = blanc Then
-		    If cross <> Nil Then
-		      can.mousecursor = cross
-		    Else
-		      can.mousecursor = System.Cursors.StandardPointer
-		      System.DebugLog("AG2: curseur cross nil, fallback StandardPointer.")
-		    End If
-		  Else
-		    If whitecross <> Nil Then
-		      can.mousecursor = whitecross
-		    Else
-		      can.mousecursor = System.Cursors.StandardPointer
-		      System.DebugLog("AG2: curseur whitecross nil, fallback StandardPointer.")
-		    End If
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SetIco(Fam as integer, Form As integer)
 		  dim i,  h, taille, haut, larg as double
 		  dim dlx, dly, urx, ury as double
@@ -3364,11 +3339,7 @@ End
 		      CurrentContent.CurrentOperation = new redimensionner()
 		    end select
 		    refreshtitle
-		    if index <> 0 then
-		      can.mousecursor = System.Cursors.StandardPointer
-		    else
-		      WorkWindow.setcross
-		    end if
+		    can.mousecursor = System.Cursors.StandardPointer
 		    SetFocus
 		  end if
 		End Sub

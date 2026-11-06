@@ -117,7 +117,7 @@ Inherits ShapeConstruction
 		  currentshape.paraperp = True
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedPoint = 0
-		  WorkWindow.setcross
+		  can.mousecursor = System.Cursors.StandardPointer
 		  
 		  
 		  
