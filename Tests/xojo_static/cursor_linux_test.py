@@ -151,6 +151,33 @@ def test_no_mtextrefresh_set_in_mousemove_linux():
     )
 
 
+def test_workwindow_opening_forces_standard_pointer_linux():
+    """WorkWindow.Opening must force StandardPointer on Linux before show.
+
+    WorkWindow (and its canvas children) are realised during Show.  Under
+    Xwayland a nil/default cursor handle can be NULL -> window.cpp:1092.
+    Forcing StandardPointer in Opening (Linux-only) before maximize/Show
+    avoids the GDK cursor error on the first paint/hover.
+    """
+    text = WORK.read_text(encoding="utf-8")
+    in_opening = False
+    body = []
+    for line in text.splitlines():
+        if "Sub Opening()" in line:
+            in_opening = True
+            body = []
+            continue
+        if in_opening:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    joined = "\n".join(body)
+    assert "#If TargetLinux" in joined, \
+        "WorkWindow.Opening: aucun bloc #If TargetLinux"
+    assert "StandardPointer" in joined, \
+        "WorkWindow.Opening: aucun curseur StandardPointer force sous Linux"
+
+
 if __name__ == "__main__":
     test_no_custom_cursor_reference_in_code()
     test_no_cursor_resource_in_project()
@@ -158,4 +185,5 @@ if __name__ == "__main__":
     test_canvas_uses_standard_pointer()
     test_no_textwindow_afficher_in_refreshbackground_linux()
     test_no_mtextrefresh_set_in_mousemove_linux()
+    test_workwindow_opening_forces_standard_pointer_linux()
     print("OK: custom cursors removed")
