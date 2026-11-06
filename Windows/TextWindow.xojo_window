@@ -89,6 +89,7 @@ End
 		  EF.BackgroundColor=&cFFFFFF
 		  #If TargetLinux Then
 		    EF.AllowSpellChecking = False
+		    EF.Visible = False
 		    System.DebugLog("textwindow opening spellcheck off")
 		  #Else
 		    Afficher
@@ -115,6 +116,7 @@ End
 		  #If TargetLinux Then
 		    Self.MouseCursor = System.Cursors.StandardPointer
 		    EF.MouseCursor = System.Cursors.StandardPointer
+		    EF.Visible = True
 		    System.DebugLog("textwindow activated cursor forced")
 		    If Not mAffiche Then
 		      mAffiche = True
