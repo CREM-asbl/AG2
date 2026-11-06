@@ -894,6 +894,7 @@ End
 		  InitParams()
 		  #If TargetLinux Then
 		    System.DebugLog("AG2: WorkWindow opening")
+		    Self.MouseCursor = System.Cursors.StandardPointer
 		  #Endif
 		  updateMenu
 		  NewContent(false)
@@ -921,7 +922,19 @@ End
 	#tag EndEvent
 
 	#tag Event
+		Sub Activated()
+		  #If TargetLinux Then
+		    System.DebugLog("AG2: WorkWindow activated")
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		  #Endif
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Resized()
+		  #If TargetLinux Then
+		    System.DebugLog("AG2: WorkWindow resized")
+		  #Endif
 		  can.resize
 		  can.RefreshBackground
 		End Sub

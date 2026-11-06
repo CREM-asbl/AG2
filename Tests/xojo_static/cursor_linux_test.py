@@ -176,22 +176,38 @@ def test_workwindow_opening_no_mousecursor_assignment_linux():
     assert "newcontent(false)" in low
     assert 'System.DebugLog("AG2: WorkWindow opening")' in joined
 
-def test_workwindow_opening_no_standardpointer_linux():
-    text = WORK.read_text(encoding="utf-8")
-    in_opening = False
-    body = []
-    for line in text.splitlines():
-        if "Sub Opening()" in line:
-            in_opening = True
-            body = []
-            continue
-        if in_opening:
-            if line.strip() == "End Sub":
-                break
-            body.append(line)
-    joined = "\n".join(body)
-    assert "StandardPointer" not in joined, \
-        "WorkWindow.Opening: StandardPointer ne doit pas etre force sous Linux"
+def test_workwindow_opening_forces_window_cursor_linux():
+    """Spec #71: WorkWindow force Self.MouseCursor des Opening (Linux).
+
+    Log --no-splash: crash window.cpp:1092 juste apres "WorkWindow
+    visible", sans TextWindow impliquee. WorkWindow n'a aucun
+    Self.MouseCursor explicite ni handler Activated : sous Xwayland le
+    curseur GDK de la fenetre est NULL au premier realize/survol apres
+    maximize -> GetGdkCursor().Get() explose. Forcer StandardPointer
+    dans Opening (avant maximize) donne a la fenetre un curseur GDK
+    valide des sa realisation.
+    """
+    body = _extract_event_body("Windows/WorkWindow.xojo_window", "Opening")
+    linux = _extract_linux_block(body)
+    assert re.search(r"(?i)Self\.MouseCursor\s*=\s*System\.Cursors\.StandardPointer", linux), \
+        "WorkWindow.Opening Linux: Self.MouseCursor=StandardPointer requis avant maximize"
+    m_cur = re.search(r"(?i)Self\.MouseCursor", linux)
+    m_max = re.search(r"(?i)\bmaximize\b", body)
+    assert m_cur and m_max, "Opening: curseur Linux + maximize attendus"
+    assert linux.index(m_cur.group(0)) < body.lower().index("maximize"), \
+        "Opening: forcer le curseur AVANT maximize"
+
+def test_workwindow_activated_forces_cursor_linux():
+    """Spec #71: WorkWindow.Activated re-force le curseur (Linux).
+
+    Garde-fou si le curseur fenetre est reinitialise entre Opening et
+    la premiere activation (maximize/Resized/realize tardif).
+    """
+    body = _extract_event_body("Windows/WorkWindow.xojo_window", "Activated")
+    assert body.strip(), "WorkWindow: handler Activated manquant"
+    linux = _extract_linux_block(body)
+    assert re.search(r"(?i)Self\.MouseCursor\s*=\s*System\.Cursors\.StandardPointer", linux), \
+        "WorkWindow.Activated Linux: Self.MouseCursor=StandardPointer requis"
 
 def _extract_event_body(path, event_name):
     text = pathlib.Path(path).read_text(encoding="utf-8")
@@ -326,6 +342,7 @@ if __name__ == "__main__":
     test_no_textwindow_afficher_in_refreshbackground_linux()
     test_no_mtextrefresh_set_in_mousemove_linux()
     test_workwindow_opening_no_mousecursor_assignment_linux()
-    test_workwindow_opening_no_standardpointer_linux()
+    test_workwindow_opening_forces_window_cursor_linux()
+    test_workwindow_activated_forces_cursor_linux()
     test_textwindow_opening_linux_no_mousecursor_before_realization()
     print("OK: custom cursors removed")
