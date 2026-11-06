@@ -796,11 +796,13 @@ End
 
 	#tag Event
 		Sub MenuBarSelected()
-		  If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
-		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
-		  else
-		    can.mousecursor = System.Cursors.StandardPointer
-		  end if
+		  #If Not TargetLinux Then
+		    If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
+		      MyCanvas1.mousecursor = System.Cursors.StandardPointer
+		    else
+		      can.mousecursor = System.Cursors.StandardPointer
+		    end if
+		  #Endif
 
 		  dim B, B1, B2 as boolean
 		  dim item as MenuItem
