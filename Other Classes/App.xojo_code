@@ -67,7 +67,17 @@ Inherits DesktopApplication
 		    System.DebugLog("splash closed")
 		  End If
 		  System.DebugLog("avant ChargerConfig")
-		  Config.ChargerConfig
+		  #If TargetLinux Then
+		    Try
+		      Config.ChargerConfig
+		    Catch err As RuntimeException
+		      System.DebugLog("AG2: ChargerConfig erreur: " + err.Message + ", menu par defaut.")
+		      Config.Menu = "Menu_AC"
+		      Config.ChargerConfig
+		    End Try
+		  #Else
+		    Config.ChargerConfig
+		  #Endif
 		  System.DebugLog("apres ChargerConfig")
 		  Tampon = new ObjectsList
 		  System.DebugLog("apres ObjectsList")

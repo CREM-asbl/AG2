@@ -315,7 +315,11 @@ Protected Class Configuration
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
 		  if nstdfam > 4 then
-		    MsgBox TooManyFiles(stdfile) + EndOfLine + only4
+		    #If TargetLinux Then
+		      System.DebugLog("AG2: " + TooManyFiles(stdfile) + " " + only4)
+		    #Else
+		      MsgBox TooManyFiles(stdfile) + EndOfLine + only4
+		    #Endif
 		    nstdfam = 4
 		  end if
 
