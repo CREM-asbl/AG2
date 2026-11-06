@@ -90,7 +90,6 @@ End
 		  #If TargetLinux Then
 		    Self.MouseCursor = System.Cursors.StandardPointer
 		    EF.AllowSpellChecking = False
-		    EF.MouseCursor = System.Cursors.StandardPointer
 		    System.DebugLog("textwindow opening spellcheck off")
 		  #Else
 		    Afficher

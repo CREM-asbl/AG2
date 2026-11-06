@@ -213,6 +213,64 @@ def test_workwindow_opening_cursor_not_on_nil_can_linux():
     assert debug_idx == -1 or debug_idx > can_idx, \
         "WorkWindow.Opening: DebugLog doit venir apres le forçage du curseur"
 
+def _extract_event_body(path, event_name):
+    text = pathlib.Path(path).read_text(encoding="utf-8")
+    in_event = False
+    body = []
+    for line in text.splitlines():
+        if f"Sub {event_name}()" in line:
+            in_event = True
+            body = []
+            continue
+        if in_event:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    return "\n".join(body)
+
+def _extract_linux_block(body):
+    lines = body.splitlines()
+    in_linux = False
+    depth = 0
+    block = []
+    for line in lines:
+        stripped = line.strip()
+        if not in_linux and "#If TargetLinux" in line:
+            in_linux = True
+            depth = 1
+            continue
+        if in_linux:
+            if stripped.startswith("#If "):
+                depth += 1
+            if stripped in ("#Endif", "#EndIf", "#End If"):
+                depth -= 1
+                if depth == 0:
+                    in_linux = False
+                    continue
+            if stripped.startswith("#Else") and depth == 1:
+                in_linux = False
+                continue
+            block.append(line)
+    return "\n".join(block)
+
+def test_textwindow_opening_linux_no_ef_mousecursor_before_realization():
+    body = _extract_event_body("Windows/TextWindow.xojo_window", "Opening")
+    linux = _extract_linux_block(body)
+    assert "EF.MouseCursor" not in linux, (
+        "TextWindow.Opening: EF.MouseCursor assigne avant realisation sous Linux "
+        "-> window.cpp:1092:\n" + linux
+    )
+    assert "Self.MouseCursor = System.Cursors.StandardPointer" in linux
+    assert "EF.AllowSpellChecking = False" in linux
+    assert 'System.DebugLog("textwindow opening spellcheck off")' in linux
+
+def test_textwindow_activated_linux_forces_ef_mousecursor():
+    body = _extract_event_body("Windows/TextWindow.xojo_window", "Activated")
+    linux = _extract_linux_block(body)
+    assert "EF.MouseCursor = System.Cursors.StandardPointer" in linux, (
+        "TextWindow.Activated: EF.MouseCursor non force apres realisation"
+    )
+
 if __name__ == "__main__":
     test_no_custom_cursor_reference_in_code()
     test_no_cursor_resource_in_project()
