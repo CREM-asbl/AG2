@@ -209,6 +209,23 @@ def test_workwindow_activated_forces_cursor_linux():
     assert re.search(r"(?i)Self\.MouseCursor\s*=\s*System\.Cursors\.StandardPointer", linux), \
         "WorkWindow.Activated Linux: Self.MouseCursor=StandardPointer requis"
 
+def test_workwindow_resized_forces_cursor_linux():
+    """Spec #71: WorkWindow.Resized re-force curseur fenetre + canvas (Linux).
+
+    Log manuel: Failure window.cpp:1092 suit toujours un Resized
+    post-Activated (maximize -> realize tardif). Le premier survol
+    souris interroge le curseur GDK entre realize et Activated :
+    forcer StandardPointer dans Resized (apres realisation) couvre
+    cette fenetre. MyCanvas1 inclus car survol canvas = meme requete.
+    """
+    body = _extract_event_body("Windows/WorkWindow.xojo_window", "Resized")
+    assert body.strip(), "WorkWindow: handler Resized manquant"
+    linux = _extract_linux_block(body)
+    assert re.search(r"(?i)Self\.MouseCursor\s*=\s*System\.Cursors\.StandardPointer", linux), \
+        "WorkWindow.Resized Linux: Self.MouseCursor=StandardPointer requis"
+    assert re.search(r"(?i)MyCanvas1\.MouseCursor\s*=\s*System\.Cursors\.StandardPointer", linux), \
+        "WorkWindow.Resized Linux: MyCanvas1.MouseCursor=StandardPointer requis"
+
 def _extract_event_body(path, event_name):
     text = pathlib.Path(path).read_text(encoding="utf-8")
     in_event = False

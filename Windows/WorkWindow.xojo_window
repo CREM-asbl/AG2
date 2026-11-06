@@ -934,6 +934,8 @@ End
 		Sub Resized()
 		  #If TargetLinux Then
 		    System.DebugLog("AG2: WorkWindow resized")
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		    MyCanvas1.MouseCursor = System.Cursors.StandardPointer
 		  #Endif
 		  can.resize
 		  can.RefreshBackground
