@@ -891,12 +891,7 @@ End
 		Sub Opening()
 		  InitParams()
 		  #If TargetLinux Then
-		    Self.MouseCursor = System.Cursors.StandardPointer
-		    MyCanvas1.MouseCursor = System.Cursors.StandardPointer
-		    If can <> nil Then
-		      can.MouseCursor = System.Cursors.StandardPointer
-		    End If
-		    System.DebugLog("AG2: WorkWindow opening cursor forced")
+		    System.DebugLog("AG2: WorkWindow opening")
 		  #Endif
 		  updateMenu
 		  NewContent(false)

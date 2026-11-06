@@ -151,14 +151,7 @@ def test_no_mtextrefresh_set_in_mousemove_linux():
     )
 
 
-def test_workwindow_opening_forces_standard_pointer_linux():
-    """WorkWindow.Opening must force StandardPointer on Linux before show.
-
-    WorkWindow (and its canvas children) are realised during Show.  Under
-    Xwayland a nil/default cursor handle can be NULL -> window.cpp:1092.
-    Forcing StandardPointer in Opening (Linux-only) before maximize/Show
-    avoids the GDK cursor error on the first paint/hover.
-    """
+def test_workwindow_opening_no_mousecursor_assignment_linux():
     text = WORK.read_text(encoding="utf-8")
     in_opening = False
     body = []
@@ -172,20 +165,18 @@ def test_workwindow_opening_forces_standard_pointer_linux():
                 break
             body.append(line)
     joined = "\n".join(body)
-    assert "#If TargetLinux" in joined, \
-        "WorkWindow.Opening: aucun bloc #If TargetLinux"
-    assert "StandardPointer" in joined, \
-        "WorkWindow.Opening: aucun curseur StandardPointer force sous Linux"
+    offending = [l for l in body if re.search(r"(?i)\\.mousecursor\\s*=", l)]
+    assert not offending, (
+        "WorkWindow.Opening: assignation MouseCursor interdite avant realisation:\\n"
+        + "\\n".join(offending)
+    )
+    low = joined.lower()
+    assert "initparams()" in low
+    assert "updatemenu" in low
+    assert "newcontent(false)" in low
+    assert 'System.DebugLog("AG2: WorkWindow opening")' in joined
 
-def test_workwindow_opening_cursor_not_on_nil_can_linux():
-    """can is nil until InitParams(); forcing can.MouseCursor before is a crash.
-
-    Regression guard for issue #71: `can` (global CustomCanvas1) is nil at
-    startup and only assigned in InitParams() (`can = mycanvas1`).  The
-    Linux cursor-forcing block must therefore run AFTER InitParams(), or
-    guard `can` against nil, so `can.MouseCursor` is never dereferenced
-    on a nil reference.  DebugLog must come after the forced cursor.
-    """
+def test_workwindow_opening_no_standardpointer_linux():
     text = WORK.read_text(encoding="utf-8")
     in_opening = False
     body = []
@@ -198,20 +189,9 @@ def test_workwindow_opening_cursor_not_on_nil_can_linux():
             if line.strip() == "End Sub":
                 break
             body.append(line)
-    low = "\n".join(body).lower()
-    can_idx = low.find("can.mousecursor")
-    assert can_idx != -1, "WorkWindow.Opening: aucun can.MouseCursor force sous Linux"
-    init_idx = low.find("initparams()")
-    has_nil_guard = any(g in low[:can_idx] for g in (
-        "if can <> nil", "if can<>nil", "if can <> nil then", "if can<>nil then",
-    ))
-    assert (init_idx != -1 and init_idx < can_idx) or has_nil_guard, (
-        "WorkWindow.Opening: can.MouseCursor est force avant InitParams() "
-        "et sans garde nil -> crash window.cpp:1092"
-    )
-    debug_idx = low.find("ag2: workwindow opening cursor forced")
-    assert debug_idx == -1 or debug_idx > can_idx, \
-        "WorkWindow.Opening: DebugLog doit venir apres le forçage du curseur"
+    joined = "\n".join(body)
+    assert "StandardPointer" not in joined, \
+        "WorkWindow.Opening: StandardPointer ne doit pas etre force sous Linux"
 
 def _extract_event_body(path, event_name):
     text = pathlib.Path(path).read_text(encoding="utf-8")
@@ -253,14 +233,14 @@ def _extract_linux_block(body):
             block.append(line)
     return "\n".join(block)
 
-def test_textwindow_opening_linux_no_ef_mousecursor_before_realization():
+def test_textwindow_opening_linux_no_mousecursor_before_realization():
     body = _extract_event_body("Windows/TextWindow.xojo_window", "Opening")
     linux = _extract_linux_block(body)
-    assert "EF.MouseCursor" not in linux, (
-        "TextWindow.Opening: EF.MouseCursor assigne avant realisation sous Linux "
-        "-> window.cpp:1092:\n" + linux
+    offending = [l for l in linux.splitlines() if re.search(r"(?i)mousecursor\s*=", l)]
+    assert not offending, (
+        "TextWindow.Opening: MouseCursor assigne avant realisation sous Linux "
+        "-> window.cpp:1092:\n" + "\n".join(offending)
     )
-    assert "Self.MouseCursor = System.Cursors.StandardPointer" in linux
     assert "EF.AllowSpellChecking = False" in linux
     assert 'System.DebugLog("textwindow opening spellcheck off")' in linux
 
@@ -278,6 +258,7 @@ if __name__ == "__main__":
     test_canvas_uses_standard_pointer()
     test_no_textwindow_afficher_in_refreshbackground_linux()
     test_no_mtextrefresh_set_in_mousemove_linux()
-    test_workwindow_opening_forces_standard_pointer_linux()
-    test_workwindow_opening_cursor_not_on_nil_can_linux()
+    test_workwindow_opening_no_mousecursor_assignment_linux()
+    test_workwindow_opening_no_standardpointer_linux()
+    test_textwindow_opening_linux_no_mousecursor_before_realization()
     print("OK: custom cursors removed")
