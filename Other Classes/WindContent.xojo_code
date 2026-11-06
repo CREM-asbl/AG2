@@ -454,7 +454,9 @@ Protected Class WindContent
 		  addshape currentoperation.currentshape
 		  AddOperation(CurrentOperation)
 		  CurrentOperation = nil
+		  #If Not TargetLinux Then
 		  can.mousecursor = System.Cursors.StandardPointer
+		  #Endif
 		  
 		End Sub
 	#tag EndMethod

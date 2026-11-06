@@ -347,7 +347,9 @@ Inherits Canvas
 		  End If
 
 		  p = mouseuser
+		  #If Not TargetLinux Then
 		  Mousecursor = System.Cursors.StandardPointer
+		  #Endif
 		  If dret = Nil And CurrentContent.CurrentOperation <> Nil and not currentContent.CurrentOperation isa Ouvrir Then
 		    currentcontent.currentoperation.mousemove(p)
 		    refreshbackground

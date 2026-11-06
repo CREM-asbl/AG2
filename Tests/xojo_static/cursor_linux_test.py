@@ -351,6 +351,86 @@ def test_textwindow_opening_no_setfocus_linux():
         + "\n".join(offending)
     )
 
+def _extract_method_body(path, signature_prefix):
+    """Extract method body by Sub signature prefix (handles params)."""
+    text = pathlib.Path(path).read_text(encoding="utf-8")
+    in_m = False
+    body = []
+    for line in text.splitlines():
+        if not in_m and line.strip().startswith("Sub " + signature_prefix):
+            in_m = True
+            body = []
+            continue
+        if in_m:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    return "\n".join(body)
+
+
+def _unguarded_mousecursor_sets(body):
+    """Lines assigning .MouseCursor that still execute on Linux.
+
+    Assignments inside #If Not TargetLinux are skipped on Linux and
+    therefore safe. Anything else runs pre-realize / on hot paths.
+    """
+    skip_stack = []
+    offending = []
+    for line in body.splitlines():
+        s = line.strip()
+        if s.startswith("#If Not TargetLinux"):
+            skip_stack.append(True)
+            continue
+        if s.startswith("#If TargetLinux"):
+            skip_stack.append(False)
+            continue
+        if s.startswith("#If "):
+            skip_stack.append(skip_stack[-1] if skip_stack else False)
+            continue
+        if s.startswith("#Else"):
+            if skip_stack:
+                skip_stack[-1] = not skip_stack[-1]
+            continue
+        if s in ("#Endif", "#EndIf", "#End If"):
+            if skip_stack:
+                skip_stack.pop()
+            continue
+        if re.search(r"(?i)mousecursor\s*=", line):
+            if not any(skip_stack):
+                offending.append(s)
+    return offending
+
+
+def test_no_unguarded_mousecursor_on_linux_hot_paths():
+    """Spec #71: pre-realize + hot-path MouseCursor sets skipped on Linux.
+
+    - WindContent.Creerrepere runs via NewContent during
+      WorkWindow.Opening, before maximize/realize. Setting
+      can.MouseCursor there leaves a NULL GDK cursor at realize
+      under Xwayland -> window.cpp:1092 on first hover/Resized.
+    - CustomCanvas1.MouseMove / MyCanvas.MouseMove set
+      MouseCursor on every mousemove, racing first realize.
+    On Linux the cursor is already forced to StandardPointer in
+    WorkWindow.Opening/Activated/Resized (post-realize), so these
+    sets are redundant there and must be skipped via
+    #If Not TargetLinux. Win/mac behavior unchanged.
+    """
+    targets = [
+        ("Other Classes/WindContent.xojo_code", "Creerrepere()"),
+        ("Windows/CustomCanvas1.xojo_code", "MouseMove("),
+        ("Windows/MyCanvas.xojo_code", "MouseMove("),
+    ]
+    offenders = []
+    for path, sig in targets:
+        body = _extract_method_body(path, sig)
+        assert body.strip(), f"{path}: handler Sub {sig} introuvable"
+        for line in _unguarded_mousecursor_sets(body):
+            offenders.append(f"{path} Sub {sig}: {line}")
+    assert not offenders, (
+        "MouseCursor assigne sans garde Linux sur chemin pre-realize / hot-path "
+        "-> window.cpp:1092 sous Xwayland:\n" + "\n".join(offenders)
+    )
+
 if __name__ == "__main__":
     test_no_custom_cursor_reference_in_code()
     test_no_cursor_resource_in_project()

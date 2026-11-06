@@ -270,7 +270,9 @@ Inherits Canvas
 		    if CurrentContent.CurrentOperation<>nil then
 		      CurrentContent.CurrentOperation.MouseMove(itransform(new BasicPoint(x,y)))
 		    elseif  CurrentContent.curoper = nil then
+		      #If Not TargetLinux Then
 		      Mousecursor = System.Cursors.StandardPointer
+		      #Endif
 		      if oldp <> nil and p.distance(oldp) >magneticdist  then
 		        oldp = p
 		        if currenthighlightedshape<> nil then
