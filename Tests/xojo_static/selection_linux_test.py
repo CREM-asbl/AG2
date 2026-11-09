@@ -12,6 +12,7 @@ from pathlib import Path
 SELECT_DRAG = Path("Operation Classes/SelectAndDrag Operations/SelectAndDragOperation.xojo_code")
 MULTI = Path("Operation Classes/MultipleSelect Operations/MultipleSelectOperation.xojo_code")
 SELECTIONNER = Path("Operation Classes/Selectionner.xojo_code")
+SELECT_OP = Path("Operation Classes/SelectOperation/SelectOperation.xojo_code")
 FORMS = Path("Windows/Formswindow.xojo_window")
 
 
@@ -37,6 +38,15 @@ def test_selectdrag_mousedown_hit_test_fallback():
     low = body.lower()
     assert "getshape(p)" in low or "findobject(p)" in low, \
         "SelectAndDrag.MouseDown: aucun fallback HitTest quand highlight nil"
+    # Ordre critique sous Linux GTK (highlight souvent nil sans MouseMove) :
+    # le fallback GetShape(p) doit preceder la garde `isa modifier` sinon
+    # Modifier.MouseDown early-return avant HitTest => clic = no-op.
+    fb = low.find("getshape(p)")
+    if fb < 0:
+        fb = low.find("findobject(p)")
+    guard = low.find("isa modifier")
+    assert 0 <= fb < guard, \
+        "SelectAndDrag.MouseDown: fallback HitTest apres garde modifier => clic Modifier inoperant sous Linux"
 
 
 def test_multipleselect_mousedown_hit_test_fallback():
@@ -56,6 +66,13 @@ def test_selectionner_mousedown_hit_test_fallback():
     assert "getshape(p)" in low or "findobject(p)" in low, \
         "Selectionner.MouseDown: currentshape=currenthighlightedshape sans fallback"
 
+
+def test_selectoperation_mousedown_hit_test_fallback():
+    body = _extract_method(SELECT_OP.read_text(encoding="utf-8"), "MouseDown(")
+    assert body.strip(), "SelectOperation: MouseDown introuvable"
+    low = body.lower()
+    assert "getshape(p)" in low or "findobject(p)" in low, \
+        "SelectOperation.MouseDown: unselectall+return sans fallback => clic bouton no-op sous Linux"
 
 def test_formswindow_paint_no_reposition():
     text = FORMS.read_text(encoding="utf-8")
@@ -88,6 +105,7 @@ if __name__ == "__main__":
     test_selectdrag_mousedown_hit_test_fallback()
     test_multipleselect_mousedown_hit_test_fallback()
     test_selectionner_mousedown_hit_test_fallback()
+    test_selectoperation_mousedown_hit_test_fallback()
     test_formswindow_paint_no_reposition()
     test_formswindow_setparams_shows_window()
     print("OK: selection linux guards present")
