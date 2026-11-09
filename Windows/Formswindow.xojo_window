@@ -426,11 +426,6 @@ End
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  if not selection then
-		    left= WorkWindow.Left + Workwindow.Tools.Width+1
-		    top= WorkWindow.top + WorkWindow.StdBox.top
-		  end if 
-		  
 		  updateTextSize
 		End Sub
 	#tag EndEvent
@@ -519,6 +514,13 @@ End
 		  self.selection = selection
 		  
 		  refreshContent
+		  
+		  if not selection then
+		    left = WorkWindow.Left + WorkWindow.Tools.Width + 1
+		    top = WorkWindow.top + WorkWindow.StdBox.top
+		  end if
+		  Visible = True
+		  Show
 		  
 		  
 		End Sub

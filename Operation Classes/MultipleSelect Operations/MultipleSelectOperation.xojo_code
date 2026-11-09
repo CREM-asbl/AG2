@@ -25,6 +25,9 @@ Inherits SelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
+		  if CurrentHighlightedShape = nil then
+		    CurrentHighlightedShape = GetShape(p)
+		  end if
 		  if CurrentHighlightedShape=nil then
 		    return
 		  end if
