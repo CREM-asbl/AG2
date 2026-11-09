@@ -926,6 +926,13 @@ End
 		  #If TargetLinux Then
 		    System.DebugLog("AG2: WorkWindow activated")
 		    Self.MouseCursor = System.Cursors.StandardPointer
+		    Dim i As Integer
+		    For i = 0 To 3
+		      StdOutil(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
+		    For i = 0 To 6
+		      LibOutils(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
 		  #Endif
 		End Sub
 	#tag EndEvent
@@ -936,6 +943,13 @@ End
 		    System.DebugLog("AG2: WorkWindow resized")
 		    Self.MouseCursor = System.Cursors.StandardPointer
 		    MyCanvas1.MouseCursor = System.Cursors.StandardPointer
+		    Dim i As Integer
+		    For i = 0 To 3
+		      StdOutil(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
+		    For i = 0 To 6
+		      LibOutils(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
 		  #Endif
 		  can.resize
 		  can.RefreshBackground

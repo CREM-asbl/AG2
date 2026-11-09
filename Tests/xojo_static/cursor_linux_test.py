@@ -443,3 +443,37 @@ if __name__ == "__main__":
     test_workwindow_activated_forces_cursor_linux()
     test_textwindow_opening_linux_no_mousecursor_before_realization()
     print("OK: custom cursors removed")
+def test_workwindow_resized_forces_toolbar_canvas_cursors_linux():
+    """Spec #71: Resized force aussi StdOutil/LibOutils (Linux).
+
+    Log WSLg --no-splash: Failure window.cpp:1092 suit toujours un
+    Resized post-Activated, sans entree souris. A ce stade Self et
+    MyCanvas1 sont deja StandardPointer : le curseur Nil restant est
+    un DesktopCanvas de la barre d'outils (StdOutil 0-3, LibOutils
+    0-6, jamais assignes) survole via Enter synthetise a
+    l'activation/maximize sous Xwayland. Forcer StandardPointer sur
+    ces canvas dans Resized (post-realize) couvre cette fenetre.
+    """
+    body = _extract_event_body("Windows/WorkWindow.xojo_window", "Resized")
+    assert body.strip(), "WorkWindow: handler Resized manquant"
+    linux = _extract_linux_block(body)
+    assert re.search(r"(?i)StdOutil", linux), \
+        "WorkWindow.Resized Linux: StdOutil.MouseCursor=StandardPointer requis"
+    assert re.search(r"(?i)LibOutils", linux), \
+        "WorkWindow.Resized Linux: LibOutils.MouseCursor=StandardPointer requis"
+    assert re.search(r"(?i)\.MouseCursor\s*=\s*System\.Cursors\.StandardPointer", linux), \
+        "WorkWindow.Resized Linux: assignation StandardPointer requise"
+
+def test_workwindow_activated_forces_toolbar_canvas_cursors_linux():
+    """Spec #71: Activated force aussi StdOutil/LibOutils (Linux).
+
+    Garde-fou si l'activation (premier map/raise du WM) synthetise
+    un Enter avant le prochain Resized.
+    """
+    body = _extract_event_body("Windows/WorkWindow.xojo_window", "Activated")
+    assert body.strip(), "WorkWindow: handler Activated manquant"
+    linux = _extract_linux_block(body)
+    assert re.search(r"(?i)StdOutil", linux), \
+        "WorkWindow.Activated Linux: StdOutil.MouseCursor=StandardPointer requis"
+    assert re.search(r"(?i)LibOutils", linux), \
+        "WorkWindow.Activated Linux: LibOutils.MouseCursor=StandardPointer requis"
