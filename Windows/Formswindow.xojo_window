@@ -639,11 +639,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
-		  #If TargetLinux Then
-		    return true
-		  #Else
-		    return false
-		  #Endif
+		  return false
 		End Function
 	#tag EndEvent
 #tag EndEvents
