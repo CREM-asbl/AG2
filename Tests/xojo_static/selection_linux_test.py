@@ -143,8 +143,10 @@ def test_formswindow_bouton_mousedown_consumes_linux():
             body.append(line)
     joined = "\n".join(body)
     low = joined.lower()
-    assert "targetlinux" in low and "return true" in low, \
-        "FormsWindow.Bouton.MouseDown: return false sous Linux => press/release ignores GTK"
+    assert "return false" in low, \
+        "FormsWindow.Bouton.MouseDown: return true consomme event sous GTK => Action jamais declenche au clic reel"
+    assert "return true" not in low, \
+        "FormsWindow.Bouton.MouseDown: return true present => clic reel bloque sous Linux"
 
 
 def test_workwindow_mouvbut_pressed_canvas_focus():
