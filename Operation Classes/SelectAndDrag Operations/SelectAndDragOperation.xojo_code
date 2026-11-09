@@ -169,12 +169,12 @@ Inherits SelectOperation
 		  StartPoint = p
 		  EndPoint = p
 		  
-		  if (CurrentHighlightedShape = nil) and (self isa modifier)    then
-		    return
-		  end if
-		  
 		  if currenthighlightedshape = nil then
 		    currenthighlightedshape = GetShape(p)
+		  end if
+
+		  if (CurrentHighlightedShape = nil) and (self isa modifier)    then
+		    return
 		  end if
 		  
 		  if currenthighlightedshape = nil and  objects.findobject(p).count = 0  then

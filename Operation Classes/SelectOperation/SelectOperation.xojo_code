@@ -384,6 +384,9 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
 		  If currenthighlightedshape = Nil Then
+		    currenthighlightedshape = GetShape(p)
+		  end if
+		  If currenthighlightedshape = Nil Then
 		    Objects.unselectall
 		    return
 		  end if
