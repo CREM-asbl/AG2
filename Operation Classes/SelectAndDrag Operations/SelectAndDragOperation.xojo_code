@@ -173,6 +173,10 @@ Inherits SelectOperation
 		    return
 		  end if
 		  
+		  if currenthighlightedshape = nil then
+		    currenthighlightedshape = GetShape(p)
+		  end if
+		  
 		  if currenthighlightedshape = nil and  objects.findobject(p).count = 0  then
 		    Objects.unselectall
 		    CurrentShape = can.getrepere

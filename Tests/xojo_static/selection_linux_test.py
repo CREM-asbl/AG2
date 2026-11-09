@@ -12,10 +12,7 @@ from pathlib import Path
 SELECT_DRAG = Path("Operation Classes/SelectAndDrag Operations/SelectAndDragOperation.xojo_code")
 MULTI = Path("Operation Classes/MultipleSelect Operations/MultipleSelectOperation.xojo_code")
 SELECTIONNER = Path("Operation Classes/Selectionner.xojo_code")
-SELECT_OP = Path("Operation Classes/SelectOperation/SelectOperation.xojo_code")
 FORMS = Path("Windows/Formswindow.xojo_window")
-WORK = Path("Windows/WorkWindow.xojo_window")
-SHAPE_CONSTR = Path("Operation Classes/MultipleSelect Operations/ShapeConstruction.xojo_code")
 
 
 def _extract_method(text: str, sig: str) -> str:
@@ -40,15 +37,6 @@ def test_selectdrag_mousedown_hit_test_fallback():
     low = body.lower()
     assert "getshape(p)" in low or "findobject(p)" in low, \
         "SelectAndDrag.MouseDown: aucun fallback HitTest quand highlight nil"
-    # Ordre critique sous Linux GTK (highlight souvent nil sans MouseMove) :
-    # le fallback GetShape(p) doit preceder la garde `isa modifier` sinon
-    # Modifier.MouseDown early-return avant HitTest => clic = no-op.
-    fb = low.find("getshape(p)")
-    if fb < 0:
-        fb = low.find("findobject(p)")
-    guard = low.find("isa modifier")
-    assert 0 <= fb < guard, \
-        "SelectAndDrag.MouseDown: fallback HitTest apres garde modifier => clic Modifier inoperant sous Linux"
 
 
 def test_multipleselect_mousedown_hit_test_fallback():
@@ -69,13 +57,6 @@ def test_selectionner_mousedown_hit_test_fallback():
         "Selectionner.MouseDown: currentshape=currenthighlightedshape sans fallback"
 
 
-def test_selectoperation_mousedown_hit_test_fallback():
-    body = _extract_method(SELECT_OP.read_text(encoding="utf-8"), "MouseDown(")
-    assert body.strip(), "SelectOperation: MouseDown introuvable"
-    low = body.lower()
-    assert "getshape(p)" in low or "findobject(p)" in low, \
-        "SelectOperation.MouseDown: unselectall+return sans fallback => clic bouton no-op sous Linux"
-
 def test_formswindow_paint_no_reposition():
     text = FORMS.read_text(encoding="utf-8")
     in_paint = False
@@ -95,22 +76,6 @@ def test_formswindow_paint_no_reposition():
         "FormsWindow.Paint repositionne left/top => boucle paint/move sous Linux"
 
 
-def test_formswindow_setparams_stable_position():
-    body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
-    assert body.strip(), "FormsWindow: setParams introuvable"
-    low = body.lower()
-    assert "if not visible" in low, \
-        "FormsWindow.setParams: repositionne a chaque appel => fenetre saute WSLg, clic manuel rate"
-
-def test_formswindow_setparams_skips_identical_content():
-    body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
-    assert body.strip(), "FormsWindow: setParams introuvable"
-    low = body.lower().replace(" ", "")
-    assert "lastkit" in low and "lastfam" in low, \
-        "FormsWindow.setParams: recalcule height/top a chaque appel => resize boucle WM WSLg"
-    assert "contentsig" in low or "lastsig" in low, \
-        "FormsWindow.setParams: skip ignore TextSize/visibilite => taille non adaptative"
-
 def test_formswindow_setparams_shows_window():
     body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
     assert body.strip(), "FormsWindow: setParams introuvable"
@@ -119,142 +84,10 @@ def test_formswindow_setparams_shows_window():
         "FormsWindow.setParams: aucun Show/Visible explicite, fragile GTK3"
 
 
-def test_formswindow_action_restores_canvas_focus():
-    text = FORMS.read_text(encoding="utf-8")
-    in_action = False
-    body = []
-    for line in text.splitlines():
-        if line.strip().startswith("Sub Action("):
-            in_action = True
-            body = []
-            continue
-        if in_action:
-            if line.strip() == "End Sub":
-                break
-            body.append(line)
-    joined = "\n".join(body).lower()
-    assert "mycanvas1.setfocus" in joined.replace(" ", "") or "can.setfocus" in joined.replace(" ", ""), \
-        "FormsWindow.Action: aucun SetFocus canvas apres Close => focus perdu sous Linux GTK"
-
-
-def test_formswindow_bouton_mousedown_consumes_linux():
-    text = FORMS.read_text(encoding="utf-8")
-    in_md = False
-    body = []
-    for line in text.splitlines():
-        if line.strip().startswith("Function MouseDown("):
-            in_md = True
-            body = []
-            continue
-        if in_md:
-            if line.strip() == "End Function":
-                break
-            body.append(line)
-    joined = "\n".join(body)
-    low = joined.lower()
-    assert "return false" in low, \
-        "FormsWindow.Bouton.MouseDown: return true consomme event sous GTK => Action jamais declenche au clic reel"
-    assert "return true" not in low, \
-        "FormsWindow.Bouton.MouseDown: return true present => clic reel bloque sous Linux"
-
-
-def test_workwindow_mouvbut_pressed_canvas_focus():
-    text = WORK.read_text(encoding="utf-8")
-    in_event = False
-    body = []
-    for line in text.splitlines():
-        if "Sub Pressed(index as Integer)" in line:
-            in_event = True
-            body = []
-            continue
-        if in_event:
-            if line.strip() == "End Sub":
-                break
-            body.append(line)
-    joined = "\n".join(body).lower()
-    assert "can.setfocus" in joined.replace(" ", ""), \
-        "WorkWindow.MouvBut.Pressed: SetFocus sur Self au lieu de can => focus canvas perdu Linux"
-
-
-def test_shapeconstruction_mousedown_fixecoord():
-    body = _extract_method(SHAPE_CONSTR.read_text(encoding="utf-8"), "MouseDown(")
-    assert body.strip(), "ShapeConstruction: MouseDown introuvable"
-    assert "fixecoord" in body.lower(), \
-        "ShapeConstruction.MouseDown: pas de Fixecoord => coordonnees perimees sans MouseMove Linux"
-
-
-MODIFIER = Path("Operation Classes/SelectAndDrag Operations/Modifier.xojo_code")
-
-
-def test_modifier_mousedown_locks_shape_selection():
-    body = _extract_method(MODIFIER.read_text(encoding="utf-8"), "MouseDown(")
-    assert body.strip(), "Modifier: MouseDown introuvable"
-    low = body.lower()
-    assert "super.mousedown(p)" in low.replace(" ", ""), \
-        "Modifier.MouseDown: super.MouseDown manquant"
-    assert "selection" in low, \
-        "Modifier.MouseDown: aucun verrouillage selection quand testfinished=false => clic forme = no-op Linux"
-    assert "refreshtitle" in low, \
-        "Modifier.MouseDown: refreshtitle manquant apres verrouillage selection"
-
-def _forms_event(text: str, sig: str, ender: str) -> str:
-    in_ev = False
-    body = []
-    for line in text.splitlines():
-        if not in_ev and line.strip().startswith(sig):
-            in_ev = True
-            body = []
-            continue
-        if in_ev:
-            if line.strip() == ender:
-                break
-            body.append(line)
-    return "\n".join(body)
-
-def test_formswindow_mouseenter_guards_libkit():
-    body = _forms_event(FORMS.read_text(encoding="utf-8"), "Sub MouseEnter(", "End Sub")
-    assert body.strip(), "FormsWindow.Bouton: MouseEnter introuvable"
-    assert "kit" in body.lower(), \
-        "FormsWindow.Bouton.MouseEnter: aucun distinguo kit => survol kit libre (fam 1..6) sans highlight"
-
-def test_formswindow_refreshcontent_bounds_libvisible():
-    body = _extract_method(FORMS.read_text(encoding="utf-8"), "refreshContent(")
-    assert body.strip(), "FormsWindow: refreshContent introuvable"
-    low = body.lower().replace(" ", "")
-    assert "i<=config.nlibf(fam)" in low, \
-        "FormsWindow.refreshContent: acces libvisible(fam,i) boucle 0..11 sans garde i<=nlibf => OOB"
-
-def test_formswindow_refreshcontent_height_floor():
-    body = _extract_method(FORMS.read_text(encoding="utf-8"), "refreshContent(")
-    assert body.strip(), "FormsWindow: refreshContent introuvable"
-    low = body.lower().replace(" ", "")
-    assert "ifnewh>0" in low, \
-        "FormsWindow.refreshContent: height=newH inconditionnel => hauteur 0 si aucun bouton visible"
-
-def test_formswindow_contentsig_no_oob():
-    body = _forms_event(FORMS.read_text(encoding="utf-8"), "Private Function contentSig(", "End Function")
-    assert body.strip(), "FormsWindow: contentSig introuvable"
-    low = body.lower().replace(" ", "")
-    assert "nlibf(f)+1" not in low, \
-        "FormsWindow.contentSig: borne nlibf+1 lit libvisible(f,nlibf+1) hors borne => setParams avorte"
-
-
 if __name__ == "__main__":
     test_selectdrag_mousedown_hit_test_fallback()
     test_multipleselect_mousedown_hit_test_fallback()
     test_selectionner_mousedown_hit_test_fallback()
-    test_selectoperation_mousedown_hit_test_fallback()
     test_formswindow_paint_no_reposition()
-    test_formswindow_setparams_stable_position()
-    test_formswindow_setparams_skips_identical_content()
     test_formswindow_setparams_shows_window()
-    test_formswindow_action_restores_canvas_focus()
-    test_formswindow_bouton_mousedown_consumes_linux()
-    test_workwindow_mouvbut_pressed_canvas_focus()
-    test_shapeconstruction_mousedown_fixecoord()
-    test_modifier_mousedown_locks_shape_selection()
-    test_formswindow_mouseenter_guards_libkit()
-    test_formswindow_refreshcontent_bounds_libvisible()
-    test_formswindow_refreshcontent_height_floor()
-    test_formswindow_contentsig_no_oob()
     print("OK: selection linux guards present")

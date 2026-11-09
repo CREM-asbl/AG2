@@ -74,6 +74,9 @@ Inherits Operation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
+		  if currenthighlightedshape = nil then
+		    currenthighlightedshape = GetShape(p)
+		  end if
 		  currentshape = currenthighlightedshape
 		  Finished = false
 		  #If TargetLinux Then
