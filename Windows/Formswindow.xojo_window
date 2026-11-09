@@ -620,7 +620,7 @@ End
 		    CurrentContent.CurrentOperation  = Op
 		    WorkWindow.refreshtitle
 		    Close
-		    WorkWindow.can.SetFocus
+		    WorkWindow.MyCanvas1.SetFocus
 		  end if
 		End Sub
 	#tag EndEvent
