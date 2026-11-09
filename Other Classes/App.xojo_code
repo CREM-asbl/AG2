@@ -247,7 +247,11 @@ Inherits DesktopApplication
 		    Return Nil
 		  End If
 		  If Not child.Exists Then
-		    child.CreateAsFolder
+		    Try
+		      child.CreateAsFolder
+		    Catch e As RuntimeException
+		      Return Nil
+		    End Try
 		  End If
 		  If Not child.Exists Then
 		    Return Nil
