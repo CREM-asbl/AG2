@@ -620,6 +620,7 @@ End
 		    CurrentContent.CurrentOperation  = Op
 		    WorkWindow.refreshtitle
 		    Close
+		    WorkWindow.can.SetFocus
 		  end if
 		End Sub
 	#tag EndEvent
@@ -636,8 +637,11 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
-		  
-		  return false
+		  #If TargetLinux Then
+		    return true
+		  #Else
+		    return false
+		  #Endif
 		End Function
 	#tag EndEvent
 #tag EndEvents

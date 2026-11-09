@@ -3378,7 +3378,7 @@ End
 		    #If Not TargetLinux Then
 		    can.mousecursor = System.Cursors.StandardPointer
 		    #Endif
-		    SetFocus
+		    can.SetFocus
 		  end if
 		End Sub
 	#tag EndEvent
