@@ -14,6 +14,8 @@ MULTI = Path("Operation Classes/MultipleSelect Operations/MultipleSelectOperatio
 SELECTIONNER = Path("Operation Classes/Selectionner.xojo_code")
 SELECT_OP = Path("Operation Classes/SelectOperation/SelectOperation.xojo_code")
 FORMS = Path("Windows/Formswindow.xojo_window")
+WORK = Path("Windows/WorkWindow.xojo_window")
+SHAPE_CONSTR = Path("Operation Classes/MultipleSelect Operations/ShapeConstruction.xojo_code")
 
 
 def _extract_method(text: str, sig: str) -> str:
@@ -101,6 +103,68 @@ def test_formswindow_setparams_shows_window():
         "FormsWindow.setParams: aucun Show/Visible explicite, fragile GTK3"
 
 
+def test_formswindow_action_restores_canvas_focus():
+    text = FORMS.read_text(encoding="utf-8")
+    in_action = False
+    body = []
+    for line in text.splitlines():
+        if line.strip().startswith("Sub Action("):
+            in_action = True
+            body = []
+            continue
+        if in_action:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    joined = "\n".join(body).lower()
+    assert "setfocus" in joined, \
+        "FormsWindow.Action: aucun SetFocus apres Close => focus perdu sous Linux GTK"
+
+
+def test_formswindow_bouton_mousedown_consumes_linux():
+    text = FORMS.read_text(encoding="utf-8")
+    in_md = False
+    body = []
+    for line in text.splitlines():
+        if line.strip().startswith("Function MouseDown("):
+            in_md = True
+            body = []
+            continue
+        if in_md:
+            if line.strip() == "End Function":
+                break
+            body.append(line)
+    joined = "\n".join(body)
+    low = joined.lower()
+    assert "targetlinux" in low and "return true" in low, \
+        "FormsWindow.Bouton.MouseDown: return false sous Linux => press/release ignores GTK"
+
+
+def test_workwindow_mouvbut_pressed_canvas_focus():
+    text = WORK.read_text(encoding="utf-8")
+    in_event = False
+    body = []
+    for line in text.splitlines():
+        if "Sub Pressed(index as Integer)" in line:
+            in_event = True
+            body = []
+            continue
+        if in_event:
+            if line.strip() == "End Sub":
+                break
+            body.append(line)
+    joined = "\n".join(body).lower()
+    assert "can.setfocus" in joined.replace(" ", ""), \
+        "WorkWindow.MouvBut.Pressed: SetFocus sur Self au lieu de can => focus canvas perdu Linux"
+
+
+def test_shapeconstruction_mousedown_fixecoord():
+    body = _extract_method(SHAPE_CONSTR.read_text(encoding="utf-8"), "MouseDown(")
+    assert body.strip(), "ShapeConstruction: MouseDown introuvable"
+    assert "fixecoord" in body.lower(), \
+        "ShapeConstruction.MouseDown: pas de Fixecoord => coordonnees perimees sans MouseMove Linux"
+
+
 if __name__ == "__main__":
     test_selectdrag_mousedown_hit_test_fallback()
     test_multipleselect_mousedown_hit_test_fallback()
@@ -108,4 +172,8 @@ if __name__ == "__main__":
     test_selectoperation_mousedown_hit_test_fallback()
     test_formswindow_paint_no_reposition()
     test_formswindow_setparams_shows_window()
+    test_formswindow_action_restores_canvas_focus()
+    test_formswindow_bouton_mousedown_consumes_linux()
+    test_workwindow_mouvbut_pressed_canvas_focus()
+    test_shapeconstruction_mousedown_fixecoord()
     print("OK: selection linux guards present")

@@ -344,6 +344,9 @@ Inherits MultipleSelectOperation
 
 	#tag Method, Flags = &h0
 		Sub MouseDown(p as BasicPoint)
+		  if currentshape <> nil and currentshape.isinconstruction then
+		    currentshape.Fixecoord(p, currentshape.IndexConstructedPoint)
+		  end if
 		  if SetItem(Currentshape) then
 		    Formswindow.close
 		    finished = false
