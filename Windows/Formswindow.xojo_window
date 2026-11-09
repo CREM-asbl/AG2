@@ -515,12 +515,14 @@ End
 		  
 		  refreshContent
 		  
-		  if not selection then
-		    left = WorkWindow.Left + WorkWindow.Tools.Width + 1
-		    top = WorkWindow.top + WorkWindow.StdBox.top
+		  if not Visible then
+		    if not selection then
+		      left = WorkWindow.Left + WorkWindow.Tools.Width + 1
+		      top = WorkWindow.top + WorkWindow.StdBox.top
+		    end if
+		    Visible = True
+		    Show
 		  end if
-		  Visible = True
-		  Show
 		  
 		  
 		End Sub
