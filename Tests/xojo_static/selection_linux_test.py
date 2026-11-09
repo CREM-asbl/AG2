@@ -117,8 +117,8 @@ def test_formswindow_action_restores_canvas_focus():
                 break
             body.append(line)
     joined = "\n".join(body).lower()
-    assert "setfocus" in joined, \
-        "FormsWindow.Action: aucun SetFocus apres Close => focus perdu sous Linux GTK"
+    assert "mycanvas1.setfocus" in joined.replace(" ", "") or "can.setfocus" in joined.replace(" ", ""), \
+        "FormsWindow.Action: aucun SetFocus canvas apres Close => focus perdu sous Linux GTK"
 
 
 def test_formswindow_bouton_mousedown_consumes_linux():
