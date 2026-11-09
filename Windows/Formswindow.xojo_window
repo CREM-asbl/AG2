@@ -509,10 +509,17 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setParams(k as integer, f as integer, selection As boolean)
+		  if contentInit and k = lastKit and f = lastFam and selection = lastSelection and Visible then
+		    return
+		  end if
 		  kit = k
 		  fam = f
 		  self.selection = selection
-		  
+		  lastKit = k
+		  lastFam = f
+		  lastSelection = selection
+		  contentInit = true
+
 		  refreshContent
 		  
 		  if not Visible then
@@ -575,6 +582,22 @@ End
 
 	#tag Property, Flags = &h0
 		selection As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastKit As integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastFam As integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastSelection As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private contentInit As Boolean = false
 	#tag EndProperty
 
 
