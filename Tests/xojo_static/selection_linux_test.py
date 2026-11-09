@@ -95,6 +95,13 @@ def test_formswindow_paint_no_reposition():
         "FormsWindow.Paint repositionne left/top => boucle paint/move sous Linux"
 
 
+def test_formswindow_setparams_stable_position():
+    body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
+    assert body.strip(), "FormsWindow: setParams introuvable"
+    low = body.lower()
+    assert "if not visible then" in low, \
+        "FormsWindow.setParams: repositionne a chaque appel => fenetre saute WSLg, clic manuel rate"
+
 def test_formswindow_setparams_shows_window():
     body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
     assert body.strip(), "FormsWindow: setParams introuvable"
@@ -186,6 +193,7 @@ if __name__ == "__main__":
     test_selectionner_mousedown_hit_test_fallback()
     test_selectoperation_mousedown_hit_test_fallback()
     test_formswindow_paint_no_reposition()
+    test_formswindow_setparams_stable_position()
     test_formswindow_setparams_shows_window()
     test_formswindow_action_restores_canvas_focus()
     test_formswindow_bouton_mousedown_consumes_linux()
