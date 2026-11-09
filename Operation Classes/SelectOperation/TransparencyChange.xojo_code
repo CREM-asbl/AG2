@@ -39,7 +39,11 @@ Inherits SelectOperation
 	#tag Method, Flags = &h0
 		Sub ImmediateDoOperation(f as integer)
 		  if tempshape.count > 0 then
-		    can.Mousecursor = System.Cursors.Wait
+		    #If TargetLinux Then
+		      can.Mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      can.Mousecursor = System.Cursors.Wait
+		    #Endif
 		    WorkWindow.refreshtitle
 		    DoOperation
 		    endoperation

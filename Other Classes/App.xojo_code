@@ -26,6 +26,21 @@ Inherits DesktopApplication
 
 	#tag Event
 		Sub Opening()
+		  Dim cliArgs() As String = System.CommandLine.Split(" ")
+		  For Each arg As String In cliArgs
+		    If arg = "--help" Or arg = "--version" Then
+		      Dim cliMsg As String = "Apprenti Geometre 2 " + FullVersion + " - application graphique ; lancez sans argument sous DISPLAY/Xvfb."
+		      System.DebugLog(cliMsg)
+		      Quit(0)
+		      Return
+		    End If
+		  Next
+		  Dim noSplash As Boolean = False
+		  For Each arg As String In cliArgs
+		    If arg = "--no-splash" Then
+		      noSplash = True
+		    End If
+		  Next
 		  CheckSystem
 		  InitFolders
 		  Dico = new Dictionnaire
@@ -33,10 +48,41 @@ Inherits DesktopApplication
 		  api.init 
 		  LabelDefault = new LabelParams
 		  themacros = new macroslist
-		  initWindow.ShowModal
-		  Config.ChargerConfig
+		  If noSplash Then
+		    quiet = True
+		    System.DebugLog("splash skipped (--no-splash)")
+		    If Config.Menu = "" Then
+		      Config.Menu = "Menu_AC"
+		    End If
+		    If Config.username = "" Then
+		      Config.username = Dico.Value("Enseignant")
+		    End If
+		    If Config.user = "" Then
+		      Config.user = "pup"
+		    End If
+		    System.DebugLog("nosplash defaults user=" + Config.user)
+		  Else
+		    System.DebugLog("splash showing")
+		    initWindow.ShowModal
+		    System.DebugLog("splash closed")
+		  End If
+		  System.DebugLog("avant ChargerConfig")
+		  #If TargetLinux Then
+		    Try
+		      Config.ChargerConfig
+		    Catch err As RuntimeException
+		      System.DebugLog("AG2: ChargerConfig erreur: " + err.Message + ", menu par defaut.")
+		      Config.Menu = "Menu_AC"
+		      Config.ChargerConfig
+		    End Try
+		  #Else
+		    Config.ChargerConfig
+		  #Endif
+		  System.DebugLog("apres ChargerConfig")
 		  Tampon = new ObjectsList
+		  System.DebugLog("apres ObjectsList")
 		  WorkWindow.Show
+		  System.DebugLog("WorkWindow visible")
 		End Sub
 	#tag EndEvent
 
@@ -49,7 +95,12 @@ Inherits DesktopApplication
 		  dim f as FolderItem
 		  
 		  
-		  if CurrentContent = nil or CurrentContent.bugfound then
+		  if CurrentContent = nil then
+		    System.DebugLog("AG2 fatal: " + Introspection.GetType(error).FullName + " #" + Str(error.ErrorNumber) + " " + error.Message)
+		    return false
+		  end if
+		  if CurrentContent.bugfound then
+		    System.DebugLog("AG2 fatal: " + error.Message)
 		    return true
 		  end if
 		  
@@ -101,7 +152,10 @@ Inherits DesktopApplication
 		      log = log + st(i) + EndOfLine
 		    next
 		    
-		    f = SpecialFolder.Documents.Parent
+		    f = SpecialFolder.Documents
+		    if f <> nil then
+		      f = f.Parent
+		    end if
 		    if f <> nil then
 		      log = log + "Createur : " + f.Name + EndOfLine
 		    end if
@@ -158,6 +212,10 @@ Inherits DesktopApplication
 		  dicos.append "English"
 		  dicos.append "PortuguesBr"
 		  
+		  If DctFolder = Nil Then
+		    System.DebugLog("AG2: DctFolder indisponible, dictionnaires par defaut.")
+		    Return dicos
+		  End If
 		  for i=1 to DctFolder.count
 		    nom = app.DctFolder.trueItem(i).Name
 		    if right(nom,4)=".dct" then
@@ -180,31 +238,77 @@ Inherits DesktopApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function EnsureFolder(parent As FolderItem, name As String) As FolderItem
+		  If parent = Nil Then
+		    Return Nil
+		  End If
+		  Dim child As FolderItem = parent.Child(name)
+		  If child = Nil Then
+		    Return Nil
+		  End If
+		  If Not child.Exists Then
+		    Try
+		      child.CreateAsFolder
+		    Catch e As RuntimeException
+		      Return Nil
+		    End Try
+		  End If
+		  If Not child.Exists Then
+		    Return Nil
+		  End If
+		  Return child
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub InitFolders()
+		  Dim baseDocs As FolderItem
 		  AppFolder=GetFolderItem("")
 		  #if DebugBuild then
 		    AppFolder = AppFolder.Parent
 		  #endif
-		  DocFolder = SpecialFolder.Documents.Child("Apprenti geometre")
-		  if not DocFolder.Exists then
-		    DocFolder.CreateAsFolder
-		  end if
-		  MacFolder = DocFolder.Child("Macros")
-		  if not MacFolder.Exists then
-		    MacFolder.CreateAsFolder
-		  end if
-		  MenusFolder = DocFolder.Child("Menus")
-		  if not MenusFolder.Exists then
-		    MenusFolder.CreateAsFolder
-		  end if
-		  StdFolder = DocFolder.Child("StdFiles")
-		  if not StdFolder.Exists then
-		    StdFolder.CreateAsFolder
-		  end if
-		  DctFolder = DocFolder.Child("Dictionaries")
-		  if not DctFolder.Exists then
-		    DctFolder.CreateAsFolder
-		  end if
+		  baseDocs = SpecialFolder.Documents
+		  If baseDocs = Nil Then
+		    baseDocs = SpecialFolder.ApplicationData
+		  End If
+		  If baseDocs = Nil Then
+		    baseDocs = AppFolder
+		  End If
+		  If baseDocs = Nil Then
+		    System.DebugLog("AG2 fatal: aucun dossier utilisateur accessible (Documents/ApplicationData).")
+		    Quit(1)
+		    Return
+		  End If
+		  DocFolder = EnsureFolder(baseDocs, "Apprenti geometre")
+		  If DocFolder = Nil Then
+		    System.DebugLog("AG2 fatal: impossible de creer le dossier utilisateur.")
+		    Quit(1)
+		    Return
+		  End If
+		  MacFolder = EnsureFolder(DocFolder, "Macros")
+		  If MacFolder = Nil Then
+		    System.DebugLog("AG2 fatal: impossible de creer le dossier Macros.")
+		    Quit(1)
+		    Return
+		  End If
+		  MenusFolder = EnsureFolder(DocFolder, "Menus")
+		  If MenusFolder = Nil Then
+		    System.DebugLog("AG2 fatal: impossible de creer le dossier Menus.")
+		    Quit(1)
+		    Return
+		  End If
+		  StdFolder = EnsureFolder(DocFolder, "StdFiles")
+		  If StdFolder = Nil Then
+		    System.DebugLog("AG2 fatal: impossible de creer le dossier StdFiles.")
+		    Quit(1)
+		    Return
+		  End If
+		  DctFolder = EnsureFolder(DocFolder, "Dictionaries")
+		  If DctFolder = Nil Then
+		    System.DebugLog("AG2 fatal: impossible de creer le dossier Dictionaries.")
+		    Quit(1)
+		    Return
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -219,6 +323,10 @@ Inherits DesktopApplication
 		  menus.append "Menu_AB"
 		  menus.append "Menu_AC"
 		  
+		  If MenusFolder = Nil Then
+		    System.DebugLog("AG2: MenusFolder indisponible, menus par defaut.")
+		    Return menus
+		  End If
 		  for i=1 to MenusFolder.count
 		    nom = MenusFolder.trueItem(i).Name
 		    if right(nom,4)=".men" then
@@ -294,6 +402,10 @@ Inherits DesktopApplication
 		  stdfiles.append "reglettes"
 		  stdfiles.append "etoiles"
 		  
+		  If StdFolder = Nil Then
+		    System.DebugLog("AG2: StdFolder indisponible, fichiers standards par defaut.")
+		    Return stdfiles
+		  End If
 		  for i=1 to StdFolder.count
 		    nom = app.StdFolder.trueItem(i).Name
 		    if right(nom,4)=".std" then

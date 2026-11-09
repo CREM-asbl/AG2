@@ -48,7 +48,11 @@ Inherits SelectOperation
 		      switch = true
 		      WorkWindow.switchcolors
 		    end if
-		    can.mousecursor = system.Cursors.Wait
+		    #If TargetLinux Then
+		      can.mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      can.mousecursor = system.Cursors.Wait
+		    #Endif
 		    
 		    gprint.DrawPicture can.BackgroundPicture, printLeft, printTop, printWidth, printHeight, 0, 0, can.Width, can.Height
 		    can.mousecursor = System.Cursors.StandardPointer

@@ -27,7 +27,7 @@ Begin DesktopWindow TextWindow
    Begin DesktopTextArea EF
       AllowAutoDeactivate=   True
       AllowFocusRing  =   True
-      AllowSpellChecking=   True
+      AllowSpellChecking=   False
       AllowStyledText =   True
       AllowTabs       =   False
       BackgroundColor =   &cFFFFFF
@@ -87,8 +87,13 @@ End
 		  EF.height = height
 		  EF.ReadOnly = true
 		  EF.BackgroundColor=&cFFFFFF
-		  
-		  Afficher
+		  #If TargetLinux Then
+		    EF.AllowSpellChecking = False
+		    EF.Visible = False
+		    System.DebugLog("textwindow opening spellcheck off")
+		  #Else
+		    Afficher
+		  #Endif
 		End Sub
 	#tag EndEvent
 
@@ -106,6 +111,20 @@ End
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Activated()
+		  #If TargetLinux Then
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		    EF.MouseCursor = System.Cursors.StandardPointer
+		    EF.Visible = True
+		    System.DebugLog("textwindow activated cursor forced")
+		    If Not mAffiche Then
+		      mAffiche = True
+		      Afficher
+		    End If
+		  #Endif
+		End Sub
+	#tag EndEvent
 
 	#tag Method, Flags = &h0
 		Sub Afficher()
@@ -127,6 +146,11 @@ End
 		  tab = 0
 		  if sc <> nil then
 		    EF.text = messages(sc)
+		    #If TargetLinux Then
+		      EF.AllowSpellChecking = False
+		      EF.MouseCursor = System.Cursors.StandardPointer
+		      System.DebugLog("AG2: TextWindow.xojo_window:147 cursor=StandardPointer")
+		    #Endif
 		    return
 		  end if
 		  
@@ -153,6 +177,11 @@ End
 		  for i = 0 to Macs.count-1
 		    EF.Text = EF.Text + Macs.item(i).caption +chr(10)
 		  next
+		  #If TargetLinux Then
+		    EF.AllowSpellChecking = False
+		    EF.MouseCursor = System.Cursors.StandardPointer
+		    System.DebugLog("AG2: textwindow afficher cursor reasserted.")
+		  #Endif
 		  
 		End Sub
 	#tag EndMethod
@@ -523,12 +552,19 @@ End
 		tab As Integer
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private mAffiche As Boolean = False
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events EF
 	#tag Event
 		Sub TextChanged()
+		  #If TargetLinux Then
+		    If Not mAffiche Then Return
+		  #Endif
 		  self.Afficher
 		End Sub
 	#tag EndEvent

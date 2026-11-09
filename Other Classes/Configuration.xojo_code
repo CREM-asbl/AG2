@@ -35,10 +35,16 @@ Protected Class Configuration
 		  case "Menu_AC"
 		    C = new XMLDocument(Menu_AC)
 		  else
+		    If app.MenusFolder = Nil Then
+		      System.DebugLog("AG2: MenusFolder indisponible, menu par defaut.")
+		      Menu = "Menu_AC"
+		      Return
+		    End If
 		    fi = app.MenusFolder.Child(Menu+".men")
-		    if not  fi.exists  then
-		      MsgBox  Dico.Value("Cfg") +  " " + Menu + " " + Dico.Value("Introuvable")
-		      quit
+		    if fi = nil or not fi.exists then
+		      System.DebugLog("AG2: menu introuvable : " + Menu + ", menu par defaut.")
+		      Menu = "Menu_AC"
+		      Return
 		    else
 		      C=new XMLDocument(fi)
 		    end if
@@ -289,9 +295,15 @@ Protected Class Configuration
 		  case "Etoiles.std"
 		    Doc = new XMLDocument(etoiles)
 		  else
+		    If app.StdFolder = Nil Then
+		      System.DebugLog("AG2: StdFolder indisponible, formes par defaut.")
+		      stdfile = "jeu_de_base"
+		      Return
+		    End If
 		    fi = app.StdFolder.Child(std)
-		    if not fi.exists then
-		      MsgBox Dico.Value("FileMenu") + " " + std + Dico.Value("Introuvable")
+		    if fi = nil or not fi.exists then
+		      System.DebugLog("AG2: formes introuvables : " + std + ", jeu par defaut.")
+		      stdfile = "jeu_de_base"
 		      return
 		    end if
 		    Doc = new XMLDocument(fi)
@@ -303,7 +315,11 @@ Protected Class Configuration
 		  Famlist = EL.XQL("Famille")
 		  NstdFam = Famlist.Length
 		  if nstdfam > 4 then
-		    MsgBox TooManyFiles(stdfile) + EndOfLine + only4
+		    #If TargetLinux Then
+		      System.DebugLog("AG2: " + TooManyFiles(stdfile) + " " + only4)
+		    #Else
+		      MsgBox TooManyFiles(stdfile) + EndOfLine + only4
+		    #Endif
 		    nstdfam = 4
 		  end if
 
@@ -405,6 +421,14 @@ Protected Class Configuration
 		  dim lastmaj,f() as String
 
 		  initParams
+		  If app.DocFolder = Nil Then
+		    System.DebugLog("AG2: DocFolder indisponible, configuration par defaut.")
+		    setLangue("Francais")
+		    Menu = "Menu_AC"
+		    StdSize = 1
+		    Thickness = 1.5
+		    Return
+		  End If
 		  fi=app.DocFolder.Child("AG_Init.xml")
 
 		  password = hash("")
@@ -558,6 +582,10 @@ Protected Class Configuration
 
 	#tag Method, Flags = &h0
 		Sub Save()
+		  If app.DocFolder = Nil Then
+		    System.DebugLog("AG2: DocFolder indisponible, configuration non sauvegardee.")
+		    Return
+		  End If
 		  dim fi As FolderItem
 		  dim tos as TextOutputStream
 		  dim Doc as XMLDocument
@@ -591,9 +619,13 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 
 		  //enregistrement du document XML
 		  fi=app.DocFolder.Child("AG_Init.xml")
+		  if fi = nil then
+		    System.DebugLog("AG2: DocFolder indisponible, configuration non sauvegardee.")
+		    Return
+		  end if
 		  tos=TextOutputStream.Create(fi)
 		  if tos =nil then
-		    MsgBox Dico.Value("AGInitNotUpdatable")
+		    System.DebugLog("AG2: AG_Init.xml non modifiable.")
 		  else
 		    tos.write(Doc.ToString)
 		    tos.close
@@ -630,8 +662,12 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 		    m  = "Menu_AC"
 		  end if
 		  Menu = m
-		  ChargerConfig
-		  save
+		  Try
+		    ChargerConfig
+		    save
+		  Catch err As RuntimeException
+		    System.DebugLog("setMenu erreur: " + err.Message)
+		  End Try
 
 		End Sub
 	#tag EndMethod

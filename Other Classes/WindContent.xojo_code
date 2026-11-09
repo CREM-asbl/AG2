@@ -454,7 +454,9 @@ Protected Class WindContent
 		  addshape currentoperation.currentshape
 		  AddOperation(CurrentOperation)
 		  CurrentOperation = nil
+		  #If Not TargetLinux Then
 		  can.mousecursor = System.Cursors.StandardPointer
+		  #Endif
 		  
 		End Sub
 	#tag EndMethod
@@ -473,13 +475,21 @@ Protected Class WindContent
 		  
 		  childs = Split(directory,"/")
 		  fi=App.DocFolder
+		  If fi = Nil Then
+		    System.DebugLog("AG2: DocFolder indisponible, historique non accessible.")
+		    Return Nil
+		  End If
 		  
 		  for i=0 to UBound(childs)
 		    fi = fi.Child(childs(i))
+		    if fi = nil then
+		      System.DebugLog("AG2: dossier historique inaccessible.")
+		      return nil
+		    end if
 		    if not fi.Exists then
 		      fi.CreateAsFolder
 		      if not fi.Exists then
-		        MsgBox Dico.Value("ErrorOnSave")+ " " + Dico.Value("Nowritingpermission")
+		        System.DebugLog("AG2: permission d'ecriture refusee pour l'historique.")
 		        return nil
 		      end if
 		    end if
@@ -766,7 +776,11 @@ Protected Class WindContent
 		  SaveHisto
 		  CurrentFileUpToDate=false
 		  curoper = CreerOperation(EL)
-		  can.Mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.cursors.wait
+		  #Endif
 		  can.ClearOffscreen
 		  CurOper.RedoOperation(EL)
 		  
@@ -970,7 +984,11 @@ Protected Class WindContent
 		  SaveHisto
 		  curoper = CreerOperation(EL)
 		  CurrentFileUpToDate=false
-		  can.Mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.cursors.wait
+		  #Endif
 		  CurOper.UndoOperation(EL)
 		  currentop = currentop-1
 		  

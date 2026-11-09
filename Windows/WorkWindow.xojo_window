@@ -796,11 +796,15 @@ End
 
 	#tag Event
 		Sub MenuBarSelected()
-		  If CurrentContent <> Nil And ( Not CurrentContent.currentoperation IsA shapeconstruction) Then
-		    MyCanvas1.mousecursor = System.Cursors.StandardPointer
-		  else
-		    setcross
-		  end if
+		  #If Not TargetLinux Then
+		    If CurrentContent = Nil Then
+		      can.mousecursor = System.Cursors.StandardPointer
+		    ElseIf CurrentContent.currentoperation IsA shapeconstruction Then
+		      can.mousecursor = System.Cursors.StandardPointer
+		    Else
+		      MyCanvas1.mousecursor = System.Cursors.StandardPointer
+		    End If
+		  #Endif
 
 		  dim B, B1, B2 as boolean
 		  dim item as MenuItem
@@ -890,19 +894,65 @@ End
 	#tag Event
 		Sub Opening()
 		  InitParams()
+		  #If TargetLinux Then
+		    System.DebugLog("AG2: WorkWindow opening")
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		  #Endif
 		  updateMenu
 		  NewContent(false)
 		  DrapShowall = false
 
-		  if MenuMenus.Child("EditMenu").Child("EditCopy").HasCheckMark  then
-		    DrapResel =  MenuBar.Child("EditMenu").Child("EditReselect").HasCheckMark
-		  end if
+		  Dim srcMenu As DesktopMenuItem = MenuMenus.Child("EditMenu")
+		  If srcMenu <> nil Then
+		    Dim srcItem As DesktopMenuItem = srcMenu.Child("EditCopy")
+		    If srcItem <> nil Then
+		      If srcItem.HasCheckMark Then
+		        Dim dstMenu As DesktopMenuItem = MenuBar.Child("EditMenu")
+		        If dstMenu <> nil Then
+		          Dim dstItem As DesktopMenuItem = dstMenu.Child("EditReselect")
+		          If dstItem <> nil Then
+		            DrapResel = dstItem.HasCheckMark
+		          Else
+		            System.DebugLog("AG2: menu EditReselect indisponible.")
+		          End If
+		        End If
+		      End If
+		    End If
+		  End If
 		  maximize
 		End Sub
 	#tag EndEvent
 
 	#tag Event
+		Sub Activated()
+		  #If TargetLinux Then
+		    System.DebugLog("AG2: WorkWindow activated")
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		    Dim i As Integer
+		    For i = 0 To 3
+		      StdOutil(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
+		    For i = 0 To 6
+		      LibOutils(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
+		  #Endif
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Resized()
+		  #If TargetLinux Then
+		    System.DebugLog("AG2: WorkWindow resized")
+		    Self.MouseCursor = System.Cursors.StandardPointer
+		    MyCanvas1.MouseCursor = System.Cursors.StandardPointer
+		    Dim i As Integer
+		    For i = 0 To 3
+		      StdOutil(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
+		    For i = 0 To 6
+		      LibOutils(i).MouseCursor = System.Cursors.StandardPointer
+		    Next
+		  #Endif
 		  can.resize
 		  can.RefreshBackground
 		End Sub
@@ -1979,7 +2029,11 @@ End
 
 		  if mousedispo then
 		    Formswindow.close
-		    MyCanvas1.Mousecursor = system.cursors.wait
+		    #If TargetLinux Then
+		      MyCanvas1.Mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      MyCanvas1.Mousecursor = system.cursors.wait
+		    #Endif
 		    if not (Config.username = "Enseignant") then
 		      OpenHistWindow.ShowModal
 		      f = OpenHistWindow.file
@@ -2349,15 +2403,30 @@ End
 		  next
 		  CopyCFGMenu
 
+		  Dim prefsMenu As DesktopMenuItem = menubar.Child("PrefsMenu")
+		  If prefsMenu = nil Then
+		    System.DebugLog("AG2: menu PrefsMenu indisponible.")
+		    Return
+		  End If
+
 		  if config.ajust then
-		    menubar.Child("PrefsMenu").Child("PrefsAjust").HasCheckMark = true
+		    If prefsMenu.Child("PrefsAjust") <> nil Then
+		      prefsMenu.Child("PrefsAjust").HasCheckMark = true
+		    End If
 		  end if
 
 		  if config.menu = "Menu_C" or config.menu = "Menu_AC" then
-		    if config.area = 0  then
-		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaArith").HasCheckMark = true
-		    else
-		      menubar.Child("PrefsMenu").Child("PrefsArea").Child("PrefsAreaAlg").HasCheckMark = true
+		    Dim prefsArea As DesktopMenuItem = prefsMenu.Child("PrefsArea")
+		    If prefsArea <> nil Then
+		      if config.area = 0  then
+		        If prefsArea.Child("PrefsAreaArith") <> nil Then
+		          prefsArea.Child("PrefsAreaArith").HasCheckMark = true
+		        End If
+		      else
+		        If prefsArea.Child("PrefsAreaAlg") <> nil Then
+		          prefsArea.Child("PrefsAreaAlg").HasCheckMark = true
+		        End If
+		      end if
 		    end if
 		  end if
 		End Sub
@@ -2547,7 +2616,17 @@ End
 
 	#tag Method, Flags = &h0
 		Function GetMenuItem(menu as string, sousmenu as string) As Boolean
-		  Return MenuMenus.Child(menu).Child(sousmenu).HasCheckMark
+		  Dim m As DesktopMenuItem = MenuMenus.Child(menu)
+		  If m = nil Then
+		    System.DebugLog("AG2: menu introuvable : " + menu)
+		    Return False
+		  End If
+		  Dim sm As DesktopMenuItem = m.Child(sousmenu)
+		  If sm = nil Then
+		    System.DebugLog("AG2: sous-menu introuvable : " + sousmenu)
+		    Return False
+		  End If
+		  Return sm.HasCheckMark
 		End Function
 	#tag EndMethod
 
@@ -2568,8 +2647,14 @@ End
 		Sub InitParams()
 		  can = mycanvas1
 
-		  width = screen(0).width -120
-		  height = screen(0).height
+		  If ScreenCount > 0 Then
+		    width = screen(0).width -120
+		    height = screen(0).height
+		  Else
+		    System.DebugLog("AG2: aucun ecran detecte, taille fenetre par defaut.")
+		    width = 800
+		    height = 600
+		  End If
 
 		  title = Config.username
 		  AcceptFileDrop(FileAGTypes.SAVE)
@@ -2697,7 +2782,10 @@ End
 		  dim mitem as MenuItem
 
 		  if (GetNumWindow<>-1) then
-		    MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = false
+		    Dim prevFen As DesktopMenuItem = MenuBar.Child("Fenetres")
+		    If prevFen <> nil Then
+		      prevFen.MenuAt(GetNumWindow).HasCheckMark = false
+		    End If
 		  end if
 
 
@@ -2710,8 +2798,13 @@ End
 		  mitem.Name = "winitem"
 		  mitem.index = GetNumWindow
 		  mitem.Text = Dico.Value("Figure") +"  " + str(numfig)
-		  MenuBar.Child("Fenetres").AddMenu mitem
-		  MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = true
+		  Dim fenMenu As DesktopMenuItem = MenuBar.Child("Fenetres")
+		  If fenMenu = nil Then
+		    System.DebugLog("AG2: menu Fenetres indisponible, contenu sans onglet.")
+		  Else
+		    fenMenu.AddMenu mitem
+		    fenMenu.MenuAt(GetNumWindow).HasCheckMark = true
+		  End If
 
 		End Sub
 	#tag EndMethod
@@ -2838,16 +2931,6 @@ End
 		Sub ScreenAdjust()
 		  MyCanvas1.Resize
 
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub setcross()
-		  if BackgroundColor = blanc then
-		    can.mousecursor = cross
-		  else
-		    can.mousecursor = whitecross
-		  end if
 		End Sub
 	#tag EndMethod
 
@@ -3292,11 +3375,9 @@ End
 		      CurrentContent.CurrentOperation = new redimensionner()
 		    end select
 		    refreshtitle
-		    if index <> 0 then
-		      can.mousecursor = System.Cursors.StandardPointer
-		    else
-		      WorkWindow.setcross
-		    end if
+		    #If Not TargetLinux Then
+		    can.mousecursor = System.Cursors.StandardPointer
+		    #Endif
 		    SetFocus
 		  end if
 		End Sub

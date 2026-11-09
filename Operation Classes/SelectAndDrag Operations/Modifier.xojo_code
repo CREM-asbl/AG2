@@ -280,7 +280,7 @@ Inherits SelectAndDragOperation
 		    return
 		  else
 		    super.mouseup(p)
-		    WorkWindow.setcross
+		    can.mousecursor = System.Cursors.StandardPointer
 		  end if
 		End Sub
 	#tag EndMethod
@@ -493,7 +493,11 @@ Inherits SelectAndDragOperation
 		  end if
 
 		  testfinished = false
-		  can.Mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.cursors.wait
+		  #Endif
 
 		  startpoint = p.bpt
 		  pointmobile = p
@@ -515,7 +519,7 @@ Inherits SelectAndDragOperation
 		    figs.restore
 		    figs.canceloldbpts
 		    figs.EnableModifyall
-		    WorkWindow.setcross
+		    can.mousecursor = System.Cursors.StandardPointer
 		    testfinished = true
 		    pointmobile = nil
 		    currentshape = nil

@@ -152,7 +152,11 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub MouseUp(p as BasicPoint)
 		  if drap and (drx <> lux) and (dry <> luy) then
-		    can.Mousecursor = System.Cursors.Wait
+		    #If TargetLinux Then
+		      can.Mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      can.Mousecursor = System.Cursors.Wait
+		    #Endif
 		    DoOperation
 		    EndOperation
 		  end if

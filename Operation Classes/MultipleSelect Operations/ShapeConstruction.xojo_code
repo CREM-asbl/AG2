@@ -295,7 +295,7 @@ Inherits MultipleSelectOperation
 		  Currentshape.InitConstruction
 		  Currentshape.IndexConstructedpoint = 0
 		  
-		  Workwindow.setcross
+		  can.mousecursor = System.Cursors.StandardPointer
 		End Sub
 	#tag EndMethod
 

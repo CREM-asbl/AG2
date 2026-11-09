@@ -347,7 +347,9 @@ Inherits Canvas
 		  End If
 
 		  p = mouseuser
+		  #If Not TargetLinux Then
 		  Mousecursor = System.Cursors.StandardPointer
+		  #Endif
 		  If dret = Nil And CurrentContent.CurrentOperation <> Nil and not currentContent.CurrentOperation isa Ouvrir Then
 		    currentcontent.currentoperation.mousemove(p)
 		    refreshbackground
@@ -724,6 +726,12 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub DemanderTextRefresh()
+		  mTextRefresh = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RefreshBackground()
 
 		  dim op As operation
@@ -775,9 +783,11 @@ Inherits Canvas
 		    BackgroundPicture.graphics.drawstring info, MouseCan.x, MouseCan.y  'Notif concernant taille des fontes
 		  end if
 
-		  if TextWindow.Visible then
-		    TextWindow.Afficher
-		  end if
+		  #If Not TargetLinux Then
+		    if TextWindow.Visible then
+		      TextWindow.Afficher
+		    end if
+		  #Endif
 
 		  refresh
 
@@ -1011,6 +1021,10 @@ Inherits Canvas
 
 	#tag Property, Flags = &h0
 		OKMess As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mTextRefresh As Boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

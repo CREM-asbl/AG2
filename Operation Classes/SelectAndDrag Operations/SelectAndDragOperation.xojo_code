@@ -253,7 +253,11 @@ Inherits SelectOperation
 		Sub MouseUp(p As BasicPoint)
 		  
 		  if  tempshape.count > 0 then
-		    can.MouseCursor = system.cursors.wait
+		    #If TargetLinux Then
+		      can.MouseCursor = System.Cursors.StandardPointer
+		    #Else
+		      can.MouseCursor = system.cursors.wait
+		    #Endif
 		    endoperation
 		  else
 		    super.mouseup(p)

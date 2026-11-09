@@ -51,7 +51,11 @@ Inherits Timer
 		  pas = niter
 		  oper.endpoint = oper.startpoint
 		  
-		  can.mousecursor = System.cursors.wait
+		  #If TargetLinux Then
+		    can.mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.mousecursor = System.cursors.wait
+		  #Endif
 		  
 		End Sub
 	#tag EndMethod

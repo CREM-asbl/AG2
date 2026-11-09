@@ -89,7 +89,11 @@ Inherits Timer
 		  
 		  curoper = AppliquerTsf(curop)
 		  curtsf = curop.tsf
-		  can.MouseCursor = system.Cursors.wait
+		  #If TargetLinux Then
+		    can.MouseCursor = System.Cursors.StandardPointer
+		  #Else
+		    can.MouseCursor = system.Cursors.wait
+		  #Endif
 		  niter = 60
 		  if curop.tsf.type <> 9 and curop.tsf.type <> 11 then
 		    M1 = curop.tsf.M.RacN(niter)

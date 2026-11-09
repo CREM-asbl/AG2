@@ -76,7 +76,11 @@ Inherits Operation
 		Sub MouseDown(p as BasicPoint)
 		  currentshape = currenthighlightedshape
 		  Finished = false
-		  can.Mousecursor = System.Cursors.Wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = System.Cursors.Wait
+		  #Endif
 		  DoOperation
 		  endoperation
 		  
