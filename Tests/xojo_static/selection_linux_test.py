@@ -165,6 +165,21 @@ def test_shapeconstruction_mousedown_fixecoord():
         "ShapeConstruction.MouseDown: pas de Fixecoord => coordonnees perimees sans MouseMove Linux"
 
 
+MODIFIER = Path("Operation Classes/SelectAndDrag Operations/Modifier.xojo_code")
+
+
+def test_modifier_mousedown_locks_shape_selection():
+    body = _extract_method(MODIFIER.read_text(encoding="utf-8"), "MouseDown(")
+    assert body.strip(), "Modifier: MouseDown introuvable"
+    low = body.lower()
+    assert "super.mousedown(p)" in low.replace(" ", ""), \
+        "Modifier.MouseDown: super.MouseDown manquant"
+    assert "selection" in low, \
+        "Modifier.MouseDown: aucun verrouillage selection quand testfinished=false => clic forme = no-op Linux"
+    assert "refreshtitle" in low, \
+        "Modifier.MouseDown: refreshtitle manquant apres verrouillage selection"
+
+
 if __name__ == "__main__":
     test_selectdrag_mousedown_hit_test_fallback()
     test_multipleselect_mousedown_hit_test_fallback()
@@ -176,4 +191,5 @@ if __name__ == "__main__":
     test_formswindow_bouton_mousedown_consumes_linux()
     test_workwindow_mouvbut_pressed_canvas_focus()
     test_shapeconstruction_mousedown_fixecoord()
+    test_modifier_mousedown_locks_shape_selection()
     print("OK: selection linux guards present")
