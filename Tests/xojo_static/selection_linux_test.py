@@ -102,6 +102,13 @@ def test_formswindow_setparams_stable_position():
     assert "if not visible then" in low, \
         "FormsWindow.setParams: repositionne a chaque appel => fenetre saute WSLg, clic manuel rate"
 
+def test_formswindow_setparams_skips_identical_content():
+    body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
+    assert body.strip(), "FormsWindow: setParams introuvable"
+    low = body.lower().replace(" ", "")
+    assert "lastkit" in low and "lastfam" in low, \
+        "FormsWindow.setParams: recalcule height/top a chaque appel => resize boucle WM WSLg"
+
 def test_formswindow_setparams_shows_window():
     body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
     assert body.strip(), "FormsWindow: setParams introuvable"
@@ -196,6 +203,7 @@ if __name__ == "__main__":
     test_selectoperation_mousedown_hit_test_fallback()
     test_formswindow_paint_no_reposition()
     test_formswindow_setparams_stable_position()
+    test_formswindow_setparams_skips_identical_content()
     test_formswindow_setparams_shows_window()
     test_formswindow_action_restores_canvas_focus()
     test_formswindow_bouton_mousedown_consumes_linux()
