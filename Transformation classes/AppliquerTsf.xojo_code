@@ -217,7 +217,11 @@ Inherits MultipleSelectOperation
 		    NextItem
 		    if FinishedSelecting then
 		      Finished = false
-		      can.Mousecursor = System.Cursors.Wait
+		      #If TargetLinux Then
+		        can.Mousecursor = System.Cursors.StandardPointer
+		      #Else
+		        can.Mousecursor = System.Cursors.Wait
+		      #Endif
 		      DoOperation
 		    end if
 		  end if
@@ -294,7 +298,11 @@ Inherits MultipleSelectOperation
 		    end if
 		    Help g, str
 		  else
-		    can.mousecursor = system.cursors.wait
+		    #If TargetLinux Then
+		      can.mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      can.mousecursor = system.cursors.wait
+		    #Endif
 		    Help g, wait
 		  end select
 		  

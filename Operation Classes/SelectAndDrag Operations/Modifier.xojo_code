@@ -493,7 +493,11 @@ Inherits SelectAndDragOperation
 		  end if
 
 		  testfinished = false
-		  can.Mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.cursors.wait
+		  #Endif
 
 		  startpoint = p.bpt
 		  pointmobile = p

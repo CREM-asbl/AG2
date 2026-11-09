@@ -72,7 +72,11 @@ Inherits Operation
 		  next
 		  CurrentContent.TheFigs.previdfig = fid
 		  
-		  can.Mousecursor = system.Cursors.wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = system.Cursors.wait
+		  #Endif
 		  CurrentContent.CurrentOperation=nil
 		  CurrentContent.SaveHisto
 		  CurrentContent.currentop = currentop
@@ -200,7 +204,11 @@ Inherits Operation
 		  
 		  OldTrace  = Config.Trace
 		  
-		  can.mousecursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.mousecursor = system.cursors.wait
+		  #Endif
 		  NOper = Histo.Childcount
 		  
 		  NewLang = Histo.GetAttribute(Dico.Value("Langage"))

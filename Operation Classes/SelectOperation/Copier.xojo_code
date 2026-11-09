@@ -51,7 +51,11 @@ Inherits SelectOperation
 		  end if
 		  
 		  Finished = false
-		  can.Mousecursor = System.Cursors.Wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = System.Cursors.Wait
+		  #Endif
 		  currentcontent.MoveFront(CurrentHighlightedShape.id)
 		  CurrentHighlightedShape.SelectNeighboor
 		  WorkWindow.refreshtitle

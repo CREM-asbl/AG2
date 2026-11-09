@@ -155,7 +155,11 @@ Inherits SelectOperation
 		Sub MouseDown(p as BasicPoint)
 
 		  Finished = false
-		  can.Mousecursor = System.Cursors.Wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = System.Cursors.Wait
+		  #Endif
 		  DoOperation
 		  endoperation
 

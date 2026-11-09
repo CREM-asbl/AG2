@@ -342,7 +342,11 @@ Inherits Operation
 	#tag Method, Flags = &h0
 		Sub ImmediateDoOperation()
 		  If tempshape.count > 0 Then
-		    can.Mousecursor = System.Cursors.Wait
+		    #If TargetLinux Then
+		      can.Mousecursor = System.Cursors.StandardPointer
+		    #Else
+		      can.Mousecursor = System.Cursors.Wait
+		    #Endif
 		    DoOperation
 		    endoperation
 		    if currentcontent.currentoperation isa Copier then
@@ -386,7 +390,11 @@ Inherits Operation
 		  
 		  selection
 		  Finished = false
-		  can.Mousecursor = System.Cursors.Wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = System.Cursors.Wait
+		  #Endif
 		  
 		  WorkWindow.refreshtitle
 		  DoOperation

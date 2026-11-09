@@ -565,7 +565,11 @@ Inherits SelectOperation
 		  f = getsavefolderitem(FileAGTypes.EPS, Titre)
 		  
 		  if f <> nil then
-		    can.MouseCursor= System.Cursors.wait
+		    #If TargetLinux Then
+		      can.MouseCursor = System.Cursors.StandardPointer
+		    #Else
+		      can.MouseCursor= System.Cursors.wait
+		    #Endif
 		    tos=TextoutputStream.create(f)
 		    creerprologueeps(tos)
 		    Body(tos,tempshape)

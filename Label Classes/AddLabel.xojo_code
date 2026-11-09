@@ -177,7 +177,11 @@ Inherits SelectAndDragOperation
 		    lab.correction = pos
 		  end if
 		  finished = false
-		  can.MouseCursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.MouseCursor = System.Cursors.StandardPointer
+		  #Else
+		    can.MouseCursor = system.cursors.wait
+		  #Endif
 		  
 		  DoOperation
 		  endoperation

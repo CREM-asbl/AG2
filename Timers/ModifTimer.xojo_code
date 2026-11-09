@@ -4,7 +4,11 @@ Inherits Timer
 	#tag Event
 		Sub Action()
 		  
-		  can.mousecursor = System.cursors.wait
+		  #If TargetLinux Then
+		    can.mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.mousecursor = System.cursors.wait
+		  #Endif
 		  oper.DoOper(BPInter)
 		  pas = pas-1
 		  
@@ -39,7 +43,11 @@ Inherits Timer
 	#tag Method, Flags = &h0
 		Sub Constructor(oper as SelectOperation)
 		  self.oper = oper
-		  can.MouseCursor = system.cursors.wait
+		  #If TargetLinux Then
+		    can.MouseCursor = System.Cursors.StandardPointer
+		  #Else
+		    can.MouseCursor = system.cursors.wait
+		  #Endif
 		  niter = 60
 		  pas = niter
 		  BPInter = oper.VectInter(niter)

@@ -129,7 +129,11 @@ Inherits SelectOperation
 		  Objects.Unselectall
 		  Objects.selectobject(CurrentHighLightedshape)
 		  Finished = false
-		  can.Mousecursor = System.Cursors.Wait
+		  #If TargetLinux Then
+		    can.Mousecursor = System.Cursors.StandardPointer
+		  #Else
+		    can.Mousecursor = System.Cursors.Wait
+		  #Endif
 		  WorkWindow.refreshtitle
 
 		  CurrentContent.Thefigs.removefigure remplacement.fig
