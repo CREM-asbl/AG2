@@ -244,7 +244,15 @@ Inherits SelectAndDragOperation
 		  super.MouseDown(p)
 
 		  if currentshape = nil or not testfinished  then
-		    return
+		    if currenthighlightedshape <> nil and not (currenthighlightedshape isa point) then
+		      selection
+		      currentshape = currenthighlightedshape
+		      finished = false
+		      WorkWindow.refreshtitle
+		    end if
+		    if currentshape = nil or not testfinished then
+		      return
+		    end if
 		  end if
 
 		  // Attention il y a une variable "pointmobile" dans la classe "Modifier" (ici) et une autre dans la classe figure
