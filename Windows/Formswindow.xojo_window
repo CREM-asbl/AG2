@@ -484,9 +484,11 @@ End
 		          end if
 		        end if
 		        Bouton(i).visible = true
-		      elseif i < config.nlibf(fam)+1 and (Config.libvisible(fam,i) or (CurrentContent.thegrid <> nil and fam = 6)) then
-		        Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i))
-		        Bouton(i).visible = true
+		      elseif i <= config.nlibf(fam) then
+		        if Config.libvisible(fam,i) or (CurrentContent.thegrid <> nil and fam = 6) then
+		          Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i))
+		          Bouton(i).visible = true
+		        end if
 		      end if
 		    end if
 		    
@@ -495,7 +497,9 @@ End
 		      newH = newH + Bouton(i).Height
 		    end if
 		  next
-		  height = newH
+		  if newH > 0 then
+		    height = newH
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -564,7 +568,7 @@ End
 		    s = s + config.nstdf(f) * 100000
 		  else
 		    s = s + config.nlibf(f) * 100000
-		    dim n as Integer = config.nlibf(f) + 1
+		    dim n as Integer = config.nlibf(f)
 		    for i as Integer = 0 to n
 		      if Config.libvisible(f, i) then
 		        s = s + (i + 1)
@@ -651,7 +655,7 @@ End
 #tag Events Bouton
 	#tag Event
 		Sub MouseEnter(index as Integer)
-		  if  not selection then
+		  if  not selection and kit = 0 then
 		    workwindow.selectedtool = fam
 		    reset(index)
 		  end if
