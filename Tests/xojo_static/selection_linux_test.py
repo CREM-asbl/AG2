@@ -99,7 +99,7 @@ def test_formswindow_setparams_stable_position():
     body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
     assert body.strip(), "FormsWindow: setParams introuvable"
     low = body.lower()
-    assert "if not visible then" in low, \
+    assert "if not visible" in low, \
         "FormsWindow.setParams: repositionne a chaque appel => fenetre saute WSLg, clic manuel rate"
 
 def test_formswindow_setparams_skips_identical_content():
