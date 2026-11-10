@@ -197,6 +197,47 @@ def test_modifier_mousedown_locks_shape_selection():
     assert "refreshtitle" in low, \
         "Modifier.MouseDown: refreshtitle manquant apres verrouillage selection"
 
+def _forms_event(text: str, sig: str, ender: str) -> str:
+    in_ev = False
+    body = []
+    for line in text.splitlines():
+        if not in_ev and line.strip().startswith(sig):
+            in_ev = True
+            body = []
+            continue
+        if in_ev:
+            if line.strip() == ender:
+                break
+            body.append(line)
+    return "\n".join(body)
+
+def test_formswindow_mouseenter_guards_libkit():
+    body = _forms_event(FORMS.read_text(encoding="utf-8"), "Sub MouseEnter(", "End Sub")
+    assert body.strip(), "FormsWindow.Bouton: MouseEnter introuvable"
+    assert "kit" in body.lower(), \
+        "FormsWindow.Bouton.MouseEnter: aucun distinguo kit => survol kit libre (fam 1..6) sans highlight"
+
+def test_formswindow_refreshcontent_bounds_libvisible():
+    body = _extract_method(FORMS.read_text(encoding="utf-8"), "refreshContent(")
+    assert body.strip(), "FormsWindow: refreshContent introuvable"
+    low = body.lower().replace(" ", "")
+    assert "i<=config.nlibf(fam)" in low, \
+        "FormsWindow.refreshContent: acces libvisible(fam,i) boucle 0..11 sans garde i<=nlibf => OOB"
+
+def test_formswindow_refreshcontent_height_floor():
+    body = _extract_method(FORMS.read_text(encoding="utf-8"), "refreshContent(")
+    assert body.strip(), "FormsWindow: refreshContent introuvable"
+    low = body.lower().replace(" ", "")
+    assert "ifnewh>0" in low, \
+        "FormsWindow.refreshContent: height=newH inconditionnel => hauteur 0 si aucun bouton visible"
+
+def test_formswindow_contentsig_no_oob():
+    body = _forms_event(FORMS.read_text(encoding="utf-8"), "Private Function contentSig(", "End Function")
+    assert body.strip(), "FormsWindow: contentSig introuvable"
+    low = body.lower().replace(" ", "")
+    assert "nlibf(f)+1" not in low, \
+        "FormsWindow.contentSig: borne nlibf+1 lit libvisible(f,nlibf+1) hors borne => setParams avorte"
+
 
 if __name__ == "__main__":
     test_selectdrag_mousedown_hit_test_fallback()
@@ -212,4 +253,8 @@ if __name__ == "__main__":
     test_workwindow_mouvbut_pressed_canvas_focus()
     test_shapeconstruction_mousedown_fixecoord()
     test_modifier_mousedown_locks_shape_selection()
+    test_formswindow_mouseenter_guards_libkit()
+    test_formswindow_refreshcontent_bounds_libvisible()
+    test_formswindow_refreshcontent_height_floor()
+    test_formswindow_contentsig_no_oob()
     print("OK: selection linux guards present")
