@@ -509,8 +509,10 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setParams(k as integer, f as integer, selection As boolean)
-		  if contentInit and k = lastKit and f = lastFam and selection = lastSelection and Visible then
-		    return
+		  dim workMoved as Boolean = (WorkWindow.Left <> lastWorkLeft or WorkWindow.top <> lastWorkTop)
+		  if contentInit and k = lastKit and f = lastFam and selection = lastSelection and Visible and not workMoved then
+		    Self.SetFocus
+		    Return
 		  end if
 		  kit = k
 		  fam = f
@@ -522,15 +524,17 @@ End
 
 		  refreshContent
 		  
-		  if not Visible then
+		  if not Visible or workMoved then
 		    if not selection then
 		      left = WorkWindow.Left + WorkWindow.Tools.Width + 1
 		      top = WorkWindow.top + WorkWindow.StdBox.top
 		    end if
+		    lastWorkLeft = WorkWindow.Left
+		    lastWorkTop = WorkWindow.top
 		    Visible = True
 		    Show
 		  end if
-		  
+		  Self.SetFocus
 		  
 		End Sub
 	#tag EndMethod
@@ -598,6 +602,14 @@ End
 
 	#tag Property, Flags = &h21
 		Private contentInit As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastWorkLeft As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastWorkTop As Integer = -1
 	#tag EndProperty
 
 
