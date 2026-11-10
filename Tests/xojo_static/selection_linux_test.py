@@ -108,6 +108,8 @@ def test_formswindow_setparams_skips_identical_content():
     low = body.lower().replace(" ", "")
     assert "lastkit" in low and "lastfam" in low, \
         "FormsWindow.setParams: recalcule height/top a chaque appel => resize boucle WM WSLg"
+    assert "contentsig" in low or "lastsig" in low, \
+        "FormsWindow.setParams: skip ignore TextSize/visibilite => taille non adaptative"
 
 def test_formswindow_setparams_shows_window():
     body = _extract_method(FORMS.read_text(encoding="utf-8"), "setParams(")
