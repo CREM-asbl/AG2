@@ -426,11 +426,6 @@ End
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  if not selection then
-		    left= WorkWindow.Left + Workwindow.Tools.Width+1
-		    top= WorkWindow.top + WorkWindow.StdBox.top
-		  end if 
-		  
 		  updateTextSize
 		End Sub
 	#tag EndEvent
@@ -459,7 +454,7 @@ End
 		      title = Dico.Value("Lacets")
 		    end select
 		  end 
-		  height = 0
+		  dim newH as Integer = 0
 		  for i as Integer = 0 to 11
 		    
 		    Bouton(i).Visible = false
@@ -496,10 +491,11 @@ End
 		    end if
 		    
 		    if Bouton(i).Visible then
-		      Bouton(i).top = height
-		      height = height + Bouton(i).Height
+		      Bouton(i).top = newH
+		      newH = newH + Bouton(i).Height
 		    end if
 		  next
+		  height = newH
 		End Sub
 	#tag EndMethod
 
@@ -514,12 +510,36 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setParams(k as integer, f as integer, selection As boolean)
+		  dim workMoved as Boolean = (WorkWindow.Left <> lastWorkLeft or WorkWindow.top <> lastWorkTop)
+		  dim sig as Integer = contentSig(k, f, selection)
+		  if contentInit and k = lastKit and f = lastFam and selection = lastSelection and sig = lastSig and Visible and not workMoved then
+		    Return
+		  end if
 		  kit = k
 		  fam = f
 		  self.selection = selection
-		  
+		  lastKit = k
+		  lastFam = f
+		  lastSelection = selection
+		  lastSig = sig
+		  contentInit = true
+
 		  refreshContent
 		  
+		  dim wasHidden as Boolean = (not Visible)
+		  if not Visible or workMoved then
+		    if not selection then
+		      left = WorkWindow.Left + WorkWindow.Tools.Width + 1
+		      top = WorkWindow.top + WorkWindow.StdBox.top
+		    end if
+		    lastWorkLeft = WorkWindow.Left
+		    lastWorkTop = WorkWindow.top
+		    Visible = True
+		    Show
+		    if wasHidden then
+		      Self.SetFocus
+		    end if
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -532,6 +552,30 @@ End
 		    Bouton(i).TextSize = Config.TextSize
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function contentSig(k as integer, f as integer, selection as boolean) As Integer
+		  dim s as Integer = Config.TextSize * 1000 + k * 100 + f
+		  if selection then
+		    s = s + 10000
+		  end if
+		  if k = 0 then
+		    s = s + config.nstdf(f) * 100000
+		  else
+		    s = s + config.nlibf(f) * 100000
+		    dim n as Integer = config.nlibf(f) + 1
+		    for i as Integer = 0 to n
+		      if Config.libvisible(f, i) then
+		        s = s + (i + 1)
+		      end if
+		    next
+		    if CurrentContent <> nil and CurrentContent.thegrid <> nil and f = 6 then
+		      s = s + 500
+		    end if
+		  end if
+		  return s
+		End Function
 	#tag EndMethod
 
 
@@ -571,6 +615,34 @@ End
 
 	#tag Property, Flags = &h0
 		selection As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastKit As integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastFam As integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastSelection As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private contentInit As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastWorkLeft As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastWorkTop As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastSig As Integer = -1
 	#tag EndProperty
 
 
@@ -618,6 +690,7 @@ End
 		    CurrentContent.CurrentOperation  = Op
 		    WorkWindow.refreshtitle
 		    Close
+		    WorkWindow.MyCanvas1.SetFocus
 		  end if
 		End Sub
 	#tag EndEvent
@@ -634,7 +707,6 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
-		  
 		  return false
 		End Function
 	#tag EndEvent
