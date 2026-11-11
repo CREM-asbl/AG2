@@ -306,7 +306,7 @@ Inherits Canvas
 		  pp = itransform(p)
 		  curop = currentcontent.currentoperation
 
-		  Formswindow.close
+		  WorkWindow.FormsWindow.Visible = False
 		  If Not IsContextualClick Then
 		    If dret = Nil And Curop <> Nil Then
 		      p = New BasicPoint(x,y)

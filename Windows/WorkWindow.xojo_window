@@ -659,6 +659,35 @@ Begin DesktopWindow WorkWindow
          Width           =   112
       End
    End
+   Begin Formswindow FormsWindow
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   False
+      AllowTabs       =   False
+      Backdrop        =   0
+      BackgroundColor =   &cFFFFFF00
+      Composited      =   False
+      Enabled         =   True
+      HasBackgroundColor=   False
+      Height          =   360
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   123
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   215
+      Transparent     =   False
+      Visible         =   False
+      Width           =   200
+   End
 End
 #tag EndDesktopWindow
 
@@ -887,7 +916,9 @@ End
 
 	#tag Event
 		Sub Moved()
-		  Formswindow.Close
+		  if FormsWindow <> nil then
+		    FormsWindow.Visible = False
+		  end if
 		End Sub
 	#tag EndEvent
 
@@ -984,7 +1015,7 @@ End
 	#tag MenuHandler
 		Function DefinirCisaillement() As Boolean Handles DefinirCisaillement.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(11)
 		    refreshtitle
 		  end if
@@ -997,7 +1028,7 @@ End
 	#tag MenuHandler
 		Function DefinirDemiTour() As Boolean Handles DefinirDemiTour.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(3)
 		    refreshtitle
 		  end if
@@ -1008,7 +1039,7 @@ End
 	#tag MenuHandler
 		Function DefinirDeplacement() As Boolean Handles DefinirDeplacement.Action
 		  If mousedispo Then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(10)
 		    refreshtitle
 		  end if
@@ -1021,7 +1052,7 @@ End
 	#tag MenuHandler
 		Function DefinirEtirement() As Boolean Handles DefinirEtirement.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(9)
 		    refreshtitle
 		  end if
@@ -1033,7 +1064,7 @@ End
 	#tag MenuHandler
 		Function DefinirHomothetie() As Boolean Handles DefinirHomothetie.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(7)
 		    refreshtitle
 		  end if
@@ -1044,7 +1075,7 @@ End
 	#tag MenuHandler
 		Function DefinirQuartD() As Boolean Handles DefinirQuartD.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(5)
 		    refreshtitle
 		  end if
@@ -1055,7 +1086,7 @@ End
 	#tag MenuHandler
 		Function DefinirQuartG() As Boolean Handles DefinirQuartG.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(4)
 		    refreshtitle
 		  end if
@@ -1066,7 +1097,7 @@ End
 	#tag MenuHandler
 		Function DefinirRotation() As Boolean Handles DefinirRotation.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(2)
 		    refreshtitle
 		  end if
@@ -1077,7 +1108,7 @@ End
 	#tag MenuHandler
 		Function DefinirSimilitude() As Boolean Handles DefinirSimilitude.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(8)
 		    refreshtitle
 		  end if
@@ -1088,7 +1119,7 @@ End
 	#tag MenuHandler
 		Function DefinirSymetrieaxiale() As Boolean Handles DefinirSymetrieaxiale.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(6)
 		    refreshtitle
 		  end if
@@ -1099,7 +1130,7 @@ End
 	#tag MenuHandler
 		Function DefinirTranslation() As Boolean Handles DefinirTranslation.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new TransfoConstruction(1)
 		    refreshtitle
 		  end if
@@ -1110,7 +1141,7 @@ End
 	#tag MenuHandler
 		Function EditCopy() As Boolean Handles EditCopy.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    if CurrentContent.TheObjects.selection.count = 0 then
 		      dim vis as ObjectsList
 		      dim s as shape
@@ -1136,7 +1167,7 @@ End
 	#tag MenuHandler
 		Function EditDelete() As Boolean Handles EditDelete.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.theobjects.unselectall
 		    CurrentContent.CurrentOperation=new Delete()
 		    refreshtitle
@@ -1148,7 +1179,7 @@ End
 	#tag MenuHandler
 		Function EditLink() As Boolean Handles EditLink.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new Lier
 		    Lier(CurrentContent.CurrentOPeration).ImmediateDoOperation
 		    refreshtitle
@@ -1160,7 +1191,7 @@ End
 	#tag MenuHandler
 		Function EditPaste() As Boolean Handles EditPaste.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new Coller
 		    if app.tampon.count > 0 then
 		      Coller(CurrentContent.CurrentOperation).MouseDown(can.MouseUser)
@@ -1175,7 +1206,7 @@ End
 	#tag MenuHandler
 		Function EditRedo() As Boolean Handles EditRedo.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.RedoLastOperation
 		  end if
 		  return true
@@ -1193,7 +1224,7 @@ End
 	#tag MenuHandler
 		Function EditSelectall() As Boolean Handles EditSelectall.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Selectionner(true)
 		    CurrentContent.Currentoperation.Dooperation
 		    CurrentContent.Currentoperation.endoperation
@@ -1207,7 +1238,7 @@ End
 	#tag MenuHandler
 		Function EditSelection() As Boolean Handles EditSelection.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    if not CurrentContent.CurrentOperation isa selectionner or selectionner(CurrentContent.currentoperation).all = true  then
 		      CurrentContent.CurrentOperation=new Selectionner()
 		    end if
@@ -1228,7 +1259,7 @@ End
 	#tag MenuHandler
 		Function EditUnlink() As Boolean Handles EditUnlink.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.currentoperation = nil
 		    refreshtitle
 		    CurrentContent.CurrentOperation = new Delier
@@ -1287,7 +1318,7 @@ End
 	#tag MenuHandler
 		Function FileNew() As Boolean Handles FileNew.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    NewContent(false)
 		    refresh
 		  end if
@@ -1300,7 +1331,7 @@ End
 		  Dim f As FolderItem
 
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    f=GetOpenFolderItem(FileAGTypes.All)
 		    if f=nil then
 		      return true
@@ -1320,7 +1351,7 @@ End
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.currentoperation = nil
 		    refreshtitle
 		    CurrentContent.CurrentOperation = new Imprimer
@@ -1336,7 +1367,7 @@ End
 	#tag MenuHandler
 		Function FileSave() As Boolean Handles FileSave.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.Save
 		    refreshtitle
 		  end if
@@ -1347,7 +1378,7 @@ End
 	#tag MenuHandler
 		Function FileSaveAs() As Boolean Handles FileSaveAs.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.SaveAs
 		    refreshtitle
 		  end if
@@ -1358,7 +1389,7 @@ End
 	#tag MenuHandler
 		Function FileSaveBitmap() As Boolean Handles FileSaveBitmap.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new SaveBitMap
 		  end if
 		  return true
@@ -1368,7 +1399,7 @@ End
 	#tag MenuHandler
 		Function FileSaveEps() As Boolean Handles FileSaveEps.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new SaveEPS
 		    CurrentContent.currentoperation.finished = false
 		    SaveEPS(CurrentContent.CurrentOPeration).ImmediateDoOperation
@@ -1382,7 +1413,7 @@ End
 	#tag MenuHandler
 		Function FileSaveStd() As Boolean Handles FileSaveStd.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new SaveStd
 		    CurrentContent.currentoperation.finished = false
 		    SaveStd(CurrentContent.CurrentOPeration).ImmediateDoOperation
@@ -1425,7 +1456,7 @@ End
 		    mois.Append ("Décembre")
 
 
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    md = New MessageDialog
 		    md.Title = Dico.value("HelpAbout")
 		    md.Icon = 0
@@ -1461,7 +1492,7 @@ End
 	#tag MenuHandler
 		Function HelpView() As Boolean Handles HelpView.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    Config.ShowHelp = not Config.ShowHelp
 		    can.RefreshBackground
 		    MenuBar.Child("HelpMenu").Child("HelpView").HasCheckMark = Config.showhelp
@@ -1473,7 +1504,7 @@ End
 	#tag MenuHandler
 		Function HelpVisit() As Boolean Handles HelpVisit.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    ShowURL "http://www.crem.be/"
 		  end if
 		  return true
@@ -1495,7 +1526,7 @@ End
 		  Dim f As FolderItem
 
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    f=GetOpenFolderItem(FileAGTypes.Image)
 		    if f=nil then
 		      return true
@@ -1513,7 +1544,7 @@ End
 	#tag MenuHandler
 		Function MacrosChoose(index as Integer) As Boolean Handles MacrosChoose.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new MacroExe(index)
 		    refreshtitle
 		  end if
@@ -1540,7 +1571,7 @@ End
 
 	#tag MenuHandler
 		Function MacrosCreate() As Boolean Handles MacrosCreate.Action
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  newcontent(true)
 		  MenuMacros(true)
 		  can.resize
@@ -1571,7 +1602,7 @@ End
 		  dim mac as macro
 		  dim cf as Confirmation
 
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  currentcontent.currentoperation = nil
 		  refreshtitle
 
@@ -1598,7 +1629,7 @@ End
 	#tag MenuHandler
 		Function MacrosFinaux() As Boolean Handles MacrosFinaux.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=New ChooseFinal
 		    MenuBar.Child("MacrosMenu").Child("MacrosSave").visible = true
 		    refreshtitle
@@ -1615,7 +1646,7 @@ End
 		  dim mac as macro
 		  dim dlg as OpenDialog
 
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  currentcontent.currentoperation = nil
 		  refreshtitle
 		  dlg = new OpenDialog
@@ -1646,7 +1677,7 @@ End
 		Function MacrosSave() As Boolean Handles MacrosSave.Action
 		  dim op as operation
 
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  op = currentcontent.currentoperation
 		  if op isa choosefinal then
 		    choosefinal(op).endoperation
@@ -1660,7 +1691,7 @@ End
 	#tag MenuHandler
 		Function NotesOpen() As Boolean Handles NotesOpen.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    NotesWindow.visible = true
 		  end if
 		  return true
@@ -1670,7 +1701,7 @@ End
 	#tag MenuHandler
 		Function OperaClone() As Boolean Handles OperaClone.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Duplicate()
 		    refreshtitle
 		  end if
@@ -1681,7 +1712,7 @@ End
 	#tag MenuHandler
 		Function OperaCreateCenter() As Boolean Handles OperaCreateCenter.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new GCConstruction()
 		    GCConstruction(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
@@ -1693,7 +1724,7 @@ End
 	#tag MenuHandler
 		Function OperaCut() As Boolean Handles OperaCut.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Decouper()
 		    refreshtitle
 		  end if
@@ -1706,7 +1737,7 @@ End
 		  dim diw as DivideWindow
 
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    diw = new DivideWindow
 		    diw.ShowModal
 		    CurrentContent.CurrentOperation=new Divide(ntemp)
@@ -1719,7 +1750,7 @@ End
 	#tag MenuHandler
 		Function OperaIdentify() As Boolean Handles OperaIdentify.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Identifier()
 		    refreshtitle
 		  end if
@@ -1733,7 +1764,7 @@ End
 		Function OperaMerge() As Boolean Handles OperaMerge.Action
 
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Fusion()
 		    refreshtitle
 		  end if
@@ -1744,7 +1775,7 @@ End
 	#tag MenuHandler
 		Function OperaProl() As Boolean Handles OperaProl.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Prolonger()
 		    refreshtitle
 		  end if
@@ -1803,7 +1834,7 @@ End
 
 	#tag MenuHandler
 		Function PrefsColorBorder() As Boolean Handles PrefsColorBorder.Action
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  refreshtitle
 		  ConfigcolorChange(True)
 		  Return True
@@ -1812,7 +1843,7 @@ End
 
 	#tag MenuHandler
 		Function PrefsColorFill() As Boolean Handles PrefsColorFill.Action
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  refreshtitle
 		  configcolorChange(False)
 
@@ -1825,7 +1856,7 @@ End
 	#tag MenuHandler
 		Function PrefsColorStdFam() As Boolean Handles PrefsColorStdFam.Action
 		  CurrentContent.currentoperation = Nil
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  refreshtitle
 		  drapstdcolor = true
 		  return true
@@ -1878,7 +1909,7 @@ End
 		  if mousedispo then
 		    CurrentContent.CurrentOperation = nil
 		    refreshtitle
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    StdFormsWindow.ShowModal
 		    Refresh
 		  end if
@@ -1919,7 +1950,7 @@ End
 	#tag MenuHandler
 		Function PrefsUAChoix() As Boolean Handles PrefsUAChoix.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Unit(1)
 		    refreshtitle
 		  end if
@@ -1930,7 +1961,7 @@ End
 	#tag MenuHandler
 		Function PrefsUADef() As Boolean Handles PrefsUADef.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Unit(3)
 		    refreshtitle
 		  end if
@@ -1945,7 +1976,7 @@ End
 	#tag MenuHandler
 		Function PrefsULChoix() As Boolean Handles PrefsULChoix.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Unit(0)
 		    refreshtitle
 		  end if
@@ -1956,7 +1987,7 @@ End
 	#tag MenuHandler
 		Function PrefsULDef() As Boolean Handles PrefsULDef.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Unit(2)
 		    refreshtitle
 		  end if
@@ -1971,7 +2002,7 @@ End
 	#tag MenuHandler
 		Function ToolsARPlan() As Boolean Handles ToolsARPlan.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new ChangePosition(0)
 		    ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
 		    refreshtitle
@@ -1983,7 +2014,7 @@ End
 	#tag MenuHandler
 		Function ToolsAvPlan() As Boolean Handles ToolsAvPlan.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new ChangePosition(1)
 		    ChangePosition(CurrentContent.Currentoperation).ImmediateDoOperation
 		    refreshtitle
@@ -2001,7 +2032,7 @@ End
 	#tag MenuHandler
 		Function ToolsGrid() As Boolean Handles ToolsGrid.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new CreateGrid()
 		    Refresh
 		  end if
@@ -2012,7 +2043,7 @@ End
 	#tag MenuHandler
 		Function ToolsHide() As Boolean Handles ToolsHide.Action
 		  If mousedispo Then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new Hide()
 		    Hide(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
@@ -2028,7 +2059,7 @@ End
 		  Dim dlg as OpenDialog
 
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    #If TargetLinux Then
 		      MyCanvas1.Mousecursor = System.Cursors.StandardPointer
 		    #Else
@@ -2059,7 +2090,7 @@ End
 	#tag MenuHandler
 		Function ToolsLabel() As Boolean Handles ToolsLabel.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new AddLabel()
 		    refreshtitle
 		  end if
@@ -2070,7 +2101,7 @@ End
 	#tag MenuHandler
 		Function ToolsOpq() As Boolean Handles ToolsOpq.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new TransparencyChange(100)
 		    TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
@@ -2084,7 +2115,7 @@ End
 	#tag MenuHandler
 		Function ToolsRigid() As Boolean Handles ToolsRigid.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new Rigidifier()
 		    Rigidifier(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
@@ -2096,7 +2127,7 @@ End
 	#tag MenuHandler
 		Function ToolsSTsp() As Boolean Handles ToolsSTsp.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new TransparencyChange(50)
 		    TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
@@ -2109,7 +2140,7 @@ End
 	#tag MenuHandler
 		Function ToolsThick1() As Boolean Handles ToolsThick1.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new Epaisseur(Config.Thickness)
 		    Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark = true
@@ -2123,7 +2154,7 @@ End
 	#tag MenuHandler
 		Function ToolsThick2() As Boolean Handles ToolsThick2.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation = new Epaisseur(1.5*Config.Thickness)
 		    Epaisseur(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    MenuBar.Child("ToolsMenu").Child("ToolsThickness").Child("ToolsThick1").HasCheckMark = false
@@ -2137,7 +2168,7 @@ End
 	#tag MenuHandler
 		Function ToolsTrace() As Boolean Handles ToolsTrace.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    MyCanvas1.ClearOffscreen
 		    CurrentContent.CurrentOperation = new Tracer()
 		    Tracer(CurrentContent.CurrentOperation).ImmediateDoOperation
@@ -2152,7 +2183,7 @@ End
 	#tag MenuHandler
 		Function ToolsTsp() As Boolean Handles ToolsTsp.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new TransparencyChange(0)
 		    TransparencyChange(CurrentContent.CurrentOperation).ImmediateDoOperation
 		    refreshtitle
@@ -2165,7 +2196,7 @@ End
 	#tag MenuHandler
 		Function TransfosAppliquer() As Boolean Handles TransfosAppliquer.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new AppliquerTsf()
 		    refreshtitle
 		  end if
@@ -2176,7 +2207,7 @@ End
 	#tag MenuHandler
 		Function TransfosFixedPoints() As Boolean Handles TransfosFixedPoints.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new FixPConstruction
 		    refreshtitle
 		  end if
@@ -2188,7 +2219,7 @@ End
 	#tag MenuHandler
 		Function TransfosHide() As Boolean Handles TransfosHide.Action
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    CurrentContent.CurrentOperation=new HideTsf
 		    refreshtitle
 		  end if
@@ -2232,7 +2263,7 @@ End
 		  dim oldOp as Operation
 
 		  if mousedispo then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    if index <> GetNumWindow then
 		      oldOp = CurrentContent.CurrentOperation
 		      MenuBar.Child("Fenetres").MenuAt(GetNumWindow).HasCheckMark = false
@@ -2304,7 +2335,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub CloseMacro()
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  deletecontent
 		  MenuMacros(false)
 
@@ -2351,7 +2382,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub configcolorchange(t as boolean)
-		  Formswindow.close
+		  FormsWindow.Visible = False
 		  CurrentContent.CurrentOperation = Nil
 		  refreshtitle
 		  Var col As Color
@@ -2667,11 +2698,19 @@ End
 
 	#tag Method, Flags = &h0
 		Sub LibBoxRefresh()
+		  if Config = nil then
+		    return
+		  end if
+		  if LibBox = nil then
+		    return
+		  end if
 		  LibBox.Visible = (Config.ShowTools and not draphisto) or (CurrentContent <> nil and CurrentContent.TheGrid <>nil)
 		  if LibBox.Visible then
 		    dim i as integer
 		    for i=0 to 6
-		      LibOutils(i).Visible =  Config.nlibvis(i) or (i = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
+		      if LibOutils(i) <> nil then
+		        LibOutils(i).Visible =  Config.nlibvis(i) or (i = 6 and CurrentContent <> nil and CurrentContent.TheGrid <> nil)
+		      end if
 		    next
 		  end if
 		  LibBox.Refresh
@@ -2827,7 +2866,7 @@ End
 		  end if
 
 		  if  CurrentContent.TheObjects.count > 1 then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    NewContent(false)
 		    nc = true
 		  end if
@@ -2940,14 +2979,32 @@ End
 		  dim dlx, dly, urx, ury as double
 		  dim specs as StdPolygonSpecifications
 
+		  if Config = nil then
+		    return
+		  end if
+		  if Fam < 0 or Fam > 3 then
+		    return
+		  end if
+		  if StdOutil(Fam) = nil then
+		    return
+		  end if
 		  StdOutil(fam).Visible = fam < Config.nstdfam
 
 		  if not StdOutil(fam).Visible then
 		    return
 		  end if
 
+		  if Form < 0 or Form > 12 then
+		    return
+		  end if
 		  h = stdoutil(fam).height
+		  if h <= 0 then
+		    return
+		  end if
 		  specs = config.stdfamilies(fam,form)
+		  if specs = nil then
+		    return
+		  end if
 
 		  if specs.family = "Cubes"   then
 		    ico(fam) = new Cubeskull(new BasicPoint(3, 0.5*h-6), form,1)
@@ -2955,7 +3012,9 @@ End
 		    ico(fam).x = 3
 		    ico(fam).y = h-taille-3
 		    Cubeskull(ico(fam)).updatesize(taille)
-		    ico(fam).fillcolor = config.stdcolor(fam).col
+		    if config.stdcolor(fam) <> nil then
+		      ico(fam).fillcolor = config.stdcolor(fam).col
+		    end if
 		    if form = 1 then
 		      ico(fam) = new Cubeskull(new BasicPoint (0.5*h-2,h-4), form,1)
 		      taille = 0.4*h
@@ -2968,7 +3027,9 @@ End
 		    ico(fam).x = 3
 		    ico(fam).y = h-taille-3
 		    Cubeskull(ico(fam)).updatesize(taille)
-		    cubeskull(ico(fam)).updatefillcolor(specs.coul.col,100)
+		    if specs.coul <> nil then
+		      cubeskull(ico(fam)).updatefillcolor(specs.coul.col,100)
+		    end if
 		  elseif  ubound(specs.angles) > 0 then                 'cas des polygonestd
 		    ico(Fam) = new LSkull(config.stdfamilies(fam,form))
 		    dlx =  LSkull(ico(Fam)).BB.First.x
@@ -2983,6 +3044,9 @@ End
 		    ico(fam).y =  (h-haut*taille)/4-dly*taille/2
 		    ico(fam).borderwidth = 0.02
 		  else                                                    'cas des cerclesstd
+		    if ubound(specs.distances) < 0 then
+		      return
+		    end if
 		    taille = 0.4*h*specs.distances(0)
 		    ico(fam) = new OvalShape
 		    ico(fam).borderwidth = 1
@@ -2991,7 +3055,12 @@ End
 		    ico(fam).x = (h -larg*taille)/4
 		    ico(fam).y = (h+haut*taille)/4
 		  end if                                                         'partie  commune
-		  ico(fam).bordercolor = Config.Bordercolor.col
+		  if ico(fam) = nil then
+		    return
+		  end if
+		  if Config.Bordercolor <> nil then
+		    ico(fam).bordercolor = Config.Bordercolor.col
+		  end if
 		  ico(fam).border = 100
 		  if specs.family = "Cubes" and form = 2 then
 		    ico(fam).fill = 0
@@ -2999,7 +3068,9 @@ End
 		    ico(fam).fill = 100
 		  end if
 		  if specs.family <> "Rods" then              'la couleur de fond d'une réglette varie avec la longueur, non la famille
-		    ico(fam).fillcolor = config.stdcolor(fam).col
+		    if config.stdcolor(fam) <> nil then
+		      ico(fam).fillcolor = config.stdcolor(fam).col
+		    end if
 		  end if
 		  ico(fam).borderwidth= 1/h
 
@@ -3026,13 +3097,21 @@ End
 		Sub StdBoxRefresh()
 		  dim i as integer
 
+		  if Config = nil then
+		    return
+		  end if
+		  if StdBox = nil then
+		    return
+		  end if
 		  if  Config.ShowStdTools and not draphisto then
 		    for i = 0 to 3
-		      if ( i < config.nstdfam ) then
-		        setico(i,0)
-		        StdOutil(i).visible = true
-		      else
-		        StdOutil(i).visible = false
+		      if StdOutil(i) <> nil then
+		        if ( i < config.nstdfam ) then
+		          setico(i,0)
+		          StdOutil(i).visible = true
+		        else
+		          StdOutil(i).visible = false
+		        end if
 		      end if
 		    next
 		    StdBox.visible = true
@@ -3359,7 +3438,7 @@ End
 		  end if
 
 		  If mousedispo Then
-		    Formswindow.close
+		    FormsWindow.Visible = False
 		    select case index
 		    case 0
 		      if currentcontent.Thefigs.count > 0 then
@@ -3418,7 +3497,9 @@ End
 		  else
 		    selectedTool = index
 		    drapico = true
-		    FormsWindow.setParams(0, SelectedTool, false)
+		    if FormsWindow <> nil then
+		      FormsWindow.setParams(0, SelectedTool, false)
+		    end if
 		  end if
 
 		End Sub
@@ -3433,12 +3514,18 @@ End
 	#tag Event
 		Sub Paint(index as Integer, g As Graphics, areas() As Rect)
 
+		  if Config = nil then
+		    return
+		  end if
+		  if index < 0 or index > 3 then
+		    return
+		  end if
 		  if index < Config.nstdfam then
 		    g.ForeColor = RGB(255,255,255)
 		    g.FillRect(0,0,g.Width,g.Height)
 		    if  ico(index) isa cubeskull  then
 		      cubeskull(ico(index)).paint(g)
-		    else
+		    elseif ico(index) <> nil then
 		      g.drawobject ico(index), ico(index).x, ico(index).y
 		    end if
 		  end if
@@ -3475,9 +3562,13 @@ End
 		    selectedTool = index
 		    Kit = "Libre"
 		    if selectedtool <> 0 then
-		      Formswindow.setParams(1, SelectedTool, false)
+		      if Self.FormsWindow <> nil then
+		        Self.FormsWindow.setParams(1, SelectedTool, false)
+		      end if
 		    else
-		      Formswindow.close
+		      if FormsWindow <> nil then
+		        FormsWindow.Visible = False
+		      end if
 		      CurrentContent.CurrentOperation = new ShapeConstruction(selectedtool, 0)  'cas du point
 		    end if
 		  end if

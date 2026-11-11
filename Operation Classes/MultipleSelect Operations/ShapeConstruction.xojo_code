@@ -348,7 +348,7 @@ Inherits MultipleSelectOperation
 		    currentshape.Fixecoord(p, currentshape.IndexConstructedPoint)
 		  end if
 		  if SetItem(Currentshape) then
-		    Formswindow.close
+		    WorkWindow.FormsWindow.Visible = False
 		    finished = false
 		    NextItem
 		    if CurrentItemToSet > NumberOfItemsToSelect then

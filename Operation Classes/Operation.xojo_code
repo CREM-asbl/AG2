@@ -29,7 +29,7 @@ Protected Class Operation
 
 	#tag Method, Flags = &h0
 		Sub Annuler()
-		  FormsWindow.close
+		  WorkWindow.FormsWindow.Visible = False
 		  If finished = True Then
 		    CurrentContent.UndoLastOperation
 		  end if
