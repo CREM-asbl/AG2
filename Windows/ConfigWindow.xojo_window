@@ -1307,7 +1307,7 @@ End
 #tag Events OKButton
 	#tag Event
 		Sub Action()
-		  Formswindow.close
+		  WorkWindow.FormsWindow.Visible = False
 		  WorkWindow.updatemenu
 		  Config.Save
 		  close
@@ -1356,17 +1356,17 @@ End
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
 		  if index = 0 then
-		    Formswindow.close
+		    WorkWindow.FormsWindow.Visible = False
 		    Config.nlibvis(0) = not config.nlibvis(0)
 		    WorkWindow.LibBoxRefresh
 		    me.Refresh
 		    return false
 		  end if
 		  
-		  FormsWindow.setParams(1, index, true)
-		  FormsWindow.left = self.left + me.left
-		  FormsWindow.top = self.top + me.Top+2*me.Height
-		  Formswindow.SetFocus
+		  WorkWindow.FormsWindow.setParams(1, index, true)
+		  WorkWindow.FormsWindow.Left = WorkWindow.Tools.Width + 1
+		  WorkWindow.FormsWindow.Top = WorkWindow.LibBox.Top
+		  WorkWindow.FormsWindow.Visible = True
 		  
 		  
 		  

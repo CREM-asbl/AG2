@@ -169,6 +169,10 @@ Inherits SelectOperation
 		  StartPoint = p
 		  EndPoint = p
 		  
+		  if currenthighlightedshape = nil then
+		    currenthighlightedshape = GetShape(p)
+		  end if
+
 		  if (CurrentHighlightedShape = nil) and (self isa modifier)    then
 		    return
 		  end if

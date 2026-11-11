@@ -1,35 +1,38 @@
 #tag DesktopWindow
-Begin DesktopWindow Formswindow
+Begin DesktopContainer Formswindow
+   AllowAutoDeactivate=   True
+   AllowFocus      =   False
+   AllowFocusRing  =   False
+   AllowTabs       =   False
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
-   Composite       =   False
-   DefaultLocation =   1
-   FullScreen      =   False
+   Composited      =   False
+   Enabled         =   True
    HasBackgroundColor=   False
-   HasCloseButton  =   True
-   HasFullScreenButton=   False
-   HasMaximizeButton=   False
-   HasMinimizeButton=   False
    Height          =   360
-   ImplicitInstance=   True
-   MacProcID       =   0
-   MaximumHeight   =   32000
-   MaximumWidth    =   32000
-   MenuBar         =   0
-   MenuBarVisible  =   True
-   MinimumHeight   =   64
-   MinimumWidth    =   64
-   Resizeable      =   False
-   Title           =   "Formes"
-   Type            =   3
-   Visible         =   True
+   Index           =   -2147483648
+   InitialParent   =   ""
+   Left            =   0
+   LockBottom      =   False
+   LockedInPosition=   False
+   LockLeft        =   True
+   LockRight       =   False
+   LockTop         =   True
+   Scope           =   0
+   TabIndex        =   0
+   TabPanelIndex   =   0
+   TabStop         =   True
+   Tooltip         =   ""
+   Top             =   0
+   Transparent     =   False
+   Visible         =   False
    Width           =   200
    Begin PushButton Bouton
       AutoDeactivate  =   False
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -53,7 +56,7 @@ Begin DesktopWindow Formswindow
       Top             =   0
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -61,7 +64,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -85,7 +88,7 @@ Begin DesktopWindow Formswindow
       Top             =   30
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -93,7 +96,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -117,7 +120,7 @@ Begin DesktopWindow Formswindow
       Top             =   60
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -125,7 +128,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -149,7 +152,7 @@ Begin DesktopWindow Formswindow
       Top             =   90
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -157,7 +160,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -181,7 +184,7 @@ Begin DesktopWindow Formswindow
       Top             =   120
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -189,7 +192,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -213,7 +216,7 @@ Begin DesktopWindow Formswindow
       Top             =   150
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -221,7 +224,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -245,7 +248,7 @@ Begin DesktopWindow Formswindow
       Top             =   180
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -253,7 +256,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -277,7 +280,7 @@ Begin DesktopWindow Formswindow
       Top             =   210
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -285,7 +288,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -309,7 +312,7 @@ Begin DesktopWindow Formswindow
       Top             =   240
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -317,7 +320,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -341,7 +344,7 @@ Begin DesktopWindow Formswindow
       Top             =   270
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -349,7 +352,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -373,7 +376,7 @@ Begin DesktopWindow Formswindow
       Top             =   300
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
    Begin PushButton Bouton
@@ -381,7 +384,7 @@ Begin DesktopWindow Formswindow
       Bold            =   True
       ButtonStyle     =   0
       Cancel          =   False
-      Caption         =   "Untitled"
+      Caption         =   ""
       Default         =   False
       Enabled         =   True
       Height          =   30
@@ -405,7 +408,7 @@ Begin DesktopWindow Formswindow
       Top             =   330
       Transparent     =   False
       Underline       =   False
-      Visible         =   True
+      Visible         =   False
       Width           =   200
    End
 End
@@ -426,11 +429,6 @@ End
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  if not selection then
-		    left= WorkWindow.Left + Workwindow.Tools.Width+1
-		    top= WorkWindow.top + WorkWindow.StdBox.top
-		  end if 
-		  
 		  updateTextSize
 		End Sub
 	#tag EndEvent
@@ -438,73 +436,138 @@ End
 
 	#tag Method, Flags = &h0
 		Sub refreshContent()
-		  select case kit
-		  case 0
-		    title = Dico.value("Famille") + " '"+ Dico.Value(Config.NamesStdFamilies(fam))+ "'"
-		  case 1
-		    select case fam
-		    case 1
-		      title = Dico.Value("Segments")
-		    case 2
-		      title = Dico.value("Triangles")
-		    case 3
-		      title = Dico.value("Quadris")
-		    case 4
-		      title = Dico.value("Polregs")
-		    case 5
-		      title = Dico.value("Arcs")
-		    case 6
-		      title = Dico.value("Polyqcqs")
-		    case 7
-		      title = Dico.Value("Lacets")
-		    end select
-		  end 
-		  height = 0
+		  if Dico = nil or Config = nil then
+		    for i as Integer = 0 to 11
+		      if Bouton(i) <> nil then
+		        if Bouton(i).Visible then
+		          Bouton(i).Visible = false
+		        end if
+		        if Bouton(i).Caption <> "" then
+		          Bouton(i).Caption = ""
+		        end if
+		      end if
+		    next
+		    lastSig = contentSig(kit, fam, selection)
+		    Return
+		  end if
+		  if kit < 0 or kit > 1 then
+		    Return
+		  end if
+		  if kit = 0 and (fam < 0 or fam > 3) then
+		    Return
+		  end if
+		  if kit = 1 and (fam < 0 or fam > 7) then
+		    Return
+		  end if
+
+		  dim sig as Integer = contentSig(kit, fam, selection)
+		  if contentInit and sig = lastSig then
+		    lastSig = sig
+		    Return
+		  end if
+
+		  dim changed as Boolean = False
+		  dim newH as Integer = 0
 		  for i as Integer = 0 to 11
-		    
-		    Bouton(i).Visible = false
-		    
-		    if kit = 0 and  i < config.nstdf(fam) then
-		      
-		      Bouton(i).caption = Dico.Value(Config.StdFamilies(fam, i).Name)
-		      Bouton(i).visible = true
-		      
-		    elseif  kit = 1 then
-		      
-		      if selection = true and i < config.nlibf(fam)+2 then
-		        if i = 0 then
-		          Bouton(i).bold = Config.nlibvis(fam)
-		          Bouton(i).italic = not Config.nlibvis(fam)
-		          if Config.nlibvis(fam) then
-		            Bouton(i).caption = Dico.Value("Retirer la famille complète")
+		    if Bouton(i) <> nil then
+		      dim wantVisible as Boolean = False
+		      dim wantCaption as String = ""
+		      dim wantBold as Boolean = False
+		      dim wantItalic as Boolean = False
+		      dim hasBold as Boolean = False
+
+		      if kit = 0 and i < config.nstdf(fam) then
+		        if Config.StdFamilies(fam, i) <> nil then
+		          wantCaption = Dico.Value(Config.StdFamilies(fam, i).Name)
+		          wantVisible = True
+		        end if
+		      elseif kit = 1 then
+		        if selection = true and i < config.nlibf(fam)+2 then
+		          if i = 0 then
+		            wantBold = Config.nlibvis(fam)
+		            wantItalic = not Config.nlibvis(fam)
+		            if Config.nlibvis(fam) then
+		              wantCaption = Dico.Value("Retirer la famille complète")
+		            else
+		              wantCaption = Dico.Value("Activer la famille complète")
+		            end if
 		          else
-		            Bouton(i).caption = Dico.Value("Activer la famille complète")
+		            wantBold = Config.libvisible(fam,i-1)
+		            wantItalic = not Config.libvisible(fam,i-1)
+		            wantCaption = Dico.Value(config.Libfamilies(fam,i-1))
+		            if Config.libvisible(fam,i-1) then
+		              wantCaption = wantCaption + " x"
+		            end if
 		          end if
-		        else
-		          Bouton(i).bold = Config.libvisible(fam,i-1)
-		          Bouton(i).italic = not Config.libvisible(fam,i-1)
-		          Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i-1))
-		          if Config.libvisible(fam,i-1) then
-		            Bouton(i).caption = Bouton(i).caption + " x"
+		          wantVisible = True
+		          hasBold = True
+		        elseif i <= config.nlibf(fam) then
+		          if Config.libvisible(fam,i) or (CurrentContent <> nil and CurrentContent.thegrid <> nil and fam = 6) then
+		            wantCaption = Dico.Value(config.Libfamilies(fam,i))
+		            wantVisible = True
 		          end if
 		        end if
-		        Bouton(i).visible = true
-		      elseif i < config.nlibf(fam)+1 and (Config.libvisible(fam,i) or (CurrentContent.thegrid <> nil and fam = 6)) then
-		        Bouton(i).caption = Dico.Value(config.Libfamilies(fam,i))
-		        Bouton(i).visible = true
+		      end if
+
+		      if Bouton(i).Visible <> wantVisible then
+		        Bouton(i).Visible = wantVisible
+		        changed = True
+		      end if
+
+		      if wantVisible then
+		        if Bouton(i).Caption <> wantCaption then
+		          Bouton(i).Caption = wantCaption
+		          changed = True
+		        end if
+		        if hasBold then
+		          if Bouton(i).Bold <> wantBold then
+		            Bouton(i).Bold = wantBold
+		            changed = True
+		          end if
+		          if Bouton(i).Italic <> wantItalic then
+		            Bouton(i).Italic = wantItalic
+		            changed = True
+		          end if
+		        end if
+		        if Bouton(i).Top <> newH then
+		          Bouton(i).Top = newH
+		          changed = True
+		        end if
+		        newH = newH + Bouton(i).Height
+		      else
+		        if Bouton(i).Caption <> "" then
+		          Bouton(i).Caption = ""
+		          changed = True
+		        end if
 		      end if
 		    end if
-		    
-		    if Bouton(i).Visible then
-		      Bouton(i).top = height
-		      height = height + Bouton(i).Height
-		    end if
 		  next
+
+		  if newH > 0 and height <> newH then
+		    height = newH
+		    changed = True
+		  end if
+
+		  lastSig = sig
+		  contentInit = True
+
+		  if changed then
+		    Me.Refresh
+		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub reset(n as integer)
+		  if Workwindow = nil or Config = nil then
+		    Return
+		  end if
+		  if fam < 0 or fam > 3 then
+		    Return
+		  end if
+		  if Workwindow.stdoutil(fam) = nil then
+		    Return
+		  end if
 		  if not selection and kit = 0  then
 		    Workwindow.setIco(fam,n)
 		    Workwindow.stdoutil(fam).refresh
@@ -514,24 +577,102 @@ End
 
 	#tag Method, Flags = &h0
 		Sub setParams(k as integer, f as integer, selection As boolean)
+		  if Config = nil or Dico = nil then
+		    Return
+		  end if
+		  if k < 0 or k > 1 then
+		    Return
+		  end if
+		  if k = 0 and (f < 0 or f > 3) then
+		    Return
+		  end if
+		  if k = 1 and (f < 0 or f > 7) then
+		    Return
+		  end if
+		  if WorkWindow = nil then
+		    Return
+		  end if
+		  if WorkWindow.Tools = nil or WorkWindow.StdBox = nil then
+		    Return
+		  end if
+		  dim workMoved as Boolean = (WorkWindow.Left <> lastWorkLeft or WorkWindow.top <> lastWorkTop)
+		  dim sig as Integer = contentSig(k, f, selection)
+		  if contentInit and k = lastKit and f = lastFam and selection = lastSelection and sig = lastSig and Visible and not workMoved then
+		    Return
+		  end if
 		  kit = k
 		  fam = f
 		  self.selection = selection
-		  
+		  lastKit = k
+		  lastFam = f
+		  lastSelection = selection
+		  contentInit = true
+
 		  refreshContent
 		  
+		  if not Visible or workMoved then
+		    if not selection then
+		      Left = WorkWindow.Tools.Width + 1
+		      Top = WorkWindow.StdBox.Top
+		    end if
+		    lastWorkLeft = WorkWindow.Left
+		    lastWorkTop = WorkWindow.top
+		    Visible = True
+		  end if
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub updateTextSize()
+		  if Config = nil then
+		    Return
+		  end if
 		  dim i as integer
 		  
 		  for i = 0 to 11
-		    Bouton(i).TextSize = Config.TextSize
+		    if Bouton(i) <> nil then
+		      Bouton(i).TextSize = Config.TextSize
+		    end if
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function contentSig(k as integer, f as integer, selection as boolean) As Integer
+		  if Config = nil then
+		    return 0
+		  end if
+		  if k < 0 or k > 1 then
+		    return 0
+		  end if
+		  if k = 0 and (f < 0 or f > 3) then
+		    return 0
+		  end if
+		  if k = 1 and (f < 0 or f > 7) then
+		    return 0
+		  end if
+		  dim s as Integer = Config.TextSize * 1000 + k * 100 + f
+		  if selection then
+		    s = s + 10000
+		  end if
+		  if k = 0 then
+		    s = s + config.nstdf(f) * 100000
+		  else
+		    s = s + config.nlibf(f) * 100000
+		    dim n as Integer = config.nlibf(f)
+		    if n > 10 then n = 10
+		    for i as Integer = 0 to n
+		      if Config.libvisible(f, i) then
+		        s = s + (i + 1)
+		      end if
+		    next
+		    if CurrentContent <> nil and CurrentContent.thegrid <> nil and f = 6 then
+		      s = s + 500
+		    end if
+		  end if
+		  return s
+		End Function
 	#tag EndMethod
 
 
@@ -573,13 +714,41 @@ End
 		selection As Boolean
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private lastKit As integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastFam As integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastSelection As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private contentInit As Boolean = false
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastWorkLeft As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastWorkTop As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lastSig As Integer = -1
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events Bouton
 	#tag Event
 		Sub MouseEnter(index as Integer)
-		  if  not selection then
+		  if  not selection and kit = 0 then
 		    workwindow.selectedtool = fam
 		    reset(index)
 		  end if
@@ -598,6 +767,10 @@ End
 		    WorkWindow.LibBoxRefresh
 		  else
 		    dim Op As Operation
+		    if CurrentContent = nil then
+		      Visible = False
+		      Return
+		    end if
 		    Op = CurrentContent.CurrentOperation
 		    
 		    if Op isa ShapeConstruction and Op.currentshape <> nil  and op.finished = false then
@@ -614,10 +787,15 @@ End
 		        Op=new ShapeConstruction(fam,index)
 		      end if
 		    end if
-		    CurrentContent.TheObjects.unselectAll
+		    if CurrentContent.TheObjects <> nil then
+		      CurrentContent.TheObjects.unselectAll
+		    end if
 		    CurrentContent.CurrentOperation  = Op
 		    WorkWindow.refreshtitle
-		    Close
+		    Visible = False
+		    if WorkWindow.MyCanvas1 <> nil then
+		      WorkWindow.MyCanvas1.SetFocus
+		    end if
 		  end if
 		End Sub
 	#tag EndEvent
@@ -634,7 +812,6 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(index as Integer, X As Integer, Y As Integer) As Boolean
-		  
 		  return false
 		End Function
 	#tag EndEvent
@@ -808,7 +985,7 @@ End
 		Name="ImplicitInstance"
 		Visible=true
 		Group="Behavior"
-		InitialValue="True"
+		InitialValue="False"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
@@ -885,18 +1062,10 @@ End
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Title"
-		Visible=true
-		Group="Frame"
-		InitialValue="Untitled"
-		Type="String"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
 		Name="Visible"
 		Visible=true
 		Group="Behavior"
-		InitialValue="True"
+		InitialValue="False"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
