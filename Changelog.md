@@ -30,6 +30,11 @@
 - chore(geometry): note TODO IntersectionSolver futur dans Intersec
 - fix(geometry): stabilise les branches d'intersection dans Intersec
 - test(geometry): oracle de memoire de branche stable (TDD)
+- fix(curseurs #71): force StandardPointer Linux, bypass splash, guards pre-realize, TextWindow differe, neutralise exception vide post-splash
+- feat(curseurs #75): supprime viseurs custom cross/whitecross
+- fix(macro #72): Continue For, GetRealId -1 sentinel + nil guards replay
+- fix(ouvrir #68): ChargerObjets private methods
+- feat(forms #77): integre FormsWindow container ancre, DesktopContainer Visible False, nil-guards, close->Visible False, stable WSLg
 
 ## Version 2.7.1 (depuis v2.7.0)
 
