@@ -3101,10 +3101,21 @@ Inherits Shape
 
 	#tag Method, Flags = &h0
 		Sub UpdateShape()
+		#if DebugBuild then
+		  Static dbgPointUpdateShapeCalls As Integer
+		  Static dbgPointUpdateShapeTime As Double
+		  Dim dbgPointUpdateShapeStart As Double
+		  dbgPointUpdateShapeStart = Microseconds
+		  dbgPointUpdateShapeCalls = dbgPointUpdateShapeCalls + 1
+		#endif
 		  Dim sh  As shape
 		  dim i as integer
 
 		  if bpt = nil then
+		    #if DebugBuild then
+		      dbgPointUpdateShapeTime = dbgPointUpdateShapeTime + (Microseconds - dbgPointUpdateShapeStart)
+		      System.DebugLog "AG2 profile Point.UpdateShape calls=" + Str(dbgPointUpdateShapeCalls) + " total_us=" + Str(dbgPointUpdateShapeTime)
+		    #endif
 		    return
 		  end if
 
@@ -3140,6 +3151,10 @@ Inherits Shape
 		    updateMacConstructedShapes
 		  end if
 		  endmove
+		  #if DebugBuild then
+		    dbgPointUpdateShapeTime = dbgPointUpdateShapeTime + (Microseconds - dbgPointUpdateShapeStart)
+		    System.DebugLog "AG2 profile Point.UpdateShape calls=" + Str(dbgPointUpdateShapeCalls) + " total_us=" + Str(dbgPointUpdateShapeTime)
+		  #endif
 
 
 
