@@ -427,6 +427,8 @@ Protected Class Configuration
 		    Menu = "Menu_AC"
 		    StdSize = 1
 		    Thickness = 1.5
+		    UUID = api.GenerateInstallationUUID()
+		    InstallationUUID = UUID
 		    Return
 		  End If
 		  fi=app.DocFolder.Child("AG_Init.xml")
@@ -515,12 +517,46 @@ Protected Class Configuration
 		        end if
 		      end if
 		    end if
+
+		    List = EL.XQL("UUID")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(EL1.FirstChild)
+		        if El2 <> nil then
+		          UUID = EL2.Value
+		          InstallationUUID = UUID
+		        end if
+		      end if
+		    end if
+
+		    List = EL.XQL("InstallationUUID")
+		    if List.Length>0 then
+		      EL1 = List.Item(0)
+		      if EL1 <> nil then
+		        El2=XMLTextNode(EL1.FirstChild)
+		        if El2 <> nil then
+		          InstallationUUID = EL2.Value
+		          if UUID = "" then
+		            UUID = InstallationUUID
+		          end if
+		        end if
+		      end if
+		    end if
+
+		    if UUID = "" then
+		      UUID = api.GenerateInstallationUUID()
+		      InstallationUUID = UUID
+		      Save
+		    end if
 		  else
 		    'Si AG_Init n'existe pas, on le recrée"
 		    setLangue("Francais")
 		    Menu = "Menu_AC"
 		    StdSize = 1
 		    Thickness = 1.5
+		    UUID = api.GenerateInstallationUUID()
+		    InstallationUUID = UUID
 		    Save
 		  end if
 
@@ -613,6 +649,12 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 
 	  EL4 = temp.AppendChild(Doc.CreateElement("LastInfo"))
 		  EL4.AppendChild(Doc.CreateTextNode(lastinfo))
+
+	  EL = temp.AppendChild(Doc.CreateElement("UUID"))
+	  EL.AppendChild(Doc.CreateTextNode(UUID))
+
+	  EL = temp.AppendChild(Doc.CreateElement("InstallationUUID"))
+	  EL.AppendChild(Doc.CreateTextNode(InstallationUUID))
 
 		  EL = temp.AppendChild(Doc.CreateElement("Thickness"))
 		  EL.SetAttribute("Value", str(Thickness))
@@ -1102,9 +1144,16 @@ EL2 = temp.AppendChild(Doc.CreateElement("Configuration"))
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Weightlesscolor As couleur
+		UUID As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		InstallationUUID As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Weightlesscolor As couleur
+	#tag EndProperty
 
 	#tag ViewBehavior
 		#tag ViewProperty
