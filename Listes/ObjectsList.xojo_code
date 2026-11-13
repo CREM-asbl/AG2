@@ -382,17 +382,28 @@ Inherits Liste
 
 	#tag Method, Flags = &h0
 		Function GetShape(id as integer) As shape
+		  #if DebugBuild then
+		    Static dbgObjectsListGetShapeCalls As Integer
+		    Static dbgObjectsListGetShapeTime As Double
+		    Dim dbgObjectsListGetShapeStart As Double
+		    dbgObjectsListGetShapeStart = Microseconds
+		    dbgObjectsListGetShapeCalls = dbgObjectsListGetShapeCalls + 1
+		  #endif
 		  // *** Optimisation avec cache ***
-		  // 1. Tenter de récupérer la forme depuis le cache pour une performance maximale.
+		  // 1. Tenter de r�cup�rer la forme depuis le cache pour une performance maximale.
 		  if mShapeCache <> nil and mShapeCache.HasKey(id) then
 		    dim sFromCache as Shape = mShapeCache.Value(id)
-		    // Vérifier que la forme n'a pas été supprimée entre-temps
+		    // V�rifier que la forme n'a pas �t� supprim�e entre-temps
 		    if sFromCache <> nil and not sFromCache.deleted then
+		  #if DebugBuild then
+		    dbgObjectsListGetShapeTime = dbgObjectsListGetShapeTime + (Microseconds - dbgObjectsListGetShapeStart)
+		    System.DebugLog "AG2 profile ObjectsList.GetShape calls=" + Str(dbgObjectsListGetShapeCalls) + " total_us=" + Str(dbgObjectsListGetShapeTime)
+		  #endif
 		      return sFromCache
 		    end if
 		  end if
 
-		  // 2. Si non trouvée dans le cache (cas de secours), parcourir la liste d'objets.
+		  // 2. Si non trouv�e dans le cache (cas de secours), parcourir la liste d'objets.
 		  dim i as integer
 		  dim s as Shape
 		  dim temp as Shape
@@ -400,13 +411,23 @@ Inherits Liste
 		    s = Shape(Objects(i))
 		    if not s.deleted then
 		      temp = GetShapeIn(s, id)
-		      if temp <> nil then return temp
+		      if temp <> nil then
+		  #if DebugBuild then
+		    dbgObjectsListGetShapeTime = dbgObjectsListGetShapeTime + (Microseconds - dbgObjectsListGetShapeStart)
+		    System.DebugLog "AG2 profile ObjectsList.GetShape calls=" + Str(dbgObjectsListGetShapeCalls) + " total_us=" + Str(dbgObjectsListGetShapeTime)
+		  #endif
+		        return temp
+		      end if
 		    end if
 		  next
+		  #if DebugBuild then
+		    dbgObjectsListGetShapeTime = dbgObjectsListGetShapeTime + (Microseconds - dbgObjectsListGetShapeStart)
+		    System.DebugLog "AG2 profile ObjectsList.GetShape calls=" + Str(dbgObjectsListGetShapeCalls) + " total_us=" + Str(dbgObjectsListGetShapeTime)
+		  #endif
 		  return nil
 
 		End Function
-	#tag EndMethod
+#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetShapeIn(s as Shape, id as Integer) As shape

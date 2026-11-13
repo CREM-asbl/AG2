@@ -3978,6 +3978,13 @@ Protected Class Figure
 
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
+		#if DebugBuild then
+		  Static dbgSubfigUpdateCalls As Integer
+		  Static dbgSubfigUpdateTime As Double
+		  Dim dbgSubfigUpdateStart As Double
+		  dbgSubfigUpdateStart = Microseconds
+		  dbgSubfigUpdateCalls = dbgSubfigUpdateCalls + 1
+		#endif
 		  ' DISPATCH PRINCIPAL : Met à jour une sous-figure suite à une modification de point.
 		  ' Applique la transformation appropriée selon le mode auto (similarité, affinité, spéciale, etc.).
 		  ' Gère aussi les cas dégénérés (pas de modification, formes libres, trapèzes, perpendiculaires).
@@ -4000,6 +4007,10 @@ Protected Class Figure
 
 		  ' Cas invalide
 		  if auto = -1 then
+		#if DebugBuild then
+		  dbgSubfigUpdateTime = dbgSubfigUpdateTime + (Microseconds - dbgSubfigUpdateStart)
+		  System.DebugLog "AG2 profile Figure.subfigupdate calls=" + Str(dbgSubfigUpdateCalls) + " total_us=" + Str(dbgSubfigUpdateTime)
+		#endif
 		    return false
 		  end if
 
@@ -4020,6 +4031,10 @@ Protected Class Figure
 		      ' Pour SIMILARITY, AFFINITY, SPECIAL: marquer pour reconstruction si besoin
 		      tobereconstructed = true
 		    end if
+		#if DebugBuild then
+		  dbgSubfigUpdateTime = dbgSubfigUpdateTime + (Microseconds - dbgSubfigUpdateStart)
+		  System.DebugLog "AG2 profile Figure.subfigupdate calls=" + Str(dbgSubfigUpdateCalls) + " total_us=" + Str(dbgSubfigUpdateTime)
+		#endif
 		    return true
 		  else
 		    ' Cas 2: Appliquer la matrice de transformation
@@ -4035,11 +4050,19 @@ Protected Class Figure
 
 		    if tobereconstructed then
 		      tobereconstructed = false
+		#if DebugBuild then
+		  dbgSubfigUpdateTime = dbgSubfigUpdateTime + (Microseconds - dbgSubfigUpdateStart)
+		  System.DebugLog "AG2 profile Figure.subfigupdate calls=" + Str(dbgSubfigUpdateCalls) + " total_us=" + Str(dbgSubfigUpdateTime)
+		#endif
 		      return true
 		    end if
 
 		    ' Valide la cohérence de la transformation
 		    result = checksimaff(M)
+		#if DebugBuild then
+		  dbgSubfigUpdateTime = dbgSubfigUpdateTime + (Microseconds - dbgSubfigUpdateStart)
+		  System.DebugLog "AG2 profile Figure.subfigupdate calls=" + Str(dbgSubfigUpdateCalls) + " total_us=" + Str(dbgSubfigUpdateTime)
+		#endif
 		    return result
 		  end if
 
