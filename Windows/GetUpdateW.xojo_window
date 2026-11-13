@@ -161,7 +161,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  showUrl("http://crem.be/logiciels/AG")
+		  showUrl("https://www.crem.be/logiciels/apprenti-geometre")
 		  Quit
 		End Sub
 	#tag EndEvent
