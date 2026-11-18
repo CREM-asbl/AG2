@@ -3553,14 +3553,27 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub Transform(M as Matrix)
 		  dim i As  Integer      // Utilisé pour les  mouvements Transform ne déplace pas les points qui sont "modified"
-
-		  if M <> nil and M.v1 <> nil then
-		    for i = 0 to npts-1
-		      Childs(i).Transform(M)
-		    next
-		    EndMove
+		#if DebugBuild then
+		  Static dbgShapeTransformCalls As Integer
+		  Static dbgShapeTransformPts As Integer
+		  Static dbgShapeTransformTime As Double
+		  Dim dbgShapeTransformStart As Double
+		  dbgShapeTransformStart = Microseconds
+		  dbgShapeTransformCalls = dbgShapeTransformCalls + 1
+		  dbgShapeTransformPts = dbgShapeTransformPts + npts
+		#endif
+		  if M <> nil then
+		    if M.v1 <> nil then
+		      for i = 0 to npts-1
+		        Childs(i).Transform(M)
+		      next
+		      EndMove
+		    end if
 		  end if
-
+		#if DebugBuild then
+		  dbgShapeTransformTime = dbgShapeTransformTime + (Microseconds - dbgShapeTransformStart)
+		  System.DebugLog "AG2 sweep Shape.Transform calls=" + Str(dbgShapeTransformCalls) + " pts=" + Str(dbgShapeTransformPts) + " total_us=" + Str(dbgShapeTransformTime)
+		#endif
 		End Sub
 	#tag EndMethod
 
@@ -3902,15 +3915,23 @@ Protected Class Shape
 	#tag Method, Flags = &h0
 		Sub updateshape(M as Matrix)
 		  dim i as integer    //Ici on s'occupe des points autres que les sommets
-
+		#if DebugBuild then
+		  Static dbgShapeUpdateshapeMCalls As Integer
+		  Static dbgShapeUpdateshapeMTime As Double
+		  Dim dbgShapeUpdateshapeMStart As Double
+		  dbgShapeUpdateshapeMStart = Microseconds
+		  dbgShapeUpdateshapeMCalls = dbgShapeUpdateshapeMCalls + 1
+		#endif
 		  if ubound(childs) >= npts then
 		    for i = npts to ubound(childs)
 		      childs(i).updateshape(M)
 		    next
 		  end if
 		  updateshape
-
-
+		#if DebugBuild then
+		  dbgShapeUpdateshapeMTime = dbgShapeUpdateshapeMTime + (Microseconds - dbgShapeUpdateshapeMStart)
+		  System.DebugLog "AG2 sweep Shape.updateshapeM calls=" + Str(dbgShapeUpdateshapeMCalls) + " total_us=" + Str(dbgShapeUpdateshapeMTime)
+		#endif
 		End Sub
 	#tag EndMethod
 

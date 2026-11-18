@@ -3909,72 +3909,6 @@ Protected Class Figure
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function helper_getTransformationMatrix() As Matrix
-		  ' Sélectionne et calcule la matrice de transformation selon le mode auto.
-		  ' Encapsule la logique de dispatch pour chaque mode de modification automatique.
-		  ' @return Matrice de transformation appropriée (ou nil si pas applicable)
-		  ' Modes supportés: FIXED, SIMILARITY, AFFINITY, SPECIAL, FREEFORM, TRAPEZOID, PERPENDICULAR
-		  const AUTO_FIXED = 0
-		  const AUTO_SIMILARITY = 1
-		  const AUTO_AFFINITY = 2
-		  const AUTO_SPECIAL = 3
-		  const AUTO_FREEFORM = 4
-		  const AUTO_TRAPEZOID = 5
-		  const AUTO_PERPENDICULAR = 7
-
-		  dim M as Matrix = nil
-
-		  select case auto
-		  case AUTO_FIXED
-		    if standard then
-		      M = autosimupdate
-		      ' Validation supplémentaire pour similarité: |det(M)-1| < ε
-		      if M <> nil and M.v1 <> nil and abs(M.det - 1) > epsilon then
-		        M = new Matrix(1)
-		      end if
-		    else
-		      ' Formes non-standard: mise à jour simple
-		      QQupdateshapes
-		      return nil  ' Signale que la mise à jour est déjà complète
-		    end if
-
-		  case AUTO_SIMILARITY
-		    M = autosimupdate
-
-		  case AUTO_AFFINITY
-		    M = autoaffupdate
-
-		  case AUTO_SPECIAL
-		    M = autospeupdate
-
-		  case AUTO_FREEFORM
-		    ' Formes quelconques: tous les points peuvent se modifier librement
-		    QQupdateshapes
-		    return nil  ' Signale que la mise à jour est déjà complète
-
-		  case AUTO_TRAPEZOID
-		    ' Trapèze: gestion spéciale avec vérification de parallèles
-		    if autotrapupdate then
-		      EndTrapupdateshapes
-		      return nil  ' Signale succès
-		    else
-		      return nil  ' Signale échec
-		    end if
-
-		  case AUTO_PERPENDICULAR
-		    ' Droites perpendiculaires/parallèles: gestion spéciale
-		    if Autoprppupdate then
-		      EndQQupdateshapes
-		      return nil  ' Signale succès
-		    else
-		      return nil  ' Signale échec
-		    end if
-		  end select
-
-		  return M
-		End Function
-	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function subfigupdate() As Boolean
@@ -3990,7 +3924,7 @@ Protected Class Figure
 		  ' Gère aussi les cas dégénérés (pas de modification, formes libres, trapèzes, perpendiculaires).
 		  '
 		  ' Algorithme :
-		  ' 1. Sélectionne matrice de transformation selon le mode auto (via helper_getTransformationMatrix)
+		  ' 1. Sélectionne matrice de transformation selon le mode auto (select direct inline)
 		  ' 2. Applique la transformation à tous les points, formes et points construits
 		  ' 3. Vérifie la cohérence finale via checksimaff()
 		  '
@@ -4014,15 +3948,70 @@ Protected Class Figure
 		    return false
 		  end if
 
-		  ' Utilise helper consolidé pour obtenir la matrice de transformation
-		  M = helper_getTransformationMatrix()
+		  ' Matrice inline : select direct, zero frame d'appel
+		  ' Sélectionne et calcule la matrice de transformation selon le mode auto.
+		  ' Encapsule la logique de dispatch pour chaque mode de modification automatique.
+		  ' @return Matrice de transformation appropriée (ou nil si pas applicable)
+		  ' Modes supportés: FIXED, SIMILARITY, AFFINITY, SPECIAL, FREEFORM, TRAPEZOID, PERPENDICULAR
+		  const AUTO_SIMILARITY = 1
+		  const AUTO_AFFINITY = 2
+		  const AUTO_FREEFORM = 4
+		  const AUTO_TRAPEZOID = 5
+		  const AUTO_PERPENDICULAR = 7
+
+
+		  select case auto
+		  case AUTO_FIXED
+		    if standard then
+		      M = autosimupdate
+		      ' Validation supplémentaire pour similarité: |det(M)-1| < ε
+		      if M <> nil and M.v1 <> nil and abs(M.det - 1) > epsilon then
+		        M = new Matrix(1)
+		      end if
+		    else
+		      ' Formes non-standard: mise à jour simple
+		      QQupdateshapes
+		    end if
+
+		  case AUTO_SIMILARITY
+		    M = autosimupdate
+
+		  case AUTO_AFFINITY
+		    M = autoaffupdate
+
+		  case AUTO_SPECIAL
+		    M = autospeupdate
+
+		  case AUTO_FREEFORM
+		    ' Formes quelconques: tous les points peuvent se modifier librement
+		    QQupdateshapes
+
+		  case AUTO_TRAPEZOID
+		    ' Trapèze: gestion spéciale avec vérification de parallèles
+		    if autotrapupdate then
+		      EndTrapupdateshapes
+		    end if
+
+		  case AUTO_PERPENDICULAR
+		    ' Droites perpendiculaires/parallèles: gestion spéciale
+		    if Autoprppupdate then
+		      EndQQupdateshapes
+		    end if
+		  end select
 
 		  ' Interprétation du résultat:
 		  ' - nil signifie: mise à jour déjà complète dans le helper (FREEFORM, TRAPEZOID, PERPENDICULAR)
 		  '   ou échec (TRAPEZOID/PERPENDICULAR retournent false)
 		  ' - matrix signifie: appliquer la transformation à tous les éléments
 
-		  if M = nil or M.v1 = nil then
+		  dim hasMatrix as Boolean = false
+		  if M <> nil then
+		    if M.v1 <> nil then
+		      hasMatrix = true
+		    end if
+		  end if
+
+		  if not hasMatrix then
 		    ' Cas 1: Pas de matrice à appliquer (déjà mis à jour ou erreur)
 		    if auto = AUTO_FIXED or auto > AUTO_SPECIAL then
 		      ' Pour FIXED (non-standard), FREEFORM, TRAPEZOID, PERPENDICULAR: update déjà fait
@@ -4225,6 +4214,15 @@ Protected Class Figure
 		Sub updateptsconsted(M as Matrix)
 		  Dim i As Integer
 		  dim p as point
+		#if DebugBuild then
+		  Static dbgUpdatePtsConstedCalls As Integer
+		  Static dbgUpdatePtsConstedPts As Integer
+		  Static dbgUpdatePtsConstedTime As Double
+		  Dim dbgUpdatePtsConstedStart As Double
+		  dbgUpdatePtsConstedStart = Microseconds
+		  dbgUpdatePtsConstedCalls = dbgUpdatePtsConstedCalls + 1
+		  dbgUpdatePtsConstedPts = dbgUpdatePtsConstedPts + PtsConsted.count
+		#endif
 
 		  if shapes.item(0) isa arc and not shapes.item(0).invalid then
 		    arc(shapes.item(0)).computearcangle
@@ -4241,6 +4239,10 @@ Protected Class Figure
 		    p.modified = true
 		    p.updateshape
 		  next
+		#if DebugBuild then
+		  dbgUpdatePtsConstedTime = dbgUpdatePtsConstedTime + (Microseconds - dbgUpdatePtsConstedStart)
+		  System.DebugLog "AG2 sweep updatePtsConsted calls=" + Str(dbgUpdatePtsConstedCalls) + " pts=" + Str(dbgUpdatePtsConstedPts) + " total_us=" + Str(dbgUpdatePtsConstedTime)
+		#endif
 
 		End Sub
 	#tag EndMethod
@@ -4249,6 +4251,15 @@ Protected Class Figure
 		Sub UpdatePtsSur(M as Matrix)
 		  Dim i As Integer
 		  dim p as point
+		#if DebugBuild then
+		  Static dbgUpdatePtsSurCalls As Integer
+		  Static dbgUpdatePtsSurPts As Integer
+		  Static dbgUpdatePtsSurTime As Double
+		  Dim dbgUpdatePtsSurStart As Double
+		  dbgUpdatePtsSurStart = Microseconds
+		  dbgUpdatePtsSurCalls = dbgUpdatePtsSurCalls + 1
+		  dbgUpdatePtsSurPts = dbgUpdatePtsSurPts + ptssur.count
+		#endif
 
 		  'Les pointssur doivent être considérés comme modifiés même si le déplacement est faible,(pour la mise à jour des formes dont ils sont sommets).
 		  for i = 0 to ptssur.count-1
@@ -4264,6 +4275,10 @@ Protected Class Figure
 		      p.updateshape
 		    end select
 		  next
+		#if DebugBuild then
+		  dbgUpdatePtsSurTime = dbgUpdatePtsSurTime + (Microseconds - dbgUpdatePtsSurStart)
+		  System.DebugLog "AG2 sweep UpdatePtsSur calls=" + Str(dbgUpdatePtsSurCalls) + " pts=" + Str(dbgUpdatePtsSurPts) + " total_us=" + Str(dbgUpdatePtsSurTime)
+		#endif
 		End Sub
 	#tag EndMethod
 
@@ -4289,7 +4304,18 @@ Protected Class Figure
 	#tag Method, Flags = &h0
 		Sub Updateshapes(M as Matrix)
 		  dim i as integer
+		#if DebugBuild then
+		  Static dbgUpdateshapesMCalls As Integer
+		  Static dbgUpdateshapesMShapes As Integer
+		  Static dbgUpdateshapesMTime As Double
+		  Dim dbgUpdateshapesMStart As Double
+		  dbgUpdateshapesMStart = Microseconds
+		  dbgUpdateshapesMCalls = dbgUpdateshapesMCalls + 1
+		#endif
 
+		#if DebugBuild then
+		  dbgUpdateshapesMShapes = dbgUpdateshapesMShapes + shapes.count
+		#endif
 		  for i = 0 to shapes.count-1
 		    if shapes.item(i) isa Circle  then
 		      Circle(shapes.item(i)).UpdatePtsConsted
@@ -4297,8 +4323,10 @@ Protected Class Figure
 		    shapes.item(i).updateshape(M)
 		    shapes.item(i).modified = true
 		  next
-
-
+		#if DebugBuild then
+		  dbgUpdateshapesMTime = dbgUpdateshapesMTime + (Microseconds - dbgUpdateshapesMStart)
+		  System.DebugLog "AG2 sweep UpdateshapesM calls=" + Str(dbgUpdateshapesMCalls) + " shapes=" + Str(dbgUpdateshapesMShapes) + " total_us=" + Str(dbgUpdateshapesMTime)
+		#endif
 
 		End Sub
 	#tag EndMethod
@@ -4307,8 +4335,19 @@ Protected Class Figure
 		Sub updatesomm(M as Matrix)
 		  dim i, nPoints as integer
 		  dim p as Point
+		#if DebugBuild then
+		  Static dbgUpdatesommCalls As Integer
+		  Static dbgUpdatesommPts As Integer
+		  Static dbgUpdatesommTime As Double
+		  Dim dbgUpdatesommStart As Double
+		  dbgUpdatesommStart = Microseconds
+		  dbgUpdatesommCalls = dbgUpdatesommCalls + 1
+		#endif
 
 		  nPoints = somm.count  ' Optimisation: Pré-cacher la taille pour éviter appels répétés
+		#if DebugBuild then
+		  dbgUpdatesommPts = dbgUpdatesommPts + nPoints
+		#endif
 		  for i = 0 to nPoints-1
 		    p = Point(somm.item(i))
 		    p.Transform(M)
@@ -4317,6 +4356,10 @@ Protected Class Figure
 		      p.modified = true    //déplacé ici pour un problème avec les macros (extrémité d'un arc placé sur une forme mac-construite)
 		    end if
 		  next
+		#if DebugBuild then
+		  dbgUpdatesommTime = dbgUpdatesommTime + (Microseconds - dbgUpdatesommStart)
+		  System.DebugLog "AG2 sweep updatesomm calls=" + Str(dbgUpdatesommCalls) + " pts=" + Str(dbgUpdatesommPts) + " total_us=" + Str(dbgUpdatesommTime)
+		#endif
 		End Sub
 	#tag EndMethod
 
