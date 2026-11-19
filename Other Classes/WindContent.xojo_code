@@ -975,35 +975,71 @@ Protected Class WindContent
 		  
 		  isaundoredo = true
 		  
+		  if Histo = nil then
+		    return
+		  end if
 		  if currentop = 0 or Histo.ChildCount = 0 then
 		    return
 		  end if
 		  
+		  if Histo.Child(currentop) = nil then
+		    return
+		  end if
 		  EL = XMLElement(Histo.Child(currentop))
-		  EL.SetAttribute("Undone","1")
+		  if EL = nil then
+		    return
+		  end if
+		  if EL <> nil then
+		    EL.SetAttribute("Undone","1")
+		  end if
 		  SaveHisto
 		  curoper = CreerOperation(EL)
-		  CurrentFileUpToDate=false
+		  if curoper = nil then
+		    return
+		  end if
+		  if curoper <> nil then
+		    CurrentFileUpToDate=false
+		  end if
 		  #If TargetLinux Then
-		    can.Mousecursor = System.Cursors.StandardPointer
+		    if can <> nil then
+		      can.Mousecursor = System.Cursors.StandardPointer
+		    end if
 		  #Else
-		    can.Mousecursor = system.cursors.wait
+		    if can <> nil then
+		      can.Mousecursor = system.cursors.wait
+		    end if
 		  #Endif
-		  CurOper.UndoOperation(EL)
+		  if CurOper <> nil then
+		    CurOper.UndoOperation(EL)
+		  end if
 		  currentop = currentop-1
 		  
-		  while currentop > 0 and Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
-		    currentop = currentop-1
-		  wend
+		  if XMLElement(Histo.Child(currentop)) <> nil then
+		    while currentop > 0 and Histo.Child(currentop) <> nil and val(XMLElement(Histo.child(currentop)).GetAttribute("Undone")) = 1
+		      currentop = currentop-1
+		    wend
+		  end if
 		  
-		  if WorkWindow.mousedispo then
-		    if curoper isa lier or curoper isa delier then
-		      curoper.paint(can.BackgroundPicture.graphics)
+		  if WorkWindow = nil then
+		    return
+		  end if
+		  if WorkWindow <> nil and WorkWindow.mousedispo then
+		    if curoper <> nil and (curoper isa lier or curoper isa delier) then
+		      if can <> nil and can.BackgroundPicture <> nil then
+		        curoper.paint(can.BackgroundPicture.graphics)
+		      end if
 		    end if
 		    isaundoredo = false
-		    can.Mousecursor = System.Cursors.StandardPointer
+		    if can <> nil then
+		      can.Mousecursor = System.Cursors.StandardPointer
+		    end if
 		  end if
-		  can.refreshbackground
+		  if can = nil then
+		    return
+		  end if
+		  if can <> nil then
+		    can.refreshbackground
+		  end if
 		  
 		  Exception err
 		    var d as Debug
