@@ -51,18 +51,40 @@ Inherits MultipleSelectOperation
 		  dim  s, newshape as shape
 		  dim i as integer
 		  
+				  if objects = nil or currentcontent = nil or currentcontent.TheObjects = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil objects/currentcontent")
+				    return nil
+				  end if
+				  if ifmac = nil or MacInfo = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil ifmac/MacInfo")
+				    return nil
+				  end if
 		  
 		  newshape = objects.createshape(ifmac.fa,ifmac.fo)
+				  if newshape = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil newshape")
+				    return nil
+				  end if
 		  newshape.auto=0
 		  
 		  newshape.initconstruction
 		  if ifmac.oper = 19 or ifmac.oper = 46 then
+				    if point(newshape) = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil point(newshape)")
+				      return newshape
+				    end if
 		    s = currentcontent.Theobjects.getshape(MacInfo.GetRealId(ifmac.forme0))
-		    point(newshape).puton s, ifmac.location
-		    point(newshape).ifmac = ifmac
+				    if s = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil s")
+				    else
+				      point(newshape).puton s, ifmac.location
+				      point(newshape).ifmac = ifmac
+				    end if
 		  end if
 		  if ifmac.oper = 1 and (ifmac.fo> 3)  then
-		    newshape.points(1).hide
+				    if newshape.npts > 1 then
+				      newshape.points(1).hide
+				    end if
 		    newshape.ncpts = 1
 		  end if
 		  newshape.ori = ifmac.ori
@@ -73,6 +95,10 @@ Inherits MultipleSelectOperation
 		  newshape.MacConstructedBy = MacInfo
 		  for i = 0 to ubound(MacInfo.Realinit)
 		    s = currentcontent.Theobjects.getshape(MacInfo.Realinit(i))
+				    if s = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil s Realinit i=" + Str(i))
+				      Continue For
+				    end if
 		    s.addMacConstructedshape newshape
 		  next
 		  
@@ -81,15 +107,13 @@ Inherits MultipleSelectOperation
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
 		  for i = 0 to newshape.npts-1
-		    if ifmac.childs(i).RealId = 0 then                           //cas où des points devront être identifiés
-		      ifmac.childs(i).RealId = newshape.points(i).id
+				    if i >= 0 and i <= Ubound(ifmac.childs) then
+				      if ifmac.childs(i) <> nil and ifmac.childs(i).RealId = 0 then                           //cas où des points devront être identifiés
+				        ifmac.childs(i).RealId = newshape.points(i).id
+				      end if
 		    end if
 		  next
 		  return newshape
-		  
-		  
-		  
-		  
 		  
 		End Function
 	#tag EndMethod
@@ -99,13 +123,28 @@ Inherits MultipleSelectOperation
 		  dim i, n as integer
 		  dim s as shape
 		  
-		  for i = 0 to ubound(MacInfo.RealFinal)           //Création des skulls des objets finaux
+				  if MacInfo = nil or objects = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil MacInfo/objects")
+				    return
+				  end if
+				  for i = 0 to ubound(MacInfo.RealFinal)
+				    if i < 0 or i > Ubound(MacInfo.RealFinal) then
+				      Continue For
+				    end if
 		    n = MacInfo.RealFinal(i)
 		    s = objects.GetShape(n)
+				    if s = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil s n=" + Str(n))
+				      Continue For
+				    end if
 		    if s isa point then
 		      s.createskull(point(s).bpt)
 		      point(s).mobility
 		    else
+				      if s.npts = 0 then
+				        System.DebugLog(CurrentMethodName + ": skip npts=0 n=" + Str(n))
+				        Continue For
+				      end if
 		      s.createskull(s.points(0).bpt)
 		    end if
 		  next
@@ -122,6 +161,14 @@ Inherits MultipleSelectOperation
 		  dim ifmac, ifm As InfoMac
 		  dim s, newshape as shape
 		  
+				  if Mac = nil or MacInfo = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Mac/MacInfo")
+				    return
+				  end if
+				  if objects = nil or currentcontent = nil or currentcontent.TheObjects = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil objects/currentcontent")
+				    return
+				  end if
 		  if EL = nil then
 		    System.DebugLog(CurrentMethodName + ": skip nil EL")
 		    return
@@ -148,12 +195,20 @@ Inherits MultipleSelectOperation
 		  
 		  //Pemière partie: création de l'infomac
 		  ifmac = new InfoMac(MacInfo, EL0,EL1,oper)
+				  if ifmac = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+				    return
+				  end if
 		  
 		  //Deuxième partie : adaptation selon la classe (init, interm, final)
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    ifmac.RealId =MacInfo.GetRealInit(n)
 		    ifmac.init = true
 		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+				    if s = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil s RealId=" + Str(ifmac.RealId))
+				      return
+				    end if
 		    if s isa point then
 		      ifmac.fo = point(s).forme
 		    end if
@@ -163,6 +218,12 @@ Inherits MultipleSelectOperation
 		      ifmac.RealSide = MacInfo.GetRealSide(n)
 		    end if
 		    for i = 0 to ifmac.npts-1
+				      if i < 0 or i > Ubound(ifmac.childs) then
+				        Continue For
+				      end if
+				      if ifmac.childs(i) = nil then
+				        Continue For
+				      end if
 		      ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
 		    next
 		    ifmac.ori = s.ori
@@ -171,7 +232,14 @@ Inherits MultipleSelectOperation
 		  if Mac.ObInterm.indexof(n) <> -1 then
 		    ifmac.interm = true
 		    for i = 0 to ubound(ifmac.childs)
+				      if i < 0 or i > Ubound(ifmac.childs) then
+				        Continue For
+				      end if
 		      ifm = ifmac.childs(i)
+				      if ifm = nil then
+				        System.DebugLog(CurrentMethodName + ": skip nil ifm i=" + Str(i))
+				        Continue For
+				      end if
 		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
 		        ifm.init = true
 		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
@@ -181,20 +249,33 @@ Inherits MultipleSelectOperation
 		  
 		  if (Mac.ObFinal.indexof(n) <> -1)  then // A-t-on affaire  à un objet final?
 		    newshape = CreateFinal(ifmac)
+				    if newshape = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil newshape")
+				      return
+				    end if
 		    IdentifyPoints(newshape, ifmac,EL0)
 		    newshape.endconstruction
 		    newshape.ifmac = ifmac
 		    for i = 0 to newshape.npts-1
+				      if i < 0 or i > Ubound(ifmac.childs) then
+				        Continue For
+				      end if
 		      ifm = ifmac.childs(i)
+				      if ifm = nil then
+				        System.DebugLog(CurrentMethodName + ": skip nil ifm i=" + Str(i))
+				        Continue For
+				      end if
 		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
 		        ifm.init = true
 		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
 		      end if
 		      newshape.points(i).ifmac = ifm
 		      if ifm.fo = 1 and (Mac.ObInterm.indexof(ifm.forme0) =-1) then
-		      s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
-		      newshape.points(i).numside.append  ifm.numside0
-		      newshape.points(i).placerptsursurfigure
+				        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
+				        if s <> nil then
+				          newshape.points(i).numside.append  ifm.numside0
+				          newshape.points(i).placerptsursurfigure
+				        end if
 		      end if
 		      newshape.points(i).forme = ifm.fo
 		    next
@@ -222,6 +303,10 @@ Inherits MultipleSelectOperation
 		  dim i, oper as integer
 		  dim EL as XMLElement
 		  
+				  if Mac = nil or MacInfo = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Mac/MacInfo")
+				    return
+				  end if
 		  if Temp = nil then
 		    System.DebugLog(CurrentMethodName + ": skip nil Temp")
 		    return
@@ -253,12 +338,37 @@ Inherits MultipleSelectOperation
 		  dim s as shape
 		  dim tsf as transformation
 		  
+				  if Mac = nil or MacInfo = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Mac/MacInfo")
+				    return
+				  end if
+				  if objects = nil or currentcontent = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil objects/currentcontent")
+				    return
+				  end if
+				  if EL = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL")
+				    return
+				  end if
+		  
 		  ifmac = new InfoMac(MacInfo, EL, oper)
+				  if ifmac = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+				    return
+				  end if
 		  
 		  if Mac.ObFinal.indexof(ifmac.forme0) <> -1 then
 		    s = objects.getshape(ifmac.RealId)
+				    if s = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil s")
+				      return
+				    end if
 		    tsf = CreateTsf(s, ifmac.type,ifmac.Realside, ifmac.ori)
-		    ifmac.num = s.tsfi.GetPosition(tsf)
+				    if s.tsfi = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil s.tsfi")
+				    else
+				      ifmac.num = s.tsfi.GetPosition(tsf)
+				    end if
 		  end if
 		  
 		  MacInfo.IfMacs.append ifmac
@@ -467,6 +577,15 @@ Inherits MultipleSelectOperation
 		Function CreateTsf(s as shape, n as integer, cote as integer, ori as integer) As transformation
 		  dim tsf as Transformation
 		  
+				  if s = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil s")
+				    return nil
+				  end if
+				  if CurrentContent = nil or CurrentContent.TheTransfos = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil CurrentContent/TheTransfos")
+				    return nil
+				  end if
+		  
 		  tsf = new transformation
 		  tsf.supp = s
 		  tsf.type = n
@@ -480,16 +599,23 @@ Inherits MultipleSelectOperation
 		  tsf.setfpsp(s)
 		  tsf.computematrix
 		  CurrentContent.TheTransfos.AddObject(tsf)
-		  s.tsfi.addObject tsf
+				  if s.tsfi <> nil then
+				    s.tsfi.addObject tsf
+				  else
+				    System.DebugLog(CurrentMethodName + ": skip nil s.tsfi")
+				  end if
 		  
 		  return tsf
-		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DoOperation()
+				  if Mac = nil or MacInfo = nil or currentcontent = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Mac/MacInfo/currentcontent")
+				    return
+				  end if
 		  if currentcontent.macrocreation then   'on utilise une macro à l'intérieur de la construction d'une autre
 		    ExecuteMacro(Histo)
 		  else
@@ -603,37 +729,56 @@ Inherits MultipleSelectOperation
 		  dim i as integer
 		  dim  sh as shape
 		  
+		  if fa = -1 and CurrentItemToSet > 0 and Mac <> nil then
+		    if CurrentItemToSet - 1 >= 0 and CurrentItemToSet - 1 <= Ubound(Mac.ObInit) then
+		      fa = Mac.FaInit(CurrentItemToSet - 1)
+		      fo = Mac.FoInit(CurrentItemToSet - 1)
+		    end if
+		  end if
+		  
 		  sh = operation.getshape(p)
+		  if sh = nil or visible = nil or visible.count = 0 then
+		    return nil
+		  end if
+		  
 		  str = lowercase(identifier(fa, fo))
+		  
 		  nobj = visible.count-1
 		  redim index(-1)
 		  redim index(nobj)
 		  
+		  for i =  visible.count-1 downto 0
+		    if i < 0 or i >= visible.count then
+		      Continue For
+		    end if
+		    sh = visible.item(i)
+		    if sh = nil then
+		      Continue For
+		    end if
+		    if not SelectionnerObjetIni(sh,p) then
+		      visremove(sh)
+		    else
+		      if i >= 0 and i <= Ubound(index) then
+		        index(i) = sh.pointonside(p)
+		      end if
+		    end if
+		  next
+		  
 		  if visible.count = 0 then
 		    return nil
 		  end if
-		  
-		  for i =  visible.count-1 downto 0
-		    sh = visible.item(i)
-		    if not SelectionnerObjetIni(sh,p) then
-		      visremove(sh)
-		    end if
-		    index(i) =sh.pointonside(p)
-		  next
+		  if iobj < 0 or iobj >= visible.count then
+		    System.DebugLog(CurrentMethodName + ": reset invalid iobj=" + Str(iobj))
+		    iobj = 0
+		  end if
+		  		  
 		  sh = visible.item(iobj)
-		  side = index(iobj)
+		  if sh = nil then
+		    return nil
+		  end if
+		  side = sh.pointonside(p)
 		  
 		  return sh
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		  
 		End Function
 	#tag EndMethod
@@ -673,7 +818,7 @@ Inherits MultipleSelectOperation
 		  dim MacId as integer
 		  dim sh as shape
 		  
-		  if ubound(Mac.ObInit) = -1 then
+				  if Mac = nil or ubound(Mac.ObInit) = -1 then
 		    return
 		  end if
 		  if currenthighlightedshape <> nil then
@@ -681,6 +826,9 @@ Inherits MultipleSelectOperation
 		    currenthighlightedshape = nil
 		  end if
 		  if fa = -1 and CurrentItemToSet > 0 then                               //fa = -1: sert à ne passer qu'une fois dans cette partie de la routine
+				    if CurrentItemToSet-1 < 0 or CurrentItemToSet-1 > Ubound(Mac.ObInit) then
+				      return
+				    end if
 		    MacId = Mac.ObInit(CurrentItemtoSet-1)
 		    fa = Mac.FaInit(CurrentItemToSet-1)
 		    fo = Mac.FoInit(CurrentItemToSet-1)
@@ -689,7 +837,6 @@ Inherits MultipleSelectOperation
 		  if currenthighlightedshape <> nil then
 		    currenthighlightedshape.highlight
 		  end if
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -728,26 +875,56 @@ Inherits MultipleSelectOperation
 		  dim t as Boolean
 		  dim Nom as string
 		  
+				  if Temp = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Temp")
+				    return
+				  end if
+				  if Temp.ChildCount = 0 then
+				    System.DebugLog(CurrentMethodName + ": skip empty Temp")
+				    return
+				  end if
+				  if App = nil or App.TheMacros = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil App/TheMacros")
+				    return
+				  end if
+				  if currentcontent = nil or objects = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil currentcontent/objects")
+				    return
+				  end if
 		  
+		  if Temp.Child(0) = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil Temp.Child(0)")
+		    return
+		  end if
 		  Nom = Temp.child(0).GetAttribute("Name")
 		  Mac = App.TheMacros.GetMacro(Nom)
 		  if Mac = Nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Mac")
 		    return
 		  end if
 		  
 		  currentcontent.currentoperation = new macroexe(mac)
 		  MacInfo = new MacConstructionInfo(Mac)
 		  Mac.MacInf = MacInfo
-		  List = Temp.FirstChild.XQL("Initial_Forms")
-		  If list.Length > 0 then
-		    Obj= XMLElement(List.Item(0))
-		    if obj.childcount > 0 then
-		      for i =0 to  Obj.Childcount-1
-		        EL1 = XMLElement(Obj.Child(i))
-		        n = val(EL1.GetAttribute("Id"))
-		        s = objects.Getshape(n)
-		        t = setitem(s)
-		      next
+		  if Temp.FirstChild <> nil then
+		    List = Temp.FirstChild.XQL("Initial_Forms")
+		    if List <> nil and List.Length > 0 then
+		      Obj= XMLElement(List.Item(0))
+		      if Obj <> nil and Obj.ChildCount > 0 then
+		        for i =0 to  Obj.Childcount-1
+		          EL1 = XMLElement(Obj.Child(i))
+		          if EL1 = nil then
+		            Continue For
+		          end if
+		          n = val(EL1.GetAttribute("Id"))
+		          s = objects.Getshape(n)
+		          if s = nil then
+		            System.DebugLog(CurrentMethodName + ": skip nil s n=" + Str(n))
+		            Continue For
+		          end if
+		          t = setitem(s)
+		        next
+		      end if
 		    end if
 		  end if
 		  DoOperation
@@ -758,6 +935,11 @@ Inherits MultipleSelectOperation
 	#tag Method, Flags = &h0
 		Function SelectionnerObjetIni(sh as shape, p as BasicPoint) As Boolean
 		  dim b as Boolean
+		  
+				  if sh = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil sh")
+				    return false
+				  end if
 		  
 		  b = (sh.fam = fa)
 		  
