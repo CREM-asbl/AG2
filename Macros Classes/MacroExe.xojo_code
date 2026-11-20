@@ -755,6 +755,7 @@ Inherits MultipleSelectOperation
 		    if sh = nil then
 		      Continue For
 		    end if
+		    side = sh.pointonside(p)
 		    if not SelectionnerObjetIni(sh,p) then
 		      visremove(sh)
 		    else

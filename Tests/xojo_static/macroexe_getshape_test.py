@@ -43,3 +43,21 @@ def test_macroexe_getshape_calls_super_before_visible_checks():
     # Must reset invalid iobj to avoid OutOfBoundsException after visremove
     assert "iobj = 0" in body
     assert "sh = visible.item(iobj)" in body
+
+
+def test_macroexe_getshape_sets_side_before_selectionnerobjetini():
+    """SelectionnerObjetIni reads the `side` property (validsegment(p, side)).
+
+    The filter loop must compute side per candidate shape BEFORE calling it,
+    otherwise a stale side rejects valid polygon sides and GetShape returns
+    nil with no error (stuck in selection mode).
+    """
+    text = MACROEXE.read_text(encoding="utf-8")
+    body = extract_method(text, "Function GetShape(p as BasicPoint) As shape").lower()
+
+    sel_call = body.find("selectionnerobjetini(sh,p)")
+    assert sel_call != -1, "filter loop must call SelectionnerObjetIni(sh,p)"
+
+    side_set = body.find("side = sh.pointonside(p)")
+    assert side_set != -1, "side must be computed per shape"
+    assert side_set < sel_call, "side must be set BEFORE SelectionnerObjetIni(sh,p)"
