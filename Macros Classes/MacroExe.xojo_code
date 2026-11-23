@@ -173,18 +173,16 @@ Inherits MultipleSelectOperation
 		    System.DebugLog(CurrentMethodName + ": skip nil EL")
 		    return
 		  end if
-		  if EL.ChildCount < 2 then
-		    System.DebugLog(CurrentMethodName + ": skip ChildCount<2")
+		  if EL.ChildCount = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip empty operation EL")
 		    return
 		  end if
 		  EL0 = XMLElement(EL.Child(0))
-		  EL1 = XMLElement(EL.Child(1))
+		  if EL.ChildCount > 1 then
+		    EL1 = XMLElement(EL.Child(1))
+		  end if
 		  if EL0 = nil then
 		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
-		    return
-		  end if
-		  if EL1 = nil then
-		    System.DebugLog(CurrentMethodName + ": skip nil EL1")
 		    return
 		  end if
 		  n = val(EL0.GetAttribute("Id"))
@@ -388,18 +386,16 @@ Inherits MultipleSelectOperation
 		    System.DebugLog(CurrentMethodName + ": skip nil EL")
 		    return
 		  end if
-		  if EL.ChildCount < 2 then
-		    System.DebugLog(CurrentMethodName + ": skip ChildCount<2")
+		  if EL.ChildCount = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip empty operation EL")
 		    return
 		  end if
 		  EL0 = XMLElement(EL.Child(0))
-		  EL1 = XMLElement(EL.Child(1))
+		  if EL.ChildCount > 1 then
+		    EL1 = XMLElement(EL.Child(1))
+		  end if
 		  if EL0 = nil then
 		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
-		    return
-		  end if
-		  if EL1 = nil then
-		    System.DebugLog(CurrentMethodName + ": skip nil EL1")
 		    return
 		  end if
 		  n = val(EL0.GetAttribute("Id"))
