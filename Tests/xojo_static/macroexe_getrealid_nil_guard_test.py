@@ -74,7 +74,8 @@ def test_createobject_guards_unknown_refs():
     ).lower()
     assert "if el = nil then" in body
     assert "if el0 = nil then" in body
-    assert "if el1 = nil then" in body
+    assert "if el.childcount > 1 then" in body
+    assert_guard_before_deref(body, "if el.childcount > 1 then", ["el.child(1)"], "CreateObject")
     assert "if rid = -1 then" in body
     assert "if createdshape = nil then" in body
 
@@ -149,9 +150,9 @@ def test_createifmacs_guards_temp_el_nil():
 def test_createifmacobject_guards_el_childcount():
     body = _body(MACROEXE, "Sub CreateIfMacObject(EL as XMLElement")
     assert_guard_before_deref(body, "if el = nil then", ["el.child("], "CreateIfMacObject")
-    assert "if el.childcount < 2 then" in body or "if el.childcount<2 then" in body
+    assert "if el.childcount = 0 then" in body
+    assert_guard_before_deref(body, "if el.childcount > 1 then", ["el.child(1)"], "CreateIfMacObject")
     assert_guard_before_deref(body, "if el0 = nil then", ['el0.getattribute("id")', "el0.getattribute"], "CreateIfMacObject")
-    assert_guard_before_deref(body, "if el1 = nil then", ["new infomac"], "CreateIfMacObject")
 
 def test_createobject_obinit_loop_guards_el02():
     body = _body(MACROEXE, "Sub CreateObject(EL as XMLElement")

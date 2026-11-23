@@ -11,8 +11,19 @@ Protected Class InfoMac
 		Sub Constructor(MacInfo as MacConstructionInfo, EL as XMLElement, oper As integer)
 		  dim EL0 as XMLElement
 		  
-		  
+				  if EL = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL")
+				    return
+				  end if
+				  if MacInfo = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil MacInfo")
+				    return
+				  end if
 		  EL0 = XMLElement(EL.Child(0))
+				  if EL0 = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL0")
+				    return
+				  end if
 		  
 		  self.MacInfo = MacInfo
 		  self.oper=oper
@@ -32,6 +43,14 @@ Protected Class InfoMac
 		  dim ifm as infomac
 		  dim EL01 as XMLElement
 		  
+				  if EL0 = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL0")
+				    return
+				  end if
+				  if MacInfo = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil MacInfo")
+				    return
+				  end if
 		  
 		  self.MacInfo = MacInfo
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
@@ -51,7 +70,9 @@ Protected Class InfoMac
 		    ptsur = fo
 		    if ptsur = 1 then
 		      ifm = MacInfo.GetInfoMac(forme0, m)
-		      ifm.childs.append self
+		      if ifm <> nil then
+		        ifm.childs.append self
+		      end if
 		    end if
 		  else
 		    Ncpts = val(EL0.GetAttribute(Dico.Value("Ncpts")))
@@ -73,6 +94,10 @@ Protected Class InfoMac
 		  dim i as integer
 		  dim EL1, EL2 as XMLElement
 		  
+				  if Temp = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Temp")
+				    return
+				  end if
 		  
 		  fa = val(Temp.GetAttribute(Dico.Value("NrFam")))
 		  fo= val(Temp.GetAttribute(Dico.Value("NrForm")))
@@ -128,7 +153,7 @@ Protected Class InfoMac
 		    Forme0 = val(EL1.GetAttribute("Id"))
 		    NumSide0= val(EL1.GetAttribute("Index"))
 		    ifm = MacInfo.GetInfoMac(forme0, m)
-		    if ifm.npts > 2 then
+		    if ifm <> nil and ifm.npts > 2 then
 		      seg = true
 		    end if
 		    if fo = 4 or fo = 5 then 'droites paraperp
@@ -142,8 +167,10 @@ Protected Class InfoMac
 		    Forme2 = val(EL1.GetAttribute("Id"))   //MacId du point dupliqué
 		    num = val(EL1.GetAttribute("Data0")) //Ecart entre les numéros de coté du dupliqué et du duplicat
 		    ifm = MacInfo.GetInfoMac(forme2,m)
-		    if ifm.macId <> forme2 then
-		      ifm = ifm.childs(m)
+		    if ifm <> nil and ifm.macId <> forme2 then
+		      if m >= 0 and m <= Ubound(ifm.childs) then
+		        ifm = ifm.childs(m)
+		      end if
 		    end if                              //infomac du point dupliqué
 		    forme1 = ifm.forme0   //macId du support du dupliqué
 		    numside1 = ifm.numside0 //numside du dupliqué
@@ -191,12 +218,25 @@ Protected Class InfoMac
 		  dim EL1 as XMLElement
 		  dim n, m as integer
 		  
+				  if EL = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL")
+				    return
+				  end if
+				  if npts = 0 then
+				    return
+				  end if
 		  for i = 0 to npts-1
+				    if i < 0 or i >= EL.ChildCount then
+				      Continue For
+				    end if
 		    EL1 = XMLElement(EL.Child(i))
+				    if EL1 = nil then
+				      Continue For
+				    end if
 		    n =val(EL1.GetAttribute("Id"))
 		    ifm =MacInfo.GetInfoMac(n,m)
 		    if ifm <> nil then
-		      if  ifm.macId <> n and m <> -1 then
+				      if  ifm.macId <> n and m >= 0 and m <= Ubound(ifm.childs) then
 		        ifm = ifm.childs(m)
 		      end if
 		    else
@@ -205,14 +245,6 @@ Protected Class InfoMac
 		    end if
 		    childs.append ifm
 		  next
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod

@@ -2,6 +2,10 @@
 Protected Class MacConstructionInfo
 	#tag Method, Flags = &h0
 		Sub Constructor(m as Macro)
+				  if m = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil m")
+				    return
+				  end if
 		  Mac = m
 		  
 		End Sub
@@ -16,6 +20,10 @@ Protected Class MacConstructionInfo
 		  dim s as shape
 		  
 		  constructor(m)
+				  if Temp = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil Temp")
+				    return
+				  end if
 		  nrf = val(Temp.GetAttribute("NRF"))
 		  nri = val(Temp.GetAttribute("NRI"))
 		  nrs = val(Temp.GetAttribute("NRS"))
@@ -31,31 +39,53 @@ Protected Class MacConstructionInfo
 		  end if
 		  
 		  EL = XMLElement(Temp.firstChild)
+				  if EL = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL")
+				    return
+				  end if
 		  for i = 0 to EL.ChildCount -1
 		    EL1 = XMLElement(EL.Child(i))
+				    if EL1 = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil EL1 i=" + Str(i))
+				      Continue For
+				    end if
 		    fa = val(EL1.GetAttribute(Dico.Value("NrFam")))
 		    if fa = 0 then
 		      ifmac = CreateInfoMacPoint(EL1)
 		    else
 		      ifmac = CreateInfoMacShape(EL1)
 		    end if
+				    if ifmac = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil ifmac i=" + Str(i))
+				      Continue For
+				    end if
 		    ifmac.MacInfo = self
 		    
 		    if ifmac.init  then
-		      s = currentcontent.TheObjects.GetShape(ifmac.RealId)
-		      s.ifmac = ifmac
-		      if ifmac.npts < s.npts then
-		        ifmac.seg = true
-		        ifmac.RealSide = GetRealSide(n)
+		      if currentcontent <> nil and currentcontent.TheObjects <> nil then
+		        s = currentcontent.TheObjects.GetShape(ifmac.RealId)
+		        if s = nil then
+		          System.DebugLog(CurrentMethodName + ": skip nil s")
+		        else
+		          s.ifmac = ifmac
+		          if ifmac.npts < s.npts then
+		            ifmac.seg = true
+		            ifmac.RealSide = GetRealSide(n)
+		          end if
+		          for j = 0 to Ubound(ifmac.childs)
+		            if ifmac.childs(j) = nil then
+		              Continue For
+		            end if
+		            ifmac.childs(j).RealId =s.points((j+ifmac.RealSide) mod s.npts).id
+		          next
+		          ifmac.ori = s.ori
+		        end if
+		      else
+		        System.DebugLog(CurrentMethodName + ": skip nil currentcontent/TheObjects")
 		      end if
-		      for j = 0 to ifmac.childs.Count-1
-		        ifmac.childs(j).RealId =s.points((j+ifmac.RealSide) mod s.npts).id
-		      next
-		      ifmac.ori = s.ori
 		    end if
 		    ifmacs.append ifmac
 		  next
-		  
 		  
 		  Exception err
 		    var d as Debug
@@ -73,7 +103,6 @@ Protected Class MacConstructionInfo
 		    err.message = err.message + d.getString
 		    Raise err
 		    
-		    
 		End Sub
 	#tag EndMethod
 
@@ -82,11 +111,18 @@ Protected Class MacConstructionInfo
 		  dim mid, num as integer
 		  dim ifm, ifmac as infomac
 		  
+				  if EL1 = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL1")
+				    return nil
+				  end if
 		  mid = val(EL1.GetAttribute("MId"))
 		  ifm = GetInfoMac(mid,num)
 		  if ifm <> nil then
-		    if  ifm.macId <> mid and num <> -1 then
+				    if ifm.macId <> mid and num >= 0 and num <= Ubound(ifm.childs) then
 		      ifmac = ifm.childs(num)
+				      if ifmac = nil then
+				        ifmac = ifm
+				      end if
 		    else
 		      ifmac = ifm
 		    end if
@@ -105,14 +141,27 @@ Protected Class MacConstructionInfo
 		  dim i as integer
 		  dim ifmac as infomac
 		  
+				  if EL1 = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil EL1")
+				    return nil
+				  end if
 		  ifmac = new InfoMac(EL1)
+				  if ifmac = nil then
+				    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+				    return nil
+				  end if
 		  
 		  List = EL1.XQL("Childs")
-		  if List.length > 0 then
+				  if List <> nil and List.length > 0 then
 		    EL2 = XMLElement(List.Item(0))
-		    for i = 0 to EL2.ChildCount-1
-		      ifmac.childs.append CreateInfoMacPoint(XMLElement(EL2.Child(i)))
-		    next
+				    if EL2 <> nil then
+				      for i = 0 to EL2.ChildCount-1
+				        if i < 0 or i >= EL2.ChildCount then
+				          Continue For
+				        end if
+				        ifmac.childs.append CreateInfoMacPoint(XMLElement(EL2.Child(i)))
+				      next
+				    end if
 		  end if
 		  
 		  return ifmac
@@ -124,6 +173,9 @@ Protected Class MacConstructionInfo
 		  dim i as integer
 		  
 		  for i = 0 to ubound (IfMacs)
+				    if IfMacs(i) = nil then
+				      Continue For
+				    end if
 		    if IfMacs(i).MacId = mid then
 		      num = 0
 		      return IfMacs(i)
@@ -143,7 +195,16 @@ Protected Class MacConstructionInfo
 		  dim i as Integer
 		  dim ifm  as infomac
 		  
+				  if IfMac = nil then
+				    return -1
+				  end if
 		  for i=0 to Ubound(IfMac.Childs)
+				    if i < 0 or i > Ubound(IfMac.Childs) then
+				      Continue For
+				    end if
+				    if IfMac.Childs(i) = nil then
+				      Continue For
+				    end if
 		    if IfMac.Childs(i).Macid = mid  then
 		      return i
 		    end if

@@ -106,9 +106,6 @@ Inherits MultipleSelectOperation
 		  if EL0 = nil then
 		    return
 		  end if
-		  if EL1 = nil then
-		    return
-		  end if
 		  fa = val(EL0.GetAttribute(Dico.Value("NrFam")))
 		  fo = val(EL0.GetAttribute(Dico.Value("NrForm")))
 		  
@@ -118,6 +115,10 @@ Inherits MultipleSelectOperation
 		    
 		    if fo = 1 then
 		      pt = point(currentshape)
+		      if EL1 = nil then
+		        currentshape = nil
+		        return
+		      end if
 		      EL = XMLElement(EL1.Child(0))
 		      if EL = nil then
 		        currentshape = nil

@@ -6,7 +6,30 @@ Protected Class Macro
 		  dim infoMac as infomac
 		  dim num as integer
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  infoMac= MacInf.GetInfoMac(ifmac.forme0, num)
+		  if infoMac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil infoMac MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    return
+		  end if
+		  if infoMac.coord = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil infoMac.coord MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    return
+		  end if
 		  nbp.append infoMac.coord.centre
 		End Sub
 	#tag EndMethod
@@ -17,7 +40,24 @@ Protected Class Macro
 		  dim infoMac as InfoMac
 		  dim num as integer
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  infoMac = MacInf.GetInfoMac(ifmac.forme0,num)
+		  if infoMac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil infoMac MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  M = infoMac.M
 		  if M <> nil and M.v1 <> nil then
 		    nbp.append M.fixpt
@@ -32,11 +72,41 @@ Protected Class Macro
 		  dim s as shape
 		  dim infoMac as infomac
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  infoMac = MacInf.GetInfoMac(ifmac.forme0,m)
+		  if infoMac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil infoMac MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  if infoMac.MacId <> ifmac.forme0 then
-		    infoMac = infoMac.childs(m)
+		    if m >= 0 and m <= Ubound(infoMac.childs) then
+		      infoMac = infoMac.childs(m)
+		    else
+		      System.DebugLog(CurrentMethodName + ": skip invalid childs index m=" + Str(m))
+		      return
+		    end if
+		    if infoMac = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil child infoMac m=" + Str(m))
+		      return
+		    end if
 		  end if
 		  nbp = infoMac.coord
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
+		  if nbp.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip empty nbp MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  select case ifmac.type
 		  case 1
 		    infoMac.M = nbp.TranslationMatrix
@@ -61,6 +131,10 @@ Protected Class Macro
 		  'k = ObFinal.indexof(MacId)
 		  if  infoMac.final then      //Si le support est une forme finale ou initiale
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
+		    if s = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil s MacId=" + Str(ifmac.MacId))
+		      return
+		    end if
 		    s.tsfi.item(ifmac.num).setfpsp(s)
 		    s.tsfi.item(ifmac.num).M =  infoMac.M
 		  end if
@@ -91,20 +165,29 @@ Protected Class Macro
 		  //Si la forme considérée est initiale, il suffit de récolter les informations dans la liste des objets précédemment créés.
 		  if Obinit.indexof(MacId) <> -1 then
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
-		    if ifmac.seg then
-		      ifmac.coord = s.GetBiBSide(ifmac.RealSide)
+		    if s = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil s (ObInit) MacId=" + Str(MacId) + " RealId=" + Str(ifmac.RealId))
+		      return
 		    else
-		      ifmac.coord = s.GetCoord
-		      if s isa point and s.forme=1 then
-		        ifmac.location = point(s).location(0)  //On ne tient pas compte de la valeur figurant dans la macro
-		      end if
-		    end if
-		    if ifmac.childs.Count > 0 then
-		      for i = 0 to ifmac.childs.Count-1
-		        if i < ifmac.coord.taille then
-		          ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
+		      if ifmac.seg then
+		        ifmac.coord = s.GetBiBSide(ifmac.RealSide)
+		      else
+		        ifmac.coord = s.GetCoord
+		        if s isa point and s.forme=1 then
+		          ifmac.location = point(s).location(0)  //On ne tient pas compte de la valeur figurant dans la macro
 		        end if
-		      next
+		      end if
+		      if ifmac.coord = nil then
+		        System.DebugLog(CurrentMethodName + ": skip nil coord (ObInit) MacId=" + Str(MacId))
+		        return
+		      end if
+		      if ifmac.childs.Count > 0 then
+		        for i = 0 to ifmac.childs.Count-1
+		          if i < ifmac.coord.taille then
+		            ifmac.childs(i).coord = new nbPoint(ifmac.coord.tab(i))
+		          end if
+		        next
+		      end if
 		    end if
 		  end if
 
@@ -118,7 +201,9 @@ Protected Class Macro
 		        maxIndex = nbp.taille-1
 		      end if
 		      for i = 0 to maxIndex
-		        ifmac.childs(i).coord = new nBPoint(nbp.tab(i))
+		        if nbp.tab(i) <> nil then
+		          ifmac.childs(i).coord = new nBPoint(nbp.tab(i))
+		        end if
 		      next
 		    end if
 		  end if
@@ -137,6 +222,10 @@ Protected Class Macro
 
 		    //On recalcule les coordonnées
 		    s = currentcontent.theobjects.getshape(ifmac.RealId)
+		    if s = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil s (ObFinal) MacId=" + Str(MacId) + " RealId=" + Str(ifmac.RealId))
+		      return
+		    end if
 		    if s isa point then
 		      point(s).bpt=ifmac.coord.tab(0)
 		      s.coord=ifmac.coord
@@ -187,36 +276,91 @@ Protected Class Macro
 		  dim ifm1, ifm2 as infomac
 		  dim p as point
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  if ifmac.fa = 0 then
 		    redim nbp.tab(-1)
 		    redim nbp.tab(0)
 		    ifm1 =  MacInf.GetInfoMac(ifmac.forme1,num)
+		    if ifm1 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(ifmac.MacId))
+		      nbp.tab(0) = nil
+		      return
+		    end if
 		    if ifm1.macid = ifmac.forme1 then
-		      nbp.tab(0) = ifm1.coord.tab(0)
+		      if ifm1.coord <> nil and ifm1.coord.taille > 0 then
+		        nbp.tab(0) = ifm1.coord.tab(0)
+		      else
+		        nbp.tab(0) = nil
+		      end if
 		    else
-		      nbp.tab(0) = ifm1.coord.tab(num)
+		      if ifm1.coord <> nil and num >= 0 and num < ifm1.coord.taille then
+		        nbp.tab(0) = ifm1.coord.tab(num)
+		      else
+		        nbp.tab(0) = nil
+		      end if
 		    end if
 		  else
 		    redim nbp.tab(-1)
 		    redim nbp.tab(ifmac.npts-1)
 		    for i = 0 to ifmac.ncpts-1
 		      ifm1 = ifmac.childs(i)
+		      if ifm1 = nil then
+		        nbp.tab(i) = nil
+		        Continue For
+		      end if
 		      if ifm1.init = true then
 		        p = point(currentcontent.theobjects.getshape(ifm1.RealId))
+		        if p = nil then
+		          nbp.tab(i) = nil
+		          Continue For
+		        end if
 		        ifm1.coord = p.GetCoord
+		        if ifm1.coord = nil or ifm1.coord.taille = 0 then
+		          nbp.tab(i) = nil
+		          Continue For
+		        end if
 		        nbp.tab(i) = ifm1.coord.tab(0)
 		        if  p.forme=1 then
 		          ifm1.location = p.location(0)  //On ne tient pas compte de la valeur figurant dans la macro
 		        end if
 		      else
 		        ifm2 = MacInf.GetInfoMac(ifm1.MacId, num)
+		        if ifm2 = nil then
+		          System.DebugLog(CurrentMethodName + ": skip nil ifm2 MacId=" + Str(ifm1.MacId))
+		          nbp.tab(i) = nil
+		          Continue For
+		        end if
 		        if ifm2.macid = ifm1.MacId then
-		          nbp.tab(i) = ifm2.coord.tab(0)
-		        else
-		          if num < ifm2.npts then
-		            nbp.tab(i) = ifm2.coord.tab(num)
+		          if ifm2.coord <> nil and ifm2.coord.taille > 0 then
+		            nbp.tab(i) = ifm2.coord.tab(0)
 		          else
-		            nbp.tab(i) = ifm2.childs(num).coord.tab(0)
+		            nbp.tab(i) = nil
+		          end if
+		        else
+		          if num >= 0 and num < ifm2.npts then
+		            if ifm2.coord <> nil and num < ifm2.coord.taille then
+		              nbp.tab(i) = ifm2.coord.tab(num)
+		            else
+		              nbp.tab(i) = nil
+		            end if
+		          else
+		            if num >= 0 and num <= Ubound(ifm2.childs) and ifm2.childs(num) <> nil and ifm2.childs(num).coord <> nil and ifm2.childs(num).coord.taille > 0 then
+		              nbp.tab(i) = ifm2.childs(num).coord.tab(0)
+		            else
+		              nbp.tab(i) = nil
+		            end if
 		          end if
 		        end if
 		      end if
@@ -339,37 +483,83 @@ Protected Class Macro
 		  dim bp1, bp2 as BasicPoint
 		  dim ifm, ifm1, ifm2 as infomac
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  ifm = MacInf.GetInfoMac(ifmac.Forme0, num)  //ifmac correspondant à l'objet constructeur
+		  if ifm = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    return
+		  end if
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme1,num1)
 
 		  if ifm1 <> nil then
 		    if ifm1.macid = ifmac.forme1 then
-		      bp1 = ifm1.coord.tab(0)
+		      if ifm1.coord <> nil and ifm1.coord.taille > 0 then
+		        bp1 = ifm1.coord.tab(0)
+		      end if
 		    else
-		      bp1=ifm1.childs(num1).coord.tab(0)
+		      if num1 >= 0 and num1 <= Ubound(ifm1.childs) and ifm1.childs(num1) <> nil and ifm1.childs(num1).coord <> nil and ifm1.childs(num1).coord.taille > 0 then
+		        bp1=ifm1.childs(num1).coord.tab(0)
+		      end if
 		    end if
 		  end if
 
 		  ifm2 = MacInf.GetInfoMac(ifmac.forme2,num2)
 		  if ifm2 <> nil then
 		    if ifm2.macid = ifmac.forme2 then
-		      bp2 = ifm2.coord.tab(0)
+		      if ifm2.coord <> nil and ifm2.coord.taille > 0 then
+		        bp2 = ifm2.coord.tab(0)
+		      end if
 		    else
-		      bp2=ifm2.childs(num2).coord.tab(0)
+		      if num2 >= 0 and num2 <= Ubound(ifm2.childs) and ifm2.childs(num2) <> nil and ifm2.childs(num2).coord <> nil and ifm2.childs(num2).coord.taille > 0 then
+		        bp2=ifm2.childs(num2).coord.tab(0)
+		      end if
 		    end if
+		  end if
+
+		  if bp1 = nil or bp2 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil bp MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    return
 		  end if
 
 		  if ifm.fa <> 5 and ifm.fa <> 7 then
 		    Bib = new BiBPoint(bp1,bp2)
+		    if Bib = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil Bib MacId=" + Str(ifmac.MacId))
+		      nbp.append nil
+		      return
+		    end if
 		    nbp.append BiB.subdiv(ifmac.ndiv,ifmac.idiv)
 		  elseif ifm.fa = 5 then
 		    'if ifm.fo = 0 and ifm.coord.taille = 2 then
 		    'Trib = new TriBPoint(ifm.coord.tab(0),ifm.coord.tab(1),ifm.coord.tab(1))
 		    'else
+		    if ifm.coord = nil or ifm.coord.taille = 0 then
+		      System.DebugLog(CurrentMethodName + ": skip nil ifm.coord MacId=" + Str(ifmac.MacId))
+		      nbp.append nil
+		      return
+		    end if
 		    Trib = new TriBPoint(ifm.coord.tab(0),bp1,bp2)
-		    'end if
+		    if Trib = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil Trib MacId=" + Str(ifmac.MacId))
+		      nbp.append nil
+		      return
+		    end if
 		    nbp.append TriB.subdiv(ifm.ori,ifmac.ndiv, ifmac.idiv)
-		  elseif ifm1.fa = 7 then                                     'cas des lacets
+		  elseif ifm1 <> nil and ifm1.fa = 7 then                                     'cas des lacets
 		  end if
 
 
@@ -383,26 +573,74 @@ Protected Class Macro
 		  dim ifm0, ifm1 as infomac
 		  dim Bib as BiBPoint
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  if ifmac.ptsur <> 1 then
 		    return
 		  end if
 
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme2,m)
+		  if ifm1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  if ifm1.macId <> ifmac.forme2 then
-		    ifm1 = ifm1.childs(m)       //infomac du dupliqué
+		    if m >= 0 and m <= Ubound(ifm1.childs) then
+		      ifm1 = ifm1.childs(m)       //infomac du dupliqué
+		    else
+		      System.DebugLog(CurrentMethodName + ": skip invalid childs index m=" + Str(m))
+		      return
+		    end if
+		    if ifm1 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil child ifm1 m=" + Str(m))
+		      return
+		    end if
 		  end if
 
 		  // Si le dupliqué est
 		  ifmac.location = ifm1.location
 		  side = ifmac.numside1                           //numero de coté du dupliqué
 		  ifm0 = MacInf.GetInfoMac(ifmac.Forme0, num0)   //ifmac du support du duplicat
+		  if ifm0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm0 MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
+		  if ifm0.npts <= 0 then
+		    System.DebugLog(CurrentMethodName + ": skip invalid ifm0.npts MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  side = (side+ifmac.num) mod ifm0.npts                   //numero du coté du duplicat
 		  ifmac.numside0 = side
 		  nb = ifm0.coord
+		  if nb = nil or nb.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip nil nb MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
+		  if side < 0 or side >= nb.taille or (side+1) mod nb.taille < 0 or (side+1) mod nb.taille >= nb.taille then
+		    System.DebugLog(CurrentMethodName + ": skip invalid side MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
+		  if nb.tab(side) = nil or nb.tab((side+1) mod nb.taille) = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil side points MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  BiB = new BiBPoint (nb.tab(side), nb.tab((side+1) mod nb.taille))
+		  if BiB = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil BiB MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  nbp.append BiB.BptOnBiBpt(ifmac.location)
-
-
 
 		End Sub
 	#tag EndMethod
@@ -466,8 +704,39 @@ Protected Class Macro
 		  dim index, num as integer
 		  dim ifm1 as infomac
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
+		  if ifm1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    nbp.append nil
+		    return
+		  end if
+		  if ifm1.coord = nil or ifm1.coord.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1.coord MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    nbp.append nil
+		    return
+		  end if
 		  index = ifmac.numside0
+		  if index < 0 or index >= ifm1.coord.taille then
+		    System.DebugLog(CurrentMethodName + ": skip invalid index MacId=" + Str(ifmac.MacId))
+		    nbp.append nil
+		    nbp.append nil
+		    return
+		  end if
 		  nbp.append ifm1.coord.tab(index)
 		  nbp.append ifm1.coord.tab((index+1) mod ifm1.coord.taille)
 		End Sub
@@ -490,19 +759,72 @@ Protected Class Macro
 		  dim  ifm0, ifm1 as infomac
 		  dim bb(), q, v as BasicPoint
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  Mid = ifmac.MacId
 		  mid0 = ifmac.forme0
 		  ifm0 = MacInf.GetInfoMac(mid0, num)
+		  if ifm0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm0 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
+		  if ifm0.coord = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm0.coord MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 		  fa0 = ifm0.fa
 		  fo0 = ifm0.fo
 		  nb0 = ifm0.coord
+		  if nb0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nb0 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
+		  if nb0.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip empty nb0 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 		  nextre0 = NextreDroite(fa0,fo0)
 
 		  mid1 = ifmac.forme1
 		  ifm1 = MacInf.GetInfoMac(mid1, num)
+		  if ifm1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
+		  if ifm1.coord = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1.coord MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 		  fa1 = ifm1.fa
 		  fo1 = ifm1.fo
 		  nb1 = ifm1.coord
+		  if nb1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nb1 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
+		  if nb1.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip empty nb1 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 		  nextre1 = NextreDroite(fa1,fo1)
 
 		  if fa0 <> 5  then
@@ -510,15 +832,34 @@ Protected Class Macro
 		  else
 		    ncot0 = 0
 		  end if
+		  if ncot0 < 0 or ncot0 >= nb0.taille then
+		    System.DebugLog(CurrentMethodName + ": skip invalid ncot0 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 		  Bib0 = new BiBPoint(nb0.tab(ncot0), nb0.tab((ncot0+1) mod nb0.taille))
-
+		  if Bib0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil Bib0 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 
 		  if fa1 <> 5 then
 		    ncot1 = ifmac.Numside1
 		  else
 		    ncot1 = 0
 		  end if
+		  if ncot1 < 0 or ncot1 >= nb1.taille then
+		    System.DebugLog(CurrentMethodName + ": skip invalid ncot1 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 		  Bib1 = new BiBPoint(nb1.tab(ncot1), nb1.tab((ncot1+1) mod nb1.taille))
+		  if Bib1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil Bib1 MacId=" + Str(Mid))
+		    nbp.append nil
+		    return
+		  end if
 
 
 		  if fa0 <> 5 and fa1 <> 5 then
@@ -541,9 +882,17 @@ Protected Class Macro
 		    case 0
 		      nbp.append nil
 		    case 1
-		      nbp.append bb(0)
+		      if Ubound(bb) >= 0 then
+		        nbp.append bb(0)
+		      else
+		        nbp.append nil
+		      end if
 		    case 2
-		      nbp.append bb(n)
+		      if n >= 0 and n <= Ubound(bb) then
+		        nbp.append bb(n)
+		      else
+		        nbp.append nil
+		      end if
 		    end select
 		  end if
 
@@ -575,12 +924,16 @@ Protected Class Macro
 		      if Validation(ifmac) then
 		        for j = 0 to ubound(ObFinal)
 		          s = currentcontent.TheObjects.getshape(MacInfo.RealFinal(j))
-		          s.Valider
+		          if s <> nil then
+		            s.Valider
+		          end if
 		        next
 		      else
 		        for j = 0 to ubound(ObFinal)
 		          s = currentcontent.TheObjects.getshape(MacInfo.RealFinal(j))
-		          s.invalider
+		          if s <> nil then
+		            s.invalider
+		          end if
 		        next
 		      end if
 		    end if
@@ -629,12 +982,40 @@ Protected Class Macro
 		  dim BiB1, BiB2 as BiBPoint
 		  dim r1, r2 as double
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
 
 		  MacId = ifmac.MacId
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0,num)
+		  if ifm1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(MacId))
+		    return
+		  end if
+		  if ifm1.coord = nil or ifm1.coord.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1.coord MacId=" + Str(MacId))
+		    return
+		  end if
 		  side = Ifmac.Numside0
 		  //On calcule d'abord le vecteur directeur de la paraperp
+		  if side < 0 or side >= ifm1.coord.taille then
+		    System.DebugLog(CurrentMethodName + ": skip invalid side MacId=" + Str(MacId))
+		    return
+		  end if
 		  BiB1 =BiBPoint(ifm1.coord.getBiBSide(side))  'new BiBPoint(c.tab(side), c.tab((side+1) mod c.taille))
+		  if BiB1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil BiB1 MacId=" + Str(MacId))
+		    return
+		  end if
 		  n = 1
 		  if ifmac.fo = 2 or ifmac.fo = 5 Then
 		    n = 2
@@ -643,6 +1024,14 @@ Protected Class Macro
 		  redim nbp.tab(-1)
 		  redim  nbp.tab(1)
 		  //Ensuite on recherche l'origine
+		  if Ubound(ifmac.childs) < 0 then
+		    System.DebugLog(CurrentMethodName + ": skip empty ifmac.childs MacId=" + Str(MacId))
+		    return
+		  end if
+		  if ifmac.childs(0) = nil or ifmac.childs(0).coord = nil or ifmac.childs(0).coord.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip nil child0 MacId=" + Str(MacId))
+		    return
+		  end if
 		  nbp.tab(0) = ifmac.childs(0).coord.tab(0)    'GetCoordChild(ifmac.childs(0))
 		  if nbp.tab(0) = nil then
 		    return
@@ -653,12 +1042,32 @@ Protected Class Macro
 		    //pour les segments, il y a deux possibilités selon que le deuxième point est un point sur ou pas
 		  else
 		    BiB1 = new BiBPoint(nbp.tab(0),nbp.tab(0)+w)
+		    if Ubound(ifmac.childs) < 1 then
+		      System.DebugLog(CurrentMethodName + ": skip missing childs(1) MacId=" + Str(MacId))
+		      return
+		    end if
 		    ifm2 = ifmac.childs(1)
+		    if ifm2 = nil or ifm2.coord = nil or ifm2.coord.taille = 0 then
+		      System.DebugLog(CurrentMethodName + ": skip nil ifm2 MacId=" + Str(MacId))
+		      return
+		    end if
 		    if ifm2.ptsur <> 1 then
 		      nbp.tab(1) =  ifm2.coord.tab(0).projection(BiB1)   //OK si le deuxième point n'est ni pt d'inter  ni un point construit, mais on ne voit pas comment  ce serait possible
 		    else
 		      ifm3 = MacInf.GetInfoMac(ifm2.forme0,num)    //infomac de l'objet sur lequel est le point (pas nécessairement identique à ifm1)
+		      if ifm3 = nil then
+		        System.DebugLog(CurrentMethodName + ": skip nil ifm3 MacId=" + Str(MacId))
+		        return
+		      end if
+		      if ifm3.coord = nil or ifm3.coord.taille = 0 then
+		        System.DebugLog(CurrentMethodName + ": skip nil ifm3.coord MacId=" + Str(MacId))
+		        return
+		      end if
 		      BiB2 = BiBPoint(ifm3.coord.GetBiBSide(ifm2.numside0))
+		      if BiB2 = nil then
+		        System.DebugLog(CurrentMethodName + ": skip nil BiB2 MacId=" + Str(MacId))
+		        return
+		      end if
 		      n1 = 0
 		      if ifm3.fa <> 5 then
 		        if ifm3.fo < 3 then
@@ -689,35 +1098,76 @@ Protected Class Macro
 		  dim Bib as BiBPoint
 		  dim Trib as TriBPoint
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
+
 		  redim nbp.tab(-1)
 		  redim nbp.tab(0)
 
-
 		  ifm1 = MacInf.GetInfoMac(ifmac.MacId,num)
+		  if ifm1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
+		  if ifm1.coord = nil or ifm1.coord.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1.coord MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 
 		  if ifm1.fa <> 5 then 'cas des segments, droites, côtés de polygones,...
 		    side = Ifmac.Numside0
 		    if ifm1.fa = 1 and ifm1.fo = 8 then
-		      BiB = new BiBPoint(ifm1.coord.tab(0),ifm1.coord.tab(side+1))
+		      if ifm1.coord.taille > 0 and side+1 >= 0 and side+1 < ifm1.coord.taille and ifm1.coord.tab(0) <> nil and ifm1.coord.tab(side+1) <> nil then
+		        BiB = new BiBPoint(ifm1.coord.tab(0),ifm1.coord.tab(side+1))
+		      end if
 		    elseif ifm1.fa = 1 and ifm1.fo = 7 then
 		      if side = 0 then
-		        BiB = new BiBPoint(ifm1.coord.tab(0),ifm1.coord.tab(1))
+		        if ifm1.coord.taille > 1 and ifm1.coord.tab(0) <> nil and ifm1.coord.tab(1) <> nil then
+		          BiB = new BiBPoint(ifm1.coord.tab(0),ifm1.coord.tab(1))
+		        end if
 		      else
-		        BiB = new BiBPoint(ifm1.coord.tab(2),ifm1.coord.tab(2)+ifm1.coord.tab(1)-ifm1.coord.tab(0))
+		        if ifm1.coord.taille > 2 and ifm1.coord.tab(2) <> nil and ifm1.coord.tab(1) <> nil and ifm1.coord.tab(0) <> nil then
+		          BiB = new BiBPoint(ifm1.coord.tab(2),ifm1.coord.tab(2)+ifm1.coord.tab(1)-ifm1.coord.tab(0))
+		        end if
 		      end if
 		    else
-		      BiB = BiBPoint(ifm1.coord.GetBiBSide(side))
+		      if side >= 0 and side < ifm1.coord.taille then
+		        BiB = BiBPoint(ifm1.coord.GetBiBSide(side))
+		      end if
+		    end if
+		    if BiB = nil then
+		      return
 		    end if
 		    nbp.tab(0) = BiB.BptOnBibpt(ifmac.location)
 		  else
 		    select case  ifm1.fo
 		    case  0   'cas des cercles
-		      BiB = new BiBpoint( ifm1.coord.tab(0), ifm1.coord.tab(1))
-		      nbp.tab(0) = BiB.PositionOnCircle(ifmac.location, ifm1.ori)
+		      if ifm1.coord.taille > 1 and ifm1.coord.tab(0) <> nil and ifm1.coord.tab(1) <> nil then
+		        BiB = new BiBpoint( ifm1.coord.tab(0), ifm1.coord.tab(1))
+		      end if
 		    case 1 'cas des arcs
-		      TriB = new TriBpoint( ifm1.coord.tab(0), ifm1.coord.tab(1), ifm1.coord.tab(2))
-		      nbp.tab(0) = TriB.PositionOnCircle(ifmac.location, ifm1.ori)
+		      if ifm1.coord.taille > 2 and ifm1.coord.tab(0) <> nil and ifm1.coord.tab(1) <> nil and ifm1.coord.tab(2) <> nil then
+		        TriB = new TriBpoint( ifm1.coord.tab(0), ifm1.coord.tab(1), ifm1.coord.tab(2))
+		      end if
 		    end select
+		    if (ifm1.fo = 0 and BiB = nil) or (ifm1.fo = 1 and TriB = nil) then
+		      return
+		    end if
+		    if ifm1.fo = 0 then
+		      nbp.tab(0) = BiB.PositionOnCircle(ifmac.location, ifm1.ori)
+		    elseif ifm1.fo = 1 then
+		      nbp.tab(0) = TriB.PositionOnCircle(ifmac.location, ifm1.ori)
+		    end if
 		  end if
 
 		End Sub
@@ -841,16 +1291,58 @@ Protected Class Macro
 		  dim M as Matrix
 		  dim ifm1, ifm2 as infomac
 
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if nbp = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp")
+		    return
+		  end if
+		  if MacInf = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil MacInf")
+		    return
+		  end if
 
 		  ifm1 = MacInf.GetInfoMac(ifmac.forme0, num)  //lecture support
+		  if ifm1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm1 MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  if ifm1.MacId <> ifmac.forme0 and num <> -1 then
-		    ifm1=ifm1.childs(num)
+		    if num >= 0 and num <= Ubound(ifm1.childs) then
+		      ifm1 = ifm1.childs(num)
+		    else
+		      System.DebugLog(CurrentMethodName + ": skip invalid childs index num=" + Str(num))
+		      return
+		    end if
+		    if ifm1 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil child ifm1 num=" + Str(num))
+		      return
+		    end if
 		  end if
 		  ifm2 = MacInf.GetInfoMac(ifmac.forme1, num)  //lecture source
+		  if ifm2 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifm2 MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  if ifm2.MacId <> ifmac.forme1 then
-		    ifm2 = ifm2.childs(num)
+		    if num >= 0 and num <= Ubound(ifm2.childs) then
+		      ifm2 = ifm2.childs(num)
+		    else
+		      System.DebugLog(CurrentMethodName + ": skip invalid childs index num=" + Str(num))
+		      return
+		    end if
+		    if ifm2 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil child ifm2 num=" + Str(num))
+		      return
+		    end if
 		  end if
 		  nbp1 = ifm2.coord
+		  if nbp1 = nil or nbp1.taille = 0 then
+		    System.DebugLog(CurrentMethodName + ": skip nil nbp1 MacId=" + Str(ifmac.MacId))
+		    return
+		  end if
 		  n = nbp1.taille
 		  redim nbp.tab(-1)
 		  redim nbp.tab(n-1)
@@ -864,9 +1356,6 @@ Protected Class Macro
 		      end if
 		    next
 		  end if
-
-
-
 
 		End Sub
 	#tag EndMethod
@@ -884,11 +1373,23 @@ Protected Class Macro
 		  dim i as integer
 		  dim t as Boolean
 
+		  if ifmac = nil then
+		    return false
+		  end if
+		  if ifmac.coord = nil then
+		    return false
+		  end if
 		  if ifmac.fa = 0 then
+		    if ifmac.coord.taille < 1 then
+		      return false
+		    end if
 		    return ifmac.coord.tab(0) <> nil
 		  else
 		    t = true
 		    for i = 0 to ifmac.npts-1
+		      if i >= ifmac.coord.taille then
+		        return false
+		      end if
 		      t = t and ifmac.coord.tab(i) <> nil
 		    next
 		    return t
