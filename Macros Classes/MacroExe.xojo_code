@@ -997,6 +997,10 @@ Inherits MultipleSelectOperation
 		  //Les deux infos doivent toujours être lues ensemble: l'id de l'objet choisi et le numéro de côté (0 s'il n'y en a qu'un)
 		  
 		  if not currentcontent.macrocreation then
+		    if Mac.MacInf = nil then
+		      Mac.MacInf = new MacConstructionInfo(Mac)
+		    end if
+		    MacInfo = Mac.MacInf
 		    Mac.MacInf.RealInit.append s.id
 		    Mac.MacInf.RealInitSide.append side
 		    objects.unhighlightall
