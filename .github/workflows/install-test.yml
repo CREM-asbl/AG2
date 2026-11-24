@@ -36,7 +36,7 @@ jobs:
           BIN=$(find /tmp/ag2 -maxdepth 4 -name AG2 -type f -print -quit)
           timeout 15 "$BIN" --help || timeout 15 "$BIN" --version
   test-macos:
-    runs-on: macos-latest
+    runs-on: [self-hosted, macOS]
     steps:
       - uses: actions/checkout@v4
       - name: Extraire tgz macOS
