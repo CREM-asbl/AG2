@@ -8,6 +8,9 @@ Protected Class Transformation
 
 		  t = true
 
+		  if M = nil then
+		    return
+		  end if
 
 		  if not  S2 isa Point then
 		    for i= 0 to s1.npts-1
@@ -45,12 +48,27 @@ Protected Class Transformation
 		Sub AppliquerExtreCtrl(s1 as shape, s2 as shape)
 		  dim i as integer
 
+		  if M = nil then
+		    return
+		  end if
+		  if M.v1 = nil then
+		    return
+		  end if
+
 		  if s1.Hybrid or s1 isa circle then
 		    for i = 0 to ubound(s2.coord.extre)
-		      s2.coord.extre(i) = M*s1.coord.extre(i)
+		      if s1.coord.extre(i) <> nil then
+		        s2.coord.extre(i) = M*s1.coord.extre(i)
+		      else
+		        s2.coord.extre(i) = nil
+		      end if
 		    next
 		    for i = 0 to ubound(s2.coord.ctrl)
-		      s2.coord.ctrl(i) = M*s1.coord.ctrl(i)
+		      if s1.coord.ctrl(i) <> nil then
+		        s2.coord.ctrl(i) = M*s1.coord.ctrl(i)
+		      else
+		        s2.coord.ctrl(i) = nil
+		      end if
 		    next
 
 		    for i = 0 to ubound(s1.coord.centres)

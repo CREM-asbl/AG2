@@ -191,6 +191,18 @@ Protected Class Matrix
 
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(v as BasicPoint) As BasicPoint
+		  if v = nil then
+		    return nil
+		  end if
+		  if v1 = nil then
+		    return nil
+		  end if
+		  if v2 = nil then
+		    return nil
+		  end if
+		  if v3 = nil then
+		    return nil
+		  end if
 		  return new BasicPoint(v1.x*v.x+v2.x*v.y+v3.x,v1.y*v.x+v2.y*v.y+v3.y)
 		  
 		  Exception err
@@ -205,6 +217,28 @@ Protected Class Matrix
 	#tag Method, Flags = &h0
 		Function Operator_Multiply(ByRef M As Matrix) As Matrix
 		  dim u1, u2, u3 , w1, w2, w3 as BasicPoint
+		  
+		  if M = nil then
+		    return nil
+		  end if
+		  if M.v1 = nil then
+		    return nil
+		  end if
+		  if M.v2 = nil then
+		    return nil
+		  end if
+		  if M.v3 = nil then
+		    return nil
+		  end if
+		  if v1 = nil then
+		    return nil
+		  end if
+		  if v2 = nil then
+		    return nil
+		  end if
+		  if v3 = nil then
+		    return nil
+		  end if
 		  
 		  w1 = M.v1
 		  w2 = M.v2
