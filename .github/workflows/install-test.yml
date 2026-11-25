@@ -3,9 +3,13 @@ on:
   workflow_dispatch:
   push:
     paths: ["tools-packaging/**", ".github/workflows/install-test.yml"]
+concurrency:
+  group: install-test-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test-ubuntu:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Verifier dist
@@ -37,6 +41,7 @@ jobs:
           timeout 15 "$BIN" --help || timeout 15 "$BIN" --version
   test-macos:
     runs-on: [self-hosted, macOS]
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Extraire tgz macOS

@@ -6,6 +6,7 @@ on:
 jobs:
   build-windows:
     runs-on: [self-hosted, windows, xojo]
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       # Build Xojo via IDE manuel (pas de CLI fiable en 2023r2).
@@ -18,6 +19,7 @@ jobs:
         with: { name: windows, path: Builds-AG/dist/AG2-*-windows-*.exe* }
   build-linux:
     runs-on: [self-hosted, linux, xojo]
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Package tgz
@@ -26,6 +28,7 @@ jobs:
         with: { name: linux, path: Builds-AG/dist/AG2-*-linux-*.tgz* }
   build-macos:
     runs-on: [self-hosted, macOS, xojo]
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Package DMG (sans compte Apple)
@@ -35,6 +38,7 @@ jobs:
   release:
     needs: [build-windows, build-linux, build-macos]
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/download-artifact@v4
         with: { path: dist, merge-multiple: true }
