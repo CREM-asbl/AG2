@@ -82,8 +82,10 @@ Inherits MultipleSelectOperation
 				    end if
 		  end if
 		  if ifmac.oper = 1 and (ifmac.fo> 3)  then
-				    if newshape.npts > 1 then
-				      newshape.points(1).hide
+				    if newshape.npts > 1 and Ubound(newshape.points) >= 1 then
+				      if newshape.points(1) <> nil then
+				        newshape.points(1).hide
+				      end if
 				    end if
 		    newshape.ncpts = 1
 		  end if
@@ -107,6 +109,14 @@ Inherits MultipleSelectOperation
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
 		  for i = 0 to newshape.npts-1
+				    if i < 0 or i > Ubound(ifmac.childs) or i > Ubound(newshape.points) then
+				      System.DebugLog(CurrentMethodName + ": skip final OOB i=" + Str(i))
+				      Continue For
+				    end if
+				    if newshape.points(i) = nil then
+				      System.DebugLog(CurrentMethodName + ": skip nil final point i=" + Str(i))
+				      Continue For
+				    end if
 				    if i >= 0 and i <= Ubound(ifmac.childs) then
 				      if ifmac.childs(i) <> nil and ifmac.childs(i).RealId = 0 then                           //cas où des points devront être identifiés
 				        ifmac.childs(i).RealId = newshape.points(i).id
@@ -145,6 +155,10 @@ Inherits MultipleSelectOperation
 				        System.DebugLog(CurrentMethodName + ": skip npts=0 n=" + Str(n))
 				        Continue For
 				      end if
+		      if Ubound(s.points) < 0 or s.points(0) = nil then
+			        System.DebugLog(CurrentMethodName + ": skip nil points(0) n=" + Str(n))
+			        Continue For
+			      end if
 		      s.createskull(s.points(0).bpt)
 		    end if
 		  next
@@ -156,7 +170,7 @@ Inherits MultipleSelectOperation
 		  //Cette  méthode crée les structures Ifmac de classe Infomac mais n'y place aucune valeur numérique de position.
 		  //Cette opération est exécutée dans la deuxième phase : exécution de la macro prise en charge par la méthode macexe de la classe Macro
 		  
-		  dim i, n as integer
+		  dim i, n, k as integer
 		  dim EL0, EL1 as XMLElement
 		  dim ifmac, ifm As InfoMac
 		  dim s, newshape as shape
@@ -201,6 +215,10 @@ Inherits MultipleSelectOperation
 		  //Deuxième partie : adaptation selon la classe (init, interm, final)
 		  if Mac.ObInit.indexof(n) <> -1 then
 		    ifmac.RealId =MacInfo.GetRealInit(n)
+		    if ifmac.RealId = -1 then
+		      System.DebugLog(CurrentMethodName + ": skip RealId -1 n=" + Str(n))
+		      return
+		    end if
 		    ifmac.init = true
 		    s = currentcontent.TheObjects.GetShape(ifmac.RealId)
 				    if s = nil then
@@ -217,12 +235,23 @@ Inherits MultipleSelectOperation
 		    end if
 		    for i = 0 to ifmac.npts-1
 				      if i < 0 or i > Ubound(ifmac.childs) then
+				        System.DebugLog(CurrentMethodName + ": skip childs OOB i=" + Str(i))
 				        Continue For
 				      end if
 				      if ifmac.childs(i) = nil then
+				        System.DebugLog(CurrentMethodName + ": skip nil child i=" + Str(i))
 				        Continue For
 				      end if
-		      ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
+		      if s.npts <= 0 or Ubound(s.points) < 0 then
+			        System.DebugLog(CurrentMethodName + ": skip bad shape points n=" + Str(n))
+			        Continue For
+			      end if
+			      k = ((i + ifmac.RealSide) mod s.npts + s.npts) mod s.npts
+			      if k < 0 or k > Ubound(s.points) or s.points(k) = nil then
+				        System.DebugLog(CurrentMethodName + ": skip bad point k=" + Str(k))
+				        Continue For
+				      end if
+			      ifmac.childs(i).RealId = s.points(k).id
 		    next
 		    ifmac.ori = s.ori
 		  end if
@@ -241,6 +270,10 @@ Inherits MultipleSelectOperation
 		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
 		        ifm.init = true
 		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
+		        if ifm.RealId = -1 then
+		          System.DebugLog(CurrentMethodName + ": skip RealId -1 MacId=" + Str(Ifm.MacId))
+		          Continue For
+		        end if
 		      end if
 		    next
 		  end if
@@ -255,7 +288,8 @@ Inherits MultipleSelectOperation
 		    newshape.endconstruction
 		    newshape.ifmac = ifmac
 		    for i = 0 to newshape.npts-1
-				      if i < 0 or i > Ubound(ifmac.childs) then
+				      if i < 0 or i > Ubound(ifmac.childs) or i > Ubound(newshape.points) then
+				        System.DebugLog(CurrentMethodName + ": skip final OOB i=" + Str(i))
 				        Continue For
 				      end if
 		      ifm = ifmac.childs(i)
@@ -266,13 +300,25 @@ Inherits MultipleSelectOperation
 		      if Mac.ObInit.indexof(Ifm.MacId) <> -1 then
 		        ifm.init = true
 		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
+		        if ifm.RealId = -1 then
+		          System.DebugLog(CurrentMethodName + ": skip RealId -1 MacId=" + Str(Ifm.MacId))
+		          Continue For
+		        end if
 		      end if
-		      newshape.points(i).ifmac = ifm
+		      if newshape.points(i) = nil then
+		        System.DebugLog(CurrentMethodName + ": skip nil newshape.points i=" + Str(i))
+		        Continue For
+		      end if
+	      newshape.points(i).ifmac = ifm
 		      if ifm.fo = 1 and (Mac.ObInterm.indexof(ifm.forme0) =-1) then
-				        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
-				        if s <> nil then
-				          newshape.points(i).numside.append  ifm.numside0
-				          newshape.points(i).placerptsursurfigure
+				        if MacInfo.GetRealId(ifm.forme0) = -1 then
+				          System.DebugLog(CurrentMethodName + ": skip RealId -1 forme0=" + Str(ifm.forme0))
+				        else
+				          s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
+				          if s <> nil then
+				            newshape.points(i).numside.append  ifm.numside0
+				            newshape.points(i).placerptsursurfigure
+				          end if
 				        end if
 		      end if
 		      newshape.points(i).forme = ifm.fo
@@ -716,6 +762,10 @@ Inherits MultipleSelectOperation
 		  if idx = -1 then
 		    return -1
 		  end if
+		  if idx < 0 or idx > Ubound(RealSide) then
+		    System.DebugLog(CurrentMethodName + ": skip RealSide OOB idx=" + Str(idx))
+		    return -1
+		  end if
 		  return RealSide(idx)
 		End Function
 	#tag EndMethod
@@ -788,17 +838,53 @@ Inherits MultipleSelectOperation
 		  dim ifm as infomac
 		  dim pt as point
 		  
+		  if newshape = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil newshape")
+		    return
+		  end if
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if EL0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
+		    return
+		  end if
 		  EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
+		  if EL1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL1")
+		    return
+		  end if
 		  
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
 		    pt = nil
+		    if j < 0 or j >= EL1.ChildCount then
+		      System.DebugLog(CurrentMethodName + ": skip EL1 OOB j=" + Str(j))
+		      Continue For
+		    end if
 		    EL2 = XMLElement(EL1.Child(j))
+		    if EL2 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil EL2 j=" + Str(j))
+		      Continue For
+		    end if
+		    if j < 0 or j > Ubound(ifmac.childs) or j > Ubound(newshape.points) then
+		      System.DebugLog(CurrentMethodName + ": skip identify OOB j=" + Str(j))
+		      Continue For
+		    end if
+		    if newshape.points(j) = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil newshape.points j=" + Str(j))
+		      Continue For
+		    end if
 		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
 		    ifm = MacInfo.GetInfoMac(m,num)
 		    if ifm <> nil and (ifm.init or ifm.final)   then
 		      if ifm.MacId = m then
 		        pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		      else
+		        if ifmac.childs(j) = nil then
+		          System.DebugLog(CurrentMethodName + ": skip nil child j=" + Str(j))
+		          Continue For
+		        end if
 		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
 		      if pt <> nil and pt <> newshape.points(j) then
