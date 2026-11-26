@@ -127,13 +127,20 @@ Protected Class InfoMac
 		  M = new Matrix(temp)
 		  
 		  List = Temp.XQL("Coords")
-		  if List.length > 0 then
+		  if List <> nil and List.length > 0 then
 		    EL1 = XMLElement(List.Item(0))
+		    if EL1 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil EL1 coords")
+		    else
 		    coord = new nBPoint
 		    for i = 0 to EL1.Childcount-1
 		      EL2 = XMLElement(EL1.Child(i))
+		      if EL2 = nil then
+		        Continue For
+		      end if
 		      coord.append new BasicPoint(val(EL2.GetAttribute("X")), val(EL2.GetAttribute("Y")))
 		    next
+		    end if
 		  end if
 		  
 		  
@@ -146,6 +153,10 @@ Protected Class InfoMac
 		  dim EL2 as XMLElement
 		  dim ifm as infomac
 		  dim m as integer
+		  
+		  if EL0 = nil or EL1 = nil then
+		    return
+		  end if
 		  
 		  select case op
 		    
@@ -170,10 +181,19 @@ Protected Class InfoMac
 		    if ifm <> nil and ifm.macId <> forme2 then
 		      if m >= 0 and m <= Ubound(ifm.childs) then
 		        ifm = ifm.childs(m)
+		        if ifm = nil then
+			          return
+			        end if
 		      end if
+		    end if
+		    if ifm = nil then
+		      return
 		    end if                              //infomac du point dupliqué
 		    forme1 = ifm.forme0   //macId du support du dupliqué
 		    numside1 = ifm.numside0 //numside du dupliqué
+		    if npts <= 0 then
+		      return
+		    end if
 		    numside0 = (numside1+num) mod npts
 		  case 24 //AppliquerTsf
 		    Forme0 = val(EL1.GetAttribute("SuppTsf")) //MacId du support
@@ -197,14 +217,29 @@ Protected Class InfoMac
 		  case 45 //inter
 		    numside0 = val(EL1.GetAttribute("NumSide0"))
 		    numside1 = val(EL1.GetAttribute("NumSide1"))
+		    if EL1.ChildCount < 2 then
+		      return
+		    end if
 		    EL2 = XMLElement(EL1.child(0))
+		    if EL2 = nil then
+		      return
+		    end if
 		    forme0 = val(EL2.GetAttribute("Id"))
 		    EL2 = XMLElement(EL1.child(1))
+		    if EL2 = nil then
+		      return
+		    end if
 		    forme1 = val(EL2.GetAttribute("Id"))
 		  case 46 //PointSur (construction)
 		    numside0 = val(EL1.GetAttribute("NumSide0"))
 		    location = val(EL1.GetAttribute("Location"))
+		    if EL1.ChildCount < 1 then
+		      return
+		    end if
 		    EL2 = XMLElement(EL1.child(0))
+		    if EL2 = nil then
+		      return
+		    end if
 		    forme0 = val(EL2.GetAttribute("Id")) //Support du point sur
 		  end select
 		  
@@ -242,6 +277,9 @@ Protected Class InfoMac
 		    else
 		      ifm = new InfoMac(0,0)
 		      ifm.MacId = n
+		    end if
+		    if ifm = nil then
+		      Continue For
 		    end if
 		    childs.append ifm
 		  next

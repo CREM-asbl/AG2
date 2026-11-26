@@ -82,8 +82,10 @@ Inherits MultipleSelectOperation
 				    end if
 		  end if
 		  if ifmac.oper = 1 and (ifmac.fo> 3)  then
-				    if newshape.npts > 1 then
-				      newshape.points(1).hide
+				    if newshape.npts > 1 and Ubound(newshape.points) >= 1 then
+				      if newshape.points(1) <> nil then
+				        newshape.points(1).hide
+				      end if
 				    end if
 		    newshape.ncpts = 1
 		  end if
@@ -107,6 +109,12 @@ Inherits MultipleSelectOperation
 		  ifmac.RealId = newshape.id
 		  ifmac.final = true
 		  for i = 0 to newshape.npts-1
+				    if i < 0 or i > Ubound(ifmac.childs) or i > Ubound(newshape.points) then
+				      Continue For
+				    end if
+				    if newshape.points(i) = nil then
+				      Continue For
+				    end if
 				    if i >= 0 and i <= Ubound(ifmac.childs) then
 				      if ifmac.childs(i) <> nil and ifmac.childs(i).RealId = 0 then                           //cas où des points devront être identifiés
 				        ifmac.childs(i).RealId = newshape.points(i).id
@@ -145,6 +153,10 @@ Inherits MultipleSelectOperation
 				        System.DebugLog(CurrentMethodName + ": skip npts=0 n=" + Str(n))
 				        Continue For
 				      end if
+		      if Ubound(s.points) < 0 or s.points(0) = nil then
+			        System.DebugLog(CurrentMethodName + ": skip nil points(0) n=" + Str(n))
+			        Continue For
+			      end if
 		      s.createskull(s.points(0).bpt)
 		    end if
 		  next
@@ -222,6 +234,12 @@ Inherits MultipleSelectOperation
 				      if ifmac.childs(i) = nil then
 				        Continue For
 				      end if
+		      if s.npts <= 0 or Ubound(s.points) < 0 then
+			        Continue For
+			      end if
+			      if s.points((i+ifmac.RealSide) mod s.npts) = nil then
+			        Continue For
+			      end if
 		      ifmac.childs(i).RealId =s.points((i+ifmac.RealSide) mod s.npts).id
 		    next
 		    ifmac.ori = s.ori
@@ -267,7 +285,10 @@ Inherits MultipleSelectOperation
 		        ifm.init = true
 		        ifm.RealId = MacInfo.GetRealInit(Ifm.MacId)
 		      end if
-		      newshape.points(i).ifmac = ifm
+		      if newshape.points(i) = nil then
+		        Continue For
+		      end if
+	      newshape.points(i).ifmac = ifm
 		      if ifm.fo = 1 and (Mac.ObInterm.indexof(ifm.forme0) =-1) then
 				        s = currentcontent.TheObjects.getshape(MacInfo.GetRealId(ifm.forme0))
 				        if s <> nil then
@@ -788,17 +809,49 @@ Inherits MultipleSelectOperation
 		  dim ifm as infomac
 		  dim pt as point
 		  
+		  if newshape = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil newshape")
+		    return
+		  end if
+		  if ifmac = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil ifmac")
+		    return
+		  end if
+		  if EL0 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL0")
+		    return
+		  end if
 		  EL1 = XMLElement(EL0.Child(0))   //EL1 contient la description des points de newshape
+		  if EL1 = nil then
+		    System.DebugLog(CurrentMethodName + ": skip nil EL1")
+		    return
+		  end if
 		  
 		  for j = 0 to newshape.ncpts-1  //On considère les points de construction un à un
 		    pt = nil
+		    if j < 0 or j >= EL1.ChildCount then
+		      Continue For
+		    end if
 		    EL2 = XMLElement(EL1.Child(j))
+		    if EL2 = nil then
+		      System.DebugLog(CurrentMethodName + ": skip nil EL2 j=" + Str(j))
+		      Continue For
+		    end if
+		    if j < 0 or j > Ubound(ifmac.childs) then
+		      Continue For
+		    end if
+		    if newshape.points(j) = nil then
+		      Continue For
+		    end if
 		    m = val(EL2.GetAttribute("Id"))     //m est la macid  du point associé à newshape.points(j)
 		    ifm = MacInfo.GetInfoMac(m,num)
 		    if ifm <> nil and (ifm.init or ifm.final)   then
 		      if ifm.MacId = m then
 		        pt  = point(CurrentContent.TheObjects.Getshape(ifm.RealId))
 		      else
+		        if ifmac.childs(j) = nil then
+		          Continue For
+		        end if
 		        pt = point(Currentcontent.TheObjects.Getshape(ifmac.childs(j).Realid))
 		      end if
 		      if pt <> nil and pt <> newshape.points(j) then
