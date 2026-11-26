@@ -15,7 +15,7 @@ Protected Class MacConstructionInfo
 		Sub Constructor(m as Macro, Temp as XMLElement)
 		  dim EL , EL1, EL2 as XMLElement
 		  dim nrf, nri, nrs, fa as integer
-		  dim i, j, n, num, nch, mid as integer
+		  dim i, j, n, num, nch, mid, k as integer
 		  dim ifm, ifmac as InfoMac
 		  dim s as shape
 		  
@@ -74,15 +74,19 @@ Protected Class MacConstructionInfo
 		          end if
 		          for j = 0 to Ubound(ifmac.childs)
 		            if ifmac.childs(j) = nil then
+		              System.DebugLog(CurrentMethodName + ": skip nil child j=" + Str(j))
 		              Continue For
 		            end if
 		            if s.npts <= 0 or Ubound(s.points) < 0 then
+		              System.DebugLog(CurrentMethodName + ": skip bad shape points")
 		              Continue For
 		            end if
-		            if s.points((j+ifmac.RealSide) mod s.npts) = nil then
+		            k = ((j + ifmac.RealSide) mod s.npts + s.npts) mod s.npts
+		            if k < 0 or k > Ubound(s.points) or s.points(k) = nil then
+		              System.DebugLog(CurrentMethodName + ": skip bad point k=" + Str(k))
 		              Continue For
 		            end if
-		            ifmac.childs(j).RealId =s.points((j+ifmac.RealSide) mod s.npts).id
+		            ifmac.childs(j).RealId = s.points(k).id
 		          next
 		          ifmac.ori = s.ori
 		        end if
@@ -265,6 +269,10 @@ Protected Class MacConstructionInfo
 		Function GetRealSide(n as integer) As integer
 		  
 		  if Mac <> nil and Mac.ObInit.indexof(n) <> -1 then
+		    if Mac.ObInit.indexof(n) < 0 or Mac.ObInit.indexof(n) > Ubound(RealInitSide) then
+		      System.DebugLog(CurrentMethodName + ": skip RealInitSide OOB")
+		      return 0
+		    end if
 		    return RealInitSide(Mac.ObInit.indexof(n))
 		    'elseif Mac.ObInterm.indexof(n) <> -1 then
 		    'return RealIntermSide(Mac.ObInterm.indexof(n))

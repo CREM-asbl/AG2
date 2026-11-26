@@ -63,11 +63,11 @@ def test_getrealid_returns_minus1_on_unknown():
 
 
 def test_getrealside_returns_minus1_on_unknown():
-    body = extract_method(
-        MACROEXE.read_text(encoding="utf-8"), "Function GetRealSide(n as integer) as integer"
-    ).lower()
+    body = _body(MACROEXE, "Function GetRealSide(n as integer) as integer")
     assert "if idx = -1 then" in body
     assert "return -1" in body
+    assert "ubound(realside)" in body
+    assert "skip realside oob" in body
 
 
 def test_createobject_guards_unknown_refs():
@@ -201,7 +201,9 @@ def test_prolonger_validates_side_before_dooperation():
     assert g != -1 and d != -1 and g < d
 
 def test_debuglog_on_skips():
-    for marker in ("Sub ExecuteMacro(Temp as XMLElement", "Sub CreateObject(EL as XMLElement", "Sub CreateTransfo(EL as XMLElement"):
+    for marker in ("Sub ExecuteMacro(Temp as XMLElement", "Sub CreateObject(EL as XMLElement",
+                   "Sub CreateTransfo(EL as XMLElement", "Sub CreateIfMacObject(EL as XMLElement",
+                   "Sub IdentifyPoints(newshape as shape"):
         body = _body(MACROEXE, marker)
         assert "system.debuglog" in body, f"{marker}: missing System.DebugLog skip trace"
 
@@ -224,7 +226,11 @@ def test_identifypoints_guards_nil_xml():
 def test_identifypoints_guards_childs_and_points_bounds():
     body = _body(MACROEXE, "Sub IdentifyPoints(newshape as shape")
     assert "ubound(ifmac.childs)" in body
+    assert "ubound(newshape.points)" in body
     assert "newshape.points(j) = nil" in body
+    assert "skip el1 oob" in body
+    assert "skip identify oob" in body
+    assert "skip nil child j=" in body
 
 def test_copparam_pointsur_guards_el2():
     body = _body(INFOMAC, "Sub CopyParam(EL0 as XMLElement")
@@ -234,6 +240,10 @@ def test_copparam_pointsur_guards_el2():
 def test_createifmacobject_final_loop_guards_points_nil():
     body = _body(MACROEXE, "Sub CreateIfMacObject(EL as XMLElement")
     assert "newshape.points(i) = nil" in body
+    assert "ubound(newshape.points)" in body
+    assert "skip final oob" in body
+    assert "skip realid -1" in body
+    assert "skip realid -1 forme0=" in body
 
 def test_createchildren_guards_nil_child():
     body = _body(INFOMAC, "Sub CreateChildren(EL as XMLElement")
@@ -247,11 +257,25 @@ def test_createfinal_hide_guards_points1_nil():
     assert "newshape.points(1) <> nil" in fbody
 
 def test_obinit_mod_loops_guard_npts_zero():
-    for path, marker in ((MACROEXE, "Sub CreateIfMacObject(EL as XMLElement"),
-                          (MACINFO, "Sub Constructor(m as Macro, Temp as XMLElement")):
-        body = _body(path, marker)
-        assert "s.npts <= 0" in body, path
-        assert "mod s.npts) = nil" in body, path
+    mx = _body(MACROEXE, "Sub CreateIfMacObject(EL as XMLElement")
+    assert "s.npts <= 0" in mx
+    assert "((i + ifmac.realside)" in mx
+    assert "+ s.npts) mod s.npts" in mx
+    assert "k < 0 or k > ubound(s.points)" in mx
+    assert "skip bad point k=" in mx
+    assert "mod s.npts).id" not in mx
+    mci = _body(MACINFO, "Sub Constructor(m as Macro, Temp as XMLElement")
+    assert "s.npts <= 0" in mci
+    assert "((j + ifmac.realside)" in mci
+    assert "+ s.npts) mod s.npts" in mci
+    assert "skip bad point k=" in mci
+    assert "mod s.npts).id" not in mci
+
+def test_mciconstruction_getrealside_bounds_checked():
+    body = _body(MACINFO, "Function GetRealSide(n as integer) as integer")
+    assert "ubound(realinitside)" in body
+    assert "skip realinitside oob" in body
+    assert "return 0" in body
 
 def test_getrealinit_final_bounds_checked():
     for fn in ("Function GetRealFinal(n as integer)", "Function GetRealInit(n as integer)"):
@@ -304,6 +328,7 @@ if __name__ == "__main__":
     test_createchildren_guards_nil_child()
     test_createfinal_hide_guards_points1_nil()
     test_obinit_mod_loops_guard_npts_zero()
+    test_mciconstruction_getrealside_bounds_checked()
     test_getrealinit_final_bounds_checked()
     test_getsommet_guards_nil_chain()
     test_copyparam_entry_and_modzero_guards()
