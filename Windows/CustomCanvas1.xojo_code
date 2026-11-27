@@ -421,8 +421,11 @@ Inherits Canvas
 		    zone.border = 100
 		  end if
 
-		  OffscreenPicture=New Picture(width,height,Screen(0).Depth)
+		  OffscreenPicture=New Picture(Max(1, Min(16384, width)), Max(1, Min(16384, height)), Screen(0).Depth)
 		  OffscreenPicture.Transparent = 1
+		  BackgroundPicture = New Picture(Max(1, Min(16384, width)), Max(1, Min(16384, height)), Screen(0).Depth)
+		  BackgroundPicture.graphics.ForeColor = &cFFFFFF
+		  BackgroundPicture.graphics.FillRect(0, 0, width, height)
 		  HelpMess = True
 		  OKMess = True
 
@@ -432,7 +435,7 @@ Inherits Canvas
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 
-		  if OffscreenPicture <> nil and BackgroundPicture <> nil  then
+		  if g <> nil and OffscreenPicture <> nil and BackgroundPicture <> nil  then
 		    BackgroundPicture.graphics.DrawPicture OffscreenPicture , 0, 0
 		    g.drawPicture(BackgroundPicture, 0, 0)
 		  end if
@@ -809,8 +812,8 @@ Inherits Canvas
 		  var targetHeight As Integer = WorkWindow.height
 
 		  // Clamp to valid Picture bounds to avoid errors during fast resize/minimize.
-		  targetWidth = Max(1, Min(32767, targetWidth))
-		  targetHeight = Max(1, Min(32767, targetHeight))
+		  targetWidth = Max(1, Min(16384, targetWidth))
+		  targetHeight = Max(1, Min(16384, targetHeight))
 
 		  me.width = targetWidth
 		  me.height = targetHeight

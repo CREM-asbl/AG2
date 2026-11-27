@@ -184,7 +184,7 @@ Protected Class WindContent
 		    end if
 		    s1 = Obj.GetAttribute("File")
 		    s2 = Obj.GetAttribute("Align")
-		    If s1 = "" Or s1.InStr("/") >= 0 Or s1.InStr("\") >= 0 Or s1 = "." Or s1 = ".." Then
+		    If s1 = "" Or s1.InStr("/") > 0 Or s1.InStr("\") > 0 Or s1 = "." Or s1 = ".." Then
 		      System.DebugLog("WindContent.ChargerPrefs: nom fond invalide, ignore")
 		      Return True
 		    End If
@@ -196,6 +196,10 @@ Protected Class WindContent
 		    f = f.child(s1)
 		    if f = nil Or Not f.Exists then
 		      System.DebugLog("WindContent.ChargerPrefs: fichier fond introuvable, ignore")
+		      dim msg As new MessageDialog
+		      msg.IconType = MessageDialog.IconTypes.Caution
+		      msg.Message = "L'image de fond d'écran " + s1 + " n'est plus disponible"
+		      call msg.ShowModal
 		      Return True
 		    end if
 		    if can = nil then
@@ -205,6 +209,10 @@ Protected Class WindContent
 		    pic = Picture.Open(f)
 		    if pic = nil then
 		      System.DebugLog("WindContent.ChargerPrefs: image illisible, fond ignore")
+		      dim msg As new MessageDialog
+		      msg.IconType = MessageDialog.IconTypes.Caution
+		      msg.Message = "L'image de fond d'écran " + s1 + " n'est plus disponible"
+		      call msg.ShowModal
 		      Return True
 		    end if
 		    can.setFondEcran(pic, f.Name)
